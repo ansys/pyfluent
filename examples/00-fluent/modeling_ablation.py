@@ -81,11 +81,37 @@ Modeling Ablation
 ####################################################################################
 # Import required libraries/modules
 # ==================================================================================
-import os
+from pathlib import Path
+
+from ansys.units import VariableCatalog
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.generated.solver.settings_builtin import (
+    PlaneSurface,
+    ReportFile,
+    ReportPlot,
+)
+from ansys.fluent.core.generated.solver.settings_builtin_261 import read_case, write_case_data
+from ansys.fluent.core.solver import (
+    Controls,
+    DynamicMesh,
+    FluidMaterial,
+    General,
+    Initialization,
+    Models,
+    Monitor,
+    PressureFarFieldBoundary,
+    PressureOutlet,
+    ReportDefinitions,
+    Residual,
+    Results,
+    RunCalculation,
+    Solution,
+    WallBoundary,
+)
 from ansys.fluent.visualization import Contour, GraphicsWindow
+from ansys.units.common import K, Pa, s
 
 ####################################################################################
 # Download example file
@@ -93,8 +119,17 @@ from ansys.fluent.visualization import Contour, GraphicsWindow
 import_filename = examples.download_file(
     "ablation.msh.h5",
     "pyfluent/examples/Ablation-tutorial",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
+
+# upload mesh to the solver working directory
+solver_upload_path = import_filename
+# Note: solver.upload accepts a path-like or string
+try:
+    # solver may not be created yet; create it before upload below
+    pass
+except Exception:
+    pass
 
 ####################################################################################
 # Fluent Solution Setup
@@ -104,66 +139,50 @@ import_filename = examples.download_file(
 # Launch Fluent session with solver mode and print Fluent version
 # ==================================================================================
 
-solver_session = pyfluent.launch_fluent(
-    precision="double",
-    processor_count=4,
-)
-print(solver_session.get_fluent_version())
+solver = pyfluent.Solver.from_install(precision="double", processor_count=4)
+print(solver.get_fluent_version())
+
 
 ####################################################################################
 # Import mesh
 # ==================================================================================
 
-solver_session.settings.file.read_case(file_name=import_filename)
+read_case(solver, file_name=import_filename)
 
 ####################################################################################
 # Define models
 # ==================================================================================
 
-solver_session.settings.setup.general.solver.type = "density-based-implicit"
-solver_session.settings.setup.general.solver.time = "unsteady-1st-order"
-solver_session.settings.setup.general.operating_conditions.operating_pressure = 0.0
-solver_session.settings.setup.models.energy = {"enabled": True}
-solver_session.settings.setup.models.ablation = {"enabled": True}
+general = General(solver)
+models = Models(solver)
+
+general.solver.type = "density-based-implicit"
+general.solver.time = "unsteady-1st-order"
+general.operating_conditions.operating_pressure = 0.0 * Pa
+models.energy.enabled = True
+models.ablation.enabled = True
 
 ###################################################################
 # Define material
 # =================================================================
 
-solver_session.settings.setup.materials.fluid["air"] = {
-    "density": {"option": "ideal-gas"},
-    "molecular_weight": {"value": 28.966, "option": "constant"},
-}
-solver_session.settings.setup.materials.fluid["air"] = {
-    "density": {"option": "ideal-gas"}
-}
+air = FluidMaterial.get(solver, name="air")
+air.density.option = "ideal-gas"
+air.molecular_weight = 28.966
 
 ############################
 # Define boundary conditions
 # ==========================
 
-solver_session.settings.setup.boundary_conditions.set_zone_type(
-    zone_list=["inlet"], new_type="pressure-far-field"
-)
-solver_session.settings.setup.boundary_conditions.pressure_far_field[
-    "inlet"
-].momentum.gauge_pressure = 13500
-solver_session.settings.setup.boundary_conditions.pressure_far_field[
-    "inlet"
-].momentum.mach_number = 3
-solver_session.settings.setup.boundary_conditions.pressure_far_field[
-    "inlet"
-].thermal.temperature = 4500
-solver_session.settings.setup.boundary_conditions.pressure_far_field[
-    "inlet"
-].turbulence.turbulent_intensity = 0.001
+inlet = PressureFarFieldBoundary.get(solver, name="inlet")
+inlet.momentum.gauge_pressure = 13500 * Pa
+inlet.momentum.mach_number = 3
+inlet.thermal.temperature = 4500 * K
+inlet.turbulence.turbulent_intensity = 0.001
 
-solver_session.settings.setup.boundary_conditions.pressure_outlet[
-    "outlet"
-].momentum.gauge_pressure = 13500
-solver_session.settings.setup.boundary_conditions.pressure_outlet[
-    "outlet"
-].momentum.prevent_reverse_flow = True
+outlet = PressureOutlet.get(solver, name="outlet")
+outlet.momentum.gauge_pressure = 13500 * Pa
+outlet.momentum.prevent_reverse_flow = True
 
 #############################################
 # Ablation boundary condition (Vielles Model)
@@ -173,220 +192,156 @@ solver_session.settings.setup.boundary_conditions.pressure_outlet[
 # Remeshing options, #creates the wall-ablation dynamic mesh zone, and configure
 # appropriate dynamic mesh settings.
 
-solver_session.settings.setup.boundary_conditions.wall[
-    "wall_ablation"
-].ablation.ablation_select_model = "Vielle's Model"
-solver_session.settings.setup.boundary_conditions.wall[
-    "wall_ablation"
-].ablation.ablation_vielle_a = 5
-solver_session.settings.setup.boundary_conditions.wall[
-    "wall_ablation"
-].ablation.ablation_vielle_n = 0.1
+wall_ablation = WallBoundary.get(solver, name="wall_ablation")
+wall_ablation.ablation.ablation_select_model = "Vielle's Model"
+wall_ablation.ablation.ablation_vielle_a = 5
+wall_ablation.ablation.ablation_vielle_n = 0.1
 
 ##############################
 # Define dynamic mesh controls
 # ============================
 
-solver_session.settings.setup.dynamic_mesh = {"enabled": True}
+dynamic_mesh = DynamicMesh(solver)
+dynamic_mesh.enabled = True
 
-solver_session.settings.setup.dynamic_mesh.dynamic_zones = {
-    "dynamic-zone-1": {
-        "solver": {"stabilization": {"enabled": False}},
-        "geometry": {"feature_detection": {"enabled": False}, "definition": "faceted"},
-        "meshing": {
-            "smoothing": {"enabled": False},
-            "remeshing": {"parameters": {"global_settings": True}, "enabled": True},
-        },
-        "motion": {"exclude_motion_bc": True},
-        "type": "deforming",
-        "zone": "interior--flow",
-        "name": "dynamic-zone-1",
-    }
-}
+dz1 = dynamic_mesh.dynamic_zones.create(
+    name="dynamic-zone-1", zone="interior--flow", type="deforming"
+)
+dz1.solver.stabilization.enabled = False
+dz1.geometry.feature_detection.enabled = False
+dz1.geometry.definition = "faceted"
+dz1.meshing.smoothing.enabled = False
+dz1.meshing.remeshing.parameters.global_settings = True
+dz1.meshing.remeshing.enabled = True
+dz1.motion.exclude_motion_bc = True
 
-solver_session.settings.setup.dynamic_mesh.dynamic_zones = {
-    "dynamic-zone-2": {
-        "solver": {
-            "stabilization": {
-                "parameters": {"scale": 0.1, "method": "coefficient-based"},
-                "enabled": True,
-            }
-        },
-        "geometry": {"feature_detection": {"enabled": False}, "definition": "faceted"},
-        "meshing": {"smoothing": {"enabled": True}, "remeshing": {"enabled": False}},
-        "motion": {"exclude_motion_bc": True},
-        "type": "deforming",
-        "zone": "outlet",
-        "name": "dynamic-zone-2",
-    }
-}
+dz2 = dynamic_mesh.dynamic_zones.create(
+    name="dynamic-zone-2", zone=outlet, type="deforming"
+)
+dz2.solver.stabilization.parameters.scale = 0.1
+dz2.solver.stabilization.parameters.method = "coefficient-based"
+dz2.solver.stabilization.enabled = True
+dz2.geometry.feature_detection.enabled = False
+dz2.geometry.definition = "faceted"
+dz2.meshing.smoothing.enabled = True
+dz2.meshing.remeshing.enabled = False
+dz2.motion.exclude_motion_bc = True
 
-solver_session.settings.setup.dynamic_mesh.dynamic_zones = {
-    "dynamic-zone-3": {
-        "solver": {
-            "stabilization": {
-                "parameters": {"scale": 0.1, "method": "coefficient-based"},
-                "enabled": True,
-            }
-        },
-        "geometry": {
-            "feature_detection": {"enabled": False},
-            "plane_def": {"normal": [0, -1, 0], "point": [0.0, -0.04, 0.0]},
-            "definition": "plane",
-        },
-        "meshing": {"smoothing": {"enabled": True}, "remeshing": {"enabled": False}},
-        "motion": {"exclude_motion_bc": True},
-        "type": "deforming",
-        "zone": "symm1",
-        "name": "dynamic-zone-3",
-    }
-}
+dz3 = dynamic_mesh.dynamic_zones.create(
+    name="dynamic-zone-3", zone="symm1", type="deforming"
+)
+dz3.solver.stabilization.parameters.scale = 0.1
+dz3.solver.stabilization.parameters.method = "coefficient-based"
+dz3.solver.stabilization.enabled = True
+dz3.geometry.feature_detection.enabled = False
+dz3.geometry.plane_def.normal = [0, -1, 0]
+dz3.geometry.plane_def.point = [0.0, -0.04, 0.0]
+dz3.geometry.definition = "plane"
+dz3.meshing.smoothing.enabled = True
+dz3.meshing.remeshing.enabled = False
+dz3.motion.exclude_motion_bc = True
 
-solver_session.settings.setup.dynamic_mesh.dynamic_zones = {
-    "dynamic-zone-4": {
-        "solver": {
-            "stabilization": {
-                "parameters": {"scale": 0.1, "method": "coefficient-based"},
-                "enabled": True,
-            }
-        },
-        "geometry": {
-            "feature_detection": {"enabled": False},
-            "plane_def": {"normal": [0, 1, 0], "point": [0.0, 0.04, 0.0]},
-            "definition": "plane",
-        },
-        "meshing": {"smoothing": {"enabled": True}, "remeshing": {"enabled": False}},
-        "motion": {"exclude_motion_bc": True},
-        "type": "deforming",
-        "zone": "symm2",
-        "name": "dynamic-zone-4",
-    }
-}
+dz4 = dynamic_mesh.dynamic_zones.create(
+    name="dynamic-zone-4", zone="symm2", type="deforming"
+)
+dz4.solver.stabilization.parameters.scale = 0.1
+dz4.solver.stabilization.parameters.method = "coefficient-based"
+dz4.solver.stabilization.enabled = True
+dz4.geometry.feature_detection.enabled = False
+dz4.geometry.plane_def.normal = [0, 1, 0]
+dz4.geometry.plane_def.point = [0.0, 0.04, 0.0]
+dz4.geometry.definition = "plane"
+dz4.meshing.smoothing.enabled = True
+dz4.meshing.remeshing.enabled = False
+dz4.motion.exclude_motion_bc = True
 
-solver_session.settings.setup.dynamic_mesh.dynamic_zones = {
-    "dynamic-zone-5": {
-        "solver": {"stabilization": {"enabled": False}},
-        "geometry": {"feature_detection": {"enabled": False}},
-        "meshing": {
-            "udf_deform": {"max_skew": 0.7, "enabled": True},
-            "adjacent_zones": {"t0": {"height": 0.0, "type": "constant"}},
-        },
-        "motion": {
-            "relative_motion": {"enabled": False},
-            "exclude_motion_bc": False,
-            "motion_def": "**ablation**",
-        },
-        "type": "user-defined",
-        "zone": "wall_ablation",
-        "name": "dynamic-zone-5",
-    }
-}
+dz5 = dynamic_mesh.dynamic_zones.create(name="dynamic-zone-5")
+dz5.zone = wall_ablation.name
+dz5.type = "user-defined"
+dz5.solver.stabilization.enabled = False
+dz5.geometry.feature_detection.enabled = False
+dz5.meshing.udf_deform.max_skew = 0.7
+dz5.meshing.udf_deform.enabled = True
+dz5.meshing.adjacent_zones.t0.height = 0.0
+dz5.meshing.adjacent_zones.t0.type = "constant"
+dz5.motion.relative_motion.enabled = False
+dz5.motion.exclude_motion_bc = False
+dz5.motion.motion_def = "**ablation**"
 
 ############################################
 # Define solver settings
 # =======================
 
-solver_session.settings.setup.general.solver.time = "unsteady-2nd-order"
-solver_session.settings.solution.controls.limits = {"max_temperature": 25000}
-solver_session.settings.solution.monitor.residual.equations[
-    "energy"
-].absolute_criteria = 1e-06
+general.solver.time = "unsteady-2nd-order"
+controls = Controls(solver)
+controls.limits.max_temperature = 25_000 * K
+Residual(solver).equations["energy"].absolute_criteria = 1e-06
 
 ############################################
 # Create report definitions
 # ==========================
 
-solver_session.settings.solution.report_definitions.drag.create(name="drag_force_x")
-solver_session.settings.solution.report_definitions.drag["drag_force_x"].zones = [
-    "wall_ablation"
-]
-solver_session.settings.solution.monitor.report_plots.create(name="drag_force_x")
-solver_session.settings.solution.monitor.report_plots["drag_force_x"].report_defs = (
-    "drag_force_x"
-)
-solver_session.settings.solution.monitor.report_files.create(name="drag_force_x")
-solver_session.settings.solution.monitor.report_files["drag_force_x"] = {
-    "file_name": "drag_force_x.out",
-    "report_defs": ["drag_force_x"],
-}
+solution = Solution(solver)
+monitor = Monitor(solver)
+report_definitions = ReportDefinitions(solver)
 
-solver_session.settings.solution.report_definitions.surface.create(
-    name="pressure_avg_abl_wall"
+drag_def = report_definitions.drag.create(name="drag_force_x", zones=[wall_ablation])
+ReportPlot.create(solver, name="drag_force_x", report_defs=[drag_def])
+ReportFile.create(
+    solver, name="drag_force_x", file_name="drag_force_x.out", report_defs=[drag_def]
 )
-solver_session.settings.solution.report_definitions.surface[
-    "pressure_avg_abl_wall"
-].report_type = "surface-areaavg"
-solver_session.settings.solution.report_definitions.surface[
-    "pressure_avg_abl_wall"
-].field = "pressure"
-solver_session.settings.solution.report_definitions.surface[
-    "pressure_avg_abl_wall"
-].surface_names = ["wall_ablation"]
-solver_session.settings.solution.monitor.report_plots.create(
-    name="pressure_avg_abl_wall"
-)
-solver_session.settings.solution.monitor.report_plots[
-    "pressure_avg_abl_wall"
-].report_defs = "pressure_avg_abl_wall"
-solver_session.settings.solution.monitor.report_files.create(
-    name="pressure_avg_abl_wall"
-)
-solver_session.settings.solution.monitor.report_files["pressure_avg_abl_wall"] = {
-    "report_defs": ["pressure_avg_abl_wall"],
-    "file_name": "pressure_avg_abl_wall.out",
-}
 
-solver_session.settings.solution.report_definitions.surface.create(name="recede_point")
-solver_session.settings.solution.report_definitions.surface[
-    "recede_point"
-].report_type = "surface-vertexmax"
-solver_session.settings.solution.report_definitions.surface["recede_point"].field = (
-    "z-coordinate"
+pressure_avg = report_definitions.surface.create(
+    name="pressure_avg_abl_wall",
+    report_type="surface-areaavg",
+    field=VariableCatalog.PRESSURE,
+    surface_names=[wall_ablation],
 )
-solver_session.settings.solution.report_definitions.surface[
-    "recede_point"
-].surface_names = ["wall_ablation"]
-solver_session.settings.solution.monitor.report_plots.create(name="recede_point")
-solver_session.settings.solution.monitor.report_plots["recede_point"].report_defs = (
-    "recede_point"
+ReportPlot.create(solver, name="pressure_avg_abl_wall", report_defs=[pressure_avg])
+pressure_avg_file = ReportFile.create(
+    solver,
+    name="pressure_avg_abl_wall",
+    report_defs=[pressure_avg],
+    file_name="pressure_avg_abl_wall.out",
 )
-solver_session.settings.solution.monitor.report_files.create(name="recede_point")
-solver_session.settings.solution.monitor.report_files["recede_point"] = {
-    "file_name": "recede_point.out",
-    "report_defs": ["recede_point"],
-}
+
+recede = report_definitions.surface.create(name="recede_point")
+recede.report_type = "surface-vertexmax"
+recede.field = "z-coordinate"
+recede.surface_names = [wall_ablation.name]
+recede_plot = ReportPlot(solver, new_instance_name="recede_point")
+recede_plot.report_defs = recede.name
+recede_file = ReportFile(solver, new_instance_name="recede_point")
+recede_file.file_name = "recede_point.out"
+recede_file.report_defs = [recede.name]
 
 ############################################
 # Initialize and Save case
 # ========================
 
-solver_session.settings.solution.initialization.compute_defaults(
-    from_zone_type="pressure-far-field", from_zone_name="inlet", phase="mixture"
+init = Initialization(solver)
+init.compute_defaults(
+    from_zone_type="pressure-far-field", from_zone_name=inlet.name(), phase="mixture"
 )
-solver_session.settings.solution.initialization.initialization_type = "standard"
-solver_session.settings.solution.initialization.standard_initialize()
-solver_session.settings.solution.run_calculation.transient_controls.time_step_size = (
-    1e-06
-)
+init.initialization_type = "standard"
+init.standard_initialize()
+run_calc = RunCalculation(solver)
+run_calc.transient_controls.time_step_size = 1e-06 * s
 
-solver_session.settings.file.write(file_type="case", file_name="ablation.cas.h5")
+write_case(solver, file_name="ablation.cas.h5")
 
 ############################################
 # Run the calculation
 # ===================
 # Note: It may take about half an hour to finish the calculation.
 
-solver_session.settings.solution.run_calculation.dual_time_iterate(
-    time_step_count=100, max_iter_per_step=20
-)
+run_calc.dual_time_iterate(time_step_count=100, max_iter_per_step=20)
 
 ###############################################
 # Save simulation data
 # ====================
 # Write case and data files
-solver_session.settings.file.write(
-    file_type="case-data", file_name="ablation_Solved.cas.h5"
-)
+write_case_data(solver, file_name="ablation_Solved.cas.h5")
 
 ####################################################################################
 # Post Processing
@@ -433,22 +388,8 @@ solver_session.settings.file.write(
 # ================
 # Following contours are displayed in the Fluent GUI:
 
-solver_session.settings.results.surfaces.plane_surface.create(name="mid_plane")
-solver_session.settings.results.surfaces.plane_surface["mid_plane"].method = "zx-plane"
-
-solver_session.settings.results.graphics.contour.create(name="contour_pressure")
-solver_session.settings.results.graphics.contour["contour_pressure"] = {
-    "field": "pressure",
-    "surfaces_list": ["mid_plane"],
-}
-solver_session.settings.results.graphics.contour.display(object_name="contour_pressure")
-
-solver_session.settings.results.graphics.contour.create(name="contour_mach")
-solver_session.settings.results.graphics.contour["contour_mach"] = {
-    "field": "mach-number",
-    "surfaces_list": ["mid_plane"],
-}
-solver_session.settings.results.graphics.contour.display(object_name="contour_mach")
+mid_plane = PlaneSurface.create(name="mid_plane", method="zx-plane")
+# Create mid plane surface for contouring
 
 ###############################################
 # Post processing with PyVista (3D visualization)
@@ -456,7 +397,7 @@ solver_session.settings.results.graphics.contour.display(object_name="contour_ma
 # Following graphics is displayed in the a new window/notebook
 
 
-contour1 = Contour(solver=solver_session, field="pressure", surfaces=["mid_plane"])
+contour1 = Contour(solver=solver, field="pressure", surfaces=["mid_plane"])
 
 window = GraphicsWindow()
 window.add_graphics(contour1)
@@ -489,6 +430,6 @@ window.show()
 # Close the session
 # ==================================================================================
 
-solver_session.exit()
+solver.exit()
 
 # sphinx_gallery_thumbnail_path = '_static/ablation-mach-number-thumbnail.png'

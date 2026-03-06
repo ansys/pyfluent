@@ -114,7 +114,6 @@ Tyler-Sofrin Compressor Modes Post-Processing
 # =====================================================================================
 import csv
 import math
-import os
 from pathlib import Path
 import random
 
@@ -123,6 +122,8 @@ import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.solver import PointSurface, ReportDefinitions, read_case_data
+from ansys.units.common import m
 
 #######################################################################################
 # Downloading cas/dat file
@@ -130,22 +131,20 @@ from ansys.fluent.core import examples
 import_filename = examples.download_file(
     "axial_comp_fullWheel_DFT_23R2.cas.h5",
     "pyfluent/examples/Tyler-Sofrin-Modes-Compressor",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
 
 examples.download_file(
     "axial_comp_fullWheel_DFT_23R2.dat.h5",
     "pyfluent/examples/Tyler-Sofrin-Modes-Compressor",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
 
 #######################################################################################
 # Launch Fluent session and print Fluent version
 # =====================================================================================
-session = pyfluent.launch_fluent(
-    processor_count=4,
-)
-print(session.get_fluent_version())
+solver = pyfluent.Solver.from_install(processor_count=4)
+print(solver.get_fluent_version())
 
 #######################################################################################
 # Reading case and data file
@@ -153,8 +152,7 @@ print(session.get_fluent_version())
 #
 # .. note::
 #   The dat file should correspond to the already completed DFT simulation.
-
-session.settings.file.read(file_type="case-data", file_name=import_filename)
+read_case_data(solver, file_name=import_filename)
 
 #######################################################################################
 # Define User constant/variables
@@ -167,15 +165,15 @@ session.settings.file.read(file_type="case-data", file_name=import_filename)
 # .. image:: ../../_static/var_names.jpg
 #    :alt: variable names
 
-varname = [
+var_names = [
     "mean-static-pressure-dataset",
     "dft-static-pressure_10.00kHz-ta",
     "dft-static-pressure-1_21.43kHz-ta",
     "dft-static-pressure-2_30.00kHz-ta",
 ]
 n_mode = [0, 1, 2, 3]  # Impeller frequency harmonics
-r = 0.082  # meters
-z = -0.037  # meters
+r = 0.082 * m
+z = -0.037 * m
 d_theta = 5  # degrees
 m_max = 50  # maximum TS mode number
 
@@ -188,49 +186,45 @@ m_inc = 2  # TS mode increment
 for angle in range(0, 360, d_theta):
     x = math.cos(math.radians(angle)) * r
     y = math.sin(math.radians(angle)) * r
-    pt_name = "point-" + str(angle)
-    session.settings.results.surfaces.point_surface[pt_name] = {}
-    session.settings.results.surfaces.point_surface[pt_name].point = [x, y, z]
+    PointSurface.create(solver, name=f"point-{angle}", point=(x, y, z))
 
 #######################################################################################
 # Compute Fourier coefficients at each monitor point (An, Bn)
 # =====================================================================================
-An = np.zeros((len(varname), int(360 / d_theta)))
-Bn = np.zeros((len(varname), int(360 / d_theta)))
+An = np.zeros((len(var_names), int(360 / d_theta)))
+Bn = np.zeros((len(var_names), int(360 / d_theta)))
+report_defs = ReportDefinitions(solver)
 
 for angle_ind, angle in enumerate(range(0, 360, d_theta)):
-    for n_ind, variable in enumerate(varname):
+    for n_ind, variable in enumerate(var_names):
         if variable.startswith("mean"):
-            session.settings.solution.report_definitions.surface["mag-report"] = {
-                "report_type": "surface-vertexavg",
-                "surface_names": ["point-" + str(angle)],
-                "field": str(variable),
-            }
-            mag = session.settings.solution.report_definitions.compute(
-                report_defs=["mag-report"]
+            mag_report = report_defs.surface.create(
+                name="mag-report",
+                report_type="surface-vertexavg",
+                surface_names=[f"point-{angle}"],
+                field=variable,
             )
-            mag = mag[0]["mag-report"][0]
+            mag_res = report_defs.compute(report_defs=[mag_report])
+            mag = mag_res[0][mag_report.name][0]
             An[n_ind][angle_ind] = mag
             Bn[n_ind][angle_ind] = 0
         else:
-            session.settings.solution.report_definitions.surface["mag-report"] = {
-                "report_type": "surface-vertexavg",
-                "surface_names": ["point-" + str(angle)],
-                "field": str(variable) + "-mag",
-            }
-            mag = session.settings.solution.report_definitions.compute(
-                report_defs=["mag-report"]
+            mag_report = report_defs.surface.create(
+                name="mag-report",
+                report_type="surface-vertexavg",
+                surface_names=[f"point-{angle}"],
+                field=f"{variable}-mag",
             )
-            mag = mag[0]["mag-report"][0]
-            session.settings.solution.report_definitions.surface["phase-report"] = {
-                "report_type": "surface-vertexavg",
-                "surface_names": ["point-" + str(angle)],
-                "field": str(variable) + "-phase",
-            }
-            phase = session.settings.solution.report_definitions.compute(
-                report_defs=["phase-report"]
+            mag_res = report_defs.compute(report_defs=[mag_report])
+            mag = mag_res[0][mag_report.name][0]
+            phase_report = report_defs.surface.create(
+                name="phase-report",
+                report_type="surface-vertexavg",
+                surface_names=[f"point-{angle}"],
+                field=f"{variable}-phase",
             )
-            phase = phase[0]["phase-report"][0]
+            phase_res = report_defs.compute(report_defs=[phase_report])
+            phase = phase_res[0][phase_report.name][0]
             An[n_ind][angle_ind] = mag * math.cos(phase)
             Bn[n_ind][angle_ind] = -mag * math.sin(phase)
 
@@ -247,7 +241,7 @@ with (Path.cwd() / "FourierCoefficients.csv").open("w") as f:
     writer = csv.writer(f)
     writer.writerow(["n", "theta", "An", "Bn"])
 
-    for n_ind, variable in enumerate(varname):
+    for n_ind, variable in enumerate(var_names):
         for ind, _ in enumerate(An[n_ind, :]):
             writer.writerow(
                 [n_mode[n_ind], ind * d_theta, An[n_ind, ind], Bn[n_ind, ind]]
@@ -265,21 +259,23 @@ with (Path.cwd() / "FourierCoefficients.csv").open("w") as f:
 m_mode = range(-m_max, m_max + m_inc, m_inc)
 
 # Initialize solution matrices with zeros
-Anm = np.zeros((len(varname), len(m_mode)))
-Bnm = np.zeros((len(varname), len(m_mode)))
-Pnm = np.zeros((len(varname), len(m_mode)))
+Anm = np.zeros((len(var_names), len(m_mode)))
+Bnm = np.zeros((len(var_names), len(m_mode)))
+Pnm = np.zeros((len(var_names), len(m_mode)))
 
-for n_ind, variable in enumerate(varname):  # loop over n modes
-    for m_ind, m in enumerate(m_mode):  # loop over m modes
+for n_ind, variable in enumerate(var_names):  # loop over n modes
+    for m_ind, _m in enumerate(m_mode):  # loop over m modes
         for angle_ind, angle in enumerate(
             np.arange(0, math.radians(360), math.radians(d_theta))
         ):  # loop over all angles, in radians
-            Anm[n_ind][m_ind] += An[n_ind][angle_ind] * math.cos(m * angle) - Bn[n_ind][
-                angle_ind
-            ] * math.sin(m * angle)
-            Bnm[n_ind][m_ind] += An[n_ind][angle_ind] * math.sin(m * angle) + Bn[n_ind][
-                angle_ind
-            ] * math.cos(m * angle)
+            Anm[n_ind][m_ind] += (  # fmt: skip
+                An[n_ind][angle_ind] * math.cos(_m * angle)
+                - Bn[n_ind][angle_ind] * math.sin(_m * angle)
+            )
+            Bnm[n_ind][m_ind] += (  # fmt: skip
+                An[n_ind][angle_ind] * math.sin(_m * angle)
+                + Bn[n_ind][angle_ind] * math.cos(_m * angle)
+            )
         Anm[n_ind][m_ind] = Anm[n_ind][m_ind] / (2 * math.pi) * math.radians(d_theta)
         Bnm[n_ind][m_ind] = Bnm[n_ind][m_ind] / (2 * math.pi) * math.radians(d_theta)
         Pnm[n_ind][m_ind] = math.sqrt(Anm[n_ind][m_ind] ** 2 + Bnm[n_ind][m_ind] ** 2)
@@ -316,7 +312,7 @@ plt.show()
 #######################################################################################
 # Close the session
 # =====================================================================================
-session.exit()
+solver.exit()
 
 
 #######################################################################################
