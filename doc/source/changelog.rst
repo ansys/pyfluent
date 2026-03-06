@@ -9,6 +9,87 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.38.0 <https://github.com/ansys/pyfluent/releases/tag/v0.38.0>`_ - March 06, 2026
+===================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Create RP Vars.
+          - `#4958 <https://github.com/ansys/pyfluent/pull/4958>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Rename in updated meshing workflow.
+          - `#4955 <https://github.com/ansys/pyfluent/pull/4955>`_
+
+        * - Typo issue with enhanced meshing workflow + fixed nightly test run
+          - `#4968 <https://github.com/ansys/pyfluent/pull/4968>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version to v0.38.0
+          - `#4974 <https://github.com/ansys/pyfluent/pull/4974>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Exposure & User guide of using context manager
+          - `#4921 <https://github.com/ansys/pyfluent/pull/4921>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add gpu folder to container [skip tests]
+          - `#4936 <https://github.com/ansys/pyfluent/pull/4936>`_
+
+        * - Clarify pyfluent version compatibility statement
+          - `#4943 <https://github.com/ansys/pyfluent/pull/4943>`_
+
+        * - Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#4950 <https://github.com/ansys/pyfluent/pull/4950>`_
+
+        * - Update new meshing workflow docs [skip tests]
+          - `#4951 <https://github.com/ansys/pyfluent/pull/4951>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update bandit checks
+          - `#4916 <https://github.com/ansys/pyfluent/pull/4916>`_
+
+        * - Update CHANGELOG for v0.38.dev6
+          - `#4942 <https://github.com/ansys/pyfluent/pull/4942>`_
+
+
 `0.38.dev6 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev6>`_ - February 19, 2026
 ============================================================================================
 
