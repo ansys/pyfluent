@@ -1,0 +1,23 @@
+:orphan:
+
+.. _volumes_1:
+
+volumes
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.volumes_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =======================================
+
+Parent                                                                                     Summary
+
+========================================================   =======================================
+:ref:`write_in_cylinder_ouput <write_in_cylinder_ouput>`          'write_in_cylinder_ouput' child.
+
+:ref:`iso_surface_child <iso_surface_child>`                   'child_object_type' of iso_surface.
+
+========================================================   =======================================
+

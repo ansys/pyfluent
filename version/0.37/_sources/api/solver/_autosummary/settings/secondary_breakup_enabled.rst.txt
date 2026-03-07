@@ -1,0 +1,21 @@
+:orphan:
+
+.. _secondary_breakup_enabled:
+
+secondary_breakup_enabled
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.secondary_breakup_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ================
+
+Parent                                              Summary
+
+========================================   ================
+:ref:`physical_models <physical_models>`       Main object.
+
+========================================   ================
+

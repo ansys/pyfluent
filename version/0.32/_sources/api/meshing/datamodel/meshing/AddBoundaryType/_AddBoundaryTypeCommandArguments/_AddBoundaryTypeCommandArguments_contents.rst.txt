@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AddBoundaryType__AddBoundaryTypeCommandArguments:
+
+_AddBoundaryTypeCommandArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.AddBoundaryType._AddBoundaryTypeCommandArguments
+   :members: _BoundaryFaceZoneList, _Merge, _MeshObject, _NewBoundaryLabelName, _NewBoundaryType, _SelectionType, _TopologyList, _ZoneLocation
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

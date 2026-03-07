@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iter_count:
+
+iter_count
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iter_count
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================================================
+
+Parent                                                                         Summary
+
+==================================   =================================================
+:ref:`parameters_8 <parameters_8>`       Flexible numerics controls parameters object.
+
+==================================   =================================================
+

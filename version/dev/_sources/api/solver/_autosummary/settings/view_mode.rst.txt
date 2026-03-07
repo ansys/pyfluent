@@ -1,0 +1,32 @@
+:orphan:
+
+.. _view_mode:
+
+view_mode
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.view_mode
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   =============================================================
+
+Argument                                                                               Summary
+
+==============================   =============================================================
+:ref:`view_name <view_name_4>`       Play animation in the stored, current or key-frames view.
+
+==============================   =============================================================
+
+.. rubric:: Included in:
+
+==========================   =========================================================
+
+Parent                                                                         Summary
+
+==========================   =========================================================
+:ref:`playback <playback>`       Control the playback settings of animation sequences.
+
+==========================   =========================================================
+

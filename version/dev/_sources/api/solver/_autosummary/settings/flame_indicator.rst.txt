@@ -1,0 +1,44 @@
+:orphan:
+
+.. _flame_indicator:
+
+flame_indicator
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flame_indicator
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================================   ========================================================
+
+Argument                                                                                                    Summary
+
+========================================================   ========================================================
+:ref:`vortex_indicator <vortex_indicator>`                     Include vorticity detection for the flame indicator.
+
+:ref:`spark_region_refinement <spark_region_refinement>`                    Include refinement in the spark region.
+
+:ref:`spark_region_time <spark_region_time>`                                   Spark region refinement time period.
+
+:ref:`spark_region_x <spark_region_x>`                               Spark region refinement centroid x-coordinate.
+
+:ref:`spark_region_y <spark_region_y>`                               Spark region refinement centroid y-coordinate.
+
+:ref:`spark_region_z <spark_region_z>`                               Spark region refinement centroid z-coordinate.
+
+:ref:`spark_region_radius <spark_region_radius>`                                    Spark region refinement radius.
+
+========================================================   ========================================================
+
+.. rubric:: Included in:
+
+==============================   ==============================================
+
+Parent                                                                  Summary
+
+==============================   ==============================================
+:ref:`combustion <combustion>`       The combustion predefined criteria object.
+
+==============================   ==============================================
+

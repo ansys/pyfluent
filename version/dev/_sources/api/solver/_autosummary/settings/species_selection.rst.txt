@@ -1,0 +1,45 @@
+:orphan:
+
+.. _species_selection:
+
+species_selection
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.species_selection
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ===================================================
+
+Attribute                                                                                Summary
+
+==========================================   ===================================================
+:ref:`selected_species <selected_species>`       List of species selected during initialization.
+
+==========================================   ===================================================
+
+.. rubric:: Methods
+
+========================================================   =============================================================
+
+Method                                                                                                           Summary
+
+========================================================   =============================================================
+:ref:`add_boundary_species <add_boundary_species>`                  Add species to the selected list for initialization.
+
+:ref:`remove_boundary_species <remove_boundary_species>`       Remove species from the selected list for initialization.
+
+========================================================   =============================================================
+
+.. rubric:: Included in:
+
+==========================================   ===================================
+
+Parent                                                                   Summary
+
+==========================================   ===================================
+:ref:`initialization_1 <initialization_1>`       Solution initialization object.
+
+==========================================   ===================================
+

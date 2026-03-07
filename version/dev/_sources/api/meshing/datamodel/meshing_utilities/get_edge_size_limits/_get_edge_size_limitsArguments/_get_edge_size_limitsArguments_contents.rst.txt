@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_edge_size_limits__get_edge_size_limitsArguments:
+
+_get_edge_size_limitsArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_edge_size_limits._get_edge_size_limitsArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

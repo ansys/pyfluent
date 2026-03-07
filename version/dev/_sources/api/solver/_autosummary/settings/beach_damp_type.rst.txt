@@ -1,0 +1,21 @@
+:orphan:
+
+.. _beach_damp_type:
+
+beach_damp_type
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.beach_damp_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`multiphase_2 <multiphase_2>`       Allows to change multiphase model variables or settings.
+
+==================================   ============================================================
+

@@ -1,0 +1,29 @@
+:orphan:
+
+.. _name_24:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_24
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ============================================================================================================
+
+Parent                                                                                                                                              Summary
+
+============================================   ============================================================================================================
+:ref:`create_7 <create_7>`                                                                                                          Create mesh interfaces.
+
+:ref:`interfaces_child <interfaces_child>`                                                                               'child_object_type' of interfaces.
+
+:ref:`interface_3_child <interface_3_child>`                                                                              'child_object_type' of interface.
+
+:ref:`auto_create_1 <auto_create_1>`                                         Automatically pair and create mesh interfaces for some or all interface zones.
+
+:ref:`create_manually <create_manually>`           Create one-to-one interfaces between two groups of boundary zones even if they do not currently overlap.
+
+============================================   ============================================================================================================
+

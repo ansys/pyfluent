@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cfl_jump:
+
+cfl_jump
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cfl_jump
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================================================================
+
+Parent                                                                                                              Summary
+
+==============================================   ==========================================================================
+:ref:`solution_based_pmn <solution_based_pmn>`       Solution-based poor mesh numerics marking based on solution imbalance.
+
+==============================================   ==========================================================================
+

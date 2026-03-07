@@ -1,0 +1,21 @@
+:orphan:
+
+.. _design_point_1:
+
+design_point
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.design_point_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`set_as_current_1 <set_as_current_1>`       Set current design point.
+
+==========================================   =============================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _imagx:
+
+imagx
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.imagx
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ==============================================================
+
+Attribute                                                                                   Summary
+
+==================================   ==============================================================
+:ref:`option <option_55>`                         How the imaginary X displacement will be defined.
+
+:ref:`value <value_29>`                  Constant value or expression for imaginary X displacement.
+
+:ref:`profile_name <profile_name>`                                         The name of the profile.
+
+:ref:`field_name <field_name>`                                               The name of the field.
+
+:ref:`udf <udf_5>`                          The user-defined function for imaginary X displacement.
+
+==================================   ==============================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`perdisp_properties_child <perdisp_properties_child>`       'child_object_type' of perdisp_properties.
+
+==========================================================   ==============================================
+

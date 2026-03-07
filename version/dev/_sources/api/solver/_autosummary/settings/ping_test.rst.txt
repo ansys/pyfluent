@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ping_test:
+
+ping_test
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ping_test
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ====================================================
+
+Parent                                                                                                                Summary
+
+======================================================================   ====================================================
+:ref:`perdisp_group_properties_child <perdisp_group_properties_child>`       'child_object_type' of perdisp_group_properties.
+
+======================================================================   ====================================================
+

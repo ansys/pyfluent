@@ -1,0 +1,21 @@
+:orphan:
+
+.. _direction_4:
+
+direction
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.direction_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`periodicity_1 <periodicity_1>`       Periodic settings .
+
+====================================   =======================
+

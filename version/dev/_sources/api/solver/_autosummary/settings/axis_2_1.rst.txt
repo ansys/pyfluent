@@ -1,0 +1,21 @@
+:orphan:
+
+.. _axis_2_1:
+
+axis_2
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.axis_2_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`scaling_1_child <scaling_1_child>`       'child_object_type' of scaling.
+
+========================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _hflux_mult_udf:
+
+hflux_mult_udf
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.hflux_mult_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ===========================================
+
+Parent                                                                                             Summary
+
+============================================================   ===========================================
+:ref:`mt_evap_cond_sbm_sphf_par <mt_evap_cond_sbm_sphf_par>`       Single phase heat flux parameter group.
+
+============================================================   ===========================================
+

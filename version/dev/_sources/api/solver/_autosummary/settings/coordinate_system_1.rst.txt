@@ -1,0 +1,29 @@
+:orphan:
+
+.. _coordinate_system_1:
+
+coordinate_system
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coordinate_system_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================================================
+
+Parent                                                                                                               Summary
+
+====================================================   =====================================================================
+:ref:`momentum_1 <momentum_1>`                                        Allows to change momentum model variables or settings.
+
+:ref:`momentum_2 <momentum_2>`                                        Allows to change momentum model variables or settings.
+
+:ref:`momentum_3 <momentum_3>`                                        Allows to change momentum model variables or settings.
+
+:ref:`momentum_8 <momentum_8>`                                        Allows to change momentum model variables or settings.
+
+:ref:`recirculation_inlet_1 <recirculation_inlet_1>`       Allows to change recirculation-inlet model variables or settings.
+
+====================================================   =====================================================================
+

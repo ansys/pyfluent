@@ -1,0 +1,21 @@
+:orphan:
+
+.. _subgrid_scale_turb_visc:
+
+subgrid_scale_turb_visc
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.subgrid_scale_turb_visc
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================================================================================
+
+Parent                                                                                                                                                       Summary
+
+======================================================   ===========================================================================================================
+:ref:`user_defined_functions <user_defined_functions>`       User-defined functions to define the turbulent viscosity and the turbulent Prandtl and Schmidt numbers.
+
+======================================================   ===========================================================================================================
+

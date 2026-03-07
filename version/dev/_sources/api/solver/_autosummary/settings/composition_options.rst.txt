@@ -1,0 +1,21 @@
+:orphan:
+
+.. _composition_options:
+
+composition_options
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.composition_options
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ====================================
+
+Parent                                                                                    Summary
+
+==========================================================   ====================================
+:ref:`inert_stream_composition <inert_stream_composition>`       Define inert stream composition.
+
+==========================================================   ====================================
+

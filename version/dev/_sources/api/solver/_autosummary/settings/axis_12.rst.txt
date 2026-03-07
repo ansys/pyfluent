@@ -1,0 +1,23 @@
+:orphan:
+
+.. _axis_12:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.axis_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================
+
+Parent                                                                  Summary
+
+========================================   ====================================
+:ref:`rotation_child <rotation_child>`         'child_object_type' of rotation.
+
+:ref:`scaling_1_child <scaling_1_child>`        'child_object_type' of scaling.
+
+========================================   ====================================
+

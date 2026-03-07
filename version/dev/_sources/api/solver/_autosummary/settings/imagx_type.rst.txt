@@ -1,0 +1,21 @@
+:orphan:
+
+.. _imagx_type:
+
+imagx_type
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.imagx_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================================
+
+Parent                                                            Summary
+
+============================   ==========================================
+:ref:`create_13 <create_13>`       Create a new Generalized Force object.
+
+============================   ==========================================
+

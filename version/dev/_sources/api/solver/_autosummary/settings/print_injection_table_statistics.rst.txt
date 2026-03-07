@@ -1,0 +1,23 @@
+:orphan:
+
+.. _print_injection_table_statistics:
+
+print_injection_table_statistics
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.print_injection_table_statistics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================   ====================================================================================================================================================
+
+Parent                                                                                                                                                                                                              Summary
+
+====================================================================   ====================================================================================================================================================
+:ref:`discrete_phase_6 <discrete_phase_6>`                                                                                          Access and configure reporting options for discrete phase (particle-based) simulations.
+
+:ref:`injection_diameter_statistics <injection_diameter_statistics>`       Configure and manipulate (e.g., print or reset) particle diameter statistics (dv_10, dv_50, dv_90 etc.) for injections using size distributions.
+
+====================================================================   ====================================================================================================================================================
+

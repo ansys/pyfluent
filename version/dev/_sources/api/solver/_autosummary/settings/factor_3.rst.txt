@@ -1,0 +1,36 @@
+:orphan:
+
+.. _factor_3:
+
+factor
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.factor_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =================================
+
+Attribute                                                  Summary
+
+==============================   =================================
+:ref:`prescribed <prescribed>`       Prescribed or freeform value.
+
+:ref:`value <value_37>`                          Prescribed value.
+
+==============================   =================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`prescribed_profile_child <prescribed_profile_child>`       'child_object_type' of prescribed_profile.
+
+:ref:`scaling_1_child <scaling_1_child>`                                    'child_object_type' of scaling.
+
+==========================================================   ==============================================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _statistics_controls:
+
+statistics_controls
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.statistics_controls
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   ==================================================================================
+
+Argument                                                                                                                Summary
+
+==========================================   ==================================================================================
+:ref:`method <method_4>`                                                   The method of sampling from the fluid density field.
+
+:ref:`samp_time_period <samp_time_period>`                                The sampling time period for the fluid density field.
+
+:ref:`samp_time_steps <samp_time_steps>`                   The number of time steps per each sample of the fluid density field.
+
+:ref:`avg_time_period <avg_time_period>`                                 The averaging time period for the fluid density field.
+
+:ref:`avg_time_steps <avg_time_steps>`           The number of time steps per each averaging window of the fluid density field.
+
+==========================================   ==================================================================================
+
+.. rubric:: Included in:
+
+==============================   ==========================
+
+Parent                                              Summary
+
+==============================   ==========================
+:ref:`statistics <statistics>`       The statistics object.
+
+==============================   ==========================
+

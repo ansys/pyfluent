@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_total_temperature_ratio_expression:
+
+add_total_temperature_ratio_expression
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.add_total_temperature_ratio_expression
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============
+
+Parent                                     Summary
+
+================================   ===============
+:ref:`performance <performance>`       The object.
+
+================================   ===============
+

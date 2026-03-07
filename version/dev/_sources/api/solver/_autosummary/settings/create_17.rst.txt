@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_17:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_17
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ==============================================
+
+Argument                                                                      Summary
+
+====================================   ==============================================
+:ref:`coefficients <coefficients_5>`                   The cofficients of X, Y and Z.
+
+:ref:`distance <distance>`                 The distance of the plane from the origin.
+
+====================================   ==============================================
+
+.. rubric:: Included in:
+
+====================================   =====================================
+
+Parent                                                               Summary
+
+====================================   =====================================
+:ref:`mirror_planes <mirror_planes>`       The mirror planes options object.
+
+====================================   =====================================
+

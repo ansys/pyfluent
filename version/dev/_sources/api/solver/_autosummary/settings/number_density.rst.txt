@@ -1,0 +1,57 @@
+:orphan:
+
+.. _number_density:
+
+number_density
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_density
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ==================================================================
+
+Attribute                                                                                             Summary
+
+========================================   ==================================================================
+:ref:`report_type <report_type_1>`                             The type of number density report to generate.
+
+:ref:`surface_list <surface_list>`                                                                   Surface.
+
+:ref:`volume_list <volume_list>`                                                         Cell zone name list.
+
+:ref:`num_dens_func <num_dens_func>`                    The number density function to be used in the report.
+
+:ref:`dia_upper_limit <dia_upper_limit>`       The upper limit for the diameter in the number density report.
+
+========================================   ==================================================================
+
+.. rubric:: Methods
+
+======================================   ========================================
+
+Method                                                                    Summary
+
+======================================   ========================================
+:ref:`plot <plot_16>`                                 Plot number density report.
+
+:ref:`print <print_7>`                               Print number density report.
+
+:ref:`histogram <histogram_2>`                          Number density histogram.
+
+:ref:`write_to_file <write_to_file_4>`       Write number density report to file.
+
+======================================   ========================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================================================================
+
+Parent                                                                                                                            Summary
+
+==================================================   ====================================================================================
+:ref:`population_balance_1 <population_balance_1>`       Access tools to generate reports related to population balance modeling results.
+
+==================================================   ====================================================================================
+

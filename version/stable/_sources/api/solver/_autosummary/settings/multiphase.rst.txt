@@ -1,0 +1,36 @@
+:orphan:
+
+.. _multiphase:
+
+multiphase
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.multiphase
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================================   =============================================================================================================
+
+Method                                                                                                                                                   Summary
+
+================================================   =============================================================================================================
+:ref:`vof <vof>`                                                 Define cell registers and adaption settings suitable for a standard Volume of Fluid simulation.
+
+:ref:`vof_to_dpm_generic <vof_to_dpm_generic>`           Define cell registers, expressions, and adaption settings suitable for a generic VOF-to-DPM simulation.
+
+:ref:`vof_to_dpm_advanced <vof_to_dpm_advanced>`       Define cell registers, expressions, and adaption settings suitable for an advanced VOF-to-DPM simulation.
+
+================================================   =============================================================================================================
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`predefined_criteria <predefined_criteria>`       The predefined criteria object.
+
+================================================   ===================================
+

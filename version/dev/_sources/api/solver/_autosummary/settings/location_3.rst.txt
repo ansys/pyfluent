@@ -1,0 +1,46 @@
+:orphan:
+
+.. _location_3:
+
+location
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.location_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ======================
+
+Attribute                                 Summary
+
+========================   ======================
+:ref:`physics <physics>`       The physics names.
+
+========================   ======================
+
+.. rubric:: Included in:
+
+========================================================   ============================================
+
+Parent                                                                                          Summary
+
+========================================================   ============================================
+:ref:`data_sets_child <data_sets_child>`                              'child_object_type' of data_sets.
+
+:ref:`add_datasets <add_datasets>`                                                        Add datasets.
+
+:ref:`force_1_child <force_1_child>`                                      'child_object_type' of force.
+
+:ref:`moment_of_force_child <moment_of_force_child>`            'child_object_type' of moment_of_force.
+
+:ref:`swirl_child <swirl_child>`                                          'child_object_type' of swirl.
+
+:ref:`pressure_drop_child <pressure_drop_child>`                  'child_object_type' of pressure_drop.
+
+:ref:`surface_integral_child <surface_integral_child>`         'child_object_type' of surface_integral.
+
+:ref:`volume_integral_1_child <volume_integral_1_child>`        'child_object_type' of volume_integral.
+
+========================================================   ============================================
+

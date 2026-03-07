@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_43:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_43
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================================
+
+Parent                                                                          Summary
+
+==============================================   ======================================
+:ref:`expression_9_child <expression_9_child>`       'child_object_type' of expression.
+
+==============================================   ======================================
+

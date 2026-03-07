@@ -1,0 +1,21 @@
+:orphan:
+
+.. _report_name_5:
+
+report_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.report_name_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================================   ========================================================
+
+Parent                                                                                                                        Summary
+
+==========================================================================   ========================================================
+:ref:`export_simulation_report_as_pptx <export_simulation_report_as_pptx>`       Export the provided simulation report as a PPT file.
+
+==========================================================================   ========================================================
+

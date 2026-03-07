@@ -1,0 +1,21 @@
+:orphan:
+
+.. _merge_surfaces:
+
+merge_surfaces
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.merge_surfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`stl_surfaces <stl_surfaces>`       Export specified surfaces from 3D cases as an .stl file.
+
+==================================   ============================================================
+

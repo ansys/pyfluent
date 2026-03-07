@@ -1,0 +1,42 @@
+:orphan:
+
+.. _pcb_zone_info:
+
+pcb_zone_info
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pcb_zone_info
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ============================================================================================
+
+Attribute                                                                                                           Summary
+
+============================   ============================================================================================
+:ref:`ecad_name <ecad_name>`       Specifies the ECAD (Electronic Computer-Aided Design) name associated with the PCB zone.
+
+:ref:`choice <choice>`                                                        Selects the type or category of the PCB zone.
+
+:ref:`rows <rows>`                                                            Specifies the number of rows in the PCB zone.
+
+:ref:`columns <columns>`                                                   Specifies the number of columns in the PCB zone.
+
+:ref:`ref_frame <ref_frame>`                        Specifies the reference frame for the PCB zone. The default is :global.
+
+:ref:`pwr_names <pwr_names>`                   Specifies the names of the Siwave export files associated with the PCB zone.
+
+============================   ============================================================================================
+
+.. rubric:: Included in:
+
+==========================   ==========================================================
+
+Parent                                                                          Summary
+
+==========================   ==========================================================
+:ref:`internal <internal>`       Allows to change internal model variables or settings.
+
+==========================   ==========================================================
+

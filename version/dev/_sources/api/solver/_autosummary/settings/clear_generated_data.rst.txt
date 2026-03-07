@@ -1,0 +1,32 @@
+:orphan:
+
+.. _clear_generated_data:
+
+clear_generated_data
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.clear_generated_data
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =========================================================================
+
+Argument                                                                                                   Summary
+
+======================================   =========================================================================
+:ref:`design_points <design_points_2>`       Clears all generated data (e.g., results) for selected design points.
+
+======================================   =========================================================================
+
+.. rubric:: Included in:
+
+====================================   ========================================================
+
+Parent                                                                                  Summary
+
+====================================   ========================================================
+:ref:`design_points <design_points>`       Manages the design points within the selected study.
+
+====================================   ========================================================
+

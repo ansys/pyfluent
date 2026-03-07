@@ -1,0 +1,45 @@
+:orphan:
+
+.. _perforated_wall:
+
+perforated_wall
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.perforated_wall
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ======================================================================
+
+Attribute                                                                                           Summary
+
+==================================   ======================================================================
+:ref:`setup_method <setup_method>`                          The method to set up the perforated wall model.
+
+:ref:`model_setup <model_setup>`         Accesses the detailed configuration for the perforated wall model.
+
+==================================   ======================================================================
+
+.. rubric:: Methods
+
+========================================   =======================================================
+
+Method                                                                                     Summary
+
+========================================   =======================================================
+:ref:`read_input_file <read_input_file>`       Reads the perforated wall model from an input file.
+
+========================================   =======================================================
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

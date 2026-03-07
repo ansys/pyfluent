@@ -1,0 +1,21 @@
+:orphan:
+
+.. _case_file_1:
+
+case_file
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.case_file_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ===============
+
+Parent                       Summary
+
+==================   ===============
+:ref:`auto <auto>`       The object.
+
+==================   ===============
+

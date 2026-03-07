@@ -1,0 +1,34 @@
+:orphan:
+
+.. _import_design_table:
+
+import_design_table
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.import_design_table
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ===============================================================================================
+
+Argument                                                                                                                           Summary
+
+========================================   ===============================================================================================
+:ref:`filepath <filepath_1>`                                                 Specifies the name of Import file for the design point table.
+
+:ref:`delete_existing <delete_existing>`       Specifies whether to delete existing design points before importing the design point table.
+
+========================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================================================================================
+
+Parent                                                                                                                                  Summary
+
+==============================================   ==============================================================================================
+:ref:`parametric_studies <parametric_studies>`       Accesses tools for creating, managing, and analyzing parametric studies and design points.
+
+==============================================   ==============================================================================================
+

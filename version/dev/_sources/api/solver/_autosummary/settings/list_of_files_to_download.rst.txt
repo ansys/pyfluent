@@ -1,0 +1,21 @@
+:orphan:
+
+.. _list_of_files_to_download:
+
+list_of_files_to_download
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.list_of_files_to_download
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ===========================================
+
+Parent                                                                                                       Summary
+
+======================================================================   ===========================================
+:ref:`download_specific_output_files <download_specific_output_files>`       Download specific output files for Job.
+
+======================================================================   ===========================================
+

@@ -1,0 +1,57 @@
+:orphan:
+
+.. _recirculation_outlet_2_child:
+
+recirculation_outlet_child
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.recirculation_outlet_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ======================================================================
+
+Attribute                                                                                                             Summary
+
+====================================================   ======================================================================
+:ref:`name <name_4>`                                                                                      Name of the object.
+
+:ref:`locations <locations_2>`                                                                           Input location name.
+
+:ref:`recirculation_outlet <recirculation_outlet_1>`       Allows to change recirculation-outlet model variables or settings.
+
+:ref:`geometry <geometry_6>`                                           Allows to change geometry model variables or settings.
+
+:ref:`phase <phase_24>`                                                                    Domain name to define settings on.
+
+====================================================   ======================================================================
+
+.. rubric:: Methods
+
+==================================   ===============================================
+
+Method                                                                       Summary
+
+==================================   ===============================================
+:ref:`display <display_4>`                                   Display physics object.
+
+:ref:`split <split_1>`                   Input boundary and location names to split.
+
+:ref:`set_location <set_location>`                              Input location name.
+
+:ref:`set_type <set_type_3>`                      Change the type for this boundary.
+
+==================================   ===============================================
+
+.. rubric:: Included in:
+
+======================================================   ================
+
+Parent                                                            Summary
+
+======================================================   ================
+:ref:`recirculation_outlet_2 <recirculation_outlet_2>`       Thread-type.
+
+======================================================   ================
+

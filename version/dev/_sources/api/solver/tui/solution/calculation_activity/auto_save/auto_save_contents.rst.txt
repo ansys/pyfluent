@@ -1,0 +1,19 @@
+.. _ref_solver_tui_solution_calculation_activity_auto_save:
+
+auto_save
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.calculation_activity.auto_save
+   :members: case_frequency, data_frequency, max_files, retain_most_recent_files, root_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   append_file_name_with/append_file_name_with_contents
+   save_data_file_every/save_data_file_every_contents

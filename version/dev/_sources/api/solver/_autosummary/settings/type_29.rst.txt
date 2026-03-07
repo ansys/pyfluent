@@ -1,0 +1,21 @@
+:orphan:
+
+.. _type_29:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.type_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ============================================================
+
+Parent                                                                                                    Summary
+
+==================================================   ============================================================
+:ref:`two_session_coupling <two_session_coupling>`       Access the two session conjugate heat transfer settings.
+
+==================================================   ============================================================
+

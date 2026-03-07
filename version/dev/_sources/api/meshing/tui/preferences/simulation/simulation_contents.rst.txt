@@ -1,0 +1,19 @@
+.. _ref_meshing_tui_preferences_simulation:
+
+simulation
+==========
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_271.main_menu.preferences.simulation
+   :members: bcgstab_for_energy_equation, flow_model, gpudirect_post_regular, local_residual_scaling, pdf_combustion_robust_numerics
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   report_definitions/report_definitions_contents
+   simulation_reports/simulation_reports_contents

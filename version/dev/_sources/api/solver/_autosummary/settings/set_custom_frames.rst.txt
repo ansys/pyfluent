@@ -1,0 +1,36 @@
+:orphan:
+
+.. _set_custom_frames:
+
+set_custom_frames
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_custom_frames
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =====================================================
+
+Attribute                                                                        Summary
+
+================================   =====================================================
+:ref:`start_frame <start_frame>`       The starting frame for custom animation playback.
+
+:ref:`end_frame <end_frame>`             The ending frame for custom animation playback.
+
+:ref:`increment <increment>`           Frame step size during custom animation playback.
+
+================================   =====================================================
+
+.. rubric:: Included in:
+
+==========================   =========================================================
+
+Parent                                                                         Summary
+
+==========================   =========================================================
+:ref:`playback <playback>`       Control the playback settings of animation sequences.
+
+==========================   =========================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _load_case_data:
+
+load_case_data
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.load_case_data
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ========================================================
+
+Parent                                                                                  Summary
+
+====================================   ========================================================
+:ref:`design_points <design_points>`       Manages the design points within the selected study.
+
+====================================   ========================================================
+

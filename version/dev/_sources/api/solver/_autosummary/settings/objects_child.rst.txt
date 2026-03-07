@@ -1,0 +1,100 @@
+:orphan:
+
+.. _objects_child:
+
+objects_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.objects_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =============================================================
+
+Attribute                                                                                          Summary
+
+==========================================   =============================================================
+:ref:`name <name_34>`                                                Name of the Generalized Force object.
+
+:ref:`ct_id <ct_id_1>`                                    Cell thread ID associated with the force object.
+
+:ref:`wt_id <wt_id_1>`                           List of wall thread IDs associated with the force object.
+
+:ref:`autofill <autofill_1>`                                  Whether autofill is enabled for this object.
+
+:ref:`mode_shape_prof <mode_shape_prof_1>`       Mesh displacement profile name used by autofill function.
+
+:ref:`cmplx <cmplx_2>`                                                  Whether the mode shape is complex.
+
+:ref:`dispx_type <dispx_type_1>`                                             Type of X displacement input.
+
+:ref:`dispx_prof <dispx_prof>`                                            Profile name for X displacement.
+
+:ref:`dispx_field <dispx_field_1>`                                          Field name for X displacement.
+
+:ref:`dispx_value <dispx_value>`                                        Constant value for X displacement.
+
+:ref:`dispy_type <dispy_type_1>`                                             Type of Y displacement input.
+
+:ref:`dispy_prof <dispy_prof>`                                            Profile name for Y displacement.
+
+:ref:`dispy_field <dispy_field_1>`                                          Field name for Y displacement.
+
+:ref:`dispy_value <dispy_value>`                                        Constant value for Y displacement.
+
+:ref:`dispz_type <dispz_type_1>`                                             Type of Z displacement input.
+
+:ref:`dispz_prof <dispz_prof>`                                            Profile name for Z displacement.
+
+:ref:`dispz_field <dispz_field_1>`                                          Field name for Z displacement.
+
+:ref:`dispz_value <dispz_value>`                                        Constant value for Z displacement.
+
+:ref:`imagx_type <imagx_type_1>`                                                Type of X imaginary input.
+
+:ref:`imagx_prof <imagx_prof>`                                               Profile name for X imaginary.
+
+:ref:`imagx_field <imagx_field_1>`                                             Field name for X imaginary.
+
+:ref:`imagx_value <imagx_value>`                                           Constant value for X imaginary.
+
+:ref:`imagy_type <imagy_type_1>`                                                Type of Y imaginary input.
+
+:ref:`imagy_prof <imagy_prof>`                                               Profile name for Y imaginary.
+
+:ref:`imagy_field <imagy_field_1>`                                             Field name for Y imaginary.
+
+:ref:`imagy_value <imagy_value>`                                           Constant value for Y imaginary.
+
+:ref:`imagz_type <imagz_type_1>`                                                Type of Z imaginary input.
+
+:ref:`imagz_prof <imagz_prof>`                                               Profile name for Z imaginary.
+
+:ref:`imagz_field <imagz_field_1>`                                             Field name for Z imaginary.
+
+:ref:`imagz_value <imagz_value>`                                           Constant value for Z imaginary.
+
+:ref:`norm <norm_1>`                                                 Whether the mode shape is normalized.
+
+:ref:`scalar_field <scalar_field>`                                                     Scalar field index.
+
+:ref:`fourier_decomp <fourier_decomp_1>`                Use Fourier representation of chosen scalar field.
+
+:ref:`ibfreq <ibfreq_1>`                                                             Base frequency index.
+
+:ref:`harmonic <harmonic_1>`                                                                     Harmonic.
+
+==========================================   =============================================================
+
+.. rubric:: Included in:
+
+========================   ======================================
+
+Parent                                                    Summary
+
+========================   ======================================
+:ref:`objects <objects>`       Manage Generalized Forces objects.
+
+========================   ======================================
+

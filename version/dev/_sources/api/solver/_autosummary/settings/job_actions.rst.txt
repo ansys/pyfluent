@@ -1,0 +1,52 @@
+:orphan:
+
+.. _job_actions:
+
+job_actions
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.job_actions
+    :show-inheritance:
+
+.. rubric:: Methods
+
+======================================================================   ===========================================
+
+Method                                                                                                       Summary
+
+======================================================================   ===========================================
+:ref:`abort <abort>`                                                                                      Abort Job.
+
+:ref:`interrupt <interrupt_1>`                                                                        Interrupt Job.
+
+:ref:`rerun <rerun>`                                                                                      Rerun Job.
+
+:ref:`connect_to_web_ui <connect_to_web_ui>`                                              Connect to Web UI for Job.
+
+:ref:`download_output_files <download_output_files>`                              Download all output files for Job.
+
+:ref:`download_specific_output_files <download_specific_output_files>`       Download specific output files for Job.
+
+:ref:`delete_files_from_the_cluster <delete_files_from_the_cluster>`                  Delete files from the cluster.
+
+:ref:`get_list_of_files <get_list_of_files>`                                 Get list of input/output files for Job.
+
+:ref:`delete_project <delete_project>`                                           Delete Project from Remote Cluster.
+
+:ref:`delete_job <delete_job>`                                                       Delete Job from Remote Cluster.
+
+:ref:`open_in_web_portal <open_in_web_portal>`                                               Open job in Web Portal.
+
+======================================================================   ===========================================
+
+.. rubric:: Included in:
+
+======================================   ============================
+
+Parent                                                        Summary
+
+======================================   ============================
+:ref:`remote_compute <remote_compute>`       Remote Compute Settings.
+
+======================================   ============================
+

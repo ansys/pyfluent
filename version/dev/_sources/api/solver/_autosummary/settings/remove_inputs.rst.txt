@@ -1,0 +1,21 @@
+:orphan:
+
+.. _remove_inputs:
+
+remove_inputs
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.remove_inputs
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ============================================================
+
+Parent                                                                  Summary
+
+================   ============================================================
+:ref:`cad <cad>`       Export specified surfaces from 3D cases as an .stl file.
+
+================   ============================================================
+

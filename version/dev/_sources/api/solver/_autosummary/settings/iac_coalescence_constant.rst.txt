@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iac_coalescence_constant:
+
+iac_coalescence_constant
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iac_coalescence_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`iac_props <iac_props>`       IAC properties group.
+
+============================   =========================
+

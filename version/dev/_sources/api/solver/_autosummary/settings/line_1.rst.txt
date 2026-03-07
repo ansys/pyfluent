@@ -1,0 +1,36 @@
+:orphan:
+
+.. _line_1:
+
+line
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.line_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ===================================================
+
+Attribute                                                                Summary
+
+==========================   ===================================================
+:ref:`pattern <pattern_1>`             The line pattern for the specified curve.
+
+:ref:`weight <weight_5>`         The thickness of the line for the chosen curve.
+
+:ref:`color <color_8>`                     The display color for the curve line.
+
+==========================   ===================================================
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`curves_1_child <curves_1_child>`       'child_object_type' of curves.
+
+======================================   ==================================
+

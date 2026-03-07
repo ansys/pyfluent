@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solution_order:
+
+solution_order
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.solution_order
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ==================================================
+
+Parent                                                                                                    Summary
+
+============================================================   ==================================================
+:ref:`pmn_enable_solution_order <pmn_enable_solution_order>`       Solution correction on meshes of poor quality.
+
+============================================================   ==================================================
+

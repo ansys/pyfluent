@@ -1,0 +1,21 @@
+:orphan:
+
+.. _divisions_2:
+
+divisions
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.divisions_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`minor_gridlines_1 <minor_gridlines_1>`       Minor rules settings.
+
+============================================   =========================
+

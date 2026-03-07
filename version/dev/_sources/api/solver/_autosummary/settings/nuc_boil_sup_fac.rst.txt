@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nuc_boil_sup_fac:
+
+nuc_boil_sup_fac
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.nuc_boil_sup_fac
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ================================================
+
+Parent                                                                                                    Summary
+
+==============================================================   ================================================
+:ref:`mt_evap_cond_sbm_nuchf_par <mt_evap_cond_sbm_nuchf_par>`       Nucleate boiling model reference quantities.
+
+==============================================================   ================================================
+

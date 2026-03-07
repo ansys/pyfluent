@@ -1,0 +1,34 @@
+:orphan:
+
+.. _export_data_1:
+
+export_data
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.export_data_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ================================
+
+Argument                                                   Summary
+
+===============================   ================================
+:ref:`field <field_14>`                      Field to interpolate.
+
+:ref:`file_name <file_name_36>`       Interpolated data file name.
+
+===============================   ================================
+
+.. rubric:: Included in:
+
+====================================   ===================================
+
+Parent                                                             Summary
+
+====================================   ===================================
+:ref:`interpolate_2 <interpolate_2>`       Interpolation utilities object.
+
+====================================   ===================================
+

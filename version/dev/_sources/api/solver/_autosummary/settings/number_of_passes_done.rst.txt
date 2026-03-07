@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_of_passes_done:
+
+number_of_passes_done
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_of_passes_done
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==============================================================
+
+Parent                                                                                                      Summary
+
+==================================================   ==============================================================
+:ref:`sampling_and_erosion <sampling_and_erosion>`       Configure sampling of particle trajectory data for output.
+
+==================================================   ==============================================================
+

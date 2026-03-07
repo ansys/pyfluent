@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_volumetric_species:
+
+number_volumetric_species
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_volumetric_species
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==================
+
+Parent                                Summary
+
+========================   ==================
+:ref:`model_5 <model_5>`       Species model.
+
+========================   ==================
+

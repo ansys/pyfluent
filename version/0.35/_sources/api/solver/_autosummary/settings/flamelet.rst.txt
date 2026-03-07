@@ -1,0 +1,48 @@
+:orphan:
+
+.. _flamelet:
+
+flamelet
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.flamelet
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   =====================================================
+
+Attribute                                                                                                      Summary
+
+==============================================================   =====================================================
+:ref:`parameters <parameters_1>`                                                              PDF Flamelet Parameters.
+
+:ref:`include_equilibrium <include_equilibrium>`                                         Include Equilibrium Flamelet.
+
+:ref:`pdf_include_equilibrium <pdf_include_equilibrium>`                                 Include Equilibrium Flamelet.
+
+:ref:`automatic_refinement <automatic_refinement>`                           Enable/disable Automated Grid Refinement.
+
+:ref:`initial_number_grids <initial_number_grids>`                          Initial Number of Grid Points in Flamelet.
+
+:ref:`maximum_number_grids <maximum_number_grids>`                          Maximum Number of Grid Points in Flamelet.
+
+:ref:`maximum_change_value_ratio <maximum_change_value_ratio>`                          Maximum Change in Value Ratio.
+
+:ref:`maximum_change_solve_ratio <maximum_change_solve_ratio>`                          Maximum Change in Slope Ratio.
+
+:ref:`refine_based <refine_based>`                                   Auto Refine Flamelet in Mixture Fraction Options.
+
+==============================================================   =====================================================
+
+.. rubric:: Included in:
+
+==========================================================================   =====================================
+
+Parent                                                                                                     Summary
+
+==========================================================================   =====================================
+:ref:`partially_premixed_model_options <partially_premixed_model_options>`       Partially Premixed Model Options.
+
+==========================================================================   =====================================
+

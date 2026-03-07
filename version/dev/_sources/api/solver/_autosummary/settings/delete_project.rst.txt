@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_project:
+
+delete_project
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_project
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ===============
+
+Argument                                 Summary
+
+==============================   ===============
+:ref:`project_id <project_id>`       Project ID.
+
+==============================   ===============
+
+.. rubric:: Included in:
+
+================================   =======================
+
+Parent                                             Summary
+
+================================   =======================
+:ref:`job_actions <job_actions>`       Remote Job Actions.
+
+================================   =======================
+

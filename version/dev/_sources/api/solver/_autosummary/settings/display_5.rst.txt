@@ -1,0 +1,23 @@
+:orphan:
+
+.. _display_5:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.display_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ======================================
+
+Parent                                                                        Summary
+
+============================================   ======================================
+:ref:`interfaces_child <interfaces_child>`         'child_object_type' of interfaces.
+
+:ref:`interface_3_child <interface_3_child>`        'child_object_type' of interface.
+
+============================================   ======================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_72:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_72
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ========================================
+
+Parent                                                                                                    Summary
+
+======================================================================   ========================================
+:ref:`track_single_particle_stream_1 <track_single_particle_stream_1>`       Enable track single particle stream.
+
+======================================================================   ========================================
+

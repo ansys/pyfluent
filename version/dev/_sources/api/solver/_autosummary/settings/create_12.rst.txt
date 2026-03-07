@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_12:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_12
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =============================================================
+
+Argument                                                                                       Summary
+
+======================================   =============================================================
+:ref:`physics_region <physics_region>`       Physics region for which you want to create dynamic mesh.
+
+:ref:`zone <zone_2>`                                   Zone for which you want to create dynamic mesh.
+
+======================================   =============================================================
+
+.. rubric:: Included in:
+
+====================================   ==================
+
+Parent                                            Summary
+
+====================================   ==================
+:ref:`dynamic_zones <dynamic_zones>`       Dynamic Zones.
+
+====================================   ==================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _high_order_scheme:
+
+high_order_scheme
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.high_order_scheme
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==============================================
+
+Parent                                                                  Summary
+
+==============================   ==============================================
+:ref:`tracking_1 <tracking_1>`       Settings related to DPM particle tracking.
+
+==============================   ==============================================
+

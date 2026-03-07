@@ -1,0 +1,36 @@
+:orphan:
+
+.. _scale:
+
+scale
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.scale
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ===============================================================
+
+Argument                                                                           Summary
+
+========================   ===============================================================
+:ref:`x_scale <x_scale>`       Sets the scaling factor for the mesh along the X direction.
+
+:ref:`y_scale <y_scale>`       Sets the scaling factor for the mesh along the Y direction.
+
+:ref:`z_scale <z_scale>`       Sets the scaling factor for the mesh along the Z direction.
+
+========================   ===============================================================
+
+.. rubric:: Included in:
+
+==================   ==========================================================================================================
+
+Parent                                                                                                                  Summary
+
+==================   ==========================================================================================================
+:ref:`mesh <mesh>`       Provides access to mesh operations such as generation, transformation, repair, import/export and more.
+
+==================   ==========================================================================================================
+

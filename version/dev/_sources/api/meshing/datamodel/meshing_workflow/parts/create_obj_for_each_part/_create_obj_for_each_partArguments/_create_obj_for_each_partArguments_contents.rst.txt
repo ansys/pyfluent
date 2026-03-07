@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_create_obj_for_each_part__create_obj_for_each_partArguments:
+
+_create_obj_for_each_partArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.create_obj_for_each_part._create_obj_for_each_partArguments
+   :members: _paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

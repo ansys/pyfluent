@@ -1,0 +1,34 @@
+:orphan:
+
+.. _manage_1:
+
+manage
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.manage_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ====================
+
+Attribute                               Summary
+
+========================   ====================
+:ref:`read <read_2>`              'read' child.
+
+:ref:`display <display>`       'display' child.
+
+========================   ====================
+
+.. rubric:: Included in:
+
+======================================   =========================
+
+Parent                                                     Summary
+
+======================================   =========================
+:ref:`surface_mesh_1 <surface_mesh_1>`       'surface_mesh' child.
+
+======================================   =========================
+

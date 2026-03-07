@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_9:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_1_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================================================================
+
+Parent                                                                                                                                    Summary
+
+==================================   ============================================================================================================
+:ref:`replace_mesh <replace_mesh>`       Load a new mesh into your existing Fluent case while preserving solver settings and boundary conditions.
+
+==================================   ============================================================================================================
+

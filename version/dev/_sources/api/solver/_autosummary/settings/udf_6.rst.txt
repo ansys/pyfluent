@@ -1,0 +1,21 @@
+:orphan:
+
+.. _udf_6:
+
+udf
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.udf_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`imagy <imagy>`       'imagy' child.
+
+====================   ==================
+

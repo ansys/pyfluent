@@ -1,0 +1,34 @@
+:orphan:
+
+.. _pb_disc:
+
+pb_disc
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pb_disc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ==================================================
+
+Attribute                                                                                           Summary
+
+======================================================   ==================================================
+:ref:`mean_and_std_deviation <mean_and_std_deviation>`                         Mean and standard deviation.
+
+:ref:`pb_disc_components <pb_disc_components>`               Settings of population balance disc component.
+
+======================================================   ==================================================
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`multiphase_7 <multiphase_7>`       Allows to change multiphase model variables or settings.
+
+==================================   ============================================================
+

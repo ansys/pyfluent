@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreateContactPatch__CreateContactPatchCommandArguments:
+
+_CreateContactPatchCommandArguments
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreateContactPatch._CreateContactPatchCommandArguments
+   :members: _ContactPatchDefeaturingSize, _ContactPatchName, _Distance, _FeatureAngle, _FlipDirection, _GroundZoneSelectionList, _LabelSelectionList, _ObjectSelectionList, _PatchHole, _SelectionType, _ZoneLocation, _ZoneSelectionList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

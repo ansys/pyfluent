@@ -1,0 +1,21 @@
+:orphan:
+
+.. _profile_update_interval:
+
+profile_update_interval
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.profile_update_interval
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ================================
+
+Parent                                                        Summary
+
+==================================   ================================
+:ref:`parameters_9 <parameters_9>`       Iteration parameters object.
+
+==================================   ================================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _remove_boundary_species:
+
+remove_boundary_species
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.remove_boundary_species
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ==================================================
+
+Argument                                                                            Summary
+
+======================================   ==================================================
+:ref:`species_names <species_names_1>`       Names of species to remove from selected list.
+
+======================================   ==================================================
+
+.. rubric:: Included in:
+
+============================================   ===========================================================================
+
+Parent                                                                                                             Summary
+
+============================================   ===========================================================================
+:ref:`species_selection <species_selection>`       Manage species selection for boundary conditions during initialization.
+
+============================================   ===========================================================================
+

@@ -1,0 +1,46 @@
+:orphan:
+
+.. _mt_evap_cond_sbm_boil_model_exp_opt:
+
+mt_evap_cond_sbm_boil_model_exp_opt
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_evap_cond_sbm_boil_model_exp_opt
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   ====================================================
+
+Attribute                                                                                                     Summary
+
+==============================================================   ====================================================
+:ref:`min_sup_heat <min_sup_heat>`                                   Minimum superheat for onset of nucleate boiling.
+
+:ref:`min_sup_heat_constant <min_sup_heat_constant>`                                      Minimum superheat constant.
+
+:ref:`min_sup_heat_udf <min_sup_heat_udf>`                                                     Minimum superheat udf.
+
+:ref:`max_sup_heat <max_sup_heat>`                                            Maximum superheat for nucleate boiling.
+
+:ref:`wall_liq_wet_frac <wall_liq_wet_frac>`                                   Wall area fraction covered by liquids.
+
+:ref:`wall_liq_wet_frac_constant <wall_liq_wet_frac_constant>`                         Wall liquid fraction constant.
+
+:ref:`wall_liq_wet_frac_udf <wall_liq_wet_frac_udf>`                                        Wall liquid fraction udf.
+
+:ref:`crit_liq_vof <crit_liq_vof>`                                                                      Crit liq vof.
+
+==============================================================   ====================================================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

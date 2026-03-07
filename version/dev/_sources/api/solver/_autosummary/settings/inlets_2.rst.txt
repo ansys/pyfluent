@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inlets_2:
+
+inlets
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inlets_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`pressure_drop_child <pressure_drop_child>`       'child_object_type' of pressure_drop.
+
+================================================   =========================================
+

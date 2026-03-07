@@ -1,0 +1,21 @@
+:orphan:
+
+.. _non_adiabatic_laminar_flame_speed:
+
+non_adiabatic_laminar_flame_speed
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.non_adiabatic_laminar_flame_speed
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================================================   =============================================
+
+Parent                                                                                                                             Summary
+
+==========================================================================================   =============================================
+:ref:`partially_premixed_combustion_parameters <partially_premixed_combustion_parameters>`       Partially Premixed Combustion Parameters.
+
+==========================================================================================   =============================================
+

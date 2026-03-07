@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coarsening:
+
+coarsening
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coarsening
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================================================
+
+Parent                                                                              Summary
+
+========================   ================================================================
+:ref:`overset <overset>`       Define adaption settings suitable for an overset simulation.
+
+========================   ================================================================
+

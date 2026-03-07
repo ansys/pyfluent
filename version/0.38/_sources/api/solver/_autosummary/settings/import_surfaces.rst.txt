@@ -1,0 +1,34 @@
+:orphan:
+
+.. _import_surfaces:
+
+import_surfaces
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.import_surfaces
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   =======================================
+
+Argument                                                          Summary
+
+===============================   =======================================
+:ref:`file_name <file_name_47>`                Path to surface mesh file.
+
+:ref:`unit <unit>`                    Unit in which the mesh was created.
+
+===============================   =======================================
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`bounded_by_surfaces_child <bounded_by_surfaces_child>`       'child_object_type' of bounded_by_surfaces.
+
+============================================================   ===============================================
+

@@ -1,0 +1,23 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_refaceting__refaceting:
+
+_refaceting
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.refaceting._refaceting
+   :members: _name_, applied, children, context, deviation, facet_max_edge_length, max_edge_length_factor, max_size, name, normal_angle
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   add/add_contents
+   apply/apply_contents
+   delete/delete_contents
+   edit/edit_contents
+   remove/remove_contents
+   rename/rename_contents

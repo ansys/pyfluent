@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_axis_function_5:
+
+x_axis_function
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.x_axis_function_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================
+
+Parent                                                                Summary
+
+============================================   ==============================
+:ref:`interpolated_data <interpolated_data>`       Display interpolated data.
+
+============================================   ==============================
+

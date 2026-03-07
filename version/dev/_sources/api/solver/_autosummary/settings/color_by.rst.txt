@@ -1,0 +1,21 @@
+:orphan:
+
+.. _color_by:
+
+color_by
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.color_by
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================================================================
+
+Parent                                                                               Summary
+
+======================   ===================================================================
+:ref:`colors <colors>`       Settings related to colors and materials for surfaces and mesh.
+
+======================   ===================================================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_rename_face_zone_label__rename_face_zone_labelCommandArguments:
+
+_rename_face_zone_labelCommandArguments
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing_utilities.Root.rename_face_zone_label._rename_face_zone_labelCommandArguments
+   :members: _new_label_name, _object_name, _old_label_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _axes_1:
+
+axes
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.axes_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============   ==============
+
+Attribute               Summary
+
+==============   ==============
+:ref:`x <x_8>`       'x' child.
+
+:ref:`y <y_8>`       'y' child.
+
+==============   ==============
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`pathline_child <pathline_child>`                         'child_object_type' of pathline.
+
+:ref:`particle_track_child <particle_track_child>`       'child_object_type' of particle_track.
+
+:ref:`xy_plot_child <xy_plot_child>`                            'child_object_type' of xy_plot.
+
+==================================================   ==========================================
+

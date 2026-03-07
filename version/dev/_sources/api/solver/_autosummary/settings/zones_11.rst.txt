@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zones_11:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zones_11
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ===========================================
+
+Parent                                                                                         Summary
+
+========================================================   ===========================================
+:ref:`volume_integral_1_child <volume_integral_1_child>`       'child_object_type' of volume_integral.
+
+========================================================   ===========================================
+

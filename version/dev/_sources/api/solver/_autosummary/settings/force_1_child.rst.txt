@@ -1,0 +1,38 @@
+:orphan:
+
+.. _force_1_child:
+
+force_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.force_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ========================
+
+Attribute                                       Summary
+
+============================   ========================
+:ref:`name <name_5>`                Name of the object.
+
+:ref:`walls <walls>`               Wall zone name list.
+
+:ref:`location <location_3>`                The object.
+
+:ref:`vector <vector_2>`                  Force vector.
+
+============================   ========================
+
+.. rubric:: Included in:
+
+========================   =================================
+
+Parent                                               Summary
+
+========================   =================================
+:ref:`force_1 <force_1>`       Force observable definitions.
+
+========================   =================================
+

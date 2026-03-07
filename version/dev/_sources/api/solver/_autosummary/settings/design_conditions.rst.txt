@@ -1,0 +1,40 @@
+:orphan:
+
+.. _design_conditions:
+
+design_conditions
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.design_conditions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =========================================================================================================================================================================
+
+Attribute                                                                                                                                                                                              Summary
+
+==================================   =========================================================================================================================================================================
+:ref:`definition <definition_5>`         Old design condition definitions. This has been migrated to definitions with an "s" where the various design condition types are contained in different dictionaries.
+
+:ref:`definitions <definitions_1>`                                                                                                                                               Design condition definitions.
+
+:ref:`selection <selection_1>`                                                                                                                                                     Selected design conditions.
+
+:ref:`options <options_24>`                                                                                                                                                  Design conditions options object.
+
+==================================   =========================================================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================================   ======================================
+
+Parent                                                                                      Summary
+
+==========================================================   ======================================
+:ref:`design_tool <design_tool>`                                 Gradient-based design tool object.
+
+:ref:`parameterize_and_explore <parameterize_and_explore>`         Parameterize and explore object.
+
+==========================================================   ======================================
+

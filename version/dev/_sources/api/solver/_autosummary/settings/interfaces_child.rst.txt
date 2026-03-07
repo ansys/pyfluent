@@ -1,0 +1,63 @@
+:orphan:
+
+.. _interfaces_child:
+
+interfaces_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.interfaces_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =====================================================
+
+Attribute                                                                                              Summary
+
+======================================================   =====================================================
+:ref:`name <name_24>`                                                     The prefix for mesh interface names.
+
+:ref:`type <type_11>`                                                                          Interface type.
+
+:ref:`boundary_1 <boundary_1_1>`                                                    Interface side-1 boundary.
+
+:ref:`boundary_2 <boundary_2_1>`                                                    Interface side-2 boundary.
+
+:ref:`overlapping_boundaries <overlapping_boundaries>`             Define settings for overlapping boundaries.
+
+:ref:`fan_settings <fan_settings>`                           Define settings for overlapping boundary portion.
+
+:ref:`porous_jump_settings <porous_jump_settings>`           Define settings for overlapping boundary portion.
+
+:ref:`radiator_settings <radiator_settings>`                 Define settings for overlapping boundary portion.
+
+:ref:`periodicity <periodicity_1>`                                                         Periodic settings .
+
+:ref:`mesh_connectivity <mesh_connectivity>`                                 Interface mesh connectivity type.
+
+======================================================   =====================================================
+
+.. rubric:: Methods
+
+==================================================   ===========================
+
+Method                                                                   Summary
+
+==================================================   ===========================
+:ref:`display <display_5>`                               Display mesh interface.
+
+:ref:`display_with_parents <display_with_parents>`       Display mesh interface.
+
+==================================================   ===========================
+
+.. rubric:: Included in:
+
+==============================   ==================================
+
+Parent                                                      Summary
+
+==============================   ==================================
+:ref:`interfaces <interfaces>`       Physics interface definitions.
+
+==============================   ==================================
+

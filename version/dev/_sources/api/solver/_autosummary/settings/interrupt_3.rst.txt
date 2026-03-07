@@ -1,0 +1,32 @@
+:orphan:
+
+.. _interrupt_3:
+
+interrupt
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.interrupt_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ============================================
+
+Argument                                                                    Summary
+
+====================================   ============================================
+:ref:`interrupt_at <interrupt_at_1>`       When should the solution be interrupted.
+
+====================================   ============================================
+
+.. rubric:: Included in:
+
+============================   ====================================
+
+Parent                                                      Summary
+
+============================   ====================================
+:ref:`optimizer <optimizer>`       Gradient-based optimizer object.
+
+============================   ====================================
+

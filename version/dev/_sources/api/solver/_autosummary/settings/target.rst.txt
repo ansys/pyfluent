@@ -1,0 +1,36 @@
+:orphan:
+
+.. _target:
+
+target
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.target
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =======================================================================
+
+Attribute                                                                                                  Summary
+
+========================================   =======================================================================
+:ref:`target_type <target_type>`                       Sets the target adoption strategy for anisotropic adaption.
+
+:ref:`number_of_cells <number_of_cells>`                      The target number of cells for anisotropic adaption.
+
+:ref:`factor_of_cells <factor_of_cells>`       Sets the refinement factor relative to the current number of cells.
+
+========================================   =======================================================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================
+
+Parent                                                                            Summary
+
+==================================================   ====================================
+:ref:`anisotropic_adaption <anisotropic_adaption>`       The anisotropic adaption object.
+
+==================================================   ====================================
+

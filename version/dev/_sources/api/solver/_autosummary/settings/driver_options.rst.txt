@@ -1,0 +1,49 @@
+:orphan:
+
+.. _driver_options:
+
+driver_options
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.driver_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =========================================================================
+
+Attribute                                                                                                      Summary
+
+==========================================   =========================================================================
+:ref:`hardcopy_format <hardcopy_format>`                                                         Hardcopy file format.
+
+:ref:`hardcopy_options <hardcopy_options>`        Hardcopy (image export) options like format, resolution, and colors.
+
+:ref:`window_dump_cmd <window_dump_cmd>`         Customize the system command used for dumping the window to an image.
+
+:ref:`post_format <post_format>`                                             Produce PostScript output for hardcopies.
+
+==========================================   =========================================================================
+
+.. rubric:: Methods
+
+======================================   ================================================================
+
+Method                                                                                            Summary
+
+======================================   ================================================================
+:ref:`current_driver <current_driver>`       Select the currently active export driver for saving images.
+
+======================================   ================================================================
+
+.. rubric:: Included in:
+
+========================   =============================================
+
+Parent                                                           Summary
+
+========================   =============================================
+:ref:`picture <picture>`       The hardcopy/save-picture options object.
+
+========================   =============================================
+

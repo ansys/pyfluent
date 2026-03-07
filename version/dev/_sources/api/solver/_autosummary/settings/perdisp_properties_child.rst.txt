@@ -1,0 +1,58 @@
+:orphan:
+
+.. _perdisp_properties_child:
+
+perdisp_properties_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.perdisp_properties_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ============================================================
+
+Attribute                                                                                                         Summary
+
+==========================================================   ============================================================
+:ref:`name <name_5>`                                                                                  Name of the object.
+
+:ref:`group_name <group_name>`                                                                        'group_name' child.
+
+:ref:`autofill_profile <autofill_profile>`                          A mode shape profile to autofill displacement fields.
+
+:ref:`complex <complex>`                                              Enable complex (imaginary) displacement components.
+
+:ref:`dispx <dispx>`                                                                                       'dispx' child.
+
+:ref:`dispy <dispy>`                                                                                       'dispy' child.
+
+:ref:`dispz <dispz>`                                                                                       'dispz' child.
+
+:ref:`imagx <imagx>`                                                                                       'imagx' child.
+
+:ref:`imagy <imagy>`                                                                                       'imagy' child.
+
+:ref:`imagz <imagz>`                                                                                       'imagz' child.
+
+:ref:`frequency <frequency_2>`                                                                         'frequency' child.
+
+:ref:`normalized <normalized>`                                   Toggle between normalized and non-normalized mode shape.
+
+:ref:`amplitude <amplitude_2>`                                                                         'amplitude' child.
+
+:ref:`structural_damping_ratio <structural_damping_ratio>`                The structural damping ratio for solved motion.
+
+==========================================================   ============================================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`perdisp_properties <perdisp_properties>`       'perdisp_properties' child.
+
+==============================================   ===============================
+

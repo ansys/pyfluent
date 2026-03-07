@@ -1,0 +1,50 @@
+:orphan:
+
+.. _boiling_parameters:
+
+boiling_parameters
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.boiling_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ========================================================================================================
+
+Attribute                                                                                                                                                                 Summary
+
+======================================================================   ========================================================================================================
+:ref:`thin_film <thin_film>`                                                                                                                Multiphase boiling thin film effects.
+
+:ref:`liquid_vof_factor <liquid_vof_factor>`                                                                                   Multiphase boiling liquid volume fraction effects.
+
+:ref:`bubble_diameter_model_options <bubble_diameter_model_options>`                                                                       The bubble diameter model for boiling.
+
+:ref:`droplet_diameter <droplet_diameter_1>`                                        Enable the modeling of liquid-phase droplet diameter in the critical heat flux boiling model.
+
+:ref:`droplet_diameter_model_options <droplet_diameter_model_options>`                                       The droplet diameter model for the critical heat flux boiling model.
+
+:ref:`liquid_droplet_diameter <liquid_droplet_diameter>`                     A constant value for the liquid-phase droplet diameter used in the critical heat flux boiling model.
+
+:ref:`min_droplet_diameter <min_droplet_diameter>`                                            The minimum liquid-phase droplet diameter for the critical heat flux boiling model.
+
+:ref:`max_droplet_diameter <max_droplet_diameter>`                                            The maximum liquid-phase droplet diameter for the critical heat flux boiling model.
+
+:ref:`vof_lower_limit <vof_lower_limit>`                                                       The lower limit for the vapor-phase volume fraction used in the blending function.
+
+:ref:`vof_upper_limit <vof_upper_limit>`                                                       The upper limit for the vapor-phase volume fraction used in the blending function.
+
+======================================================================   ========================================================================================================
+
+.. rubric:: Included in:
+
+================================================   ===========================================
+
+Parent                                                                                 Summary
+
+================================================   ===========================================
+:ref:`multiphase_numerics <multiphase_numerics>`       The multiphase numerics options object.
+
+================================================   ===========================================
+

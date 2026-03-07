@@ -1,0 +1,25 @@
+:orphan:
+
+.. _compute_8:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.compute_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================
+
+Parent                                                                  Summary
+
+========================================   ====================================
+:ref:`range_options <range_options>`           Range using the min max options.
+
+:ref:`range_options_1 <range_options_1>`       Range using the min max options.
+
+:ref:`range_options_2 <range_options_2>`                  Min max of the range.
+
+========================================   ====================================
+

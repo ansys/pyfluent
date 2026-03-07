@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_tpr:
+
+name_tpr
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_tpr
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`define_expressions <define_expressions>`       Define expressions to evaluate turbomachine performance.
+
+==============================================   ============================================================
+

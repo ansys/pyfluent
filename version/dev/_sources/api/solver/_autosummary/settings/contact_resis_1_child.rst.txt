@@ -1,0 +1,36 @@
+:orphan:
+
+.. _contact_resis_1_child:
+
+contact_resis_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.contact_resis_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ============================================
+
+Attribute                                                                 Summary
+
+==================================   ============================================
+:ref:`physics_name <physics_name>`       Physics name in thread-real-pair object.
+
+:ref:`zone_name <zone_name_6>`              Zone name in thread-real-pair object.
+
+:ref:`value <value_16>`                         Value in thread-real-pair object.
+
+==================================   ============================================
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`contact_resis_1 <contact_resis_1>`       Contact Resistance Regions.
+
+========================================   ===============================
+

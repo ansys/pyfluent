@@ -1,0 +1,21 @@
+:orphan:
+
+.. _imagz_field_1:
+
+imagz_field
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.imagz_field_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===================================
+
+Parent                                                             Summary
+
+====================================   ===================================
+:ref:`objects_child <objects_child>`       'child_object_type' of objects.
+
+====================================   ===================================
+

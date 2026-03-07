@@ -1,0 +1,29 @@
+:orphan:
+
+.. _process:
+
+process
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.process
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`performance <performance>`                                                                  The object.
+
+:ref:`define_expressions <define_expressions>`       Define expressions to evaluate turbomachine performance.
+
+:ref:`efficiency <efficiency>`                                                                    The object.
+
+:ref:`isentropic <isentropic>`                                               Calculate isentropic efficiency.
+
+:ref:`polytropic <polytropic>`                                               Calculate polytropic efficiency.
+
+==============================================   ============================================================
+

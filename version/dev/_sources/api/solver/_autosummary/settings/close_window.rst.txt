@@ -1,0 +1,32 @@
+:orphan:
+
+.. _close_window:
+
+close_window
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.close_window
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ======================================================================
+
+Argument                                                                                        Summary
+
+==============================   ======================================================================
+:ref:`window_id <window_id_3>`       Close a user graphics window using the specified unique window ID.
+
+==============================   ======================================================================
+
+.. rubric:: Included in:
+
+========================   =============================================
+
+Parent                                                           Summary
+
+========================   =============================================
+:ref:`windows <windows>`       Manage all open graphics display windows.
+
+========================   =============================================
+

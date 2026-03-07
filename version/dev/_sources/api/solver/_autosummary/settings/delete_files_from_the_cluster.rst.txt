@@ -1,0 +1,38 @@
+:orphan:
+
+.. _delete_files_from_the_cluster:
+
+delete_files_from_the_cluster
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_files_from_the_cluster
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================================   ================================================
+
+Argument                                                                                            Summary
+
+========================================================   ================================================
+:ref:`project_id <project_id>`                                                                  Project ID.
+
+:ref:`job_id <job_id>`                                                                              Job ID.
+
+:ref:`list_of_files_to_delete <list_of_files_to_delete>`                           List of files to delete.
+
+:ref:`input_files <input_files>`                               Specifies whether the files are input files.
+
+========================================================   ================================================
+
+.. rubric:: Included in:
+
+================================   =======================
+
+Parent                                             Summary
+
+================================   =======================
+:ref:`job_actions <job_actions>`       Remote Job Actions.
+
+================================   =======================
+

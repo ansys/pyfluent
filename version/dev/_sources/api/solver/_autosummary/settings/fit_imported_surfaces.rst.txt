@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fit_imported_surfaces:
+
+fit_imported_surfaces
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.fit_imported_surfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`bounded_by_surfaces_child <bounded_by_surfaces_child>`       'child_object_type' of bounded_by_surfaces.
+
+============================================================   ===============================================
+

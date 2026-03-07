@@ -1,0 +1,23 @@
+:orphan:
+
+.. _scope:
+
+scope
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.scope
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =====================================
+
+Parent                                                                   Summary
+
+========================================   =====================================
+:ref:`ensight_dvs <ensight_dvs>`                       Write a EnSight DVS file.
+
+:ref:`visualize_child <visualize_child>`       'child_object_type' of visualize.
+
+========================================   =====================================
+

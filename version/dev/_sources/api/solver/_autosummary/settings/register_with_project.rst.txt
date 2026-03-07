@@ -1,0 +1,29 @@
+:orphan:
+
+.. _register_with_project:
+
+register_with_project
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.register_with_project
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================================   =========================================================================
+
+Parent                                                                                                                                                   Summary
+
+====================================================================================   =========================================================================
+:ref:`export_simulation_report_as_pdf <export_simulation_report_as_pdf>`                                    Export the provided simulation report as a PDF file.
+
+:ref:`export_simulation_report_as_html <export_simulation_report_as_html>`                                        Export the provided simulation report as HTML.
+
+:ref:`export_simulation_report_as_pptx <export_simulation_report_as_pptx>`                                  Export the provided simulation report as a PPT file.
+
+:ref:`write_simulation_report_names_to_file <write_simulation_report_names_to_file>`           Write the list of currently generated report names to a txt file.
+
+:ref:`write_simulation_report_template_file <write_simulation_report_template_file>`       Write a JSON template file with this case Simulation Report settings.
+
+====================================================================================   =========================================================================
+

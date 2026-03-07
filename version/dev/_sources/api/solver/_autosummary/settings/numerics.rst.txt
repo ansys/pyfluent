@@ -1,0 +1,44 @@
+:orphan:
+
+.. _numerics:
+
+numerics
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.numerics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================   =======================================================================================================================================
+
+Attribute                                                                                                                                                                                                      Summary
+
+============================================================================   =======================================================================================================================================
+:ref:`tracking <tracking_1>`                                                                                                                                                Settings related to DPM particle tracking.
+
+:ref:`heat_mass_exchange <heat_mass_exchange>`                                     Settings controlling the modelling and numerical solution of heat and mass exchange between the particles and the continuous phase.
+
+:ref:`source_term_settings <source_term_settings>`                                                         Settings that control the handling of DPM-related source terms in the continuous phase transport equations.
+
+:ref:`node_based_averaging <node_based_averaging>`                                                              Menu containing options to enable/disable node-based averaging of DPM variables and DPM source terms. 
+
+:ref:`dynamic_interaction_range_enabled <dynamic_interaction_range_enabled>`                                                                                          Enable/disable dynamic interaction range option.
+
+:ref:`parcel_count_control <parcel_count_control>`                                                           Options for increasing or decreasing the number of DPM numerical parcels to meet resolution requirements.
+
+:ref:`high_res_tracking <high_res_tracking>`                                                                                                                                                              Main object.
+
+============================================================================   =======================================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`discrete_phase <discrete_phase>`       Toplevel object.
+
+======================================   ====================
+

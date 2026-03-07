@@ -1,0 +1,36 @@
+:orphan:
+
+.. _set_current:
+
+set_current
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_current
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   ============================================
+
+Argument                                                          Summary
+
+==========================   ============================================
+:ref:`name <name_41>`                           Name of Compute Resource.
+
+:ref:`username <username>`       Username to Connect to Compute Resource.
+
+:ref:`password <password>`       Password to Connect to Compute Resource.
+
+==========================   ============================================
+
+.. rubric:: Included in:
+
+============================================   ==========================
+
+Parent                                                            Summary
+
+============================================   ==========================
+:ref:`compute_resources <compute_resources>`       Compute Resource List.
+
+============================================   ==========================
+

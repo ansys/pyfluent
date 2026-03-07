@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_list_1:
+
+name_list
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_list_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =============================
+
+Parent                                             Summary
+
+==========================   =============================
+:ref:`delete_5 <delete_5>`       Delete specified objects.
+
+==========================   =============================
+

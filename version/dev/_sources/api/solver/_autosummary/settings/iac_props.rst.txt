@@ -1,0 +1,54 @@
+:orphan:
+
+.. _iac_props:
+
+iac_props
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iac_props
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ==================================================
+
+Attribute                                                                                               Summary
+
+==========================================================   ==================================================
+:ref:`iac_min_dia <iac_min_dia>`                                            Minumum diameter used in iac model.
+
+:ref:`iac_max_dia <iac_max_dia>`                                            Maxumum diameter used in iac model.
+
+:ref:`iac_breakage <iac_breakage>`                                                         IAC breakage kernel.
+
+:ref:`iac_breakage_constant <iac_breakage_constant>`                                     IAC breakage constant.
+
+:ref:`iac_breakage_udf <iac_breakage_udf>`                                                    IAC breakage udf.
+
+:ref:`iac_coalescence <iac_coalescence>`                                                IAC coalescence kernel.
+
+:ref:`iac_coalescence_constant <iac_coalescence_constant>`                            IAC coalescence constant.
+
+:ref:`iac_coalescence_udf <iac_coalescence_udf>`                                           IAC coalescence udf.
+
+:ref:`iac_nucleation <iac_nucleation>`                                                   IAC nucleation kernel.
+
+:ref:`iac_nucleation_constant <iac_nucleation_constant>`                               IAC nucleation constant.
+
+:ref:`iac_nucleation_udf <iac_nucleation_udf>`                                              IAC nucleation udf.
+
+:ref:`iac_sftc <iac_sftc>`                                       Surface tension coefficient used in iac model.
+
+==========================================================   ==================================================
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`phases_child <phases_child>`       'child_object_type' of phases.
+
+==================================   ==================================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _major_gridlines:
+
+major_gridlines
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.major_gridlines
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================   =======================================================================================================
+
+Attribute                                                                                                                                                                        Summary
+
+==============================================================================   =======================================================================================================
+:ref:`color <color>`                                                                                                                                         Color of gridlines on axis.
+
+:ref:`weight <weight_1>`                                                                                                                                    Weight of gridlines on axis.
+
+:ref:`auto_placement <auto_placement>`                                                                                    Specifies whether placement of gridlines on axis is automatic.
+
+:ref:`specify_divisions_instead_of_units <specify_divisions_instead_of_units>`       Specifies whether you want to specify the no. of divisions on the axis made by the major gridlines.
+
+:ref:`units <units_1>`                                                                                                                      The gridlines placement (units) on the axis.
+
+:ref:`divisions <divisions>`                                                                                                            The gridlines placement (divisions) on the axis.
+
+==============================================================================   =======================================================================================================
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`x_6 <x_6>`       X-axis properties.
+
+:ref:`y_6 <y_6>`       Y-axis properties.
+
+================   ======================
+

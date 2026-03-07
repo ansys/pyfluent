@@ -1,0 +1,21 @@
+:orphan:
+
+.. _input_files_1:
+
+input_files
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.input_files_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===========================================
+
+Parent                                                                             Summary
+
+============================================   ===========================================
+:ref:`get_list_of_files <get_list_of_files>`       Get list of input/output files for Job.
+
+============================================   ===========================================
+

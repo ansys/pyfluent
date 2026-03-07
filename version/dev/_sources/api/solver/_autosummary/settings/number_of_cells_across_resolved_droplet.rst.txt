@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_of_cells_across_resolved_droplet:
+
+number_of_cells_across_resolved_droplet
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_of_cells_across_resolved_droplet
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===========================================================================================================
+
+Parent                                                                                                                                               Summary
+
+==============================================   ===========================================================================================================
+:ref:`vof_to_dpm_generic <vof_to_dpm_generic>`       Define cell registers, expressions, and adaption settings suitable for a generic VOF-to-DPM simulation.
+
+==============================================   ===========================================================================================================
+

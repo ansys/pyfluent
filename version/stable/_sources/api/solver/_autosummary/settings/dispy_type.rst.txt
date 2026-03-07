@@ -1,0 +1,21 @@
+:orphan:
+
+.. _dispy_type:
+
+dispy_type
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dispy_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================================
+
+Parent                                                            Summary
+
+============================   ==========================================
+:ref:`create_13 <create_13>`       Create a new Generalized Force object.
+
+============================   ==========================================
+

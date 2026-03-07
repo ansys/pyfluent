@@ -1,0 +1,23 @@
+:orphan:
+
+.. _url:
+
+url
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.url
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =============================================
+
+Parent                                                                                           Summary
+
+========================================================   =============================================
+:ref:`add_8 <add_8>`                                                              Add Computer Resource.
+
+:ref:`compute_resources_child <compute_resources_child>`       'child_object_type' of compute_resources.
+
+========================================================   =============================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _number_of_bins_1:
+
+number_of_bins
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_of_bins_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =====================================================================================
+
+Argument                                                                                                         Summary
+
+================================   =====================================================================================
+:ref:`sample_var <sample_var_4>`       Pick a sample variable for which to set the number of bins in the data reduction.
+
+:ref:`num_bins <num_bins>`                  The number of bins to be used for a specific variable in the data reduction.
+
+================================   =====================================================================================
+
+.. rubric:: Included in:
+
+========================================   ======================================================================================================
+
+Parent                                                                                                                                    Summary
+
+========================================   ======================================================================================================
+:ref:`setup_reduction <setup_reduction>`       Up the sample data reduction by specifying all relevant options and setting parameters as desired.
+
+========================================   ======================================================================================================
+

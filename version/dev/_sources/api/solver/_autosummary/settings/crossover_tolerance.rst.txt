@@ -1,0 +1,21 @@
+:orphan:
+
+.. _crossover_tolerance:
+
+crossover_tolerance
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.crossover_tolerance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===============================================================
+
+Parent                                                                               Summary
+
+==========================   ===============================================================
+:ref:`expert_3 <expert_3>`       Expert settings controlling parallel DPM particle tracking.
+
+==========================   ===============================================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _copy_materials:
+
+copy_materials
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.copy_materials
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   =============================================
+
+Argument                                                     Summary
+
+====================   =============================================
+:ref:`type <type_5>`        The material type to copy from database.
+
+:ref:`form <form>`                Copy database material by formula.
+
+:ref:`names <names>`       The material names to copy from database.
+
+====================   =============================================
+
+.. rubric:: Included in:
+
+==========================   ======================
+
+Parent                                      Summary
+
+==========================   ======================
+:ref:`database <database>`       Material database.
+
+==========================   ======================
+

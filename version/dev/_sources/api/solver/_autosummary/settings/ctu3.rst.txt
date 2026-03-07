@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ctu3:
+
+ctu3
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ctu3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`transition <transition>`       The transition model options.
+
+==============================   =================================
+

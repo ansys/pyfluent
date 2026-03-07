@@ -1,0 +1,36 @@
+:orphan:
+
+.. _write_3:
+
+write
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.write_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ==================================================
+
+Argument                                                                        Summary
+
+==================================   ==================================================
+:ref:`object_name <object_name_5>`                 Which PULSE object to write to file.
+
+:ref:`write_format <write_format>`             The format to use for saving PULSE data.
+
+:ref:`file_name <file_name_29>`          The file name for saving PULSE visualizations.
+
+==================================   ==================================================
+
+.. rubric:: Included in:
+
+====================   ===============================================
+
+Parent                                                         Summary
+
+====================   ===============================================
+:ref:`pulse <pulse>`       Save pathline/particle tracks pulse object.
+
+====================   ===============================================
+

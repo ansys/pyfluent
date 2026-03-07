@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_refaceting_operations_update_all_refacets:
+
+update_all_refacets
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.refaceting_operations.update_all_refacets
+   :members: _update_all_refacetsArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

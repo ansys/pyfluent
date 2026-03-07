@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pressure:
+
+pressure
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pressure
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =================================================================================================
+
+Parent                                                                                                                                 Summary
+
+==========================================   =================================================================================================
+:ref:`reference_values <reference_values>`       Manages reference values used in calculations of coefficients and non-dimensional quantities.
+
+==========================================   =================================================================================================
+

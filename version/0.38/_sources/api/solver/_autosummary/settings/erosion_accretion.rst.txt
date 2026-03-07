@@ -1,0 +1,21 @@
+:orphan:
+
+.. _erosion_accretion:
+
+erosion_accretion
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.erosion_accretion
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ================
+
+Parent                                                                Summary
+
+==========================================================   ================
+:ref:`user_defined_functions_1 <user_defined_functions_1>`       Main object.
+
+==========================================================   ================
+

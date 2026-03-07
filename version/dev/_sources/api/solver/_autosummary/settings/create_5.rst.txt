@@ -1,0 +1,36 @@
+:orphan:
+
+.. _create_5:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_5
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   =================================================
+
+Argument                                                           Summary
+
+======================   =================================================
+:ref:`name <name_22>`                                Input boundary name .
+
+:ref:`volume <volume>`       Input volume name for which the new boundary.
+
+:ref:`type <type_10>`                                 Input boundary type.
+
+======================   =================================================
+
+.. rubric:: Included in:
+
+==============================   ===================================================
+
+Parent                                                                       Summary
+
+==============================   ===================================================
+:ref:`boundaries <boundaries>`       Defines physics boundaries for a volume region.
+
+==============================   ===================================================
+

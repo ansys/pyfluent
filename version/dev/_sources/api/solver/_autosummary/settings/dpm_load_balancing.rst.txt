@@ -1,0 +1,36 @@
+:orphan:
+
+.. _dpm_load_balancing:
+
+dpm_load_balancing
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.dpm_load_balancing
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ============================================
+
+Attribute                                                                     Summary
+
+======================================   ============================================
+:ref:`load_balancing <load_balancing>`       Enable automatic load balancing for DPM.
+
+:ref:`threshold <threshold_3>`                      Load balancing threshold for DPM.
+
+:ref:`interval <interval>`                           Load balancing interval for DPM.
+
+======================================   ============================================
+
+.. rubric:: Included in:
+
+====================   ===============
+
+Parent                         Summary
+
+====================   ===============
+:ref:`set_3 <set_3>`       The object.
+
+====================   ===============
+

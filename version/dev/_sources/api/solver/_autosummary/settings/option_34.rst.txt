@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_34:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_34
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =============================================
+
+Parent                                                                                     Summary
+
+==================================================   =============================================
+:ref:`turbulent_dispersion <turbulent_dispersion>`       Lagrangian turbulent dispersion settings.
+
+==================================================   =============================================
+

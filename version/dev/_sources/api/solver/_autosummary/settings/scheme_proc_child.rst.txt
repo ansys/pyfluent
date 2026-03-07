@@ -1,0 +1,36 @@
+:orphan:
+
+.. _scheme_proc_child:
+
+scheme_proc_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.scheme_proc_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ========================================================================
+
+Attribute                                                                                                 Summary
+
+======================================   ========================================================================
+:ref:`name <name_5>`                                                                          Name of the object.
+
+:ref:`value <value_41>`                              Sets the current value for the Scheme-based Input Parameter.
+
+:ref:`apply_function <apply_function>`       Applies a Scheme function to update the input parameter dynamically.
+
+======================================   ========================================================================
+
+.. rubric:: Included in:
+
+================================   ============================================
+
+Parent                                                                  Summary
+
+================================   ============================================
+:ref:`scheme_proc <scheme_proc>`       Use input parameter in scheme-procedure.
+
+================================   ============================================
+
