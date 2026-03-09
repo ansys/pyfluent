@@ -125,10 +125,10 @@ class AppUtilitiesService:
         return self._stub.IsSolutionDataAvailable(request, metadata=self._metadata)
 
     def register_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.RegisterPauseSolutionEventsRequest
-    ) -> AppUtilitiesProtoModule.RegisterPauseSolutionEventsResponse:
+        self, request: AppUtilitiesProtoModule.RegisterSolutionEventsPauseRequest
+    ) -> AppUtilitiesProtoModule.RegisterSolutionEventsPauseResponse:
         """Register on pause solution events RPC of AppUtilities service."""
-        return self._stub.RegisterPauseSolutionEvents(request, metadata=self._metadata)
+        return self._stub.RegisterSolutionEventsPause(request, metadata=self._metadata)
 
     def resume_on_solution_event(
         self, request: AppUtilitiesProtoModule.ResumeSolutionEventRequest
@@ -137,10 +137,10 @@ class AppUtilitiesService:
         return self._stub.ResumeSolutionEvent(request, metadata=self._metadata)
 
     def unregister_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.UnregisterPauseSolutionEventsRequest
-    ) -> AppUtilitiesProtoModule.UnregisterPauseSolutionEventsResponse:
+        self, request: AppUtilitiesProtoModule.UnregisterSolutionEventsPauseRequest
+    ) -> AppUtilitiesProtoModule.UnregisterSolutionEventsPauseResponse:
         """Unregister on pause solution events RPC of AppUtilities service."""
-        return self._stub.UnregisterPauseSolutionEvents(
+        return self._stub.UnregisterSolutionEventsPause(
             request, metadata=self._metadata
         )
 
