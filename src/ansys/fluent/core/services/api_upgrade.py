@@ -45,7 +45,7 @@ class ApiUpgradeAdvisor:
         self._id = None
 
     def _can_advise(self) -> bool:
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         return not config.skip_api_upgrade_advice and self._mode == "solver"
 
