@@ -70,7 +70,6 @@ import subprocess
 import time
 from typing import Any, Callable, Dict
 
-from ansys.fluent.core import config
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
@@ -93,6 +92,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -521,8 +521,6 @@ class SlurmLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        from ansys.fluent.core import config
-
         certificates_folder, insecure_mode = get_remote_grpc_options(
             certificates_folder, insecure_mode
         )

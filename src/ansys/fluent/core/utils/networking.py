@@ -82,7 +82,7 @@ def find_remoting_ip() -> str:
     str
         remoting ip address
     """
-    from ansys.fluent.core import config
+    from ansys.fluent.core.module_config import config
 
     all_ips = [
         addrinfo[-1][0]
