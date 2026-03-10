@@ -32,9 +32,9 @@ from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
 
-from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
-from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.api.fluent.v1 import datamodel_se_pb2 as DataModelProtoModule
+from ansys.api.fluent.v1 import datamodel_se_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v1.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.services.interceptors import (
@@ -193,7 +193,7 @@ class DatamodelServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
+        self._stub = DataModelGrpcModule.DataModelServiceStub(intercept_channel)
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
 
@@ -202,81 +202,81 @@ class DatamodelServiceImpl:
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
         """RPC initDatamodel of DataModel service."""
-        return self._stub.initDatamodel(request, metadata=self._metadata)
+        return self._stub.InitDatamodel(request, metadata=self._metadata)
 
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
         """RPC getAttributeValue of DataModel service."""
-        return self._stub.getAttributeValue(request, metadata=self._metadata)
+        return self._stub.GetAttributeValue(request, metadata=self._metadata)
 
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
         """RPC getState of DataModel service."""
-        return self._stub.getState(request, metadata=self._metadata)
+        return self._stub.GetState(request, metadata=self._metadata)
 
     def rename(
         self, request: DataModelProtoModule.RenameRequest
     ) -> DataModelProtoModule.RenameResponse:
         """RPC rename of DataModel service."""
-        return self._stub.rename(request, metadata=self._metadata)
+        return self._stub.Rename(request, metadata=self._metadata)
 
     def get_object_names(
         self, request: DataModelProtoModule.GetObjectNamesRequest
     ) -> DataModelProtoModule.GetObjectNamesResponse:
         """RPC getObjectNames of DataModel service."""
-        return self._stub.getObjectNames(request, metadata=self._metadata)
+        return self._stub.GetObjectNames(request, metadata=self._metadata)
 
     def delete_child_objects(
         self, request: DataModelProtoModule.DeleteChildObjectsRequest
     ) -> DataModelProtoModule.DeleteChildObjectsResponse:
         """RPC deleteChildObjects of DataModel service."""
-        return self._stub.deleteChildObjects(request, metadata=self._metadata)
+        return self._stub.DeleteChildObjects(request, metadata=self._metadata)
 
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
         """RPC setState of DataModel service."""
-        return self._stub.setState(request, metadata=self._metadata)
+        return self._stub.SetState(request, metadata=self._metadata)
 
     def fix_state(
         self, request: DataModelProtoModule.FixStateRequest
     ) -> DataModelProtoModule.FixStateResponse:
         """RPC fixState of DataModel service."""
-        return self._stub.fixState(request, metadata=self._metadata)
+        return self._stub.FixState(request, metadata=self._metadata)
 
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
         """RPC updateDict of DataModel service."""
-        return self._stub.updateDict(request, metadata=self._metadata)
+        return self._stub.UpdateDict(request, metadata=self._metadata)
 
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
         """RPC deleteObject of DataModel service."""
-        return self._stub.deleteObject(request, metadata=self._metadata)
+        return self._stub.DeleteObject(request, metadata=self._metadata)
 
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         """RPC executeCommand of DataModel service."""
         logger.debug(f"Command: {request.command}")
-        return self._stub.executeCommand(request, metadata=self._metadata)
+        return self._stub.ExecuteCommand(request, metadata=self._metadata)
 
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
         """RPC executeQuery of DataModel service."""
         logger.debug(f"Query: {request.query}")
-        return self._stub.executeQuery(request, metadata=self._metadata)
+        return self._stub.ExecuteQuery(request, metadata=self._metadata)
 
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
         """RPC createCommandArguments of DataModel service."""
-        return self._stub.createCommandArguments(request, metadata=self._metadata)
+        return self._stub.CreateCommandArguments(request, metadata=self._metadata)
 
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
@@ -289,7 +289,7 @@ class DatamodelServiceImpl:
             If command instancing is not supported.
         """
         try:
-            return self._stub.deleteCommandArguments(request, metadata=self._metadata)
+            return self._stub.DeleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
             raise RuntimeError(
                 f"The following exception was caught\n {ex.details()}\n "
@@ -301,25 +301,25 @@ class DatamodelServiceImpl:
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
         """RPC getSpecs of DataModel service."""
-        return self._stub.getSpecs(request, metadata=self._metadata)
+        return self._stub.GetSpecs(request, metadata=self._metadata)
 
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
         """RPC getStaticInfo of DataModel service."""
-        return self._stub.getStaticInfo(request, metadata=self._metadata)
+        return self._stub.GetStaticInfo(request, metadata=self._metadata)
 
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
         """RPC subscribeEvents of DataModel service."""
-        return self._stub.subscribeEvents(request, metadata=self._metadata)
+        return self._stub.SubscribeEvents(request, metadata=self._metadata)
 
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
         """RPC unsubscribeEvents of DataModel service."""
-        return self._stub.unsubscribeEvents(request, metadata=self._metadata)
+        return self._stub.UnsubscribeEvents(request, metadata=self._metadata)
 
 
 def _convert_value_to_variant(val: ValueT, var: Variant) -> None:
@@ -394,7 +394,7 @@ class EventSubscription:
         self.path: str = path
         response = service.subscribe_events(request_dict)
         response = response[0]
-        if response["status"] != DataModelProtoModule.STATUS_SUBSCRIBED:
+        if response["status"] != DataModelProtoModule.SUBSCRIPTION_STATUS_SUBSCRIBED:
             raise SubscribeEventError(request_dict)
         else:
             self.is_subscribed = True
@@ -413,7 +413,10 @@ class EventSubscription:
             self._service.event_streaming.unregister_callback(self.tag)
             response = self._service.unsubscribe_events([self.tag])
             response = response[0]
-            if response["status"] != DataModelProtoModule.STATUS_UNSUBSCRIBED:
+            if (
+                response["status"]
+                != DataModelProtoModule.SUBSCRIPTION_STATUS_UNSUBSCRIBED
+            ):
                 raise UnsubscribeEventError(self.tag)
             else:
                 self.is_subscribed = False
@@ -697,7 +700,7 @@ class DatamodelService(StreamingService):
     ) -> None:
         """Delete command arguments."""
         request = DataModelProtoModule.DeleteCommandArgumentsRequest(
-            rules=rules, path=path, command=command, commandid=commandid
+            rules=rules, path=path, command=command, command_id=commandid
         )
         self._impl.delete_command_arguments(request)
 

@@ -28,8 +28,8 @@ from typing import Any
 
 import grpc
 
-from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
-from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
+from ansys.api.fluent.v1 import settings_pb2 as SettingsModule
+from ansys.api.fluent.v1 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -49,7 +49,7 @@ class _SettingsServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
+        self.__stub = SettingsGrpcModule.SettingsServiceStub(intercept_channel)
         self.__metadata = metadata
 
     def set_var(

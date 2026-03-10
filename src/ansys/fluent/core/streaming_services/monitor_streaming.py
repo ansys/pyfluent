@@ -27,7 +27,7 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
-from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
+from ansys.api.fluent.v1 import monitor_pb2 as MonitorModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 

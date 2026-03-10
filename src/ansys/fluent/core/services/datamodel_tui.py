@@ -29,9 +29,9 @@ from typing import Any
 from google.protobuf.json_format import MessageToDict
 import grpc
 
-from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
-from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
-from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.api.fluent.v1 import datamodel_tui_pb2 as DataModelProtoModule
+from ansys.api.fluent.v1 import datamodel_tui_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
