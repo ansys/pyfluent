@@ -32,7 +32,6 @@ import os
 from typing import Any, Dict
 from warnings import warn
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -65,6 +64,7 @@ from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -124,7 +124,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
             return UIMode.NO_GUI
         elif container_dict:
             return UIMode.NO_GUI
-        elif pyfluent.config.launch_fluent_container:
+        elif config.launch_fluent_container:
             return UIMode.NO_GUI
         else:
             return UIMode.GUI
@@ -366,7 +366,7 @@ def launch_fluent(
         )
 
     if start_timeout is None:
-        start_timeout = pyfluent.config.launch_fluent_timeout
+        start_timeout = config.launch_fluent_timeout
 
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
@@ -404,7 +404,7 @@ def launch_fluent(
     )
     common_args = launch_fluent_args.intersection(launcher_type_args)
     launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
-    if pyfluent.config.start_watchdog is False:
+    if config.start_watchdog is False:
         launcher_argvals["start_watchdog"] = False
     launcher = launcher_type(**launcher_argvals)
     return launcher()
