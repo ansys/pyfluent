@@ -16,7 +16,7 @@ permissions:
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  MAIN_PYTHON_VERSION: "3.10"
+  MAIN_PYTHON_VERSION: "3.12"
   FLUENT_IMAGE_TAG: v27.1.latest
   FLUENT_VERSION: 271
 

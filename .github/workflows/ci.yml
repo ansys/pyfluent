@@ -27,7 +27,7 @@ env:
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  MAIN_PYTHON_VERSION: "3.10"
+  MAIN_PYTHON_VERSION: "3.11"
   PYTHON_VERSION: "3.12"
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYTEST_XDIST_AUTO_NUM_WORKERS: 4
@@ -104,7 +104,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         should-release:
           - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
         exclude:
