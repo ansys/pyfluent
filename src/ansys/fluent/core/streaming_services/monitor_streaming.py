@@ -210,9 +210,9 @@ class MonitorsManager(StreamingService):
             try:
                 data_received = {}
                 response = next(responses)
-                x_axis_index = response.xaxisdata.xaxisindex
+                x_axis_index = response.x_axis_data.x_axis_index
                 data_received["xvalues"] = x_axis_index
-                for y_axis_value in response.yaxisvalues:
+                for y_axis_value in response.y_axis_values:
                     data_received[y_axis_value.name] = y_axis_value.value
                 with self._lock:
                     self._streaming = True

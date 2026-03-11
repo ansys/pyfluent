@@ -168,19 +168,19 @@ class SolutionVariableInfo:
                     """Initialize PartitionsInfo."""
                     self.count = partition_info.count
                     self.start_index = (
-                        partition_info.startIndex if self.count > 0 else 0
+                        partition_info.start_index if self.count > 0 else 0
                     )
-                    self.end_index = partition_info.endIndex if self.count > 0 else 0
+                    self.end_index = partition_info.end_index if self.count > 0 else 0
 
             def __init__(self, zone_info):
                 """Initialize ZoneInfo."""
                 self.name = zone_info.name
-                self.zone_id = zone_info.zoneId
-                self.zone_type = zone_info.zoneType
-                self.thread_type = zone_info.threadType
+                self.zone_id = zone_info.zone_id
+                self.zone_type = zone_info.zone_type
+                self.thread_type = zone_info.thread_type
                 self.partitions_info = [
                     self.PartitionsInfo(partition_info)
-                    for partition_info in zone_info.partitionsInfo
+                    for partition_info in zone_info.partitions_info
                 ]
 
             @property
@@ -203,7 +203,7 @@ class SolutionVariableInfo:
             for zone_info in zones_info:
                 self._zones_info[zone_info.name] = self.ZoneInfo(zone_info)
             for domain_info in domains_info:
-                self._domains_info[domain_info.name] = domain_info.domainId
+                self._domains_info[domain_info.name] = domain_info.domain_id
 
         def __getitem__(self, name):
             return self._zones_info.get(name, None)
@@ -297,7 +297,7 @@ class SolutionVariableInfo:
         """
         request = SvarProtoModule.GetZonesInfoRequest()
         response = self._service.get_zones_info(request)
-        return SolutionVariableInfo.ZonesInfo(response.zonesInfo, response.domainsInfo)
+        return SolutionVariableInfo.ZonesInfo(response.zones_info, response.domains_info)
 
 
 class InvalidSolutionVariableNameError(ValueError):

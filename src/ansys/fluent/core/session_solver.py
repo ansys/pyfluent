@@ -217,7 +217,7 @@ class Solver(BaseSession):
         ) in self.fields.solution_variable_info.get_zones_info()._zones_info.values():
             zone_type = (
                 ZoneType.CELL
-                if zone_info.thread_type == SvarProtoModule.ThreadType.CELL_THREAD
+                if zone_info.thread_type == SvarProtoModule.ThreadType.THREAD_TYPE_CELL
                 else ZoneType.FACE
             )
             zones_info.append(

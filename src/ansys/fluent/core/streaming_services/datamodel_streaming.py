@@ -78,7 +78,7 @@ class DatamodelStream(StreamingService):
                     self._streaming = True
                     for _, cb_list in self._service_callbacks.items():
                         state = response.state if hasattr(response, "state") else None
-                        deleted_paths = getattr(response, "deletedpaths", None)
+                        deleted_paths = getattr(response, "deleted_paths", None)
                         cb_list[0](state=state, deleted_paths=deleted_paths)
             except StopIteration:
                 break

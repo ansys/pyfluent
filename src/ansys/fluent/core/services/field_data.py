@@ -205,9 +205,9 @@ class _FieldInfo(BaseFieldInfo):
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
-        request.fieldName = _to_field_name_str(field)
-        request.nodeValue = node_value
-        request.surfaceid.extend(
+        request.field_name = _to_field_name_str(field)
+        request.node_value = node_value
+        request.surface_ids.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
         )
         response = self._service.get_scalar_field_range(request)
@@ -231,13 +231,13 @@ class _FieldInfo(BaseFieldInfo):
         request = FieldDataProtoModule.GetFieldsInfoRequest()
         response = self._service.get_scalar_fields_info(request)
         return {
-            field_info.solverName: {
-                "display_name": field_info.displayName,
+            field_info.solver_name: {
+                "display_name": field_info.display_name,
                 "section": field_info.section,
                 "domain": field_info.domain,
                 "quantity_name": field_info.quantity_name,
             }
-            for field_info in response.fieldInfo
+            for field_info in response.field_info
         }
 
     def get_vector_fields_info(self) -> Dict[str, Dict]:
@@ -258,12 +258,12 @@ class _FieldInfo(BaseFieldInfo):
         request = FieldDataProtoModule.GetVectorFieldsInfoRequest()
         response = self._service.get_vector_fields_info(request)
         return {
-            vector_field_info.displayName: {
-                "x-component": vector_field_info.xComponent,
-                "y-component": vector_field_info.yComponent,
-                "z-component": vector_field_info.zComponent,
+            vector_field_info.display_name: {
+                "x-component": vector_field_info.x_component,
+                "y-component": vector_field_info.y_component,
+                "z-component": vector_field_info.z_component,
             }
-            for vector_field_info in response.vectorFieldInfo
+            for vector_field_info in response.vector_field_info
         }
 
     def get_surfaces_info(self) -> Dict[str, Dict]:
@@ -284,13 +284,13 @@ class _FieldInfo(BaseFieldInfo):
         request = FieldDataProtoModule.GetSurfacesInfoResponse()
         response = self._service.get_surfaces_info(request)
         info = {
-            surface_info.surfaceName: {
-                "surface_id": [surf.id for surf in surface_info.surfaceId],
-                "zone_id": surface_info.zoneId.id,
-                "zone_type": surface_info.zoneType,
+            surface_info.surface_name: {
+                "surface_id": [surf.id for surf in surface_info.surface_ids],
+                "zone_id": surface_info.zone_id.id,
+                "zone_type": surface_info.zone_type,
                 "type": surface_info.type,
             }
-            for surface_info in response.surfaceInfo
+            for surface_info in response.surface_info
         }
         return info
 
@@ -425,12 +425,12 @@ class _FetchFieldData:
     ):
         return [
             FieldDataProtoModule.SurfaceRequest(
-                surfaceId=surface_id,
-                oversetMesh=overset_mesh,
-                provideFaces=SurfaceDataType.FacesConnectivity in data_types,
-                provideVertices=SurfaceDataType.Vertices in data_types,
-                provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
-                provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
+                surface_id=surface_id,
+                overset_mesh=overset_mesh,
+                provide_faces=SurfaceDataType.FacesConnectivity in data_types,
+                provide_vertices=SurfaceDataType.Vertices in data_types,
+                provide_faces_centroid=SurfaceDataType.FacesCentroid in data_types,
+                provide_faces_normal=SurfaceDataType.FacesNormal in data_types,
             )
             for surface_id in surface_ids
         ]
@@ -444,14 +444,14 @@ class _FetchFieldData:
     ):
         return [
             FieldDataProtoModule.ScalarFieldRequest(
-                surfaceId=surface_id,
-                scalarFieldName=field_name,
-                dataLocation=(
-                    FieldDataProtoModule.DataLocation.Nodes
+                surface_id=surface_id,
+                scalar_field_name=field_name,
+                data_location=(
+                    FieldDataProtoModule.DataLocation.DATA_LOCATION_NODES
                     if node_value
-                    else FieldDataProtoModule.DataLocation.Elements
+                    else FieldDataProtoModule.DataLocation.DATA_LOCATION_ELEMENTS
                 ),
-                provideBoundaryValues=boundary_value,
+                provide_boundary_values=boundary_value,
             )
             for surface_id in surface_ids
         ]
@@ -463,7 +463,7 @@ class _FetchFieldData:
     ):
         return [
             FieldDataProtoModule.VectorFieldRequest(
-                surfaceId=surface_id, vectorFieldName=field_name
+                surface_id=surface_id, vector_field_name=field_name
             )
             for surface_id in surface_ids
         ]
@@ -476,7 +476,7 @@ class _FetchFieldData:
     ):
         return [
             FieldDataProtoModule.PathlinesFieldRequest(
-                surfaceId=surface_id,
+                surface_id=surface_id,
                 field=field_name,
                 **kwargs,
             )
@@ -517,7 +517,7 @@ class BaseFieldData:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
-                ("dataLocation", 0 if kwargs.get("node_value") else 1),
+                ("dataLocation", 1 if kwargs.get("node_value") else 0),
                 ("boundaryValues", kwargs.get("boundary_value")),
             )
         ]
@@ -718,7 +718,7 @@ class Batch(FieldBatch):
             else:
                 updated_data_types.append(d_type)
         data_types = updated_data_types
-        self._fields_request.surfaceRequest.extend(
+        self._fields_request.surface_requests.extend(
             self._fetched_data._surface_data(
                 data_types,
                 kwargs.get("surfaces"),
@@ -727,7 +727,7 @@ class Batch(FieldBatch):
         )
 
     def _add_scalar_fields_request(self, **kwargs) -> None:
-        self._fields_request.scalarFieldRequest.extend(
+        self._fields_request.scalar_field_requests.extend(
             self._fetched_data._scalar_data(
                 self._allowed_scalar_field_names.valid_name(kwargs.get("field_name")),
                 kwargs.get("surfaces"),
@@ -737,7 +737,7 @@ class Batch(FieldBatch):
         )
 
     def _add_vector_fields_request(self, **kwargs) -> None:
-        self._fields_request.vectorFieldRequest.extend(
+        self._fields_request.vector_field_requests.extend(
             self._fetched_data._vector_data(
                 self._allowed_vector_field_names.valid_name(kwargs.get("field_name")),
                 kwargs.get("surfaces"),
@@ -762,25 +762,25 @@ class Batch(FieldBatch):
             additional_field_name = self._allowed_scalar_field_names.valid_name(
                 additional_field_name
             )
-        self._fields_request.pathlinesFieldRequest.extend(
+        self._fields_request.pathlines_field_requests.extend(
             self._fetched_data._pathlines_data(
                 field_name,
                 kwargs.get("surfaces"),
-                additionalField=additional_field_name,
-                provideParticleTimeField=kwargs.get("provide_particle_time_field"),
-                dataLocation=(
-                    FieldDataProtoModule.DataLocation.Nodes
+                additional_field=additional_field_name,
+                provide_particle_time_field=kwargs.get("provide_particle_time_field"),
+                data_location=(
+                    FieldDataProtoModule.DataLocation.DATA_LOCATION_NODES
                     if kwargs.get("node_value")
-                    else FieldDataProtoModule.DataLocation.Elements
+                    else FieldDataProtoModule.DataLocation.DATA_LOCATION_ELEMENTS
                 ),
                 steps=kwargs.get("steps"),
-                stepSize=kwargs.get("step_size"),
+                step_size=kwargs.get("step_size"),
                 skip=kwargs.get("skip"),
                 reverse=kwargs.get("reverse"),
-                accuracyControlOn=kwargs.get("accuracy_control_on"),
+                accuracy_control_enabled=kwargs.get("accuracy_control_on"),
                 tolerance=kwargs.get("tolerance"),
                 coarsen=kwargs.get("coarsen"),
-                velocityDomain=kwargs.get("velocity_domain"),
+                velocity_domain=kwargs.get("velocity_domain"),
                 zones=zones,
             )
         )
@@ -1085,8 +1085,8 @@ def _get_surface_ids(
 def get_fields_request():
     """Populates a new field request."""
     return FieldDataProtoModule.GetFieldsRequest(
-        provideBytesStream=_FieldDataConstants.bytes_stream,
-        chunkSize=_FieldDataConstants.chunk_size,
+        provide_bytes_stream=_FieldDataConstants.bytes_stream,
+        chunk_size=_FieldDataConstants.chunk_size,
     )
 
 
@@ -1124,8 +1124,8 @@ class ChunkParser:
         def _get_tag_for_scalar_field_request(scalar_field_request):
             return (
                 ("type", "scalar-field"),
-                ("dataLocation", scalar_field_request.dataLocation),
-                ("boundaryValues", scalar_field_request.provideBoundaryValues),
+                ("dataLocation", scalar_field_request.data_location),
+                ("boundaryValues", scalar_field_request.provide_boundary_values),
             )
 
         def _get_tag_for_pathlines_field_request(pathlines_field_request):
@@ -1139,23 +1139,23 @@ class ChunkParser:
             field_datatype_item_size = np.dtype(field_datatype).itemsize
             index = 0
             for chunk in chunk_iterator:
-                if chunk.bytePayload:
+                if chunk.byte_payload:
                     count = min(
-                        len(chunk.bytePayload) // field_datatype_item_size,
+                        len(chunk.byte_payload) // field_datatype_item_size,
                         field_size - index,
                     )
                     field_arr[index : index + count] = np.frombuffer(
-                        chunk.bytePayload, field_datatype, count=count
+                        chunk.byte_payload, field_datatype, count=count
                     )
                     index += count
                     if index == field_size:
                         return field_arr
                 else:
                     payload = (
-                        chunk.floatPayload.payload
-                        or chunk.intPayload.payload
-                        or chunk.doublePayload.payload
-                        or chunk.longPayload.payload
+                        chunk.float_payload.payload
+                        or chunk.int_payload.payload
+                        or chunk.double_payload.payload
+                        or chunk.long_payload.payload
                     )
                     count = len(payload)
                     field_arr[index : index + count] = np.fromiter(
@@ -1167,27 +1167,27 @@ class ChunkParser:
 
         fields_data = {}
         for chunk in chunk_iterator:
-            payload_info = chunk.payloadInfo
-            surface_id = payload_info.surfaceId
-            field_request_info = payload_info.fieldRequestInfo
+            payload_info = chunk.payload_info
+            surface_id = payload_info.surface_id
+            field_request_info = payload_info.field_request_info
             request_type = field_request_info.WhichOneof("request")
             if request_type is not None:
                 payload_tag_id = (
                     _get_tag_for_surface_request()
-                    if request_type == "surfaceRequest"
+                    if request_type == "surface_request"
                     else (
                         _get_tag_for_scalar_field_request(
-                            field_request_info.scalarFieldRequest
+                            field_request_info.scalar_field_request
                         )
-                        if request_type == "scalarFieldRequest"
+                        if request_type == "scalar_field_request"
                         else (
                             _get_tag_for_vector_field_request()
-                            if request_type == "vectorFieldRequest"
+                            if request_type == "vector_field_request"
                             else (
                                 _get_tag_for_pathlines_field_request(
-                                    field_request_info.pathlinesFieldRequest
+                                    field_request_info.pathlines_field_request
                                 )
-                                if request_type == "pathlinesFieldRequest"
+                                if request_type == "pathlines_field_request"
                                 else None
                             )
                         )
@@ -1199,7 +1199,7 @@ class ChunkParser:
                         lambda x, y: x | y,
                         [
                             _FieldDataConstants.payloadTags[tag]
-                            for tag in payload_info.payloadTag
+                            for tag in payload_info.payload_tags
                         ]
                         or [0],
                     )
@@ -1207,12 +1207,12 @@ class ChunkParser:
                     payload_tag_id = None
             field = None
             if payload_tag_id is not None:
-                if payload_info.fieldSize > 0:
+                if payload_info.field_size > 0:
                     field = _extract_field(
                         _FieldDataConstants.proto_field_type_to_np_data_type[
-                            payload_info.fieldType
+                            payload_info.field_type
                         ],
-                        payload_info.fieldSize,
+                        payload_info.field_size,
                         chunk_iterator,
                     )
                 else:
@@ -1232,18 +1232,18 @@ class ChunkParser:
                     payload_data = fields_data[payload_tag_id] = {}
                 surface_data = payload_data.get(surface_id)
                 if surface_data:
-                    if payload_info.fieldName in surface_data:
+                    if payload_info.field_name in surface_data:
                         surface_data.update(
                             {
-                                payload_info.fieldName: np.concatenate(
-                                    (surface_data[payload_info.fieldName], field)
+                                payload_info.field_name: np.concatenate(
+                                    (surface_data[payload_info.field_name], field)
                                 )
                             }
                         )
                     else:
-                        surface_data.update({payload_info.fieldName: field})
+                        surface_data.update({payload_info.field_name: field})
                 else:
-                    payload_data[surface_id] = {payload_info.fieldName: field}
+                    payload_data[surface_id] = {payload_info.field_name: field}
         return fields_data
 
 
@@ -1486,7 +1486,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
         )
-        fields_request.scalarFieldRequest.extend(
+        fields_request.scalar_field_requests.extend(
             self._fetched_data._scalar_data(
                 field_name,
                 self.get_surface_ids(surfaces),
@@ -1506,7 +1506,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         fields_request = get_fields_request()
-        fields_request.surfaceRequest.extend(
+        fields_request.surface_requests.extend(
             self._fetched_data._surface_data(
                 kwargs.get("data_types"),
                 surface_ids,
@@ -1545,7 +1545,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         for surface_id in surface_ids:
             self.scheme.string_eval(f"(surface? {surface_id})")
         fields_request = get_fields_request()
-        fields_request.vectorFieldRequest.extend(
+        fields_request.vector_field_requests.extend(
             self._fetched_data._vector_data(
                 field_name,
                 surface_ids,
@@ -1577,25 +1577,25 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             additional_field_name = self._allowed_scalar_field_names.valid_name(
                 additional_field_name
             )
-        fields_request.pathlinesFieldRequest.extend(
+        fields_request.pathlines_field_requests.extend(
             self._fetched_data._pathlines_data(
                 field_name,
                 surface_ids,
-                additionalField=kwargs.get(additional_field_name),
-                provideParticleTimeField=kwargs.get("provide_particle_time_field"),
-                dataLocation=(
-                    FieldDataProtoModule.DataLocation.Nodes
+                additional_field=kwargs.get(additional_field_name),
+                provide_particle_time_field=kwargs.get("provide_particle_time_field"),
+                data_location=(
+                    FieldDataProtoModule.DataLocation.DATA_LOCATION_NODES
                     if kwargs.get("node_value")
-                    else FieldDataProtoModule.DataLocation.Elements
+                    else FieldDataProtoModule.DataLocation.DATA_LOCATION_ELEMENTS
                 ),
                 steps=kwargs.get("steps"),
-                stepSize=kwargs.get("step_size"),
+                step_size=kwargs.get("step_size"),
                 skip=kwargs.get("skip"),
                 reverse=kwargs.get("reverse"),
-                accuracyControlOn=kwargs.get("accuracy_control_on"),
+                accuracy_control_enabled=kwargs.get("accuracy_control_on"),
                 tolerance=kwargs.get("tolerance"),
                 coarsen=kwargs.get("coarsen"),
-                velocityDomain=kwargs.get("velocity_domain"),
+                velocity_domain=kwargs.get("velocity_domain"),
                 zones=zones,
             )
         )
@@ -1774,7 +1774,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                     facets = []
                     for facet_pb in element_pb.facets:
                         facet = Facet(
-                            node_indices=[node_index_by_id[id] for id in facet_pb.node]
+                            node_indices=[node_index_by_id[id] for id in facet_pb.nodes]
                         )
                         facets.append(facet)
                     element = Element(

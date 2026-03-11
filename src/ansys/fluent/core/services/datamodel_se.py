@@ -555,7 +555,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
 
@@ -574,7 +574,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
 
@@ -590,7 +590,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
 
@@ -605,7 +605,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
 
@@ -619,7 +619,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
 
@@ -640,7 +640,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
 
@@ -654,7 +654,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
 
@@ -671,7 +671,7 @@ class DatamodelService(StreamingService):
             self.cache.update_cache(
                 rules,
                 response.state,
-                response.deletedpaths,
+                response.deleted_paths,
                 version=self.version,
             )
         return _convert_variant_to_value(response.result)
@@ -752,12 +752,12 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on child created."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "createdEventRequest": {
-                        "parentpath": path,
-                        "childtype": child_type,
+                    "created_event_request": {
+                        "parent_path": path,
+                        "child_type": child_type,
                     },
                 }
             ]
@@ -778,10 +778,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on deleted."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "deletedEventRequest": {"path": path},
+                    "deleted_event_request": {"path": path},
                 }
             ]
         }
@@ -794,10 +794,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on changed."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "modifiedEventRequest": {"path": path},
+                    "modified_event_request": {"path": path},
                 }
             ]
         }
@@ -810,10 +810,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on affected."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "affectedEventRequest": {"path": path},
+                    "affected_event_request": {"path": path},
                 }
             ]
         }
@@ -826,10 +826,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on affected at type path."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "affectedEventRequest": {
+                    "affected_event_request": {
                         "path": path,
                         "subtype": child_type,
                     },
@@ -850,10 +850,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "commandExecutedEventRequest": {
+                    "command_executed_event_request": {
                         "path": path,
                         "command": command,
                     },
@@ -869,10 +869,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "commandExecutedEventRequest": {
+                    "command_executed_event_request": {
                         "path": path,
                     },
                 }
@@ -887,10 +887,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on attribute changed."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "attributeChangedEventRequest": {
+                    "attribute_changed_event_request": {
                         "path": path,
                         "attribute": attribute,
                     },
@@ -911,10 +911,10 @@ class DatamodelService(StreamingService):
     ) -> EventSubscription:
         """Add on command attribute changed."""
         request_dict = {
-            "eventrequest": [
+            "event_requests": [
                 {
                     "rules": rules,
-                    "commandAttributeChangedEventRequest": {
+                    "command_attribute_changed_event_request": {
                         "path": path,
                         "command": command,
                         "attribute": attribute,

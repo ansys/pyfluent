@@ -148,7 +148,7 @@ def _convert_py_value_to_scheme_pointer(
         _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
     elif isinstance(val, list) or isinstance(val, tuple):
         for item in val:
-            _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
+            _convert_py_value_to_scheme_pointer(item, p.list.items.add(), version)
     elif isinstance(val, dict):
         for k, v in val.items():
             item = p.list.item.add()

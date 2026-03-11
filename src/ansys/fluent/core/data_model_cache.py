@@ -256,7 +256,7 @@ class DataModelCache:
         # Handle variant vector state
         if state.HasField("variant_vector_state"):
             updater_fn(source, key, [])
-            for item in state.variant_vector_state.item:
+            for item in state.variant_vector_state.items:
                 self._update_cache_from_variant_state(
                     rules,
                     source,

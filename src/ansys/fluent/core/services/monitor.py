@@ -68,7 +68,7 @@ class MonitorsService(StreamingService):
         monitors_info = {}
         request = MonitorModule.GetMonitorsRequest()
         response = self._stub.GetMonitors(request, metadata=self._metadata)
-        for monitor_set in response.monitorset:
+        for monitor_set in response.monitor_sets:
             monitor_info = MessageToDict(monitor_set)
             monitors_info[monitor_set.name] = monitor_info
         return monitors_info
