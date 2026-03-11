@@ -31,6 +31,7 @@ import weakref
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
@@ -158,7 +159,7 @@ class Solver(BaseSession):
         )
         #: Manage Fluent's solution monitors.
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
-        if not pyfluent.config.disable_monitor_refresh_on_init:
+        if not config.disable_monitor_refresh_on_init:
             self.events.register_callback(
                 (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
                 self.monitors.refresh,
@@ -270,7 +271,7 @@ class Solver(BaseSession):
             "solution/run-calculation/calculate",
             "solution/run-calculation/dual-time-iterate",
         ]
-        if pyfluent.config.support_solver_interrupt:
+        if config.support_solver_interrupt:
             if command.path in interruptible_commands:
                 command._root.solution.run_calculation.interrupt()
 

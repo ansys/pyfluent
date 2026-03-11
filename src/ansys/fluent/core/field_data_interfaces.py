@@ -34,8 +34,10 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+from ansys.units.variable_descriptor import VariableDescriptor
 
-_to_field_name_str = naming_strategy().to_string
+_naming_strategy_instance = naming_strategy()
+_to_field_name_str = _naming_strategy_instance.to_string
 
 
 class SurfaceDataType(Enum):
@@ -360,15 +362,45 @@ class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
 
-    def is_active(self, field_name):
-        """Check whether a field is active in the given context."""
-        if _to_field_name_str(field_name) in self._available_field_names():
-            return True
-        return False
+    def is_active(self, field_name: VariableDescriptor | str) -> bool:
+        """Check whether a field is active in the given context.
+
+        Parameters
+        ----------
+        field_name : VariableDescriptor | str
+            Field name to check. Can be a VariableDescriptor or a string.
+        """
+        return _to_field_name_str(field_name) in self._available_field_names()
 
     def allowed_values(self):
-        """Lists available scalar or vector field names."""
+        """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
+
+    def allowed_variables(self) -> list[VariableDescriptor]:
+        """Return allowed field names as VariableDescriptor objects.
+
+        Returns
+        -------
+        list[VariableDescriptor]
+            List of VariableDescriptor objects for all allowed fields.
+            Fields without a corresponding VariableDescriptor are excluded,
+            and a warning is issued listing them.
+        """
+        descriptors = []
+        unmatched = []
+        for field_name in self._available_field_names():
+            descriptor = _naming_strategy_instance.to_variable_descriptor(field_name)
+            if descriptor is not None:
+                descriptors.append(descriptor)
+            else:
+                unmatched.append(field_name)
+        if unmatched:
+            warnings.warn(
+                "The following variables are available but do not have "
+                f"corresponding descriptors: {', '.join(sorted(unmatched))}",
+                stacklevel=2,
+            )
+        return descriptors
 
     def __call__(self):
         return self._available_field_names()
