@@ -102,10 +102,8 @@ markers = [
     "standalone: Tests that cannot be run within container"
 ]
 
-
 [tool.black]
 extend-exclude = "/(src/ansys/fluent/core/meshing/tui*|src/ansys/fluent/core/solver/tui*|src/ansys/fluent/core/solver/settings*|src/ansys/fluent/core/datamodel*)/"
-
 
 [tool.isort]
 profile = "black"
@@ -118,7 +116,6 @@ skip_glob = [
 filter_files = "true"
 known_first_party = ["ansys"]
 
-
 [tool.codespell]
 skip = """
     *.xml,
@@ -129,7 +126,6 @@ skip = """
     devel/field_level_help/field_level_help.csv
     """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
-
 
 [tool.docformatter]
 in-place = "true"
@@ -153,7 +149,6 @@ non-cap = [
     "subscribeEvents",
     "unsubscribeEvents"
 ]
-
 
 [tool.coverage.run]
 source = ["ansys/fluent"]
@@ -179,8 +174,8 @@ name = "Added"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "changed"
-name = "Changed"
+directory = "breaking"
+name = "Breaking"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -189,17 +184,18 @@ name = "Fixed"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "dependencies"
-name = "Dependencies"
+directory = "documentation"
+name = "Documentation"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "miscellaneous"
-name = "Miscellaneous"
+directory = "test"
+name = "Test"
 showcontent = true
+
 [[tool.towncrier.type]]
-directory = "documentation"
-name = "Documentation"
+directory = "dependencies"
+name = "Dependencies"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -208,8 +204,13 @@ name = "Maintenance"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "test"
-name = "Test"
+directory = "miscellaneous"
+name = "Miscellaneous"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
 showcontent = true
 
 [tool.bandit]
