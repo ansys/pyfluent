@@ -124,8 +124,6 @@ Unhandled:
  'wave-length': 'Angstrom'}
 """
 
-from __future__ import annotations
-
 from typing import TypeVar
 
 _fl_unit_table = {

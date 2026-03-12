@@ -38,8 +38,6 @@ Example
 >>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 
-from __future__ import annotations
-
 import collections
 from contextlib import contextmanager, nullcontext, suppress
 import fnmatch

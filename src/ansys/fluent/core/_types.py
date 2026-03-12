@@ -26,8 +26,6 @@
 This module centralizes reusable typing constructs
 """
 
-from __future__ import annotations
-
 import os
 from typing import TypeAlias
 

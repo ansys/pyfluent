@@ -23,8 +23,6 @@
 """Meshing workflow specialization of the Workflow module that wraps and extends the
 core functionality."""
 
-from __future__ import annotations
-
 from enum import Enum
 import os
 
@@ -271,7 +269,7 @@ class LoadWorkflow(Workflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        file_path: "PathType | None" = None,
+        file_path: PathType | None = None,
         initialize: bool = True,
     ) -> None:
         """Initialize a ``LoadWorkflow`` instance.
