@@ -26,11 +26,11 @@ import functools
 import os
 from typing import TYPE_CHECKING, Any
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
@@ -149,7 +149,7 @@ class PureMeshing(BaseSession):
                 self.datamodel_streams[rules] = stream
                 stream.start(
                     rules=rules,
-                    no_commands_diff_state=pyfluent.config.datamodel_use_nocommands_diff_state,
+                    no_commands_diff_state=config.datamodel_use_nocommands_diff_state,
                 )
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 

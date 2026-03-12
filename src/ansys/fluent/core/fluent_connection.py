@@ -43,7 +43,6 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -51,6 +50,7 @@ from ansys.fluent.core.launcher.error_warning_messages import (
     INSECURE_MODE_WARNING,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
@@ -63,6 +63,7 @@ from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
 from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
@@ -265,9 +266,9 @@ class FluentConnectionProperties:
 
 def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
-        ip = pyfluent.config.launch_fluent_ip or "127.0.0.1"
+        ip = config.launch_fluent_ip or "127.0.0.1"
     if not port:
-        port = pyfluent.config.launch_fluent_port
+        port = config.launch_fluent_port
     if not port:
         raise PortNotProvided()
     return ip, port
@@ -344,11 +345,11 @@ class _ConnectionInterface:
         self._app_utilities_service = create_grpc_service(
             AppUtilitiesService, error_state
         )
-        match pyfluent.FluentVersion(self.scheme_eval.version):
-            case v if v < pyfluent.FluentVersion.v252:
+        match FluentVersion(self.scheme_eval.version):
+            case v if v < FluentVersion.v252:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
 
-            case pyfluent.FluentVersion.v252:
+            case FluentVersion.v252:
                 self._app_utilities = AppUtilitiesV252(
                     self._app_utilities_service, self.scheme_eval
                 )
@@ -544,7 +545,7 @@ class FluentConnection:
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
-        if pyfluent.config.check_health:
+        if config.check_health:
             try:
                 self._health_check.check_health()
             except RuntimeError:
@@ -859,7 +860,7 @@ class FluentConnection:
             )
 
         if timeout is None:
-            config_timeout = pyfluent.config.force_exit_timeout
+            config_timeout = config.force_exit_timeout
             if config_timeout is not None:
                 logger.debug(f"Found force_exit_timeout config: '{config_timeout}'")
                 try:

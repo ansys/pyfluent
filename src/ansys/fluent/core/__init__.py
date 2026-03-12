@@ -49,7 +49,7 @@ from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
-__version__ = "0.38.dev6"
+__version__ = "0.39.dev0"
 
 _VERSION_INFO = None
 """
@@ -116,7 +116,7 @@ _config_by_deprecated_name = {
     "LAUNCH_FLUENT_STDERR": "launch_fluent_stderr",
     "LAUNCH_FLUENT_IP": "launch_fluent_ip",
     "LAUNCH_FLUENT_PORT": "launch_fluent_port",
-    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",
+    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",  # nosec B105: Not a password
 }
 
 from typing import TYPE_CHECKING as _TYPE_CHECKING  # noqa: E402

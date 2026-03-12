@@ -30,7 +30,7 @@ import grpc
 from grpc_health.v1 import health_pb2 as HealthCheckModule
 from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -83,7 +83,7 @@ class HealthCheckService(ServiceProtocol):
         response = self._stub.Check(
             request,
             metadata=self._metadata,
-            timeout=pyfluent.config.check_health_timeout,
+            timeout=config.check_health_timeout,
         )
         return HealthCheckService.Status(response.status)
 

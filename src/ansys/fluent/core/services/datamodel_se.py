@@ -37,8 +37,8 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -518,9 +518,7 @@ class DatamodelService(
         self.event_streaming = None
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
-        self.cache = (
-            DataModelCache() if pyfluent.config.datamodel_use_state_cache else None
-        )
+        self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
@@ -1103,10 +1101,7 @@ class PyStateContainer(PyCallableStateObject):
         Any
             Value of the attribute.
         """
-        if (
-            pyfluent.config.datamodel_use_attr_cache
-            and self.rules != "meshing_workflow"
-        ):
+        if config.datamodel_use_attr_cache and self.rules != "meshing_workflow":
             return self._get_cached_attr(attrib)
         return self._get_remote_attr(attrib)
 

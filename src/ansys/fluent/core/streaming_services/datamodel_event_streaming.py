@@ -61,7 +61,7 @@ class DatamodelEvents(StreamingService):
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes datamodel events."""
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         request = DataModelProtoModule.EventRequest(*args, **kwargs)
         responses = self._streaming_service.begin_streaming(

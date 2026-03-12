@@ -31,6 +31,7 @@ import platform
 from typing import Any
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 
 __all__ = ("FluentVersion",)
 
@@ -161,7 +162,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(pyfluent.config.fluent_release_version)
+        return cls(config.fluent_release_version)
 
     @classmethod
     def current_dev(cls):
@@ -172,7 +173,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(pyfluent.config.fluent_dev_version)
+        return cls(config.fluent_dev_version)
 
     @classmethod
     def minimum_supported(cls):

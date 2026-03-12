@@ -79,13 +79,13 @@ import tempfile
 from typing import Any
 import warnings
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
 from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
@@ -131,7 +131,7 @@ def dict_to_str(dict: dict) -> str:
     This is useful for logging purposes, to avoid printing sensitive information such as license server details.
     """
 
-    if "environment" in dict and pyfluent.config.hide_log_secrets:
+    if "environment" in dict and config.hide_log_secrets:
         modified_dict = dict.copy()
         modified_dict.pop("environment")
         return pformat(modified_dict)
@@ -257,7 +257,7 @@ def configure_container_dict(
         if file_transfer_service:
             mount_source = file_transfer_service.mount_source
         else:
-            mount_source = pyfluent.config.container_mount_source
+            mount_source = config.container_mount_source
 
     if "volumes" in container_dict:
         if len(container_dict["volumes"]) != 1:
@@ -290,7 +290,7 @@ def configure_container_dict(
         if "working_dir" in container_dict:
             mount_target = container_dict["working_dir"]
         else:
-            mount_target = pyfluent.config.container_mount_target
+            mount_target = config.container_mount_target
 
     if "working_dir" in container_dict and mount_target:
         # working_dir will be set later to the final value of mount_target
@@ -301,7 +301,7 @@ def configure_container_dict(
 
     if not mount_target:
         logger.debug("No container 'mount_target' specified, using default value.")
-        mount_target = pyfluent.config.container_mount_target
+        mount_target = config.container_mount_target
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
@@ -326,8 +326,8 @@ def configure_container_dict(
     if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
         port_mapping = container_dict["ports"]
-    if not port_mapping and pyfluent.config.launch_fluent_port:
-        port = pyfluent.config.launch_fluent_port
+    if not port_mapping and config.launch_fluent_port:
+        port = config.launch_fluent_port
         port_mapping = {port: port}
     if not port_mapping:
         port = get_free_port()
@@ -355,7 +355,7 @@ def configure_container_dict(
         )
 
     if "labels" not in container_dict:
-        test_name = pyfluent.config.test_name
+        test_name = config.test_name
         container_dict.update(
             labels={"test_name": test_name},
         )
@@ -400,14 +400,13 @@ def configure_container_dict(
 
     if not fluent_image:
         if not image_tag:
-            image_tag = pyfluent.config.fluent_image_tag
+            image_tag = config.fluent_image_tag
         if not image_name and image_tag:
-            image_name = (
-                pyfluent.config.fluent_image_name
-                or get_ghcr_fluent_image_name(image_tag)
+            image_name = config.fluent_image_name or get_ghcr_fluent_image_name(
+                image_tag
             )
         if not image_tag or not image_name:
-            fluent_image = pyfluent.config.fluent_container_name
+            fluent_image = config.fluent_container_name
         elif image_tag and image_name:
             if image_tag.startswith("sha"):
                 fluent_image = f"{image_name}@{image_tag}"
@@ -418,19 +417,19 @@ def configure_container_dict(
 
     container_dict["fluent_image"] = fluent_image
 
-    if not pyfluent.config.fluent_automatic_transcript:
+    if not config.fluent_automatic_transcript:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
-    if pyfluent.config.launch_fluent_ip or pyfluent.config.remoting_server_address:
+    if config.launch_fluent_ip or config.remoting_server_address:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["REMOTING_SERVER_ADDRESS"] = (
-            pyfluent.config.launch_fluent_ip or pyfluent.config.remoting_server_address
+            config.launch_fluent_ip or config.remoting_server_address
         )
 
-    if pyfluent.config.launch_fluent_skip_password_check:
+    if config.launch_fluent_skip_password_check:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"

@@ -47,7 +47,7 @@ class ComposeConfig:
         use_docker_compose: bool | None = None,
         use_podman_compose: bool | None = None,
     ):
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         self._env_docker = config.use_docker_compose
         self._env_podman = config.use_podman_compose

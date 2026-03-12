@@ -33,7 +33,6 @@ from warnings import warn
 
 from typing_extensions import Required, Unpack, assert_never
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -66,6 +65,7 @@ from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -133,7 +133,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
             return UIMode.NO_GUI
         elif container_dict:
             return UIMode.NO_GUI
-        elif pyfluent.config.launch_fluent_container:
+        elif config.launch_fluent_container:
             return UIMode.NO_GUI
         else:
             return UIMode.GUI
@@ -387,9 +387,7 @@ def launch_fluent(
         )
 
     start_timeout_val = (
-        start_timeout
-        if start_timeout is not None
-        else pyfluent.config.launch_fluent_timeout
+        start_timeout if start_timeout is not None else config.launch_fluent_timeout
     )
 
     def _normalize_path(value: "PathType | None") -> str | None:
@@ -420,7 +418,7 @@ def launch_fluent(
             UserWarning,
         )
 
-    if pyfluent.config.start_watchdog is False:
+    if config.start_watchdog is False:
         start_watchdog = False
 
     match fluent_launch_mode:

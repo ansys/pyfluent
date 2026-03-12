@@ -25,7 +25,7 @@
 import logging.config
 import os
 
-from ansys.fluent.core import config
+from ansys.fluent.core.module_config import config
 
 __all__ = ("set_console_logging_level",)
 
