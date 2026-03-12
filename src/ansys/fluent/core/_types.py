@@ -29,5 +29,5 @@ This module centralizes reusable typing constructs
 import os
 from typing import TypeAlias
 
-PathType: TypeAlias = "os.PathLike[str] | os.PathLike[bytes] | str | bytes"
+PathType: TypeAlias = os.PathLike[str] | os.PathLike[bytes] | str | bytes
 """Type alias for file system paths."""

@@ -30,6 +30,7 @@ from typing import Any, Callable, Dict
 import warnings
 import weakref
 
+from beartype import beartype
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
@@ -263,6 +264,7 @@ class BaseSession:
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
     @deprecate_function(version="v0.38.0", new_func="is_active")
+    @beartype
     def is_server_healthy(self) -> bool:
         """Whether the current session is healthy (i.e. the server is 'SERVING')."""
         return self._is_server_healthy()
@@ -271,6 +273,7 @@ class BaseSession:
         """Whether the current session is healthy (i.e. the server is 'SERVING')."""
         return self._health_check.is_serving
 
+    @beartype
     def is_active(self) -> bool:
         """Whether the current session is active."""
         return self._fluent_connection is not None and self._is_server_healthy()
@@ -308,6 +311,7 @@ class BaseSession:
         return self.fields.field_data_streaming
 
     @property
+    @beartype
     def id(self) -> str:
         """Return the session ID."""
         return self._fluent_connection._id
@@ -379,10 +383,12 @@ class BaseSession:
         )
         return session
 
+    @beartype
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
         self.scheme.eval(f"(ti-menu-load-string {json.dumps(command)})")
 
+    @beartype
     def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
         return FluentVersion(self.scheme.version)
@@ -415,6 +421,7 @@ class BaseSession:
         """
         return self._fluent_connection_backup.wait_process_finished()
 
+    @beartype
     def exit(self, **kwargs) -> None:
         """Exit session.
 
@@ -431,11 +438,13 @@ class BaseSession:
             self._fluent_connection.exit(**kwargs)
             self._fluent_connection = None
 
+    @beartype
     def force_exit(self) -> None:
         """Forces the Fluent session to exit, losing unsaved progress and data."""
         self._exit_compose_service()
         self._fluent_connection.force_exit()
 
+    @beartype
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.
 
@@ -493,6 +502,7 @@ class BaseSession:
             )
             return self._file_transfer_service.download(file_name, local_directory)
 
+    @beartype
     def chdir(self, path: PathType) -> None:
         """Change Fluent working directory.
 

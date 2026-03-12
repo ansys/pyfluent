@@ -22,6 +22,13 @@
 
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+# NOTE: beartype_this_package() is intentionally NOT used here.
+# `ansys` and `ansys.fluent` are implicit PEP 420 namespace packages
+# (no __init__.py at those levels). beartype's package-level hook
+# requires a regular package with __init__.py at the namespace root.
+# The @beartype decorator is applied manually to public API functions instead.
+# Upstream tracking: https://github.com/beartype/beartype/issues/286
+
 import os
 import pydoc
 import warnings
