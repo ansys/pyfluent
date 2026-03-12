@@ -349,12 +349,18 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         )
         == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
     )
+    read_case_and_data = globals()["ReadCaseAndData"]
+    write_case_and_data = globals()["WriteCaseAndData"]
     assert ReadCase(settings_source=solver) == solver.file.read_case
     assert ReadData(settings_source=solver) == solver.file.read_data
-    assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
+    assert read_case_and_data(settings_source=solver) == solver.file.read_case_data
+    with pytest.warns(FutureWarning, match="ReadCaseData"):
+        assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
     assert WriteCase(settings_source=solver) == solver.file.write_case
     assert WriteData(settings_source=solver) == solver.file.write_data
-    assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
+    assert write_case_and_data(settings_source=solver) == solver.file.write_case_data
+    with pytest.warns(FutureWarning, match="WriteCaseData"):
+        assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
     assert (
         Initialize(settings_source=solver) == solver.solution.initialization.initialize
     )
