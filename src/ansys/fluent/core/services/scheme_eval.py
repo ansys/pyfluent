@@ -37,9 +37,9 @@ from typing import Any, Sequence
 from deprecated.sphinx import deprecated
 import grpc
 
-from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
-from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
-from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.api.fluent.v1 import scheme_eval_pb2 as SchemeEvalProtoModule
+from ansys.api.fluent.v1 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
+from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -148,10 +148,10 @@ def _convert_py_value_to_scheme_pointer(
         _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
     elif isinstance(val, list) or isinstance(val, tuple):
         for item in val:
-            _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
+            _convert_py_value_to_scheme_pointer(item, p.list.items.add(), version)
     elif isinstance(val, dict):
         for k, v in val.items():
-            item = p.list.item.add()
+            item = p.list.items.add()
             _convert_py_value_to_scheme_pointer(k, item.pair.car, version)
             _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
 
@@ -200,18 +200,18 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version: str) -> Any:
         cdr = _convert_scheme_pointer_to_py_value(p.pair.cdr, version)
         return (car,) if cdr is None else (car, cdr)
     elif p.HasField("list"):
-        is_dict = all(item.HasField("pair") for item in p.list.item)
+        is_dict = all(item.HasField("pair") for item in p.list.items)
         if is_dict:
             return {
                 _convert_scheme_pointer_to_py_value(
                     item.pair.car, version
                 ): _convert_scheme_pointer_to_py_value(item.pair.cdr, version)
-                for item in p.list.item
+                for item in p.list.items
             }
         else:
             return [
                 _convert_scheme_pointer_to_py_value(item, version)
-                for item in p.list.item
+                for item in p.list.items
             ]
 
     return None
@@ -287,7 +287,7 @@ class SchemeEval:
            Output as string
         """
         request = SchemeEvalProtoModule.ExecRequest()
-        request.command.extend(commands)
+        request.commands.extend(commands)
         request.wait = wait
         request.silent = silent
         response = self.service.exec(request)

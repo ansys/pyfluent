@@ -27,8 +27,8 @@ import weakref
 
 import grpc
 
-from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
-from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
+from ansys.api.fluent.v1 import reduction_pb2 as ReductionProtoModule
+from ansys.api.fluent.v1 import reduction_pb2_grpc as ReductionGrpcModule
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (

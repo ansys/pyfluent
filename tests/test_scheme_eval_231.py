@@ -25,7 +25,7 @@ from typing import Any, Dict
 from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
 
-from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.scheme_eval import (
     Symbol,
     _convert_py_value_to_scheme_pointer,
@@ -43,7 +43,7 @@ from ansys.fluent.core.services.scheme_eval import (
         (5.0, {"flonum": 5.0}),
         ("abc", {"str": "abc"}),
         ((), {}),
-        (("abc",), {"list": {"item": [{"str": "abc"}]}}),
+        (("abc",), {"list": {"items": [{"str": "abc"}]}}),
         (
             ("abc", 5.0),
             {
@@ -55,20 +55,20 @@ from ansys.fluent.core.services.scheme_eval import (
         ),
         (
             (False, 5.0, "abc"),
-            {"list": {"item": [{"b": False}, {"flonum": 5.0}, {"str": "abc"}]}},
+            {"list": {"items": [{"b": False}, {"flonum": 5.0}, {"str": "abc"}]}},
         ),
         ([], {}),
-        (["abc"], {"list": {"item": [{"str": "abc"}]}}),
+        (["abc"], {"list": {"items": [{"str": "abc"}]}}),
         (
             [False, 5.0],
-            {"list": {"item": [{"b": False}, {"flonum": 5.0}]}},
+            {"list": {"items": [{"b": False}, {"flonum": 5.0}]}},
         ),
         ({}, {}),
         (
             {"a": 5.0},
             {
                 "list": {
-                    "item": [{"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}}],
+                    "items": [{"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}}],
                 }
             },
         ),
@@ -76,7 +76,7 @@ from ansys.fluent.core.services.scheme_eval import (
             {"a": 5.0, "b": 10.0},
             {
                 "list": {
-                    "item": [
+                    "items": [
                         {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
                         {"pair": {"car": {"str": "b"}, "cdr": {"flonum": 10.0}}},
                     ]
@@ -85,7 +85,7 @@ from ansys.fluent.core.services.scheme_eval import (
         ),
         (
             [Symbol("+"), 2.0, 3.0],
-            {"list": {"item": [{"sym": "+"}, {"flonum": 2.0}, {"flonum": 3.0}]}},
+            {"list": {"items": [{"sym": "+"}, {"flonum": 2.0}, {"flonum": 3.0}]}},
         ),
     ],
 )
@@ -106,12 +106,12 @@ def test_convert_py_value_to_scheme_pointer(
         (5, {"fixednum": "5"}),
         (5.0, {"flonum": 5.0}),
         ("abc", {"str": "abc"}),
-        (["abc"], {"list": {"item": [{"str": "abc"}]}}),
+        (["abc"], {"list": {"items": [{"str": "abc"}]}}),
         (("abc",), {"pair": {"car": {"str": "abc"}}}),
         (
             [False, 5.0, "abc"],
             {
-                "list": {"item": [{"b": False}, {"flonum": 5.0}, {"str": "abc"}]},
+                "list": {"items": [{"b": False}, {"flonum": 5.0}, {"str": "abc"}]},
             },
         ),
         (None, {}),
@@ -119,7 +119,7 @@ def test_convert_py_value_to_scheme_pointer(
             {"a": 5.0, "b": 10.0},
             {
                 "list": {
-                    "item": [
+                    "items": [
                         {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
                         {"pair": {"car": {"str": "b"}, "cdr": {"flonum": 10.0}}},
                     ]
@@ -130,13 +130,13 @@ def test_convert_py_value_to_scheme_pointer(
             {"a": [5.0, False], "b": [10.0, True]},
             {
                 "list": {
-                    "item": [
+                    "items": [
                         {
                             "pair": {
                                 "car": {"str": "a"},
                                 "cdr": {
                                     "list": {
-                                        "item": [{"flonum": 5.0}, {"b": False}],
+                                        "items": [{"flonum": 5.0}, {"b": False}],
                                     }
                                 },
                             }
@@ -146,7 +146,7 @@ def test_convert_py_value_to_scheme_pointer(
                                 "car": {"str": "b"},
                                 "cdr": {
                                     "list": {
-                                        "item": [{"flonum": 10.0}, {"b": True}],
+                                        "items": [{"flonum": 10.0}, {"b": True}],
                                     }
                                 },
                             }
@@ -159,15 +159,15 @@ def test_convert_py_value_to_scheme_pointer(
             [["a", 5.0, False], [5, 10.0, True]],
             {
                 "list": {
-                    "item": [
+                    "items": [
                         {
                             "list": {
-                                "item": [{"str": "a"}, {"flonum": 5.0}, {"b": False}],
+                                "items": [{"str": "a"}, {"flonum": 5.0}, {"b": False}],
                             }
                         },
                         {
                             "list": {
-                                "item": [
+                                "items": [
                                     {"fixednum": 5},
                                     {"flonum": 10.0},
                                     {"b": True},

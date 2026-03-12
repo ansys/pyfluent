@@ -30,13 +30,15 @@ import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
 import pytest
 
-from ansys.api.fluent.v0 import (
+from ansys.api.fluent.v1 import (
     scheme_eval_pb2,
     scheme_eval_pb2_grpc,
+)
+from ansys.api.fluent.v0 import (
     settings_pb2,
     settings_pb2_grpc,
 )
-from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
