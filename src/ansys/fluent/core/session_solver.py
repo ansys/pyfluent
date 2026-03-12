@@ -316,13 +316,21 @@ class Solver(BaseSession):
             if thread.is_alive():
                 thread.join()
 
-    def read_case_lightweight(self, file_name: str):
+    def start_case_lightweight_sync(self):
+        """Start pending lightweight background sync sessions."""
+        for thread in self._bg_session_threads:
+            if thread.ident is None:
+                thread.start()
+
+    def read_case_lightweight(self, file_name: str, start_sync: bool = True):
         """Read a case file using light IO mode.
 
         Parameters
         ----------
         file_name : str
             Case file name
+        start_sync : bool, optional
+            Whether to immediately start lightweight background sync.
         """
 
         self.settings.file.read(
@@ -336,6 +344,8 @@ class Solver(BaseSession):
                 target=self._start_bg_session_and_sync, args=(launcher_args,)
             )
         )
+        if start_sync:
+            self.start_case_lightweight_sync()
 
     def get_state(self) -> StateT:
         """Get the state of the object."""

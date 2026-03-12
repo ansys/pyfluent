@@ -228,8 +228,14 @@ class StandaloneLauncher:
         )
         if self.argvals["cwd"]:
             self._kwargs.update(cwd=self.argvals["cwd"])
+        self._defer_journal_file_read = bool(
+            self.argvals["journal_file_names"]
+            and (self.argvals["case_file_name"] or self.argvals["case_data_file_name"])
+        )
         self._launch_string += _build_journal_argument(
-            self.argvals["topy"], self.argvals["journal_file_names"]
+            self.argvals["topy"],
+            self.argvals["journal_file_names"],
+            include_journal_file_names=not self._defer_journal_file_read,
         )
 
         if is_windows():
@@ -292,26 +298,7 @@ class StandaloneLauncher:
                 if len(values) == 3:
                     ip, port, password = values
                     watchdog.launch(os.getpid(), port, password, ip)
-            if self.argvals["case_file_name"]:
-                if FluentMode.is_meshing(self.argvals["mode"]):
-                    session.tui.file.read_case(self.argvals["case_file_name"])
-                elif self.argvals["lightweight_mode"]:
-                    session.read_case_lightweight(self.argvals["case_file_name"])
-                else:
-                    session.settings.file.read(
-                        file_type="case",
-                        file_name=self.argvals["case_file_name"],
-                    )
-            if self.argvals["case_data_file_name"]:
-                if not FluentMode.is_meshing(self.argvals["mode"]):
-                    session.settings.file.read(
-                        file_type="case-data",
-                        file_name=self.argvals["case_data_file_name"],
-                    )
-                else:
-                    raise RuntimeError(
-                        "Case and data file cannot be read in meshing mode."
-                    )
+            self._process_case_data_and_journals(session)
 
             return session
         except Exception as ex:
@@ -321,3 +308,48 @@ class StandaloneLauncher:
             server_info_file = Path(self._server_info_file_name)
             if server_info_file.exists():
                 server_info_file.unlink()
+
+    @staticmethod
+    def _get_journal_file_names(
+        journal_file_names: None | str | list[str],
+    ) -> list[str]:
+        if isinstance(journal_file_names, str):
+            return [journal_file_names]
+        return journal_file_names or []
+
+    def _read_journals(self, session) -> None:
+        for journal_file_name in self._get_journal_file_names(
+            self.argvals["journal_file_names"]
+        ):
+            session.execute_tui(
+                f'/file/read-journal "{Path(journal_file_name).as_posix()}"'
+            )
+
+    def _process_case_data_and_journals(self, session) -> None:
+        lightweight_sync_deferred = False
+        if self.argvals["case_file_name"]:
+            if FluentMode.is_meshing(self.argvals["mode"]):
+                session.tui.file.read_case(self.argvals["case_file_name"])
+            elif self.argvals["lightweight_mode"]:
+                session.read_case_lightweight(
+                    self.argvals["case_file_name"],
+                    start_sync=not self._defer_journal_file_read,
+                )
+                lightweight_sync_deferred = self._defer_journal_file_read
+            else:
+                session.settings.file.read(
+                    file_type="case",
+                    file_name=self.argvals["case_file_name"],
+                )
+        if self.argvals["case_data_file_name"]:
+            if not FluentMode.is_meshing(self.argvals["mode"]):
+                session.settings.file.read(
+                    file_type="case-data",
+                    file_name=self.argvals["case_data_file_name"],
+                )
+            else:
+                raise RuntimeError("Case and data file cannot be read in meshing mode.")
+        if self._defer_journal_file_read:
+            self._read_journals(session)
+        if lightweight_sync_deferred:
+            session.start_case_lightweight_sync()
