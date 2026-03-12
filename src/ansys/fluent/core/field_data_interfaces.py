@@ -370,9 +370,7 @@ class _Fields:
         field_name : VariableDescriptor | str
             Field name to check. Can be a VariableDescriptor or a string.
         """
-        if _to_field_name_str(field_name) in self._available_field_names():
-            return True
-        return False
+        return _to_field_name_str(field_name) in self._available_field_names()
 
     def allowed_values(self):
         """Lists available scalar or vector field names as strings."""
@@ -385,23 +383,24 @@ class _Fields:
         -------
         list[VariableDescriptor]
             List of VariableDescriptor objects for all allowed fields.
-            Fields without a corresponding VariableDescriptor are excluded.
+            Fields without a corresponding VariableDescriptor are excluded,
+            and a warning is issued listing them.
         """
-        converter = getattr(_naming_strategy_instance, "to_variable_descriptor", None)
-        if converter is None or not callable(converter):
-            warnings.warn(
-                "Naming strategy does not support conversion to VariableDescriptor; "
-                "returning an empty list from allowed_variables().",
-                RuntimeWarning,
-            )
-            return []
-
-        result = []
+        descriptors = []
+        unmatched = []
         for field_name in self._available_field_names():
-            descriptor = converter(field_name)
+            descriptor = _naming_strategy_instance.to_variable_descriptor(field_name)
             if descriptor is not None:
-                result.append(descriptor)
-        return result
+                descriptors.append(descriptor)
+            else:
+                unmatched.append(field_name)
+        if unmatched:
+            warnings.warn(
+                "The following variables are available but do not have "
+                f"corresponding descriptors: {', '.join(sorted(unmatched))}",
+                stacklevel=2,
+            )
+        return descriptors
 
     def __call__(self):
         return self._available_field_names()

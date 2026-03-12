@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import warnings
+
 from conftest import SKIP_INVESTIGATING
 import numpy as np
 import pytest
@@ -732,28 +734,26 @@ def test_fields_is_active_accepts_variable_descriptor() -> None:
 def test_fields_allowed_variables_filters_unmapped_names() -> None:
     fields = _Fields(lambda: ["temperature", "not-a-mapped-field"])
 
-    allowed_variables = fields.allowed_variables()
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
 
     assert len(allowed_variables) == 1
     assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 1
+    assert "not-a-mapped-field" in str(caught[0].message)
 
 
-def test_fields_allowed_variables_without_converter_warns_and_returns_empty(
-    monkeypatch,
-) -> None:
+def test_fields_allowed_variables_no_warning_when_all_mapped() -> None:
     fields = _Fields(lambda: ["temperature"])
 
-    class NamingStrategyWithoutConverter:
-        pass
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
 
-    monkeypatch.setattr(
-        field_data_interfaces_module,
-        "_naming_strategy_instance",
-        NamingStrategyWithoutConverter(),
-    )
-
-    with pytest.warns(RuntimeWarning, match="does not support conversion"):
-        assert fields.allowed_variables() == []
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 0
 
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
