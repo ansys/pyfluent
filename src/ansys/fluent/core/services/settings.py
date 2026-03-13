@@ -28,8 +28,8 @@ from typing import Any
 
 import grpc
 
-from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
-from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
+from ansys.api.fluent.v1 import settings_pb2 as SettingsModule
+from ansys.api.fluent.v1 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -49,7 +49,7 @@ class _SettingsServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
+        self.__stub = SettingsGrpcModule.SettingsServiceStub(intercept_channel)
         self.__metadata = metadata
 
     def set_var(
@@ -183,7 +183,7 @@ class SettingsService:
                 self._set_state_from_value(state.value_map.m[k], v)
         elif isinstance(value, collections.abc.Iterable):
             for v in value:
-                self._set_state_from_value(state.value_list.lst.add(), v)
+                self._set_state_from_value(state.value_list.lsts.add(), v)
         else:  # fall back to string (for example, pathlib.Path)
             state.string = str(value)
 
@@ -199,7 +199,7 @@ class SettingsService:
         elif t == "string":
             return state.string
         elif t == "value_list":
-            return [self._get_state_from_value(v) for v in state.value_list.lst]
+            return [self._get_state_from_value(v) for v in state.value_list.lsts]
         elif t == "value_map":
             return {
                 k: self._get_state_from_value(v)
