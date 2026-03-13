@@ -94,6 +94,7 @@ ci_types = [
     "seaborn",
     "xgboost",
     "imageio",
+    "tomli",
 ]
 
 [tool.flit.module]
