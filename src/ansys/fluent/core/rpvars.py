@@ -83,7 +83,7 @@ class RPVars:
             else (self._get_var(var) if var is not None else self._get_vars())
         )
 
-    def allowed_values(self) -> List[str]:
+    def all(self) -> List[str]:
         """Returns list with the allowed rpvars names.
 
         Returns
@@ -96,6 +96,8 @@ class RPVars:
                 self._eval_fn("(cx-send '(map car rp-variables))")
             )
         return RPVars._allowed_values
+
+    allowed_values = all
 
     def _get_var(self, var: str):
         if var not in self.allowed_values():

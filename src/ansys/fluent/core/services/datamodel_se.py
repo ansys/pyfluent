@@ -1523,9 +1523,11 @@ def false_if_none(val: bool | None) -> bool:
 class PyTextual(PyParameter):
     """Provides interface for textual parameters."""
 
-    def allowed_values(self) -> list[str]:
+    def all(self) -> list[str]:
         """Get allowed values."""
         return self.get_attr(Attribute.ALLOWED_VALUES.value)
+
+    allowed_values = all
 
 
 class PyNumerical(PyParameter):

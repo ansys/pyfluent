@@ -2117,13 +2117,14 @@ class _NonCreatableNamedObjectMixin(
 class AllowedValuesMixin:
     """Provides allowed values."""
 
-    def allowed_values(self):
+    def all(self):
         """Get the allowed values of the object."""
         try:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
         except Exception:
             return []
 
+    allowed_values = all
 
 class _MaybeActiveString(str):
     """A string class with an is_active() method."""

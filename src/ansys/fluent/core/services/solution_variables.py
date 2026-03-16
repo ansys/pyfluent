@@ -438,9 +438,11 @@ class _SvarMethod:
         def __init__(self, accessor):
             self._accessor = accessor
 
-        def allowed_values(self):
+        def all(self):
             """Get allowed values."""
             return sorted(self._accessor())
+
+        allowed_values = all
 
     def __init__(self, svar_accessor, args_allowed_values_accessors):
         self._svar_accessor = svar_accessor

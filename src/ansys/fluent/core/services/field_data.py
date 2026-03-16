@@ -361,33 +361,35 @@ class _FieldMethod:
         def __init__(self, accessor):
             self._accessor = accessor
 
-        def allowed_values(self):
+        def all(self):
             """Returns set of allowed values."""
             if self._accessor.__class__.__name__ == "_AllowedScalarFieldNames":
                 warnings.warn(
                     "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'scalar_fields.allowed_values()' instead",
+                    "Please use 'scalar_fields.all()' instead",
                     PyFluentDeprecationWarning,
                 )
             elif self._accessor.__class__.__name__ == "_AllowedVectorFieldNames":
                 warnings.warn(
                     "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'vector_fields.allowed_values()' instead",
+                    "Please use 'vector_fields.all()' instead",
                     PyFluentDeprecationWarning,
                 )
             elif self._accessor.__class__.__name__ == "_AllowedSurfaceNames":
                 warnings.warn(
                     "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'field_data.surfaces.allowed_values()' instead",
+                    "Please use 'field_data.surfaces.all()' instead",
                     PyFluentDeprecationWarning,
                 )
             elif self._accessor.__class__.__name__ == "_AllowedSurfaceIDs":
                 warnings.warn(
                     "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'field_data.surface_ids.allowed_values()' instead",
+                    "Please use 'field_data.surface_ids.all()' instead",
                     PyFluentDeprecationWarning,
                 )
             return sorted(self._accessor())
+
+    allowed_values = all
 
     def __init__(self, field_data_accessor, args_allowed_values_accessors):
         self._field_data_accessor = field_data_accessor
