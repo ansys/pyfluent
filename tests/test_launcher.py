@@ -531,16 +531,17 @@ def test_additional_arguments_fluent_launch_args_string():
 
 
 def test_processor_count():
-    def get_processor_count(solver):
-        return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
-
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
-    with pyfluent.launch_fluent(processor_count=2, **grpc_kwds) as solver:
-        assert get_processor_count(solver) == 2
+    with pyfluent.launch_fluent(
+        dimension=2, precision="single", processor_count=2, **grpc_kwds
+    ) as solver:
+        assert solver.dimension == 2
+        assert solver.precision == 1
+        assert solver.processor_count == 2
     # The following check is not yet supported for container launch
     # https://github.com/ansys/pyfluent/issues/2624
     # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
-    #     assert get_processor_count(solver) == 2
+    #     assert solver.processor_count == 2
 
 
 def test_container_mount_source_target(caplog):
