@@ -134,7 +134,7 @@ mesh = Mesh.create(solver)
 graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
 graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
 
-all_walls = mesh.surfaces_list.allowed_values()
+all_walls = mesh.surfaces_list.all()
 
 mesh.surfaces_list = all_walls
 mesh.options.edges = True

@@ -130,13 +130,13 @@ solver.settings.file.read_mesh(file_name=mesh_file)
 # Display mesh
 # ------------
 graphics = Graphics(solver)
-mesh = Mesh(solver, new_instance_name="mesh-1")
+mesh = Mesh(solver).create(name="mesh-1")
 
 
 graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
 graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
 
-all_walls = mesh.surfaces_list.allowed_values()
+all_walls = mesh.surfaces_list.all()
 
 mesh.surfaces_list = all_walls
 mesh.options.edges = True
@@ -213,21 +213,20 @@ electrical_tab.cathode_tab = ["cathode_tab", "cathode_tab.1", "cathode_tab.1.1"]
 # ----------------------
 materials = Materials(solver)
 
-SolidMaterial.create(
-    solver, name="collector-default", electric_conductivity=20000 * S / m
+solid_material = SolidMaterial(solver)
+solid_material.create(
+    name="collector-default", electric_conductivity=20000 * S / m
 )
+solid_material.create(name="porous-default", electric_conductivity=20000 * S / m)
 
-SolidMaterial.create(solver, name="porous-default", electric_conductivity=20000 * S / m)
-
-SolidMaterial.create(
-    solver,
+solid_material.create(
     name="catalyst-default",
     electrical_conductivity=5000 * S / m,
     dual_electric_conductivity=4.5 * S / m,
 )
 
-SolidMaterial.create(
-    solver, name="electrolyte-default", dual_electric_conductivity=11 * S / m
+solid_material.create(
+    name="electrolyte-default", dual_electric_conductivity=11 * S / m
 )
 
 # %%
