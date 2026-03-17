@@ -515,6 +515,42 @@ def test_lightweight_case_journal_read_is_completed_before_sync_step():
     ]
 
 
+def test_case_and_case_data_are_processed_before_journal_files():
+    launcher = object.__new__(StandaloneLauncher)
+    launcher.argvals = {
+        "case_file_name": "a.cas.h5",
+        "case_data_file_name": "a.cas.h5",
+        "mode": FluentMode.SOLVER,
+        "lightweight_mode": False,
+        "journal_file_names": ["a.jou", "b.jou"],
+    }
+    launcher._defer_journal_file_read = True
+
+    calls = []
+
+    class _DummyFile:
+        def read(self, **kwargs):
+            calls.append(("read", kwargs))
+
+    class _DummySettings:
+        file = _DummyFile()
+
+    class _DummySession:
+        settings = _DummySettings()
+
+        def execute_tui(self, command):
+            calls.append(("execute_tui", command))
+
+    launcher._process_case_data_and_journals(_DummySession())
+
+    assert calls == [
+        ("read", {"file_type": "case", "file_name": "a.cas.h5"}),
+        ("read", {"file_type": "case-data", "file_name": "a.cas.h5"}),
+        ("execute_tui", '/file/read-journal "a.jou"'),
+        ("execute_tui", '/file/read-journal "b.jou"'),
+    ]
+
+
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
