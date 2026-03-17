@@ -354,12 +354,12 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert ReadCase(settings_source=solver) == solver.file.read_case
     assert ReadData(settings_source=solver) == solver.file.read_data
     assert read_case_and_data(settings_source=solver) == solver.file.read_case_data
-    with pytest.warns(FutureWarning, match="ReadCaseData"):
+    with pytest.warns(pyfluent.PyFluentDeprecationWarning, match="ReadCaseData"):
         assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
     assert WriteCase(settings_source=solver) == solver.file.write_case
     assert WriteData(settings_source=solver) == solver.file.write_data
     assert write_case_and_data(settings_source=solver) == solver.file.write_case_data
-    with pytest.warns(FutureWarning, match="WriteCaseData"):
+    with pytest.warns(pyfluent.PyFluentDeprecationWarning, match="WriteCaseData"):
         assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
     assert (
         Initialize(settings_source=solver) == solver.solution.initialization.initialize
