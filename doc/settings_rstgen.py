@@ -207,15 +207,21 @@ def _populate_rst_from_settings(rst_dir, cls, version, path=""):
         rst_list.append(rstpath)
         if has_children:
             for child in cls.child_names:
-                _populate_rst_from_settings(rst_dir, cls._child_classes[child], version, current_path)
+                _populate_rst_from_settings(
+                    rst_dir, cls._child_classes[child], version, current_path
+                    )
 
         if has_commands:
             for child in cls.command_names:
-                _populate_rst_from_settings(rst_dir, cls._child_classes[child], version, current_path)
+                _populate_rst_from_settings(
+                    rst_dir, cls._child_classes[child], version, current_path
+                    )
 
         if has_arguments:
             for child in cls.argument_names:
-                _populate_rst_from_settings(rst_dir, cls._child_classes[child], version, current_path)
+                _populate_rst_from_settings(
+                    rst_dir, cls._child_classes[child], version, current_path
+                    )
 
         if has_named_object:
             _populate_rst_from_settings(
@@ -239,7 +245,9 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
 
     for class_path, deprecated_name_and_version in deprecated_class_version.items():
         cls_name, deprecated_version = deprecated_name_and_version
-        settings_with_ref = f":ref:`{class_path.replace('root.', 'solver.settings.')} <{cls_name}>`"
+        settings_with_ref = (
+            f":ref:`{class_path.replace('root.', 'solver.settings.')} <{cls_name}>`"
+        )
         deprecated_data.append((settings_with_ref, deprecated_version))
 
     with open(deprecated_rst, "w", encoding="utf-8") as f:
