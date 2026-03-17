@@ -598,10 +598,10 @@ Switch to solution mode
     >>> solver_session = meshing_session.switch_to_solver()
 
 
-2D meshing workflow
--------------------
+2-dimensional meshing workflow
+------------------------------
 Use the **2D** meshing workflow to mesh specific two-dimensional geometries.
-The following example shows how to use the 2D Meshing workflow.
+The following example shows how to use the 2D meshing workflow.
 
 Import geometry
 ~~~~~~~~~~~~~~~
@@ -806,8 +806,8 @@ Generate surface mesh
     >>> )
     >>> create_surface_mesh.Execute()
 
-Export Fluent 2D mesh
-~~~~~~~~~~~~~~~~~~~~~
+Export Fluent 2-dimensional mesh
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 

@@ -1,6 +1,6 @@
 .. _ref_convert_journal:
 
-Converting TUI Journals to Python
+Converting TUI journals to Python
 =================================
 
 The ``topy`` and ``journal_file_names`` arguments in the :func:`launch_fluent() <ansys.fluent.core.launch_fluent>` function is utilized to convert TUI journals into Python journals. 
@@ -25,7 +25,7 @@ This process supports the conversion of multiple TUI journals by passing a list 
   >>> solver_session.exit()
 
 
-Recording a Python Journal
+Recording a Python journal
 ==========================
 
 Journaling enables seamless recording and playback of Fluent interactions as Python scripts across PyFluent, Fluent, and 
