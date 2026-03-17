@@ -31,10 +31,10 @@ development with the following commands:
    python codegen/allapigen.py     # Generates the API files or
    python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
 
-Step-by-Step Explanation
+Step-by-step explanation
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Clone the Repository
+Clone the repository
 ++++++++++++++++++++
 
 .. code:: console
@@ -45,7 +45,7 @@ Clone the Repository
 These commands clone the PyFluent repository from GitHub to your local machine and navigate into
 the repository directory.
 
-Upgrade Pip
+Upgrade pip
 +++++++++++
 
 .. code:: console
@@ -54,7 +54,7 @@ Upgrade Pip
 
 This command upgrades pip to the latest version to ensure compatibility with the latest packages.
 
-Install PyFluent in Editable Mode
+Install PyFluent in editable mode
 +++++++++++++++++++++++++++++++++
 
 .. code:: console
@@ -65,7 +65,7 @@ Installing with the -e option (editable mode) creates a symbolic link to the rep
 ``site-packages`` directory of your Python installation. This means any changes you make to the
 PyFluent code are automatically reflected when you use PyFluent.
 
-Generate Required API Classes
+Generate required API classes
 +++++++++++++++++++++++++++++
 
 .. code:: console
