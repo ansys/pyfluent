@@ -1,6 +1,6 @@
 .. _field_data_vs_solution_variable_data:
 
-Choosing Between Field Data and Solution Variable Data APIs
+Choosing between field data and solution variable data APIs
 ===========================================================
 
 Overview
@@ -16,7 +16,7 @@ PyFluent provides two primary APIs for accessing field array data from Fluent:
 
 This guide summarizes the scope, strengths, and intended use cases for each API, and provides guidance on how to choose the appropriate interface for your workflow.
 
-Field Data API (``field_data``)
+Field data API (``field_data``)
 -------------------------------
 
 - **Scope**:
@@ -32,7 +32,7 @@ Field Data API (``field_data``)
   - Data is organized by surface, not by zone.
   - Not all solver variables are available; some fields are derived or post-processed.
 
-Solution Variable Data API (``solution_variable_data``)
+Solution variable data API (``solution_variable_data``)
 -------------------------------------------------------
 
 - **Scope**:
@@ -48,7 +48,7 @@ Solution Variable Data API (``solution_variable_data``)
   - Does not provide mesh geometry or general field/derived data.
   - Requires knowledge of Fluent's SVAR naming conventions.
 
-How to Choose
+How to choose
 -------------
 
 Use the following table to help decide which API to use for your context:
@@ -103,7 +103,7 @@ Examples
         variable_name="SV_T", zone_names_to_data={"fluid": temp_array}, domain_name="mixture"
     )
 
-Further Reading
+Further reading
 ---------------
 
 - :ref:`ref_field_data_guide`
