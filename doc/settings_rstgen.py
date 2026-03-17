@@ -209,19 +209,19 @@ def _populate_rst_from_settings(rst_dir, cls, version, path=""):
             for child in cls.child_names:
                 _populate_rst_from_settings(
                     rst_dir, cls._child_classes[child], version, current_path
-                    )
+                )
 
         if has_commands:
             for child in cls.command_names:
                 _populate_rst_from_settings(
                     rst_dir, cls._child_classes[child], version, current_path
-                    )
+                )
 
         if has_arguments:
             for child in cls.argument_names:
                 _populate_rst_from_settings(
                     rst_dir, cls._child_classes[child], version, current_path
-                    )
+                )
 
         if has_named_object:
             _populate_rst_from_settings(
