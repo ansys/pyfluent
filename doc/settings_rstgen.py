@@ -239,7 +239,7 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
 
     for class_path, deprecated_name_and_version in deprecated_class_version.items():
         cls_name, deprecated_version = deprecated_name_and_version
-        settings_with_ref = f":ref:`{class_path.replace("root.", "solver.settings.")} <{cls_name}>`"
+        settings_with_ref = f":ref:`{class_path.replace('root.', 'solver.settings.')} <{cls_name}>`"
         deprecated_data.append((settings_with_ref, deprecated_version))
 
     with open(deprecated_rst, "w", encoding="utf-8") as f:
