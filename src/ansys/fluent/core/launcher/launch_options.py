@@ -112,7 +112,7 @@ class FluentMode(FluentEnum):
     - ``SOLVER``: The default Ansys Fluent full solution mode allows you to set up, solve, and postprocess a problem.
     - ``SOLVER_ICING``: Fluent Icing allows you to simulate airflow, particles and ice accretion on aircraft surfaces.
     - ``SOLVER_AERO``: Fluent Aero allows you to easily explore the aerodynamic performance of aircraft from a wide range of flight regimes, from subsonic to hypersonic conditions.
-    - ``PRE_POST``: Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
+    - ``PRE_POST``: Run Ansys Fluent in pre/post mode. This mode uses the ``Solver`` session type in PyFluent, but solve commands are unavailable in Fluent.
     """
 
     MESHING = "meshing"
