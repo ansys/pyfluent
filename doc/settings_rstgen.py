@@ -20,9 +20,7 @@ Usage
 python <path to settings_rstgen.py>
 """
 
-from contextlib import redirect_stdout
 import importlib
-import io
 import logging
 import os
 from pathlib import Path
@@ -30,7 +28,6 @@ from pathlib import Path
 from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
 
 from ansys.fluent.core import config
-from ansys.fluent.core.search import search
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
