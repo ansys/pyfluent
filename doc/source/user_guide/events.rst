@@ -119,3 +119,95 @@ reusable handlers that can react differently based on runtime configuration or c
   {'x': 12, 'y': 42}
   >>> on_case_loaded_with_args.state
   {'x': 12, 'y': 42}
+
+Finally an advanced example that showcases how to integrate PyFluent's event handling with its
+visualization capabilities.
+It demonstrates how to automatically refresh visualizations in response to simulation events like
+iteration progress, solution initialization, and data loading.
+
+The script performs the following:
+
+1. Configures two contour plots for temperature and velocity magnitude using PyFluent's Graphics interface.
+
+2. Registers a callback to refresh these contour plots every 5 iterations during the solver run using the ITERATION_ENDED event.
+
+3. Registers callbacks for both the SOLUTION_INITIALIZED and DATA_LOADED events to refresh the graphics and residual plots once initialization or data import completes.
+
+4. Demonstrates case load callbacks with and without custom arguments for both the meshing and solver contexts.
+
+It highlights how to build an interactive, event-driven simulation monitoring workflow by seamlessly
+combining Fluent’s event hooks with real-time visualization updates.
+
+The ``execute_in_event_loop_threadsafe`` helper shown below is standard ``asyncio`` utility code,
+not a PyFluent-specific API. It is included here because event callbacks may run on a worker thread,
+and UI refresh work should be scheduled onto the active event loop thread.
+
+.. code-block:: python
+
+  >>> import asyncio
+  >>> from functools import partial
+  >>> from ansys.fluent.core import MeshingEvent, SolverEvent
+  >>> from ansys.fluent.core import CaseLoadedEventInfo, DataLoadedEventInfo, SolutionInitializedEventInfo, IterationEndedEventInfo
+  >>> from ansys.fluent.visualization.matplotlib import matplot_windows_manager
+  >>> from ansys.fluent.visualization.pyvista import pyvista_windows_manager
+  >>> from ansys.fluent.visualization import Graphics
+  >>>
+  >>> def _get_loop() -> asyncio.AbstractEventLoop:
+  >>>     try:
+  >>>         return asyncio.get_running_loop()
+  >>>     except RuntimeError:
+  >>>         try:
+  >>>             return asyncio.get_event_loop()
+  >>>         except RuntimeError:
+  >>>             loop = asyncio.new_event_loop()
+  >>>             asyncio.set_event_loop(loop)
+  >>>             return loop
+  >>>
+  >>> def execute_in_event_loop_threadsafe(f):
+  >>>     loop = _get_loop()
+  >>>
+  >>>     def cb(*args, **kwargs):
+  >>>         par = partial(f, *args, **kwargs)
+  >>>         loop.call_soon_threadsafe(par)
+  >>>
+  >>>     return cb
+  >>>
+  >>> graphics = Graphics(session=solver_session)
+  >>>
+  >>> contour1 = graphics.Contours["contour-1"]
+  >>> contour1.field = "temperature"
+  >>> contour1.surfaces_list = ["symmetry"]
+  >>>
+  >>> contour2 = graphics.Contours["contour-2"]
+  >>> contour2.field = "velocity-magnitude"
+  >>> contour2.surfaces_list = ["symmetry"]
+  >>> 
+  >>> @execute_in_event_loop_threadsafe
+  >>> def auto_refersh_call_back_iteration(session, event_info: IterationEndedEventInfo):
+  >>>   if event_info.index % 5 == 0:
+  >>>       pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
+  >>>       matplot_windows_manager.refresh_windows("", ["residual"])
+  >>>
+  >>> callback_itr_id = solver_session.events.register_callback(SolverEvent.ITERATION_ENDED, auto_refersh_call_back_iteration)
+  >>>
+  >>> @execute_in_event_loop_threadsafe
+  >>> def initialize_call_back(session, event_info: SolutionInitializedEventInfo | DataLoadedEventInfo):
+  >>>     pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
+  >>>     matplot_windows_manager.refresh_windows("", ["residual"])
+  >>>
+  >>> callback_init_id = solver_session.events.register_callback(SolverEvent.SOLUTION_INITIALIZED, initialize_call_back)
+  >>>
+  >>> callback_data_read_id = solver_session.events.register_callback(SolverEvent.DATA_LOADED, initialize_call_back)
+  >>>
+  >>> def on_case_loaded(session, event_info: CaseLoadedEventInfo):
+  >>>     print("Case loaded. Index = ", event_info.index)
+  >>>
+  >>> def on_case_loaded_with_args(session, event_info: CaseLoadedEventInfo, x, y):
+  >>>     print(f"Case loaded with {x}, {y}. Index = ", event_info.index)
+  >>>
+  >>> callback = meshing_session.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
+  >>>
+  >>> callback_case = solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+  >>>
+  >>> callback_case_with_args = solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
+  >>>
