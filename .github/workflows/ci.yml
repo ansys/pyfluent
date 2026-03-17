@@ -89,17 +89,18 @@ jobs:
       FLUENT_IMAGE_TAG: v26.1.latest
 
     steps:
-      - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@v10.2
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          skip-install: false
 
       - name: "Make venv"
         run: uv venv --clear
 
       - name: "Install extras"
         run: uv pip install -e ".[ci_types]"
+
+      - name: "Run PyAnsys code style checks"
+        uses: ansys/actions/code-style@v10.2
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          skip-install: false
 
       - name: Retrieve PyFluent version
         run: |
