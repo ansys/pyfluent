@@ -328,12 +328,22 @@ def _get_channel(
                 grpc_options=options,
             )
         else:
-            return create_channel(
-                transport_mode="wnua",
-                host=ip,
-                port=port,
-                grpc_options=options,
-            )
+            if os.name == "nt":
+                # Note: As WNUA is purely a server-side implementation, the following code works on Windows
+                # even for unsupported Fluent versions that do not have WNUA implemented on the server side.
+                return create_channel(
+                    transport_mode="wnua",
+                    host=ip,
+                    port=port,
+                    grpc_options=options,
+                )
+            else:
+                # Got non-uds transport mode on non-Windows system on local connection.
+                # User is most likely using an unsupported Fluent server version that uses TCP for local connections.
+                # The supported Fluent versions on Linux should always use UDS for local connections.
+                raise RuntimeError(
+                    "Fluent version is not supported. Please refer to the documentation to see the list of supported Fluent versions."
+                )
 
 
 class _ConnectionInterface:
