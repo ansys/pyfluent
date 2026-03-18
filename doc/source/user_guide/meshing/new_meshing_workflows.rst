@@ -373,8 +373,8 @@ Switch to solution mode
     solver_session = meshing_session.switch_to_solver()
 
 
-2D meshing workflow
--------------------
+2-dimensional meshing workflow
+------------------------------
 Use the **2D** meshing workflow to mesh specific two-dimensional geometries.
 The example below demonstrates the workflow.
 
