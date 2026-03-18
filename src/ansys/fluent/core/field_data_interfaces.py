@@ -101,14 +101,7 @@ def _set_namedtuple_field_docs(cls: type, field_docs: dict[str, str]) -> None:
     "Alias for field number N" in attribute/member tables.
     """
     for field_name, field_doc in field_docs.items():
-        # NamedTuple fields are descriptor objects that expose ``__doc__``.
-        # If a field cannot be updated for any reason, continue silently.
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            try:
-                getattr(cls, field_name).__doc__ = field_doc
-            except Exception:
-                pass
+        getattr(cls, field_name).__doc__ = field_doc
 
 
 _set_namedtuple_field_docs(
