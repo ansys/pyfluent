@@ -342,7 +342,9 @@ def _get_channel(
                 # User is most likely using an unsupported Fluent server version that uses TCP for local connections.
                 # The supported Fluent versions on Linux should always use UDS for local connections.
                 raise RuntimeError(
-                    "Fluent version is not supported. Please refer to the documentation to see the list of supported Fluent versions."
+                    "Unexpected transport mode for a local connection on this platform. "
+                    "This may indicate that the Fluent version is not supported by PyFluent. "
+                    "Please check the PyFluent documentation for supported Fluent versions."
                 )
 
 
