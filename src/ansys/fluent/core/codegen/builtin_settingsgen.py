@@ -168,9 +168,9 @@ def generate(version: str):
                     )
                     f.write("    def __init__(self, *args, **kwargs):\n")
                     f.write(
-                        f"       warnings.warn(\"'{legacy_name}' is deprecated, use '{name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
+                        f"        warnings.warn(\"'{legacy_name}' is deprecated, use '{name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
                     )
-                    f.write("       super().__init__(*args, **kwargs)\n\n")
+                    f.write("        super().__init__(*args, **kwargs)\n\n")
 
                     legacy_command_name = _convert_camel_case_to_snake_case(legacy_name)
                     f.write(f"class {legacy_command_name}({command_name}):\n")
@@ -181,10 +181,10 @@ def generate(version: str):
                         "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
                     )
                     f.write(
-                        f"       warnings.warn(\"'{legacy_command_name}' is deprecated, use '{command_name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
+                        f"        warnings.warn(\"'{legacy_command_name}' is deprecated, use '{command_name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
                     )
                     f.write(
-                        "       return super().__new__(cls, settings_source=settings_source, **kwargs)\n\n"
+                        "        return super().__new__(cls, settings_source=settings_source, **kwargs)\n\n"
                     )
                 else:
                     f.write(f"class {legacy_name}({name}):\n")
@@ -193,9 +193,9 @@ def generate(version: str):
                     )
                     f.write("    def __init__(self, *args, **kwargs):\n")
                     f.write(
-                        f"       warnings.warn(\"'{legacy_name}' is deprecated, use '{name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
+                        f"        warnings.warn(\"'{legacy_name}' is deprecated, use '{name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
                     )
-                    f.write("       super().__init__(*args, **kwargs)\n\n")
+                    f.write("        super().__init__(*args, **kwargs)\n\n")
 
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:
