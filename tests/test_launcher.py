@@ -93,6 +93,12 @@ def test_mode():
         )
 
 
+def test_pre_post_mode_maps_to_solver_session_type():
+    assert (
+        FluentMode.PRE_POST.get_fluent_value() is FluentMode.SOLVER.get_fluent_value()
+    )
+
+
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 1s for the connection to fail
     with pytest.raises(LaunchFluentError) as ex:
