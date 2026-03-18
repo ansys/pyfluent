@@ -107,7 +107,7 @@ def _set_namedtuple_field_docs(cls: type, field_docs: dict[str, str]) -> None:
 _set_namedtuple_field_docs(
     SurfaceFieldDataRequest,
     {
-        "data_types": "Surface data entries to request, such as vertices, face connectivity, face normals, and face centroids.",
+        "data_types": "Surface data entries to request: vertices, face connectivity, face normals, and face centroids.",
         "surfaces": "Surface identifiers, names, or objects exposing a ``name()`` method.",
         "overset_mesh": "Whether overset mesh entities should be included when available.",
         "flatten_connectivity": "Whether face connectivity is returned in flattened format.",
