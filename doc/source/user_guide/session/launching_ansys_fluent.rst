@@ -222,7 +222,7 @@ This example shows how to launch Fluent in meshing mode:
 
 Pre/post mode
 ~~~~~~~~~~~~~
-Run Ansys Fluent in pre/post mode. In PyFluent, this mode maps to the Solver session type, but solve commands are unavailable in Fluent.
+Run Ansys Fluent in pre/post mode. In PyFluent, this mode maps to the ``Solver`` session type, but solve commands are unavailable in Fluent.
 
 This example shows how to launch Fluent in Pre/Post mode:
 
