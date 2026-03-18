@@ -50,20 +50,7 @@ class SurfaceDataType(Enum):
 
 
 class SurfaceFieldDataRequest(NamedTuple):
-    """Container storing parameters for surface data request.
-
-    Attributes
-    ----------
-    data_types : List[SurfaceDataType] | List[str]
-        Surface data entries to request, such as vertices, face connectivity,
-        face normals, and face centroids.
-    surfaces : List[int | str | object]
-        Surface identifiers, names, or objects exposing a ``name()`` method.
-    overset_mesh : bool | None, default: False
-        Whether overset mesh entities should be included when available.
-    flatten_connectivity : bool, default: False
-        Whether face connectivity is returned in flattened format.
-    """
+    """Container storing parameters for surface data request."""
 
     data_types: List[SurfaceDataType] | List[str]
     surfaces: List[int | str | object]
@@ -72,19 +59,7 @@ class SurfaceFieldDataRequest(NamedTuple):
 
 
 class ScalarFieldDataRequest(NamedTuple):
-    """Container storing parameters for scalar field data request.
-
-    Attributes
-    ----------
-    field_name : str
-        Scalar field name to request.
-    surfaces : List[int | str | object]
-        Surface identifiers, names, or objects exposing a ``name()`` method.
-    node_value : bool | None, default: True
-        Whether to request nodal values. If ``False``, element values are requested.
-    boundary_value : bool | None, default: True
-        Whether to request boundary values when supported.
-    """
+    """Container storing parameters for scalar field data request."""
 
     field_name: str
     surfaces: List[int | str | object]
@@ -93,56 +68,14 @@ class ScalarFieldDataRequest(NamedTuple):
 
 
 class VectorFieldDataRequest(NamedTuple):
-    """Container storing parameters for vector field data request.
-
-    Attributes
-    ----------
-    field_name : str
-        Vector field name to request.
-    surfaces : List[int | str | object]
-        Surface identifiers, names, or objects exposing a ``name()`` method.
-    """
+    """Container storing parameters for vector field data request."""
 
     field_name: str
     surfaces: List[int | str | object]
 
 
 class PathlinesFieldDataRequest(NamedTuple):
-    """Container storing parameters for path-lines field data request.
-
-    Attributes
-    ----------
-    field_name : str
-        Scalar field name to sample along computed pathlines.
-    surfaces : List[int | str | object]
-        Surface identifiers, names, or objects exposing a ``name()`` method.
-    additional_field_name : str, default: ""
-        Optional additional scalar field to include in the response.
-    provide_particle_time_field : bool | None, default: False
-        Whether to include a particle-time field in the output.
-    node_value : bool | None, default: True
-        Whether to request nodal values.
-    steps : int | None, default: 500
-        Maximum number of integration steps per pathline.
-    step_size : float | None, default: 500
-        Integration step size.
-    skip : int | None, default: 0
-        Number of sampled points to skip.
-    reverse : bool | None, default: False
-        Whether to integrate pathlines in reverse direction.
-    accuracy_control_on : bool | None, default: False
-        Whether adaptive accuracy control is enabled.
-    tolerance : float | None, default: 0.001
-        Tolerance used when accuracy control is enabled.
-    coarsen : int | None, default: 1
-        Coarsening factor applied to pathline output.
-    velocity_domain : str | None, default: "all-phases"
-        Velocity domain used for pathline integration.
-    zones : list | None, default: None
-        Optional zones used to constrain pathline computation.
-    flatten_connectivity : bool, default: False
-        Whether line connectivity is returned in flattened format.
-    """
+    """Container storing parameters for path-lines field data request."""
 
     field_name: str
     surfaces: List[int | str | object]
