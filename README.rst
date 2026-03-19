@@ -92,8 +92,9 @@ the latest release with:
 
 Dependencies
 ------------
-You must have a licensed copy of Ansys Fluent installed locally. PyFluent
-supports Fluent 2024 R2 and later. The Windows installation of Ansys Fluent automatically
+You must have a licensed copy of Ansys Fluent installed locally. PyFluent supports
+Fluent versions 2024 R2 SP05, 2025 R1 SP04, 2025 R2 SP03, 2026 R1, and later versions.
+The Windows installation of Ansys Fluent automatically
 sets the required environment variables so that PyFluent can find the Ansys Fluent
 installation. Using Fluent 2025 R2 (or 25.2) installed in the default directory as an
 example, the installer automatically sets the ``AWP_ROOT252`` environment variable to point
