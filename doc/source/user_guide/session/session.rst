@@ -5,17 +5,27 @@
 Using PyFluent sessions
 =======================
 
-You can obtain a PyFluent session object by calling either of the functions, :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` or :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`. 
+The encouraged way to create a PyFluent session is to use the ``from_<...>`` class methods on a session type, for
+example :meth:`Solver.from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>`,
+:meth:`Solver.from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>`,
+:meth:`Solver.from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`, or
+:meth:`Solver.from_pim() <ansys.fluent.core.session_utilities.SessionBase.from_pim>`.
+For full details see :ref:`ref_launch_guide`.
 
+For example, to launch a solver session from a local Fluent installation:
 
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
   >>> case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-  >>> data_file_name = download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-  >>> solver_session = pyfluent.launch_fluent(case_data_file_name=case_file_name)
+  >>> solver_session = pyfluent.Solver.from_install(case_file_name=case_file_name)
+
+.. note::
+
+  You can also use the lower-level :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+  and :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>` functions,
+  but the ``from_<...>`` class methods are recommended for new code.
 
 
 Solution mode sessions
@@ -51,7 +61,7 @@ session that starts a second Fluent instance and is independent of your PyFluent
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = pyfluent.Meshing.from_install()
 
 
 A uniform interface exists across solver settings objects. For instance,
@@ -165,7 +175,7 @@ You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing`
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> pure_meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PURE_MESHING)
+  >>> pure_meshing = pyfluent.PureMeshing.from_install()
 
 
 The only difference between the two meshing session types is that a pure session cannot be
@@ -208,8 +218,8 @@ within its intended scope:
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core import using
   >>> from ansys.fluent.core.solver import ReadCase, Viscous
-  >>> solver_session_1 = pyfluent.launch_fluent()
-  >>> solver_session_2 = pyfluent.launch_fluent()
+  >>> solver_session_1 = pyfluent.Solver.from_install()
+  >>> solver_session_2 = pyfluent.Solver.from_install()
   >>> case_file = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> with using(solver_session_1):
   ...     ReadCase()(file_name=case_file)
@@ -295,9 +305,12 @@ each session can be ended independently of the others. Calling the ``exit()`` me
 
 
 Each Fluent session terminates in this scenario because both PyFluent :ref:`Session <ref_session_guide>` objects were obtained by
-calling the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function. If the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>` function were used instead, the
-Fluent session would terminate upon the ``exit()`` method call if and only if the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
-function were called with the argument value ``cleanup_on_exit=True``.
+using a ``from_<...>`` launch method (for example, :meth:`from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>`).
+If :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` were used instead, the
+Fluent session would not be terminated upon ``exit()`` by default.
+For configurable cleanup behavior when attaching to an existing Fluent process,
+use :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
+directly with its ``cleanup_on_exit`` parameter.
 
 Session exiting can also happen implicitly when :ref:`Session <ref_session_guide>` objects are garbage collected. The same rules apply
 regarding Fluent termination whether the exit is explicit via an ``<session>.exit()`` method call or implicit.
@@ -308,7 +321,7 @@ being garbage collected:
 .. code:: python
 
   >>> def run_solver():
-  >>>     solver_session = pyfluent.launch_fluent()
+  >>>     solver_session = pyfluent.Solver.from_install()
   >>>     # <insert some PyFluent solver actions>
   >>>     # solver is exited at the end of the function
 
