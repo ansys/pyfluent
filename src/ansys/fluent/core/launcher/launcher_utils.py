@@ -26,6 +26,7 @@ import logging
 import os
 from pathlib import Path
 import platform
+import shutil
 import socket
 import subprocess
 import time
@@ -149,14 +150,27 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     return kwargs
 
 
+def _update_server_info_file(server_info_file_name: str, pid: int | None = None):
+    servers = (Path(os.environ["APPDATA"]) / "pyfluent" / "servers").resolve()
+    Path(servers).mkdir(parents=True, exist_ok=True)
+    si_file = servers / Path(server_info_file_name).name
+    shutil.copy2(server_info_file_name, si_file)
+    with open(si_file, "a", encoding="utf-8") as f:
+        f.write(f"{pid}")
+
+
 def _await_fluent_launch(
-    server_info_file_name: str, start_timeout: int, sifile_last_mtime: float
+    server_info_file_name: str,
+    start_timeout: int,
+    sifile_last_mtime: float,
+    pid: int | None = None,
 ):
     """Wait for successful fluent launch or raise an error."""
     while True:
         if Path(server_info_file_name).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
             logger.info("Fluent has been successfully launched.")
+            _update_server_info_file(server_info_file_name, pid)
             break
         if start_timeout == 0:
             raise TimeoutError("The launch process has timed out.")
