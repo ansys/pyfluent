@@ -738,7 +738,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
         if sys.version_info >= (3, 14):
             expected_settings_api_output = expected_settings_api_output.replace(
                 'SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"',
-                f'SHASH = "54828595751f83d80abe11673952397862edb1f6f1ff3c23b2c133b483561345"',
+                'SHASH = "54828595751f83d80abe11673952397862edb1f6f1ff3c23b2c133b483561345"',
             )
         assert f.read().strip() == expected_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
