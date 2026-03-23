@@ -171,9 +171,7 @@ def _update_server_info_file(server_info_file_name: str, pid: int | None = None)
             with open(si_file, "a", encoding="utf-8") as f:
                 f.write(f"\n{pid}")
     except PermissionError:
-        raise PermissionError(
-            "Insufficient permissions to copy and update server info."
-        )
+        logger.warning("Insufficient permissions to update server info file. Skipping.")
 
 
 def _await_fluent_launch(
