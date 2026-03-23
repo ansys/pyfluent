@@ -9,6 +9,32 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.38.1 <https://github.com/ansys/pyfluent/releases/tag/v0.38.1>`_ - March 23, 2026
+===================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Document supported patch versions of Fluent for gRPC connection.
+          - `#4995 <https://github.com/ansys/pyfluent/pull/4995>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version 0.38.1
+          - `#5003 <https://github.com/ansys/pyfluent/pull/5003>`_
+
+
 `0.38.0 <https://github.com/ansys/pyfluent/releases/tag/v0.38.0>`_ - March 06, 2026
 ===================================================================================
 
