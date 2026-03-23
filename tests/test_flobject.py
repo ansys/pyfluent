@@ -524,6 +524,32 @@ def test_list_object():
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
 
 
+def test_list_object_set_state_with_quantity_values():
+    class RealWithUnits(Real):
+        attrs = Setting.attrs | {
+            "units-quantity": lambda self: "length",
+        }
+
+    class RootWithQuantityList(Group):
+        class L1(ListObject):
+            child_object_type = RealWithUnits
+
+        children = {
+            "l-1": L1,
+        }
+
+    class ProxyWithQuantityList(Proxy):
+        root = RootWithQuantityList
+
+    r = flobject.get_root(ProxyWithQuantityList())
+    inches = ansys.units.Quantity([1, 2, 34], "inch")
+
+    r.l_1.set_state(inches)
+
+    # Expect per-item conversion to SI units using child-level quantity handling.
+    assert r.l_1() == pytest.approx([0.0254, 0.0508, 0.8636])
+
+
 def test_command():
     r = flobject.get_root(Proxy())
     r.g_1.r_1 = 2.4

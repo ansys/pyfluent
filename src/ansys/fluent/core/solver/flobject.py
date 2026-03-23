@@ -1694,7 +1694,63 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return alias_obj
         else:
             return getattr(super(), name)
+    
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the list object.
 
+        For Quantity-like inputs containing sequence values, assign each element
+        to child items so child-level unit handling is reused.
+        """
+        with self._while_setting_state():
+            if kwargs or state is None:
+                return super().set_state(state=state, **kwargs)
+
+            quantity = None
+            try:
+                if isinstance(state, ansys.units.Quantity):
+                    quantity = state
+                elif (
+                    isinstance(state, tuple)
+                    and len(state) == 2
+                    and isinstance(state[0], collections.abc.Sequence)
+                ):
+                    quantity = ansys.units.Quantity(*state)
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
+
+            if quantity is None:
+                return super().set_state(state=state, **kwargs)
+
+            try:
+                values = list(quantity.value)
+                units = quantity.units
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
+
+            try:
+                size = len(values)
+                if self.get_size() != size:
+                    with self._while_resizing():
+                        self.flproxy.resize_list_object(self.path, size)
+                if len(self._objects) != size:
+                    self._update_objects()
+
+                for i, value in enumerate(values):
+                    child = self[i]
+                    child_quantity = ansys.units.Quantity(value=float(value), units=units)
+
+                    # Reuse child-level unit conversion where available.
+                    if isinstance(child, RealNumerical):
+                        child.set_state(child_quantity)
+                    elif hasattr(child, "value") and isinstance(
+                        getattr(child, "value"), RealNumerical
+                    ):
+                        child.value.set_state(child_quantity)
+                    else:
+                        # Non-numerical child: pass raw value
+                        child.set_state(value)
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
 
 class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
