@@ -1694,7 +1694,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return alias_obj
         else:
             return getattr(super(), name)
-    
+
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the list object.
 
@@ -1737,7 +1737,9 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 
                 for i, value in enumerate(values):
                     child = self[i]
-                    child_quantity = ansys.units.Quantity(value=float(value), units=units)
+                    child_quantity = ansys.units.Quantity(
+                        value=float(value), units=units
+                    )
 
                     # Reuse child-level unit conversion where available.
                     if isinstance(child, RealNumerical):
@@ -1751,6 +1753,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
                         child.set_state(value)
             except Exception as ex:
                 raise UnhandledQuantity(self.path, state) from ex
+
 
 class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
