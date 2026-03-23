@@ -108,7 +108,7 @@ _set_namedtuple_field_docs(
     SurfaceFieldDataRequest,
     {
         "data_types": "Surface data entries to request: vertices, face connectivity, face normals, and face centroids.",
-        "surfaces": "Surface identifiers, names, or objects exposing a ``name()`` method.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
         "overset_mesh": "Whether overset mesh entities should be included when available.",
         "flatten_connectivity": "Whether face connectivity is returned in flattened format.",
     },
