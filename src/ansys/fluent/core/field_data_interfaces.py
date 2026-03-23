@@ -94,6 +94,66 @@ class PathlinesFieldDataRequest(NamedTuple):
     flatten_connectivity: bool = False
 
 
+def _set_namedtuple_field_docs(cls: type, field_docs: dict[str, str]) -> None:
+    """Set docstrings for NamedTuple-generated field attributes.
+
+    Without this, Sphinx may render default ``NamedTuple`` field docs like
+    "Alias for field number N" in attribute/member tables.
+    """
+    for field_name, field_doc in field_docs.items():
+        getattr(cls, field_name).__doc__ = field_doc
+
+
+_set_namedtuple_field_docs(
+    SurfaceFieldDataRequest,
+    {
+        "data_types": "Surface data entries to request: vertices, face connectivity, face normals, and face centroids.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+        "overset_mesh": "Whether overset mesh entities should be included when available.",
+        "flatten_connectivity": "Whether face connectivity is returned in flattened format.",
+    },
+)
+
+_set_namedtuple_field_docs(
+    ScalarFieldDataRequest,
+    {
+        "field_name": "Scalar field name to request.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+        "node_value": "Whether to request nodal values. If ``False``, element values are requested.",
+        "boundary_value": "Whether to request boundary values when supported.",
+    },
+)
+
+_set_namedtuple_field_docs(
+    VectorFieldDataRequest,
+    {
+        "field_name": "Vector field name to request.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+    },
+)
+
+_set_namedtuple_field_docs(
+    PathlinesFieldDataRequest,
+    {
+        "field_name": "Scalar field name to sample along computed pathlines.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+        "additional_field_name": "Optional additional scalar field to include in the response.",
+        "provide_particle_time_field": "Whether to include a particle-time field in the output.",
+        "node_value": "Whether to request nodal values.",
+        "steps": "Maximum number of integration steps per pathline.",
+        "step_size": "Integration step size.",
+        "skip": "Number of sampled points to skip.",
+        "reverse": "Whether to integrate pathlines in reverse direction.",
+        "accuracy_control_on": "Whether adaptive accuracy control is enabled.",
+        "tolerance": "Tolerance used when accuracy control is enabled.",
+        "coarsen": "Coarsening factor applied to pathline output.",
+        "velocity_domain": "Velocity domain used for pathline integration.",
+        "zones": "Optional zones used to constrain pathline computation.",
+        "flatten_connectivity": "Whether line connectivity is returned in flattened format.",
+    },
+)
+
+
 class BaseFieldInfo(ABC):
     """
     Abstract base class for field information retrieval.
