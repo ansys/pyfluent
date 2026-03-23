@@ -100,7 +100,7 @@ all PyFluent packages in a Python *virtual environment*:
 
    For Python version information, see the answer to the next question.
 
-#. Install Fluent 2024 R2 or later.
+#. Install a supported version of Fluent: 2024 R2 SP05, 2025 R1 SP04, 2025 R2 SP03, 2026 R1, or later.
 
 #. Set the environment variable for your installed release to point to
    the appropriate Ansys installation folder.

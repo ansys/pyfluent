@@ -43,7 +43,6 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -51,6 +50,7 @@ from ansys.fluent.core.launcher.error_warning_messages import (
     INSECURE_MODE_WARNING,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
@@ -61,6 +61,7 @@ from ansys.fluent.core.services.app_utilities import (
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
 from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
@@ -263,9 +264,9 @@ class FluentConnectionProperties:
 
 def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
-        ip = pyfluent.config.launch_fluent_ip or "127.0.0.1"
+        ip = config.launch_fluent_ip or "127.0.0.1"
     if not port:
-        port = pyfluent.config.launch_fluent_port
+        port = config.launch_fluent_port
     if not port:
         raise PortNotProvided()
     return ip, port
@@ -327,12 +328,24 @@ def _get_channel(
                 grpc_options=options,
             )
         else:
-            return create_channel(
-                transport_mode="wnua",
-                host=ip,
-                port=port,
-                grpc_options=options,
-            )
+            if os.name == "nt":
+                # Note: As WNUA is purely a server-side implementation, the following code works on Windows
+                # even for unsupported Fluent versions that do not have WNUA implemented on the server side.
+                return create_channel(
+                    transport_mode="wnua",
+                    host=ip,
+                    port=port,
+                    grpc_options=options,
+                )
+            else:
+                # Got non-uds transport mode on non-Windows system on local connection.
+                # User is most likely using an unsupported Fluent server version that uses TCP for local connections.
+                # The supported Fluent versions on Linux should always use UDS for local connections.
+                raise RuntimeError(
+                    "Unexpected transport mode for a local connection on this platform. "
+                    "This may indicate that the Fluent version is not supported by PyFluent. "
+                    "Please check the PyFluent documentation for supported Fluent versions."
+                )
 
 
 class _ConnectionInterface:
@@ -344,11 +357,11 @@ class _ConnectionInterface:
         self._app_utilities_service = create_grpc_service(
             AppUtilitiesService, error_state
         )
-        match pyfluent.FluentVersion(self.scheme_eval.version):
-            case v if v < pyfluent.FluentVersion.v252:
+        match FluentVersion(self.scheme_eval.version):
+            case v if v < FluentVersion.v252:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
 
-            case pyfluent.FluentVersion.v252:
+            case FluentVersion.v252:
                 self._app_utilities = AppUtilitiesV252(
                     self._app_utilities_service, self.scheme_eval
                 )
@@ -543,7 +556,7 @@ class FluentConnection:
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
-        if pyfluent.config.check_health:
+        if config.check_health:
             try:
                 self._health_check.check_health()
             except RuntimeError:
@@ -858,7 +871,7 @@ class FluentConnection:
             )
 
         if timeout is None:
-            config_timeout = pyfluent.config.force_exit_timeout
+            config_timeout = config.force_exit_timeout
             if config_timeout is not None:
                 logger.debug(f"Found force_exit_timeout config: '{config_timeout}'")
                 try:

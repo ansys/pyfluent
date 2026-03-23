@@ -220,7 +220,7 @@ This example shows how to launch Fluent in meshing mode:
   >>> )
 
 
-Pre/Post mode
+Pre/post mode
 ~~~~~~~~~~~~~
 Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
 
