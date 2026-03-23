@@ -29,6 +29,7 @@ import platform
 import shutil
 import socket
 import subprocess
+import sys
 import time
 from typing import Any, Dict
 import warnings
@@ -150,13 +151,24 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     return kwargs
 
 
+def _get_app_data_root() -> Path:
+    if sys.platform == "win32":
+        return Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+    elif sys.platform == "darwin":
+        return Path.home() / "Library" / "Application Support"
+    else:
+        return Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share"))
+
+
 def _update_server_info_file(server_info_file_name: str, pid: int | None = None):
-    servers = (Path(os.environ["APPDATA"]) / "pyfluent" / "servers").resolve()
-    Path(servers).mkdir(parents=True, exist_ok=True)
-    si_file = servers / Path(server_info_file_name).name
+    servers_dir = _get_app_data_root() / "pyfluent" / "servers"
+    servers_dir.mkdir(parents=True, exist_ok=True)
+    si_file = servers_dir / Path(server_info_file_name).name
     shutil.copy2(server_info_file_name, si_file)
-    with open(si_file, "a", encoding="utf-8") as f:
-        f.write(f"{pid}")
+
+    if pid is not None:
+        with open(si_file, "a", encoding="utf-8") as f:
+            f.write(f"\n{pid}")
 
 
 def _await_fluent_launch(
