@@ -30,6 +30,7 @@ import shutil
 from unittest.mock import create_autospec
 import uuid
 
+from conftest import SKIP_INVESTIGATING
 import grpc
 from grpc_health.v1 import health_pb2_grpc
 import pytest
@@ -53,7 +54,8 @@ from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4055")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4055
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     monkeypatch.setattr(pyfluent.config, "check_health", False)
     fluent = new_solver_session

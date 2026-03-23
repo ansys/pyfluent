@@ -7,7 +7,7 @@ Must set the FLUENT_STABLE_IMAGE_DEV environment variable to the dev image sha25
 import os
 import subprocess
 
-IMAGE_TAGS_TO_RETAIN = ["v24.2.5", "v25.1.4", "v25.2.3"]
+IMAGE_TAGS_TO_RETAIN = ["v24.2.5", "v25.1.4", "v25.2.3", "v26.1.latest"]
 
 
 def clean_docker_data():

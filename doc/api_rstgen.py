@@ -175,7 +175,6 @@ hierarchy = {
         "data_transfer",
         "deprecate",
         "dictionary_operations",
-        "dump_session_data",
         "event_loop",
         "execution",
         "file_transfer_service",

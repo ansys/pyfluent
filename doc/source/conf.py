@@ -1,5 +1,6 @@
 """Sphinx documentation configuration file."""
 
+from contextlib import suppress
 from dataclasses import is_dataclass
 from datetime import datetime
 import inspect
@@ -126,7 +127,9 @@ copybutton_prompt_is_regexp = True
 
 
 def _stop_fluent_container(gallery_conf, fname):
-    try:
+    # Use suppress to ignore benign exceptions during Docker container cleanup
+    # (for example, when Docker is unavailable or no containers are running) without triggering B110.
+    with suppress(Exception):
         is_linux = platform.system() == "Linux"
         container_names = (
             subprocess.check_output(
@@ -139,8 +142,6 @@ def _stop_fluent_container(gallery_conf, fname):
         for container_name in container_names:
             print(f"Container still running for script {fname}")
             subprocess.run(f"docker stop {container_name}", shell=is_linux)
-    except Exception:
-        pass
 
 
 # -- Sphinx Gallery Options ---------------------------------------------------

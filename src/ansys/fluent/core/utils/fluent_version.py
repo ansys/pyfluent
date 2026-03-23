@@ -31,6 +31,7 @@ import platform
 from typing import Any
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 
 
 class AnsysVersionNotFound(RuntimeError):
@@ -90,7 +91,7 @@ class FluentVersion(Enum):
     FluentVersion.v252.awp_var == 'AWP_ROOT252'
     """
 
-    v262 = "26.2.0"
+    v271 = "27.1.0"
     v261 = "26.1.0"
     v252 = "25.2.0"
     v251 = "25.1.0"
@@ -159,7 +160,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(pyfluent.config.fluent_release_version)
+        return cls(config.fluent_release_version)
 
     @classmethod
     def current_dev(cls):
@@ -170,7 +171,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(pyfluent.config.fluent_dev_version)
+        return cls(config.fluent_dev_version)
 
     @classmethod
     def minimum_supported(cls):

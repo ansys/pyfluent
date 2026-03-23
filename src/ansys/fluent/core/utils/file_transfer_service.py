@@ -25,7 +25,7 @@
 import logging
 import os
 import pathlib
-import random
+import secrets
 import shutil
 from typing import Any, Protocol
 import warnings
@@ -249,6 +249,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         port: int | None = None,
         mount_target: str | None = None,
         mount_source: str | None = None,
+        certs_dir: str | None = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -264,6 +265,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
             Path inside the container where ``mount_source`` will be mounted to.
         mount_source: str | Path, optional
             Existing path in the host operating system that will be mounted to ``mount_target``.
+        certs_dir : str, optional
+            Directory containing the TLS certificates. The default is ``None``.
         """
         import docker
 
@@ -274,28 +277,46 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         self.image_tag = image_tag if image_tag else "latest"
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
         self.mount_source = mount_source if mount_source else MOUNT_SOURCE
+        server_command = [
+            "--host=0.0.0.0",
+            "--port=50000",
+            "--allow-remote-host",
+            "--transport-mode=mtls",
+            "--certs-dir=/certs",
+        ]
+
+        volumes = [f"{self.mount_source}:{self.mount_target}"]
+        if certs_dir:
+            volumes.append(f"{certs_dir}:/certs:ro")
         try:
-            self.host_port = port if port else random.randint(5000, 6000)
+            self.host_port = (
+                port if port else secrets.SystemRandom().randint(5000, 6000)
+            )
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
+                volumes=volumes,
+                command=server_command,
             )
         except docker.errors.DockerException:
-            self.host_port = port if port else random.randint(6000, 7000)
+            self.host_port = (
+                port if port else secrets.SystemRandom().randint(6000, 7000)
+            )
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
+                volumes=volumes,
+                command=server_command,
             )
         import ansys.tools.filetransfer as ft
 
         self.client = ft.Client.from_transport_options(
-            transport_options=ft.InsecureOptions(
+            transport_options=ft.MTLSOptions(
+                certs_dir=certs_dir,
                 host="localhost",
                 port=self.host_port,
                 allow_remote_host=True,
@@ -411,6 +432,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self,
         server_ip: str | None = None,
         server_port: int | None = None,
+        certs_dir: str | None = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -420,6 +442,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             IP address of the server.
         server_port : int
             Port of the server.
+        certs_dir : str, optional
+            Directory containing the TLS certificates. The default is ``None``.
         """
         import ansys.tools.filetransfer as ft
 
@@ -427,8 +451,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.server_port = server_port
 
         self._client = ft.Client.from_transport_options(
-            transport_options=ft.InsecureOptions(
-                host=self.server_ip,
+            transport_options=ft.MTLSOptions(
+                certs_dir=certs_dir,
+                host=self.server_ip if self.server_ip else "localhost",
                 port=self.server_port,
                 allow_remote_host=True,
             )
@@ -536,7 +561,7 @@ class PimFileTransferService:
                 from simple_upload_server.client import Client
 
                 self.file_service = Client(
-                    token="token",
+                    token="token",  # nosec B106 - Fixed token for internal AnsysLabs upload server; not user-facing credential
                     url=self.upload_server.uri,
                     headers=self.upload_server.headers,
                 )

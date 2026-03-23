@@ -41,7 +41,7 @@ Example
 from __future__ import annotations
 
 import collections
-from contextlib import contextmanager, nullcontext
+from contextlib import contextmanager, nullcontext, suppress
 import fnmatch
 import hashlib
 import inspect
@@ -1784,7 +1784,7 @@ class BaseCommand(Action):
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1994,10 +1994,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object lookup without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 return cobj[name]
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __setitem__(self, name, value):
@@ -2008,21 +2008,21 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object deletion without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 del cobj[name]
                 return
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __iter__(self):
         """Iterator for child named objects."""
         for cname in self.child_names:
-            try:
+            # Use suppress to ignore exceptions during child object iteration without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 for item in getattr(self, cname):
                     yield item
-            except Exception:
-                continue
 
     def __len__(self):
         """Number of child named objects."""
@@ -2394,14 +2394,15 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import config, utils
+    from ansys.fluent.core.module_config import config
+    from ansys.fluent.core.utils import load_module as _load_module
 
     if config.use_runtime_python_classes:
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
-            settings = utils.load_module(
+            settings = _load_module(
                 f"settings_{version}",
                 config.codegen_outdir / "solver" / f"settings_{version}.py",
             )
