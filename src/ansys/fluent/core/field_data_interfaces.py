@@ -118,7 +118,7 @@ _set_namedtuple_field_docs(
     ScalarFieldDataRequest,
     {
         "field_name": "Scalar field name to request.",
-        "surfaces": "Surface identifiers, names, or objects exposing a ``name()`` method.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
         "node_value": "Whether to request nodal values. If ``False``, element values are requested.",
         "boundary_value": "Whether to request boundary values when supported.",
     },
@@ -128,7 +128,7 @@ _set_namedtuple_field_docs(
     VectorFieldDataRequest,
     {
         "field_name": "Vector field name to request.",
-        "surfaces": "Surface identifiers, names, or objects exposing a ``name()`` method.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
     },
 )
 
@@ -136,7 +136,7 @@ _set_namedtuple_field_docs(
     PathlinesFieldDataRequest,
     {
         "field_name": "Scalar field name to sample along computed pathlines.",
-        "surfaces": "Surface identifiers, names, or objects exposing a ``name()`` method.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
         "additional_field_name": "Optional additional scalar field to include in the response.",
         "provide_particle_time_field": "Whether to include a particle-time field in the output.",
         "node_value": "Whether to request nodal values.",
