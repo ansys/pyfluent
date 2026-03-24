@@ -543,10 +543,16 @@ def test_list_object_set_state_with_quantity_values():
 
     r = flobject.get_root(ProxyWithQuantityList())
     inches = ansys.units.Quantity([1, 2, 34], "inch")
+    inches_tuple = ([1, 2, 34], "inch")
 
     r.l_1.set_state(inches)
 
-    # Expect per-item conversion to SI units using child-level quantity handling.
+    # Expect conversion to SI units for Quantity input.
+    assert r.l_1() == pytest.approx([0.0254, 0.0508, 0.8636])
+
+    r.l_1.set_state(inches_tuple)
+
+    # Expect equivalent conversion for tuple(sequence, units) input.
     assert r.l_1() == pytest.approx([0.0254, 0.0508, 0.8636])
 
 

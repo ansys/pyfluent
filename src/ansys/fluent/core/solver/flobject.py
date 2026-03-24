@@ -1698,8 +1698,8 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the list object.
 
-        For Quantity-like inputs containing sequence values, assign each element
-        to child items so child-level unit handling is reused.
+        For Quantity-like inputs containing sequence values, convert once to the
+        child target units (when available) and apply in a single bulk update.
 
         Raises
         ------
@@ -1718,6 +1718,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
                     isinstance(state, tuple)
                     and len(state) == 2
                     and isinstance(state[0], collections.abc.Sequence)
+                    and not isinstance(state[0], (str, bytes, bytearray))
                 ):
                     quantity = ansys.units.Quantity(*state)
             except Exception as ex:
@@ -1728,36 +1729,33 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 
             try:
                 values = list(quantity.value)
-                units = quantity.units
             except Exception as ex:
                 raise UnhandledQuantity(self.path, state) from ex
 
-            try:
-                size = len(values)
-                if self.get_size() != size:
-                    with self._while_resizing():
-                        self.flproxy.resize_list_object(self.path, size)
-                if len(self._objects) != size:
-                    self._update_objects()
+            size = len(values)
+            if self.get_size() != size:
+                with self._while_resizing():
+                    self.flproxy.resize_list_object(self.path, size)
+            if len(self._objects) != size:
+                self._update_objects()
 
-                for i, value in enumerate(values):
-                    child = self[i]
-                    child_quantity = ansys.units.Quantity(
-                        value=float(value), units=units
-                    )
+            target_units = None
+            if size > 0:
+                child = self[0]
+                if isinstance(child, RealNumerical):
+                    target_units = child.units()
+                elif hasattr(child, "value") and isinstance(
+                    getattr(child, "value"), RealNumerical
+                ):
+                    target_units = child.value.units()
 
-                    # Reuse child-level unit conversion where available.
-                    if isinstance(child, RealNumerical):
-                        child.set_state(child_quantity)
-                    elif hasattr(child, "value") and isinstance(
-                        getattr(child, "value"), RealNumerical
-                    ):
-                        child.value.set_state(child_quantity)
-                    else:
-                        # Non-numerical child: pass raw value
-                        child.set_state(value)
-            except Exception as ex:
-                raise UnhandledQuantity(self.path, state) from ex
+            if target_units is not None:
+                try:
+                    values = [float(v) for v in quantity.to(target_units).value]
+                except Exception as ex:
+                    raise UnhandledQuantity(self.path, state) from ex
+
+            return super().set_state(state=values, **kwargs)
 
 
 class Map(SettingsBase[DictStateType]):
