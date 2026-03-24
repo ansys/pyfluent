@@ -1706,56 +1706,55 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         UnhandledQuantity
             If a Quantity-like input cannot be interpreted or applied.
         """
-        with self._while_setting_state():
-            if kwargs or state is None:
-                return super().set_state(state=state, **kwargs)
+        if kwargs or state is None:
+            return super().set_state(state=state, **kwargs)
 
-            quantity = None
+        quantity = None
+        try:
+            if isinstance(state, ansys.units.Quantity):
+                quantity = state
+            elif (
+                isinstance(state, tuple)
+                and len(state) == 2
+                and isinstance(state[0], collections.abc.Sequence)
+                and not isinstance(state[0], (str, bytes, bytearray))
+            ):
+                quantity = ansys.units.Quantity(*state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        if quantity is None:
+            return super().set_state(state=state, **kwargs)
+
+        try:
+            values = list(quantity.value)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        size = len(values)
+        if self.get_size() != size:
+            with self._while_resizing():
+                self.flproxy.resize_list_object(self.path, size)
+        if len(self._objects) != size:
+            self._update_objects()
+
+        target_units = None
+        if size > 0:
+            child = self[0]
+            if isinstance(child, RealNumerical):
+                target_units = child.units()
+            elif hasattr(child, "value") and isinstance(
+                getattr(child, "value"), RealNumerical
+            ):
+                target_units = child.value.units()
+
+        if target_units is not None:
             try:
-                if isinstance(state, ansys.units.Quantity):
-                    quantity = state
-                elif (
-                    isinstance(state, tuple)
-                    and len(state) == 2
-                    and isinstance(state[0], collections.abc.Sequence)
-                    and not isinstance(state[0], (str, bytes, bytearray))
-                ):
-                    quantity = ansys.units.Quantity(*state)
+                values = [float(v) for v in quantity.to(target_units).value]
             except Exception as ex:
                 raise UnhandledQuantity(self.path, state) from ex
 
-            if quantity is None:
-                return super().set_state(state=state, **kwargs)
-
-            try:
-                values = list(quantity.value)
-            except Exception as ex:
-                raise UnhandledQuantity(self.path, state) from ex
-
-            size = len(values)
-            if self.get_size() != size:
-                with self._while_resizing():
-                    self.flproxy.resize_list_object(self.path, size)
-            if len(self._objects) != size:
-                self._update_objects()
-
-            target_units = None
-            if size > 0:
-                child = self[0]
-                if isinstance(child, RealNumerical):
-                    target_units = child.units()
-                elif hasattr(child, "value") and isinstance(
-                    getattr(child, "value"), RealNumerical
-                ):
-                    target_units = child.value.units()
-
-            if target_units is not None:
-                try:
-                    values = [float(v) for v in quantity.to(target_units).value]
-                except Exception as ex:
-                    raise UnhandledQuantity(self.path, state) from ex
-
-            return super().set_state(state=values, **kwargs)
+        return super().set_state(state=values, **kwargs)
 
 
 class Map(SettingsBase[DictStateType]):
