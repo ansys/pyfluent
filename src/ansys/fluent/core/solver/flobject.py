@@ -1700,6 +1700,11 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 
         For Quantity-like inputs containing sequence values, assign each element
         to child items so child-level unit handling is reused.
+
+        Raises
+        ------
+        UnhandledQuantity
+            If a Quantity-like input cannot be interpreted or applied.
         """
         with self._while_setting_state():
             if kwargs or state is None:
