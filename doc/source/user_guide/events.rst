@@ -138,14 +138,16 @@ The script performs the following:
 It highlights how to build an interactive, event-driven simulation monitoring workflow by seamlessly
 combining Fluent’s event hooks with real-time visualization updates.
 
-The ``execute_in_event_loop_threadsafe`` helper shown below is standard ``asyncio`` utility code,
-not a PyFluent-specific API. It is included here because event callbacks may run on a worker thread,
+The ``execute_in_event_loop_threadsafe`` helper shown below uses standard ``asyncio`` utility code.
+It is included here because event callbacks may run on a worker thread,
 and UI refresh work should be scheduled onto the active event loop thread.
 
 .. note::
   Keep callbacks lightweight; long-running or CPU-heavy callback logic can block
   event processing and may interfere with timely communication with the Fluent
   server over gRPC.
+  Scheduled UI refresh callbacks run only while the selected event loop is
+  running.
 
 .. code-block:: python
 
@@ -158,21 +160,29 @@ and UI refresh work should be scheduled onto the active event loop thread.
   >>> from ansys.fluent.visualization import Graphics
   >>>
   >>> def _get_loop() -> asyncio.AbstractEventLoop:
+  >>>     # Prefer the currently running loop in this thread.
   >>>     try:
   >>>         return asyncio.get_running_loop()
   >>>     except RuntimeError:
+  >>>         # Fall back to this thread's current loop if one was set.
   >>>         try:
   >>>             return asyncio.get_event_loop()
   >>>         except RuntimeError:
+  >>>             # Last resort for examples: create and set a loop for this thread.
+  >>>             # In applications, prefer passing an explicitly running UI loop.
   >>>             loop = asyncio.new_event_loop()
   >>>             asyncio.set_event_loop(loop)
   >>>             return loop
   >>>
   >>> def execute_in_event_loop_threadsafe(f):
-  >>>     loop = _get_loop()
   >>>
   >>>     def cb(*args, **kwargs):
+  >>>         # Resolve loop at callback invocation time rather than decorator
+  >>>         # definition time, so import-time loop state does not get captured.
+  >>>         loop = _get_loop()
+  >>>         # Package callback arguments for thread-safe scheduling.
   >>>         par = partial(f, *args, **kwargs)
+  >>>         # Enqueue work onto the loop from any worker thread.
   >>>         loop.call_soon_threadsafe(par)
   >>>
   >>>     return cb
