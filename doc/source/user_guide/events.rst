@@ -142,6 +142,11 @@ The ``execute_in_event_loop_threadsafe`` helper shown below is standard ``asynci
 not a PyFluent-specific API. It is included here because event callbacks may run on a worker thread,
 and UI refresh work should be scheduled onto the active event loop thread.
 
+.. note::
+  Keep callbacks lightweight; long-running or CPU-heavy callback logic can block
+  event processing and may interfere with timely communication with the Fluent
+  server over gRPC.
+
 .. code-block:: python
 
   >>> import asyncio
