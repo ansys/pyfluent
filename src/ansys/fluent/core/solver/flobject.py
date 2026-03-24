@@ -1704,7 +1704,8 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         Raises
         ------
         UnhandledQuantity
-            If a Quantity-like input cannot be interpreted or applied.
+            If a Quantity-like input cannot be interpreted or converted to
+            target units.
         """
         if kwargs or state is None:
             return super().set_state(state=state, **kwargs)
