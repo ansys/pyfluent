@@ -142,8 +142,19 @@ class FluentVersion(Enum):
         -------
         Path
             Fluent executable path.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the environment variable for this version (for example,
+            ``AWP_ROOT252``) is not set.
         """
-        awp_root = os.environ[self.awp_var]
+        awp_root = os.getenv(self.awp_var)
+        if not awp_root:
+            raise FileNotFoundError(
+                f"Environment variable '{self.awp_var}' is not set. "
+                "Set it to your Ansys installation root to resolve the Fluent executable path."
+            )
         fluent_root = Path(awp_root) / "fluent"
         return (
             fluent_root / "ntbin" / "win64" / "fluent.exe"
