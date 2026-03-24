@@ -1712,6 +1712,8 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 
         quantity = None
         try:
+            # Accept either a concrete Quantity or tuple shorthand
+            # (sequence, units) for list-style unit-aware updates.
             if isinstance(state, ansys.units.Quantity):
                 quantity = state
             elif (
@@ -1728,10 +1730,13 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return super().set_state(state=state, **kwargs)
 
         try:
+            # Materialize values once so we can determine target size before
+            # any conversion or server update.
             values = list(quantity.value)
         except Exception as ex:
             raise UnhandledQuantity(self.path, state) from ex
 
+        # Keep list-object cardinality in sync before the final bulk set.
         size = len(values)
         if self.get_size() != size:
             with self._while_resizing():
@@ -1742,15 +1747,19 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         target_units = None
         if size > 0:
             child = self[0]
+            # First support direct numerical list children.
             if isinstance(child, RealNumerical):
                 target_units = child.units()
             else:
+                # Then support wrapped schemas where units live under .value.
                 child_value = getattr(child, "value", None)
                 if isinstance(child_value, RealNumerical):
                     target_units = child_value.units()
 
         if target_units is not None:
             try:
+                # Convert once using the resolved target units and send plain
+                # floats in a single bulk update.
                 values = [float(v) for v in quantity.to(target_units).value]
             except Exception as ex:
                 raise UnhandledQuantity(self.path, state) from ex
