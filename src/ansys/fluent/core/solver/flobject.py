@@ -1744,10 +1744,10 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             child = self[0]
             if isinstance(child, RealNumerical):
                 target_units = child.units()
-            elif hasattr(child, "value") and isinstance(
-                getattr(child, "value"), RealNumerical
-            ):
-                target_units = child.value.units()
+            else:
+                child_value = getattr(child, "value", None)
+                if isinstance(child_value, RealNumerical):
+                    target_units = child_value.units()
 
         if target_units is not None:
             try:
