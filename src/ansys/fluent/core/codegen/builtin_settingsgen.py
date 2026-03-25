@@ -90,6 +90,24 @@ def generate(version: str):
     root = _get_settings_root(version)
     version = FluentVersion(version)
     with open(_PY_FILE, "w") as f:
+        def _write_command_name_to_all(command_class_name: str):
+            f.write(f'    "{_convert_camel_case_to_snake_case(command_class_name)}",\n')
+
+        def _write_deprecated_alias_class(
+            alias_name: str,
+            preferred_name: str,
+            alias_kind_desc: str,
+        ):
+            f.write(f"class {alias_name}({preferred_name}):\n")
+            f.write(
+                f'    """{alias_name} {alias_kind_desc} (deprecated alias of {preferred_name})."""\n\n'
+            )
+            f.write("    def __init__(self, *args, **kwargs):\n")
+            f.write(
+                f"       warnings.warn(\"'{alias_name}' is deprecated, use '{preferred_name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
+            )
+            f.write("       super().__init__(*args, **kwargs)\n\n")
+
         f.write('"""Solver settings."""\n\n')
         f.write(
             "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting, Solver\n"
@@ -102,13 +120,11 @@ def generate(version: str):
             name = _get_public_class_name(legacy_name)
             f.write(f'    "{name}",\n')
             if kind == "Command":
-                command_name = _convert_camel_case_to_snake_case(name)
-                f.write(f'    "{command_name}",\n')
+                _write_command_name_to_all(name)
             if name != legacy_name:
                 f.write(f'    "{legacy_name}",\n')
                 if kind == "Command":
-                    legacy_command_name = _convert_camel_case_to_snake_case(legacy_name)
-                    f.write(f'    "{legacy_command_name}",\n')
+                    _write_command_name_to_all(legacy_name)
         f.write("]\n\n")
         for legacy_name, v in DATA.items():
             kind, path = v
@@ -162,16 +178,11 @@ def generate(version: str):
 
             if name != legacy_name:
                 if kind == "Command":
-                    f.write(f"class {legacy_name}({name}):\n")
-                    f.write(
-                        f'    """{legacy_name} command object (deprecated alias of {name})."""\n\n'
+                    _write_deprecated_alias_class(
+                        alias_name=legacy_name,
+                        preferred_name=name,
+                        alias_kind_desc="command object",
                     )
-                    f.write("    def __init__(self, *args, **kwargs):\n")
-                    f.write(
-                        f"        warnings.warn(\"'{legacy_name}' is deprecated, use '{name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
-                    )
-                    f.write("        super().__init__(*args, **kwargs)\n\n")
-
                     legacy_command_name = _convert_camel_case_to_snake_case(legacy_name)
                     f.write(f"class {legacy_command_name}({command_name}):\n")
                     f.write(
@@ -186,16 +197,6 @@ def generate(version: str):
                     f.write(
                         "        return super().__new__(cls, settings_source=settings_source, **kwargs)\n\n"
                     )
-                else:
-                    f.write(f"class {legacy_name}({name}):\n")
-                    f.write(
-                        f'    """{legacy_name} setting (deprecated alias of {name})."""\n\n'
-                    )
-                    f.write("    def __init__(self, *args, **kwargs):\n")
-                    f.write(
-                        f"        warnings.warn(\"'{legacy_name}' is deprecated, use '{name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
-                    )
-                    f.write("        super().__init__(*args, **kwargs)\n\n")
 
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:
