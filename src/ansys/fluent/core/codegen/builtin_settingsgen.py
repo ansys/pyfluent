@@ -90,6 +90,7 @@ def generate(version: str):
     root = _get_settings_root(version)
     version = FluentVersion(version)
     with open(_PY_FILE, "w") as f:
+
         def _write_command_name_to_all(command_class_name: str):
             f.write(f'    "{_convert_camel_case_to_snake_case(command_class_name)}",\n')
 
