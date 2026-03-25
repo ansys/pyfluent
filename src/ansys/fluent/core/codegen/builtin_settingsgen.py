@@ -91,8 +91,25 @@ def generate(version: str):
     version = FluentVersion(version)
     with open(_PY_FILE, "w") as f:
 
+        def _write_name_to_all(name: str):
+            f.write(f'    "{name}",\n')
+
         def _write_command_name_to_all(command_class_name: str):
-            f.write(f'    "{_convert_camel_case_to_snake_case(command_class_name)}",\n')
+            _write_name_to_all(_convert_camel_case_to_snake_case(command_class_name))
+
+        def _write_symbol_to_all(name: str, kind: str):
+            _write_name_to_all(name)
+            if kind == "Command":
+                _write_command_name_to_all(name)
+
+        def _write_deprecation_warning(
+            alias_name: str,
+            preferred_name: str,
+            indentation: str,
+        ):
+            f.write(
+                f"{indentation}warnings.warn(\"'{alias_name}' is deprecated, use '{preferred_name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
+            )
 
         def _write_deprecated_alias_class(
             alias_name: str,
@@ -104,9 +121,7 @@ def generate(version: str):
                 f'    """{alias_name} {alias_kind_desc} (deprecated alias of {preferred_name})."""\n\n'
             )
             f.write("    def __init__(self, *args, **kwargs):\n")
-            f.write(
-                f"       warnings.warn(\"'{alias_name}' is deprecated, use '{preferred_name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
-            )
+            _write_deprecation_warning(alias_name, preferred_name, "       ")
             f.write("       super().__init__(*args, **kwargs)\n\n")
 
         f.write('"""Solver settings."""\n\n')
@@ -119,13 +134,9 @@ def generate(version: str):
         f.write("__all__ = [\n")
         for legacy_name, (kind, _) in DATA.items():
             name = _get_public_class_name(legacy_name)
-            f.write(f'    "{name}",\n')
-            if kind == "Command":
-                _write_command_name_to_all(name)
+            _write_symbol_to_all(name, kind)
             if name != legacy_name:
-                f.write(f'    "{legacy_name}",\n')
-                if kind == "Command":
-                    _write_command_name_to_all(legacy_name)
+                _write_symbol_to_all(legacy_name, kind)
         f.write("]\n\n")
         for legacy_name, v in DATA.items():
             kind, path = v
@@ -192,8 +203,8 @@ def generate(version: str):
                     f.write(
                         "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
                     )
-                    f.write(
-                        f"        warnings.warn(\"'{legacy_command_name}' is deprecated, use '{command_name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
+                    _write_deprecation_warning(
+                        legacy_command_name, command_name, "        "
                     )
                     f.write(
                         "        return super().__new__(cls, settings_source=settings_source, **kwargs)\n\n"
