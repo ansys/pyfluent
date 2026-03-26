@@ -9,31 +9,33 @@ Process
     -- Populate a parents dictionary with current class file name (not class name) as key and list of parents file names (not class names) as value.
     - Recursively Generate the rst files for classes starting with settings.root.
     -- Add target reference as the file name for the given class. This is used by other classes to generate hyperlinks
-    -- Add properties like members, undoc-memebers, show-inheritence to the autoclass directive.
+    -- Add properties like members, undoc-members, show-inheritance to the autoclass directive.
     -- Generate the tables of children, commands, arguments, and parents.
     --- Get access to the respective properties and members on the class with get_attr.
     --- Use the file name of the child class to generate the hyperlink to that class.
     --- Use the __doc__ property to generate the short summary for the corresponding child
-    --- Use the previously generated perents dict to populate the parents table.
+    --- Use the previously generated parents dict to populate the parents table.
 Usage
 -----
 python <path to settings_rstgen.py>
 """
 
-from contextlib import redirect_stdout
 import importlib
-import io
+import logging
 import os
 from pathlib import Path
 
 from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
 
 from ansys.fluent.core import config
-from ansys.fluent.core.search import search
 from ansys.fluent.core.utils.fluent_version import (
+    AnsysVersionNotFound,
     FluentVersion,
     get_version_for_file_name,
 )
+
+logger = logging.getLogger("pyfluent.settings_api")
+
 
 parents_dict = {}
 rst_list = []
@@ -130,7 +132,9 @@ def _write_common(initial_param, r, cls, attr):
     _generate_table_for_rst(r, data_dict)
 
 
-def _populate_rst_from_settings(rst_dir, cls, version):
+def _populate_rst_from_settings(rst_dir, cls, version, path=""):
+    # Build the current path
+    current_path = f"{path}.{cls._python_name}" if path else cls._python_name
     istr1 = _get_indent_str(1)
     cls_name = cls.__name__
     cls_orig_name = cls._python_name
@@ -151,10 +155,17 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f'{"="*(len(cls_orig_name))}\n\n')
         deprecated = getattr(cls, "_deprecated_version", None)
         if deprecated:
-            pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
+            try:
+                pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
+            except AnsysVersionNotFound as ex:
+                logger.debug(ex)
+                pyfluent_fluent_version = FluentVersion.minimum_supported()
+                logger.debug(
+                    f"Using minimum supported version {pyfluent_fluent_version} instead of {cls._deprecated_version} for deprecated class {cls_name}."
+                )
             release_version = str(pyfluent_fluent_version)
             r.write(f".. deprecated:: {release_version}\n\n")
-            deprecated_class_version.update({cls_name: release_version})
+            deprecated_class_version.update({current_path: (cls_name, release_version)})
         r.write(
             f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{cls_name}\n"
         )
@@ -193,19 +204,25 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         rst_list.append(rstpath)
         if has_children:
             for child in cls.child_names:
-                _populate_rst_from_settings(rst_dir, cls._child_classes[child], version)
+                _populate_rst_from_settings(
+                    rst_dir, cls._child_classes[child], version, current_path
+                )
 
         if has_commands:
             for child in cls.command_names:
-                _populate_rst_from_settings(rst_dir, cls._child_classes[child], version)
+                _populate_rst_from_settings(
+                    rst_dir, cls._child_classes[child], version, current_path
+                )
 
         if has_arguments:
             for child in cls.argument_names:
-                _populate_rst_from_settings(rst_dir, cls._child_classes[child], version)
+                _populate_rst_from_settings(
+                    rst_dir, cls._child_classes[child], version, current_path
+                )
 
         if has_named_object:
             _populate_rst_from_settings(
-                rst_dir, getattr(cls, "child_object_type"), version
+                rst_dir, getattr(cls, "child_object_type"), version, current_path
             )
 
 
@@ -222,29 +239,13 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
     name = "Deprecated APIs"
     pyfluent_name = "Deprecated PyFluent APIs"
     fluent_name = "Deprecated Ansys Fluent APIs"
-    buffer = io.StringIO()
 
-    for class_name, deprecated_version in deprecated_class_version.items():
-        with redirect_stdout(buffer):
-            search(class_name)
-        output = buffer.getvalue()
-        out = output.split("\n")
-        settings = set(
-            [
-                setting
-                for setting in out
-                if "tui" not in setting and "meshing" not in setting
-            ]
+    for class_path, deprecated_name_and_version in deprecated_class_version.items():
+        cls_name, deprecated_version = deprecated_name_and_version
+        settings_with_ref = (
+            f":ref:`{class_path.replace('root.', 'solver.settings.')} <{cls_name}>`"
         )
-        for setting in settings:
-            if setting and setting.split(".")[-1].split(" ")[0] == class_name:
-                setting = (
-                    setting.replace("<solver_session>", "solver")
-                    .replace("<", "")
-                    .replace(">", "")
-                )
-                settings_with_ref = f":ref:`{setting} <{class_name}>`"
-                deprecated_data.append((settings_with_ref, deprecated_version))
+        deprecated_data.append((settings_with_ref, deprecated_version))
 
     with open(deprecated_rst, "w", encoding="utf-8") as f:
         f.write(":orphan:\n\n")
@@ -288,6 +289,8 @@ if __name__ == "__main__":
 
     image_tag = config.fluent_image_tag
     version = get_version_for_file_name(image_tag.lstrip("v"))
+    print("Selecting Fluent version:", version)
+    print("Set the environment variable FLUENT_IMAGE_TAG to change the version.")
     settings = importlib.import_module(
         f"ansys.fluent.core.generated.solver.settings_{version}"
     )

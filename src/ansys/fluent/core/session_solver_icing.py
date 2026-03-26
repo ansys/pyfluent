@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -81,7 +81,7 @@ class SolverIcing(Solver):
         if self._flserver_root is None:
             se = self._datamodel_service_se
             dm_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self._version}.flicing"
+                f"ansys.fluent.core.generated.datamodel_{self._version}.flicing"
             )
             self._flserver_root = dm_module.Root(se, "flserver", [])
         return self._flserver_root

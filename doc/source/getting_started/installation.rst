@@ -8,7 +8,7 @@ Installation
 PyFluent Installation
 ---------------------
 
-PyFluent supports Python 3.10 through Python 3.13 on Windows, Mac OS and Linux.
+PyFluent supports Python 3.10 through Python 3.14 on Windows, Mac OS and Linux.
 
 PyFluent can be installed, along with all its optional dependencies, using:
 
@@ -31,10 +31,10 @@ development with the following commands:
    python codegen/allapigen.py     # Generates the API files or
    python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
 
-Step-by-Step Explanation
+Step-by-step explanation
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Clone the Repository
+Clone the repository
 ++++++++++++++++++++
 
 .. code:: console
@@ -45,7 +45,7 @@ Clone the Repository
 These commands clone the PyFluent repository from GitHub to your local machine and navigate into
 the repository directory.
 
-Upgrade Pip
+Upgrade pip
 +++++++++++
 
 .. code:: console
@@ -54,7 +54,7 @@ Upgrade Pip
 
 This command upgrades pip to the latest version to ensure compatibility with the latest packages.
 
-Install PyFluent in Editable Mode
+Install PyFluent in editable mode
 +++++++++++++++++++++++++++++++++
 
 .. code:: console
@@ -65,7 +65,7 @@ Installing with the -e option (editable mode) creates a symbolic link to the rep
 ``site-packages`` directory of your Python installation. This means any changes you make to the
 PyFluent code are automatically reflected when you use PyFluent.
 
-Generate Required API Classes
+Generate required API classes
 +++++++++++++++++++++++++++++
 
 .. code:: console
@@ -84,7 +84,7 @@ Fluent Installation
 -------------------
 
 To benefit fully from using PyFluent, you must have a licensed copy of Ansys Fluent installed.
-All versions of PyFluent support Fluent 2022 R2 and later. 
+PyFluent is compatible with the full set of Fluent versions officially supported at its release date.
 
 PyFluent uses an environment variable to locate your Ansys installation.
 
@@ -103,6 +103,10 @@ For this variable to persist between different shell sessions for the current us
 export command can instead be added to the user's ``~/.profile`` file.
 
 For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
+
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
 
 
 Additional PyFluent packages

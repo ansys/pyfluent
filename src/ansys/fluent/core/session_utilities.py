@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,6 +25,7 @@
 from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -74,13 +75,13 @@ class SessionBase:
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
-        case_file_name: str | None = None,
-        case_data_file_name: str | None = None,
+        case_file_name: "PathType | None" = None,
+        case_data_file_name: "PathType | None" = None,
         lightweight_mode: bool | None = None,
         py: bool | None = None,
         gpu: bool | None = None,
-        cwd: str | None = None,
-        fluent_path: str | None = None,
+        cwd: "PathType | None" = None,
+        fluent_path: "PathType | None" = None,
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
@@ -90,8 +91,9 @@ class SessionBase:
 
         Parameters
         ----------
-        ui_mode : UIMode
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -127,9 +129,9 @@ class SessionBase:
         start_transcript : bool, optional
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
-        case_file_name : str, optional
+        case_file_name : :class:`os.PathLike` or str, optional
             Name of the case file to read into the Fluent session. Defaults to None.
-        case_data_file_name : str, optional
+        case_data_file_name : :class:`os.PathLike` or str, optional
             Name of the case data file. If both case and data files are provided, they are read into the session.
         lightweight_mode : bool, optional
             If True, runs in lightweight mode where mesh settings are read into a background solver session,
@@ -138,9 +140,9 @@ class SessionBase:
             If True, runs Fluent in Python mode. Defaults to None.
         gpu : bool, optional
             If True, starts Fluent with GPU Solver enabled.
-        cwd : str, optional
+        cwd : :class:`os.PathLike` or str, optional
             Working directory for the Fluent client.
-        fluent_path: str, optional
+        fluent_path: :class:`os.PathLike` or str, optional
             User-specified path for Fluent installation.
         topy :  bool or str, optional
             A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
@@ -188,14 +190,19 @@ class SessionBase:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """
         Launch a Fluent session in container mode.
 
         Parameters
         ----------
-        ui_mode : UIMode
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -239,6 +246,16 @@ class SessionBase:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
+        use_docker_compose: bool
+            Whether to use Docker Compose to launch Fluent.
+        use_podman_compose: bool
+            Whether to use Podman Compose to launch Fluent.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -287,7 +304,8 @@ class SessionBase:
         Parameters
         ----------
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -355,6 +373,9 @@ class SessionBase:
         port: int | None = None,
         server_info_file_name: str | None = None,
         password: str | None = None,
+        allow_remote_host: bool = False,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """Connect to an existing Fluent server instance.
 
@@ -376,17 +397,24 @@ class SessionBase:
             connect to a running Fluent session.
         password : str, optional
             Password to connect to existing Fluent instance.
+        allow_remote_host : bool, optional
+            Whether to allow connecting to a remote Fluent instance.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be connected in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------
         TypeError
             If the session type does not match the expected session type.
         """
+        argvals = locals().copy()
+        argvals.pop("cls", None)
         session = pyfluent.connect_to_fluent(
-            ip=ip,
-            port=port,
-            server_info_file_name=server_info_file_name,
-            password=password,
+            **argvals,
         )
 
         expected = "Solver" if cls.__name__ == "PrePost" else cls.__name__

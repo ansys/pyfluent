@@ -6,7 +6,7 @@ Solver settings objects
 .. vale Google.Spacing = NO
 
 Solver settings objects provide a natural way to access and modify Fluent solver
-settings and issue commands to be executed in the Fluent solver. 
+settings and issue commands to be executed.
 An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
 function returns an object whose interface directly exposes the :ref:`ref_root` of the solver settings hierarchy.
 
@@ -16,10 +16,10 @@ function returns an object whose interface directly exposes the :ref:`ref_root` 
 New format for accessing solver settings objects
 ------------------------------------------------
 
-To simplify the usage of Fluent solver settings and improve readability, 
-you can now instantiate settings objects directly using a more intuitive syntax. 
-This new approach allows for straightforward access to various settings without 
-navigating through the hierarchical structure of the solver settings.
+To simplify access to solver settings and improve readability, you can now
+instantiate settings objects directly using a concise constructor-style syntax.
+This avoids navigating the full hierarchy of solver settings while preserving
+the same functional capabilities.
 
 Example usage
 ~~~~~~~~~~~~~
@@ -27,20 +27,21 @@ Example usage
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core.solver import VelocityInlet
   >>> solver_session = pyfluent.launch_fluent()
-  >>> inlet1 = pyfluent.solver.VelocityInlet(settings_source=solver_session, name="inlet-1")
+  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
 
 
-This format provides a more natural way to create and interact with settings objects, 
-making your code easier to read and maintain. By abstracting the underlying hierarchy, 
-users can focus on the specific settings they need without dealing with potential changes 
+This format provides a more natural way to create and interact with settings objects,
+making your code easier to read and maintain. By abstracting the underlying hierarchy,
+users can focus on the specific settings they need without dealing with potential changes
 in the Fluent API structure.
+
+The traditional hierarchy-based API remains fully supported. The new syntax is an
+additional, more convenient option and not a replacement.
 
 Accessing solver settings
 -------------------------
-
-Following the introduction of the new format, the traditional method remains available for those 
-who prefer the existing hierarchy.
 
 .. code-block:: python
 
@@ -84,7 +85,7 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
   created unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
   list. Children of a ``ListObject`` object can be accessed using the index operator.
-  For example, ``solver_session.settings.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
+  For example, ``solver_session.settings.setup.cell_zone_conditions.fluid['fluid-1'].sources.terms['mass'][2]``
   refers to the third (starting from index 0) mass source entry for the fluid zone
   named ``fluid-1``. The current number of child objects can be accessed with the
   ``get_size()`` method.
@@ -99,16 +100,16 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> viscous = pyfluent.solver.Viscous(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> viscous = Viscous(settings_source=solver_session)
   >>> viscous.model()
   'k-epsilon-standard'
 
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> energy = pyfluent.solver.Energy(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Energy, VelocityInlet
+  >>> energy = Energy(settings_source=solver_session)
   >>> from pprint import pprint
   >>> pprint (energy(), width=1)
   {'enabled': True,
@@ -116,7 +117,7 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
    'kinetic_energy': False,
    'pressure_work': False,
    'viscous_dissipation': False}
-  >>> inlet1 = pyfluent.solver.VelocityInlet(settings_source=solver_session, name="inlet1")
+  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet1")
   >>> inlet1.vmag.constant()
   10.0
 
@@ -128,12 +129,12 @@ and ``NamedObject`` types, the state value is a dictionary. For the
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> viscous = pyfluent.solver.Viscous(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Energy, VelocityInlet, Viscous
+  >>> viscous = Viscous(settings_source=solver_session)
   >>> viscous.model = 'laminar'
-  >>> energy = pyfluent.solver.Energy(settings_source=solver_session)
+  >>> energy = Energy(settings_source=solver_session)
   >>> energy.enabled = False
-  >>> inlet1 = pyfluent.solver.VelocityInlet(settings_source=solver_session, name="inlet1")
+  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet1")
   >>> inlet1.vmag.constant = 14
 
 
@@ -164,8 +165,8 @@ You can print the current state in a simple text format with the
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> models = pyfluent.solver.Models(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Models
+  >>> models = Models(settings_source=solver_session)
   >>> models.print_state()
 
 
@@ -218,24 +219,24 @@ for that object or returns ``None`` otherwise.
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> viscous = pyfluent.solver.Viscous(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> viscous = Viscous(settings_source=solver_session)
   >>> viscous.model.allowed_values()
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> viscous = pyfluent.solver.Viscous(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> viscous = Viscous(settings_source=solver_session)
   >>> viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
 
 .. code-block::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> viscous = pyfluent.solver.Viscous(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> viscous = Viscous(settings_source=solver_session)
   >>> viscous.model.get_attrs(['allowed-values'])
   {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
 
@@ -290,6 +291,7 @@ in a single solver session:
 .. code-block::
 
   >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core.solver import Viscous, VelocityInlet
   >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
@@ -297,7 +299,7 @@ in a single solver session:
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
-  >>> viscous = pyfluent.solver.Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(settings_source=solver_session)
   >>> viscous.is_active()
   True
   >>> viscous.model.is_read_only()
@@ -316,7 +318,7 @@ in a single solver session:
    'scale-adaptive-simulation',
    'detached-eddy-simulation',
    'large-eddy-simulation']
-  >>> cold_inlet = pyfluent.solver.VelocityInlet(settings_source=solver_session, name="cold-inlet")
+  >>> cold_inlet = VelocityInlet(settings_source=solver_session, name="cold-inlet")
   >>> cold_inlet.turb_intensity.min()
   0
   >>> cold_inlet.turb_intensity.max()
@@ -332,8 +334,8 @@ is currently active.
 The ``get_active_child_names()`` method returns a list of
 active children::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> models = pyfluent.solver.Models(settings_source=solver_session)
+  >>> from ansys.fluent.core.solver import Models
+  >>> models = Models(settings_source=solver_session)
   >>> models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
@@ -348,27 +350,27 @@ Wildcards
 You can use wildcards when using named objects, list objects, and string list settings.
 For named objects and list objects, for instance::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> fluid = pyfluent.solver.FluidCellZone(settings_source=solver_session, name="*")
-  >>> fluid.source_terms["*mom*"]()
-  {'fluid': {'source_terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}
+  >>> from ansys.fluent.core.solver import FluidCellZone
+  >>> fluid = FluidCellZone(settings_source=solver_session, name="*")
+  >>> fluid.sources.terms["*mom*"]()
+  {'fluid': {'sources': {'terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}}
 
 Also, when you have one or more velocity inlets with "inlet" in their names::
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> inlet = pyfluent.solver.VelocityInlet(settings_source=solver_session, name="*inlet*")
+  >>> from ansys.fluent.core.solver import VelocityInlet
+  >>> inlet = VelocityInlet(settings_source=solver_session, name="*inlet*")
   >>> inlet.vmag()
   {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
   'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
 
 For string lists with allowed values, for instance::
 
-  >>> solver_session.results.graphics.contour['contour-1'].surfaces_list = 'in*'
+  >>> solver_session.settings.results.graphics.contour['contour-1'].surfaces_list = 'in*'
 
 sets ``surfaces_list`` to all matches of surface names starting with ``in``, so when you prompt for the
 list of surfaces::
 
-  >>> solver_session.results.graphics.contour['contour-1'].surfaces_list()
+  >>> solver_session.settings.results.graphics.contour['contour-1'].surfaces_list()
   ['in1', 'in2']
 
 The following list summarizes common wildcards:

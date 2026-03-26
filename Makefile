@@ -14,6 +14,7 @@ install-test:
 	@pip install -r requirements/requirements_build.txt
 	@pip install ansys-fluent-core[reader,tests]
 	@python -m pip install -q --force-reinstall dist/*.whl > /dev/null
+	@bash .ci/generate_certs.sh
 
 version-info:
 	@bash -c "date -u +'Build date: %B %d, %Y %H:%M UTC ShaID: <id>' | xargs -I date sed -i 's/_VERSION_INFO = .*/_VERSION_INFO = \"date\"/g' src/ansys/fluent/core/__init__.py"
@@ -22,14 +23,14 @@ version-info:
 docker-pull:
 	@python .ci/pull_fluent_image.py
 
-docker-clean-images:
-	@docker system prune --volumes -a -f
+docker-clean-all-except-supported-images:
+	@python .ci/docker_data_cleaner.py
 
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
-PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html -n 4
-PYTESTRERUN = --last-failed --last-failed-no-failures none -n 4
+PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html -n auto
+PYTESTRERUN = --last-failed --last-failed-no-failures none -n auto
 
 unittest: unittest-dev-242
 
@@ -72,6 +73,11 @@ unittest-dev-261:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@python -m pytest --fluent-version=26.1 $(PYTESTEXTRA) || python -m pytest --fluent-version=26.1 $(PYTESTRERUN)
+
+unittest-dev-271:
+	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --fluent-version=27.1 $(PYTESTEXTRA) || python -m pytest --fluent-version=27.1 $(PYTESTRERUN)
 
 unittest-all-222:
 	@echo "Running all unittests"
@@ -168,11 +174,27 @@ unittest-all-261-no-codegen:
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@python -m pytest --nightly --fluent-version=26.1 -m "not codegen_required" $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=26.1 -m "not codegen_required" $(PYTESTRERUN)
 
+unittest-all-271:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --nightly --fluent-version=27.1 $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=27.1 $(PYTESTRERUN)
+
+unittest-solvermode-271:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --fluent-version=27.1 --solvermode $(PYTESTEXTRA) || python -m pytest --fluent-version=27.1 --solvermode $(PYTESTRERUN)
+
+unittest-all-271-no-codegen:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --nightly --fluent-version=27.1 -m "not codegen_required" $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=27.1 -m "not codegen_required" $(PYTESTRERUN)
+
 api-codegen:
 	@echo "Running API codegen"
 	@python -m venv env
 	@. env/bin/activate
 	@pip install -q -e .
+	@bash .ci/generate_certs.sh
 	@python codegen/allapigen.py
 	@rm -rf env
 
@@ -193,14 +215,6 @@ build-all-docs:
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
 	@xvfb-run make -C doc html
 	@python doc/modify_html.py
-
-cleanup-previous-docker-containers:
-	@if [ -n "$(docker ps -a -q)" ]; then \
-		echo "Found running containers"; \
-		docker inspect --format='{{.Config.Labels.test_name}}' $(docker ps -a -q); \
-		docker stop $(docker ps -a -q); \
-	fi
-	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
 
 write-and-run-fluent-tests:
 	@pip install -r requirements/requirements_build.txt

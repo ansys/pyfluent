@@ -231,13 +231,17 @@ Retrieve data using ``get_field_data``, either by reusing or modifying request o
 .. note::
   ``PathlinesFieldDataRequest`` allows only one unique ``field_name`` per batch.
 
-Allowed values
---------------
-Additionally there is an ``allowed_values`` method provided on all of
-``field_name``, ``surface_name`` and ``surface_ids`` which tells you what object
-names are accessible.
+Queries
+-------
 
-Some sample use cases are demonstrated below:
+Several query methods are available for exploring data, checking status,
+and retrieving information.
+
+
+Allowed values
+~~~~~~~~~~~~~~
+The ``allowed_values()`` method is provided on ``fields``, ``surface_name``,
+and ``surface_ids``. It returns the set of accessible object names or IDs.
 
 .. code-block:: python
 
@@ -249,6 +253,20 @@ Some sample use cases are demonstrated below:
   >>> field_data.vector_fields.allowed_values()
   ['velocity', 'relative-velocity']
 
+  >>> field_data.surfaces.allowed_values()
+  ['in1', 'in2', 'in3', 'inlet', 'inlet1', 'inlet2', 'out1', 'outlet', 'solid_up:1', 'solid_up:1:830', 'solid_up:1:830-shadow']
+
+  >>> field_data.surface_ids.allowed_values()
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+
+Active status
+~~~~~~~~~~~~~
+
+The ``is_active()`` method checks whether a particular variable is available.
+
+.. code-block:: python
+
   >>> from ansys.units import VariableCatalog
   >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY)
   True
@@ -256,14 +274,17 @@ Some sample use cases are demonstrated below:
   False
   >>> field_data.scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
   True
+
+
+Value ranges
+~~~~~~~~~~~~
+
+The ``range()`` method returns the numeric range of values for a given variable.
+
+.. code-block:: python
+
   >>> field_data.scalar_fields.range("cell-weight")
   [8.0, 24.0]
-
-  >>> field_data.surfaces.allowed_values()
-  ['in1', 'in2', 'in3', 'inlet', 'inlet1', 'inlet2', 'out1', 'outlet', 'solid_up:1', 'solid_up:1:830', 'solid_up:1:830-shadow']
-
-  >>> field_data.surface_ids.allowed_values()
-  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
 Field data streaming

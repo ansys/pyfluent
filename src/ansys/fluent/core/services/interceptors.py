@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -40,7 +40,7 @@ def _upper_snake_case_to_camel_case(name: str) -> str:
 
 
 def _truncate_grpc_str(message: Message) -> str:
-    from ansys.fluent.core import config
+    from ansys.fluent.core.module_config import config
 
     truncate_len = config.grpc_log_bytes_limit // 5
     message_bytes = message.ByteSize()
@@ -68,7 +68,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         client_call_details: grpc.ClientCallDetails,
         request: Any,
     ) -> Any:
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         network_logger.debug(
             f"GRPC_TRACE: RPC = {client_call_details.method}, request = {_truncate_grpc_str(request)}"

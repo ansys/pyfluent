@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -42,6 +42,17 @@ class FluentDevVersionWarning(PyFluentUserWarning):
     """Warning raised when a released PyFluent version is used with a development version of Fluent."""
 
     pass
+
+
+# Deriving from the base Warning instead of any derived classes
+# to have less chance of being ignored by user configurations.
+class InsecureGrpcWarning(Warning):
+    """Warning raised when gRPC connection is insecure."""
+
+    pass
+
+
+warnings.filterwarnings("always", category=InsecureGrpcWarning)
 
 
 def warning_for_fluent_dev_version(version):

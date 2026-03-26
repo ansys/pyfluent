@@ -6,19 +6,20 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   packages: read
-  pull-requests: write
-  issues: write
+  pull-requests: read
+  issues: read
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYTEST_XDIST_AUTO_NUM_WORKERS: 1
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_LOGGING: "DEBUG"
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  FLUENT_IMAGE_TAG: v25.2.0
+  FLUENT_IMAGE_TAG: v26.1.latest
   PYTHON_VERSION: "3.10"
 
 jobs:
@@ -27,15 +28,22 @@ jobs:
     runs-on: [self-hosted, pyfluent]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
       - name: Cache pip
-        uses: actions/cache@v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
@@ -55,39 +63,36 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 25.2 Fluent docker image
+      - name: Pull 26.1 Fluent docker image
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
-      - name: Run 25.2 API codegen
+      - name: Run 26.1 API codegen
         run: make api-codegen
 
-      - name: Print 25.2 Fluent version info
+      - name: Print 26.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_251.py
-          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_261.py
+          python -c "from ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
           rm -rf dist
           make install > /dev/null
 
-      - name: 25.2 Unit Testing
+      - name: 26.1 Unit Testing
         run: |
           make install-test
-          make unittest-solvermode-251
+          make unittest-solvermode-261
 
-      - name: Cleanup previous docker containers
-        if: always()
-        run: make cleanup-previous-docker-containers
-
-      - name: Remove all docker images
-        if: always()
-        run: make docker-clean-images
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -314,6 +314,8 @@ class Reduction:
     ) -> Any:
         request = getattr(ReductionProtoModule, requestName)()
         if expression is not None:
+            if hasattr(expression, "definition"):
+                expression = expression.definition()
             request.expression = self._to_str(expression)
         if weight is not None:
             request.weight = Weight(weight).value

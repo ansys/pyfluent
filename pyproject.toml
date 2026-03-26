@@ -7,7 +7,7 @@ build-backend = "flit_core.buildapi"
 name = "ansys-fluent-core"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10,<3.15"
 license = {file = "LICENSE"}
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 maintainers = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
@@ -18,10 +18,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "ansys-api-fluent>=0.3.36",
+    "ansys-api-fluent>=0.3.37",
     "ansys-platform-instancemanagement~=1.1",
-    "ansys-tools-filetransfer>=0.1,<0.3",
-    "ansys-units>=0.7.0,<1.0",
+    "ansys-tools-common>=0.4.0",
+    "ansys-tools-filetransfer>=0.2,<1.0",
+    "ansys-units~=0.11.0",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",
@@ -31,7 +32,6 @@ dependencies = [
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
-    "pyansys-tools-report>=0.8.1",
     "pyyaml>=6.0",
 ]
 dynamic = ["version"]
@@ -40,22 +40,22 @@ dynamic = ["version"]
 include = ["src/ansys/fluent/core/generated/"]
 
 [project.optional-dependencies]
-reader = ["h5py==3.14.0"]
-ui-jupyter = ["ipywidgets"]
-ui = ["panel"]
+reader = ["h5py>=3.15.1"]
+ui-jupyter = ["ipywidgets>=8.1.8"]
+ui = ["panel>=1.8.1"]
 tests = [
-    "pytest==8.4.1",
-    "pytest-cov==6.2.1",
-    "pytest-mock==3.14.1",
+    "pytest==9.0.1",
+    "pytest-cov==7.0.0",
+    "pytest-mock==3.15.1",
     "pytest-xdist==3.8.0",
-    "pyfakefs==5.9.3"
+    "pyfakefs==5.10.1"
 ]
 docs = [
     "Sphinx==8.1.3",
     "jupyter_sphinx==0.5.3",
     "numpydoc==1.9.0",
-    "matplotlib==3.10.6",
-    "ansys-sphinx-theme==1.6.0",
+    "matplotlib==3.10.7",
+    "ansys-sphinx-theme==1.6.3",
     "pypandoc==1.15",
     "pytest-sphinx==0.6.3",
     "sphinx-autobuild==2024.10.3",
@@ -68,11 +68,11 @@ docs = [
     "sphinxemoji==0.3.1",
     "sphinx-toggleprompt==0.6.0",
     "autodocsumm==0.2.14",
-    "beautifulsoup4==4.13.5",
+    "beautifulsoup4==4.14.2",
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.7.34",
+    "quarto-cli==1.8.25",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
 ]
@@ -213,19 +213,9 @@ name = "Test"
 showcontent = true
 
 [tool.bandit]
-exclude_dirs = ["tests"]
+exclude_dirs = ["src/ansys/fluent/core/generated", "examples", "tests"]
 skips = [
-    "B101",
-    "B105",
-    "B106",
-    "B110",
-    "B112",
-    "B301",
-    "B307",
-    "B310",
-    "B311",
-    "B314",
-    "B403",
+    "B403", # Only for pickle module.
     "B404",
     "B405",
     "B602",

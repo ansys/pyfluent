@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,13 +26,13 @@ import argparse
 from pathlib import Path
 import pickle
 
-from ansys.fluent.core import config
 from ansys.fluent.core.codegen import (  # noqa: F401
     builtin_settingsgen,
     datamodelgen,
     settingsgen,
     tuigen,
 )
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.search import get_api_tree_file_name
 
 

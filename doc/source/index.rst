@@ -20,7 +20,7 @@ Python. It enables engineers and developers to automate, customize, and
 streamline CFD workflows using the flexibility of Python.
 
 
-Why Use PyFluent?
+Why use PyFluent?
 -----------------
 
 - **Automation**: Eliminate repetitive tasks and accelerate simulation workflows.
@@ -29,7 +29,7 @@ Why Use PyFluent?
 - **Integration**: Seamlessly integrate with other Python libraries and tools.
 
 
-How It Works
+How it works
 ------------
 
 PyFluent connects to Ansys Fluent and allows programmatic interaction using a
@@ -39,7 +39,11 @@ extraction.
 
 Compatibility
 -------------
-PyFluent supports **Ansys Fluent 2022 R2 and later**.
+PyFluent is compatible with the full set of Fluent versions officially supported at its release date.
+
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
 
 
 Getting started
@@ -56,12 +60,12 @@ Resources
 - `Ansys customer portal <https://support.ansys.com>`_
 
 
-Need Help?
+Need help?
 ----------
 
 Visit the community or support resources:
 
-- `PyAnsys community forum <https://forum.pyansys.com>`_
+- `Ansys developer forum <https://discuss.ansys.com>`_
 - `Submit a bug report <https://github.com/ansys/pyfluent/issues>`_
 - `Contact support <https://support.ansys.com>`_
 

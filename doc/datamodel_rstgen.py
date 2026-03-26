@@ -1,8 +1,11 @@
 """Provides a module for generating Fluent datamodel RST files."""
 
 import importlib
+import logging
 
 from rstgen import _get_file_or_folder, _write_datamodel_index_doc, generate
+
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 def generate_meshing_datamodels():
@@ -16,6 +19,7 @@ def generate_meshing_datamodels():
         "pm_file_management",
         "preferences",
         "workflow",
+        "meshing_workflow",
     ]
     for meshing_datamodel in meshing_datamodels:
         try:
@@ -25,8 +29,8 @@ def generate_meshing_datamodels():
             if datamodel:
                 meshing_datamodel_roots.append(datamodel.Root)
                 available_datamodels.append(meshing_datamodel)
-        except ModuleNotFoundError:
-            pass
+        except ModuleNotFoundError as ex:
+            logger.debug(ex)
     _write_datamodel_index_doc(available_datamodels, "meshing")
     for root in meshing_datamodel_roots:
         generate(main_menu=root, mode="meshing", is_datamodel=True)
@@ -45,8 +49,8 @@ def generate_solver_datamodels():
             if datamodel:
                 solver_datamodel_roots.append(datamodel.Root)
                 available_datamodels.append(solver_datamodel)
-        except ModuleNotFoundError:
-            pass
+        except ModuleNotFoundError as ex:
+            logger.debug(ex)
     _write_datamodel_index_doc(available_datamodels, "solver")
     for root in solver_datamodel_roots:
         generate(main_menu=root, mode="solver", is_datamodel=True)

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -37,7 +37,7 @@ from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
 from ansys.fluent.core.services.datamodel_se import (
-    PySingletonCommandArgumentsSubItem,
+    PyArgumentsSingletonSubItem,
     arg_class_by_type,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
@@ -62,11 +62,10 @@ _PY_TYPE_BY_DM_TYPE = {
             "ListReal",
             "Real Triplet",
             "RealTriplet",
-            "Real Triplet List",
-            "ListRealTriplet",
         ],
         "list[float]",
     ),
+    **dict.fromkeys(["Real Triplet List", "ListRealTriplet"], "list[list[float]]"),
     **dict.fromkeys(["Dict", "ModelObject"], "dict[str, Any]"),
     "None": "None",
 }
@@ -138,13 +137,33 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
+def _get_api_help_text(info: Dict[str, Any], default: str) -> str:
+    """Prefer attrs.api_help_text, else helpstring, else default."""
+    # Newer servers (Ansys Fluent 2026 R1 and later) may attach a richer help payload under 'attrs' -> 'api_help_text'.
+    # Older entries may only have a plain 'helpstring'. If neither exists, use 'default'.
+    attrs = info.get("attrs") or {}
+    # Get the richer help payload if present; otherwise None.
+    api_help_text = attrs.get("api_help_text")
+    # Return precedence:
+    # 1) api_help_text['stringState'] if available (richer text from server).
+    # 2) info['helpstring'] if present (legacy help).
+    # 3) default (provided by caller) when nothing else exists.
+    return (
+        api_help_text.get("stringState")
+        if api_help_text
+        else info.get("helpstring", default)
+    )
+
+
 def _build_command_query_docstring(
     name: str, static_info: Any, indent: str, is_command: bool
 ):
     doc = StringIO()
     info = static_info["commandinfo"] if is_command else static_info["queryinfo"]
-    if static_info.get("helpstring"):
-        for line in static_info["helpstring"].splitlines():
+
+    top_text = _get_api_help_text(static_info, "")
+    if top_text:
+        for line in top_text.splitlines():
             doc.write(f"{indent}{line}\n")
     elif info.get("docstring"):
         for line in info["docstring"].split("."):
@@ -159,15 +178,17 @@ def _build_command_query_docstring(
             else f"{indent}Query {name}.\n\n"
         )
     if info.get("args"):
-        doc.write(f"{indent}Parameters\n")
+        doc.write(f"\n{indent}Parameters\n")
         doc.write(f"{indent}{'-' * len('Parameters')}\n")
         for arg in info.get("args"):
             doc.write(f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n')
-            if arg.get("helpstring"):
-                for line in arg["helpstring"].splitlines():
+            arg_help = _get_api_help_text(arg, "")
+            if arg_help:
+                for line in arg_help.splitlines():
                     doc.write(f"{indent}    {line}\n")
+                doc.write("\n")
             elif arg.get("docstring"):
-                doc.write(f'{indent}    {arg["docstring"]}\n')
+                doc.write(f'{indent}    {arg["docstring"]}\n\n')
     doc.write(f"\n{indent}Returns\n")
     doc.write(f"{indent}{'-' * len('Returns')}\n")
     doc.write(f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n')
@@ -188,6 +209,7 @@ datamodel_file_name_map = {
     "MeshingUtilities": "meshing_utilities",
     "flicing": "flicing",
     "solverworkflow": "solver_workflow",
+    "meshing_workflow": "meshing_workflow",
 }
 
 
@@ -240,6 +262,13 @@ class DataModelGenerator:
                     "meshing",
                     "solver",
                 ),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_MESHING_WORKFLOW in static_infos:
+            self._static_info["meshing_workflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
+                "meshing_workflow",
+                ("meshing",),
                 self.version,
             )
         if StaticInfoType.DATAMODEL_MESHING in static_infos:
@@ -302,7 +331,7 @@ class DataModelGenerator:
         run_solver_mode = any(
             "solver" in info.modes for _, info in self._static_info.items()
         )
-        run_icing_mode = FluentVersion(self.version) >= FluentVersion.v231 and any(
+        run_icing_mode = any(
             "flicing" in info.modes for _, info in self._static_info.items()
         )
 
@@ -342,7 +371,7 @@ class DataModelGenerator:
     def _write_arg_class(self, f: FileIO, arg_info, indent: str):
         arg_name = arg_info["name"]
         arg_type = arg_info["type"]
-        arg_doc = arg_info.get("helpstring", f"Argument {arg_name}.")
+        arg_doc = _get_api_help_text(arg_info, f"Argument {arg_name}.")
         arg_class = arg_class_by_type[arg_type]
         py_name = _convert_to_py_name(arg_name)
         f.write(f"{indent}class _{py_name}({arg_class.__name__}):\n")
@@ -350,7 +379,7 @@ class DataModelGenerator:
         for line in arg_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n\n')
-        if arg_class == PySingletonCommandArgumentsSubItem:
+        if arg_class == PyArgumentsSingletonSubItem:
             f.write(
                 f"{indent}    def __init__(self, parent, attr, service, rules, path):\n"
             )
@@ -379,7 +408,7 @@ class DataModelGenerator:
         if not name.isidentifier():
             return api_tree
         indent = " " * level * 4
-        singleton_doc = info.get("helpstring", _build_singleton_docstring(name))
+        singleton_doc = _get_api_help_text(info, _build_singleton_docstring(name))
         f.write(f"{indent}class {name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
         for line in singleton_doc.splitlines():
@@ -450,8 +479,9 @@ class DataModelGenerator:
                 f.write(f"{indent}    class {parameter_name}(PyDictionary):\n")
             else:
                 f.write(f"{indent}    class {parameter_name}(PyParameter):\n")
-            parameter_doc = parameter_info.get(
-                "helpstring", _build_parameter_docstring(parameter_name, parameter_type)
+            parameter_doc = _get_api_help_text(
+                parameter_info,
+                _build_parameter_docstring(parameter_name, parameter_type),
             )
             f.write(f'{indent}        """\n')
             for line in parameter_doc.splitlines():
@@ -485,56 +515,55 @@ class DataModelGenerator:
                         info["queries"][k]["queryinfo"],
                         file,
                     )
-        for k in commands:
-            f.write(f"{indent}    class {k}(PyCommand):\n")
-            f.write(f'{indent}        """\n')
-            command_static_info = info["commands"][k]
-            f.write(
-                _build_command_query_docstring(
-                    k, command_static_info, f"{indent}        ", True
-                )
-            )
-            f.write(f'{indent}        """\n')
-            f.write(
-                f"{indent}        class _{k}CommandArguments(PyCommandArguments):\n"
-            )
-            f.write(
-                f"{indent}            def __init__(self, service, rules, command, path, id):\n"
-            )
-            f.write(
-                f"{indent}                super().__init__(service, rules, command, path, id)\n"
-            )
-            args_info = command_static_info["commandinfo"].get("args", [])
-            for arg_info in args_info:
-                arg_name = arg_info["name"]
-                py_name = _convert_to_py_name(arg_name)
-                f.write(
-                    f'{indent}                self.{py_name} = self._{py_name}(self, "{arg_name}", service, rules, path)\n'
-                )
-            f.write("\n")
-            for arg_info in args_info:
-                self._write_arg_class(f, arg_info, f"{indent}            ")
 
-            f.write(
-                f"{indent}        def create_instance(self) -> _{k}CommandArguments:\n"
-            )
-            f.write(f"{indent}            args = self._get_create_instance_args()\n")
-            f.write(f"{indent}            if args is not None:\n")
-            f.write(
-                f"{indent}                return self._{k}CommandArguments(*args)\n\n"
-            )
-            api_tree[k] = "Command"
-        for k in queries:
-            f.write(f"{indent}    class {k}(PyQuery):\n")
-            f.write(f'{indent}        """\n')
-            f.write(
-                _build_command_query_docstring(
-                    k, info["queries"][k], f"{indent}        ", False
+        def _write_static_command_and_query_info(
+            actions, class_name: str, st_info_key: tuple[str], is_command: bool
+        ):
+            for k in actions:
+                f.write(f"{indent}    class {k}({class_name}):\n")
+                f.write(f'{indent}        """\n')
+                actions_static_info = info[st_info_key[0]][k]
+                f.write(
+                    _build_command_query_docstring(
+                        k, actions_static_info, f"{indent}        ", is_command
+                    )
                 )
-            )
-            f.write(f'{indent}        """\n')
-            f.write(f"{indent}        pass\n\n")
-            api_tree[k] = "Query"
+                f.write(f'{indent}        """\n')
+                f.write(f"{indent}        class _{k}Arguments(PyArguments):\n")
+                f.write(
+                    f"{indent}            def __init__(self, service, rules, command, path, id):\n"
+                )
+                f.write(
+                    f"{indent}                super().__init__(service, rules, command, path, id)\n"
+                )
+                args_info = actions_static_info[st_info_key[1]].get("args", [])
+                for arg_info in args_info:
+                    arg_name = arg_info["name"]
+                    py_name = _convert_to_py_name(arg_name)
+                    f.write(
+                        f'{indent}                self.{py_name} = self._{py_name}(self, "{arg_name}", service, rules, path)\n'
+                    )
+                f.write("\n")
+                for arg_info in args_info:
+                    self._write_arg_class(f, arg_info, f"{indent}            ")
+
+                f.write(
+                    f"{indent}        def create_instance(self) -> _{k}Arguments:\n"
+                )
+                f.write(
+                    f"{indent}            args = self._get_create_instance_args()\n"
+                )
+                f.write(f"{indent}            if args is not None:\n")
+                f.write(f"{indent}                return self._{k}Arguments(*args)\n\n")
+                api_tree[k] = st_info_key[2]
+
+        _write_static_command_and_query_info(
+            commands, "PyCommand", ("commands", "commandinfo", "Command"), True
+        )
+        _write_static_command_and_query_info(
+            queries, "PyQuery", ("queries", "queryinfo", "Query"), False
+        )
+
         return api_tree
 
     def write_static_info(self) -> None:
@@ -559,12 +588,12 @@ class DataModelGenerator:
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
                 f.write("    PyQuery,\n")
-                f.write("    PyCommandArguments,\n")
-                f.write("    PyTextualCommandArgumentsSubItem,\n")
-                f.write("    PyNumericalCommandArgumentsSubItem,\n")
-                f.write("    PyDictionaryCommandArgumentsSubItem,\n")
-                f.write("    PyParameterCommandArgumentsSubItem,\n")
-                f.write("    PySingletonCommandArgumentsSubItem\n")
+                f.write("    PyArguments,\n")
+                f.write("    PyArgumentsTextualSubItem,\n")
+                f.write("    PyArgumentsNumericalSubItem,\n")
+                f.write("    PyArgumentsDictionarySubItem,\n")
+                f.write("    PyArgumentsParameterSubItem,\n")
+                f.write("    PyArgumentsSingletonSubItem\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
@@ -611,17 +640,19 @@ if __name__ == "__main__":
             "preferences"
         ),
     }
-    if FluentVersion(version) >= FluentVersion.v231:
-        flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
-        static_infos[StaticInfoType.DATAMODEL_FLICING] = (
-            flicing._datamodel_service_se.get_static_info("flserver")
-        )
-        static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
-            solver._datamodel_service_se.get_static_info("solverworkflow")
-        )
-    if FluentVersion(version) >= FluentVersion.v242:
-        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
-            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+    flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
+    static_infos[StaticInfoType.DATAMODEL_FLICING] = (
+        flicing._datamodel_service_se.get_static_info("flserver")
+    )
+    static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
+        solver._datamodel_service_se.get_static_info("solverworkflow")
+    )
+    static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
+        meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+    )
+    if FluentVersion(version) >= FluentVersion.v261:
+        static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
+            meshing._datamodel_service_se.get_static_info("meshing_workflow")
         )
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."

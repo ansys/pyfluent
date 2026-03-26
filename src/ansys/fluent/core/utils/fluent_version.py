@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -31,6 +31,7 @@ import platform
 from typing import Any
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 
 
 class AnsysVersionNotFound(RuntimeError):
@@ -83,21 +84,18 @@ class FluentVersion(Enum):
 
     Examples
     --------
-    FluentVersion("23.2.0") == FluentVersion.v232
+    FluentVersion("25.2.0") == FluentVersion.v252
 
-    FluentVersion.v232.number == 232
+    FluentVersion.v252.number == 252
 
-    FluentVersion.v232.awp_var == 'AWP_ROOT232'
+    FluentVersion.v252.awp_var == 'AWP_ROOT252'
     """
 
+    v271 = "27.1.0"
     v261 = "26.1.0"
     v252 = "25.2.0"
     v251 = "25.1.0"
     v242 = "24.2.0"
-    v241 = "24.1.0"
-    v232 = "23.2.0"
-    v231 = "23.1.0"
-    v222 = "22.2.0"
 
     @classmethod
     def _missing_(cls, version: Any):
@@ -162,7 +160,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(pyfluent.config.fluent_release_version)
+        return cls(config.fluent_release_version)
 
     @classmethod
     def current_dev(cls):
@@ -173,7 +171,18 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(pyfluent.config.fluent_dev_version)
+        return cls(config.fluent_dev_version)
+
+    @classmethod
+    def minimum_supported(cls):
+        """Return the version member of the minimum supported version.
+
+        Returns
+        -------
+        FluentVersion
+            FluentVersion member corresponding to the minimum supported version.
+        """
+        return next(reversed(cls))
 
     @property
     def awp_var(self):

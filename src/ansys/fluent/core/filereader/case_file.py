@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -48,6 +48,7 @@ from typing import Dict, List
 import defusedxml.ElementTree as ET
 import numpy as np
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
@@ -345,7 +346,7 @@ class Mesh:
         key = np.unique(key)
         value = np.arange(0, len(key))
         replace = np.array([key, value])
-        mask = np.in1d(nodes, key)
+        mask = np.isin(nodes, key)
         nodes[mask] = replace[1, np.searchsorted(replace[0, :], nodes[mask])]
         obj = np.cumsum(nnodes)
         obj = np.insert(obj, 0, 0)
@@ -616,17 +617,17 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_file_name: str | None = None,
-        project_file_name: str | None = None,
+        case_file_name: "PathType | None" = None,
+        project_file_name: "PathType | None" = None,
     ) -> None:
         """Initialize a CaseFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        case_file_name : str
+        case_file_name : :class:`os.PathLike` | str | None
             The path of a case file.
-        project_file_name : str
+        project_file_name : :class:`os.PathLike` | str | None
             The path of a project file from which the case file is selected.
         """
         self._is_case_file = False

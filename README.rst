@@ -66,8 +66,8 @@ To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@a
 
 Installation
 ------------
-The ``ansys-fluent-core`` package supports Python 3.9 through Python
-3.13 on Windows and Linux.
+The ``ansys-fluent-core`` package supports Python 3.10 through Python
+3.14 on Windows and Linux.
 
 Install the latest release from `PyPI
 <https://pypi.org/project/ansys-fluent-core/>`_ with:
@@ -92,23 +92,27 @@ the latest release with:
 
 Dependencies
 ------------
-You must have a licensed copy of Ansys Fluent installed locally. PyFluent
-supports Fluent 2022 R2 and later. The Windows installation of Ansys Fluent automatically
+You must have a licensed copy of Ansys Fluent installed locally. PyFluent supports
+Fluent versions 2024 R2 SP05, 2025 R1 SP04, 2025 R2 SP03, 2026 R1, and later versions.
+The Windows installation of Ansys Fluent automatically
 sets the required environment variables so that PyFluent can find the Ansys Fluent
-installation. Using Fluent 2023 R2 (or 23.2) installed in the default directory as an
-example, the installer automatically sets the ``AWP_ROOT232`` environment variable to point
-to ``C:\Program Files\ANSYS Inc\v232``.
-
+installation. Using Fluent 2025 R2 (or 25.2) installed in the default directory as an
+example, the installer automatically sets the ``AWP_ROOT252`` environment variable to point
+to ``C:\Program Files\ANSYS Inc\v252``.
 On Linux, the required environment variable is not set automatically, and can be set for the
-current user in the current shell session, using Fluent 2023 R2 in the default installation
+current user in the current shell session, using Fluent 2025 R2 in the default installation
 directory as an example, before running PyFluent, with:
 
 .. code:: console
 
-    export AWP_ROOT232=/usr/ansys_inc/v232
+    export AWP_ROOT252=/usr/ansys_inc/v252
 
 For this setting to persist between different shell sessions for the current user, the same
 export command can instead be added to the user's ``~/.profile`` file.
+
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
 
 Getting started
 ---------------
@@ -125,21 +129,22 @@ To launch Fluent from Python, use the ``launch_fluent`` function:
 
 Basic usage
 ~~~~~~~~~~~
-You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
+The ``solver_session`` interface provides a convenient way to launch and
+interact with Fluent.
 
 .. code:: python
 
-  solver_session.tui.file.read_case('elbow.cas.h5')
-  solver_session.tui.define.models.unsteady_2nd_order("yes")
-  solver_session.tui.solve.initialize.initialize_flow()
-  solver_session.tui.solve.dual_time_iterate(2, 3)
+  import ansys.fluent.core as pyfluent
 
-You can also install and use these PyFluent libraries:
+  solver_session = pyfluent.launch_fluent()
 
-- `PyFluent Parametric <https://parametric.fluent.docs.pyansys.com/>`_, which provides
-  access to Fluent's parametric workflows.
+For more information on using the ``solver_session`` interface, see the
+`PyFluent documentation <https://fluent.docs.pyansys.com/version/stable/>`_.
+
+For postprocessing and visualization, you can also install:
+
 - `PyFluent Visualization <https://visualization.fluent.docs.pyansys.com/>`_, which
-  provides postprocessing and visualization capabilities using the `pyvista <https://docs.pyvista.org/>`_
+  enables analysis and plotting through the `pyvista <https://docs.pyvista.org/>`_
   and `matplotlib <https://matplotlib.org/>`_ packages.
 
 License and acknowledgments

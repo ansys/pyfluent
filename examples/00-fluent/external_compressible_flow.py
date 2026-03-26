@@ -1,4 +1,10 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+# ]
+# ///
+
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -67,6 +73,9 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 # the geometry files.
 
 # sphinx_gallery_thumbnail_path = '_static/external_compressible_flow.png'
+import shutil
+import tempfile
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
@@ -87,6 +96,9 @@ meshing_session = pyfluent.launch_fluent(
     mode="meshing",
 )
 print(meshing_session.get_fluent_version())
+
+tmpdir = tempfile.mkdtemp()
+meshing_session.preferences.MeshingWorkflow.TempFolder = tmpdir
 
 ###############################################################################
 # Initialize workflow
@@ -111,7 +123,6 @@ geo_import.Arguments.set_state(
     }
 )
 
-meshing_session.upload(wing_intermediary_file)
 geo_import.Execute()
 
 ###############################################################################
@@ -240,7 +251,7 @@ meshing_session.meshing.File.WriteMesh(FileName="wing.msh.h5")
 # Solve and postprocess
 # ---------------------
 # Once you have completed the watertight geometry meshing workflow, you can
-# solve and postprcess the results.
+# solve and postprocess the results.
 #
 # Switch to solution mode
 # ~~~~~~~~~~~~~~~~~~~~~~~
@@ -258,7 +269,7 @@ solver_session = meshing_session.switch_to_solver()
 # reports a number of other mesh features that are checked. Any errors in the
 # mesh are reported.
 
-solver_session.mesh.check()
+solver_session.settings.mesh.check()
 
 ###############################################################################
 # Define model
@@ -268,7 +279,7 @@ solver_session.mesh.check()
 # model : k-omega
 # k-omega model : sst
 
-viscous = solver_session.setup.models.viscous
+viscous = solver_session.settings.setup.models.viscous
 
 viscous.model = "k-omega"
 viscous.k_omega_model = "sst"
@@ -285,7 +296,7 @@ viscous.k_omega_model = "sst"
 # reference temperature : 273.11 [K]
 # effective temperature : 110.56 [K]
 
-air = solver_session.setup.materials.fluid["air"]
+air = solver_session.settings.setup.materials.fluid["air"]
 
 air.density.option = "ideal-gas"
 
@@ -312,9 +323,11 @@ air.viscosity.sutherland.effective_temperature = 110.56
 # turbulent intensity : 5 [%]
 # turbulent viscosity ratio : 10
 
-pressure_farfield = solver_session.setup.boundary_conditions.pressure_far_field[
-    "pressure_farfield"
-]
+pressure_farfield = (
+    solver_session.settings.setup.boundary_conditions.pressure_far_field[
+        "pressure_farfield"
+    ]
+)
 
 pressure_farfield.momentum.gauge_pressure = 0
 
@@ -337,35 +350,39 @@ pressure_farfield.turbulence.turbulent_viscosity_ratio = 10
 
 # operating pressure : 80600 [Pa]
 
-solver_session.setup.general.operating_conditions.operating_pressure = 80600
+solver_session.settings.setup.general.operating_conditions.operating_pressure = 80600
 
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
 # Initialize the flow field using hybrid initialization.
 
-solver_session.solution.initialization.hybrid_initialize()
+solver_session.settings.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Save case file
 # ~~~~~~~~~~~~~~
 # Save the case file ``external_compressible1.cas.h5``.
 
-solver_session.file.write(file_name="external_compressible.cas.h5", file_type="case")
+solver_session.settings.file.write(
+    file_name="external_compressible.cas.h5", file_type="case"
+)
 
 ###############################################################################
 # Solve for 25 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 25 iterations (100 iterations is recommended, however for this example 25 is sufficient).
 
-solver_session.solution.run_calculation.iterate(iter_count=25)
+solver_session.settings.solution.run_calculation.iterate(iter_count=25)
 
 ###############################################################################
 # Write final case file and data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the final case file and the data.
 
-solver_session.file.write(file_name="external_compressible1.cas.h5", file_type="case")
+solver_session.settings.file.write(
+    file_name="external_compressible1.cas.h5", file_type="case"
+)
 
 ###############################################################################
 # Close Fluent
@@ -373,5 +390,8 @@ solver_session.file.write(file_name="external_compressible1.cas.h5", file_type="
 # Close Fluent.
 
 solver_session.exit()
+
+shutil.rmtree(tmpdir, ignore_errors=True)
+shutil.rmtree("wing_workflow_files", ignore_errors=True)
 
 ###############################################################################

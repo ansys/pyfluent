@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -31,6 +31,7 @@ import weakref
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
@@ -40,7 +41,10 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
+from ansys.fluent.core.session_shared import (
+    _make_datamodel_module,
+    _make_tui_module,
+)
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -50,12 +54,10 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
-    FluentVersion,
     get_version_for_file_name,
 )
 from ansys.fluent.core.workflow import ClassicWorkflow
@@ -147,12 +149,9 @@ class Solver(BaseSession):
         self._reduction_service = self._fluent_connection.create_grpc_service(
             ReductionService, self._error_state
         )
-        if FluentVersion(self._version) >= FluentVersion.v241:
-            self.fields.reduction = service_creator("reduction").create(
-                self._reduction_service, self
-            )
-        else:
-            self.fields.reduction = reduction_old
+        self.fields.reduction = service_creator("reduction").create(
+            self._reduction_service, self
+        )
         self.fields.solution_variable_data = self._solution_variable_data()
 
         monitors_service = service_creator("monitors").create(
@@ -160,7 +159,7 @@ class Solver(BaseSession):
         )
         #: Manage Fluent's solution monitors.
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
-        if not pyfluent.config.disable_monitor_refresh_on_init:
+        if not config.disable_monitor_refresh_on_init:
             self.events.register_callback(
                 (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
                 self.monitors.refresh,
@@ -272,7 +271,7 @@ class Solver(BaseSession):
             "solution/run-calculation/calculate",
             "solution/run-calculation/dual-time-iterate",
         ]
-        if pyfluent.config.support_solver_interrupt:
+        if config.support_solver_interrupt:
             if command.path in interruptible_commands:
                 command._root.solution.run_calculation.interrupt()
 
@@ -326,7 +325,9 @@ class Solver(BaseSession):
             Case file name
         """
 
-        self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
+        self.settings.file.read(
+            file_type="case", file_name=file_name, lightweight_setup=True
+        )
         launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
@@ -347,18 +348,28 @@ class Solver(BaseSession):
     def __call__(self):
         return self.get_state()
 
-    def __getattr__(self, name):
+    def __getattribute__(self, item: str):
+        if item.startswith("__") and item.endswith("__"):
+            return super().__getattribute__(item)
         try:
-            return super().__getattribute__(name)
-        except AttributeError as ex:
-            if name in self.settings.child_names:
+            _connection = super(Solver, self).__getattribute__("_fluent_connection")
+        except AttributeError:
+            _connection = False
+        if _connection is None and item not in BaseSession._inactive_session_allow_list:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{item}'"
+            )
+        try:
+            return super(Solver, self).__getattribute__(item)
+        except AttributeError:
+            settings = super(Solver, self).__getattribute__("settings")
+            if item in settings.child_names:
                 warnings.warn(
-                    f"'{name}' is deprecated. Use 'settings.{name}' instead.",
+                    f"'{item}' is deprecated. Use 'settings.{item}' instead.",
                     DeprecatedSettingWarning,
                 )
-                return getattr(self.settings, name)
-            else:
-                raise ex
+                return getattr(settings, item)
+            raise
 
     def __dir__(self):
         dir_list = set(super().__dir__()) - {

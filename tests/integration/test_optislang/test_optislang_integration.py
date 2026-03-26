@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -31,6 +31,7 @@ from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -54,7 +55,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     """
     # Step 1: Launch fluent session and read case file with and without data file
     solver_session = mixing_elbow_param_case_data_session
-    assert solver_session.is_server_healthy()
+    assert solver_session.is_active()
     if not solver_session.connection_properties.inside_container:
         solver_session.chdir(pyfluent.config.examples_path)
     case_name = "elbow_param.cas.h5"
@@ -140,8 +141,6 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     # A bug has been submitted to address this
     assert output_unit == "K"
 
-    solver_session.exit()
-
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
@@ -222,10 +221,11 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     - Session health
     """
     # Step 1: Launch fluent session in meshing mode
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     meshing_session = pyfluent.launch_fluent(
-        mode="meshing", precision="double", processor_count=2
+        mode="meshing", precision="double", processor_count=2, **grpc_kwds
     )
-    assert meshing_session.is_server_healthy()
+    assert meshing_session.is_active()
     if not meshing_session.connection_properties.inside_container:
         meshing_session.chdir(pyfluent.config.examples_path)
     temporary_resource_path = (

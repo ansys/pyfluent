@@ -1,4 +1,12 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
+#   "matplotlib",
+# ]
+# ///
+
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -64,7 +72,7 @@ import_filename = examples.download_file(
 # Launch Fluent session with solver mode and print Fluent version
 # ---------------------------------------------------------------
 
-session = pyfluent.launch_fluent(precision="double", processor_count=2, version="3d")
+session = pyfluent.launch_fluent(precision="double", processor_count=2, dimension=3)
 print(session.get_fluent_version())
 
 ####################################################################################
@@ -295,14 +303,7 @@ session.settings.file.write(file_type="case-data", file_name="brake-final.cas.h5
 ###############################################
 # Temperature contour object
 # --------------------------
-contour1 = Contour(solver=session)
-
-###############################################
-# Set contour properties
-# ----------------------
-
-contour1.field = "temperature"
-contour1.surfaces = [
+contour1_surfaces = [
     "wall-disc1",
     "wall-disc2",
     "wall-pad-disc2",
@@ -312,6 +313,12 @@ contour1.surfaces = [
     "wall-geom-1-innerpad",
     "wall-geom-1-outerpad",
 ]
+contour1 = Contour(solver=session, field="temperature", surfaces=contour1_surfaces)
+
+###############################################
+# Set contour properties
+# ----------------------
+
 contour1.range.option = "auto-range-off"
 contour1.range.auto_range_off.minimum = 300
 contour1.range.auto_range_off.maximum = 400

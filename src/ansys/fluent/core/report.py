@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,7 +26,7 @@ from importlib.metadata import requires
 
 from packaging.requirements import Requirement
 
-import ansys.tools.report as pyansys_report
+import ansys.tools.common.report as pyansys_report
 
 ANSYS_ENV_VARS = [
     "ANSYSLMD_LICENSE_FILE",
@@ -58,6 +58,7 @@ ANSYS_ENV_VARS = [
     "REMOTING_PORTS",
     "REMOTING_SERVER_ADDRESS",
     "SERVER_INFO_DIR",
+    "PYFLUENT_CONTAINER_INSECURE_MODE",
 ]
 
 

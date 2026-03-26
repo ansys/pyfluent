@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,18 +20,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_UNKNOWN
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.launcher.launch_options import FluentMode
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 
 
-@pytest.mark.skip(reason="This test works fine locally but fails on CI")
+@pytest.mark.skip(reason=SKIP_UNKNOWN)
+# This test works fine locally but fails on CI
 @pytest.mark.fluent_version(">=23.1")
 def test_pre_post_session():
     file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     pre_post = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PRE_POST)
+    assert (
+        FluentMode.PRE_POST.get_fluent_value() is FluentMode.SOLVER.get_fluent_value()
+    )
     pre_post.settings.file.read_case(file_name=file_name)
     pre_post.settings.solution.initialization.hybrid_initialize()
     with pytest.raises(InactiveObjectError):

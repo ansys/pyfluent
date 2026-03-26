@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -23,6 +23,7 @@
 import gc
 from time import sleep
 
+from conftest import SKIP_INVESTIGATING
 from google.protobuf.json_format import MessageToDict
 import pytest
 from util import create_datamodel_root_in_server, create_root_using_datamodelgen
@@ -32,11 +33,13 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyArguments,
+    PyArgumentsSingletonSubItem,
+    PyArgumentsTextualSubItem,
     PyCommand,
     PyMenuGeneric,
     PyNumerical,
-    PySingletonCommandArgumentsSubItem,
-    PyTextualCommandArgumentsSubItem,
+    PyQuery,
     ReadOnlyObjectError,
     _convert_value_to_variant,
     _convert_variant_to_value,
@@ -192,7 +195,7 @@ def test_add_on_affected(new_meshing_session):
         lambda obj: data.append(True)
     )
     assert data == []
-    wt = meshing.watertight()
+    wt = meshing.watertight(legacy=True)
     sleep(5)
     assert len(data) > 0
     assert data[0]
@@ -287,7 +290,8 @@ def test_add_on_command_executed(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2999
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(
@@ -387,11 +391,11 @@ def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
 
     assert x.LengthUnit.get_state() == "ft"
 
-    assert x.CadImportOptions.ExtractFeatures()
+    assert not x.ImportCadPreferences.ShowImportCadPreferences()
 
-    x.CadImportOptions.ExtractFeatures.set_state(False)
+    x.ImportCadPreferences.ShowImportCadPreferences.set_state(True)
 
-    assert not x.CadImportOptions.ExtractFeatures()
+    assert x.ImportCadPreferences.ShowImportCadPreferences()
 
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
@@ -413,6 +417,12 @@ def test_task_object_keys_are_display_names(new_meshing_session):
 
 def test_generic_datamodel(new_solver_session):
     solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.setup.general.solver.time = "unsteady-2nd-order"
+    solver.solution.initialization.hybrid_initialize()
     solver.scheme.eval("(init-flserver)")
     flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
@@ -813,30 +823,31 @@ def test_set_command_args_and_sub_args(new_meshing_session):
     meshing = new_meshing_session
     ig = meshing.meshing.ImportGeometry.create_instance()
 
+    ig.FileFormat = "Mesh"
+
     # Command Arguments
     assert ig.MeshUnit() == "m"
     ig.MeshUnit = "mm"
     assert ig.MeshUnit() == "mm"
 
     # Command Arguments SubItem
-    assert ig.CadImportOptions.OneZonePer() == "body"
-    ig.CadImportOptions.OneZonePer = "face"
-    assert ig.CadImportOptions.OneZonePer() == "face"
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is False
+    ig.ImportCadPreferences.ShowImportCadPreferences = True
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is True
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=26.1")
 def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session
     ic = meshing.meshing.LoadCADGeometry.create_instance()
 
-    d = ic.Refaceting.Deviation.get_state()
-    cd = ic.Refaceting.CustomDeviation.get_state()
-    assert d == cd
+    ic.Refaceting.Refacet = True
 
-    ic.Refaceting.Deviation.set_state(1.2)
-    d = ic.Refaceting.Deviation.get_state()
-    cd = ic.Refaceting.CustomDeviation.get_state()
-    assert d == cd
+    assert ic.Refaceting.FacetResolution() == "Medium"
+    assert ic.Refaceting.NormalAngle() == 8.0
+
+    ic.Refaceting.FacetResolution = "Coarse"
+    assert ic.Refaceting.NormalAngle() == 16.0
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -846,26 +857,86 @@ def test_field_level_help(new_meshing_session):
     deviation = meshing.PartManagement.AssemblyNode["node-1"].Refaceting.Deviation
     assert isinstance(deviation, PyNumerical)
     # Field-level help at parameter level
-    assert deviation.__doc__.strip().startswith(
-        "Specify the distance between facet edges and the geometry edges. Decreasing this value"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert deviation.__doc__.strip().startswith(
+            "The distance between facet edges and geometry edges, where lower values result in more facets along curved edges."
+        )
+    else:
+        assert deviation.__doc__.strip().startswith(
+            "Specify the distance between facet edges and the geometry edges. Decreasing this value"
+        )
     # TODO Test Field-level help at singleton level when we have that in the datamodel
     assert meshing.meshing.ImportGeometry, PyCommand
     # Field-level help at command level
-    assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
-        "Specify the CAD geometry that you want to work with. Choose from"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Imports a geometry file for meshing tasks."
+        )
+    else:
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Specify the CAD geometry that you want to work with. Choose from"
+        )
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
-    assert isinstance(import_geometry.FileFormat, PyTextualCommandArgumentsSubItem)
+    assert isinstance(import_geometry.FileFormat, PyArgumentsTextualSubItem)
     # Field-level help at parameter-type command argument level
     assert import_geometry.FileFormat.__doc__.strip().startswith(
         "Indicate whether the imported geometry is a CAD File or"
     )
     linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
-    assert isinstance(
-        linear_mesh_pattern.PatternVector, PySingletonCommandArgumentsSubItem
-    )
+    assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
-    assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
-        "Specify a name for the mesh pattern or use the default value."
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Represents a vector defining the direction and magnitude of a linear mesh pattern within a meshing framework."
+        )
+    else:
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Specify a name for the mesh pattern or use the default value."
+        )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=25.1")
+def test_py_query(new_meshing_session):
+    meshing_session = new_meshing_session
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
+    meshing_session.tui.file.read_case(import_filename)
+    assert isinstance(
+        meshing_session.meshing_utilities.get_labels_on_face_zones, PyQuery
+    )
+    get_labels_on_face_zones_instance = (
+        meshing_session.meshing_utilities.get_labels_on_face_zones.create_instance()
+    )
+    assert isinstance(get_labels_on_face_zones_instance, PyArguments)
+
+    if meshing_session.get_fluent_version() >= FluentVersion.v261:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": None,
+            "face_zone_id_list": None,
+            "face_zone_name_pattern": "",
+        }
+    else:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": [],
+            "face_zone_id_list": [],
+            "face_zone_name_pattern": "",
+        }
+
+    get_labels_on_face_zones_instance.face_zone_name_list = ["wall-inlet", "wall-elbow"]
+
+    if meshing_session.get_fluent_version() >= FluentVersion.v261:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": ["wall-inlet", "wall-elbow"],
+            "face_zone_name_pattern": "",
+        }
+    else:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": ["wall-inlet", "wall-elbow"],
+            "face_zone_id_list": [],
+            "face_zone_name_pattern": "",
+        }

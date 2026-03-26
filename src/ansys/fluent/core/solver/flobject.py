@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -41,7 +41,7 @@ Example
 from __future__ import annotations
 
 import collections
-from contextlib import contextmanager, nullcontext
+from contextlib import contextmanager, nullcontext, suppress
 import fnmatch
 import hashlib
 import inspect
@@ -105,6 +105,14 @@ class InactiveObjectError(RuntimeError):
     def __init__(self, python_path):
         """Initialize InactiveObjectError."""
         super().__init__(f"'{python_path}' is currently inactive.")
+
+
+class ReadOnlyActionError(RuntimeError):
+    """Read-only action execution."""
+
+    def __init__(self, python_path):
+        """Initialize ReadOnlyActionError."""
+        super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
 
 class _InlineConstants:
@@ -686,9 +694,11 @@ class Textual(Property):
         allowed_types = (str, VariableDescriptor)
 
         if not isinstance(state, allowed_types):
-            expected = " or ".join(t.__name__ for t in allowed_types)
+            if self._has_migration_adapter:
+                return self.base_set_state(state=state, **kwargs)
             raise TypeError(
-                f"Expected state to be {expected}, got {type(state).__name__}."
+                f"Expected state to be {' or '.join(t.__name__ for t in allowed_types)}, "
+                f"got {type(state).__name__}."
             )
         return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
@@ -817,9 +827,20 @@ class SettingsBase(Base, Generic[StateT]):
         """
         return value
 
-    def __call__(self) -> StateT:
-        """Alias for self.get_state."""
-        return self.get_state()
+    def __call__(self, *args, **kwargs):
+        """Get or set the state of the object."""
+        if kwargs:
+            # Send value of the first key only
+            if len(kwargs) > 1:
+                warnings.warn(
+                    f"Only the first keyword argument is used when setting state at {self.python_path}.",
+                    PyFluentUserWarning,
+                )
+            self.set_state(next(iter(kwargs.values())))
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
@@ -1499,6 +1520,26 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
         return CombinedNamedObject([self, other])
 
+    def list(self):
+        """Print the object names."""
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list(object_path=self.path)
+        else:
+            return self.list_1()
+
+    def list_properties(self, object_name):
+        """Print the properties of the given object name.
+
+        Parameters
+        ----------
+        object_name : str
+            Name of the object whose properties are to be listed.
+        """
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
+        else:
+            return self.list_properties_1(object_name=object_name)
+
 
 class CombinedNamedObject:
     """A ``CombinedNamedObject`` contains the concatenated named-objects."""
@@ -1654,6 +1695,77 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         else:
             return getattr(super(), name)
 
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the list object.
+
+        For Quantity-like inputs containing sequence values, convert once to the
+        child target units (when available) and apply in a single bulk update.
+
+        Raises
+        ------
+        UnhandledQuantity
+            If a Quantity-like input cannot be interpreted or converted to
+            target units.
+        """
+        if kwargs or state is None:
+            return super().set_state(state=state, **kwargs)
+
+        quantity = None
+        try:
+            # Accept either a concrete Quantity or tuple shorthand
+            # (sequence, units) for list-style unit-aware updates.
+            if isinstance(state, ansys.units.Quantity):
+                quantity = state
+            elif (
+                isinstance(state, tuple)
+                and len(state) == 2
+                and isinstance(state[0], collections.abc.Sequence)
+                and not isinstance(state[0], (str, bytes, bytearray))
+            ):
+                quantity = ansys.units.Quantity(*state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        if quantity is None:
+            return super().set_state(state=state, **kwargs)
+
+        try:
+            # Materialize values once so we can determine target size before
+            # any conversion or server update.
+            values = list(quantity.value)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        # Keep list-object cardinality in sync before the final bulk set.
+        size = len(values)
+        if self.get_size() != size:
+            with self._while_resizing():
+                self.flproxy.resize_list_object(self.path, size)
+        if len(self._objects) != size:
+            self._update_objects()
+
+        target_units = None
+        if size > 0:
+            child = self[0]
+            # First support direct numerical list children.
+            if isinstance(child, RealNumerical):
+                target_units = child.units()
+            else:
+                # Then support wrapped schemas where units live under .value.
+                child_value = getattr(child, "value", None)
+                if isinstance(child_value, RealNumerical):
+                    target_units = child_value.units()
+
+        if target_units is not None:
+            try:
+                # Convert once using the resolved target units and send plain
+                # floats in a single bulk update.
+                values = [float(v) for v in quantity.to(target_units).value]
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
+
+        return super().set_state(state=values, **kwargs)
+
 
 class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
@@ -1743,7 +1855,7 @@ class BaseCommand(Action):
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1760,6 +1872,8 @@ class BaseCommand(Action):
                     else:
                         print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
+            if "path" in kwds:
+                kwds["path_1"] = kwds.pop("path")
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
             if (
                 not config.disable_parameter_list_return_fix
@@ -1846,6 +1960,8 @@ class Command(BaseCommand):
         """Call a command with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
+        if self.is_read_only():
+            raise ReadOnlyActionError(self.python_path)
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
@@ -1860,6 +1976,8 @@ class CommandWithPositionalArgs(BaseCommand):
         """Call a command with the specified positional and keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
+        if self.is_read_only():
+            raise ReadOnlyActionError(self.python_path)
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
@@ -1874,6 +1992,8 @@ class Query(Action):
         """Call a query with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
+        if self.is_read_only():
+            raise ReadOnlyActionError(self.python_path)
         kwds = _get_new_keywords(self, **kwds)
         scmKwds = {}
         for arg, value in kwds.items():
@@ -1945,10 +2065,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object lookup without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 return cobj[name]
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __setitem__(self, name, value):
@@ -1959,21 +2079,21 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object deletion without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 del cobj[name]
                 return
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __iter__(self):
         """Iterator for child named objects."""
         for cname in self.child_names:
-            try:
+            # Use suppress to ignore exceptions during child object iteration without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 for item in getattr(self, cname):
                     yield item
-            except Exception:
-                continue
 
     def __len__(self):
         """Number of child named objects."""
@@ -2345,14 +2465,15 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import config, utils
+    from ansys.fluent.core.module_config import config
+    from ansys.fluent.core.utils import load_module as _load_module
 
     if config.use_runtime_python_classes:
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
-            settings = utils.load_module(
+            settings = _load_module(
                 f"settings_{version}",
                 config.codegen_outdir / "solver" / f"settings_{version}.py",
             )

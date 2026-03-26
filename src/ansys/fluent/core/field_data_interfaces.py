@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -34,8 +34,10 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+from ansys.units.variable_descriptor import VariableDescriptor
 
-_to_field_name_str = naming_strategy().to_string
+_naming_strategy_instance = naming_strategy()
+_to_field_name_str = _naming_strategy_instance.to_string
 
 
 class SurfaceDataType(Enum):
@@ -90,6 +92,66 @@ class PathlinesFieldDataRequest(NamedTuple):
     velocity_domain: str | None = "all-phases"
     zones: list | None = None
     flatten_connectivity: bool = False
+
+
+def _set_namedtuple_field_docs(cls: type, field_docs: dict[str, str]) -> None:
+    """Set docstrings for NamedTuple-generated field attributes.
+
+    Without this, Sphinx may render default ``NamedTuple`` field docs like
+    "Alias for field number N" in attribute/member tables.
+    """
+    for field_name, field_doc in field_docs.items():
+        getattr(cls, field_name).__doc__ = field_doc
+
+
+_set_namedtuple_field_docs(
+    SurfaceFieldDataRequest,
+    {
+        "data_types": "Surface data entries to request: vertices, face connectivity, face normals, and face centroids.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+        "overset_mesh": "Whether overset mesh entities should be included when available.",
+        "flatten_connectivity": "Whether face connectivity is returned in flattened format.",
+    },
+)
+
+_set_namedtuple_field_docs(
+    ScalarFieldDataRequest,
+    {
+        "field_name": "Scalar field name to request.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+        "node_value": "Whether to request nodal values. If ``False``, element values are requested.",
+        "boundary_value": "Whether to request boundary values when supported.",
+    },
+)
+
+_set_namedtuple_field_docs(
+    VectorFieldDataRequest,
+    {
+        "field_name": "Vector field name to request.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+    },
+)
+
+_set_namedtuple_field_docs(
+    PathlinesFieldDataRequest,
+    {
+        "field_name": "Scalar field name to sample along computed pathlines.",
+        "surfaces": "A sequence of valid Fluent surfaces, each identified by either an integer ID, a name string, or a settings API surface object (or any object with a name() -> str method).",
+        "additional_field_name": "Optional additional scalar field to include in the response.",
+        "provide_particle_time_field": "Whether to include a particle-time field in the output.",
+        "node_value": "Whether to request nodal values.",
+        "steps": "Maximum number of integration steps per pathline.",
+        "step_size": "Integration step size.",
+        "skip": "Number of sampled points to skip.",
+        "reverse": "Whether to integrate pathlines in reverse direction.",
+        "accuracy_control_on": "Whether adaptive accuracy control is enabled.",
+        "tolerance": "Tolerance used when accuracy control is enabled.",
+        "coarsen": "Coarsening factor applied to pathline output.",
+        "velocity_domain": "Velocity domain used for pathline integration.",
+        "zones": "Optional zones used to constrain pathline computation.",
+        "flatten_connectivity": "Whether line connectivity is returned in flattened format.",
+    },
+)
 
 
 class BaseFieldInfo(ABC):
@@ -360,15 +422,45 @@ class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
 
-    def is_active(self, field_name):
-        """Check whether a field is active in the given context."""
-        if _to_field_name_str(field_name) in self._available_field_names():
-            return True
-        return False
+    def is_active(self, field_name: VariableDescriptor | str) -> bool:
+        """Check whether a field is active in the given context.
+
+        Parameters
+        ----------
+        field_name : VariableDescriptor | str
+            Field name to check. Can be a VariableDescriptor or a string.
+        """
+        return _to_field_name_str(field_name) in self._available_field_names()
 
     def allowed_values(self):
-        """Lists available scalar or vector field names."""
+        """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
+
+    def allowed_variables(self) -> list[VariableDescriptor]:
+        """Return allowed field names as VariableDescriptor objects.
+
+        Returns
+        -------
+        list[VariableDescriptor]
+            List of VariableDescriptor objects for all allowed fields.
+            Fields without a corresponding VariableDescriptor are excluded,
+            and a warning is issued listing them.
+        """
+        descriptors = []
+        unmatched = []
+        for field_name in self._available_field_names():
+            descriptor = _naming_strategy_instance.to_variable_descriptor(field_name)
+            if descriptor is not None:
+                descriptors.append(descriptor)
+            else:
+                unmatched.append(field_name)
+        if unmatched:
+            warnings.warn(
+                "The following variables are available but do not have "
+                f"corresponding descriptors: {', '.join(sorted(unmatched))}",
+                stacklevel=2,
+            )
+        return descriptors
 
     def __call__(self):
         return self._available_field_names()

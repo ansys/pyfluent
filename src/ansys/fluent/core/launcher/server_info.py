@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -53,7 +53,7 @@ def _get_server_info_file_names(use_tmpdir=True) -> tuple[str, str]:
     temporary directory if ``use_tmpdir`` is True, otherwise it is created in the current working
     directory.
     """
-    from ansys.fluent.core import config
+    from ansys.fluent.core.module_config import config
 
     server_info_dir = config.fluent_server_info_dir
     dir_ = (
@@ -96,8 +96,9 @@ def _get_server_info(
     port: int | None = None,
     password: str | None = None,
 ):
-    """Get server connection information of an already running session."""
-    from ansys.fluent.core import config
+    """Get server connection information of an already running session.
+    Returns (ip, port, password) or (unix_socket, password)"""
+    from ansys.fluent.core.module_config import config
 
     if not (ip and port) and not server_info_file_name:
         raise IpPortNotProvided()
@@ -108,7 +109,11 @@ def _get_server_info(
         )
     else:
         if server_info_file_name:
-            ip, port, password = _parse_server_info_file(server_info_file_name)
+            values = _parse_server_info_file(server_info_file_name)
+            if len(values) == 2:
+                return values
+            else:
+                ip, port, password = values
         ip = ip or config.launch_fluent_ip or "127.0.0.1"
         port = port or config.launch_fluent_port
 

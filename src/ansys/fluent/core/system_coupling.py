@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -29,7 +29,7 @@ import xml.etree.ElementTree as XmlET
 
 from defusedxml.ElementTree import fromstring
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -77,11 +77,6 @@ class SystemCoupling:
     def __init__(self, solver):
         """Initialize SystemCoupling."""
         self._solver = solver
-        # version check - this requires Fluent 2024 R1 or newer.
-        if self._solver.get_fluent_version() < FluentVersion.v241:
-            raise RuntimeError(
-                f"Using {str(self._solver.get_fluent_version())}. PySystemCoupling integration requires {str(FluentVersion.v241)} or later."
-            )
         if self._solver.get_fluent_version() >= FluentVersion.v251:
             # enable feature to be able to make System Coupling settings APIs calls
             self._solver.scheme.eval("(enable-feature 'sc/participant-info)")
@@ -236,8 +231,13 @@ class SystemCoupling:
         """
 
         def get_scp_string() -> str:
-            """Get the SCP file contents in the form of an XML string."""
+            """Get the SCP file contents in the form of an XML string.
 
+            Raises
+            ------
+            FileNotFoundError
+                If the SCP file cannot be created or located.
+            """
             scp_file_name = "fluent.scp"
             self._solver.settings.setup.models.system_coupling.write_scp_file(
                 file_name=scp_file_name
@@ -252,15 +252,14 @@ class SystemCoupling:
                 # the local Fluent container working directory will correspond to
                 # pyfluent.EXAMPLES_PATH in the host, so that is where the SCP file
                 # will be written.
-                examples_path_scp = os.path.join(
-                    pyfluent.config.examples_path, scp_file_name
-                )
+                examples_path_scp = os.path.join(config.examples_path, scp_file_name)
                 if os.path.exists(examples_path_scp):
                     scp_file_name = examples_path_scp
 
-            assert os.path.exists(
-                scp_file_name
-            ), f"ERROR: could not create System Coupling SCP file: {scp_file_name}"
+            if not os.path.exists(scp_file_name):
+                raise FileNotFoundError(
+                    f"Could not create System Coupling SCP file: {scp_file_name}"
+                )
 
             with open(scp_file_name, "r") as f:
                 xml_string = f.read()

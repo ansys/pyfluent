@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -296,9 +296,9 @@ def get_si_unit_for_fluent_quantity(
     """
     # The settings API should return None for the units-quantity
     # attribute only for dimensionless variables
-    if quantity is None:
+    if not quantity:
         return ""
-    if isinstance(quantity, list):  # real vector
+    if isinstance(quantity, list):
         quantity = quantity[0]
     if not isinstance(quantity, str):
         raise InvalidQuantityType(quantity)

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -30,7 +30,7 @@ import grpc
 from grpc_health.v1 import health_pb2 as HealthCheckModule
 from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -82,7 +82,7 @@ class HealthCheckService:
         response = self._stub.Check(
             request,
             metadata=self._metadata,
-            timeout=pyfluent.config.check_health_timeout,
+            timeout=config.check_health_timeout,
         )
         return HealthCheckService.Status(response.status)
 

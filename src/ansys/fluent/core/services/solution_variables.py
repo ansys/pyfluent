@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -42,7 +42,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
-from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as naming_strategy,
 )
@@ -344,18 +344,10 @@ class _AllowedSvarNames:
             zone_names=zone_names, domain_name=domain_name
         ).solution_variables
 
-    #   pylint: disable=unused-argument
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "solution_variable_name",
-                "new_arg": "variable_name",
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.35.1",
-        deprecated_reason="'solution_variable_name' is deprecated. Use 'variable_name' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="solution_variable_name",
+        new_args="variable_name",
+        version="v0.35.1",
     )
     def is_valid(
         self,
@@ -366,18 +358,10 @@ class _AllowedSvarNames:
         """Check whether solution variable name is valid or not."""
         return variable_name in self(zone_names=zone_names, domain_name=domain_name)
 
-    #   pylint: disable=unused-argument
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "solution_variable_name",
-                "new_arg": "variable_name",
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.35.1",
-        deprecated_reason="'solution_variable_name' is deprecated. Use 'variable_name' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="solution_variable_name",
+        new_args="variable_name",
+        version="v0.35.1",
     )
     def valid_name(
         self,
@@ -608,18 +592,10 @@ class SolutionVariableData:
             self._solution_variable_info
         )
 
-    #   pylint: disable=unused-argument
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "solution_variable_name",
-                "new_arg": "variable_name",
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.35.1",
-        deprecated_reason="'solution_variable_name' is deprecated. Use 'variable_name' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="solution_variable_name",
+        new_args="variable_name",
+        version="v0.35.1",
     )
     def create_empty_array(
         self,
@@ -632,6 +608,11 @@ class SolutionVariableData:
         This array can be populated  with values to set SVAR data.
         """
         self._update_solution_variable_info()
+        variable_name = self._allowed_solution_variable_names.valid_name(
+            variable_name,
+            [zone_name],
+            domain_name,
+        )
 
         zones_info = self._solution_variable_info.get_zones_info()
         if zone_name in zones_info.zone_names:
@@ -645,18 +626,10 @@ class SolutionVariableData:
                     dtype=solution_variables_info[variable_name].field_type,
                 )
 
-    #   pylint: disable=unused-argument
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "solution_variable_name",
-                "new_arg": "variable_name",
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.35.1",
-        deprecated_reason="'solution_variable_name' is deprecated. Use 'variable_name' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="solution_variable_name",
+        new_args="variable_name",
+        version="v0.35.1",
     )
     def get_data(
         self,
@@ -703,18 +676,10 @@ class SolutionVariableData:
             extract_svars(self._service.get_data(svars_request)),
         )
 
-    #   pylint: disable=unused-argument
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "solution_variable_name",
-                "new_arg": "variable_name",
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.35.1",
-        deprecated_reason="'solution_variable_name' is deprecated. Use 'variable_name' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="solution_variable_name",
+        new_args="variable_name",
+        version="v0.35.1",
     )
     def get_svar_data(
         self,
@@ -733,18 +698,10 @@ class SolutionVariableData:
             domain_name=domain_name,
         )
 
-    #   pylint: disable=unused-argument
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "solution_variable_name",
-                "new_arg": "variable_name",
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.35.1",
-        deprecated_reason="'solution_variable_name' is deprecated. Use 'variable_name' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="solution_variable_name",
+        new_args="variable_name",
+        version="v0.35.1",
     )
     def set_data(
         self,
@@ -768,6 +725,11 @@ class SolutionVariableData:
         None
         """
         self._update_solution_variable_info()
+        variable_name = self._allowed_solution_variable_names.valid_name(
+            variable_name,
+            list(zone_names_to_data.keys()),
+            domain_name,
+        )
         domain_id = self._allowed_domain_names.valid_name(domain_name)
         zone_ids_to_svar_data = {
             self._allowed_zone_names.valid_name(zone_name): solution_variable_data
@@ -846,18 +808,10 @@ class SolutionVariableData:
 
         self._service.set_data(generate_set_data_requests())
 
-    #   pylint: disable=unused-argument
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "solution_variable_name",
-                "new_arg": "variable_name",
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.35.1",
-        deprecated_reason="'solution_variable_name' is deprecated. Use 'variable_name' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="solution_variable_name",
+        new_args="variable_name",
+        version="v0.35.1",
     )
     def set_svar_data(
         self,

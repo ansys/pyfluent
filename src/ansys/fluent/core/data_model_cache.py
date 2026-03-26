@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -126,7 +126,7 @@ class _CacheImpl:
 
 def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str):
     """Check if a parameter is a dict type."""
-    from ansys.fluent.core import config
+    from ansys.fluent.core.module_config import config
     from ansys.fluent.core.services.datamodel_se import (
         PyDictionary,
         PyNamedObjectContainer,

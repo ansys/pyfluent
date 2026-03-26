@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -24,7 +24,8 @@ from concurrent.futures import Future
 
 import pytest
 
-from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture
+from ansys.fluent.core import config
+from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, _SlurmWrapper
 
 
 class SlurmEnvironment:
@@ -45,6 +46,7 @@ class SlurmFutureException:
 
 @pytest.fixture
 def slurm_future(monkeypatch: pytest.MonkeyPatch) -> SlurmFuture:
+    monkeypatch.setattr(_SlurmWrapper, "is_available", lambda: True)
     env = SlurmEnvironment()
     future = Future()
     future.set_running_or_notify_cancel()
@@ -56,8 +58,20 @@ def slurm_future(monkeypatch: pytest.MonkeyPatch) -> SlurmFuture:
     return slurm_future
 
 
+@pytest.fixture
+def disable_slurm_in_current_machine(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(config, "use_slurm_from_current_machine", False)
+
+
 def test_cancel_slurm_future(slurm_future: SlurmFuture):
     assert slurm_future.cancel()
+
+
+def test_cancel_slurm_future_if_slurm_disabled(
+    slurm_future: SlurmFuture, disable_slurm_in_current_machine
+):
+    with pytest.raises(RuntimeError):
+        slurm_future.cancel()
 
 
 def test_slurm_future_lifecycle(slurm_future: SlurmFuture):
@@ -73,6 +87,19 @@ def test_slurm_future_lifecycle(slurm_future: SlurmFuture):
     assert not slurm_future.pending()
     assert not slurm_future.running()
     assert slurm_future.done()
+
+
+def test_slurm_future_lifecycle_if_slurm_disabled(
+    slurm_future: SlurmFuture, disable_slurm_in_current_machine
+):
+    with pytest.raises(RuntimeError):
+        slurm_future.pending()
+
+    with pytest.raises(RuntimeError):
+        slurm_future.running()
+
+    with pytest.raises(RuntimeError):
+        slurm_future.done()
 
 
 def test_slurm_future_exception(slurm_future: SlurmFuture):

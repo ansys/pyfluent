@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,30 +26,32 @@ from collections.abc import Mapping
 import fnmatch
 import functools
 import json
+import logging
 import os
 from pathlib import Path
 import pickle
 import re
+import warnings
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.error_message import closest_allowed_names
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
 
+warnings.filterwarnings("ignore", category=UserWarning, module="nltk")
+
+logger = logging.getLogger("pyfluent.general")
+
 
 def _get_api_tree_data_file_path():
     """Get API tree data file."""
-    from ansys.fluent.core import config
-
     return (config.codegen_outdir / "api_tree" / "api_objects.json").resolve()
 
 
 def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
-    from ansys.fluent.core import config
-
     return (config.codegen_outdir / f"api_tree_{version}.pickle").resolve()
 
 
@@ -88,7 +90,8 @@ def _generate_api_data(
                 break
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
-        api_tree = pickle.load(f)
+        # Safe to load: file is generated internally by PyFluent
+        api_tree = pickle.load(f)  # nosec B301
 
     def inner(tree, path):
         for k, v in tree.items():
@@ -139,8 +142,6 @@ def _generate_api_data(
         from nltk.corpus import wordnet as wn
 
         _download_nltk_data()
-        from ansys.fluent.core import config
-
         json_file_folder = Path(os.path.join(config.codegen_outdir, "api_tree"))
         json_file_folder.mkdir(parents=True, exist_ok=True)
 
@@ -257,7 +258,7 @@ def _print_search_results(
         )
 
     results = final_results or all_results
-    if pyfluent.config.print_search_results:
+    if config.print_search_results:
         for result in results:
             print(result)
     elif results:
@@ -672,8 +673,8 @@ def search(
             return _search_semantic(
                 search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
-        except ModuleNotFoundError:
-            pass
+        except ModuleNotFoundError as ex:
+            logger.debug(ex)
         except LookupError:
             _download_nltk_data()
             return _search_semantic(

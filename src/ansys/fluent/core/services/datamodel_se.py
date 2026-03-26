@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
-
 from enum import Enum
 import functools
 import itertools
@@ -36,8 +35,8 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -514,9 +513,7 @@ class DatamodelService(StreamingService):
         self.event_streaming = None
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
-        self.cache = (
-            DataModelCache() if pyfluent.config.datamodel_use_state_cache else None
-        )
+        self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
@@ -1075,14 +1072,15 @@ class PyStateContainer(PyCallableStateObject):
         cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
-            try:  # will fail for Fluent 23.1 or before
+            try:
                 self.add_on_attribute_changed(
                     attrib,
                     functools.partial(dict.__setitem__, self._cached_attrs, attrib),
                 )
                 self._cached_attrs[attrib] = cached_val
-            except Exception:
-                pass
+            except Exception as ex:
+                # will fail for Fluent 23.1 or before
+                logger.warning(ex)
         return cached_val
 
     def get_attr(self, attrib: str) -> Any:
@@ -1098,7 +1096,7 @@ class PyStateContainer(PyCallableStateObject):
         Any
             Value of the attribute.
         """
-        if pyfluent.config.datamodel_use_attr_cache:
+        if config.datamodel_use_attr_cache and self.rules != "meshing_workflow":
             return self._get_cached_attr(attrib)
         return self._get_remote_attr(attrib)
 
@@ -1111,16 +1109,6 @@ class PyStateContainer(PyCallableStateObject):
     def is_read_only(self) -> bool:
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
-
-    def help(self) -> None:
-        """Print help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
-        )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "common", "helpstring"]
-        )
-        print(help_string)
 
     def __call__(self, *args, **kwargs) -> Any:
         if kwargs:
@@ -1655,12 +1643,9 @@ class PyNamedObjectContainer:
 
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
-        if self.service.version <= FluentVersion.v241:
-            return self._get_child_object_display_names()
-        else:
-            return self.service.get_object_names(
-                self.rules, convert_path_to_se_path(self.path)
-            )
+        return self.service.get_object_names(
+            self.rules, convert_path_to_se_path(self.path)
+        )
 
     getChildObjectDisplayNames = get_object_names
 
@@ -1805,68 +1790,76 @@ class PyNamedObjectContainer:
     getState = __call__ = get_state
 
 
-class PyQuery:
-    """Query class using the StateEngine-based DatamodelService as the backend. Use this
-    class instead of directly calling the DatamodelService's method.
+class PyAction:
+    """Base class for command/query objects using Datamodel Service."""
 
-    Methods
-    -------
-    __call__()
-        Execute the query.
-    help()
-        Print the query help string.
-    """
+    _operation: str = ""  # "command" or "query"
 
     def __init__(
         self,
         service: DatamodelService,
         rules: str,
-        query: str,
-        path: Path = None,
-    ):
-        """__init__ method of PyQuery class."""
+        name: str,
+        path: Path | None = None,
+    ) -> None:
+        """__init__ method of PyAction class."""
         self.service = service
         self.rules = rules
-        self.query = query
-        if path is None:
-            self.path = []
-        else:
-            self.path = path
+        setattr(self, self._operation, name)
+        self.path = path or []
 
     def __call__(self, *args, **kwds) -> Any:
-        """Execute the query.
-
-        Returns
-        -------
-        Any
-            Return value.
-        """
-        return self.service.execute_query(
-            self.rules, convert_path_to_se_path(self.path), self.query, kwds
+        """Execute the operation (command or query)."""
+        execute_method = getattr(self.service, f"execute_{self._operation}")
+        return execute_method(
+            self.rules,
+            convert_path_to_se_path(self.path),
+            getattr(self, self._operation),
+            kwds,
         )
 
-    def help(self) -> None:
-        """Prints help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
+    def _create_arguments(self) -> str:
+        """Create arguments for this operation."""
+        return self.service.create_command_arguments(
+            self.rules,
+            convert_path_to_se_path(self.path),
+            getattr(self, self._operation),
         )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "query", "helpstring"]
-        )
-        print(help_string)
+
+    def _get_create_instance_args(self):
+        """Prepare arguments for PyArguments constructor."""
+        try:
+            id = self._create_arguments()
+            return [
+                self.service,
+                self.rules,
+                getattr(self, self._operation),
+                self.path.copy(),
+                id,
+            ]
+        except (RuntimeError, ValueError) as e:
+            logger.warning(
+                f"datamodels_se.{self.__class__.__name__} could not create {self._operation} arguments. "
+                f"The underlying DatamodelService reported an error: {e}."
+            )
+
+    def create_instance(self) -> "PyArguments":
+        """Create an operation instance."""
+        args = self._get_create_instance_args()
+        if args is not None:
+            return PyArguments(*args)
 
 
-class PyCommand:
-    """Command class using the StateEngine-based DatamodelService as the backend. Use
-    this class instead of directly calling the DatamodelService's method.
+class PyQuery(PyAction):
+    """Enables querying Fluent’s data model through a simple Python interface."""
 
-    Methods
-    -------
-    __call__()
-        Execute the command.
-    help()
-        Print the command help string.
-    """
+    _operation = "query"
+
+
+class PyCommand(PyAction):
+    """Enables commanding Fluent’s data model through a simple Python interface."""
+
+    _operation = "command"
 
     def __init__(
         self,
@@ -1874,15 +1867,9 @@ class PyCommand:
         rules: str,
         command: str,
         path: Path | None = None,
-    ) -> None:
+    ):
         """__init__ method of PyCommand class."""
-        self.service = service
-        self.rules = rules
-        self.command = command
-        if path is None:
-            self.path = []
-        else:
-            self.path = path
+        super().__init__(service, rules, command, path)
         self.file_behavior = None
 
     def _update_file_behavior(self, file_purpose):
@@ -1933,58 +1920,16 @@ class PyCommand:
         Any
             Return value.
         """
+        processed = []
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
                 kwds[arg] = self.before_execute(value)
-        command = self.service.execute_command(
-            self.rules, convert_path_to_se_path(self.path), self.command, kwds
-        )
-        for arg, value in kwds.items():
-            if self._get_file_purpose(arg):
-                self.after_execute(value)
-        return command
-
-    def help(self) -> None:
-        """Prints help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
-        )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "common", "helpstring"]
-        )
-        print(help_string)
-
-    def _create_command_arguments(self) -> str:
-        commandid = self.service.create_command_arguments(
-            self.rules, convert_path_to_se_path(self.path), self.command
-        )
-        return commandid
-
-    def _get_create_instance_args(self):
-        """Create a command instance."""
+                processed.append(kwds[arg])
         try:
-            id = self._create_command_arguments()
-            return [
-                self.service,
-                self.rules,
-                self.command,
-                self.path.copy(),
-                id,
-            ]
-        # Possible error thrown from the grpc layer
-        except (RuntimeError, ValueError) as e:
-            logger.warning(
-                "datamodels_se.PyCommand was unable to construct command arguments. "
-                "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
-                "Error details: %s",
-                e,
-            )
-
-    def create_instance(self) -> "PyCommandArguments":
-        """Create a command instance."""
-        args = self._get_create_instance_args()
-        if args is not None:
-            return PyCommandArguments(*args)
+            return super().__call__(*args, **kwds)
+        finally:
+            for value in processed:
+                self.after_execute(value)
 
 
 class _InputFile:
@@ -2014,7 +1959,7 @@ class _InOutFile(_InputFile, _OutputFile):
     pass
 
 
-class PyCommandArgumentsSubItem(PyCallableStateObject):
+class PyArgumentsSubItem(PyCallableStateObject):
     """Class representing command argument in datamodel."""
 
     def __init__(
@@ -2025,7 +1970,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyCommandArgumentsSubItem class."""
+        """__init__ method of PyArgumentsSubItem class."""
         self.__dict__.update(
             dict(
                 parent=parent,
@@ -2067,18 +2012,14 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     getAttribValue = get_attr
 
-    def help(self) -> None:
-        """Get help."""
-        print(self.__doc__.strip())
-
     def __setattr__(self, key, value):
-        if isinstance(value, PyCommandArgumentsSubItem):
+        if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
             getattr(self, key).set_state(value)
 
 
-class PyCommandArguments(PyStateContainer):
+class PyArguments(PyStateContainer):
     """Class representing command arguments in datamodel."""
 
     def __init__(
@@ -2089,7 +2030,7 @@ class PyCommandArguments(PyStateContainer):
         path: Path,
         id: str,
     ) -> None:
-        """__init__ method of PyCommandArguments class."""
+        """__init__ method of PyArguments class."""
         super().__init__(service, rules, path)
         self.__dict__.update(
             dict(
@@ -2126,13 +2067,13 @@ class PyCommandArguments(PyStateContainer):
         return self._get_remote_attr(attrib)
 
     def __setattr__(self, key, value):
-        if isinstance(value, PyCommandArgumentsSubItem):
+        if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
             getattr(self, key).set_state(value)
 
 
-class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
+class PyArgumentsTextualSubItem(PyArgumentsSubItem, PyTextual):
     """Class representing textual command argument in datamodel."""
 
     def __init__(
@@ -2143,12 +2084,12 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyTextualCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
+        """__init__ method of PyArgumentsTextualSubItem class."""
+        PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyTextual.__init__(self, service, rules, path)
 
 
-class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical):
+class PyArgumentsNumericalSubItem(PyArgumentsSubItem, PyNumerical):
     """Class representing numerical command argument in datamodel."""
 
     def __init__(
@@ -2159,12 +2100,12 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyNumericalCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
+        """__init__ method of PyArgumentsNumericalSubItem class."""
+        PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyNumerical.__init__(self, service, rules, path)
 
 
-class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionary):
+class PyArgumentsDictionarySubItem(PyArgumentsSubItem, PyDictionary):
     """Class representing dictionary-like command argument in datamodel."""
 
     def __init__(
@@ -2175,12 +2116,12 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyDictionaryCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
+        """__init__ method of PyArgumentsDictionarySubItem class."""
+        PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyDictionary.__init__(self, service, rules, path)
 
 
-class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter):
+class PyArgumentsParameterSubItem(PyArgumentsSubItem, PyParameter):
     """Class representing generic parameter-like command argument in datamodel."""
 
     def __init__(
@@ -2191,8 +2132,8 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyParameterCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(
+        """__init__ method of PyArgumentsParameterSubItem class."""
+        PyArgumentsSubItem.__init__(
             self,
             parent,
             attr,
@@ -2203,7 +2144,7 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         PyParameter.__init__(self, service, rules, path)
 
 
-class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
+class PyArgumentsSingletonSubItem(PyArgumentsSubItem):
     """Class representing singleton-like command argument in datamodel."""
 
     def __init__(
@@ -2214,8 +2155,8 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PySingletonCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(
+        """__init__ method of PyArgumentsSingletonSubItem class."""
+        PyArgumentsSubItem.__init__(
             self,
             parent,
             attr,
@@ -2226,18 +2167,14 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
 
 
 arg_class_by_type = {
-    **dict.fromkeys(
-        ["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem
-    ),
+    **dict.fromkeys(["String", "ListString", "String List"], PyArgumentsTextualSubItem),
     **dict.fromkeys(
         ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt", "Integer List"],
-        PyNumericalCommandArgumentsSubItem,
+        PyArgumentsNumericalSubItem,
     ),
-    "Dict": PyDictionaryCommandArgumentsSubItem,
-    **dict.fromkeys(
-        ["Bool", "Logical", "Logical List"], PyParameterCommandArgumentsSubItem
-    ),
-    "ModelObject": PySingletonCommandArgumentsSubItem,
+    "Dict": PyArgumentsDictionarySubItem,
+    **dict.fromkeys(["Bool", "Logical", "Logical List"], PyArgumentsParameterSubItem),
+    "ModelObject": PyArgumentsSingletonSubItem,
 }
 
 

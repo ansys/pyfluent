@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,17 +22,20 @@
 
 """Provides a module for file transfer service."""
 
+import logging
 import os
 import pathlib
-import random
+import secrets
 import shutil
 from typing import Any, Protocol
 import warnings
 
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils import get_user_data_dir
-from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 import ansys.platform.instancemanagement as pypim
+
+logger = logging.getLogger("pyfluent.general")
 
 # Host path which is mounted to the file-transfer-service container
 MOUNT_SOURCE = str(get_user_data_dir())
@@ -224,28 +227,20 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
     >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
     >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
-    >>> solver_session.file.read_case(file_name="elbow.cas.h5")
-    >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+    >>> solver_session.settings.file.read_case(file_name="elbow.cas.h5")
+    >>> solver_session.settings.file.write_case(file_name="write_elbow.cas.h5")
     >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
     """
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "container_mount_path",
-                "new_arg": "mount_target",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-            {
-                "old_arg": "host_mount_path",
-                "new_arg": "mount_source",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.23.dev1",
-        deprecated_reason="'container_mount_path' and 'host_mount_path' are deprecated. Use 'mount_target' and 'mount_source' instead.",
-        warn_message="",
+    @deprecate_arguments(
+        old_args="container_mount_path",
+        new_args="mount_target",
+        version="v0.23.0",
+    )
+    @deprecate_arguments(
+        old_args="host_mount_path",
+        new_args="mount_source",
+        version="v0.23.0",
     )
     def __init__(
         self,
@@ -254,6 +249,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         port: int | None = None,
         mount_target: str | None = None,
         mount_source: str | None = None,
+        certs_dir: str | None = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -269,6 +265,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
             Path inside the container where ``mount_source`` will be mounted to.
         mount_source: str | Path, optional
             Existing path in the host operating system that will be mounted to ``mount_target``.
+        certs_dir : str, optional
+            Directory containing the TLS certificates. The default is ``None``.
         """
         import docker
 
@@ -279,27 +277,51 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         self.image_tag = image_tag if image_tag else "latest"
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
         self.mount_source = mount_source if mount_source else MOUNT_SOURCE
+        server_command = [
+            "--host=0.0.0.0",
+            "--port=50000",
+            "--allow-remote-host",
+            "--transport-mode=mtls",
+            "--certs-dir=/certs",
+        ]
+
+        volumes = [f"{self.mount_source}:{self.mount_target}"]
+        if certs_dir:
+            volumes.append(f"{certs_dir}:/certs:ro")
         try:
-            self.host_port = port if port else random.randint(5000, 6000)
+            self.host_port = (
+                port if port else secrets.SystemRandom().randint(5000, 6000)
+            )
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
+                volumes=volumes,
+                command=server_command,
             )
         except docker.errors.DockerException:
-            self.host_port = port if port else random.randint(6000, 7000)
+            self.host_port = (
+                port if port else secrets.SystemRandom().randint(6000, 7000)
+            )
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
+                volumes=volumes,
+                command=server_command,
             )
         import ansys.tools.filetransfer as ft
 
-        self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
+        self.client = ft.Client.from_transport_options(
+            transport_options=ft.MTLSOptions(
+                certs_dir=certs_dir,
+                host="localhost",
+                port=self.host_port,
+                allow_remote_host=True,
+            )
+        )
 
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.
@@ -339,7 +361,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
         >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
         >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
-        >>> solver_session.file.read_case(file_name="elbow.cas.h5")
+        >>> solver_session.settings.file.read_case(file_name="elbow.cas.h5")
         """
         files = _get_files(file_name)
         if self.client:
@@ -379,7 +401,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
         >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
-        >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+        >>> solver_session.settings.file.write_case(file_name="write_elbow.cas.h5")
         >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
         """
         files = _get_files(file_name)
@@ -410,6 +432,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self,
         server_ip: str | None = None,
         server_port: int | None = None,
+        certs_dir: str | None = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -419,14 +442,21 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             IP address of the server.
         server_port : int
             Port of the server.
+        certs_dir : str, optional
+            Directory containing the TLS certificates. The default is ``None``.
         """
         import ansys.tools.filetransfer as ft
 
         self.server_ip = server_ip
         self.server_port = server_port
 
-        self._client = ft.Client.from_server_address(
-            f"{self.server_ip}:{self.server_port}"
+        self._client = ft.Client.from_transport_options(
+            transport_options=ft.MTLSOptions(
+                certs_dir=certs_dir,
+                host=self.server_ip if self.server_ip else "localhost",
+                port=self.server_port,
+                allow_remote_host=True,
+            )
         )
 
     def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
@@ -531,12 +561,12 @@ class PimFileTransferService:
                 from simple_upload_server.client import Client
 
                 self.file_service = Client(
-                    token="token",
+                    token="token",  # nosec B106 - Fixed token for internal AnsysLabs upload server; not user-facing credential
                     url=self.upload_server.uri,
                     headers=self.upload_server.headers,
                 )
-            except ModuleNotFoundError:
-                pass
+            except ModuleNotFoundError as ex:
+                logger.debug(ex)
         self.cwd = os.getcwd()
         self.instance_name = self.pim_instance.name.replace("instances/", "")
         self.instance_dir = os.path.join(self.cwd, self.instance_name)

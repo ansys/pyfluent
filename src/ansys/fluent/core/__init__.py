@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -78,10 +78,11 @@ from ansys.fluent.core.session_utilities import (  # noqa: F401
 )
 from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
 from ansys.fluent.core.utils import fldoc
+from ansys.fluent.core.utils.context_managers import using  # noqa: F401
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.36.dev0"
+__version__ = "0.39.dev0"
 
 _VERSION_INFO = None
 """
@@ -141,7 +142,7 @@ _config_by_deprecated_name = {
     "LAUNCH_FLUENT_STDERR": "launch_fluent_stderr",
     "LAUNCH_FLUENT_IP": "launch_fluent_ip",
     "LAUNCH_FLUENT_PORT": "launch_fluent_port",
-    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",
+    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",  # nosec B105: Not a password
 }
 
 

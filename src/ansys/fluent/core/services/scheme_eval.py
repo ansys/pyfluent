@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -147,27 +147,13 @@ def _convert_py_value_to_scheme_pointer(
         _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
         _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
     elif isinstance(val, list) or isinstance(val, tuple):
-        if FluentVersion(version) < FluentVersion.v231:
-            if val:
-                val = list(val)
-                _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
-                _convert_py_value_to_scheme_pointer(val[1:], p.pair.cdr, version)
-        else:
-            for item in val:
-                _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
+        for item in val:
+            _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
     elif isinstance(val, dict):
-        if FluentVersion(version) < FluentVersion.v231:
-            as_list = list(val.items())
-            if as_list:
-                _convert_pair_to_scheme_pointer(as_list[0], p.pair.car, version)
-                _convert_list_of_pairs_to_scheme_pointer(
-                    as_list[1:], p.pair.cdr, version
-                )
-        else:
-            for k, v in val.items():
-                item = p.list.item.add()
-                _convert_py_value_to_scheme_pointer(k, item.pair.car, version)
-                _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
+        for k, v in val.items():
+            item = p.list.item.add()
+            _convert_py_value_to_scheme_pointer(k, item.pair.car, version)
+            _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
 
 
 def _convert_scheme_pointer_to_py_list(p: SchemePointer, version: str) -> dict | list:
@@ -210,22 +196,9 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version: str) -> Any:
     elif p.HasField("sym"):
         return Symbol(p.sym)
     elif p.HasField("pair"):
-        if FluentVersion(version) < FluentVersion.v231:
-            if any(
-                p.pair.cdr.HasField(x)
-                for x in ["b", "fixednum", "flonum", "c", "str", "sym"]
-            ):
-                return (
-                    _convert_scheme_pointer_to_py_value(p.pair.car, version),
-                    _convert_scheme_pointer_to_py_value(p.pair.cdr, version),
-                )
-            else:
-                val = _convert_scheme_pointer_to_py_list(p, version)
-                return val
-        else:
-            car = _convert_scheme_pointer_to_py_value(p.pair.car, version)
-            cdr = _convert_scheme_pointer_to_py_value(p.pair.cdr, version)
-            return (car,) if cdr is None else (car, cdr)
+        car = _convert_scheme_pointer_to_py_value(p.pair.car, version)
+        cdr = _convert_scheme_pointer_to_py_value(p.pair.cdr, version)
+        return (car,) if cdr is None else (car, cdr)
     elif p.HasField("list"):
         is_dict = all(item.HasField("pair") for item in p.list.item)
         if is_dict:
@@ -264,7 +237,7 @@ class SchemeEval:
             version = self.string_eval("(cx-version)")
             self.version = ".".join(version.strip("()").split())
         except Exception:  # for pypim launch
-            self.version = FluentVersion.v231.value
+            self.version = FluentVersion.v252.value
 
     def _eval(self, val: Any, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression.
@@ -282,19 +255,13 @@ class SchemeEval:
         Any
             Output scheme value represented as Python datatype
         """
-        if FluentVersion(self.version) < FluentVersion.v231:
-            request = SchemePointer()
-            _convert_py_value_to_scheme_pointer(val, request, self.version)
-            response = self.service.eval(request)
-            return _convert_scheme_pointer_to_py_value(response, self.version)
-        else:
-            request = SchemeEvalProtoModule.SchemeEvalRequest()
-            _convert_py_value_to_scheme_pointer(val, request.input, self.version)
-            metadata = []
-            if not suppress_prompts:
-                metadata.append(("no-suppress-prompts", "1"))
-            response = self.service.scheme_eval(request, metadata)
-            return _convert_scheme_pointer_to_py_value(response.output, self.version)
+        request = SchemeEvalProtoModule.SchemeEvalRequest()
+        _convert_py_value_to_scheme_pointer(val, request.input, self.version)
+        metadata = []
+        if not suppress_prompts:
+            metadata.append(("no-suppress-prompts", "1"))
+        response = self.service.scheme_eval(request, metadata)
+        return _convert_scheme_pointer_to_py_value(response.output, self.version)
 
     def exec(
         self,

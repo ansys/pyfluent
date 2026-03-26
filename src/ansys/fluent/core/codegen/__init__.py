@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -32,6 +32,7 @@ class StaticInfoType(Enum):
     TUI_SOLVER = auto()
     TUI_MESHING = auto()
     DATAMODEL_WORKFLOW = auto()
+    DATAMODEL_MESHING_WORKFLOW = auto()
     DATAMODEL_MESHING = auto()
     DATAMODEL_PART_MANAGEMENT = auto()
     DATAMODEL_PM_FILE_MANAGEMENT = auto()

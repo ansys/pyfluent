@@ -200,7 +200,7 @@
     - path
     - rules
     - service
-  Class: PyCommandArgumentsSubItem
+  Class: PyArgumentsSubItem
     - getAttribValue
     - getState
     - setState

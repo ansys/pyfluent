@@ -9,16 +9,16 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
   packages: read
-  pull-requests: write
-  issues: write
+  pull-requests: read
+  issues: read
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  MAIN_PYTHON_VERSION: "3.10"
-  FLUENT_IMAGE_TAG: v26.1.latest
-  FLUENT_VERSION: 261
+  MAIN_PYTHON_VERSION: "3.12"
+  FLUENT_IMAGE_TAG: v27.1.latest
+  FLUENT_VERSION: 271
 
 jobs:
   test:
@@ -27,10 +27,17 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -41,18 +48,11 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      - name: Cleanup previous docker containers
-        if: always()
-        run: make cleanup-previous-docker-containers
-
       - name: Update Fluent image
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+          IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
         if: github.ref == 'refs/heads/main'
         run: |
-          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${{ env.FLUENT_IMAGE_TAG }} | sed 's/.*@//')
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${IMAGE_TAG} | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
-
-      - name: Remove all docker images
-        if: always()
-        run: make docker-clean-images

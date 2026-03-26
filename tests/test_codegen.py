@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,6 +25,7 @@ import importlib
 from pathlib import Path
 import pickle
 import shutil
+import sys
 import tempfile
 
 import pytest
@@ -192,6 +193,7 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
 
 _static_info_type_by_rules = {
     "workflow": StaticInfoType.DATAMODEL_WORKFLOW,
+    "meshing_workflow": StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
     "meshing": StaticInfoType.DATAMODEL_MESHING,
     "PartManagement": StaticInfoType.DATAMODEL_PART_MANAGEMENT,
     "PMFileManagement": StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
@@ -234,12 +236,12 @@ from ansys.fluent.core.services.datamodel_se import (
     PyNamedObjectContainer,
     PyCommand,
     PyQuery,
-    PyCommandArguments,
-    PyTextualCommandArgumentsSubItem,
-    PyNumericalCommandArgumentsSubItem,
-    PyDictionaryCommandArgumentsSubItem,
-    PyParameterCommandArgumentsSubItem,
-    PySingletonCommandArgumentsSubItem
+    PyArguments,
+    PyArgumentsTextualSubItem,
+    PyArgumentsNumericalSubItem,
+    PyArgumentsDictionarySubItem,
+    PyArgumentsParameterSubItem,
+    PyArgumentsSingletonSubItem
 )
 
 
@@ -303,6 +305,7 @@ class Root(PyMenu):
             """
             Command C2.
 
+
             Parameters
             ----------
             A2 : float
@@ -311,20 +314,20 @@ class Root(PyMenu):
             -------
             bool
             """
-            class _C2CommandArguments(PyCommandArguments):
+            class _C2Arguments(PyArguments):
                 def __init__(self, service, rules, command, path, id):
                     super().__init__(service, rules, command, path, id)
                     self.A2 = self._A2(self, "A2", service, rules, path)
 
-                class _A2(PyNumericalCommandArgumentsSubItem):
+                class _A2(PyArgumentsNumericalSubItem):
                     """
                     Argument A2.
                     """
 
-            def create_instance(self) -> _C2CommandArguments:
+            def create_instance(self) -> _C2Arguments:
                 args = self._get_create_instance_args()
                 if args is not None:
-                    return self._C2CommandArguments(*args)
+                    return self._C2Arguments(*args)
 
     class P1(PyTextual):
         """
@@ -336,6 +339,7 @@ class Root(PyMenu):
         """
         Command C1.
 
+
         Parameters
         ----------
         A1 : str
@@ -344,20 +348,20 @@ class Root(PyMenu):
         -------
         bool
         """
-        class _C1CommandArguments(PyCommandArguments):
+        class _C1Arguments(PyArguments):
             def __init__(self, service, rules, command, path, id):
                 super().__init__(service, rules, command, path, id)
                 self.A1 = self._A1(self, "A1", service, rules, path)
 
-            class _A1(PyTextualCommandArgumentsSubItem):
+            class _A1(PyArgumentsTextualSubItem):
                 """
                 Argument A1.
                 """
 
-        def create_instance(self) -> _C1CommandArguments:
+        def create_instance(self) -> _C1Arguments:
             args = self._get_create_instance_args()
             if args is not None:
-                return self._C1CommandArguments(*args)'''
+                return self._C1Arguments(*args)'''
 
 
 @pytest.mark.parametrize(
@@ -428,6 +432,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     api_tree_expected = {"<meshing_session>": {}, "<solver_session>": {}}
     if rules in [
         "workflow",
+        "meshing_workflow",
         "meshing",
         "PartManagement",
         "PMFileManagement",
@@ -729,7 +734,13 @@ def test_codegen_with_settings_static_info(monkeypatch):
         f"settings_{version}.pyi",
     }
     with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
-        assert f.read().strip() == _expected_settings_api_output
+        expected_settings_api_output = _expected_settings_api_output
+        if sys.version_info >= (3, 14):
+            expected_settings_api_output = expected_settings_api_output.replace(
+                'SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"',
+                'SHASH = "54828595751f83d80abe11673952397862edb1f6f1ff3c23b2c133b483561345"',
+            )
+        assert f.read().strip() == expected_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)

@@ -10,10 +10,10 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
   packages: read
-  pull-requests: write
-  issues: write
+  pull-requests: read
+  issues: read
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -26,6 +26,7 @@ env:
 
 jobs:
   install-podman:
+    name: "Install Podman"
     runs-on: [public-ubuntu-latest-8-cores]
     steps:
       - uses: gacts/install-podman@96e73075ee4b6669429c80458d063924472fb04d # v1.1.1
@@ -39,19 +40,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v25.2.0
-            version: 252
+          - image-tag: v26.1.latest
+            version: 261
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache pip
-        uses: actions/cache@v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
@@ -73,28 +76,36 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
         run: |
-          docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          make docker-pull
           docker images
 
       - name: Transport docker image to podman
+        env:
+          IMAGE_TAG: ${{ matrix.image-tag }}
         run: |
-          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          sudo podman pull docker-daemon:ghcr.io/ansys/fluent:${IMAGE_TAG}
           sudo podman images
 
       - name: Run API codegen
         run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Print Fluent version info
+        env:
+          VERSION: ${{ matrix.version }}
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
+          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
 
       - name: Install again after codegen
         run: |
@@ -102,11 +113,79 @@ jobs:
           make install > /dev/null
 
       - name: Run Fluent test script
+        id: fluent_test
         run: |
           python tests/podman_compose.py
+        continue-on-error: true
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Cleanup previous containers
         if: always()
         run: |
           docker system prune -af
           sudo podman system prune -af
+
+      - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
+        if: github.event_name == 'schedule' && steps.fluent_test.outcome != 'success'
+        run: | # zizmor: ignore[template-injection]
+          STATUS="Failure"
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+
+          JSON_PAYLOAD=$(jq -n \
+            --arg status "$STATUS" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg commit "${{ github.sha }}" \
+            --arg commit_url "$COMMIT_URL" \
+            --arg run_url "$RUN_URL" \
+            '{
+              "attachments": [
+                {
+                  "contentType": "application/vnd.microsoft.card.adaptive",
+                  "content": {
+                    "type": "AdaptiveCard",
+                    "version": "1.2",
+                    "body": [
+                      {
+                        "type": "TextBlock",
+                        "weight": "Bolder",
+                        "size": "Medium",
+                        "text": "${{ github.workflow }}"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Status: \($status)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Branch: \($branch)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Commit: \($commit)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "[View Commit](\($commit_url))"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "[View Run](\($run_url))"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }'
+          )
+
+          echo "Sending notification to Power Automate..."
+          curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
+
+      - name: Check test run status and fail the whole job if tests failed
+        if: steps.fluent_test.outcome != 'success'
+        run: |
+          echo "One or more tests failed. Failing the job."
+          exit 1

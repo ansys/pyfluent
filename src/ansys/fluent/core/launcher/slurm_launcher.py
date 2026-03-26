@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -70,7 +70,11 @@ import subprocess
 import time
 from typing import Any, Callable, Dict
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.launcher.error_warning_messages import (
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+)
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -79,6 +83,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
@@ -87,6 +92,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -101,7 +107,17 @@ def _get_slurm_job_id(proc: subprocess.Popen):
     for line in proc.stdout:
         if line.startswith(prefix.encode()):
             line = line.decode().removeprefix(prefix).strip()
+            # if the configuration setting 'launch_fluent_stdout' is None,
+            # close proc.stdout after reading the slurm job id to avoid hang in some systems
+            if config.launch_fluent_stdout is None and proc.stdout is not None:
+                proc.stdout.close()
             return int(line)
+
+
+_slurm_unavailable_in_current_machine_clause = (
+    " as either Slurm is not available in the current (client) machine or the configuration setting"
+    " 'use_slurm_from_current_machine' is False."
+)
 
 
 class _SlurmWrapper:
@@ -116,7 +132,38 @@ class _SlurmWrapper:
         bool
             ``True`` if Slurm is available, otherwise ``False``.
         """
-        return shutil.which("sinfo") and len(_SlurmWrapper.list_queues()) > 0
+        return (
+            shutil.which("sinfo") is not None and len(_SlurmWrapper.list_queues()) > 0
+        )
+
+    @staticmethod
+    def use_slurm() -> bool:
+        """Check whether to use Slurm from the current machine.
+
+        Returns
+        -------
+        bool
+            ``True`` if Slurm from the current machine will be used, otherwise ``False``.
+        """
+
+        return config.use_slurm_from_current_machine and _SlurmWrapper.is_available()
+
+    @staticmethod
+    def check_and_raise_slurm_not_used_error(msg: str) -> None:
+        """Raise RuntimeError if Slurm is not used from the current machine.
+
+        Parameters
+        ----------
+        msg : str
+            Error message prefix.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm is not used from the current machine.
+        """
+        if not _SlurmWrapper.use_slurm():
+            raise RuntimeError(msg + _slurm_unavailable_in_current_machine_clause)
 
     @staticmethod
     def list_queues() -> list[str]:
@@ -197,7 +244,15 @@ class SlurmFuture:
         -------
         bool
             ``True`` if the Fluent launch is successfully cancelled, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job cannot be cancelled from client
         """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot cancel Slurm job from client"
+        )
         if self.done():
             return False
         self._cancel()
@@ -208,17 +263,61 @@ class SlurmFuture:
         return False
 
     def running(self) -> bool:
-        """Return ``True`` if Fluent is currently running, otherwise ``False``."""
+        """Return ``True`` if Fluent is currently running, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if Fluent is currently running, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._get_state() == "RUNNING" and self._future.done()
 
     def pending(self) -> bool:
         """Return ``True`` if the Fluent launch is currently waiting for Slurm
-        allocation or Fluent is being launched, otherwise ``False``."""
+        allocation or Fluent is being launched, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if the Fluent launch is currently waiting for Slurm
+            allocation or Fluent is being launched, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._future.running()
 
     def done(self) -> bool:
         """Return ``True`` if the Fluent launch was successfully cancelled or Fluent was
-        finished running, otherwise ``False``."""
+        finished running, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if the Fluent launch was successfully cancelled or Fluent was
+            finished running, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
@@ -298,17 +397,19 @@ class SlurmLauncher:
         env: Dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        case_file_name: str | None = None,
-        case_data_file_name: str | None = None,
+        case_file_name: "PathType | None" = None,
+        case_data_file_name: "PathType | None" = None,
         lightweight_mode: bool | None = None,
         py: bool | None = None,
         gpu: bool | None = None,
-        cwd: str | None = None,
-        fluent_path: str | None = None,
+        cwd: "PathType | None" = None,
+        fluent_path: "PathType | None" = None,
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         scheduler_options: dict | None = None,
         file_transfer_service: Any | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -316,8 +417,9 @@ class SlurmLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        ui_mode : UIMode
-            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
@@ -359,10 +461,10 @@ class SlurmLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        case_file_name : str, optional
+        case_file_name : :class:`os.PathLike` or str, optional
             Name of the case file to read into the
             Fluent session. The default is ``None``.
-        case_data_file_name : str, optional
+        case_data_file_name : :class:`os.PathLike` or str, optional
             Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
         lightweight_mode : bool, optional
             Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
@@ -375,9 +477,9 @@ class SlurmLauncher:
             If True, Fluent will run in Python mode. Default is None.
         gpu : bool, optional
             If True, Fluent will start with GPU Solver.
-        cwd : str, Optional
+        cwd : :class:`os.PathLike` or str, optional
             Working directory for the Fluent client.
-        fluent_path: str, Optional
+        fluent_path: :class:`os.PathLike` or str, optional
             User provided Fluent installation path.
         topy : bool or str, optional
             A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
@@ -398,6 +500,12 @@ class SlurmLauncher:
             specified in a similar manner to Fluent's scheduler options.
         file_transfer_service : optional
             File transfer service for uploading and downloading files to and from the server.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -413,10 +521,17 @@ class SlurmLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        from ansys.fluent.core import config
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         if not _SlurmWrapper.is_available():
-            raise RuntimeError("Slurm is not available.")
+            logger.debug(
+                "Slurm is not available in or not used from the client machine. "
+                "Job query/control from client will not be possible."
+            )
         locals_ = locals().copy()
         argvals = {
             arg: locals_.get(arg)
@@ -437,7 +552,7 @@ class SlurmLauncher:
             elif self._argvals["scheduler_options"]["scheduler"] != "slurm":
                 raise InvalidArgument("Only slurm is supported as scheduler.")
             queue = self._argvals["scheduler_options"].get("scheduler_queue")
-            if queue is not None:
+            if queue is not None and _SlurmWrapper.use_slurm():
                 queues = _SlurmWrapper.list_queues()
                 if queue not in queues:
                     raise InvalidArgument(
@@ -461,6 +576,10 @@ class SlurmLauncher:
             self._argvals["topy"], self._argvals["journal_file_names"]
         )
         launch_cmd += ' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
+        if self._argvals["insecure_mode"]:
+            launch_cmd += " -grpc-allow-remote-host -grpc-insecure-mode"
+        elif self._argvals["certificates_folder"]:
+            launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)
@@ -481,6 +600,9 @@ class SlurmLauncher:
             cleanup_on_exit=self._argvals["cleanup_on_exit"],
             start_transcript=self._argvals["start_transcript"],
             inside_container=False,
+            allow_remote_host=True,
+            certificates_folder=self._argvals["certificates_folder"],
+            insecure_mode=self._argvals["insecure_mode"],
         )
         return session
 

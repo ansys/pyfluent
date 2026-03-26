@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -42,9 +42,9 @@ from pathlib import Path
 import subprocess
 from typing import Any, Dict
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
-    _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -95,13 +95,13 @@ class StandaloneLauncher:
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
-        case_file_name: str | None = None,
-        case_data_file_name: str | None = None,
+        case_file_name: "PathType | None" = None,
+        case_data_file_name: "PathType | None" = None,
         lightweight_mode: bool | None = None,
         py: bool | None = None,
         gpu: bool | None = None,
-        cwd: str | None = None,
-        fluent_path: str | None = None,
+        cwd: "PathType | None" = None,
+        fluent_path: "PathType | None" = None,
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
@@ -113,8 +113,9 @@ class StandaloneLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent to target a specific session type.
-        ui_mode : UIMode
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -150,9 +151,9 @@ class StandaloneLauncher:
         start_transcript : bool, optional
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
-        case_file_name : str, optional
+        case_file_name : :class:`os.PathLike` or str, optional
             Name of the case file to read into the Fluent session. Defaults to None.
-        case_data_file_name : str, optional
+        case_data_file_name : :class:`os.PathLike` or str, optional
             Name of the case data file. If both case and data files are provided, they are read into the session.
         lightweight_mode : bool, optional
             If True, runs in lightweight mode where mesh settings are read into a background solver session,
@@ -161,9 +162,9 @@ class StandaloneLauncher:
             If True, runs Fluent in Python mode. Defaults to None.
         gpu : bool, optional
             If True, starts Fluent with GPU Solver enabled.
-        cwd : str, optional
+        cwd : :class:`os.PathLike` or str, optional
             Working directory for the Fluent client.
-        fluent_path: str, optional
+        fluent_path: :class:`os.PathLike` or str, optional
             User-specified path for Fluent installation.
         topy :  bool or str, optional
             A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
@@ -201,8 +202,6 @@ class StandaloneLauncher:
         if self.argvals["lightweight_mode"] is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
-        if fluent_version:
-            _raise_non_gui_exception_in_windows(self.argvals["ui_mode"], fluent_version)
 
         if (
             fluent_version
@@ -234,14 +233,7 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if (
-                pyfluent.config.launch_fluent_stdout
-                or pyfluent.config.launch_fluent_stderr
-            ):
-                self._launch_cmd = self._launch_string
-            else:
-                # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
-                self._launch_cmd = 'start "" ' + self._launch_string
+            self._launch_cmd = self._launch_string
         else:
             if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
@@ -255,7 +247,6 @@ class StandaloneLauncher:
             return self._launch_string, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
@@ -263,6 +254,7 @@ class StandaloneLauncher:
                     self._server_info_file_name,
                     self.argvals["start_timeout"],
                     self._sifile_last_mtime,
+                    process.pid,
                 )
             except TimeoutError as ex:
                 if is_windows():
@@ -277,6 +269,7 @@ class StandaloneLauncher:
                         self._server_info_file_name,
                         self.argvals["start_timeout"],
                         self._sifile_last_mtime,
+                        process.pid,
                     )
                 else:
                     raise ex
@@ -297,21 +290,23 @@ class StandaloneLauncher:
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
-                ip, port, password = _get_server_info(self._server_info_file_name)
-                watchdog.launch(os.getpid(), port, password, ip)
+                values = _get_server_info(self._server_info_file_name)
+                if len(values) == 3:
+                    ip, port, password = values
+                    watchdog.launch(os.getpid(), port, password, ip)
             if self.argvals["case_file_name"]:
                 if FluentMode.is_meshing(self.argvals["mode"]):
                     session.tui.file.read_case(self.argvals["case_file_name"])
                 elif self.argvals["lightweight_mode"]:
                     session.read_case_lightweight(self.argvals["case_file_name"])
                 else:
-                    session.file.read(
+                    session.settings.file.read(
                         file_type="case",
                         file_name=self.argvals["case_file_name"],
                     )
             if self.argvals["case_data_file_name"]:
                 if not FluentMode.is_meshing(self.argvals["mode"]):
-                    session.file.read(
+                    session.settings.file.read(
                         file_type="case-data",
                         file_name=self.argvals["case_data_file_name"],
                     )

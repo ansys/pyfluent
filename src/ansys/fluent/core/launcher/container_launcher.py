@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -42,6 +42,9 @@ import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.error_warning_messages import (
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+)
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     dict_to_str,
@@ -55,6 +58,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -110,6 +114,8 @@ class DockerLauncher:
         file_transfer_service: Any | None = None,
         use_docker_compose: bool | None = None,
         use_podman_compose: bool | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """
         Launch a Fluent session in container mode.
@@ -118,8 +124,9 @@ class DockerLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent to target a specific session type.
-        ui_mode : UIMode
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -167,6 +174,12 @@ class DockerLauncher:
             Whether to use Docker Compose to launch Fluent.
         use_podman_compose: bool
             Whether to use Podman Compose to launch Fluent.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -183,6 +196,15 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
+        # Note: PYFLUENT_CONTAINER_INSECURE_MODE is not exposed to users. It is used internally in
+        # GitHub Actions runs to indicate that insecure mode should be used.
+        insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode or insecure_mode_env
+        )
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
+
         locals_ = locals().copy()
         argvals = {
             arg: locals_.get(arg)
@@ -205,6 +227,19 @@ class DockerLauncher:
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
         self._compose_config = ComposeConfig(use_docker_compose, use_podman_compose)
+        fluent_image_tag = os.getenv("FLUENT_IMAGE_TAG")
+        # There is an issue in passing gRPC arguments to Fluent image version 24.1.0 during github runs.
+        if (
+            self.argvals["insecure_mode"] or insecure_mode_env
+        ) and fluent_image_tag != "v24.1.0":
+            self._args.append(" -grpc-allow-remote-host")
+            self._args.append(" -grpc-insecure-mode")
+        elif self.argvals["certificates_folder"]:
+            self.argvals["container_dict"]["certificates_folder"] = self.argvals[
+                "certificates_folder"
+            ]
+            self._args.append(" -grpc-allow-remote-host")
+            self._args.append(" -grpc-certs-folder=/tmp/certs")
 
     def __call__(self):
 
@@ -231,7 +266,15 @@ class DockerLauncher:
                 compose_config=self._compose_config,
             )
 
-            _, _, password = _get_server_info_from_container(config_dict=config_dict)
+            try:
+                _, _, password = _get_server_info_from_container(
+                    config_dict=config_dict
+                )
+            except PermissionError:
+                container.chown_server_info_file()
+                _, _, password = _get_server_info_from_container(
+                    config_dict=config_dict
+                )
         else:
             port, password, container = start_fluent_container(
                 self._args,
@@ -240,9 +283,16 @@ class DockerLauncher:
                 compose_config=self._compose_config,
             )
 
+        allow_remote_host = (
+            self.argvals["insecure_mode"]
+            or self.argvals["certificates_folder"] is not None
+        )
         fluent_connection = FluentConnection(
             port=port,
             password=password,
+            allow_remote_host=allow_remote_host,
+            certificates_folder=self.argvals["certificates_folder"],
+            insecure_mode=self.argvals["insecure_mode"],
             file_transfer_service=self.file_transfer_service,
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
@@ -271,6 +321,13 @@ class DockerLauncher:
                 self.argvals["start_watchdog"] = True
             if self.argvals["start_watchdog"]:
                 logger.debug("Launching Watchdog for Fluent container...")
-                watchdog.launch(os.getpid(), port, password)
+                watchdog.launch(
+                    os.getpid(),
+                    port,
+                    password,
+                    allow_remote_host=allow_remote_host,
+                    certificates_folder=self.argvals["certificates_folder"],
+                    insecure_mode=self.argvals["insecure_mode"],
+                )
 
         return session

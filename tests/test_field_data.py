@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import warnings
+
+from conftest import SKIP_INVESTIGATING
 import numpy as np
 import pytest
 from test_utils import pytest_approx
@@ -36,12 +39,14 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
+    _Fields,
 )
 from ansys.fluent.core.services.field_data import (
     CellElementType,
     ZoneType,
 )
 from ansys.fluent.core.solver import VelocityInlet, VelocityInlets, WallBoundaries
+from ansys.units.variable_descriptor import VariableCatalog
 
 HOT_INLET_TEMPERATURE = 313.15
 
@@ -345,7 +350,7 @@ def test_field_data_attributes(new_solver_session) -> None:
     assert not field_data.surfaces.validate(["hot-inlet", "inlet"])
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -458,7 +463,7 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"]["lines"][100]) == [100, 101]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -597,7 +602,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"].lines[:3]) == [2, 0, 1]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_2d(disk_case_session) -> None:
     solver = disk_case_session
 
@@ -613,53 +618,58 @@ def test_field_data_objects_2d(disk_case_session) -> None:
     assert field_data.is_data_valid()
 
     # Absolute Pressure data over the cold-inlet (surface_id=3)
-    abs_press_data = field_data.get_scalar_field_data(
+    abs_press_request = ScalarFieldDataRequest(
         field_name="absolute-pressure", surfaces=["velocity-inlet-2"]
     )
+    abs_press_data = field_data.get_field_data(abs_press_request)
 
     assert abs_press_data["velocity-inlet-2"].shape == (11,)
     assert abs_press_data["velocity-inlet-2"][5] == 101325.0
 
-    vertices_data = field_data.get_surface_data(
+    vertices_data_request = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices], surfaces=["interior-4"]
     )
-    assert round(vertices_data["interior-4"][SurfaceDataType.Vertices][5][0], 2) == 0.0
+    vertices_data = field_data.get_field_data(vertices_data_request)
+    assert round(vertices_data["interior-4"].vertices[5][0], 2) == 0.0
 
-    faces_centroid_data = field_data.get_surface_data(
+    faces_centroid_request = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesCentroid], surfaces=["velocity-inlet-2"]
     )
+    faces_centroid_data = field_data.get_field_data(faces_centroid_request)
     assert (
         round(
-            float(
-                faces_centroid_data["velocity-inlet-2"][SurfaceDataType.FacesCentroid][
-                    5
-                ][1]
-            ),
+            float(faces_centroid_data["velocity-inlet-2"].face_centroids[5][1]),
             2,
         )
         == 0.02
     )
 
-    faces_connectivity_data = field_data.get_surface_data(
+    faces_connectivity_request = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["velocity-inlet-2"]
-    )["velocity-inlet-2"][SurfaceDataType.FacesConnectivity]
+    )
+    faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)[
+        "velocity-inlet-2"
+    ].connectivity
     assert (faces_connectivity_data[5] == [5, 6]).all()
 
-    velocity_vector_data = field_data.get_vector_field_data(
+    velocity_vector_request = VectorFieldDataRequest(
         field_name="velocity", surfaces=["velocity-inlet-2"]
     )
+    velocity_vector_data = field_data.get_field_data(velocity_vector_request)
 
     assert velocity_vector_data["velocity-inlet-2"].shape == (10, 3)
 
-    path_lines_data = field_data.get_pathlines_field_data(
+    path_lines_request = PathlinesFieldDataRequest(
         field_name="velocity-magnitude", surfaces=["velocity-inlet-2"]
     )
+    path_lines_data = field_data.get_field_data(path_lines_request)
 
-    assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
-    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 5000
-    assert path_lines_data["velocity-inlet-2"]["velocity-magnitude"].shape == (5010,)
+    assert path_lines_data["velocity-inlet-2"].vertices.shape == (5010, 3)
+    assert len(path_lines_data["velocity-inlet-2"].lines) == 5000
+    assert path_lines_data["velocity-inlet-2"].scalar_field_name == "velocity-magnitude"
+    assert path_lines_data["velocity-inlet-2"].scalar_field.shape == (5010,)
 
-    assert list(path_lines_data["velocity-inlet-2"]["lines"][100]) == [100, 101]
+    assert list(path_lines_data["velocity-inlet-2"].lines[100]) == [100, 101]
 
 
 def test_field_data_errors(new_solver_session) -> None:
@@ -712,7 +722,41 @@ def test_field_data_errors(new_solver_session) -> None:
         )
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
+def test_fields_is_active_accepts_variable_descriptor() -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    assert fields.is_active("temperature")
+    assert fields.is_active(VariableCatalog.TEMPERATURE)
+    assert not fields.is_active(VariableCatalog.VELOCITY)
+
+
+def test_fields_allowed_variables_filters_unmapped_names() -> None:
+    fields = _Fields(lambda: ["temperature", "not-a-mapped-field"])
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
+
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 1
+    assert "not-a-mapped-field" in str(caught[0].message)
+
+
+def test_fields_allowed_variables_no_warning_when_all_mapped() -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
+
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 0
+
+
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2404
 @pytest.mark.fluent_version(">=24.2")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
@@ -875,7 +919,7 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_with_location_objects_overall(
     new_solver_session,
 ) -> None:

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -24,23 +24,23 @@
 
 import re
 
-from ansys.fluent.core import FluentVersion, config
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.flobject import (
     CreatableNamedObjectMixin,
     NamedObject,
     _ChildNamedObjectAccessorMixin,
 )
 from ansys.fluent.core.solver.settings_builtin_data import DATA
-from ansys.fluent.core.utils.fluent_version import all_versions
+from ansys.fluent.core.utils.fluent_version import FluentVersion, all_versions
 
 _PY_FILE = config.codegen_outdir / "solver" / "settings_builtin.py"
 _PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
 
 
 def _get_settings_root(version: str):
-    from ansys.fluent.core import config, utils
+    from ansys.fluent.core.utils import load_module as _load_module
 
-    settings = utils.load_module(
+    settings = _load_module(
         f"settings_{version}",
         config.codegen_outdir / "solver" / f"settings_{version}.py",
     )
