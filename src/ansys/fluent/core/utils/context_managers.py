@@ -25,6 +25,8 @@
 from contextlib import contextmanager
 from threading import local
 
+__all__ = ("using",)
+
 _thread_local = local()
 
 

@@ -33,6 +33,8 @@ from typing import Any
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.module_config import config
 
+__all__ = ("FluentVersion",)
+
 
 class AnsysVersionNotFound(RuntimeError):
     """Raised when Ansys version is not found."""

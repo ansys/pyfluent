@@ -26,6 +26,13 @@ updates:
       - dependency-name: "pyansys-tools-report"
       - dependency-name: "pyyaml"
       - dependency-name: "h5py"
+      - dependency-name: "tensorflow"
+      - dependency-name: "matplotlib"
+      - dependency-name: "plotly"
+      - dependency-name: "scikit-learn"
+      - dependency-name: "seaborn"
+      - dependency-name: "xgboost"
+      - dependency-name: "imageio"
     groups:
       dependencies:
         patterns:

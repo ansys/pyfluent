@@ -27,9 +27,13 @@ import logging
 from pathlib import Path
 import sys
 
-from ansys.fluent.core.search import search  # noqa: F401
-
 logger = logging.getLogger("pyfluent.general")
+
+
+__all__ = (
+    "load_module",
+    "get_user_data_dir",
+)
 
 
 def load_module(module_name, file_path):

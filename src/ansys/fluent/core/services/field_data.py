@@ -21,18 +21,20 @@
 # SOFTWARE.
 
 """Wrappers over FieldData gRPC service of Fluent."""
-from collections.abc import Iterable
+
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
 import logging
 import time
-from typing import Callable, Dict, List, Tuple
+from typing import Any, Sized
 import warnings
 import weakref
 
 import grpc
 import numpy as np
+import numpy.typing as npt
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
@@ -60,6 +62,7 @@ from ansys.fluent.core.field_data_interfaces import (
     get_surfaces_from_objects,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -83,11 +86,13 @@ def override_help_text(func, func_to_be_wrapped):
     return func
 
 
-class FieldDataService(StreamingService):
+class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    StreamingService, ServiceProtocol
+):
     """FieldData service of Fluent."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ):
         """__init__ method of FieldDataService class."""
         intercept_channel = grpc.intercept_channel(
@@ -176,8 +181,8 @@ class _FieldInfo(BaseFieldInfo):
         self._is_data_valid = is_data_valid
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
+    ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
@@ -200,8 +205,8 @@ class _FieldInfo(BaseFieldInfo):
         return self._get_scalar_field_range(field, node_value, surface_ids)
 
     def _get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
+    ) -> list[float]:
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
@@ -213,7 +218,7 @@ class _FieldInfo(BaseFieldInfo):
         response = self._service.get_scalar_field_range(request)
         return [response.minimum, response.maximum]
 
-    def get_scalar_fields_info(self) -> Dict[str, Dict]:
+    def get_scalar_fields_info(self) -> dict[str, dict]:
         """Get fields information (field name, domain, and section).
 
         Returns
@@ -227,7 +232,7 @@ class _FieldInfo(BaseFieldInfo):
         )
         return self._get_scalar_fields_info()
 
-    def _get_scalar_fields_info(self) -> Dict[str, Dict]:
+    def _get_scalar_fields_info(self) -> dict[str, dict]:
         request = FieldDataProtoModule.GetFieldsInfoRequest()
         response = self._service.get_scalar_fields_info(request)
         return {
@@ -240,7 +245,7 @@ class _FieldInfo(BaseFieldInfo):
             for field_info in response.fieldInfo
         }
 
-    def get_vector_fields_info(self) -> Dict[str, Dict]:
+    def get_vector_fields_info(self) -> dict[str, dict]:
         """Get vector fields information (vector components).
 
         Returns
@@ -254,7 +259,7 @@ class _FieldInfo(BaseFieldInfo):
         )
         return self._get_vector_fields_info()
 
-    def _get_vector_fields_info(self) -> Dict[str, Dict]:
+    def _get_vector_fields_info(self) -> dict[str, dict]:
         request = FieldDataProtoModule.GetVectorFieldsInfoRequest()
         response = self._service.get_vector_fields_info(request)
         return {
@@ -266,7 +271,7 @@ class _FieldInfo(BaseFieldInfo):
             for vector_field_info in response.vectorFieldInfo
         }
 
-    def get_surfaces_info(self) -> Dict[str, Dict]:
+    def get_surfaces_info(self) -> dict[str, dict]:
         """Get surfaces information (surface name, ID, and type).
 
         Returns
@@ -280,7 +285,7 @@ class _FieldInfo(BaseFieldInfo):
         )
         return self._get_surfaces_info()
 
-    def _get_surfaces_info(self) -> Dict[str, Dict]:
+    def _get_surfaces_info(self) -> dict[str, dict]:
         request = FieldDataProtoModule.GetSurfacesInfoResponse()
         response = self._service.get_surfaces_info(request)
         info = {
@@ -316,7 +321,7 @@ class _FieldInfo(BaseFieldInfo):
             self._is_data_valid, info=self._get_vector_fields_info()
         ).valid_name(field_name)
 
-    def validate_surfaces(self, surfaces: List[str]):
+    def validate_surfaces(self, surfaces: list[str]):
         """Validate surfaces."""
         warnings.warn(
             "This usage is deprecated and will be removed in a future release. "
@@ -416,11 +421,10 @@ def _data_type_converter(args_dict):
 
 
 class _FetchFieldData:
-
     @staticmethod
     def _surface_data(
-        data_types: List[SurfaceDataType] | List[str],
-        surface_ids: List[int],
+        data_types: list[SurfaceDataType] | list[str],
+        surface_ids: list[int],
         overset_mesh: bool | None = False,
     ):
         return [
@@ -438,7 +442,7 @@ class _FetchFieldData:
     @staticmethod
     def _scalar_data(
         field_name: str,
-        surface_ids: List[int],
+        surface_ids: list[int],
         node_value: bool,
         boundary_value: bool,
     ):
@@ -459,7 +463,7 @@ class _FetchFieldData:
     @staticmethod
     def _vector_data(
         field_name: str,
-        surface_ids: List[int],
+        surface_ids: list[int],
     ):
         return [
             FieldDataProtoModule.VectorFieldRequest(
@@ -471,7 +475,7 @@ class _FetchFieldData:
     @staticmethod
     def _pathlines_data(
         field_name: str,
-        surface_ids: List[int],
+        surface_ids: list[int],
         **kwargs,
     ):
         return [
@@ -489,7 +493,7 @@ class BaseFieldData:
 
     def __init__(
         self,
-        data: Dict,
+        data: dict,
         field_info,
         allowed_surface_names,
         allowed_scalar_field_names,
@@ -502,7 +506,7 @@ class BaseFieldData:
         self._returned_data = _ReturnFieldData()
         self._deprecated_flag = False
 
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+    def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""
         return _get_surface_ids(
             field_info=self._field_info,
@@ -513,7 +517,7 @@ class BaseFieldData:
     def _get_scalar_field_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
@@ -531,7 +535,7 @@ class BaseFieldData:
     def _get_surface_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surface_data = self.data[(("type", "surface-data"),)]
         return self._returned_data._surface_data(
             kwargs.get("data_types"),
@@ -544,7 +548,7 @@ class BaseFieldData:
     def _get_vector_field_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
             _to_field_name_str(kwargs.get("field_name")),
@@ -555,8 +559,8 @@ class BaseFieldData:
 
     def _get_pathlines_field_data(
         self,
-        **kwargs,
-    ) -> Dict:
+        **kwargs: Any,
+    ) -> dict:
         if kwargs.get("zones") is None:
             zones = []
         del zones
@@ -578,7 +582,7 @@ class BaseFieldData:
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> Dict[int | str, Dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """Get the surface, scalar, vector or path-lines field data on a surface.
 
         Returns
@@ -608,7 +612,7 @@ class BatchFieldData(BaseFieldData, BaseFieldDataSource):
 
     def __init__(
         self,
-        data: Dict,
+        data: dict,
         field_info,
         allowed_surface_names,
         allowed_scalar_field_names,
@@ -702,7 +706,7 @@ class Batch(FieldBatch):
         self._pathline_field_data = []
         self._cache_requests = []
 
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+    def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""
         return _get_surface_ids(
             field_info=self._field_info,
@@ -809,8 +813,8 @@ class Batch(FieldBatch):
     @deprecate_function(version="v0.23.0", new_func="add_requests")
     def add_surfaces_request(
         self,
-        data_types: List[SurfaceDataType] | List[str],
-        surfaces: List[int | str],
+        data_types: list[SurfaceDataType] | list[str],
+        surfaces: list[int | str],
         overset_mesh: bool | None = False,
     ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
@@ -835,7 +839,7 @@ class Batch(FieldBatch):
     def add_scalar_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> None:
@@ -861,7 +865,7 @@ class Batch(FieldBatch):
     def add_vector_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ) -> None:
         """Add request to get vector field data on surfaces."""
         self._add_vector_fields_request(
@@ -882,7 +886,7 @@ class Batch(FieldBatch):
     def add_pathlines_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
@@ -1049,8 +1053,8 @@ class _FieldDataConstants:
 def _get_surface_ids(
     field_info: _FieldInfo,
     allowed_surface_names,
-    surfaces: List[int | str | object],
-) -> List[int]:
+    surfaces: list[int | str | object],
+) -> list[int]:
     """Get surface IDs based on surface names or IDs.
 
     Parameters
@@ -1109,32 +1113,38 @@ class ChunkParser:
         """__init__ method of ChunkParser class."""
         self._callbacks_provider = callbacks_provider
 
-    def extract_fields(self, chunk_iterator) -> Dict[int, Dict[str, np.array]]:
+    def extract_fields(self, chunk_iterator) -> dict[Any, dict[str, npt.NDArray[Any]]]:
         """Extracts field data received from Fluent.
 
         if callbacks_provider is set then callbacks are triggered with extracted data.
         """
 
-        def _get_tag_for_surface_request():
+        def _get_tag_for_surface_request() -> tuple[tuple[str, str]]:
             return (("type", "surface-data"),)
 
-        def _get_tag_for_vector_field_request():
+        def _get_tag_for_vector_field_request() -> tuple[tuple[str, str]]:
             return (("type", "vector-field"),)
 
-        def _get_tag_for_scalar_field_request(scalar_field_request):
+        def _get_tag_for_scalar_field_request(
+            scalar_field_request,
+        ) -> tuple[tuple[str, str], tuple[str, Any], tuple[str, Any]]:
             return (
                 ("type", "scalar-field"),
                 ("dataLocation", scalar_field_request.dataLocation),
                 ("boundaryValues", scalar_field_request.provideBoundaryValues),
             )
 
-        def _get_tag_for_pathlines_field_request(pathlines_field_request):
+        def _get_tag_for_pathlines_field_request(
+            pathlines_field_request,
+        ) -> tuple[tuple[str, str], tuple[str, Any]]:
             return (
                 ("type", "pathlines-field"),
                 ("field", pathlines_field_request.field),
             )
 
-        def _extract_field(field_datatype, field_size, chunk_iterator):
+        def _extract_field(
+            field_datatype: npt.DTypeLike, field_size: int, chunk_iterator
+        ) -> npt.NDArray[Any] | None:
             field_arr = np.empty(field_size, dtype=field_datatype)
             field_datatype_item_size = np.dtype(field_datatype).itemsize
             index = 0
@@ -1151,7 +1161,7 @@ class ChunkParser:
                     if index == field_size:
                         return field_arr
                 else:
-                    payload = (
+                    payload: Sequence[float] = (
                         chunk.floatPayload.payload
                         or chunk.intPayload.payload
                         or chunk.doublePayload.payload
@@ -1165,7 +1175,7 @@ class ChunkParser:
                     if index == field_size:
                         return field_arr
 
-        fields_data = {}
+        fields_data = dict[Any, dict[str, npt.NDArray[Any]]]()
         for chunk in chunk_iterator:
             payload_info = chunk.payloadInfo
             surface_id = payload_info.surfaceId
@@ -1205,7 +1215,7 @@ class ChunkParser:
                     )
                 else:
                     payload_tag_id = None
-            field = None
+            field: npt.NDArray[Any] | None = None
             if payload_tag_id is not None:
                 if payload_info.fieldSize > 0:
                     field = _extract_field(
@@ -1233,15 +1243,11 @@ class ChunkParser:
                 surface_data = payload_data.get(surface_id)
                 if surface_data:
                     if payload_info.fieldName in surface_data:
-                        surface_data.update(
-                            {
-                                payload_info.fieldName: np.concatenate(
-                                    (surface_data[payload_info.fieldName], field)
-                                )
-                            }
+                        surface_data[payload_info.fieldName] = np.concatenate(
+                            (surface_data[payload_info.fieldName], field)
                         )
                     else:
-                        surface_data.update({payload_info.fieldName: field})
+                        surface_data[payload_info.fieldName] = field
                 else:
                     payload_data[surface_id] = {payload_info.fieldName: field}
         return fields_data
@@ -1503,7 +1509,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def _get_surface_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
@@ -1537,7 +1543,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def _get_vector_field_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_vector_field_names.valid_name(
             kwargs.get("field_name")
@@ -1564,7 +1570,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def _get_pathlines_field_data(
         self,
         **kwargs,
-    ) -> Dict:
+    ) -> dict:
         if kwargs.get("zones") is None:
             zones = []
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
@@ -1625,10 +1631,10 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def get_scalar_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
-    ) -> Dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         """Get scalar field data on a surface."""
         return self._get_scalar_field_data(
             field_name=field_name,
@@ -1640,10 +1646,10 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     @deprecate_function(version="v0.34.0", new_func="get_field_data")
     def get_surface_data(
         self,
-        data_types: List[SurfaceDataType],
-        surfaces: List[int | str],
+        data_types: list[SurfaceDataType],
+        surfaces: list[int | str],
         overset_mesh: bool | None = False,
-    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         self._deprecated_flag = True
         return self._get_surface_data(
@@ -1654,8 +1660,8 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def get_vector_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
-    ) -> Dict[int | str, np.array]:
+        surfaces: list[int | str],
+    ) -> dict[int | str, np.ndarray]:
         """Get vector field data on a surface."""
         return self._get_vector_field_data(
             field_name=field_name,
@@ -1666,7 +1672,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def get_pathlines_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
@@ -1679,7 +1685,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         coarsen: int | None = 1,
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
-    ) -> Dict:
+    ) -> dict:
         """Get the pathlines field data on a surface."""
         self._deprecated_flag = True
         return self._get_pathlines_field_data(

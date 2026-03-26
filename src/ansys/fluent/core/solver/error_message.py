@@ -22,9 +22,10 @@
 
 """Provides a module to customize exception messages."""
 
+from collections.abc import Iterable
 import difflib
 from functools import partial
-from typing import Any, Iterable
+from typing import Any
 
 
 def closest_allowed_names(trial_name: str, allowed_names: Iterable[str]) -> list[str]:
