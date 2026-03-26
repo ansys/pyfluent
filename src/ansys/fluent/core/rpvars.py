@@ -26,17 +26,54 @@ The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
 interfaces: solver settings objects and task-based meshing workflow.
 """
-
+from enum import Enum
 from typing import Any, List
 
 import ansys.fluent.core.filereader.lispy as lispy
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
+class RPVarType(Enum):
+    """Enumeration of rpvar types mapping Python types to Fluent type strings."""
+
+    INTEGER = "integer"
+    REAL = "real"
+    BOOLEAN = "boolean"
+    STRING = "string"
+    CUSTOM = "none"
+
+    @classmethod
+    def from_python_type(cls, python_type: type) -> "RPVarType":
+        """Convert Python type to RPVarType.
+
+        Parameters
+        ----------
+        python_type : type
+            Python type to convert.
+
+        Returns
+        -------
+        RPVarType
+            Corresponding RPVarType enum value.
+
+        Raises
+        ------
+        ValueError
+            For unsupported python types.
+        """
+        type_map = {
+            int: cls.INTEGER,
+            float: cls.REAL,
+            bool: cls.BOOLEAN,
+            str: cls.STRING,
+        }
+        if python_type not in type_map:
+            raise ValueError(f"Unsupported type: {python_type}")
+        return type_map[python_type]
+
+
 class RPVars:
     """Access to rpvars in a specific session."""
-
-    _allowed_values = None
 
     def __init__(self, eval_fn):
         """Initialize RPVars."""
@@ -91,19 +128,16 @@ class RPVars:
         List[str]
             List with all allowed rpvars names.
         """
-        if not RPVars._allowed_values:
-            RPVars._allowed_values = lispy.parse(
-                self._eval_fn("(cx-send '(map car rp-variables))")
-            )
-        return RPVars._allowed_values
+        return lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))"))
 
     def _get_var(self, var: str):
-        if var not in self.allowed_values():
+        allowed_rp_vars = self.allowed_values()
+        if var not in allowed_rp_vars:
             raise RuntimeError(
                 allowed_name_error_message(
                     context="rp-vars",
                     trial_name=var,
-                    allowed_values=RPVars._allowed_values,
+                    allowed_values=allowed_rp_vars,
                 )
             )
 
@@ -116,8 +150,81 @@ class RPVars:
 
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
-        cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
+        if type(val) is str:
+            cmd = f'(rpsetvar {RPVars._var(var)} {prefix}"{lispy.to_string(val)}")'
+        else:
+            cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
         return self._execute(cmd)
+
+    def create(self, name: str, value: Any, var_type: RPVarType | type | None):
+        """Create a new rpvar.
+
+        Parameters
+        ----------
+        name : str
+            Name of the rpvar to create.
+        value : Any
+            Initial value for the rpvar.
+        var_type : RPVarType | type | None
+            Type of the rpvar, either as RPVarType enum or Python type.
+            Allowed Python types: int, float, bool, str or None.
+
+        Raises
+        ------
+        NameError
+            If the rpvar name already exists.
+        TypeError
+            If the value type doesn't match the specified var_type.
+        RuntimeError
+            If 'make-new-rpvar' returns #f for a reason other than the variable name already matching an existing entry.
+        """
+        if var_type is None:
+            var_type = RPVarType.CUSTOM
+            python_type = None
+        elif isinstance(var_type, type):
+            python_type = var_type
+            var_type = RPVarType.from_python_type(var_type)
+        elif isinstance(var_type, RPVarType):
+            type_map = {
+                RPVarType.INTEGER: int,
+                RPVarType.REAL: float,
+                RPVarType.BOOLEAN: bool,
+                RPVarType.STRING: str,
+            }
+            python_type = type_map.get(var_type)
+        else:
+            raise TypeError(
+                "Invalid var_type: expected RPVarType enum, Python type, or None."
+            )
+
+        # Type check the value
+        if python_type and var_type != RPVarType.CUSTOM:
+            type_mismatch = False
+            if python_type is int:
+                # Avoid accepting booleans where a strict integer is expected
+                type_mismatch = type(value) is not int
+            elif python_type is bool:
+                # Enforce strict boolean type as well
+                type_mismatch = type(value) is not bool
+            else:
+                type_mismatch = not isinstance(value, python_type)
+            if type_mismatch:
+                raise TypeError(
+                    f"Value type mismatch: expected {python_type}, got {type(value).__name__}"
+                )
+        prefix = "'" if isinstance(value, (list, tuple)) else ""
+        if var_type == RPVarType.STRING:
+            cmd = f'(make-new-rpvar {RPVars._var(name)} "{prefix}{lispy.to_string(value)}" \'{lispy.to_string(var_type.value)})'
+        else:
+            cmd = f"(make-new-rpvar {RPVars._var(name)} {prefix}{lispy.to_string(value)} '{lispy.to_string(var_type.value)})"
+        returned_val = self._execute(cmd)
+        if returned_val is False:
+            if name in self.allowed_values():
+                raise NameError(f"'{name}' already exists as an rpvar.")
+            raise RuntimeError(
+                f"Failed to create rpvar '{name}': make-new-rpvar returned #f."
+            )
+        return returned_val
 
     def _execute(self, cmd: str):
         scheme_val = self._eval_fn(cmd)

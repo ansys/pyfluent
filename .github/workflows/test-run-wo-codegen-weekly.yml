@@ -84,10 +84,12 @@ jobs:
             version: 251
           - image-tag: v25.2.0
             version: 252
-          - image-tag: v26.1.0
+          - image-tag: v26.1.latest
             version: 261
+          - image-tag: v27.1.latest
+            version: 271
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1

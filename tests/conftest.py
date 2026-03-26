@@ -41,6 +41,36 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 sys.path.append(Path(__file__).parent / "util")
 
+# ============================================================================
+# Test Skip Reasons - Centralized for consistency and searchability
+# ============================================================================
+# Based on our understanding of the failure, tests are categorized into 3 groups:
+#
+# 1. Root cause completely unknown
+#    - Test behavior is unexplained; needs investigation from scratch
+#    - Examples: "Fails on CI", "Failing in GitHub" (with no further context)
+#
+# 2. Partially understood but unresolved
+#    - Some investigation done but root cause not fully identified
+#    - Active investigation may be ongoing
+#    - Example: "Wait for later implementation"
+#
+# 3. Root cause understood but test cannot be enabled due to an external blocker
+#    - e.g., upstream bug, CI/environment limitation, product constraint
+#    - An issue link may be present for tracking, but this does NOT imply active investigation
+#    - The blocker is known; we're waiting on external factors to resolve
+#    - Examples: "Currently only tested in backend", GitHub issue links, "Cannot read generated Python journals"
+# ============================================================================
+
+# 1. Root cause completely unknown
+SKIP_UNKNOWN = "Skipped (root cause completely unknown)"
+
+# 2. Partially understood but unresolved
+SKIP_INVESTIGATING = "Skipped (partially understood but unresolved)"
+
+# 3. Understood but blocked for other reasons
+SKIP_BLOCKED = "Skipped (root cause understood but test cannot be enabled due to an external blocker)"
+
 
 def pytest_addoption(parser):
     parser.addoption(

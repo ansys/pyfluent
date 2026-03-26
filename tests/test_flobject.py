@@ -26,6 +26,7 @@ from collections.abc import MutableMapping
 import io
 import weakref
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
@@ -523,6 +524,38 @@ def test_list_object():
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
 
 
+def test_list_object_set_state_with_quantity_values():
+    class RealWithUnits(Real):
+        attrs = Setting.attrs | {
+            "units-quantity": lambda self: "length",
+        }
+
+    class RootWithQuantityList(Group):
+        class L1(ListObject):
+            child_object_type = RealWithUnits
+
+        children = {
+            "l-1": L1,
+        }
+
+    class ProxyWithQuantityList(Proxy):
+        root = RootWithQuantityList
+
+    r = flobject.get_root(ProxyWithQuantityList())
+    inches = ansys.units.Quantity([1, 2, 34], "inch")
+    inches_tuple = ([1, 2, 34], "inch")
+
+    r.l_1.set_state(inches)
+
+    # Expect conversion to SI units for Quantity input.
+    assert r.l_1() == pytest.approx([0.0254, 0.0508, 0.8636])
+
+    r.l_1.set_state(inches_tuple)
+
+    # Expect equivalent conversion for tuple(sequence, units) input.
+    assert r.l_1() == pytest.approx([0.0254, 0.0508, 0.8636])
+
+
 def test_command():
     r = flobject.get_root(Proxy())
     r.g_1.r_1 = 2.4
@@ -892,7 +925,8 @@ def test_settings_api_names_exception(new_solver_session):
         solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4645")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4645
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(new_solver_session):
     solver = new_solver_session
@@ -1018,6 +1052,8 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session

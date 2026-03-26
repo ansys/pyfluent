@@ -15,7 +15,7 @@ permissions:
 
 env:
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
-  DOC_DEPLOYMENT_IMAGE_TAG: v25.2.3
+  DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Clean Docker Data
         run: make docker-clean-all-except-supported-images
