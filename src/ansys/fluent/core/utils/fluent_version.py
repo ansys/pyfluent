@@ -150,7 +150,8 @@ class FluentVersion(Enum):
         Raises
         ------
         FileNotFoundError
-            If the Fluent executable path does not exist.
+            If the corresponding ``AWP_ROOTnnn`` environment variable is unset or invalid,
+            or if the Fluent executable path derived from it does not exist.
         """
         awp_root = os.getenv(self.awp_var)
         if awp_root:
