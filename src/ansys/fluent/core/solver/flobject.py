@@ -1695,6 +1695,77 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         else:
             return getattr(super(), name)
 
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the list object.
+
+        For Quantity-like inputs containing sequence values, convert once to the
+        child target units (when available) and apply in a single bulk update.
+
+        Raises
+        ------
+        UnhandledQuantity
+            If a Quantity-like input cannot be interpreted or converted to
+            target units.
+        """
+        if kwargs or state is None:
+            return super().set_state(state=state, **kwargs)
+
+        quantity = None
+        try:
+            # Accept either a concrete Quantity or tuple shorthand
+            # (sequence, units) for list-style unit-aware updates.
+            if isinstance(state, ansys.units.Quantity):
+                quantity = state
+            elif (
+                isinstance(state, tuple)
+                and len(state) == 2
+                and isinstance(state[0], collections.abc.Sequence)
+                and not isinstance(state[0], (str, bytes, bytearray))
+            ):
+                quantity = ansys.units.Quantity(*state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        if quantity is None:
+            return super().set_state(state=state, **kwargs)
+
+        try:
+            # Materialize values once so we can determine target size before
+            # any conversion or server update.
+            values = list(quantity.value)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        # Keep list-object cardinality in sync before the final bulk set.
+        size = len(values)
+        if self.get_size() != size:
+            with self._while_resizing():
+                self.flproxy.resize_list_object(self.path, size)
+        if len(self._objects) != size:
+            self._update_objects()
+
+        target_units = None
+        if size > 0:
+            child = self[0]
+            # First support direct numerical list children.
+            if isinstance(child, RealNumerical):
+                target_units = child.units()
+            else:
+                # Then support wrapped schemas where units live under .value.
+                child_value = getattr(child, "value", None)
+                if isinstance(child_value, RealNumerical):
+                    target_units = child_value.units()
+
+        if target_units is not None:
+            try:
+                # Convert once using the resolved target units and send plain
+                # floats in a single bulk update.
+                values = [float(v) for v in quantity.to(target_units).value]
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
+
+        return super().set_state(state=values, **kwargs)
+
 
 class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
@@ -1784,7 +1855,7 @@ class BaseCommand(Action):
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -2394,14 +2465,15 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import config, utils
+    from ansys.fluent.core.module_config import config
+    from ansys.fluent.core.utils import load_module as _load_module
 
     if config.use_runtime_python_classes:
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
-            settings = utils.load_module(
+            settings = _load_module(
                 f"settings_{version}",
                 config.codegen_outdir / "solver" / f"settings_{version}.py",
             )

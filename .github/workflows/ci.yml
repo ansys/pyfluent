@@ -104,7 +104,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         should-release:
           - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
         exclude:
@@ -534,6 +534,7 @@ jobs:
   nightly-dev-test:
     name: Release Testing
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
+    needs: build
     runs-on: [self-hosted, pyfluent]
     env:
       PYTEST_XDIST_AUTO_NUM_WORKERS: 1
@@ -553,20 +554,14 @@ jobs:
         env:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
-      - name: Cache pip
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+      - name: Download package
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-          lookup-only: false # zizmor: ignore[cache-poisoning]
-
-      - name: Add version information
-        run: make version-info
+          name: PyFluent-packages
+          path: dist
 
       - name: Install pyfluent
-        run: make install
+        run: pip install -q --force-reinstall dist/*.whl > /dev/null
 
       - name: Retrieve PyFluent version
         run: |
@@ -585,21 +580,6 @@ jobs:
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Run API codegen
-        run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Print Fluent version info
-        run: |
-          cat src/ansys/fluent/core/generated/fluent_version_271.py
-          python -c "from ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
-
-      - name: Install again after codegen
-        run: |
-          rm -rf dist
-          make install > /dev/null
 
       - name: Unit Testing
         run: |
