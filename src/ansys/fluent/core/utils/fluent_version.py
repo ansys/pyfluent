@@ -126,8 +126,12 @@ class FluentVersion(Enum):
             If an Ansys version cannot be found.
         """
         for member in cls:
-            if member.awp_var in os.environ and member.get_fluent_exe_path().exists():
-                return member
+            if os.environ.get(member.awp_var):
+                try:
+                    member.get_fluent_exe_path()
+                    return member
+                except FileNotFoundError:
+                    continue
 
         raise FileNotFoundError(
             "Unable to locate a compatible Ansys Fluent installation. "
@@ -146,20 +150,21 @@ class FluentVersion(Enum):
         Raises
         ------
         FileNotFoundError
-            If the environment variable for this version (for example,
-            ``AWP_ROOT252``) is not set.
+            If the Fluent executable path does not exist.
         """
         awp_root = os.getenv(self.awp_var)
-        if not awp_root:
-            raise FileNotFoundError(
-                f"Environment variable '{self.awp_var}' is not set. "
-                "Set it to your Ansys installation root to resolve the Fluent executable path."
+        if awp_root:
+            fluent_root = Path(awp_root) / "fluent"
+            exe_path = (
+                fluent_root / "ntbin" / "win64" / "fluent.exe"
+                if platform.system() == "Windows"
+                else fluent_root / "bin" / "fluent"
             )
-        fluent_root = Path(awp_root) / "fluent"
-        return (
-            fluent_root / "ntbin" / "win64" / "fluent.exe"
-            if platform.system() == "Windows"
-            else fluent_root / "bin" / "fluent"
+            if exe_path.exists():
+                return exe_path
+        raise FileNotFoundError(
+            f"Fluent executable not found for '{self.awp_var}'. "
+            "Verify that the environment variable points to a valid Ansys installation containing Fluent."
         )
 
     @classmethod
