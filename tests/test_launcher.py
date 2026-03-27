@@ -314,7 +314,7 @@ def test_get_fluent_exe_path_when_nothing_is_set(helpers):
 )
 def test_get_fluent_exe_path_from_awp_root(fluent_version, helpers, fs):
     helpers.mock_awp_vars(version=str(fluent_version.number))
-    fs.create_file(fluent_version.get_fluent_exe_path())
+    fs.create_file(fluent_version._get_fluent_exe_path())
     if platform.system() == "Windows":
         expected_path = (
             Path(f"ansys_inc/v{fluent_version.number}/fluent")
