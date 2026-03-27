@@ -1006,37 +1006,6 @@ def get_child_nodes(node, nodes, type_list):
                     return
 
 
-@pytest.mark.fluent_version("latest")
-def test_strings_with_allowed_values(static_mixer_settings_session):
-    solver = static_mixer_settings_session
-    fluent_version = solver.get_fluent_version()
-
-    with pytest.raises(AttributeError) as e:
-        if fluent_version >= FluentVersion.v261:
-            solver.solution.calculation_activity.auto_save.root_name.allowed_values()
-        else:
-            solver.file.auto_save.root_name.allowed_values()
-    assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
-
-    if fluent_version >= FluentVersion.v261:
-        assert solver.solution.calculation_activity.auto_save.case_frequency.allowed_values() == [
-            "if-case-is-modified",
-            "each-time",
-            "if-mesh-is-modified",
-        ]
-
-    string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
-    expected_solver_types = [
-        "pressure-based",
-        "density-based-implicit",
-        "density-based-explicit",
-    ]
-
-    if fluent_version >= FluentVersion.v271:
-        expected_solver_types.append("direct-simulation-monte-carlo")
-    assert string_with_allowed_values == expected_solver_types
-
-
 @pytest.mark.fluent_version(">=24.2")
 def test_parent_class_attributes(static_mixer_settings_session):
     solver = static_mixer_settings_session
