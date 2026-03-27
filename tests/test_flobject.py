@@ -781,11 +781,16 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_session):
 def test_accessor_methods_on_settings_object_types(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
-    assert solver.setup.general.solver.type.allowed_values() == [
+    expected_solver_types = [
         "pressure-based",
         "density-based-implicit",
         "density-based-explicit",
     ]
+
+    if solver.get_fluent_version() >= FluentVersion.v271:
+        expected_solver_types.append("direct-simulation-monte-carlo")
+
+    assert solver.setup.general.solver.type.allowed_values() == expected_solver_types
     accuracy_control = (
         solver.setup.models.discrete_phase.numerics.tracking.accuracy_control
     )
@@ -1026,11 +1031,15 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
         ]
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
-    assert string_with_allowed_values == [
+    expected_solver_types = [
         "pressure-based",
         "density-based-implicit",
         "density-based-explicit",
     ]
+
+    if fluent_version >= FluentVersion.v271:
+        expected_solver_types.append("direct-simulation-monte-carlo")
+    assert string_with_allowed_values == expected_solver_types
 
 
 @pytest.mark.fluent_version(">=24.2")
