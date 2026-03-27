@@ -160,20 +160,31 @@ class FluentVersion(Enum):
                 "Set it to the root of a valid Ansys installation containing Fluent."
             )
 
-        fluent_root = Path(awp_root) / "fluent"
-        exe_path = (
-            fluent_root / "ntbin" / "win64" / "fluent.exe"
-            if platform.system() == "Windows"
-            else fluent_root / "bin" / "fluent"
-        )
+        exe_path = self._get_fluent_exe_path()
         if exe_path.exists():
             return exe_path
 
         raise FileNotFoundError(
-            "Fluent executable not found at the expected path "
+            "Fluent executable not found (or is inaccessible) at the expected path "
             f"'{exe_path}'. Environment variable '{self.awp_var}' is set to '{awp_root}', "
             "but no Fluent executable was found there. Verify that it points to a valid "
             "Ansys installation containing Fluent."
+        )
+
+    def _get_fluent_exe_path(self) -> Path:
+        """Get the path for the Fluent executable file.
+
+        Returns
+        -------
+        Path
+            Fluent executable path.
+        """
+        awp_root = os.environ[self.awp_var]
+        fluent_root = Path(awp_root) / "fluent"
+        return (
+            fluent_root / "ntbin" / "win64" / "fluent.exe"
+            if platform.system() == "Windows"
+            else fluent_root / "bin" / "fluent"
         )
 
     @classmethod

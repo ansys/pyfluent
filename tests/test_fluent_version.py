@@ -60,7 +60,7 @@ def test_get_latest_installed(helpers, fs):
     helpers.mock_awp_vars()
     with pytest.raises(FileNotFoundError):
         assert FluentVersion.get_latest_installed() == FluentVersion.current_release()
-    fs.create_file(FluentVersion.current_release().get_fluent_exe_path())
+    fs.create_file(FluentVersion.current_release()._get_fluent_exe_path())
     assert FluentVersion.get_latest_installed() == FluentVersion.current_release()
 
 
