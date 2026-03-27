@@ -7,11 +7,13 @@ on:
       - "v*"
       - "!*dev*"
 
+concurrency:
+  group: doc-build-release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: read
-  packages: read
-  pull-requests: read
-  issues: read
+  contents: read # Required for actions/checkout and repository reads.
+  packages: read # Required for docker/login-action access to GHCR packages/images.
 
 env:
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
@@ -105,8 +107,8 @@ jobs:
     runs-on: public-ubuntu-latest-8-cores
     needs: [build_release_docs]
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Required to push release documentation updates to the target repository/branch.
+      pull-requests: write # Required when deployment action creates or updates pull requests.
     steps:
       - name: "Deploy release documentation"
         uses: ansys/actions/doc-deploy-stable@v10.2.7

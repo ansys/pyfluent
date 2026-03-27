@@ -7,6 +7,10 @@
 name: 'Dependency Review'
 on: [pull_request]
 
+concurrency:
+  group: dependency-review-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
