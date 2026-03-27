@@ -16,10 +16,9 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
-  packages: read
-  pull-requests: read
-  issues: read
+  contents: read # Required for actions/checkout and repository reads across jobs.
+  packages: read # Required to pull Fluent images/packages from GHCR using GITHUB_TOKEN.
+  pull-requests: read # Required by PR metadata checks (for example, check-pr-title).
 
 env:
   API_CODE_CACHE: 7
@@ -64,8 +63,8 @@ jobs:
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Required to commit and push CHANGELOG updates.
+      pull-requests: write # Required to create or update changelog PRs.
     steps:
       - uses: ansys/actions/doc-deploy-changelog@v10.2.7
         with:

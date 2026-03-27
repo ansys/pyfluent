@@ -5,6 +5,8 @@ updates:
     insecure-external-code-execution: allow
     schedule:
       interval: "monthly"
+    cooldown:
+      default: 7 # Wait 7 days before raising a PR for a newly published version.
     labels:
       - "Maintenance"
       - "Dependencies"
@@ -38,6 +40,8 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    cooldown:
+      default: 7 # Wait 7 days before raising a PR for a newly published action version.
     labels:
       - "Maintenance"
     groups:
