@@ -1,9 +1,9 @@
 name: "CodeQL"
 
 permissions:
-  contents: read
-  security-events: read
-  actions: read
+  contents: read # Required to checkout and read repository contents during analysis.
+  security-events: read # Required for codeql-action/analyze to upload code scanning results.
+  actions: read # Required for CodeQL workflow/action metadata access.
 
 on:
   push:
@@ -22,6 +22,9 @@ jobs:
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners
     # Consider using larger runners for possible analysis time improvements.
+    concurrency:
+      group: codeql-${{ github.workflow }}-${{ github.ref }}-${{ matrix.language }}
+      cancel-in-progress: true
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
 
