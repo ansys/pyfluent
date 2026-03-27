@@ -5,11 +5,13 @@ on:
     - cron: "0 3 * * *"
   workflow_dispatch:
 
+concurrency:
+  group: test-run-dev-version-nightly-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: read
-  packages: read
-  pull-requests: read
-  issues: read
+  contents: read # Required for actions/checkout and repository reads.
+  packages: read # Required for docker/login-action access to GHCR images.
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}

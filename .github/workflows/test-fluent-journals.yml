@@ -8,11 +8,13 @@ on:
     branches:
       - main
 
+concurrency:
+  group: test-fluent-journals-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: read
-  packages: read
-  pull-requests: read
-  issues: read
+  contents: read # Required for actions/checkout and repository reads.
+  packages: read # Required for docker/login-action access to GHCR images.
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}

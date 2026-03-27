@@ -20,11 +20,12 @@ on:
     - cron: "0 4 28 12 *"
   workflow_dispatch:
 
+concurrency:
+  group: tag-iteration-ends-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: read
-  packages: read
-  pull-requests: read
-  issues: read
+  contents: read # Required for actions/checkout to read repository contents.
 
 jobs:
   tag:
