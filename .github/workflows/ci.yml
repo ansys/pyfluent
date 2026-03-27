@@ -186,6 +186,7 @@ jobs:
         shell: bash
         run: |
           quarto --version
+
       - name: Verify tinytex is installed
         run: |
           quarto install tinytex --no-prompt --update-path
