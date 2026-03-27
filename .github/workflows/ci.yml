@@ -179,6 +179,14 @@ jobs:
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
           lookup-only: false # zizmor: ignore[cache-poisoning]
 
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
+
+      - name: Check Quarto Version
+        shell: bash
+        run: |
+          quarto --version
+ 
       - name: Verify tinytex is installed
         run: |
           quarto install tinytex --no-prompt --update-path
