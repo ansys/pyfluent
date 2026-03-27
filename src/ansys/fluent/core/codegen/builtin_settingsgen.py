@@ -38,6 +38,7 @@ _PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
 
 
 def _get_settings_root(version: str):
+    from ansys.fluent.core.module_config import config
     from ansys.fluent.core.utils import load_module as _load_module
 
     settings = _load_module(
