@@ -62,6 +62,7 @@ def test_parametric_workflow():
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
                 container_dict=config_dict,
+                insecure_mode=True,
             )
         container_workdir = PurePosixPath(pyfluent.config.container_mount_target)
     else:
