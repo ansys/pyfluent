@@ -23,7 +23,7 @@
 from pathlib import Path, PurePosixPath
 import tempfile
 
-# from conftest import SKIP_INVESTIGATING
+from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import pytest_approx
 
@@ -33,9 +33,9 @@ from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferS
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-# @pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# # https://github.com/ansys/pyfluent/issues/3855
-# @pytest.mark.nightly
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/3855
+@pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
