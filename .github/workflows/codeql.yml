@@ -14,6 +14,10 @@ on:
   schedule: # At 01:27 AM, only on Tuesday
     - cron: '27 1 * * 2'
 
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   analyze:
     name: Analyze
@@ -22,9 +26,6 @@ jobs:
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners
     # Consider using larger runners for possible analysis time improvements.
-    concurrency:
-      group: codeql-${{ github.workflow }}-${{ github.ref }}-${{ matrix.language }}
-      cancel-in-progress: true
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
 
