@@ -27,8 +27,8 @@ import logging
 import sys
 
 import grpc
-from grpc_health.v1 import health_pb2 as HealthCheckModule
-from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
+from ansys.api.fluent.v1 import health_pb2 as HealthCheckModule
+from ansys.api.fluent.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.interceptors import (
@@ -53,8 +53,27 @@ class HealthCheckService:
     class Status(Enum):
         """Health check status."""
 
+        UNSPECIFIED: int = 0
         SERVING: int = 1
         NOT_SERVING: int = 2
+        SERVICE_UNKNOWN: int = 3
+
+    @classmethod
+    def _status_from_response(cls, response_status: int) -> "HealthCheckService.Status":
+        """Convert a protobuf health status to local status enum."""
+        if response_status == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_SERVING:
+            return cls.Status.SERVING
+        if (
+            response_status
+            == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_NOT_SERVING
+        ):
+            return cls.Status.NOT_SERVING
+        if (
+            response_status
+            == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_SERVICE_UNKNOWN
+        ):
+            return cls.Status.SERVICE_UNKNOWN
+        return cls.Status.UNSPECIFIED
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
@@ -84,7 +103,7 @@ class HealthCheckService:
             metadata=self._metadata,
             timeout=config.check_health_timeout,
         )
-        return HealthCheckService.Status(response.status)
+        return self._status_from_response(response.status)
 
     def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
@@ -107,7 +126,10 @@ class HealthCheckService:
         while True:
             try:
                 response = next(responses)
-                if response.status == 1:
+                if (
+                    response.status
+                    == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_SERVING
+                ):
                     responses.cancel()
             except StopIteration:
                 break

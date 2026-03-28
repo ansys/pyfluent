@@ -29,9 +29,9 @@ import warnings
 import grpc
 import numpy as np
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
-from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
+from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v1 import svar_pb2_grpc as SvarGrpcModule
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
@@ -60,7 +60,7 @@ class SolutionVariableService:
             GrpcErrorInterceptor(),
             TracingInterceptor(),
         )
-        self.__stub = SvarGrpcModule.svarStub(intercept_channel)
+        self.__stub = SvarGrpcModule.SvarStub(intercept_channel)
         self.__metadata = metadata
 
     def get_data(self, request):
@@ -111,7 +111,7 @@ class SolutionVariableInfo:
                 self.name = solution_variable_info.name
                 self.dimension = solution_variable_info.dimension
                 self.field_type = _FieldDataConstants.proto_field_type_to_np_data_type[
-                    solution_variable_info.fieldType
+                    solution_variable_info.field_type
                 ]
 
             def __repr__(self):
@@ -168,19 +168,19 @@ class SolutionVariableInfo:
                     """Initialize PartitionsInfo."""
                     self.count = partition_info.count
                     self.start_index = (
-                        partition_info.startIndex if self.count > 0 else 0
+                        partition_info.start_index if self.count > 0 else 0
                     )
-                    self.end_index = partition_info.endIndex if self.count > 0 else 0
+                    self.end_index = partition_info.end_index if self.count > 0 else 0
 
             def __init__(self, zone_info):
                 """Initialize ZoneInfo."""
                 self.name = zone_info.name
-                self.zone_id = zone_info.zoneId
-                self.zone_type = zone_info.zoneType
-                self.thread_type = zone_info.threadType
+                self.zone_id = zone_info.zone_id
+                self.zone_type = zone_info.zone_type
+                self.thread_type = zone_info.thread_type
                 self.partitions_info = [
                     self.PartitionsInfo(partition_info)
-                    for partition_info in zone_info.partitionsInfo
+                    for partition_info in zone_info.partitions_info
                 ]
 
             @property
@@ -203,7 +203,7 @@ class SolutionVariableInfo:
             for zone_info in zones_info:
                 self._zones_info[zone_info.name] = self.ZoneInfo(zone_info)
             for domain_info in domains_info:
-                self._domains_info[domain_info.name] = domain_info.domainId
+                self._domains_info[domain_info.name] = domain_info.domain_id
 
         def __getitem__(self, name):
             return self._zones_info.get(name, None)
@@ -261,16 +261,16 @@ class SolutionVariableInfo:
         solution_variables_info = None
         for zone_name in zone_names:
             request = SvarProtoModule.GetSvarsInfoRequest(
-                domainId=allowed_domain_names.valid_name(domain_name),
-                zoneId=allowed_zone_names.valid_name(zone_name),
+                domain_id=allowed_domain_names.valid_name(domain_name),
+                zone_id=allowed_zone_names.valid_name(zone_name),
             )
             response = self._service.get_variables_info(request)
             if solution_variables_info is None:
                 solution_variables_info = SolutionVariableInfo.SolutionVariables(
-                    response.svarsInfo
+                    response.svars_info
                 )
             else:
-                solution_variables_info._filter(response.svarsInfo)
+                solution_variables_info._filter(response.svars_info)
         return solution_variables_info
 
     def get_svars_info(
@@ -297,7 +297,7 @@ class SolutionVariableInfo:
         """
         request = SvarProtoModule.GetZonesInfoRequest()
         response = self._service.get_zones_info(request)
-        return SolutionVariableInfo.ZonesInfo(response.zonesInfo, response.domainsInfo)
+        return SolutionVariableInfo.ZonesInfo(response.zones_info, response.domains_info)
 
 
 class InvalidSolutionVariableNameError(ValueError):
@@ -460,23 +460,23 @@ def extract_svars(solution_variables_data):
         index = 0
         for solution_variable_data in solution_variables_data:
             chunk = solution_variable_data.payload
-            if chunk.bytePayload:
+            if chunk.byte_payload:
                 count = min(
-                    len(chunk.bytePayload) // field_datatype_item_size,
+                    len(chunk.byte_payload) // field_datatype_item_size,
                     field_size - index,
                 )
                 field_arr[index : index + count] = np.frombuffer(
-                    chunk.bytePayload, field_datatype, count=count
+                    chunk.byte_payload, field_datatype, count=count
                 )
                 index += count
                 if index == field_size:
                     return field_arr
             else:
                 payload = (
-                    chunk.floatPayload.payload
-                    or chunk.intPayload.payload
-                    or chunk.doublePayload.payload
-                    or chunk.longPayload.payload
+                    chunk.float_payload.payloads
+                    or chunk.int_payload.payloads
+                    or chunk.double_payload.payloads
+                    or chunk.long_payload.payloads
                 )
                 count = len(payload)
                 field_arr[index : index + count] = np.fromiter(
@@ -488,12 +488,12 @@ def extract_svars(solution_variables_data):
 
     zones_svar_data = {}
     for array in solution_variables_data:
-        if array.WhichOneof("array") == "payloadInfo":
-            zones_svar_data[array.payloadInfo.zone] = _extract_svar(
+        if array.WhichOneof("array") == "payload_info":
+            zones_svar_data[array.payload_info.zone] = _extract_svar(
                 _FieldDataConstants.proto_field_type_to_np_data_type[
-                    array.payloadInfo.fieldType
+                    array.payload_info.field_type
                 ],
-                array.payloadInfo.fieldSize,
+                array.payload_info.field_size,
                 solution_variables_data,
             )
         elif array.WhichOneof("array") == "header":
@@ -655,10 +655,10 @@ class SolutionVariableData:
         """
         self._update_solution_variable_info()
         svars_request = SvarProtoModule.GetSvarDataRequest(
-            provideBytesStream=_FieldDataConstants.bytes_stream,
-            chunkSize=_FieldDataConstants.chunk_size,
+            provide_bytes_stream=_FieldDataConstants.bytes_stream,
+            chunk_size=_FieldDataConstants.chunk_size,
         )
-        svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
+        svars_request.domain_id = self._allowed_domain_names.valid_name(domain_name)
         svars_request.name = self._allowed_solution_variable_names.valid_name(
             variable_name,
             zone_names,
@@ -742,7 +742,7 @@ class SolutionVariableData:
             set_data_requests.append(
                 SvarProtoModule.SetSvarDataRequest(
                     header=SvarProtoModule.SvarHeader(
-                        name=variable_name, domainId=domain_id
+                        name=variable_name, domain_id=domain_id
                     )
                 )
             )
@@ -758,11 +758,11 @@ class SolutionVariableData:
                 )
                 set_data_requests.append(
                     SvarProtoModule.SetSvarDataRequest(
-                        payloadInfo=SvarProtoModule.Info(
-                            fieldType=_FieldDataConstants.np_data_type_to_proto_field_type[
+                        payload_info=SvarProtoModule.Info(
+                            field_type=_FieldDataConstants.np_data_type_to_proto_field_type[
                                 solution_variable_data.dtype.type
                             ],
-                            fieldSize=solution_variable_data.size,
+                            field_size=solution_variable_data.size,
                             zone=zone_id,
                         )
                     )
@@ -771,28 +771,28 @@ class SolutionVariableData:
                     SvarProtoModule.SetSvarDataRequest(
                         payload=(
                             SvarProtoModule.Payload(
-                                floatPayload=FieldDataProtoModule.FloatPayload(
-                                    payload=solution_variable_data
+                                float_payload=FieldDataProtoModule.FloatPayload(
+                                    payloads=solution_variable_data
                                 )
                             )
                             if solution_variable_data.dtype.type == np.float32
                             else (
                                 SvarProtoModule.Payload(
-                                    doublePayload=FieldDataProtoModule.DoublePayload(
-                                        payload=solution_variable_data
+                                    double_payload=FieldDataProtoModule.DoublePayload(
+                                        payloads=solution_variable_data
                                     )
                                 )
                                 if solution_variable_data.dtype.type == np.float64
                                 else (
                                     SvarProtoModule.Payload(
-                                        intPayload=FieldDataProtoModule.IntPayload(
-                                            payload=solution_variable_data
+                                        int_payload=FieldDataProtoModule.IntPayload(
+                                            payloads=solution_variable_data
                                         )
                                     )
                                     if solution_variable_data.dtype.type == np.int32
                                     else SvarProtoModule.Payload(
-                                        longPayload=FieldDataProtoModule.LongPayload(
-                                            payload=solution_variable_data
+                                        long_payload=FieldDataProtoModule.LongPayload(
+                                            payloads=solution_variable_data
                                         )
                                     )
                                 )
