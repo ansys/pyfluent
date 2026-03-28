@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cpp_cmd_name:
+
+cpp_cmd_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cpp_cmd_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================================
+
+Parent                                                                                      Summary
+
+====================================================   ============================================
+:ref:`interpreted_functions <interpreted_functions>`       Load interpreted user-defined functions.
+
+====================================================   ============================================
+

@@ -1,0 +1,404 @@
+:orphan:
+
+Deprecated APIs
+===============
+
+Deprecated PyFluent APIs
+------------------------
+
+.. list-table:: Deprecated PyFluent APIs
+   :header-rows: 1
+
+   * - Target
+     - Deprecated
+     - Alternatives
+   * - :py:meth:`ansys.fluent.core.services.scheme_eval.SchemeEval.scheme_eval <ansys.fluent.core.services.scheme_eval.SchemeEval.scheme_eval>`
+     - 0.32
+     - :py:meth:`ansys.fluent.core.services.scheme_eval.SchemeEval.eval <ansys.fluent.core.services.scheme_eval.SchemeEval.eval>`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.scheme_eval <ansys.fluent.core.session.BaseSession.scheme_eval>`
+     - 0.32
+     - :py:meth:`ansys.fluent.core.session.BaseSession.scheme <ansys.fluent.core.session.BaseSession.scheme>`
+   * - :py:meth:`ansys.fluent.core.fluent_connection.FluentConnection.health_check <ansys.fluent.core.fluent_connection.FluentConnection.health_check>`
+     - 0.32
+     - N/A
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.health_check <ansys.fluent.core.session.BaseSession.health_check>`
+     - 0.32
+     - :py:meth:`ansys.fluent.core.session.BaseSession.is_active <ansys.fluent.core.session.BaseSession.is_active>`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.is_server_healthy <ansys.fluent.core.session.BaseSession.is_server_healthy>`
+     - 0.38
+     - :py:meth:`ansys.fluent.core.session.BaseSession.is_active <ansys.fluent.core.session.BaseSession.is_active>`
+   * - :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.Transaction.add_requests <ansys.fluent.core.file_session.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.file_session.Transaction.add_scalar_fields_request <ansys.fluent.core.file_session.Transaction.add_scalar_fields_request>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.Transaction.add_requests <ansys.fluent.core.file_session.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.file_session.Transaction.add_vector_fields_request <ansys.fluent.core.file_session.Transaction.add_vector_fields_request>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.Transaction.add_requests <ansys.fluent.core.file_session.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_surface_data <ansys.fluent.core.file_session.FileFieldData.get_surface_data>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_field_data <ansys.fluent.core.file_session.FileFieldData.get_field_data>`
+   * - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data <ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_field_data <ansys.fluent.core.file_session.FileFieldData.get_field_data>`
+   * - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_vector_field_data <ansys.fluent.core.file_session.FileFieldData.get_vector_field_data>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_field_data <ansys.fluent.core.file_session.FileFieldData.get_field_data>`
+   * - :py:class:`ansys.fluent.core.services.field_data.FieldInfo <ansys.fluent.core.services.field_data.FieldInfo>`
+     - 0.34.0
+     - :py:class:`ansys.fluent.core.services.field_data.FieldData <ansys.fluent.core.services.field_data.FieldData>`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.field_info <ansys.fluent.core.session.BaseSession.field_info>`
+     - 0.20.dev9
+     - `session.fields.field_info`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.field_data <ansys.fluent.core.session.BaseSession.field_data>`
+     - 0.20.dev9
+     - `session.fields.field_data`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.field_data_streaming <ansys.fluent.core.session.BaseSession.field_data_streaming>`
+     - 0.20.dev9
+     - `session.fields.field_data_streaming`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_surfaces_request <ansys.fluent.core.services.field_data.Transaction.add_surfaces_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request <ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request <ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - ``timeout`` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`
+     - 0.34.dev0
+     - ``start_timeout`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_scalar_fields_request <ansys.fluent.core.file_session.Transaction.add_scalar_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_vector_fields_request <ansys.fluent.core.file_session.Transaction.add_vector_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request <ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_scalar_fields_request <ansys.fluent.core.file_session.Transaction.add_scalar_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_vector_fields_request <ansys.fluent.core.file_session.Transaction.add_vector_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request <ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_surface_data <ansys.fluent.core.file_session.FileFieldData.get_surface_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data <ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_vector_field_data <ansys.fluent.core.file_session.FileFieldData.get_vector_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data <ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_surface_data <ansys.fluent.core.file_session.FileFieldData.get_surface_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data <ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_vector_field_data <ansys.fluent.core.file_session.FileFieldData.get_vector_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data <ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `container_mount_path` argument of :py:meth:`ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy>`
+     - 0.23.dev1
+     - `mount_target`
+   * - The `host_mount_path` argument of :py:meth:`ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy>`
+     - 0.23.dev1
+     - `mount_source`
+   * - The `container_mount_path` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`
+     - 0.23.dev1
+     - `mount_target`
+   * - The `host_mount_path` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`
+     - 0.23.dev1
+     - `mount_source`
+   * - The `show_gui` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
+     - 0.22.dev0
+     - `ui_mode`
+   * - The `version` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
+     - 0.22.dev0
+     - `dimension`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_surfaces_request <ansys.fluent.core.services.field_data.Transaction.add_surfaces_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`nsys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request <ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request <ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_surfaces_request <ansys.fluent.core.services.field_data.Transaction.add_surfaces_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request <ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request <ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `PYFLUENT_USE_DOCKER_COMPOSE` environment variable
+     - 0.34.0
+     - ``use_docker_compose`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
+   * - The `PYFLUENT_USE_PODMAN_COMPOSE` environment variable
+     - 0.34.0
+     - ``use_podman_compose`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
+Deprecated Ansys Fluent APIs
+----------------------------
+
+.. list-table:: Deprecated Ansys Fluent APIs
+   :header-rows: 1
+
+   * - Target
+     - Deprecated
+   * - :ref:`solver.settings.design.geometry.enable <enable_42>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.design.gradient_based.enable <enable_42>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.results.graphics.vector.vector_child.skip <skip>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.vector.vector_child.style <style>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.surfaces.ungroup_surfaces <ungroup_surfaces>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.mesh.mesh_child.coloring <coloring>`
+     - Ansys Fluent 2025 R2
+   * - :ref:`solver.settings.results.graphics.vector.vector_child.scale <scale_4>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.step <step>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.animations.playback.stored_view <stored_view>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.results.graphics.mesh.mesh_child.edge_type <edge_type>`
+     - Ansys Fluent 2025 R2
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.skip <skip_2>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.plot.xy_plot.xy_plot_child.options <options_22>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.contour.contour_child.filled <filled_1>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.range <range_5>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.onzone <onzone>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.lic.lic_child.range_option <range_option>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.design.gradient_based.observables.definition <definition_3>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.results.graphics.contour.contour_child.coloring <coloring_1>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.coarsen <coarsen_2>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.olic.olic_child.range_option <range_option>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.options <options_18>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.surfaces.create_group_surfaces <create_group_surfaces>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.contour.contour_child.node_values <node_values>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.vector.vector_child.range_option <range_option>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.contour.contour_child.range_option <range_option>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.skip <skip_4>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.solution.initialization.open_channel_auto_init.flat_init <flat_init>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.results.graphics.contour.contour_child.contour_lines <contour_lines>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.range <range_5>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.plot.xy_plot.xy_plot_child.y_axis_function <y_axis_function>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.plot.xy_plot.xy_plot_child.plot_direction <plot_direction_1>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.models.viscous.user_defined_functions.tke_prandtl <tke_prandtl>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.setup.models.viscous.user_defined_functions.tdr_prandtl <tdr_prandtl>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.setup.models.viscous.user_defined_functions.sdr_prandtl <sdr_prandtl>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.momentum.rotating <rotating>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.models.viscous.options.kw_buoyancy_effects <kw_buoyancy_effects>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.setup.user_defined.udf_functions.compile.library_name <library_name_1>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.setup.user_defined.udf_functions.compile.source_files <source_files_1>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.setup.user_defined.udf_functions.compile.header_files <header_files_1>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.solution.run_calculation.remote_compute.submit_job.use_data <use_data>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.results.plot.xy_plot.xy_plot_child.x_axis_function <x_axis_function_1>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.models.viscous.user_defined_functions.wall_prandtl <wall_prandtl>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.results.graphics.contour.contour_child.boundary_values <boundary_values>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.coarsen <coarsen_4>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel <kernel>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.user_defined.udf_functions.load.udf_library_name <udf_library_name>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.style_attribute <style_attribute>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.models.viscous.user_defined_functions.energy_prandtl <energy_prandtl>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.momentum.components <components_3>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.turbulence.rough_nasa <rough_nasa>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.turbulence.rough_data <rough_data>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.solution.calculation_activity.poor_mesh_numerics.register_based.set <set_1>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.user_defined.udf_functions.unload.udf_library_name <udf_library_name_1>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.design.gradient_based.design_tool.design_conditions.definition <definition_5>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.results.graphics.pathline.pathline_child.accuracy_control <accuracy_control_1>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.boundary_conditions.perforated_wall.model_setup.ninjections <ninjections>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.setup.models.viscous.user_defined_functions.turbulent_schmidt <turbulent_schmidt>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.results.report.discrete_phase.sampling_and_erosion.compute_samples.op_udf <op_udf>`
+     - Ansys Fluent 2025 R2
+   * - :ref:`solver.settings.results.report.discrete_phase.sampling_and_erosion.start_file_write.op_udf <op_udf>`
+     - Ansys Fluent 2025 R2
+   * - :ref:`solver.settings.solution.initialization.open_channel_auto_init.wavy_surface_init <wavy_surface_init>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.setup.materials.mixture.mixture_child.species.volumetric_species <volumetric_species>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.vector_settings <vector_settings>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.filter_settings <filter_settings>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.turbulence.rough_shin_et_al <rough_shin_et_al>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.radiator.radiator_child.radiator.hc.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.user_defined.udf_functions.compile.use_built_in_compiler <use_built_in_compiler_1>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.solution.controls.p_v_controls.skewness_neighbor_coupling <skewness_neighbor_coupling_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.run_calculation.remote_compute.submit_job.use_modified_case <use_modified_case>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.solution.run_calculation.remote_compute.submit_job.use_modified_data <use_modified_data>`
+     - Ansys Fluent 2027 R1
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.style_attribute <style_attribute_1>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.models.viscous.transition_sst.roughness_correlation_fcn <roughness_correlation_fcn>`
+     - Ansys Fluent 2025 R2
+   * - :ref:`solver.settings.solution.report_definitions.vbm.vbm_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.mesh.mesh_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.lift.lift_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.drag.drag_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.time.time_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.flux.flux_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.controls.p_v_controls.skewness_correction_itr_count <skewness_correction_itr_count_1>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.controls.p_v_controls.neighbor_correction_itr_count <neighbor_correction_itr_count_1>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.wall_film_particles <wall_film_particles>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.track_pdf_particles <track_pdf_particles>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.solution.report_definitions.force.force_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.icing.icing_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.volume.volume_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.moment.moment_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.custom.custom_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.free_stream_particles <free_stream_particles>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.materials.particle_mixture.particle_mixture_child.species.particle_species <particle_species>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.surface.surface_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.results.report.discrete_phase.sampling_and_erosion.compute_samples.accumulate_rates <accumulate_rates>`
+     - Ansys Fluent 2025 R2
+   * - :ref:`solver.settings.solution.report_definitions.injection.injection_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.results.report.discrete_phase.sampling_and_erosion.start_file_write.accumulate_rates <accumulate_rates>`
+     - Ansys Fluent 2025 R2
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.discrete_phase.friction_coefficient.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.physics.boundaries.exhaust_fan.exhaust_fan_child.momentum.pressure_jump.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.expression.expression_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.physics.boundaries.inlet_vent.inlet_vent_child.momentum.loss_coefficient.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.models.discrete_phase.physical_models.particle_forces.pressure_gradient_force <pressure_gradient_force>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.user_defined.user_defined_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.aeromechanics.aeromechanics_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.track_single_particle_stream <track_single_particle_stream>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.discrete_phase.reflection_coefficients.normal.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.discrete_phase.erosion.generic.diameter_function.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.results.graphics.particle_track.particle_track_child.style_attribute.sphere_settings.options.variable.range <range_5>`
+     - Ansys Fluent 2025 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.discrete_phase.reflection_coefficients.tangential.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.models.discrete_phase.physical_models.wall_film.include_convective_heat_transfer <include_convective_heat_transfer>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.cell_zone_conditions.fluid.fluid_child.phase.phase_child.porous_zone.relative_viscosity.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.cell_zone_conditions.fluid.fluid_child.phase.phase_child.porous_zone.capillary_pressure.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.discrete_phase.erosion.generic.impact_angle_function.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.boundary_conditions.perforated_wall.model_setup.injection.injection_child.injection_hole_count <injection_hole_count>`
+     - Ansys Fluent 2026 R1
+   * - :ref:`solver.settings.setup.physics.boundaries.wall.wall_child.discrete_phase.erosion.generic.velocity_exponent_function.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.physics.boundaries.recirculation_inlet.recirculation_inlet_child.recirculation_inlet.outlet_zone.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.solution.report_definitions.single_valued_expression.single_valued_expression_child.create_output_parameter <create_output_parameter>`
+     - Ansys Fluent 2024 R2
+   * - :ref:`solver.settings.setup.physics.boundaries.recirculation_inlet.recirculation_inlet_child.recirculation_inlet.transfer_coefficient.function_of <function_of_2>`
+     - Ansys Fluent 2024 R2

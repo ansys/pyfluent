@@ -1,0 +1,21 @@
+:orphan:
+
+.. _y_3:
+
+y
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.y_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============   ===========================================
+
+Parent                                             Summary
+
+============   ===========================================
+:ref:`u <u>`       Lagrangian matrix injection r settings.
+
+============   ===========================================
+

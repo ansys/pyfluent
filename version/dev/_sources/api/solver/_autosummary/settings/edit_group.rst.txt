@@ -1,0 +1,36 @@
+:orphan:
+
+.. _edit_group:
+
+edit_group
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.edit_group
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   ========================================================
+
+Argument                                                                                              Summary
+
+==================================================   ========================================================
+:ref:`group_name <group_name_2>`                                                   Name of the group to edit.
+
+:ref:`new_name <new_name_4>`                                                          New name for the group.
+
+:ref:`active_displacement <active_displacement_1>`   Name of the displacement to set as active in this group.
+
+==================================================   ========================================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _window_name_1:
+
+window_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.window_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =================================================
+
+Parent                                                                                         Summary
+
+==================================================   =================================================
+:ref:`close_window_by_name <close_window_by_name>`       Close a reserved graphics window by its name.
+
+==================================================   =================================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_part_replacement_settings__part_replacement_settings_insert_compound_child_task:
+
+insert_compound_child_task
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.insert_compound_child_task
+   :members: _insert_compound_child_taskArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _system_coupling_2:
+
+system_coupling
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.system_coupling_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============================================
+
+Parent                                                                     Summary
+
+================================   ===============================================
+:ref:`radiation_7 <radiation_7>`   Radiation settings for this boundary-condition.
+
+================================   ===============================================
+

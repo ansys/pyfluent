@@ -1,0 +1,36 @@
+:orphan:
+
+.. _displacement:
+
+displacement
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.displacement
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===============   ==============================
+
+Attribute                                Summary
+
+===============   ==============================
+:ref:`x <x_11>`       Prescribed X displacement.
+
+:ref:`y <y_11>`       Prescribed Y displacement.
+
+:ref:`z <z_10>`       Prescribed Z displacement.
+
+===============   ==============================
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`translation_1_child <translation_1_child>`       'child_object_type' of translation.
+
+================================================   =======================================
+

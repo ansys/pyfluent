@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_apply_share_topology__apply_share_topology_arguments_improve_surface_mesh_preferences:
+
+improve_surface_mesh_preferences
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.apply_share_topology._apply_share_topology.arguments.improve_surface_mesh_preferences
+   :members: advanced_improve, allow_defeaturing, show_in_gui, si_dihedral_angle, si_improve_dihedral_angle, si_quality_collapse_limit, si_quality_iterations, si_quality_max_angle, si_remove_step, si_step_quality_limit, si_step_width
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

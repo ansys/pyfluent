@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_41:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_41
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ==================================================
+
+Parent                                                                                                          Summary
+
+==================================================================   ==================================================
+:ref:`per_injection_zone_summaries <per_injection_zone_summaries>`   Enable per-injection per-zone DPM summary reports.
+
+==================================================================   ==================================================
+

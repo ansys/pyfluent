@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_describe_geometry_and_flow__describe_geometry_and_flow_add_child_and_update:
+
+add_child_and_update
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.describe_geometry_and_flow._describe_geometry_and_flow.add_child_and_update
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _add_child_and_updateArguments/_add_child_and_updateArguments_contents

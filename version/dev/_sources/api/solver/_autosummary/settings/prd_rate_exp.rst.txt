@@ -1,0 +1,21 @@
+:orphan:
+
+.. _prd_rate_exp:
+
+prd_rate_exp
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.prd_rate_exp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ========================================
+
+Parent                                                                                    Summary
+
+======================================================   ========================================
+:ref:`rxn_product_list_child <rxn_product_list_child>`   'child_object_type' of rxn_product_list.
+
+======================================================   ========================================
+

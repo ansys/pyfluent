@@ -1,0 +1,34 @@
+:orphan:
+
+.. _heat_mass_exchange:
+
+heat_mass_exchange
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.heat_mass_exchange
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   ==============================================================================================================
+
+Attribute                                                                                                                                                                     Summary
+
+====================================================================   ==============================================================================================================
+:ref:`coupled_heat_mass_solution <coupled_heat_mass_solution>`         Enables fully coupled calculation heat and mass transfer for selected particle types. Recommended when strong 
+
+:ref:`vaporization_limiting_factors <vaporization_limiting_factors>`                                                    Controls when a fully coupled heat-mass solution is enforced.
+
+====================================================================   ==============================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ==================================================
+
+Parent                                                                  Summary
+
+==========================   ==================================================
+:ref:`numerics <numerics>`   Configures numerical options for DPM calculations.
+
+==========================   ==================================================
+

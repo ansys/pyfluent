@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_interpolation_1:
+
+flow_interpolation
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.flow_interpolation_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ================
+
+Parent                                                                Summary
+
+==========================================================   ================
+:ref:`user_defined_functions_1 <user_defined_functions_1>`       Main object.
+
+==========================================================   ================
+

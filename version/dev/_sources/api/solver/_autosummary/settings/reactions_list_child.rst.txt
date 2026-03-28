@@ -1,0 +1,40 @@
+:orphan:
+
+.. _reactions_list_child:
+
+reactions_list_child
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reactions_list_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ========================================
+
+Attribute                                                                       Summary
+
+============================================   ========================================
+:ref:`rxn_name <rxn_name>`                          Name of the heterogeneous reaction.
+
+:ref:`rxn_method <rxn_method>`                                         Reaction method.
+
+:ref:`rxn_reactant_list <rxn_reactant_list>`                                 Reactants.
+
+:ref:`rxn_product_list <rxn_product_list>`                                    Products.
+
+:ref:`arrh_params <arrh_params>`               Parameters for the Arrhenius rate model.
+
+============================================   ========================================
+
+.. rubric:: Included in:
+
+======================================   ===============
+
+Parent                                           Summary
+
+======================================   ===============
+:ref:`reactions_list <reactions_list>`   Reactions list.
+
+======================================   ===============
+

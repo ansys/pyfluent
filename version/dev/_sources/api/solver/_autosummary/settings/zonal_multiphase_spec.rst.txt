@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zonal_multiphase_spec:
+
+zonal_multiphase_spec
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zonal_multiphase_spec
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==========================
+
+Parent                                                  Summary
+
+==================================   ==========================
+:ref:`zonal_models <zonal_models>`   Zonal flow model settings.
+
+==================================   ==========================
+

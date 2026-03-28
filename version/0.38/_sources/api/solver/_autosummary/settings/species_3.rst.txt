@@ -1,0 +1,21 @@
+:orphan:
+
+.. _species_3:
+
+species
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.species_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =====================================
+
+Parent                                                                                 Summary
+
+======================================================   =====================================
+:ref:`turbulence_interaction <turbulence_interaction>`       NOx-turbulence interaction model.
+
+======================================================   =====================================
+

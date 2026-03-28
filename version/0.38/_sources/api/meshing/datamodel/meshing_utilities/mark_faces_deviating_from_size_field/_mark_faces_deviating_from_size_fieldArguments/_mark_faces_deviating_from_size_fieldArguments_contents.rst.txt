@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_faces_deviating_from_size_field__mark_faces_deviating_from_size_fieldArguments:
+
+_mark_faces_deviating_from_size_fieldArguments
+==============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.mark_faces_deviating_from_size_field._mark_faces_deviating_from_size_fieldArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern, _max_size_factor, _min_size_factor, _size_factor_type_to_compare
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,55 @@
+:orphan:
+
+.. _udf_functions:
+
+udf_functions
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.udf_functions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ================================================
+
+Attribute                                                                                       Summary
+
+====================================================   ================================================
+:ref:`source_files <source_files>`                                                    The source files.
+
+:ref:`header_files <header_files>`                                                    The header files.
+
+:ref:`use_built_in_compiler <use_built_in_compiler>`   Enable/disable the use of the built-in compiler.
+
+:ref:`library_name <library_name>`                                                   The UDF libraries.
+
+:ref:`unload_library_name <unload_library_name>`                     Name of the UDF library to unload.
+
+====================================================   ================================================
+
+.. rubric:: Methods
+
+========================   ============================================================
+
+Method                                                                          Summary
+
+========================   ============================================================
+:ref:`compile <compile>`   Compile user-defined functions using the data in this group.
+
+:ref:`load <load>`                   Load the UDF library using the data in this group.
+
+:ref:`unload <unload>`             Unload the UDF library using the data in this group.
+
+========================   ============================================================
+
+.. rubric:: Included in:
+
+======================================   =======================
+
+Parent                                                   Summary
+
+======================================   =======================
+:ref:`user_defined_1 <user_defined_1>`   User-defined functions.
+
+======================================   =======================
+

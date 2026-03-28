@@ -1,0 +1,40 @@
+:orphan:
+
+.. _passage_number_1:
+
+passage_number
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.passage_number_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =============================================
+
+Attribute                                                                  Summary
+
+==================================   =============================================
+:ref:`option <option_60>`                  How the passage number will be defined.
+
+:ref:`value <value_34>`                         Constant value for passage number.
+
+:ref:`profile_name <profile_name>`                        The name of the profile.
+
+:ref:`field_name <field_name>`                              The name of the field.
+
+:ref:`udf <udf_10>`                  The user-defined function for passage number.
+
+==================================   =============================================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`perdisp_properties_child <perdisp_properties_child>`   'child_object_type' of perdisp_properties.
+
+==========================================================   ==========================================
+

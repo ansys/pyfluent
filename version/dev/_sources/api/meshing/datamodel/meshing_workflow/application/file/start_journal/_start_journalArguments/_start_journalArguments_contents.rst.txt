@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_file_start_journal__start_journalArguments:
+
+_start_journalArguments
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.file.start_journal._start_journalArguments
+   :members: _file_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

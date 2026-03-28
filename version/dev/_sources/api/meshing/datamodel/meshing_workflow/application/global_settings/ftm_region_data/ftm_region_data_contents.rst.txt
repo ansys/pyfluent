@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_global_settings_ftm_region_data:
+
+ftm_region_data
+===============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.global_settings.ftm_region_data
+   :members: all_overset_name_list, all_overset_size_list, all_overset_type_list, all_overset_volume_fill_list, all_region_filter_categories, all_region_leakage_size_list, all_region_linked_construction_surface_list, all_region_mesh_method_list, all_region_name_list, all_region_overset_componen_list, all_region_size_list, all_region_source_list, all_region_type_list, all_region_volume_fill_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

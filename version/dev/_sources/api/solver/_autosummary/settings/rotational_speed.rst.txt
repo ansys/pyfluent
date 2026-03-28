@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rotational_speed:
+
+rotational_speed
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rotational_speed
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`machine_child <machine_child>`   'child_object_type' of machine.
+
+====================================   ===============================
+

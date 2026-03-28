@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rgp_table_name:
+
+rgp_table_name
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rgp_table_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ============================================================
+
+Parent                                                                                                            Summary
+
+==========================================================   ============================================================
+:ref:`real_gas_property_tables <real_gas_property_tables>`   Select which properties to use: built-in or from RGP tables.
+
+==========================================================   ============================================================
+

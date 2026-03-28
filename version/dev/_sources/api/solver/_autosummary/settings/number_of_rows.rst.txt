@@ -1,0 +1,23 @@
+:orphan:
+
+.. _number_of_rows:
+
+number_of_rows
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_of_rows
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===========================================================================================================================================
+
+Parent                                                                                                                                                                             Summary
+
+============================================   ===========================================================================================================================================
+:ref:`turbo_description <turbo_description>`                                                              Turbomachine description defining rows, sectors, and rotational characteristics.
+
+:ref:`create_14 <create_14>`                   Create turbomachine description with specified number of rows. Each row will be initialized with default values that you need to configure.
+
+============================================   ===========================================================================================================================================
+

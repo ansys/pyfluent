@@ -1,0 +1,40 @@
+:orphan:
+
+.. _model_options:
+
+model_options
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.model_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ====================================
+
+Attribute                                                                                   Summary
+
+============================================================   ====================================
+:ref:`open_channel_flow <open_channel_flow>`                                                  Help.
+
+:ref:`open_channel_flow_wave_bc <open_channel_flow_wave_bc>`                                  Help.
+
+:ref:`slip_velocity_on <slip_velocity_on>`                                 Mixture model parameter.
+
+:ref:`flow_regime_modeling <flow_regime_modeling>`             Enable/disable Flow Regime Modeling.
+
+:ref:`flow_regime_parameters <flow_regime_parameters>`             Flow regime blending parameters.
+
+============================================================   ====================================
+
+.. rubric:: Included in:
+
+==================================   =================
+
+Parent                                         Summary
+
+==================================   =================
+:ref:`multiphase_1 <multiphase_1>`   Multiphase model.
+
+==================================   =================
+

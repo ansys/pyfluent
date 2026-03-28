@@ -1,0 +1,55 @@
+:orphan:
+
+.. _turbo_description:
+
+turbo_description
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.turbo_description
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =======================================================================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                                                  Summary
+
+========================================   =======================================================================================================================================================================================================================================================================
+:ref:`extended <extended>`                 Whether the turbomachine description is in extended mode. Automatically enabled when any row has no cell zones assigned (virtual row). Extended mode allows virtual rows for modeling rotational boundary disturbances from blade rows not in the computational domain.
+
+:ref:`number_of_rows <number_of_rows>`                                                                                                                                                                                                                                Number of rows (stages) in the turbomachine.
+
+:ref:`rotational_axis <rotational_axis>`                                                                                                                     Rotational axis vector of the turbomachine (X, Y, Z components). First axis extracted is set as machine axis, next axes are compared for consistency.
+
+:ref:`machine <machine>`                                                                                                                                                                                                              Collection of turbomachine rows. Create rows and configure their properties.
+
+========================================   =======================================================================================================================================================================================================================================================================
+
+.. rubric:: Methods
+
+==================================   ===========================================================================================================================================
+
+Method                                                                                                                                                                   Summary
+
+==================================   ===========================================================================================================================================
+:ref:`create <create_14>`            Create turbomachine description with specified number of rows. Each row will be initialized with default values that you need to configure.
+
+:ref:`create_tui <create_tui>`                     Create turbomachine description (TUI) with specified number of rows. Each row will be initialized with user-specified values.
+
+:ref:`delete <delete_4>`                                                                                                            Delete the current turbomachine description.
+
+:ref:`list_details <list_details>`                                                                                         Display the current turbomachine description details.
+
+==================================   ===========================================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`turbomachinery <turbomachinery>`   The turbomachinery models.
+
+======================================   ==========================
+

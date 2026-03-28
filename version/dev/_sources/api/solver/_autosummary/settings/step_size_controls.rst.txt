@@ -1,0 +1,36 @@
+:orphan:
+
+.. _step_size_controls:
+
+step_size_controls
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.step_size_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =============================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                              Summary
+
+==============================================   =============================================================================================================================================================================
+:ref:`option <option_27>`                        Selects how the initial tracking step size is determined. Step size can be controlled by a characteristic length scale or by a scaling factor applied to the local cell size.
+
+:ref:`length_scale <length_scale>`                                                                                                                                                        Sets the characteristic step length.
+
+:ref:`step_length_factor <step_length_factor>`                                                                                  Sets the scaling factor applied to the local cell size for obtaining the tracking step length.
+
+==============================================   =============================================================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ==============================================
+
+Parent                                                              Summary
+
+==========================   ==============================================
+:ref:`tracking <tracking>`   Controls integration of particle trajectories.
+
+==========================   ==============================================
+

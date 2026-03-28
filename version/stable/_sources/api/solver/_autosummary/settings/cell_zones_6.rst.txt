@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cell_zones_6:
+
+cell_zones
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cell_zones_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================================================================
+
+Parent                                                                                                      Summary
+
+========================================   ========================================================================
+:ref:`fuse_cell_zones <fuse_cell_zones>`       Attempt to fuse a list of cell zones at their contacting boundaries.
+
+========================================   ========================================================================
+

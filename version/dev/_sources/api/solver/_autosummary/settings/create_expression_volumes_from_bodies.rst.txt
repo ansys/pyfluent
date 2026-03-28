@@ -1,0 +1,36 @@
+:orphan:
+
+.. _create_expression_volumes_from_bodies:
+
+create_expression_volumes_from_bodies
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_expression_volumes_from_bodies
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ======================================================
+
+Argument                                                                        Summary
+
+==============================   ======================================================
+:ref:`auto_name <auto_name>`           Specifies whether to do automatic naming or not.
+
+:ref:`prefix <prefix_1>`                        The prefix for expression volume names.
+
+:ref:`body_names <body_names>`   The body names for which to create expression volumes.
+
+==============================   ======================================================
+
+.. rubric:: Included in:
+
+==============================   ===========================================================================================
+
+Parent                                                                                                               Summary
+
+==============================   ===========================================================================================
+:ref:`surfaces_9 <surfaces_9>`   Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+==============================   ===========================================================================================
+

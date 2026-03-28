@@ -1,0 +1,34 @@
+:orphan:
+
+.. _ht_two_resistance_group:
+
+ht_two_resistance_group
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ht_two_resistance_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =====================================================
+
+Attribute                                                                                            Summary
+
+====================================================   =====================================================
+:ref:`continuous_heat_coeff <continuous_heat_coeff>`   Continuous phase heat transfer coefficient sub-model.
+
+:ref:`dispersed_heat_coeff <dispersed_heat_coeff>`      Dispersed phase heat transfer coefficient sub-model.
+
+====================================================   =====================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`heat_transfer_list_child <heat_transfer_list_child>`   'child_object_type' of heat_transfer_list.
+
+==========================================================   ==========================================
+

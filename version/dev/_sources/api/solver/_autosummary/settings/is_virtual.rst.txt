@@ -1,0 +1,21 @@
+:orphan:
+
+.. _is_virtual:
+
+is_virtual
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.is_virtual
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`machine_child <machine_child>`   'child_object_type' of machine.
+
+====================================   ===============================
+

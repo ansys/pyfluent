@@ -1,0 +1,32 @@
+:orphan:
+
+.. _create_15:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_15
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   =====================
+
+Argument                              Summary
+
+=====================   =====================
+:ref:`name <name_35>`   Name for the new row.
+
+=====================   =====================
+
+.. rubric:: Included in:
+
+========================   ============================================================================
+
+Parent                                                                                          Summary
+
+========================   ============================================================================
+:ref:`machine <machine>`   Collection of turbomachine rows. Create rows and configure their properties.
+
+========================   ============================================================================
+

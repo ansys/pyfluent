@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_ambient_radiation:
+
+enable_ambient_radiation
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enable_ambient_radiation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ============================================
+
+Parent                                                                                                Summary
+
+==============================================================   ============================================
+:ref:`ambient_radiation_modeling <ambient_radiation_modeling>`       Settings for ambient radiation modeling.
+
+==============================================================   ============================================
+

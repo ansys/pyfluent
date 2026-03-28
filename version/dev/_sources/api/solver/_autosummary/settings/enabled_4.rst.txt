@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_4:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enabled_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==============================
+
+Parent                                                                      Summary
+
+==================================================   ==============================
+:ref:`crossflow_transition <crossflow_transition>`   Crossflow transition settings.
+
+==================================================   ==============================
+

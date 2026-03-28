@@ -1,0 +1,32 @@
+:orphan:
+
+.. _ht_disp_time_scale_group:
+
+ht_disp_time_scale_group
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ht_disp_time_scale_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ====================================================
+
+Attribute                                                                                                 Summary
+
+==========================================================   ====================================================
+:ref:`ht_disp_time_scale_coeff <ht_disp_time_scale_coeff>`   Return-to-saturation time scale for dispersed phase.
+
+==========================================================   ====================================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================================
+
+Parent                                                                                            Summary
+
+==================================================   ====================================================
+:ref:`dispersed_heat_coeff <dispersed_heat_coeff>`   Dispersed phase heat transfer coefficient sub-model.
+
+==================================================   ====================================================
+

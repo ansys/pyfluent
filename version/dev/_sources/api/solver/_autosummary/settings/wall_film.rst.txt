@@ -1,0 +1,44 @@
+:orphan:
+
+.. _wall_film:
+
+wall_film
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.wall_film
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================   =============================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                            Summary
+
+============================================================================   =============================================================================================================================================================
+:ref:`convective_heat_transfer <convective_heat_transfer>`                                                                                                                                      Configures wall film heat transfer modeling.
+
+:ref:`include_convective_heat_transfer <include_convective_heat_transfer>`                                                                                                  Enables convection and conduction in film-to-wall heat transfer.
+
+:ref:`film_movement <film_movement>`                                                                                                                                                                   Configures wall film particle motion.
+
+:ref:`film_adds_to_dpm_concentration <film_adds_to_dpm_concentration>`                                                                                                            Includes wall film mass in DPM concentration calculations.
+
+:ref:`temperature_limiter <temperature_limiter>`                                                                                                                                                  Configures wall film temperature limiters.
+
+:ref:`enable_lwf_continuity_formulation <enable_lwf_continuity_formulation>`   Configures the wall film continuity equation. Solves a surface continuity equation for wall film thickness evolution, important for realistic film spreading.
+
+:ref:`enable_caloric_film_temperature <enable_caloric_film_temperature>`                Uses caloric formulation for wall film temperature. Required when temperature-dependence of specific heat significantly affects film energy balance.
+
+============================================================================   =============================================================================================================================================================
+
+.. rubric:: Included in:
+
+========================================   =================================================================
+
+Parent                                                                                               Summary
+
+========================================   =================================================================
+:ref:`physical_models <physical_models>`   Enables and configures physical submodels for the discrete phase.
+
+========================================   =================================================================
+

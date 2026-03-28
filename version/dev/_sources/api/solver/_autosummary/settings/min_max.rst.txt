@@ -1,0 +1,21 @@
+:orphan:
+
+.. _min_max:
+
+min_max
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.min_max
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ========================================================
+
+Parent                                                                          Summary
+
+============================   ========================================================
+:ref:`option_63 <option_63>`   The range option for cell marking based on field values.
+
+============================   ========================================================
+

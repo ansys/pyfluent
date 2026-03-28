@@ -1,0 +1,36 @@
+:orphan:
+
+.. _solid_regions_child:
+
+solid_regions_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.solid_regions_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================================
+
+Attribute                                                                Summary
+
+============================   =================================================
+:ref:`name <name_5>`                                         Name of the object.
+
+:ref:`bodies <bodies>`         List of body names referred by this solid region.
+
+:ref:`material <material_6>`          This material is assigned to solid region.
+
+============================   =================================================
+
+.. rubric:: Included in:
+
+====================================   ========================
+
+Parent                                                  Summary
+
+====================================   ========================
+:ref:`solid_regions <solid_regions>`   Solid region collection.
+
+====================================   ========================
+

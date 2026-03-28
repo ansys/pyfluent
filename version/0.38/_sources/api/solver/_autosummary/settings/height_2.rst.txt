@@ -1,0 +1,21 @@
+:orphan:
+
+.. _height_2:
+
+height
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.height_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================================
+
+Parent                                                                      Summary
+
+==================================   ==============================================
+:ref:`aspect_ratio <aspect_ratio>`       Set the aspect ratio of the active window.
+
+==================================   ==============================================
+

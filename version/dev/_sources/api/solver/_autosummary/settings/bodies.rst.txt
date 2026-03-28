@@ -1,0 +1,21 @@
+:orphan:
+
+.. _bodies:
+
+bodies
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bodies
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`solid_regions_child <solid_regions_child>`   'child_object_type' of solid_regions.
+
+================================================   =====================================
+

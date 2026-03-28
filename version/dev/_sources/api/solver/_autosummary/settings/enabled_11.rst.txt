@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_11:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enabled_11
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==========================================
+
+Parent                                                                                Summary
+
+================================================   ==========================================
+:ref:`temperature_limiter <temperature_limiter>`   Configures wall film temperature limiters.
+
+================================================   ==========================================
+

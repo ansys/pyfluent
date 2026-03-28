@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_47:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_47
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ====================
+
+Parent                              Summary
+
+====================   ====================
+:ref:`new_2 <new_2>`   Create new material.
+
+====================   ====================
+

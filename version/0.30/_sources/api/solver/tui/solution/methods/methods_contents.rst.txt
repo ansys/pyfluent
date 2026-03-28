@@ -1,0 +1,35 @@
+.. _ref_solver_tui_solution_methods:
+
+methods
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu.solution.methods
+   :members: accelerated_non_iterative_time_marching, bcd_boundedness, frozen_flux, nita, reduced_rank_extrapolation, set_solution_methods_to_default, species_disc_together, transient_formulation, unsteady_global_time, use_limiter_in_time
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   axisymmetric/axisymmetric_contents
+   convergence_acceleration_for_stretched_meshes/convergence_acceleration_for_stretched_meshes_contents
+   expert/expert_contents
+   flux_type/flux_type_contents
+   high_order_term_relaxation/high_order_term_relaxation_contents
+   high_speed_numerics/high_speed_numerics_contents
+   multiphase_numerics/multiphase_numerics_contents
+   nb_gradient_boundary_option/nb_gradient_boundary_option_contents
+   nita_expert_controls/nita_expert_controls_contents
+   overset/overset_contents
+   p_v_coupling/p_v_coupling_contents
+   phase_based_vof_discretization/phase_based_vof_discretization_contents
+   pseudo_time_method/pseudo_time_method_contents
+   reduced_rank_extrapolation_options/reduced_rank_extrapolation_options_contents
+   residual_smoothing/residual_smoothing_contents
+   spatial_discretization/spatial_discretization_contents
+   vof_numerics/vof_numerics_contents
+   warped_face_gradient_correction/warped_face_gradient_correction_contents

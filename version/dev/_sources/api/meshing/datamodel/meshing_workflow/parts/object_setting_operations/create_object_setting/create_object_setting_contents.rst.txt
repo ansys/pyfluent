@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_object_setting_operations_create_object_setting:
+
+create_object_setting
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.object_setting_operations.create_object_setting
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _create_object_settingArguments/_create_object_settingArguments_contents

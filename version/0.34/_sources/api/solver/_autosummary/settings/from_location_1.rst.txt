@@ -1,0 +1,36 @@
+:orphan:
+
+.. _from_location_1:
+
+from_location
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.from_location_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=============================   =====================
+
+Attribute                                     Summary
+
+=============================   =====================
+:ref:`physics <physics_3>`           'physics' child.
+
+:ref:`geometry <geometry_11>`       'geometry' child.
+
+:ref:`surfaces <surfaces_7>`        'surfaces' child.
+
+=============================   =====================
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`pathline_child <pathline_child>`       'child_object_type' of pathline.
+
+======================================   ====================================
+

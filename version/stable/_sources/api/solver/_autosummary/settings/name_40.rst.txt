@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_40:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_40
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==========================
+
+Parent                                    Summary
+
+====================   ==========================
+:ref:`add_8 <add_8>`       Add Computer Resource.
+
+====================   ==========================
+

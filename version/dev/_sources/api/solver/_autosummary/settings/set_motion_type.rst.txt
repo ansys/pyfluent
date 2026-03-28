@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_motion_type:
+
+set_motion_type
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_motion_type
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ============================================
+
+Argument                                                                  Summary
+
+==================================   ============================================
+:ref:`motion_type <motion_type_1>`   Motion type: 0 for Prescribed, 1 for Solved.
+
+==================================   ============================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

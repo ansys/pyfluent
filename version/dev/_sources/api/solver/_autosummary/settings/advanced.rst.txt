@@ -1,0 +1,42 @@
+:orphan:
+
+.. _advanced:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.advanced
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================================   =========================================================================================================
+
+Attribute                                                                                                                                                                                                    Summary
+
+========================================================================================================   =========================================================================================================
+:ref:`reference_frame <reference_frame>`                                                                   Tracks particles in the absolute reference frame (recommended default is relative frame unless required).
+
+:ref:`tracking_statistics_format <tracking_statistics_format>`                                                                                                     Selects the format of tracking statistics output.
+
+:ref:`verbosity <verbosity_2>`                                                                                                                    Sets the particle tracker verbosity level for diagnostic messages.
+
+:ref:`randomize_every_iteration <randomize_every_iteration>`                                                                                                Re-randomizes all stochastic modeling at each iteration.
+
+:ref:`randomize_every_timestep <randomize_every_timestep>`                                                                                                  Re-randomizes all stochastic modeling at each time step.
+
+:ref:`immediate_tracking_of_spawned_particles_enabled <immediate_tracking_of_spawned_particles_enabled>`                          Enables tracking of newly spawned particles immediately within the same time step.
+
+========================================================================================================   =========================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ==============================================
+
+Parent                                                              Summary
+
+==========================   ==============================================
+:ref:`tracking <tracking>`   Controls integration of particle trajectories.
+
+==========================   ==============================================
+

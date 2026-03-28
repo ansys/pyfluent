@@ -1,0 +1,120 @@
+:orphan:
+
+.. _create_displacement:
+
+create_displacement
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_displacement
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================================================   ===================================================================================
+
+Argument                                                                                                                                                 Summary
+
+==========================================================================   ===================================================================================
+:ref:`displacement_name <displacement_name>`                                                                                  Name of the periodic displacement.
+
+:ref:`autofill <autofill>`                                                   When enabled, automatically populate displacement fields from a mode-shape profile.
+
+:ref:`mode_shape_profile <mode_shape_profile>`                                                                      Name of the mode-shape profile for autofill.
+
+:ref:`complex <complex_1>`                                                                                                        Whether mode shape is complex.
+
+:ref:`x_displacement_type <x_displacement_type>`                                                                                  Type: "constant" or "profile".
+
+:ref:`x_displacement_profile <x_displacement_profile>`                                                 Profile name for X displacement (when type is "profile").
+
+:ref:`x_displacement_field <x_displacement_field>`                                                             Field name within the profile for X displacement.
+
+:ref:`x_displacement <x_displacement>`                                                                                            X displacement constant value.
+
+:ref:`y_displacement_type <y_displacement_type>`                                                                                  Type: "constant" or "profile".
+
+:ref:`y_displacement_profile <y_displacement_profile>`                                                 Profile name for Y displacement (when type is "profile").
+
+:ref:`y_displacement_field <y_displacement_field>`                                                             Field name within the profile for Y displacement.
+
+:ref:`y_displacement <y_displacement>`                                                                                            Y displacement constant value.
+
+:ref:`z_displacement_type <z_displacement_type>`                                                                                  Type: "constant" or "profile".
+
+:ref:`z_displacement_profile <z_displacement_profile>`                                                 Profile name for Z displacement (when type is "profile").
+
+:ref:`z_displacement_field <z_displacement_field>`                                                             Field name within the profile for Z displacement.
+
+:ref:`z_displacement <z_displacement>`                                                                                            Z displacement constant value.
+
+:ref:`x_imaginary_displacement_type <x_imaginary_displacement_type>`                                                              Type: "constant" or "profile".
+
+:ref:`x_imaginary_displacement_profile <x_imaginary_displacement_profile>`                   Profile name for X imaginary displacement (when type is "profile").
+
+:ref:`x_imaginary_displacement_field <x_imaginary_displacement_field>`                               Field name within the profile for X imaginary displacement.
+
+:ref:`x_imaginary_displacement <x_imaginary_displacement>`                     X imaginary displacement constant value. Used when complex mode shape is enabled.
+
+:ref:`y_imaginary_displacement_type <y_imaginary_displacement_type>`                                                              Type: "constant" or "profile".
+
+:ref:`y_imaginary_displacement_profile <y_imaginary_displacement_profile>`                   Profile name for Y imaginary displacement (when type is "profile").
+
+:ref:`y_imaginary_displacement_field <y_imaginary_displacement_field>`                               Field name within the profile for Y imaginary displacement.
+
+:ref:`y_imaginary_displacement <y_imaginary_displacement>`                     Y imaginary displacement constant value. Used when complex mode shape is enabled.
+
+:ref:`z_imaginary_displacement_type <z_imaginary_displacement_type>`                                                              Type: "constant" or "profile".
+
+:ref:`z_imaginary_displacement_profile <z_imaginary_displacement_profile>`                   Profile name for Z imaginary displacement (when type is "profile").
+
+:ref:`z_imaginary_displacement_field <z_imaginary_displacement_field>`                               Field name within the profile for Z imaginary displacement.
+
+:ref:`z_imaginary_displacement <z_imaginary_displacement>`                     Z imaginary displacement constant value. Used when complex mode shape is enabled.
+
+:ref:`frequency_type <frequency_type>`                                                                                            Type: "constant" or "profile".
+
+:ref:`frequency_profile <frequency_profile>`                                                                Profile name for frequency (when type is "profile").
+
+:ref:`frequency_field <frequency_field>`                                                                            Field name within the profile for frequency.
+
+:ref:`frequency <frequency_3>`                                                                                                         Frequency constant value.
+
+:ref:`normalized <normalized_1>`                                                                                              Whether the profile is normalized.
+
+:ref:`amplitude_type <amplitude_type>`                                                                                            Type: "constant" or "profile".
+
+:ref:`amplitude_profile <amplitude_profile>`                                                                Profile name for amplitude (when type is "profile").
+
+:ref:`amplitude_field <amplitude_field>`                                                                            Field name within the profile for amplitude.
+
+:ref:`amplitude <amplitude_3>`                                                                                                         Amplitude constant value.
+
+:ref:`method <method_13>`                                                           Mode propagation option: 0=None, 1=Travelling Wave, 2=Influence Coefficient.
+
+:ref:`nodal_diameter <nodal_diameter_1>`                                                                                                   Nodal diameter value.
+
+:ref:`forward <forward>`                                                                                          Travelling direction: #t=Forward, #f=Backward.
+
+:ref:`passage_number_type <passage_number_type>`                                                                                  Type: "constant" or "profile".
+
+:ref:`passage_number_profile <passage_number_profile>`                                                 Profile name for passage number (when type is "profile").
+
+:ref:`passage_number_field <passage_number_field>`                                                             Field name within the profile for passage number.
+
+:ref:`passage_number <passage_number_2>`                                                                                          Passage number constant value.
+
+:ref:`aerodamping <aerodamping>`                                                                                                    Enable aerodamping monitors.
+
+==========================================================================   ===================================================================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

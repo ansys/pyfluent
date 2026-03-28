@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_set_gradient_options_least_squares:
+
+least_squares
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solve.set.gradient_options.least_squares
+   :members: weighting_factor
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

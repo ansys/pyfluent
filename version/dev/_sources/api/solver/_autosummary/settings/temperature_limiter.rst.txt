@@ -1,0 +1,36 @@
+:orphan:
+
+.. _temperature_limiter:
+
+temperature_limiter
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.temperature_limiter
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================   =============================================================
+
+Attribute                                                                                                                            Summary
+
+============================================================================   =============================================================
+:ref:`leidenfrost_temp_postproc_enabled <leidenfrost_temp_postproc_enabled>`       Reports wall faces exceeding the Leidenfrost temperature.
+
+:ref:`enabled <enabled_11>`                                                                     Enables the Leidenfrost temperature limiter.
+
+:ref:`temp_limit_rel_to_boil_point <temp_limit_rel_to_boil_point>`             Sets the temperature difference above the film boiling point.
+
+============================================================================   =============================================================
+
+.. rubric:: Included in:
+
+============================   =====================================================================================
+
+Parent                                                                                                       Summary
+
+============================   =====================================================================================
+:ref:`wall_film <wall_film>`   Controls physical modeling and numerical treatment of the Lagrangian thin-film model.
+
+============================   =====================================================================================
+

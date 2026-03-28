@@ -1,0 +1,23 @@
+:orphan:
+
+.. _use_modified_case:
+
+use_modified_case
+=================
+
+.. deprecated:: Ansys Fluent 2027 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.use_modified_case
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`submit_job <submit_job>`   Submit job to remote cluster.
+
+==============================   =============================
+

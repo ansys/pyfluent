@@ -1,0 +1,21 @@
+:orphan:
+
+.. _motion_definition:
+
+motion_definition
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.motion_definition
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`motion_1 <motion_1>`       Give motion properties.
+
+==========================   ===========================
+

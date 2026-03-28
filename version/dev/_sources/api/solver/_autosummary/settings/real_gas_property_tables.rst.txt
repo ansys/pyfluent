@@ -1,0 +1,34 @@
+:orphan:
+
+.. _real_gas_property_tables:
+
+real_gas_property_tables
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.real_gas_property_tables
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ===================================================================
+
+Argument                                                                                             Summary
+
+======================================   ===================================================================
+:ref:`use_rgp_tables <use_rgp_tables>`   Specifies whether to use RGP tables for wet steam model properties.
+
+:ref:`rgp_table_name <rgp_table_name>`                  The RGP table to use for wet steam model properties.
+
+======================================   ===================================================================
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`wet_steam_settings <wet_steam_settings>`   Adjust settings for the wet steam model.
+
+==============================================   ========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _critical_vf:
+
+critical_vf
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.critical_vf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================================
+
+Parent                                                                            Summary
+
+======================================================   ================================
+:ref:`flow_regime_parameters <flow_regime_parameters>`   Flow regime blending parameters.
+
+======================================================   ================================
+

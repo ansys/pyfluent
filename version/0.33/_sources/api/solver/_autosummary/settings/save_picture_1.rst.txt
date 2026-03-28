@@ -1,0 +1,32 @@
+:orphan:
+
+.. _save_picture_1:
+
+save_picture
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.save_picture_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ======================
+
+Argument                                        Summary
+
+==============================   ======================
+:ref:`file_name <file_name_3>`       'file_name' child.
+
+==============================   ======================
+
+.. rubric:: Included in:
+
+========================   =============================================
+
+Parent                                                           Summary
+
+========================   =============================================
+:ref:`picture <picture>`       The hardcopy/save-picture options object.
+
+========================   =============================================
+

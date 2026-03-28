@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_14:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_14
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =======================================================================================
+
+Argument                                                                                                                 Summary
+
+======================================   =======================================================================================
+:ref:`component_type <component_type>`   Type of turbomachine component. This determines the default naming convention for rows.
+
+:ref:`number_of_rows <number_of_rows>`                                              Number of rows (stages) in the turbomachine.
+
+======================================   =======================================================================================
+
+.. rubric:: Included in:
+
+============================================   ================================================================================
+
+Parent                                                                                                                  Summary
+
+============================================   ================================================================================
+:ref:`turbo_description <turbo_description>`   Turbomachine description defining rows, sectors, and rotational characteristics.
+
+============================================   ================================================================================
+

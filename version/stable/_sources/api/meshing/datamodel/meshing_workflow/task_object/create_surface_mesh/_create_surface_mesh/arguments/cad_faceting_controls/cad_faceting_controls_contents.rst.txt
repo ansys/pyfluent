@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_surface_mesh__create_surface_mesh_arguments_cad_faceting_controls:
+
+cad_faceting_controls
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.create_surface_mesh._create_surface_mesh.arguments.cad_faceting_controls
+   :members: max_size, refine_faceting, tolerance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

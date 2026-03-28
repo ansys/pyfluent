@@ -1,0 +1,21 @@
+:orphan:
+
+.. _group_name_4:
+
+group_name
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.group_name_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ================================================
+
+Parent                                                                                              Summary
+
+========================================================   ================================================
+:ref:`set_active_displacement <set_active_displacement>`   Set the active periodic displacement in a group.
+
+========================================================   ================================================
+

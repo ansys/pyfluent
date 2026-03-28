@@ -1,0 +1,38 @@
+:orphan:
+
+.. _linearization:
+
+linearization
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.linearization
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ==========================================================================================================
+
+Attribute                                                                                                                                                               Summary
+
+==================================================================   ==========================================================================================================
+:ref:`enabled <enabled_13>`                                                                              Enables linearization of DPM source terms to improve solver stability.
+
+:ref:`enhanced_formulation_enabled <enhanced_formulation_enabled>`          Uses enhanced linearization for improved robustness. Typically recommended for strongly coupled or 
+
+:ref:`constant_during_iterations <constant_during_iterations>`       Keeps linearized source terms fixed until the next DPM update. Useful when source-term fluctuations cause 
+
+:ref:`limiter <limiter>`                                                                            Limits the DPM source linear coefficient relative to the fluid coefficient.
+
+==================================================================   ==========================================================================================================
+
+.. rubric:: Included in:
+
+==================================================   ===================================================================================
+
+Parent                                                                                                                           Summary
+
+==================================================   ===================================================================================
+:ref:`source_term_settings <source_term_settings>`   Configures how particle source terms are applied to the continuous-phase equations.
+
+==================================================   ===================================================================================
+

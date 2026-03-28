@@ -1,0 +1,34 @@
+:orphan:
+
+.. _global_groups_child:
+
+global_groups_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.global_groups_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =====================
+
+Attribute                                        Summary
+
+================================   =====================
+:ref:`name <name_5>`                 Name of the object.
+
+:ref:`components <components_2>`   Input component name.
+
+================================   =====================
+
+.. rubric:: Included in:
+
+====================================   =============================
+
+Parent                                                       Summary
+
+====================================   =============================
+:ref:`global_groups <global_groups>`   Define topology global group.
+
+====================================   =============================
+

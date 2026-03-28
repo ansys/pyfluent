@@ -1,0 +1,34 @@
+:orphan:
+
+.. _controls_2:
+
+controls
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.controls_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==============================================
+
+Attribute                                                                                   Summary
+
+==================================================   ==============================================
+:ref:`advancement_controls <advancement_controls>`                     The adjoint controls object.
+
+:ref:`stabilization <stabilization_2>`                   The adjoint stabilization controls object.
+
+==================================================   ==============================================
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`gradient_based <gradient_based>`       Gradient-based design object.
+
+======================================   =================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _convective_heat_transfer:
+
+convective_heat_transfer
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.convective_heat_transfer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ====================================================================================================================
+
+Attribute                                                                                                                                                               Summary
+
+========================================================   ====================================================================================================================
+:ref:`enabled <enabled_10>`                                                                                    Enables convection and conduction in film-to-wall heat transfer.
+
+:ref:`turbulent_approximation <turbulent_approximation>`                                                         Uses a turbulent heat transfer approximation in the wall film.
+
+:ref:`unheated_length <unheated_length>`                   Sets the distance from particle injection / wall impact before heat transfer modeling begins in the wall film model.
+
+========================================================   ====================================================================================================================
+
+.. rubric:: Included in:
+
+============================   =====================================================================================
+
+Parent                                                                                                       Summary
+
+============================   =====================================================================================
+:ref:`wall_film <wall_film>`   Controls physical modeling and numerical treatment of the Lagrangian thin-film model.
+
+============================   =====================================================================================
+

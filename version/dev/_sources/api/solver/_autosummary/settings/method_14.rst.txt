@@ -1,0 +1,21 @@
+:orphan:
+
+.. _method_14:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.method_14
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===================
+
+Parent                                           Summary
+
+==================================   ===================
+:ref:`parameters_7 <parameters_7>`   'parameters' child.
+
+==================================   ===================
+

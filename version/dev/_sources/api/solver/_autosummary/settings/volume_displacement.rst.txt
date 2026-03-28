@@ -1,0 +1,40 @@
+:orphan:
+
+.. _volume_displacement:
+
+volume_displacement
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.volume_displacement
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ======================================================================================
+
+Attribute                                                                                                                                           Summary
+
+==================================================================   ======================================================================================
+:ref:`enabled <enabled_9>`                                                                                Accounts for fluid volume displaced by particles.
+
+:ref:`blocking_max_vol_frac <blocking_max_vol_frac>`                 Sets the maximum particle volume fraction used in the continuous phase (default 0.95).
+
+:ref:`drag_scaling_enabled <drag_scaling_enabled>`                                               Scales drag coefficient based on particle volume fraction.
+
+:ref:`mom_source_scaling_enabled <mom_source_scaling_enabled>`                              Scales momentum source terms based on particle volume fraction.
+
+:ref:`other_source_scaling_enabled <other_source_scaling_enabled>`                             Scales other source terms based on particle volume fraction.
+
+==================================================================   ======================================================================================
+
+.. rubric:: Included in:
+
+========================================   =================================================================
+
+Parent                                                                                               Summary
+
+========================================   =================================================================
+:ref:`physical_models <physical_models>`   Enables and configures physical submodels for the discrete phase.
+
+========================================   =================================================================
+

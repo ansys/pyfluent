@@ -1,0 +1,40 @@
+:orphan:
+
+.. _dispersed_heat_coeff:
+
+dispersed_heat_coeff
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.dispersed_heat_coeff
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   =======================================================
+
+Attribute                                                                                                    Summary
+
+==========================================================   =======================================================
+:ref:`ht_disp_method <ht_disp_method>`                                          Dispersed phase heat transfer model.
+
+:ref:`ht_disp_constant <ht_disp_constant>`                   Constant heat transfer coefficient for dispersed phase.
+
+:ref:`ht_disp_nusselt <ht_disp_nusselt>`                                         Nusselt number for dispersed phase.
+
+:ref:`ht_disp_udf <ht_disp_udf>`                                              Udf for dispersed phase heat transfer.
+
+:ref:`ht_disp_time_scale_group <ht_disp_time_scale_group>`                 Time scale sub-model for dispersed phase.
+
+==========================================================   =======================================================
+
+.. rubric:: Included in:
+
+========================================================   ===================================
+
+Parent                                                                                 Summary
+
+========================================================   ===================================
+:ref:`ht_two_resistance_group <ht_two_resistance_group>`   Two resistance heat transfer model.
+
+========================================================   ===================================
+
