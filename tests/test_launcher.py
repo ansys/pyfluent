@@ -57,6 +57,7 @@ from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
     get_fluent_exe_path,
 )
+from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
@@ -472,6 +473,46 @@ def test_fluent_launchers():
 def test_build_journal_argument(topy, journal_file_names, result, raises):
     with raises:
         assert _build_journal_argument(topy, journal_file_names) == result
+
+
+def test_build_journal_argument_without_journal_files_but_with_topy():
+    assert (
+        _build_journal_argument("a.py", ["a.jou"], include_journal_file_names=False)
+        == ' -topy="a.py"'
+    )
+
+
+def test_lightweight_case_journal_read_is_completed_before_sync_step():
+    launcher = object.__new__(StandaloneLauncher)
+    launcher.argvals = {
+        "case_file_name": "a.cas.h5",
+        "case_data_file_name": None,
+        "mode": FluentMode.SOLVER,
+        "lightweight_mode": True,
+        "journal_file_names": ["a.jou", "b.jou"],
+    }
+    launcher._defer_journal_file_read = True
+
+    calls = []
+
+    class _DummySession:
+        def read_case_lightweight(self, file_name, start_sync=True):
+            calls.append(("read_case_lightweight", file_name, start_sync))
+
+        def execute_tui(self, command):
+            calls.append(("execute_tui", command))
+
+        def start_case_lightweight_sync(self):
+            calls.append(("start_case_lightweight_sync",))
+
+    launcher._process_case_data_and_journals(_DummySession())
+
+    assert calls == [
+        ("read_case_lightweight", "a.cas.h5", False),
+        ("execute_tui", '/file/read-journal "a.jou"'),
+        ("execute_tui", '/file/read-journal "b.jou"'),
+        ("start_case_lightweight_sync",),
+    ]
 
 
 def test_show_gui_raises_warning():
