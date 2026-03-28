@@ -55,7 +55,7 @@ Features
   - Web mode for standalone Python scripts.
   - Inline mode inside Jupyter Notebooks.
 
-Use Cases
+Use cases
 ---------
 
 The interactive Settings UI is particularly useful for:

@@ -167,7 +167,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     # 2. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
-        return FluentVersion(product_version).get_fluent_exe_path()
+        return FluentVersion(product_version)._get_fluent_exe_path()
 
     # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
     fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
