@@ -23,8 +23,6 @@
 """Meshing workflow specialization of the Workflow module that wraps and extends the
 core functionality."""
 
-from __future__ import annotations
-
 from enum import Enum
 import os
 

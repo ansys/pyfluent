@@ -62,7 +62,7 @@ class SessionBase:
         cls,
         ui_mode: UIMode | str | None = None,
         graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
+            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
         product_version: FluentVersion | str | float | int | None = None,
         dimension: Dimension | int | None = None,
@@ -75,13 +75,13 @@ class SessionBase:
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
-        case_file_name: "PathType | None" = None,
-        case_data_file_name: "PathType | None" = None,
+        case_file_name: PathType | None = None,
+        case_data_file_name: PathType | None = None,
         lightweight_mode: bool | None = None,
         py: bool | None = None,
         gpu: bool | None = None,
-        cwd: "PathType | None" = None,
-        fluent_path: "PathType | None" = None,
+        cwd: PathType | None = None,
+        fluent_path: PathType | None = None,
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,

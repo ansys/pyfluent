@@ -22,8 +22,6 @@
 
 """Web UI for Fluent settings using Panel with lazy loading and batched property access."""
 
-from __future__ import annotations
-
 from typing import Any, Callable, Dict, List
 
 try:

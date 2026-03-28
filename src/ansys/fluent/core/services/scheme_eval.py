@@ -88,7 +88,7 @@ class SchemeEvalService:
     def scheme_eval(
         self,
         request: SchemeEvalProtoModule.SchemeEvalRequest,
-        metadata: list[tuple[str, str]] = None,
+        metadata: list[tuple[str, str]] | None = None,
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
         """SchemeEval RPC of SchemeEval service."""
         new_metadata = self.__metadata

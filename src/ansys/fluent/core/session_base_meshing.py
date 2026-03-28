@@ -333,7 +333,7 @@ class BaseMeshing:
 
     def load_workflow(
         self,
-        file_path: PathType = None,
+        file_path: PathType | None = None,
         initialize: bool = True,
         legacy: bool | None = None,
     ):

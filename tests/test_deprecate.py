@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import inspect
 import warnings
 
 import pytest
@@ -155,3 +156,33 @@ def test_deprecate_function():
     assert "3.0.0" in str(warning.message)
 
     assert result == 3
+
+
+def test_deprecate_arguments_preserves_signature():
+    """Test that @deprecate_arguments preserves the original function signature."""
+
+    @deprecate_arguments(old_args="old_x", new_args="x", version="3.0.0")
+    def my_func(x: int, y: str = "hello") -> bool:
+        return True
+
+    sig = inspect.signature(my_func)
+    param_names = list(sig.parameters.keys())
+    assert param_names == ["x", "y"]
+    assert sig.parameters["x"].annotation is int
+    assert sig.parameters["y"].default == "hello"
+    assert sig.return_annotation is bool
+
+
+def test_deprecate_function_preserves_signature():
+    """Test that @deprecate_function preserves the original function signature."""
+
+    @deprecate_function(version="3.0.0", new_func="new_fn")
+    def old_fn(a: int, b: str = "world") -> float:
+        return 1.0
+
+    sig = inspect.signature(old_fn)
+    param_names = list(sig.parameters.keys())
+    assert param_names == ["a", "b"]
+    assert sig.parameters["a"].annotation is int
+    assert sig.parameters["b"].default == "world"
+    assert sig.return_annotation is float

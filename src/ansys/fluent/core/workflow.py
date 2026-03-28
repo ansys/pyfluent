@@ -22,8 +22,6 @@
 
 """Workflow module that wraps and extends the core functionality."""
 
-from __future__ import annotations
-
 from contextlib import suppress
 import logging
 import re
@@ -203,7 +201,7 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: Workflow,
+        command_source: "Workflow",
         task: str,
     ) -> None:
         """Initialize BaseTask.
@@ -621,7 +619,7 @@ class TaskContainer(PyCallableStateObject):
     __dir__()
     """
 
-    def __init__(self, command_source: ClassicWorkflow) -> None:
+    def __init__(self, command_source: "ClassicWorkflow") -> None:
         """Initialize TaskContainer.
 
         Parameters
@@ -969,7 +967,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Workflow,
+        command_source: "Workflow",
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -984,7 +982,7 @@ class CommandTask(BaseTask):
         super().__init__(command_source, task)
 
     @property
-    def command_arguments(self) -> ReadOnlyObject:
+    def command_arguments(self) -> "ReadOnlyObject":
         """Get the task's arguments in read-only form (deprecated).
 
         Returns
@@ -996,7 +994,7 @@ class CommandTask(BaseTask):
         return self._refreshed_command()
 
     @property
-    def _command_arguments(self) -> ReadOnlyObject:
+    def _command_arguments(self) -> "ReadOnlyObject":
         return self._refreshed_command()
 
     @property
@@ -1010,7 +1008,7 @@ class CommandTask(BaseTask):
         """
         return ArgumentsWrapper(self)
 
-    def _refreshed_command(self) -> ReadOnlyObject:
+    def _refreshed_command(self) -> "ReadOnlyObject":
         task_arg_state = self._task.Arguments.get_state()
         cmd = self._command()
         if task_arg_state:
@@ -1038,7 +1036,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Workflow,
+        command_source: "Workflow",
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -1066,7 +1064,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: Workflow,
+        command_source: "Workflow",
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -1111,7 +1109,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Workflow,
+        command_source: "Workflow",
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -1126,7 +1124,7 @@ class CompositeTask(BaseTask):
         super().__init__(command_source, task)
 
     @property
-    def command_arguments(self) -> ReadOnlyObject:
+    def command_arguments(self) -> "ReadOnlyObject":
         """Get the task's arguments in read-only form (deprecated).
 
         Returns
@@ -1138,7 +1136,7 @@ class CompositeTask(BaseTask):
         return {}
 
     @property
-    def _command_arguments(self) -> ReadOnlyObject:
+    def _command_arguments(self) -> "ReadOnlyObject":
         return {}
 
     @property
@@ -1163,7 +1161,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Workflow,
+        command_source: "Workflow",
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -1198,7 +1196,7 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Workflow,
+        command_source: "Workflow",
         task: str,
     ) -> None:
         """Initialize CompoundTask.

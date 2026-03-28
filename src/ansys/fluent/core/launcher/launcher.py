@@ -29,8 +29,10 @@ with gRPC.
 import inspect
 import logging
 import os
-from typing import Any, Dict
+from typing import Any
 from warnings import warn
+
+from beartype import beartype
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
@@ -77,8 +79,9 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
+@beartype
 def create_launcher(
-    fluent_launch_mode: LaunchMode = LaunchMode.STANDALONE, **kwargs
+    fluent_launch_mode: LaunchMode = LaunchMode.STANDALONE, **kwargs: Any
 ) -> DockerLauncher | PIMLauncher | SlurmLauncher | StandaloneLauncher:
     """Use the factory function to create a launcher for supported launch modes.
 
@@ -170,15 +173,16 @@ def _custom_converter_dimension(kwargs):
     version="v0.22.0",
     converter=_custom_converter_dimension,
 )
+@beartype
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,
     dimension: Dimension | int | None = None,
     precision: Precision | str | None = None,
     processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
-    start_timeout: int = None,
+    start_timeout: int | None = None,
     additional_arguments: str = "",
-    env: Dict[str, Any] | None = None,
+    env: dict[str, Any] | None = None,
     start_container: bool | None = None,
     container_dict: dict | None = None,
     dry_run: bool = False,
@@ -188,14 +192,14 @@ def launch_fluent(
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
     ) = None,
-    case_file_name: "PathType | None" = None,
-    case_data_file_name: "PathType | None" = None,
+    case_file_name: PathType | None = None,
+    case_data_file_name: PathType | None = None,
     lightweight_mode: bool | None = None,
     mode: FluentMode | str | None = None,
     py: bool | None = None,
     gpu: bool | list[int] | None = None,
-    cwd: "PathType | None" = None,
-    fluent_path: "PathType | None" = None,
+    cwd: PathType | None = None,
+    fluent_path: PathType | None = None,
     topy: str | list | None = None,
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
@@ -410,6 +414,7 @@ def launch_fluent(
     return launcher()
 
 
+@beartype
 def connect_to_fluent(
     ip: str | None = None,
     port: int | None = None,

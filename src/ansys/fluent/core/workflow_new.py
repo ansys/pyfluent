@@ -43,8 +43,6 @@ The workflow system provides both imperative and declarative approaches to build
 simulation workflows, with automatic dependency management and validation.
 """
 
-from __future__ import annotations
-
 from collections import OrderedDict
 from functools import wraps
 import inspect
@@ -360,7 +358,7 @@ class Workflow:
         """
         return [name.split(":")[0] for name in self._workflow.task_object()]
 
-    def children(self) -> list[TaskObject]:
+    def children(self) -> "list[TaskObject]":
         """Get the top-level tasks in the workflow in display order.
 
         Returns an ordered list of the workflow's main tasks (those directly under
@@ -396,7 +394,7 @@ class Workflow:
 
         return wrapped_tasks
 
-    def first_child(self) -> TaskObject | None:
+    def first_child(self) -> "TaskObject | None":
         """Get the first top-level task in the workflow.
 
         Returns
@@ -437,7 +435,7 @@ class Workflow:
                     self._command_source,
                 )
 
-    def last_child(self) -> TaskObject | None:
+    def last_child(self) -> "TaskObject | None":
         """Get the last top-level task in the workflow.
 
         Returns
@@ -506,7 +504,7 @@ class Workflow:
 
         return sorted_dict
 
-    def delete_tasks(self, list_of_tasks: list[TaskObject]):
+    def delete_tasks(self, list_of_tasks: "list[TaskObject]"):
         """Delete multiple tasks from the workflow.
 
         Removes the specified tasks from the workflow. Tasks are identified by TaskObject instances.
@@ -537,7 +535,7 @@ class Workflow:
         self._workflow.general.delete_tasks(list_of_tasks=items_to_be_deleted)
 
     @property
-    def insertable_tasks(self) -> FirstTask:
+    def insertable_tasks(self) -> "FirstTask":
         """Tasks that can be inserted into an empty workflow.
 
         Returns a helper that exposes the set of valid starting tasks for a blank
@@ -688,7 +686,7 @@ class TaskObject:
         task_object: PyMenu,
         base_name: str,
         workflow: PyMenu,
-        parent: Workflow | TaskObject,
+        parent: "Workflow | TaskObject",
         meshing_root: PyMenu,
     ):
         """Initialize a TaskObject wrapper.
@@ -812,7 +810,7 @@ class TaskObject:
                 setattr(self, item, insertable_task)
                 self._insertable_tasks.append(insertable_task)
 
-        def __call__(self) -> list[_Insert]:
+        def __call__(self) -> "list[_Insert]":
             """Get list of all insertable task objects.
 
             Returns

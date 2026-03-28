@@ -617,8 +617,8 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_file_name: "PathType | None" = None,
-        project_file_name: "PathType | None" = None,
+        case_file_name: PathType | None = None,
+        project_file_name: PathType | None = None,
     ) -> None:
         """Initialize a CaseFile object. Exactly one file path argument must be
         specified.

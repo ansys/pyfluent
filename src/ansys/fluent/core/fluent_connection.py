@@ -22,8 +22,6 @@
 
 """Provides a module for Fluent connection functionality."""
 
-from __future__ import annotations
-
 from contextlib import suppress
 import ctypes
 from ctypes import c_int, sizeof

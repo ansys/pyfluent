@@ -40,7 +40,9 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict
+from typing import Any
+
+from beartype import beartype
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
@@ -77,12 +79,13 @@ logger = logging.getLogger("pyfluent.launcher")
 class StandaloneLauncher:
     """Instantiates Fluent session in standalone mode."""
 
+    @beartype
     def __init__(
         self,
         mode: FluentMode | str | None = None,
         ui_mode: UIMode | str | None = None,
         graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
+            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
         product_version: FluentVersion | str | float | int | None = None,
         dimension: Dimension | int | None = None,
@@ -91,17 +94,17 @@ class StandaloneLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
+        env: dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
-        case_file_name: "PathType | None" = None,
-        case_data_file_name: "PathType | None" = None,
+        case_file_name: PathType | None = None,
+        case_data_file_name: PathType | None = None,
         lightweight_mode: bool | None = None,
         py: bool | None = None,
         gpu: bool | None = None,
-        cwd: "PathType | None" = None,
-        fluent_path: "PathType | None" = None,
+        cwd: PathType | None = None,
+        fluent_path: PathType | None = None,
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
