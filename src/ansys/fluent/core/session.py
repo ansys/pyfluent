@@ -312,6 +312,33 @@ class BaseSession:
         """Return the session ID."""
         return self._fluent_connection._id
 
+    @property
+    def precision(self) -> int:
+        """Return the current solver precision.
+
+        Returns
+        -------
+        int
+            ``1`` for single precision, ``2`` for double precision.
+        """
+        return 2 if self.scheme.eval("(rp-double?)") else 1
+
+    @property
+    def dimension(self) -> int:
+        """Return the current dimensionality.
+
+        Returns
+        -------
+        int
+            ``2`` for 2D, ``3`` for 3D.
+        """
+        return 3 if self.scheme.eval("(rp-3d?)") else 2
+
+    @property
+    def processor_count(self) -> int:
+        """Return the current processor count."""
+        return int(str(self.rp_vars("parallel/nprocs_string")).strip('"'))
+
     def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
         warnings.warn("Use -> journal.start()", PyFluentDeprecationWarning)
