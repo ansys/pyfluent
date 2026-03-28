@@ -93,6 +93,7 @@ from ansys.fluent.core.solver import (
     Methods,
     Results,
     RunCalculation,
+    Scene,
     Setup,
     Solution,
     VelocityInlet,
@@ -344,7 +345,10 @@ mushy_temp.range_option = {
     "option": "auto-range-off",
     "auto_range_off": {"clip_to_range": True, "minimum": 1100, "maximum": 1200},
 }
-mushy_temp.display()
+scene = Scene(solver, new_instance_name="scene-1")
+scene.graphics_objects.add(name="mesh-1")
+scene.graphics_objects.add(name="temperature-mushy")
+scene.display()
 
 graphics.views.restore_view(view_name="front")
 graphics.picture.save_picture(file_name="modeling_solidification_3.png")
@@ -362,6 +366,7 @@ solver.settings.file.write_case_data(file_name="steady_state")
 # %%
 # Enable transient flow and heat transfer
 # ---------------------------------------
+solver.settings.file.read_case_data(file_name="steady_state")
 solver_general_settings.solver.time = "unsteady-1st-order"  # First-order implicit
 
 controls.equations = {"flow": True, "w-swirl": True}
@@ -396,7 +401,9 @@ solutions.run_calculation.transient_controls.time_step_count = 48
 solutions.run_calculation.calculate()
 
 # Liquid fraction at t = 5.0 s
-liquid_fraction_contour_t_5_sec = Contour(solver, new_instance_name="liquid-fraction")
+liquid_fraction_contour_t_5_sec = Contour(
+    solver, new_instance_name="liquid-fraction_t_5_sec"
+)
 
 liquid_fraction_contour_t_5_sec.field = "liquid-fraction"
 liquid_fraction_contour_t_5_sec.display()
