@@ -53,7 +53,7 @@ def _get_server_info_file_names(use_tmpdir=True) -> tuple[str, str]:
     temporary directory if ``use_tmpdir`` is True, otherwise it is created in the current working
     directory.
     """
-    from ansys.fluent.core import config
+    from ansys.fluent.core.module_config import config
 
     server_info_dir = config.fluent_server_info_dir
     dir_ = (
@@ -98,7 +98,7 @@ def _get_server_info(
 ):
     """Get server connection information of an already running session.
     Returns (ip, port, password) or (unix_socket, password)"""
-    from ansys.fluent.core import config
+    from ansys.fluent.core.module_config import config
 
     if not (ip and port) and not server_info_file_name:
         raise IpPortNotProvided()

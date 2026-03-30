@@ -42,6 +42,16 @@ command line arguments and run this script to copy needed files from the Ansys i
   * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent_252/excludeCEIList.txt>`_
   * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent_252/excludeFluentList.txt>`_
 
+.. note::
+
+   For Fluent versions 23R1, 23R2, 24R1, 24R2, and 25R1, ``excludeFluentList.txt`` includes the path to the
+   Fluent GPU capabilities folder (``addons/gpuapp``). This means GPU solver functionality is **not** copied
+   into the container image by default. If your workflow requires GPU-accelerated solving, remove the
+   ``addons/gpuapp`` entry from ``excludeFluentList.txt`` before running ``copy_ansys_files.py``.
+
+   Starting from Fluent 25R2 and later (including 26R1), the GPU capabilities folder is **no longer excluded**
+   and is included in the container image by default.
+
 1. Above excluded files are not needed to run typical Fluent workflows.
 
 2. If you find that some of the excluded files are needed to run your workflows then you can remove those files from the exclusion list.
