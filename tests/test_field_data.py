@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import warnings
+
+from conftest import SKIP_INVESTIGATING
 import numpy as np
 import pytest
 from test_utils import pytest_approx
@@ -36,12 +39,14 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
+    _Fields,
 )
 from ansys.fluent.core.services.field_data import (
     CellElementType,
     ZoneType,
 )
 from ansys.fluent.core.solver import VelocityInlet, VelocityInlets, WallBoundaries
+from ansys.units.variable_descriptor import VariableCatalog
 
 HOT_INLET_TEMPERATURE = 313.15
 
@@ -717,7 +722,41 @@ def test_field_data_errors(new_solver_session) -> None:
         )
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
+def test_fields_is_active_accepts_variable_descriptor() -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    assert fields.is_active("temperature")
+    assert fields.is_active(VariableCatalog.TEMPERATURE)
+    assert not fields.is_active(VariableCatalog.VELOCITY)
+
+
+def test_fields_allowed_variables_filters_unmapped_names() -> None:
+    fields = _Fields(lambda: ["temperature", "not-a-mapped-field"])
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
+
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 1
+    assert "not-a-mapped-field" in str(caught[0].message)
+
+
+def test_fields_allowed_variables_no_warning_when_all_mapped() -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
+
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 0
+
+
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2404
 @pytest.mark.fluent_version(">=24.2")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session

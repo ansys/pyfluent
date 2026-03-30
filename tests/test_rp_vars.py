@@ -24,6 +24,7 @@ import pytest
 
 from ansys.fluent.core.examples import download_file, path
 from ansys.fluent.core.filereader.casereader import CaseReader
+from ansys.fluent.core.rpvars import RPVarType
 
 
 def test_get_and_set_rp_vars(new_solver_session) -> None:
@@ -97,3 +98,57 @@ def test_rp_vars_boolean(new_solver_session) -> None:
         var_val = not var_val
         rp_vars(var_name, var_val)
         assert rp_vars(var_name) == var_val
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_create_rp_vars(new_solver_session) -> None:
+    solver = new_solver_session
+
+    with pytest.raises(TypeError):
+        solver.rp_vars.create(name="my-int-var", value=55.5, var_type=int)
+
+    solver.rp_vars.create(name="my-int-var", value=55, var_type=int)
+
+    with pytest.raises(NameError):
+        solver.rp_vars.create(name="my-int-var", value=55, var_type=int)
+
+    assert solver.rp_vars("my-int-var") == 55
+    solver.rp_vars("my-int-var", 60)
+    assert solver.rp_vars("my-int-var") == 60
+
+    solver.rp_vars.create(
+        name="my-str-var", value="my-string", var_type=RPVarType.STRING
+    )
+    assert solver.rp_vars("my-str-var") == '"my-string"'
+    solver.rp_vars("my-str-var", "new-str")
+    assert solver.rp_vars("my-str-var") == '"new-str"'
+
+    with pytest.raises(RuntimeError):
+        # Since it was defined with string type
+        solver.rp_vars("my-str-var", 50)
+
+    solver.rp_vars.create(name="my-custom-var", value=100, var_type=None)
+    assert solver.rp_vars("my-custom-var") == 100
+    solver.rp_vars("my-custom-var", "any-str")
+    assert solver.rp_vars("my-custom-var") == '"any-str"'
+
+    # Create RPVar with a list value and verify it is stored and retrieved correctly.
+    solver.rp_vars.create(name="my-list-var", value=[1, 2, 3], var_type=None)
+    list_var_value = solver.rp_vars("my-list-var")
+    assert isinstance(list_var_value, (list, tuple))
+    assert list(list_var_value) == [1, 2, 3]
+
+    # REAL (float) RP var
+    solver.rp_vars.create(name="my-real-var", value=1.5, var_type=RPVarType.REAL)
+    assert solver.rp_vars("my-real-var") == pytest.approx(1.5)
+    solver.rp_vars("my-real-var", 2.75)
+    assert solver.rp_vars("my-real-var") == pytest.approx(2.75)
+
+    # BOOLEAN RP var
+    solver.rp_vars.create(name="my-bool-var", value=True, var_type=RPVarType.BOOLEAN)
+    bool_val = solver.rp_vars("my-bool-var")
+    assert isinstance(bool_val, bool)
+    assert bool_val is True
+
+    solver.rp_vars("my-bool-var", False)
+    assert solver.rp_vars("my-bool-var") is False

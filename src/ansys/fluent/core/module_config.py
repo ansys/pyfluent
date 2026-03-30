@@ -337,12 +337,12 @@ class Config:
     @property
     def fluent_release_version(self) -> str:
         """The latest released version of Fluent."""
-        return "25.2.0"
+        return "26.1.0"
 
     @property
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
-        return "26.1.0"
+        return "27.1.0"
 
     def print(self):
         """Print all configuration variables."""

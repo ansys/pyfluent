@@ -20,6 +20,9 @@ RUN yum install -y \
     libXrandr.x86_64 \
     libXinerama.x86_64 \
     libXcursor.x86_64 \
+    libXcomposite1 \
+    libnss3 \
+    libtirpc \
     nss-3.90.0-7.el8_10.x86_64 \
     mesa-libGLU-9.0.0-15.el8.x86_64 \
     libglvnd-glx-1.3.4-2.el8.x86_64 \

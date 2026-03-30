@@ -120,7 +120,6 @@ reusable handlers that can react differently based on runtime configuration or c
   >>> on_case_loaded_with_args.state
   {'x': 12, 'y': 42}
 
-
 Finally an advanced example that showcases how to integrate PyFluent's event handling with its
 visualization capabilities.
 It demonstrates how to automatically refresh visualizations in response to simulation events like
@@ -139,14 +138,54 @@ The script performs the following:
 It highlights how to build an interactive, event-driven simulation monitoring workflow by seamlessly
 combining Fluent’s event hooks with real-time visualization updates.
 
+The ``execute_in_event_loop_threadsafe`` helper shown below uses standard ``asyncio`` utility code.
+It is included here because event callbacks may run on a worker thread,
+and UI refresh work should be scheduled onto the active event loop thread.
+
+.. note::
+  Keep callbacks lightweight; long-running or CPU-heavy callback logic can block
+  event processing and may interfere with timely communication with the Fluent
+  server over gRPC.
+  Scheduled UI refresh callbacks run only while the selected event loop is
+  running.
+
 .. code-block:: python
 
+  >>> import asyncio
+  >>> from functools import partial
   >>> from ansys.fluent.core import MeshingEvent, SolverEvent
   >>> from ansys.fluent.core import CaseLoadedEventInfo, DataLoadedEventInfo, SolutionInitializedEventInfo, IterationEndedEventInfo
-  >>> from ansys.fluent.core.utils.event_loop import execute_in_event_loop_threadsafe
   >>> from ansys.fluent.visualization.matplotlib import matplot_windows_manager
   >>> from ansys.fluent.visualization.pyvista import pyvista_windows_manager
   >>> from ansys.fluent.visualization import Graphics
+  >>>
+  >>> def _get_loop() -> asyncio.AbstractEventLoop:
+  >>>     # Prefer the currently running loop in this thread.
+  >>>     try:
+  >>>         return asyncio.get_running_loop()
+  >>>     except RuntimeError:
+  >>>         # Fall back to this thread's current loop if one was set.
+  >>>         try:
+  >>>             return asyncio.get_event_loop()
+  >>>         except RuntimeError:
+  >>>             # Last resort for examples: create and set a loop for this thread.
+  >>>             # In applications, prefer passing an explicitly running UI loop.
+  >>>             loop = asyncio.new_event_loop()
+  >>>             asyncio.set_event_loop(loop)
+  >>>             return loop
+  >>>
+  >>> def execute_in_event_loop_threadsafe(f):
+  >>>
+  >>>     def cb(*args, **kwargs):
+  >>>         # Resolve loop at callback invocation time rather than decorator
+  >>>         # definition time, so import-time loop state does not get captured.
+  >>>         loop = _get_loop()
+  >>>         # Package callback arguments for thread-safe scheduling.
+  >>>         par = partial(f, *args, **kwargs)
+  >>>         # Enqueue work onto the loop from any worker thread.
+  >>>         loop.call_soon_threadsafe(par)
+  >>>
+  >>>     return cb
   >>>
   >>> graphics = Graphics(session=solver_session)
   >>>
