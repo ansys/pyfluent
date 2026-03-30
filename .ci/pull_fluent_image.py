@@ -47,7 +47,7 @@ def pull_fluent_image():  # pylint: disable=missing-raises-doc
                         retry_after = float(match.group(1)) / 1000
 
                     # Use retry-after if available, otherwise exponential backoff
-                    delay = retry_after if retry_after else BASE_DELAY * (2**attempt)
+                    delay = retry_after if retry_after is not None else BASE_DELAY * (2**attempt)
 
                     print(
                         f"Rate limit hit (429), retrying in {delay:.2f} seconds... (attempt {attempt + 1}/{MAX_RETRIES})"
