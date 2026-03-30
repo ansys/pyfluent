@@ -24,15 +24,18 @@ def pull_fluent_image():  # pylint: disable=missing-raises-doc
 
     for attempt in range(MAX_RETRIES):
         try:
-            subprocess.run(
+            result = subprocess.run(
                 ["docker", "pull", full_image_name],
                 check=True,
                 capture_output=True,
                 text=True,
             )
+            if result.stdout:
+                print(result.stdout, end="")
+            print(f"Successfully pulled Docker image: {full_image_name}")
             break  # Success, exit retry loop
         except subprocess.CalledProcessError as e:
-            stderr_output = e.stderr.lower()
+            stderr_output = (e.stderr or "").lower()
 
             # Check if it's a 429 rate limit error
             if "toomanyrequests" in stderr_output or "429" in stderr_output:
@@ -40,7 +43,7 @@ def pull_fluent_image():  # pylint: disable=missing-raises-doc
                     # Parse retry-after hint if available
                     retry_after = None
                     match = re.search(
-                        r"retry-after:\s*([\d.]+)\s*ms", e.stderr, re.IGNORECASE
+                        r"retry-after:\s*([\d.]+)\s*ms", stderr_output, re.IGNORECASE
                     )
                     if match:
                         retry_after = float(match.group(1)) / 1000
