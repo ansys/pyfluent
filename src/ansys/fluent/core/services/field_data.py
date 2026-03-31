@@ -745,7 +745,7 @@ class Batch(FieldBatch):
         self,
         **kwargs,
     ) -> None:
-        zones = kwargs.get("zones") or []
+        zones = kwargs.get("zones", [])
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
         )
