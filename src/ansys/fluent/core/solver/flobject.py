@@ -42,6 +42,7 @@ from __future__ import annotations
 
 import collections
 from contextlib import contextmanager, nullcontext, suppress
+from enum import Enum
 import fnmatch
 import hashlib
 import inspect
@@ -115,6 +116,24 @@ class ReadOnlyActionError(RuntimeError):
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
 
+class ExposureLevel(Enum):
+    """Exposure level of a settings object."""
+
+    ALPHA = "alpha"
+    BETA = "beta"
+    STABLE = "stable"
+
+    @classmethod
+    def _missing_(cls, value):
+        if value == "unknown":
+            return cls.STABLE
+        # Extra defensive check: server is expected to return only
+        # alpha, beta, stable, or unknown, so this should not occur.
+        raise ValueError(
+            f"Invalid exposure-level '{value}'. Allowed values are: alpha, beta, stable, unknown."
+        )
+
+
 class _InlineConstants:
     is_active = "active?"
     is_read_only = "read-only?"
@@ -124,6 +143,7 @@ class _InlineConstants:
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
     file_purpose = "file-purpose"
+    exposure_level = "exposure-level"
 
 
 # Type hints
@@ -462,6 +482,21 @@ class Base:
         """Whether the object is read-only."""
         attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
+
+    def exposure_level(self) -> ExposureLevel | None:
+        """Get the exposure level of the object.
+
+        Returns
+        -------
+        ExposureLevel | None
+            The exposure level of the object (Alpha, Beta, or Stable).
+        """
+        attr = self.get_attr(_InlineConstants.exposure_level)
+        if attr is None:
+            attr = getattr(self, "_exposure_level", None)
+        if attr is None:
+            return ExposureLevel.STABLE
+        return ExposureLevel(attr.lower())
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -2240,6 +2275,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             )
             base = String
         dct = {"fluent_name": name, "_version": version}
+        exposure_level = info.get("exposure-level", None)
+        if exposure_level:
+            dct["_exposure_level"] = exposure_level
         helpinfo = info.get("help")
         if helpinfo:
             dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
