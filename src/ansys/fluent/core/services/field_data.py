@@ -1561,7 +1561,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self,
         **kwargs,
     ) -> Dict:
-        zones = kwargs.get("zones") or []
+        zones = kwargs.get("zones", [])
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
