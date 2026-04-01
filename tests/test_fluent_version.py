@@ -60,8 +60,14 @@ def test_get_latest_installed(helpers, fs):
     helpers.mock_awp_vars()
     with pytest.raises(FileNotFoundError):
         assert FluentVersion.get_latest_installed() == FluentVersion.current_release()
-    fs.create_file(FluentVersion.current_release().get_fluent_exe_path())
+    fs.create_file(FluentVersion.current_release()._get_fluent_exe_path())
     assert FluentVersion.get_latest_installed() == FluentVersion.current_release()
+
+
+def test_get_fluent_exe_path_missing_awp_root(monkeypatch):
+    monkeypatch.delenv(FluentVersion.v252.awp_var, raising=False)
+    with pytest.raises(FileNotFoundError, match=FluentVersion.v252.awp_var):
+        FluentVersion.v252.get_fluent_exe_path()
 
 
 def test_gt():
