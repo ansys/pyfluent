@@ -1,8 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
-    cooldown:
-      default-days: 10 # Fallback cooldown if no specific rule applies
     directory: "/" # Location of package manifests
     schedule:
       interval: "monthly"
@@ -38,8 +36,6 @@ updates:
           - "patch"
 
   - package-ecosystem: "github-actions"
-    cooldown:
-      default-days: 10 # Fallback cooldown if no specific rule applies
     directory: "/"
     schedule:
       interval: "monthly"
