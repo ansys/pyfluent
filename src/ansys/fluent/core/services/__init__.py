@@ -45,9 +45,7 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableService,
 )
 from ansys.fluent.core.services.transcript import TranscriptService
-from ansys.fluent.core.services_v0.app_utilities import (
-    AppUtilitiesService as AppUtilitiesService_v0,
-)
+from ansys.fluent.core.services_v0.app_utilities import AppUtilities as AppUtilities_v0
 from ansys.fluent.core.services_v0.batch_ops import (
     BatchOpsService as BatchOpsService_v0,
 )
@@ -69,7 +67,7 @@ from ansys.fluent.core.services_v0.solution_variables import (
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 
 _service_cls_by_name = {
-    "app_utilities": AppUtilities if os.getenv("NEW_GRPC") else AppUtilitiesService_v0,
+    "app_utilities": AppUtilities if os.getenv("NEW_GRPC") else AppUtilities_v0,
     "health_check": (
         HealthCheckService if os.getenv("NEW_GRPC") else HealthCheckService_v0
     ),
