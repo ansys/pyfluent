@@ -94,6 +94,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 _static_class_attributes = [
     "_version",
+    "_exposure_level",
     "_deprecated_version",
     "_python_name",
     "fluent_name",
@@ -125,12 +126,10 @@ class ExposureLevel(Enum):
 
     @classmethod
     def _missing_(cls, value):
-        if value == "unknown":
-            return cls.STABLE
         # Extra defensive check: server is expected to return only
-        # alpha, beta, stable, or unknown, so this should not occur.
+        # alpha, beta, stable, so this should not occur.
         raise ValueError(
-            f"Invalid exposure-level '{value}'. Allowed values are: alpha, beta, stable, unknown."
+            f"Invalid exposure-level '{value}'. Allowed values are: alpha, beta, stable."
         )
 
 
@@ -143,7 +142,6 @@ class _InlineConstants:
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
     file_purpose = "file-purpose"
-    exposure_level = "exposure-level"
 
 
 # Type hints
@@ -491,12 +489,11 @@ class Base:
         ExposureLevel | None
             The exposure level of the object (Alpha, Beta, or Stable).
         """
-        attr = self.get_attr(_InlineConstants.exposure_level)
-        if attr is None:
-            attr = getattr(self, "_exposure_level", None)
+        attr = getattr(self, "_exposure_level", None)
         if attr is None:
             return ExposureLevel.STABLE
-        return ExposureLevel(attr.lower())
+        else:
+            return ExposureLevel(attr)
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -2275,9 +2272,6 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             )
             base = String
         dct = {"fluent_name": name, "_version": version}
-        exposure_level = info.get("exposure-level", None)
-        if exposure_level:
-            dct["_exposure_level"] = exposure_level
         helpinfo = info.get("help")
         if helpinfo:
             dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
@@ -2339,6 +2333,10 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
+        exposure_level = info.get("exposure_level", None)
+        if exposure_level:
+            print(cls.__name__, exposure_level)
+            cls._exposure_level = exposure_level
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:
             cls._deprecated_version = deprecated_version
