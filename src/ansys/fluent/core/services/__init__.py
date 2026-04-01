@@ -33,7 +33,8 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import LiveFieldData, _FieldInfo
-from ansys.fluent.core.services.health_check import HealthCheckService
+
+# from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval
@@ -43,11 +44,14 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableService,
 )
 from ansys.fluent.core.services.transcript import TranscriptService
+from ansys.fluent.core.services_v0.health_check import (
+    HealthCheckService as HealthCheckService_v0,
+)
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 
 _service_cls_by_name = {
     "app_utilities": AppUtilities,
-    "health_check": HealthCheckService,
+    "health_check": HealthCheckService_v0,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
     "settings": SettingsService,
