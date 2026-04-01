@@ -251,6 +251,7 @@ class BaseSession:
             self._app_utilities,
             self.scheme,
             self._error_state,
+            self.get_fluent_version(),
         )
 
         self._health_check = fluent_connection._health_check

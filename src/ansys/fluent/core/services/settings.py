@@ -28,8 +28,11 @@ from typing import Any
 
 import grpc
 
-from ansys.api.fluent.v1 import settings_pb2 as SettingsModule
-from ansys.api.fluent.v1 import settings_pb2_grpc as SettingsGrpcModule
+from ansys.fluent.core.services.grpc_compat import (
+    get_grpc_api_version,
+    import_fluent_api_module,
+    resolve_attr_first,
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -37,11 +40,29 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 
+SettingsModule = import_fluent_api_module("settings_pb2", get_grpc_api_version(None))
+SettingsGrpcModule = import_fluent_api_module(
+    "settings_pb2_grpc", get_grpc_api_version(None)
+)
+
 
 class _SettingsServiceImpl:
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        fluent_version: str | None = None,
     ) -> None:
+        global SettingsModule
+        global SettingsGrpcModule
+
+        grpc_api_version = get_grpc_api_version(fluent_version)
+        SettingsModule = import_fluent_api_module("settings_pb2", grpc_api_version)
+        SettingsGrpcModule = import_fluent_api_module(
+            "settings_pb2_grpc", grpc_api_version
+        )
+
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),
@@ -49,78 +70,59 @@ class _SettingsServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self.__stub = SettingsGrpcModule.SettingsServiceStub(intercept_channel)
+        stub_cls = resolve_attr_first(
+            SettingsGrpcModule,
+            "SettingsServiceStub",
+            "SettingsStub",
+        )
+        self.__stub = stub_cls(intercept_channel)
         self.__metadata = metadata
 
-    def set_var(
-        self, request: SettingsModule.SetVarRequest
-    ) -> SettingsModule.SetVarResponse:
+    def set_var(self, request: Any) -> Any:
         """Set a variable."""
         return self.__stub.SetVar(request, metadata=self.__metadata)
 
-    def get_var(
-        self, request: SettingsModule.GetVarRequest
-    ) -> SettingsModule.GetVarResponse:
+    def get_var(self, request: Any) -> Any:
         """Get a variable."""
         return self.__stub.GetVar(request, metadata=self.__metadata)
 
-    def rename(
-        self, request: SettingsModule.RenameRequest
-    ) -> SettingsModule.RenameResponse:
+    def rename(self, request: Any) -> Any:
         """Rename an object."""
         return self.__stub.Rename(request, metadata=self.__metadata)
 
-    def create(
-        self, request: SettingsModule.CreateRequest
-    ) -> SettingsModule.CreateResponse:
+    def create(self, request: Any) -> Any:
         """Create an object."""
         return self.__stub.Create(request, metadata=self.__metadata)
 
-    def delete(
-        self, request: SettingsModule.DeleteRequest
-    ) -> SettingsModule.DeleteResponse:
+    def delete(self, request: Any) -> Any:
         """Delete an object."""
         return self.__stub.Delete(request, metadata=self.__metadata)
 
-    def get_object_names(
-        self, request: SettingsModule.GetObjectNamesRequest
-    ) -> SettingsModule.GetObjectNamesResponse:
+    def get_object_names(self, request: Any) -> Any:
         """Get object names."""
         return self.__stub.GetObjectNames(request, metadata=self.__metadata)
 
-    def get_list_size(
-        self, request: SettingsModule.GetListSizeRequest
-    ) -> SettingsModule.GetListSizeResponse:
+    def get_list_size(self, request: Any) -> Any:
         """Get list size."""
         return self.__stub.GetListSize(request, metadata=self.__metadata)
 
-    def resize_list_object(
-        self, request: SettingsModule.ResizeListObjectRequest
-    ) -> SettingsModule.ResizeListObjectResponse:
+    def resize_list_object(self, request: Any) -> Any:
         """Resize list object."""
         return self.__stub.ResizeListObject(request, metadata=self.__metadata)
 
-    def get_static_info(
-        self, request: SettingsModule.GetStaticInfoRequest
-    ) -> SettingsModule.GetStaticInfoResponse:
+    def get_static_info(self, request: Any) -> Any:
         """Get static info."""
         return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
 
-    def execute_cmd(
-        self, request: SettingsModule.ExecuteCommandRequest
-    ) -> SettingsModule.ExecuteCommandResponse:
+    def execute_cmd(self, request: Any) -> Any:
         """Execute the command."""
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
-    def execute_query(
-        self, request: SettingsModule.ExecuteQueryRequest
-    ) -> SettingsModule.ExecuteQueryResponse:
+    def execute_query(self, request: Any) -> Any:
         """Execute the query."""
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 
-    def get_attrs(
-        self, request: SettingsModule.GetAttrsRequest
-    ) -> SettingsModule.GetAttrsResponse:
+    def get_attrs(self, request: Any) -> Any:
         """Get attributes."""
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
@@ -159,15 +161,23 @@ class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
     def __init__(
-        self, channel, metadata, app_utilities, scheme_eval, fluent_error_state
+        self,
+        channel,
+        metadata,
+        app_utilities,
+        scheme_eval,
+        fluent_error_state,
+        fluent_version: str | None = None,
     ) -> None:
         """__init__ method of SettingsService class."""
-        self._service_impl = _SettingsServiceImpl(channel, metadata, fluent_error_state)
+        self._service_impl = _SettingsServiceImpl(
+            channel, metadata, fluent_error_state, fluent_version
+        )
         self._app_utilities = app_utilities
         self._scheme_eval = scheme_eval
 
     @_trace
-    def _set_state_from_value(self, state: SettingsModule.Value, value: Any):
+    def _set_state_from_value(self, state: Any, value: Any):
         if value is None:
             return
         if isinstance(value, bool):
@@ -183,12 +193,13 @@ class SettingsService:
                 self._set_state_from_value(state.value_map.m[k], v)
         elif isinstance(value, collections.abc.Iterable):
             for v in value:
-                self._set_state_from_value(state.value_list.lsts.add(), v)
+                lst = resolve_attr_first(state.value_list, "lsts", "lst")
+                self._set_state_from_value(lst.add(), v)
         else:  # fall back to string (for example, pathlib.Path)
             state.string = str(value)
 
     @_trace
-    def _get_state_from_value(self, state: SettingsModule.Value) -> Any:
+    def _get_state_from_value(self, state: Any) -> Any:
         t = state.WhichOneof("value")
         if t == "boolean":
             return state.boolean
@@ -199,7 +210,8 @@ class SettingsService:
         elif t == "string":
             return state.string
         elif t == "value_list":
-            return [self._get_state_from_value(v) for v in state.value_list.lsts]
+            lst = resolve_attr_first(state.value_list, "lsts", "lst")
+            return [self._get_state_from_value(v) for v in lst]
         elif t == "value_map":
             return {
                 k: self._get_state_from_value(v)
@@ -273,7 +285,7 @@ class SettingsService:
         return self._service_impl.resize_list_object(request)
 
     @_trace
-    def _extract_static_info(self, info: SettingsModule.StaticInfo) -> dict[str, Any]:
+    def _extract_static_info(self, info: Any) -> dict[str, Any]:
         ret = {}
         ret["type"] = info.type
         for key, value in sorted(info.attrs.items()):
@@ -368,7 +380,7 @@ class SettingsService:
         return self._get_state_from_value(response.reply)
 
     @_trace
-    def _parse_attrs(self, response: SettingsModule.GetAttrsResponse) -> dict[str, Any]:
+    def _parse_attrs(self, response: Any) -> dict[str, Any]:
         ret = {}
         ret["attrs"] = self._get_state_from_value(response.values)
         if response.group_children:

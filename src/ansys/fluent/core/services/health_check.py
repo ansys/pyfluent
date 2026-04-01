@@ -23,14 +23,19 @@
 """Wrapper over the health check gRPC service of Fluent."""
 
 from enum import Enum
+import importlib
 import logging
 import sys
 
 import grpc
-from ansys.api.fluent.v1 import health_pb2 as HealthCheckModule
-from ansys.api.fluent.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
 from ansys.fluent.core.module_config import config
+from ansys.fluent.core.services.grpc_compat import (
+    GrpcApiVersion,
+    get_grpc_api_version,
+    import_fluent_api_module,
+    resolve_attr_first,
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -39,6 +44,24 @@ from ansys.fluent.core.services.interceptors import (
 )
 
 logger: logging.Logger = logging.getLogger("pyfluent.general")
+
+HealthCheckModule = import_fluent_api_module("health_pb2", get_grpc_api_version(None))
+HealthCheckGrpcModule = import_fluent_api_module(
+    "health_pb2_grpc", get_grpc_api_version(None)
+)
+
+
+def _load_health_modules(grpc_api_version: GrpcApiVersion):
+    """Load health proto/grpc modules for the selected API generation."""
+    if grpc_api_version == GrpcApiVersion.V0:
+        return (
+            importlib.import_module("grpc_health.v1.health_pb2"),
+            importlib.import_module("grpc_health.v1.health_pb2_grpc"),
+        )
+    return (
+        import_fluent_api_module("health_pb2", grpc_api_version),
+        import_fluent_api_module("health_pb2_grpc", grpc_api_version),
+    )
 
 
 class HealthCheckService:
@@ -61,24 +84,45 @@ class HealthCheckService:
     @classmethod
     def _status_from_response(cls, response_status: int) -> "HealthCheckService.Status":
         """Convert a protobuf health status to local status enum."""
-        if response_status == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_SERVING:
+        serving_status_serving = resolve_attr_first(
+            HealthCheckModule.HealthCheckResponse,
+            "SERVING_STATUS_SERVING",
+            "SERVING",
+        )
+        serving_status_not_serving = resolve_attr_first(
+            HealthCheckModule.HealthCheckResponse,
+            "SERVING_STATUS_NOT_SERVING",
+            "NOT_SERVING",
+        )
+        serving_status_service_unknown = resolve_attr_first(
+            HealthCheckModule.HealthCheckResponse,
+            "SERVING_STATUS_SERVICE_UNKNOWN",
+            "SERVICE_UNKNOWN",
+        )
+        if response_status == serving_status_serving:
             return cls.Status.SERVING
-        if (
-            response_status
-            == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_NOT_SERVING
-        ):
+        if response_status == serving_status_not_serving:
             return cls.Status.NOT_SERVING
-        if (
-            response_status
-            == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_SERVICE_UNKNOWN
-        ):
+        if response_status == serving_status_service_unknown:
             return cls.Status.SERVICE_UNKNOWN
         return cls.Status.UNSPECIFIED
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        fluent_version: str | None = None,
     ) -> None:
         """__init__ method of HealthCheckService class."""
+        global HealthCheckModule
+        global HealthCheckGrpcModule
+
+        self._grpc_api_version = get_grpc_api_version(fluent_version)
+        HealthCheckModule, HealthCheckGrpcModule = _load_health_modules(
+            self._grpc_api_version
+        )
+
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),
@@ -89,6 +133,18 @@ class HealthCheckService:
         self._stub = HealthCheckGrpcModule.HealthStub(intercept_channel)
         self._metadata = metadata
         self._channel = channel
+        self._intercept_channel = intercept_channel
+
+    def _switch_to_v0(self) -> None:
+        """Switch proto/stub modules to v0 for older Fluent servers."""
+        global HealthCheckModule
+        global HealthCheckGrpcModule
+
+        self._grpc_api_version = GrpcApiVersion.V0
+        HealthCheckModule, HealthCheckGrpcModule = _load_health_modules(
+            self._grpc_api_version
+        )
+        self._stub = HealthCheckGrpcModule.HealthStub(self._intercept_channel)
 
     def check_health(self) -> Status:
         """Check the health of the Fluent connection.
@@ -96,13 +152,33 @@ class HealthCheckService:
         Returns
         -------
         Status
+
+        Raises
+        ------
+        RuntimeError
+            If the gRPC call to check health fails.
         """
         request = HealthCheckModule.HealthCheckRequest()
-        response = self._stub.Check(
-            request,
-            metadata=self._metadata,
-            timeout=config.check_health_timeout,
-        )
+        try:
+            response = self._stub.Check(
+                request,
+                metadata=self._metadata,
+                timeout=config.check_health_timeout,
+            )
+        except RuntimeError as ex:
+            if (
+                self._grpc_api_version == GrpcApiVersion.V1
+                and "Method not found" in str(ex)
+            ):
+                self._switch_to_v0()
+                request = HealthCheckModule.HealthCheckRequest()
+                response = self._stub.Check(
+                    request,
+                    metadata=self._metadata,
+                    timeout=config.check_health_timeout,
+                )
+            else:
+                raise
         return self._status_from_response(response.status)
 
     def wait_for_server(self, timeout: int) -> None:
@@ -126,10 +202,12 @@ class HealthCheckService:
         while True:
             try:
                 response = next(responses)
-                if (
-                    response.status
-                    == HealthCheckModule.HealthCheckResponse.SERVING_STATUS_SERVING
-                ):
+                serving_status_serving = resolve_attr_first(
+                    HealthCheckModule.HealthCheckResponse,
+                    "SERVING_STATUS_SERVING",
+                    "SERVING",
+                )
+                if response.status == serving_status_serving:
                     responses.cancel()
             except StopIteration:
                 break

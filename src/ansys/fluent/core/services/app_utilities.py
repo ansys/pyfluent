@@ -25,13 +25,16 @@
 from dataclasses import dataclass
 from enum import Enum
 import os
-from typing import List, Tuple
+from typing import Any, List, Tuple
 
 import grpc
 
-from ansys.api.fluent.v1 import app_utilities_pb2 as AppUtilitiesProtoModule
-from ansys.api.fluent.v1 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.services.grpc_compat import (
+    get_grpc_api_version,
+    import_fluent_api_module,
+    resolve_attr_first,
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -40,14 +43,36 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
+AppUtilitiesProtoModule = import_fluent_api_module(
+    "app_utilities_pb2", get_grpc_api_version(None)
+)
+AppUtilitiesGrpcModule = import_fluent_api_module(
+    "app_utilities_pb2_grpc", get_grpc_api_version(None)
+)
+
 
 class AppUtilitiesService:
     """AppUtilities Service."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: List[Tuple[str, str]],
+        fluent_error_state,
+        fluent_version: str | None = None,
     ):
         """__init__ method of AppUtilities class."""
+        global AppUtilitiesProtoModule
+        global AppUtilitiesGrpcModule
+
+        grpc_api_version = get_grpc_api_version(fluent_version)
+        AppUtilitiesProtoModule = import_fluent_api_module(
+            "app_utilities_pb2", grpc_api_version
+        )
+        AppUtilitiesGrpcModule = import_fluent_api_module(
+            "app_utilities_pb2_grpc", grpc_api_version
+        )
+
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),
@@ -58,103 +83,82 @@ class AppUtilitiesService:
         self._stub = AppUtilitiesGrpcModule.AppUtilitiesStub(intercept_channel)
         self._metadata = metadata
 
-    def get_product_version(
-        self, request: AppUtilitiesProtoModule.GetProductVersionRequest
-    ) -> AppUtilitiesProtoModule.GetProductVersionResponse:
+    def get_product_version(self, request: Any) -> Any:
         """Get product version RPC of AppUtilities service."""
         return self._stub.GetProductVersion(request, metadata=self._metadata)
 
-    def get_build_info(
-        self, request: AppUtilitiesProtoModule.GetBuildInfoRequest
-    ) -> AppUtilitiesProtoModule.GetBuildInfoResponse:
+    def get_build_info(self, request: Any) -> Any:
         """Get build info RPC of AppUtilities service."""
         return self._stub.GetBuildInfo(request, metadata=self._metadata)
 
-    def get_controller_process_info(
-        self, request: AppUtilitiesProtoModule.GetControllerProcessInfoRequest
-    ) -> AppUtilitiesProtoModule.GetControllerProcessInfoResponse:
+    def get_controller_process_info(self, request: Any) -> Any:
         """Get controller process info RPC of AppUtilities service."""
         return self._stub.GetControllerProcessInfo(request, metadata=self._metadata)
 
-    def get_solver_process_info(
-        self, request: AppUtilitiesProtoModule.GetSolverProcessInfoRequest
-    ) -> AppUtilitiesProtoModule.GetSolverProcessInfoResponse:
+    def get_solver_process_info(self, request: Any) -> Any:
         """Get solver process info RPC of AppUtilities service."""
         return self._stub.GetSolverProcessInfo(request, metadata=self._metadata)
 
-    def get_app_mode(
-        self, request: AppUtilitiesProtoModule.GetAppModeRequest
-    ) -> AppUtilitiesProtoModule.GetAppModeResponse:
+    def get_app_mode(self, request: Any) -> Any:
         """Get app mode RPC of AppUtilities service."""
         return self._stub.GetAppMode(request, metadata=self._metadata)
 
-    def start_python_journal(
-        self, request: AppUtilitiesProtoModule.StartPythonJournalRequest
-    ) -> AppUtilitiesProtoModule.StartPythonJournalResponse:
+    def start_python_journal(self, request: Any) -> Any:
         """Start python journal RPC of AppUtilities service."""
         return self._stub.StartPythonJournal(request, metadata=self._metadata)
 
-    def stop_python_journal(
-        self, request: AppUtilitiesProtoModule.StopPythonJournalRequest
-    ) -> AppUtilitiesProtoModule.StopPythonJournalResponse:
+    def stop_python_journal(self, request: Any) -> Any:
         """Stop python journal RPC of AppUtilities service."""
         return self._stub.StopPythonJournal(request, metadata=self._metadata)
 
-    def is_beta_enabled(
-        self, request: AppUtilitiesProtoModule.IsBetaEnabledRequest
-    ) -> AppUtilitiesProtoModule.IsBetaEnabledResponse:
+    def is_beta_enabled(self, request: Any) -> Any:
         """Is beta enabled RPC of AppUtilities service."""
         return self._stub.IsBetaEnabled(request, metadata=self._metadata)
 
-    def enable_beta(
-        self, request: AppUtilitiesProtoModule.EnableBetaRequest
-    ) -> AppUtilitiesProtoModule.EnableBetaResponse:
+    def enable_beta(self, request: Any) -> Any:
         """Is beta enabled RPC of AppUtilities service."""
         return self._stub.EnableBeta(request, metadata=self._metadata)
 
-    def is_wildcard(
-        self, request: AppUtilitiesProtoModule.IsWildcardRequest
-    ) -> AppUtilitiesProtoModule.IsWildcardResponse:
+    def is_wildcard(self, request: Any) -> Any:
         """Is wildcard RPC of AppUtilities service."""
         return self._stub.IsWildcard(request, metadata=self._metadata)
 
-    def is_solution_data_available(
-        self, request: AppUtilitiesProtoModule.IsSolutionDataAvailableRequest
-    ) -> AppUtilitiesProtoModule.IsSolutionDataAvailableResponse:
+    def is_solution_data_available(self, request: Any) -> Any:
         """Is solution data available RPC of AppUtilities service."""
         return self._stub.IsSolutionDataAvailable(request, metadata=self._metadata)
 
-    def register_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.RegisterSolutionEventsPauseRequest
-    ) -> AppUtilitiesProtoModule.RegisterSolutionEventsPauseResponse:
+    def register_pause_on_solution_events(self, request):
         """Register on pause solution events RPC of AppUtilities service."""
-        return self._stub.RegisterSolutionEventsPause(
-            request, metadata=self._metadata
+        method = resolve_attr_first(
+            self._stub,
+            "RegisterSolutionEventsPause",
+            "RegisterPauseOnSolutionEvents",
         )
+        return method(request, metadata=self._metadata)
 
-    def resume_on_solution_event(
-        self, request: AppUtilitiesProtoModule.ResumeSolutionEventRequest
-    ) -> AppUtilitiesProtoModule.ResumeSolutionEventResponse:
+    def resume_on_solution_event(self, request):
         """Resume on solution event RPC of AppUtilities service."""
-        return self._stub.ResumeSolutionEvent(request, metadata=self._metadata)
-
-    def unregister_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.UnregisterSolutionEventsPauseRequest
-    ) -> AppUtilitiesProtoModule.UnregisterSolutionEventsPauseResponse:
-        """Unregister on pause solution events RPC of AppUtilities service."""
-        return self._stub.UnregisterSolutionEventsPause(
-            request, metadata=self._metadata
+        method = resolve_attr_first(
+            self._stub,
+            "ResumeSolutionEvent",
+            "ResumeOnSolutionEvent",
         )
+        return method(request, metadata=self._metadata)
 
-    def exit(
-        self, request: AppUtilitiesProtoModule.ExitRequest
-    ) -> AppUtilitiesProtoModule.ExitResponse:
+    def unregister_pause_on_solution_events(self, request):
+        """Unregister on pause solution events RPC of AppUtilities service."""
+        method = resolve_attr_first(
+            self._stub,
+            "UnregisterSolutionEventsPause",
+            "UnregisterPauseOnSolutionEvents",
+        )
+        return method(request, metadata=self._metadata)
+
+    def exit(self, request: Any) -> Any:
         """Exit RPC of AppUtilities service."""
         return self._stub.Exit(request, metadata=self._metadata)
 
-    def set_working_directory(
-        self, request: AppUtilitiesProtoModule.SetWorkingDirectoryRequest
-    ) -> AppUtilitiesProtoModule.SetWorkingDirectoryResponse:
+    def set_working_directory(self, request: Any) -> Any:
         """SetWorkingDirectory RPC of AppUtilities service."""
         return self._stub.SetWorkingDirectory(request, metadata=self._metadata)
 
@@ -391,17 +395,22 @@ class AppUtilities:
 
         request = AppUtilitiesProtoModule.GetAppModeRequest()
         response = self.service.get_app_mode(request)
-        match response.app_mode:
-            case AppUtilitiesProtoModule.APP_MODE_UNSPECIFIED:
-                raise ValueError("Unknown app mode.")
-            case AppUtilitiesProtoModule.APP_MODE_MESHING:
-                return pyfluent.FluentMode.MESHING
-            case AppUtilitiesProtoModule.APP_MODE_SOLVER:
-                return pyfluent.FluentMode.SOLVER
-            case AppUtilitiesProtoModule.APP_MODE_SOLVER_ICING:
-                return pyfluent.FluentMode.SOLVER_ICING
-            case AppUtilitiesProtoModule.APP_MODE_SOLVER_AERO:
-                return pyfluent.FluentMode.SOLVER_AERO
+        app_mode_unspecified = getattr(
+            AppUtilitiesProtoModule,
+            "APP_MODE_UNSPECIFIED",
+            getattr(AppUtilitiesProtoModule, "APP_MODE_UNKNOWN"),
+        )
+        if response.app_mode == app_mode_unspecified:
+            raise ValueError("Unknown app mode.")
+        if response.app_mode == AppUtilitiesProtoModule.APP_MODE_MESHING:
+            return pyfluent.FluentMode.MESHING
+        if response.app_mode == AppUtilitiesProtoModule.APP_MODE_SOLVER:
+            return pyfluent.FluentMode.SOLVER
+        if response.app_mode == AppUtilitiesProtoModule.APP_MODE_SOLVER_ICING:
+            return pyfluent.FluentMode.SOLVER_ICING
+        if response.app_mode == AppUtilitiesProtoModule.APP_MODE_SOLVER_AERO:
+            return pyfluent.FluentMode.SOLVER_AERO
+        raise ValueError("Unknown app mode.")
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
@@ -445,8 +454,17 @@ class AppUtilities:
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
-        request = AppUtilitiesProtoModule.RegisterSolutionEventsPauseRequest()
-        request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNSPECIFIED
+        request_cls = resolve_attr_first(
+            AppUtilitiesProtoModule,
+            "RegisterSolutionEventsPauseRequest",
+            "RegisterPauseOnSolutionEventsRequest",
+        )
+        request = request_cls()
+        request.solution_event = getattr(
+            AppUtilitiesProtoModule,
+            "SOLUTION_EVENT_UNSPECIFIED",
+            getattr(AppUtilitiesProtoModule, "SOLUTION_EVENT_UNKNOWN"),
+        )
         match solution_event:
             case SolverEvent.ITERATION_ENDED:
                 request.solution_event = (
@@ -461,13 +479,23 @@ class AppUtilities:
 
     def resume_on_solution_event(self, registration_id: int) -> None:
         """Resume on solution event."""
-        request = AppUtilitiesProtoModule.ResumeSolutionEventRequest()
+        request_cls = resolve_attr_first(
+            AppUtilitiesProtoModule,
+            "ResumeSolutionEventRequest",
+            "ResumeOnSolutionEventRequest",
+        )
+        request = request_cls()
         request.registration_id = registration_id
         self.service.resume_on_solution_event(request)
 
     def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
-        request = AppUtilitiesProtoModule.UnregisterSolutionEventsPauseRequest()
+        request_cls = resolve_attr_first(
+            AppUtilitiesProtoModule,
+            "UnregisterSolutionEventsPauseRequest",
+            "UnregisterPauseOnSolutionEventsRequest",
+        )
+        request = request_cls()
         request.registration_id = registration_id
         self.service.unregister_pause_on_solution_events(request)
 

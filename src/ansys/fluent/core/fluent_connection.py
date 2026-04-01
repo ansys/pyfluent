@@ -355,7 +355,7 @@ class _ConnectionInterface:
             self._scheme_eval_service
         )
         self._app_utilities_service = create_grpc_service(
-            AppUtilitiesService, error_state
+            AppUtilitiesService, error_state, self.scheme_eval.version
         )
         match FluentVersion(self.scheme_eval.version):
             case v if v < FluentVersion.v252:
