@@ -689,10 +689,11 @@ class FileFieldData(FieldDataSource):
         overset_mesh: bool | None = False,
         flatten_connectivity: bool = False,
     ):
-        for d_type in data_types:
-            if isinstance(d_type, str):
-                data_types.remove(d_type)
-                data_types.append(SurfaceDataType(d_type))
+        data_types = [
+    d_type if isinstance(d_type, SurfaceDataType)
+    else SurfaceDataType(d_type)
+    for d_type in data_types
+]
 
         surface_ids = self.get_surface_ids(surfaces=surfaces)
 
