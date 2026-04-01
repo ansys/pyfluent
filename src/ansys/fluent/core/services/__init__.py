@@ -22,6 +22,8 @@
 
 """Provides a module to create gRPC services."""
 
+import os
+
 from ansys.fluent.core.services.app_utilities import AppUtilities
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
@@ -33,8 +35,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import LiveFieldData, _FieldInfo
-
-# from ansys.fluent.core.services.health_check import HealthCheckService
+from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval
@@ -44,28 +45,52 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableService,
 )
 from ansys.fluent.core.services.transcript import TranscriptService
+from ansys.fluent.core.services_v0.app_utilities import (
+    AppUtilitiesService as AppUtilitiesService_v0,
+)
+from ansys.fluent.core.services_v0.batch_ops import (
+    BatchOpsService as BatchOpsService_v0,
+)
+from ansys.fluent.core.services_v0.events import EventsService as EventsService_v0
+from ansys.fluent.core.services_v0.field_data import LiveFieldData as LiveFieldData_v0
+from ansys.fluent.core.services_v0.field_data import _FieldInfo as _FieldInfo_v0
 from ansys.fluent.core.services_v0.health_check import (
     HealthCheckService as HealthCheckService_v0,
+)
+from ansys.fluent.core.services_v0.reduction import Reduction as Reduction_v0
+from ansys.fluent.core.services_v0.scheme_eval import SchemeEval as SchemeEval_v0
+from ansys.fluent.core.services_v0.settings import SettingsService as SettingsService_v0
+from ansys.fluent.core.services_v0.solution_variables import (
+    SolutionVariableData as SolutionVariableData_v0,
+)
+from ansys.fluent.core.services_v0.solution_variables import (
+    SolutionVariableService as SolutionVariableService_v0,
 )
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 
 _service_cls_by_name = {
-    "app_utilities": AppUtilities,
-    "health_check": HealthCheckService_v0,
+    "app_utilities": AppUtilities if os.getenv("NEW_GRPC") else AppUtilitiesService_v0,
+    "health_check": (
+        HealthCheckService if os.getenv("NEW_GRPC") else HealthCheckService_v0
+    ),
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
-    "settings": SettingsService,
-    "scheme_eval": SchemeEval,
-    "events": EventsService,
-    "field_data": LiveFieldData,
+    "settings": SettingsService if os.getenv("NEW_GRPC") else SettingsService_v0,
+    "scheme_eval": SchemeEval if os.getenv("NEW_GRPC") else SchemeEval_v0,
+    "events": EventsService if os.getenv("NEW_GRPC") else EventsService_v0,
+    "field_data": LiveFieldData if os.getenv("NEW_GRPC") else LiveFieldData_v0,
     "field_data_old": DeprecatedFieldData,
-    "field_info": _FieldInfo,
+    "field_info": _FieldInfo if os.getenv("NEW_GRPC") else _FieldInfo_v0,
     "monitors": MonitorsService,
-    "reduction": Reduction,
-    "svar": SolutionVariableService,
-    "svar_data": SolutionVariableData,
+    "reduction": Reduction if os.getenv("NEW_GRPC") else Reduction_v0,
+    "svar": (
+        SolutionVariableService if os.getenv("NEW_GRPC") else SolutionVariableService_v0
+    ),
+    "svar_data": (
+        SolutionVariableData if os.getenv("NEW_GRPC") else SolutionVariableData_v0
+    ),
     "transcript": TranscriptService,
-    "batch_ops": BatchOpsService,
+    "batch_ops": BatchOpsService if os.getenv("NEW_GRPC") else BatchOpsService_v0,
     "field_data_streaming": FieldDataStreaming,
 }
 
