@@ -340,6 +340,7 @@ class BaseTask:
                     type_, id_ = k.split(":")
                     if type_ == "TaskObject":
                         return id_
+        raise RuntimeError("Task ID not found, should be unreachable")
 
     def get_idx(self) -> int:
         """Get the unique integer index of this task, as it is in the application.
