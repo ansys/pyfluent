@@ -425,12 +425,13 @@ class _AllowedDomainNames(_AllowedNames):
         ZoneError
             If the given domain name is invalid.
         """
-        if not self.is_valid(domain_name):
-            raise ZoneError(
-                domain_name=domain_name,
-                allowed_values=self(),
-            )
-        return self._zones_info.domain_id(domain_name)
+        domain_id = self._zones_info.domain_id(domain_name)
+        if domain_id is not None:
+            return domain_id
+        raise ZoneError(
+            zone_name=domain_name,
+            allowed_values=self(),
+        )
 
 
 class _SvarMethod:
