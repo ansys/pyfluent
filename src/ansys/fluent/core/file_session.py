@@ -160,9 +160,6 @@ class BatchFieldData:
         self,
         **kwargs,
     ) -> dict:
-        if kwargs.get("zones") is None:
-            zones = []
-        del zones
         pathlines_data = self.data[
             (
                 ("type", "pathlines-field"),

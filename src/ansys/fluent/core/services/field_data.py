@@ -559,11 +559,8 @@ class BaseFieldData:
 
     def _get_pathlines_field_data(
         self,
-        **kwargs: Any,
+        **kwargs,
     ) -> dict:
-        if kwargs.get("zones") is None:
-            zones = []
-        del zones
         field_name = _to_field_name_str(kwargs.get("field_name"))
         pathlines_data = self.data[(("type", "pathlines-field"), ("field", field_name))]
         return self._returned_data._pathlines_data(
@@ -752,8 +749,7 @@ class Batch(FieldBatch):
         self,
         **kwargs,
     ) -> None:
-        if kwargs.get("zones") is None:
-            zones = []
+        zones = kwargs.get("zones", [])
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
         )
@@ -1571,8 +1567,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self,
         **kwargs,
     ) -> dict:
-        if kwargs.get("zones") is None:
-            zones = []
+        zones = kwargs.get("zones", [])
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
