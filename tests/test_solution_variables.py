@@ -26,7 +26,7 @@ import pytest
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.services.solution_variables import (
-    ZoneError,
+    DomainError,
     _AllowedDomainNames,
 )
 from ansys.units.variable_descriptor import VariableCatalog
@@ -72,14 +72,14 @@ def test_allowed_domain_names_valid_name_domain_id_zero():
 def test_allowed_domain_names_valid_name_raises_on_missing_domain_id():
     zones_info = _DummyZonesInfo(domains=["mixture"], domain_id_map={})
     allowed = _AllowedDomainNames(_DummySVInfo(zones_info))
-    with pytest.raises(ZoneError):
+    with pytest.raises(DomainError):
         allowed.valid_name("mixture")
 
 
 def test_allowed_domain_names_valid_name_raises_on_invalid_domain():
     zones_info = _DummyZonesInfo(domains=["mixture"], domain_id_map={"mixture": 1})
     allowed = _AllowedDomainNames(_DummySVInfo(zones_info))
-    with pytest.raises(ZoneError):
+    with pytest.raises(DomainError):
         allowed.valid_name("nonexistent")
 
 

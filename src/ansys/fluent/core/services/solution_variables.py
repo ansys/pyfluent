@@ -327,6 +327,19 @@ class ZoneError(ValueError):
         )
 
 
+class DomainError(ValueError):
+    """Exception class for errors in domain name."""
+
+    def __init__(self, domain_name: str, allowed_values: List[str]):
+        """Initialize DomainError."""
+        self.domain_name = domain_name
+        super().__init__(
+            allowed_name_error_message(
+                context="domain", trial_name=domain_name, allowed_values=allowed_values
+            )
+        )
+
+
 class _AllowedNames:
     def is_valid(self, name):
         """Check whether a given name is valid or not."""
@@ -422,14 +435,14 @@ class _AllowedDomainNames(_AllowedNames):
 
         Raises
         ------
-        ZoneError
+        DomainError
             If the given domain name is invalid.
         """
         domain_id = self._zones_info.domain_id(domain_name)
         if domain_id is not None:
             return domain_id
-        raise ZoneError(
-            zone_name=domain_name,
+        raise DomainError(
+            domain_name=domain_name,
             allowed_values=self(),
         )
 
