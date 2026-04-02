@@ -898,6 +898,8 @@ def test_field_level_help(new_meshing_session):
         )
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/5051
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_py_query(new_meshing_session):
