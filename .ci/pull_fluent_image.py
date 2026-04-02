@@ -24,7 +24,7 @@ def pull_fluent_image():  # pylint: disable=missing-raises-doc
 
     for attempt in range(MAX_RETRIES):
         try:
-            result = subprocess.run(
+            subprocess.run(
                 ["docker", "pull", full_image_name],
                 check=True,
                 stderr=subprocess.PIPE,
