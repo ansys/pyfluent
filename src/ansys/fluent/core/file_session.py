@@ -45,7 +45,6 @@ from ansys.fluent.core.field_data_interfaces import (
     _ScalarFields,
     _SurfaceIds,
     _SurfaceNames,
-    _transform_faces_connectivity_data,
     _VectorFields,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
@@ -611,6 +610,7 @@ class FileFieldData(FieldDataSource):
         )
         self.vector_fields = _VectorFields(self._field_info._get_vector_fields_info)
         self.surfaces = _SurfaceNames(self._field_info._get_surfaces_info)
+        self._returned_data = _ReturnFieldData()
 
     @property
     def surface_ids(self):
@@ -689,44 +689,29 @@ class FileFieldData(FieldDataSource):
         overset_mesh: bool | None = False,
         flatten_connectivity: bool = False,
     ):
-        for d_type in data_types:
-            if isinstance(d_type, str):
-                data_types.remove(d_type)
-                data_types.append(SurfaceDataType(d_type))
-
-        surface_ids = self.get_surface_ids(surfaces=surfaces)
-
-        if SurfaceDataType.Vertices in data_types:
-            return {
-                surface: self._file_session._case_file.get_mesh()
-                .get_vertices(surface_ids[count])
-                .reshape(-1, 3)
-                for count, surface in enumerate(surfaces)
-            }
-
-        if SurfaceDataType.FacesConnectivity in data_types:
-            if flatten_connectivity:
-                return {
-                    surface: self._file_session._case_file.get_mesh().get_connectivity(
-                        surface_ids[count]
-                    )
-                    for count, surface in enumerate(surfaces)
-                }
-            else:
-                warnings.warn(
-                    "Structured face connectivity output is deprecated and will be replaced by the flat format "
-                    "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
-                    "'SurfaceFieldDataRequest' to request data in the flat format.",
-                    PyFluentDeprecationWarning,
+        data_types = [SurfaceDataType(d) for d in data_types]
+        surface_ids = self.get_surface_ids(surfaces)
+        surface_data = {}
+        for surface_id in surface_ids:
+            surface_data[surface_id] = {}
+            if SurfaceDataType.Vertices in data_types:
+                surface_data[surface_id][
+                    "vertices"
+                ] = self._file_session._case_file.get_mesh().get_vertices(surface_id)
+            if SurfaceDataType.FacesConnectivity in data_types:
+                surface_data[surface_id][
+                    "faces"
+                ] = self._file_session._case_file.get_mesh().get_connectivity(
+                    surface_id
                 )
-                return {
-                    surface: _transform_faces_connectivity_data(
-                        self._file_session._case_file.get_mesh().get_connectivity(
-                            surface_ids[count]
-                        )
-                    )
-                    for count, surface in enumerate(surfaces)
-                }
+
+        return self._returned_data._surface_data(
+            data_types=data_types,
+            surfaces=surfaces,
+            surface_ids=surface_ids,
+            surface_data=surface_data,
+            flatten_connectivity=flatten_connectivity,
+        )
 
     @deprecate_arguments(
         old_args="surface_names",
@@ -787,25 +772,35 @@ class FileFieldData(FieldDataSource):
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
+        field_name = _to_scalar_field_name(field_name)
         surface_ids = self.get_surface_ids(surfaces=surfaces)
+        scalar_data = {}
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            return {
-                surface: self._file_session._data_file.get_face_scalar_field_data(
-                    field_name.split(":")[0],
-                    field_name.split(":")[1],
-                    surface_ids[count],
-                )
-                for count, surface in enumerate(surfaces)
-            }
+            phase_name, scalar_field_name = field_name.split(":", 1)
+            for surface_id in surface_ids:
+                scalar_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_scalar_field_data(
+                        phase_name,
+                        scalar_field_name,
+                        surface_id,
+                    )
+                }
         else:
-            return {
-                surface: self._file_session._data_file.get_face_scalar_field_data(
-                    "phase-1", field_name, surface_ids[count]
-                )
-                for count, surface in enumerate(surfaces)
-            }
+            for surface_id in surface_ids:
+                scalar_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_scalar_field_data(
+                        "phase-1", field_name, surface_id
+                    )
+                }
+
+        return self._returned_data._scalar_data(
+            field_name=field_name,
+            surfaces=surfaces,
+            surface_ids=surface_ids,
+            scalar_field_data=scalar_data,
+        )
 
     @deprecate_arguments(
         old_args="surface_names",
@@ -864,22 +859,31 @@ class FileFieldData(FieldDataSource):
         ):
             raise InvalidFieldName()
 
+        vector_data = {}
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            return {
-                surface: self._file_session._data_file.get_face_vector_field_data(
-                    field_name.split(":")[0], surface_ids[count]
-                ).reshape(-1, 3)
-                for count, surface in enumerate(surfaces)
-            }
+            phase_name = field_name.split(":", 1)[0]
+            for surface_id in surface_ids:
+                vector_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_vector_field_data(
+                        phase_name, surface_id
+                    )
+                }
         else:
-            return {
-                surface: self._file_session._data_file.get_face_vector_field_data(
-                    "phase-1", surface_ids[count]
-                ).reshape(-1, 3)
-                for count, surface in enumerate(surfaces)
-            }
+            for surface_id in surface_ids:
+                vector_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_vector_field_data(
+                        "phase-1", surface_id
+                    )
+                }
+
+        return self._returned_data._vector_data(
+            field_name=field_name,
+            surfaces=surfaces,
+            surface_ids=surface_ids,
+            vector_field_data=vector_data,
+        )
 
     @deprecate_arguments(
         old_args="surface_names",
