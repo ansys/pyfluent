@@ -22,8 +22,9 @@
 
 """Common interfaces for field data."""
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field, replace
 from enum import Enum
-from typing import Callable, Dict, List, NamedTuple
+from typing import Callable, Dict, List
 import warnings
 
 import numpy as np
@@ -49,7 +50,32 @@ class SurfaceDataType(Enum):
     FacesCentroid = "centroid"
 
 
-class SurfaceFieldDataRequest(NamedTuple):
+class _NamedTupleCompat:
+    """Compatibility helpers for former NamedTuple request objects."""
+
+    @property
+    def _fields(self) -> tuple[str, ...]:
+        return tuple(self.__dataclass_fields__.keys())
+
+    def _asdict(self) -> dict[str, object]:
+        return {name: getattr(self, name) for name in self._fields}
+
+    def _replace(self, /, **changes):
+        return replace(self, **changes)
+
+    def __iter__(self):
+        for name in self._fields:
+            yield getattr(self, name)
+
+    def __len__(self) -> int:
+        return len(self._fields)
+
+    def __getitem__(self, index):
+        return tuple(self)[index]
+
+
+@dataclass
+class SurfaceFieldDataRequest(_NamedTupleCompat):
     """Container storing parameters for surface data request."""
 
     data_types: List[SurfaceDataType] | List[str]
@@ -58,7 +84,8 @@ class SurfaceFieldDataRequest(NamedTuple):
     flatten_connectivity: bool = False
 
 
-class ScalarFieldDataRequest(NamedTuple):
+@dataclass
+class ScalarFieldDataRequest(_NamedTupleCompat):
     """Container storing parameters for scalar field data request."""
 
     field_name: str
@@ -67,14 +94,16 @@ class ScalarFieldDataRequest(NamedTuple):
     boundary_value: bool | None = True
 
 
-class VectorFieldDataRequest(NamedTuple):
+@dataclass
+class VectorFieldDataRequest(_NamedTupleCompat):
     """Container storing parameters for vector field data request."""
 
     field_name: str
     surfaces: List[int | str | object]
 
 
-class PathlinesFieldDataRequest(NamedTuple):
+@dataclass
+class PathlinesFieldDataRequest(_NamedTupleCompat):
     """Container storing parameters for path-lines field data request."""
 
     field_name: str
@@ -90,18 +119,19 @@ class PathlinesFieldDataRequest(NamedTuple):
     tolerance: float | None = 0.001
     coarsen: int | None = 1
     velocity_domain: str | None = "all-phases"
-    zones: list | None = None
+    zones: list | None = field(default_factory=list)
     flatten_connectivity: bool = False
 
 
 def _set_namedtuple_field_docs(cls: type, field_docs: dict[str, str]) -> None:
-    """Set docstrings for NamedTuple-generated field attributes.
+    """Set docstrings for dataclass field attributes.
 
-    Without this, Sphinx may render default ``NamedTuple`` field docs like
-    "Alias for field number N" in attribute/member tables.
+    For dataclass fields, this stores documentation in a class attribute
+    that Sphinx and documentation tools can use to render field documentation
+    in attribute/member tables.
     """
-    for field_name, field_doc in field_docs.items():
-        getattr(cls, field_name).__doc__ = field_doc
+    # Store field documentation in a class attribute for Sphinx discovery
+    cls.__dataclass_field_docs__ = field_docs
 
 
 _set_namedtuple_field_docs(

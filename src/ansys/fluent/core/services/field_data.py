@@ -745,7 +745,6 @@ class Batch(FieldBatch):
         self,
         **kwargs,
     ) -> None:
-        zones = kwargs.get("zones", [])
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
         )
@@ -777,7 +776,7 @@ class Batch(FieldBatch):
                 tolerance=kwargs.get("tolerance"),
                 coarsen=kwargs.get("coarsen"),
                 velocityDomain=kwargs.get("velocity_domain"),
-                zones=zones,
+                zones=kwargs.get("zones"),
             )
         )
 
@@ -1561,7 +1560,6 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self,
         **kwargs,
     ) -> Dict:
-        zones = kwargs.get("zones", [])
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
@@ -1591,7 +1589,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                 tolerance=kwargs.get("tolerance"),
                 coarsen=kwargs.get("coarsen"),
                 velocityDomain=kwargs.get("velocity_domain"),
-                zones=zones,
+                zones=kwargs.get("zones"),
             )
         )
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
