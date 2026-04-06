@@ -98,10 +98,10 @@ Single-phase
    (2018, 3)
 
    >>> vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
-   >>>      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
-   >>>      surfaces=[3, 4],
-   >>>      flatten_connectivity=True,
-   >>> )
+   ...      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+   ...      surfaces=[3, 4],
+   ...      flatten_connectivity=True,
+   ... )
 
    >>> file_session.fields.field_data.get_field_data(vertices_and_faces_connectivity_request)[3].vertices.shape
    (3810, 3)
