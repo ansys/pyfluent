@@ -800,29 +800,17 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     }
     meshing.workflow.TaskObject["Import Geometry"].Execute()
 
-    def has_expected_vertices():
+    def has_expected_mesh_data():
         try:
-            return len(mesh_data[5]["vertices"]) == 66
+            return (
+                len(mesh_data[5]["vertices"]) == 66
+                and len(mesh_data[5]["faces"]) == 80
+                and list(mesh_data[12].keys()) == ["vertices", "faces"]
+            )
         except KeyError:
             return False
 
-    def has_expected_faces():
-        try:
-            return len(mesh_data[5]["faces"]) == 80
-        except KeyError:
-            return False
-
-    def has_expected_keys():
-        try:
-            return set(mesh_data[12].keys()) == {"vertices", "faces"}
-        except KeyError:
-            return False
-
-    assert timeout_loop(has_expected_vertices, timeout=5)
-    assert timeout_loop(has_expected_faces, timeout=5)
-    assert timeout_loop(has_expected_keys, timeout=5)
-
-
+    assert timeout_loop(has_expected_mesh_data, timeout=5)
 @pytest.mark.fluent_version(">=25.2")
 def test_mesh_data_2d_standard(disk_case_session):
     solver = disk_case_session
