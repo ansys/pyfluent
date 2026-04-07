@@ -811,6 +811,8 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
             return False
 
     assert timeout_loop(has_expected_mesh_data, timeout=5)
+
+
 @pytest.mark.fluent_version(">=25.2")
 def test_mesh_data_2d_standard(disk_case_session):
     solver = disk_case_session
