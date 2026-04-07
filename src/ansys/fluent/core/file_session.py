@@ -966,7 +966,7 @@ class FileFieldData(FieldDataSource):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> "Dict[int | str, SurfaceData | np.ndarray]":
+    ) -> Dict[int | str, SurfaceData | np.ndarray]:
         """Get the surface, scalar, vector, or path-lines field data on a surface.
 
         Parameters
