@@ -558,7 +558,7 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=25.2,<=26.1")
-def test_nested_alias(mixing_elbow_settings_session):
+def test_nested_alias_till_26r1(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.settings.setup.models.viscous.model = "k-omega"
     solver.settings.setup.models.viscous.k_omega_model = "standard"
