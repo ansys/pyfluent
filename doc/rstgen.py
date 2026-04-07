@@ -1,6 +1,7 @@
 """Provides a module for generating Fluent Datamodel and TUI RST files."""
 
 import fnmatch
+import importlib
 import os
 import pathlib
 from pathlib import Path
@@ -282,9 +283,25 @@ def _write_datamodel_index_doc(datamodels: list, mode: str):
         f.write(f".. _ref_{mode}_datamodel:\n\n")
         f.write(f"{datamodel_mode}\n")
         f.write(f"{'=' * len(datamodel_mode)}\n\n")
-        f.write(".. automodule:: ansys.fluent.core.datamodel\n")
-        f.write("   :autosummary:\n\n")
-        f.write("   :autosummary-members:\n\n")
+        generated_datamodel_pkg = _get_file_or_folder(mode=mode, is_datamodel=True)
+        candidate_modules = [
+            "ansys.fluent.core.datamodel",
+            f"ansys.fluent.core.generated.{generated_datamodel_pkg}",
+        ]
+
+        datamodel_module_name = None
+        for candidate in candidate_modules:
+            try:
+                importlib.import_module(candidate)
+                datamodel_module_name = candidate
+                break
+            except Exception:
+                pass
+
+        if datamodel_module_name is not None:
+            f.write(f".. automodule:: {datamodel_module_name}\n")
+            f.write("   :autosummary:\n\n")
+            f.write("   :autosummary-members:\n\n")
         f.write(".. toctree::\n")
         f.write("   :hidden:\n\n")
         for datamodel in datamodels:
@@ -371,7 +388,7 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         f.write(f"{'=' * len(title)}\n\n")
         f.write(f".. autoclass:: {menu_name}\n")
         f.write(
-            f"   :members: {', '.join(_get_sorted_members(menu['without_members']))}\n"
+            f"   :members: {',\n'.join(_get_sorted_members(menu['without_members']))}\n"
         )
         f.write("   :show-inheritance:\n")
         f.write("   :undoc-members:\n")
