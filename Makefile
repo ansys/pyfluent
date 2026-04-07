@@ -29,8 +29,8 @@ docker-clean-all-except-supported-images:
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
-PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html -n auto
-PYTESTRERUN = --last-failed --last-failed-no-failures none -n auto
+PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
+PYTESTRERUN = --last-failed --last-failed-no-failures none
 
 unittest: unittest-dev-242
 
