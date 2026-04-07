@@ -557,7 +557,7 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     )
 
 
-@pytest.mark.fluent_version(">=25.2")
+@pytest.mark.fluent_version(">=27.1")
 def test_nested_alias(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.settings.setup.models.viscous.model = "k-omega"
@@ -565,33 +565,39 @@ def test_nested_alias(mixing_elbow_settings_session):
     # k_omega_options is alias of k_omega
     # kw_low_re_correction is alias of k_omega_low_re_correction
     # Testing all 4 combinations
-    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = True
+    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = (
+        True
+    )
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = False"
         ),
     ):
-        solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction = (
+        solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction.enabled = (
             False
         )
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = True"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = True"
         ),
     ):
-        solver.settings.setup.models.viscous.k_omega_options.kw_low_re_correction = True
+        solver.settings.setup.models.viscous.k_omega_options.kw_low_re_correction.enabled = (
+            True
+        )
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = False"
         ),
     ):
-        solver.settings.setup.models.viscous.k_omega.kw_low_re_correction = False
+        solver.settings.setup.models.viscous.k_omega.kw_low_re_correction.enabled = (
+            False
+        )
 
 
 @pytest.mark.fluent_version(">=25.1")

@@ -46,6 +46,7 @@ from ansys.fluent.core.services.field_data import (
     ZoneType,
 )
 from ansys.fluent.core.solver import VelocityInlet, VelocityInlets, WallBoundaries
+from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.units.variable_descriptor import VariableCatalog
 
 HOT_INLET_TEMPERATURE = 313.15
@@ -797,10 +798,27 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     }
     meshing.workflow.TaskObject["Import Geometry"].Execute()
 
-    assert len(mesh_data[5]["vertices"]) == 66
-    assert len(mesh_data[5]["faces"]) == 80
+    def has_expected_vertices():
+        try:
+            return len(mesh_data[5]["vertices"]) == 66
+        except KeyError:
+            return False
 
-    assert list(mesh_data[12].keys()) == ["vertices", "faces"]
+    def has_expected_faces():
+        try:
+            return len(mesh_data[5]["faces"]) == 80
+        except KeyError:
+            return False
+
+    def has_expected_keys():
+        try:
+            return list(mesh_data[12].keys()) == ["vertices", "faces"]
+        except KeyError:
+            return False
+
+    assert timeout_loop(has_expected_vertices, timeout=5)
+    assert timeout_loop(has_expected_faces, timeout=5)
+    assert timeout_loop(has_expected_keys, timeout=5)
 
 
 @pytest.mark.fluent_version(">=25.2")
