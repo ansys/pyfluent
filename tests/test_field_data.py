@@ -814,7 +814,7 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
 
     def has_expected_keys():
         try:
-            return list(mesh_data[12].keys()) == ["vertices", "faces"]
+            return set(mesh_data[12].keys()) == {"vertices", "faces"}
         except KeyError:
             return False
 
