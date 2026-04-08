@@ -1285,7 +1285,7 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
 
     # Add boundary layer
     two_dim_mesh.add_2d_boundary_layers.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers.bl_control_name = "aspect-ratio_1"
+    two_dim_mesh.add_2d_boundary_layers.control_name = "aspect-ratio_1"
     two_dim_mesh.add_2d_boundary_layers.number_of_layers = 4
     two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
@@ -1305,7 +1305,7 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
     two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name = "uniform_1"
+    two_dim_mesh.add_2d_boundary_layers_child_1.control_name = "uniform_1"
     two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
@@ -1347,6 +1347,10 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_sessio
         [repr(x) for x in watertight.import_geometry.insertable_tasks()]
     ) == sorted(_next_possible_tasks)
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        _next_possible_tasks.remove(
+            "<Insertable 'create_local_refinement_regions' task>"
+        )
     assert sorted(
         [repr(x) for x in watertight.import_geometry.insertable_tasks()]
     ) == sorted(_next_possible_tasks)

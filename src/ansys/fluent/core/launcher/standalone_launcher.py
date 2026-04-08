@@ -254,6 +254,7 @@ class StandaloneLauncher:
                     self._server_info_file_name,
                     self.argvals["start_timeout"],
                     self._sifile_last_mtime,
+                    process.pid,
                 )
             except TimeoutError as ex:
                 if is_windows():
@@ -268,6 +269,7 @@ class StandaloneLauncher:
                         self._server_info_file_name,
                         self.argvals["start_timeout"],
                         self._sifile_last_mtime,
+                        process.pid,
                     )
                 else:
                     raise ex
