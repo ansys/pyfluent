@@ -98,7 +98,7 @@ jobs:
         run: uv venv --clear
 
       - name: "Install extras"
-        run: uv pip install -e ".[ci_types]"
+        run: uv pip sync .ci/pylock.toml
 
       - name: Retrieve PyFluent version
         run: |
