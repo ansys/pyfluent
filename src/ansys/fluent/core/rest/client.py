@@ -117,6 +117,7 @@ class _Endpoints:
     DELETE = "settings/object"
     RENAME = "settings/rename"
     LIST_SIZE = "settings/list-size"
+    RESIZE_LIST = "settings/resize-list"
     COMMANDS = "settings/commands"
     QUERIES = "settings/queries"
 
@@ -342,6 +343,19 @@ class FluentRestClient:
         return self._request("GET", _Endpoints.LIST_SIZE, query_params={"path": path})[
             "size"
         ]
+
+    def resize_list_object(self, path: str, size: int) -> None:
+        """Resize the list-object at *path*.
+
+        Corresponds to ``PUT /settings/resize-list?path=<path>`` with body
+        ``{"size": <size>}``.
+        """
+        self._request(
+            "PUT",
+            _Endpoints.RESIZE_LIST,
+            query_params={"path": path},
+            body={"size": size},
+        )
 
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute *command* at *path* with keyword arguments *kwds*.

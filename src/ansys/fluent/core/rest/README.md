@@ -1,291 +1,734 @@
-# PyFluent REST Settings Transport — Step 1 Exploration
+# PyFluent REST Transport
 
-## What Is This?
+This folder contains the REST-based settings transport for PyFluent.
 
-Fluent is a simulation solver. PyFluent is the Python library that lets you
-control Fluent from code — change settings, run simulations, read results.
+The main idea is simple:
 
-Normally PyFluent talks to Fluent over **gRPC**, which is Google's high-speed
-binary communication protocol. It works great, but it ties PyFluent tightly to
-gRPC.
+- `flobject` already knows how to build the settings tree.
+- `flobject` only needs a proxy object with the right methods.
+- `FluentRestClient` implements those methods over HTTP.
+- Because of that, the same settings tree can work over REST instead of gRPC.
 
-The goal of this work (**Issue #4959**) is to prove that PyFluent can work just
-as well over a plain **REST API** (the same kind of API that every web service
-uses). If we can do that, PyFluent becomes more flexible — it can talk to
-Fluent however it needs to, without any single transport being baked in.
+This README explains:
 
-This folder contains **Step 1**: a standalone Python REST client and a matching
-mock server, so we can develop and test the idea without a real Fluent instance.
+1. what each file does,
+2. how the files connect,
+3. what each main function does,
+4. how the request flow works,
+5. how the tests prove it works.
 
----
-
-## The Big Picture (Plain English)
-
-Think of it like ordering food:
-
-| Concept | Restaurant Analogy |
-|---|---|
-| **Fluent solver** | The kitchen — it does the actual cooking (simulation) |
-| **PyFluent settings** | The menu — a structured list of things you can configure |
-| **gRPC transport** | A private phone line between the waiter and the kitchen |
-| **REST transport** | A standard walkie-talkie anyone can use |
-| **`FluentRestClient`** | The waiter who speaks walkie-talkie |
-| **`FluentRestMockServer`** | A fake kitchen used for training waiters |
-
-Right now PyFluent only has the private phone line (gRPC). This project adds
-the walkie-talkie (REST) as an equally valid option.
+The goal is to make the folder easy to understand for a junior developer.
 
 ---
 
-## Folder Structure
+## 1. Simple mental model
 
-```
+Think about the REST layer as 4 pieces:
+
+1. **Protocol**
+   Defines the method names that a settings proxy must provide.
+
+2. **Client**
+   Sends HTTP requests to a REST server.
+
+3. **Session / Launcher**
+   Builds a client and plugs it into PyFluent's settings tree.
+
+4. **Mock server + tests**
+   Simulate a Fluent REST server so everything can be tested locally.
+
+---
+
+## 2. Folder structure
+
+```text
 src/ansys/fluent/core/rest/
 │
-├── __init__.py          ← Entry point. Import FluentRestClient and
-│                          FluentRestMockServer from here.
-│
-├── client.py            ← The REST client.
-│                          Speaks HTTP to a Fluent REST server.
-│                          Uses only Python's built-in urllib — no extra packages.
-│
-├── mock_server.py       ← A fake Fluent server for testing.
-│                          Runs in memory. Uses only Python's built-in
-│                          http.server — no Flask, no extra packages.
-│
-├── README.md            ← This file.
-│
+├── __init__.py
+├── client.py
+├── mock_server.py
+├── protocol.py
+├── rest_session.py
+├── rest_launcher.py
+├── README.md
 └── tests/
-    ├── conftest.py      ← Shared test fixtures (start/stop the mock server).
-    └── test_rest_client.py  ← 40 tests covering every feature.
+    ├── __init__.py
+    ├── conftest.py
+    ├── test_rest_client.py
+    └── test_rest_integration.py
 ```
 
 ---
 
-## How It Works
+## 3. What each file does
 
-### 1. The Settings Tree
+### `__init__.py`
 
-Fluent has hundreds of settings organised like a folder tree:
+This is the package entry point.
 
-```
-setup/
-  models/
-    energy/
-      enabled          ← True or False
-    viscous/
-      model            ← "k-epsilon", "laminar", etc.
-  boundary_conditions/
-    velocity_inlet/
-      inlet/
-        momentum/
-          velocity_magnitude/
-            value      ← 1.0 (m/s)
-solution/
-  run_calculation/
-    iter_count         ← 100
-```
+It re-exports the main public objects:
 
-Every setting is identified by its **path** — a slash-separated string like
-`"setup/models/energy/enabled"`.
+- `FluentRestClient`
+- `FluentRestMockServer`
+- `SettingsProxy`
+- `RestSolverSession`
+- `launch_fluent_rest`
 
-### 2. The REST API Contract
+Why this file matters:
 
-`FluentRestClient` talks to a server using simple HTTP requests. Each
-operation maps to one HTTP call:
+- It gives one clean import location.
+- Users do not need to know the internal file layout.
 
-| What you want to do | HTTP call |
-|---|---|
-| Read a setting | `GET /settings/var?path=setup/models/energy/enabled` |
-| Write a setting | `PUT /settings/var?path=setup/models/energy/enabled` + body `{"value": false}` |
-| Get the full settings tree structure | `GET /settings/static-info` |
-| List child objects (e.g. boundary names) | `GET /settings/object-names?path=setup/boundary_conditions/velocity_inlet` |
-| Create a new named object | `POST /settings/create?path=...&name=wall-1` |
-| Delete a named object | `DELETE /settings/object?path=...&name=wall-1` |
-| Rename a named object | `PATCH /settings/rename?path=...` + body `{"old": "wall-1", "new": "wall-2"}` |
-| Count items in a list | `GET /settings/list-size?path=...` |
-| Run a command (e.g. initialise) | `POST /settings/commands/initialize?path=solution/initialization` |
-| Run a query (e.g. get zone names) | `POST /settings/queries/get_zone_names?path=...` |
-| Get attribute metadata | `GET /settings/attrs?path=...&attrs=allowed-values` |
-
-All responses come back as **JSON**.
-
-> **Note:** This is a *provisional* contract designed to match the shape of
-> Fluent's gRPC settings API. When Ansys publishes the official Fluent REST
-> API spec, only the endpoint paths in `client.py` need updating — the rest of
-> PyFluent stays the same.
-
-### 3. The Mock Server
-
-Because the real Fluent REST API does not exist yet, `FluentRestMockServer`
-acts as a stand-in. It:
-
-- Runs in a background thread inside the same Python process.
-- Stores all settings in a Python dictionary (in memory).
-- Comes pre-loaded with a small but realistic set of solver settings.
-- Starts on a random free port so multiple tests can run at the same time without
-  clashing.
-
-### 4. The flobject Connection (Why This Matters)
-
-PyFluent's settings system is built around a module called **flobject**. When
-you write:
+Example:
 
 ```python
-solver.settings.setup.models.energy.enabled = True
+from ansys.fluent.core.rest import FluentRestClient, RestSolverSession
 ```
-
-`flobject` is the code that makes `solver.settings` feel like a real Python
-object tree. Under the hood it calls through a **proxy** object.
-
-Currently that proxy is `SettingsService` (the gRPC one). But `flobject` does
-not care *how* the proxy works — it just calls methods like `get_var`,
-`set_var`, `execute_cmd`, etc.
-
-`FluentRestClient` has **exactly the same method signatures**, so in Step 2 of
-this project it can be dropped in as the proxy directly:
-
-```python
-# Today (gRPC)
-root = flobject.get_root(flproxy=grpc_settings_service, ...)
-
-# Tomorrow (REST) — one line change
-root = flobject.get_root(flproxy=FluentRestClient("http://localhost:8000"), ...)
-```
-
-No changes to `flobject` at all.
 
 ---
 
-## Quick Start
+### `protocol.py`
 
-```python
-from ansys.fluent.core.rest import FluentRestClient, FluentRestMockServer
+This file contains `SettingsProxy`, which is a `typing.Protocol`.
 
-# Start a fake Fluent server (for demo/testing)
-server = FluentRestMockServer()
-server.start()
+In simple terms, it says:
 
-# Connect a client
-client = FluentRestClient(server.base_url)
+> “Any object with these methods can act like a settings backend for `flobject`.”
 
-# Read a setting
-print(client.get_var("setup/models/energy/enabled"))   # True
+This file does **not** send requests and does **not** create sessions.
+It is only a formal contract.
 
-# Change a setting
-client.set_var("setup/models/energy/enabled", False)
-print(client.get_var("setup/models/energy/enabled"))   # False
+The 14 required methods are:
 
-# List boundary conditions
-print(client.get_object_names("setup/boundary_conditions/velocity_inlet"))
-# ['inlet']
+- `get_static_info()`
+- `get_var(path)`
+- `set_var(path, value)`
+- `get_attrs(path, attrs, recursive=False)`
+- `get_object_names(path)`
+- `get_list_size(path)`
+- `create(path, name)`
+- `delete(path, name)`
+- `rename(path, new, old)`
+- `resize_list_object(path, size)`
+- `execute_cmd(path, command, **kwds)`
+- `execute_query(path, query, **kwds)`
+- `has_wildcard(name)`
+- `is_interactive_mode()`
 
-# Create a new wall boundary
-client.create("setup/boundary_conditions/wall", "wall-1")
+Why this file matters:
 
-# Run a command
-reply = client.execute_cmd("solution/initialization", "initialize")
-print(reply)   # 'Initialization complete'
+- It documents the exact API that `flobject` expects.
+- It makes type-checking easier.
+- It makes it obvious that REST and gRPC are following the same contract.
 
-# Check the full settings tree structure
-info = client.get_static_info()
-print(info["type"])          # 'group'
-print(list(info["children"])) # ['setup', 'solution']
+---
 
-# Stop the server when done
-server.stop()
+### `client.py`
+
+This is the most important runtime file.
+
+It contains:
+
+- `FluentRestError`
+- `_Endpoints`
+- `FluentRestClient`
+
+#### `FluentRestError`
+
+This is a small custom exception.
+
+It is raised when the REST server returns an HTTP error, for example:
+
+- `404 Not Found`
+- `400 Bad Request`
+- `500 Internal Server Error`
+
+Why this is useful:
+
+- It turns raw HTTP failures into Python exceptions.
+- The caller gets a cleaner error message like `HTTP 404: Path not found`.
+
+#### `_Endpoints`
+
+This class stores endpoint names in one place.
+
+Examples:
+
+- `settings/static-info`
+- `settings/var`
+- `settings/attrs`
+- `settings/object-names`
+- `settings/resize-list`
+
+Why this is useful:
+
+- If the real REST API changes later, this is the first place to update.
+- The rest of the client code stays simple.
+
+#### `FluentRestClient`
+
+This class is the real REST proxy.
+
+It implements the `SettingsProxy` contract using `urllib` from the standard
+library.
+
+##### Internal helper functions
+
+- `_url(endpoint, **query_params)`
+  - Builds the final URL.
+  - Example: base URL + endpoint + query string.
+
+- `_request(method, endpoint, query_params=None, body=None)`
+  - Sends the HTTP request.
+  - Adds headers.
+  - Serializes JSON request bodies.
+  - Parses JSON responses.
+  - Converts HTTP errors into `FluentRestError`.
+
+##### Main public functions
+
+- `get_static_info()`
+  - Gets the full settings structure.
+  - This is the most important call for `flobject`.
+  - `flobject.get_root()` uses this to build the settings tree.
+
+- `get_var(path)`
+  - Reads a value from a settings path.
+
+- `set_var(path, value)`
+  - Writes a value to a settings path.
+
+- `get_attrs(path, attrs, recursive=False)`
+  - Gets metadata such as allowed values or active state.
+
+- `get_object_names(path)`
+  - Lists names under a named-object container.
+  - Example: names of inlet or outlet boundaries.
+
+- `create(path, name)`
+  - Creates a named object.
+
+- `delete(path, name)`
+  - Deletes a named object.
+
+- `rename(path, new, old)`
+  - Renames a named object.
+
+- `get_list_size(path)`
+  - Gets the size of a list object.
+
+- `resize_list_object(path, size)`
+  - Changes the size of a list object.
+
+- `execute_cmd(path, command, **kwds)`
+  - Executes a settings command.
+
+- `execute_query(path, query, **kwds)`
+  - Executes a settings query.
+
+- `has_wildcard(name)`
+  - Local helper.
+  - Checks if a name contains wildcard characters like `*` or `?`.
+
+- `is_interactive_mode()`
+  - Always returns `False`.
+  - REST is treated as non-interactive.
+
+Why this file matters:
+
+- This is the REST replacement for the gRPC settings service.
+- This is the object that `flobject` talks to.
+
+---
+
+### `mock_server.py`
+
+This file provides a fake REST server for development and tests.
+
+It contains:
+
+- default in-memory data,
+- request handlers,
+- `FluentRestMockServer`.
+
+#### Default data
+
+The file defines several preloaded dictionaries:
+
+- `_DEFAULT_VARS`
+  - actual values for settings paths.
+
+- `_DEFAULT_NAMED_OBJECTS`
+  - named objects such as boundary names.
+
+- `_DEFAULT_LIST_SIZES`
+  - sizes for list objects.
+
+- `_DEFAULT_ATTRS`
+  - metadata like allowed values.
+
+- `_STATIC_INFO`
+  - schema of the settings tree.
+  - This is the most important piece for building the tree.
+
+- `_COMMAND_HANDLERS`
+  - mock implementations of commands.
+
+- `_QUERY_HANDLERS`
+  - mock implementations of queries.
+
+#### `_Handler`
+
+This class handles incoming HTTP requests.
+
+Main helper methods:
+
+- `_parse_url()`
+  - splits URL path and query parameters.
+
+- `_read_body()`
+  - reads JSON from the request body.
+
+- `_send_json(data, status=200)`
+  - sends JSON back to the client.
+
+- `_send_error(status, message)`
+  - sends error responses.
+
+- `_store`
+  - gives access to the server's in-memory data store.
+
+Main HTTP methods:
+
+- `do_GET()`
+  - handles reads such as `static-info`, `var`, `attrs`, `object-names`,
+    and `list-size`.
+
+- `do_PUT()`
+  - handles writing values and resizing lists.
+
+- `do_POST()`
+  - handles creation, commands, and queries.
+
+- `do_DELETE()`
+  - handles deletion of named objects.
+
+- `do_PATCH()`
+  - handles renaming of named objects.
+
+#### `FluentRestMockServer`
+
+This is the server wrapper class used by tests and examples.
+
+Main functions:
+
+- `__init__(port=0, host="127.0.0.1")`
+  - builds a new isolated in-memory store.
+
+- `port`
+  - returns the active server port.
+
+- `base_url`
+  - returns a complete base URL.
+
+- `start()`
+  - starts the HTTP server in a background thread.
+
+- `stop()`
+  - shuts down the server cleanly.
+
+- `__enter__()` and `__exit__()`
+  - allow use as a context manager.
+
+Why this file matters:
+
+- It lets the REST client be tested without a real Fluent server.
+- It proves the transport layer works on its own.
+
+---
+
+### `rest_session.py`
+
+This file introduces `RestSolverSession`.
+
+Its job is small but important:
+
+1. create `FluentRestClient`,
+2. pass that client into `flobject.get_root(...)`,
+3. expose the result as `session.settings`.
+
+#### `RestSolverSession.__init__(...)`
+
+This constructor:
+
+- accepts `base_url`, `auth_token`, `version`, and `timeout`,
+- creates a `FluentRestClient`,
+- calls `get_root(self._client, version=version)`,
+- stores the returned root settings object.
+
+#### `client`
+
+Returns the underlying `FluentRestClient`.
+
+#### `settings`
+
+Returns the root settings tree.
+
+Why this file matters:
+
+- This is the bridge between the low-level HTTP client and the high-level
+  PyFluent settings API.
+- It gives a small session object without any gRPC-only constructor complexity.
+
+---
+
+### `rest_launcher.py`
+
+This file contains one convenience function:
+
+- `launch_fluent_rest(...)`
+
+What it does:
+
+1. builds a URL from `host`, `port`, and `scheme`,
+2. creates `RestSolverSession`,
+3. returns that session.
+
+This file is intentionally small.
+
+Why this file matters:
+
+- It gives a clean entry point similar in spirit to other launcher helpers.
+- It keeps session creation simple for users.
+
+---
+
+### `tests/conftest.py`
+
+This file contains shared pytest fixtures.
+
+It creates:
+
+- a mock server fixture,
+- a client fixture connected to that server.
+
+Why this matters:
+
+- Tests can reuse the same setup code.
+- Test files stay smaller and easier to read.
+
+---
+
+### `tests/test_rest_client.py`
+
+This file tests the REST client and mock server directly.
+
+It checks:
+
+- server lifecycle,
+- `get_static_info()`,
+- value reads and writes,
+- named objects,
+- list size,
+- commands,
+- queries,
+- helper methods,
+- error handling.
+
+Why this matters:
+
+- It proves the HTTP layer works correctly.
+
+---
+
+### `tests/test_rest_integration.py`
+
+This file tests the integration between REST and `flobject`.
+
+It checks:
+
+- `FluentRestClient` satisfies `SettingsProxy`,
+- `get_root(flproxy=FluentRestClient(...))` builds a working settings tree,
+- values can be read and written through the tree,
+- named objects work,
+- commands work,
+- `RestSolverSession` works,
+- `launch_fluent_rest()` works,
+- test isolation is preserved.
+
+Why this matters:
+
+- Direct client tests are not enough.
+- This file proves that REST really plugs into the same settings tree model
+  used by PyFluent.
+
+---
+
+## 4. How the files connect
+
+### High-level connection
+
+```text
+launch_fluent_rest()
+        ↓
+RestSolverSession
+        ↓
+FluentRestClient
+        ↓
+HTTP request
+        ↓
+Fluent REST server / FluentRestMockServer
+        ↓
+JSON response
+        ↓
+FluentRestClient
+        ↓
+flobject.get_root(...)
+        ↓
+settings tree
+        ↓
+session.settings.setup.models.energy.enabled()
 ```
 
-### Use as a context manager (recommended)
+### Structural connection between files
+
+```text
+protocol.py
+   └── defines SettingsProxy contract
+
+client.py
+   └── implements SettingsProxy as FluentRestClient
+
+mock_server.py
+   └── provides a fake REST server for FluentRestClient
+
+rest_session.py
+   ├── uses FluentRestClient
+   └── passes it to flobject.get_root(...)
+
+rest_launcher.py
+   └── creates RestSolverSession
+
+__init__.py
+   └── re-exports all public REST objects
+
+tests/
+   ├── test_rest_client.py checks client + server behavior
+   └── test_rest_integration.py checks client + flobject + session behavior
+```
+
+---
+
+## 5. Function flow in the simplest way
+
+Here is the most important runtime flow.
+
+### Flow A: building the settings tree
+
+1. `launch_fluent_rest()` is called.
+2. It creates `RestSolverSession`.
+3. `RestSolverSession` creates `FluentRestClient`.
+4. `RestSolverSession` calls `flobject.get_root(flproxy=client, version=...)`.
+5. `flobject.get_root()` calls `client.get_static_info()`.
+6. The REST server returns the schema of the settings tree.
+7. `flobject` builds Python objects from that schema.
+8. The result becomes `session.settings`.
+
+### Flow B: reading one setting
+
+Example:
 
 ```python
+session.settings.setup.models.energy.enabled()
+```
+
+What happens:
+
+1. the settings object knows its path,
+2. it asks the proxy for the value,
+3. the proxy is `FluentRestClient`,
+4. `FluentRestClient.get_var(path)` sends `GET /settings/var?path=...`,
+5. server returns JSON,
+6. client returns the Python value.
+
+### Flow C: writing one setting
+
+Example:
+
+```python
+session.settings.setup.models.energy.enabled.set_state(False)
+```
+
+What happens:
+
+1. the settings object calls proxy `set_var(path, value)`,
+2. `FluentRestClient.set_var(...)` sends `PUT /settings/var`,
+3. server updates its store,
+4. next read returns the new value.
+
+### Flow D: running a command
+
+Example:
+
+```python
+session.settings.solution.initialization.initialize()
+```
+
+What happens:
+
+1. `flobject` sees that `initialize` is a command,
+2. it calls proxy `execute_cmd(path, command, **kwds)`,
+3. `FluentRestClient` sends `POST /settings/commands/initialize?...`,
+4. server runs the mock command handler,
+5. handler returns a reply,
+6. the reply comes back to the caller.
+
+---
+
+## 6. Mermaid diagrams
+
+### File relationship diagram
+
+```mermaid
+flowchart TD
+    A[protocol.py\nSettingsProxy] --> B[client.py\nFluentRestClient]
+    C[mock_server.py\nFluentRestMockServer] --> B
+    B --> D[rest_session.py\nRestSolverSession]
+    D --> E[rest_launcher.py\nlaunch_fluent_rest]
+    B --> F[flobject.get_root]
+    F --> G[settings tree]
+    H[tests/test_rest_client.py] --> B
+    H --> C
+    I[tests/test_rest_integration.py] --> B
+    I --> D
+    I --> E
+    I --> F
+```
+
+### Request flow diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Launcher as launch_fluent_rest
+    participant Session as RestSolverSession
+    participant Client as FluentRestClient
+    participant Server as REST Server / Mock Server
+    participant Flobject as flobject
+
+    User->>Launcher: launch_fluent_rest(host, port, ...)
+    Launcher->>Session: create session
+    Session->>Client: create FluentRestClient
+    Session->>Flobject: get_root(flproxy=client)
+    Flobject->>Client: get_static_info()
+    Client->>Server: GET /settings/static-info
+    Server-->>Client: settings schema JSON
+    Client-->>Flobject: static info dict
+    Flobject-->>Session: root settings object
+    Session-->>User: session.settings
+```
+
+---
+
+## 7. Why `get_static_info()` is so important
+
+If a junior developer remembers only one thing, it should be this:
+
+> `get_static_info()` is the function that tells `flobject` what the settings
+> tree looks like.
+
+Without it:
+
+- `flobject` cannot build the Python settings classes,
+- the REST client cannot become a real settings backend,
+- `session.settings` cannot exist.
+
+That is why the mock server's `_STATIC_INFO` structure must match what
+`flobject` expects.
+
+Important keys include:
+
+- `type`
+- `children`
+- `commands`
+- `queries`
+- `arguments`
+- `object-type`
+- `allowed-values`
+- `return-type`
+
+---
+
+## 8. Main public API summary
+
+### Typical low-level usage
+
+```python
+from ansys.fluent.core.rest import FluentRestClient
+
+client = FluentRestClient("http://localhost:8000")
+value = client.get_var("setup/models/energy/enabled")
+```
+
+### Typical session usage
+
+```python
+from ansys.fluent.core.rest import launch_fluent_rest
+
+session = launch_fluent_rest("localhost", 8000, version="261")
+print(session.settings.setup.models.energy.enabled())
+```
+
+### Typical local test usage
+
+```python
+from ansys.fluent.core.rest import FluentRestMockServer, RestSolverSession
+
 with FluentRestMockServer() as server:
-    client = FluentRestClient(server.base_url)
-    print(client.get_var("solution/run_calculation/iter_count"))  # 100
-# Server is automatically stopped here
+    session = RestSolverSession(server.base_url)
+    print(session.settings.solution.run_calculation.iter_count())
 ```
 
-### Pointing at a real server
+---
 
-When the real Fluent REST server is available, just change the URL:
+## 9. Test coverage in this folder
 
-```python
-client = FluentRestClient("http://my-fluent-machine:8000", auth_token="my-token")
-```
+This folder currently has two test files.
 
-Everything else stays the same.
+### `test_rest_client.py`
+
+Checks the REST client and mock server directly.
+
+### `test_rest_integration.py`
+
+Checks the full connection:
+
+`FluentRestClient` → `flobject.get_root(...)` → settings tree.
+
+Together, these tests verify:
+
+- client behavior,
+- server behavior,
+- error handling,
+- protocol conformance,
+- settings tree creation,
+- read/write behavior,
+- session creation,
+- launcher behavior.
 
 ---
 
-## Running the Tests
+## 10. Key takeaways
 
-From the `pyfluent/` directory:
+- `protocol.py` defines the contract.
+- `client.py` implements the contract over HTTP.
+- `mock_server.py` gives a fake backend.
+- `rest_session.py` connects the client to `flobject`.
+- `rest_launcher.py` gives a simple entry point.
+- `test_rest_client.py` verifies the HTTP layer.
+- `test_rest_integration.py` verifies full PyFluent settings integration.
 
-```bash
-pytest src/ansys/fluent/core/rest/tests/ -v
-```
+In one sentence:
 
-No Fluent installation needed. All 40 tests run against the in-memory mock
-server.
-
-What the tests cover:
-
-| Test class | What it checks |
-|---|---|
-| `TestMockServer` | Server lifecycle (start, stop, context manager, independent state) |
-| `TestGetStaticInfo` | Settings tree structure returned correctly |
-| `TestGetSetVar` | Read/write all value types (bool, string, int, float, dict, list) |
-| `TestGetAttrs` | Attribute metadata (allowed values, active flag) |
-| `TestNamedObjects` | Create, list, delete, rename named objects |
-| `TestListSize` | List-object size queries |
-| `TestExecuteCmd` | Command execution (registered + unregistered) |
-| `TestExecuteQuery` | Query execution (registered + unregistered) |
-| `TestHelpers` | `is_interactive_mode()`, `has_wildcard()` |
-| `TestFluentRestError` | Error representation and status codes |
-
----
-
-## No Extra Dependencies
-
-Both `FluentRestClient` and `FluentRestMockServer` use **only Python's standard
-library**:
-
-| Need | Module used |
-|---|---|
-| HTTP client | `urllib.request`, `urllib.parse`, `urllib.error` |
-| HTTP server | `http.server`, `socketserver` |
-| Background thread | `threading` |
-| JSON | `json` |
-
-Nothing to `pip install` beyond what PyFluent already requires.
-
----
-
-## Key Design Decisions
-
-| Decision | Reason |
-|---|---|
-| Endpoint paths are in one `_Endpoints` class | Easy to update when the real Fluent REST spec arrives |
-| `FluentRestClient` method names match the gRPC `SettingsService` | Drop-in replacement for `flobject` in Step 2 |
-| Mock server uses random port by default | Tests can run in parallel without port conflicts |
-| Each mock server instance has its own store (deep copy) | Tests are fully isolated from each other |
-| `has_wildcard()` runs locally (no HTTP call) | Simple string check — no need to ask the server |
-| `is_interactive_mode()` always returns `False` | REST is non-interactive by nature |
-
----
-
-## What Comes Next (Step 2)
-
-Step 1 (this folder) proved the REST client works in isolation.
-
-Step 2 will wire it into the full PyFluent stack:
-
-1. **`my-simple-launcher`** — a tiny launcher that connects to a REST-enabled
-   Fluent instead of starting gRPC.
-2. **`my-session-class`** — a lightweight session that holds a
-   `FluentRestClient` instead of a `SettingsService`.
-3. **`flobject` unchanged** — pass `FluentRestClient` as `flproxy` and the
-   entire `solver.settings` tree works transparently over REST.
-
-The end result: one line of code changes the transport from gRPC to REST. The
-user never needs to know which one is running underneath.
+> This folder makes it possible for PyFluent settings to work over REST with
+> almost the same high-level behavior as the existing gRPC path.

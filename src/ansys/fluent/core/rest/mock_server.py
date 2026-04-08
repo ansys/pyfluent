@@ -251,6 +251,7 @@ _STATIC_INFO: dict[str, Any] = {
                     "commands": {
                         "initialize": {
                             "type": "command",
+                            "return-type": "string",
                             "arguments": {},
                         }
                     },
@@ -334,9 +335,25 @@ class _Handler(BaseHTTPRequestHandler):
             setting_path = params.get("path")
             if setting_path is None:
                 return self._send_error(400, "Missing 'path' parameter")
-            if setting_path not in self._store["vars"]:
-                return self._send_error(404, f"Path not found: {setting_path}")
-            self._send_json({"value": self._store["vars"][setting_path]})
+            if setting_path in self._store["vars"]:
+                self._send_json({"value": self._store["vars"][setting_path]})
+            else:
+                # Group-level read: aggregate all leaf paths under the prefix
+                # into a nested dict.
+                prefix = setting_path + "/"
+                group = {}
+                for k, v in self._store["vars"].items():
+                    if k.startswith(prefix):
+                        remainder = k[len(prefix) :]
+                        parts = remainder.split("/")
+                        target = group
+                        for part in parts[:-1]:
+                            target = target.setdefault(part, {})
+                        target[parts[-1]] = v
+                if group:
+                    self._send_json({"value": group})
+                else:
+                    self._send_error(404, f"Path not found: {setting_path}")
 
         elif path == "settings/attrs":
             setting_path = params.get("path")
@@ -379,7 +396,29 @@ class _Handler(BaseHTTPRequestHandler):
                 return self._send_error(400, "Missing 'path' parameter")
             if "value" not in body:
                 return self._send_error(400, "Missing 'value' in request body")
-            self._store["vars"][setting_path] = body["value"]
+            value = body["value"]
+            if isinstance(value, dict):
+                # Group-level write: flatten the nested dict into leaf paths.
+                def _flatten(prefix, d):
+                    for k, v in d.items():
+                        full = f"{prefix}/{k}"
+                        if isinstance(v, dict):
+                            _flatten(full, v)
+                        else:
+                            self._store["vars"][full] = v
+
+                _flatten(setting_path, value)
+            else:
+                self._store["vars"][setting_path] = value
+            self._send_json({})
+
+        elif path == "settings/resize-list":
+            setting_path = params.get("path")
+            if setting_path is None:
+                return self._send_error(400, "Missing 'path' parameter")
+            if "size" not in body:
+                return self._send_error(400, "Missing 'size' in request body")
+            self._store["list_sizes"][setting_path] = body["size"]
             self._send_json({})
 
         else:

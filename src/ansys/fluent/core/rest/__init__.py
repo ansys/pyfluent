@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""REST-based PyFluent settings client (Step 1 exploration).
+"""REST-based PyFluent settings client and session.
 
 This package provides a transport-agnostic alternative to the gRPC
 ``SettingsService``.  It contains:
@@ -36,9 +36,30 @@ This package provides a transport-agnostic alternative to the gRPC
   the same provisional REST contract backed by an in-memory settings store.
   Useful for local development, unit-tests, and demos without a running Fluent
   instance.
+
+* :class:`~ansys.fluent.core.rest.protocol.SettingsProxy` – a
+  ``typing.Protocol`` formalising the 14-method *flproxy* contract shared by
+  the gRPC ``SettingsService`` and ``FluentRestClient``.
+
+* :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession` – a
+  lightweight solver session that wires ``FluentRestClient`` into
+  ``flobject.get_root`` so the full settings tree works over HTTP.
+
+* :func:`~ansys.fluent.core.rest.rest_launcher.launch_fluent_rest` – a
+  convenience launcher that builds a ``RestSolverSession`` from host, port,
+  and optional auth token.
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.rest.mock_server import FluentRestMockServer
+from ansys.fluent.core.rest.protocol import SettingsProxy
+from ansys.fluent.core.rest.rest_launcher import launch_fluent_rest
+from ansys.fluent.core.rest.rest_session import RestSolverSession
 
-__all__ = ["FluentRestClient", "FluentRestMockServer"]
+__all__ = [
+    "FluentRestClient",
+    "FluentRestMockServer",
+    "RestSolverSession",
+    "SettingsProxy",
+    "launch_fluent_rest",
+]
