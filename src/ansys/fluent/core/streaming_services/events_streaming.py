@@ -193,20 +193,24 @@ class IterationEndedEventInfo(EventInfoBase, event=SolverEvent.ITERATION_ENDED):
     index: int
 
 
+@dataclass
 class CalculationsStartedEventInfo(
     EventInfoBase, event=SolverEvent.CALCULATIONS_STARTED
 ):
     """Information about the event triggered when calculations are started."""
 
 
+@dataclass
 class CalculationsEndedEventInfo(EventInfoBase, event=SolverEvent.CALCULATIONS_ENDED):
     """Information about the event triggered when calculations are ended."""
 
 
+@dataclass
 class CalculationsPausedEventInfo(EventInfoBase, event=SolverEvent.CALCULATIONS_PAUSED):
     """Information about the event triggered when calculations are paused."""
 
 
+@dataclass
 class CalculationsResumedEventInfo(
     EventInfoBase, event=SolverEvent.CALCULATIONS_RESUMED
 ):
@@ -265,12 +269,14 @@ class DataLoadedEventInfo(EventInfoBase, event=SolverEvent.DATA_LOADED):
     data_file_name: str = field(metadata=dict(deprecated_name="datafilepath"))
 
 
+@dataclass
 class AboutToInitializeSolutionEventInfo(
     EventInfoBase, event=SolverEvent.ABOUT_TO_INITIALIZE_SOLUTION
 ):
     """Information about the event triggered just before solution is initialized."""
 
 
+@dataclass
 class SolutionInitializedEventInfo(
     EventInfoBase, event=SolverEvent.SOLUTION_INITIALIZED
 ):
@@ -291,12 +297,14 @@ class ReportPlotSetUpdatedEventInfo(
     """Information about the event triggered when a report plot set is updated."""
 
 
+@dataclass
 class ResidualPlotUpdatedEventInfo(
     EventInfoBase, event=SolverEvent.RESIDUAL_PLOT_UPDATED
 ):
     """Information about the event triggered when residual plots are updated."""
 
 
+@dataclass
 class SettingsClearedEventInfo(EventInfoBase, event=SolverEvent.SETTINGS_CLEARED):
     """Information about the event triggered when settings are cleared."""
 
@@ -409,7 +417,10 @@ class EventsManager(Generic[TEvent]):
         solver_event = SolverEvent(event.value)
         event_info_cls = EventInfoBase.derived_classes.get(solver_event)
         # Key names can be different, but their order is the same
-        return event_info_cls(*event_info_dict.values())
+        kwargs = {
+            f.name: v for f, v in zip(fields(event_info_cls), event_info_dict.values())
+        }
+        return event_info_cls(**kwargs)
 
     def _process_streaming(
         self, service, id, stream_begin_method, started_evt, *args, **kwargs
