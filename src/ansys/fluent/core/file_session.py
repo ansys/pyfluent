@@ -146,7 +146,10 @@ class BatchFieldData:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
-                ("dataLocation", 0 if node_value else 1),
+                (
+                    "dataLocation",
+                    DataLocation.Nodes if node_value else DataLocation.Elements,
+                ),
                 ("boundaryValues", boundary_value),
             )
         ]
