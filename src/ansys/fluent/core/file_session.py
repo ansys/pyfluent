@@ -76,6 +76,26 @@ class InvalidFieldName(ValueError):
         super().__init__("The only allowed field is 'velocity'.")
 
 
+def _normalize_file_session_scalar_options(
+    node_value: bool | None,
+    boundary_value: bool | None,
+) -> tuple[bool, bool]:
+    """Normalize scalar options for FileSession face-based scalar data.
+
+    FileSession scalar data comes from face values only. To avoid claiming nodal or
+    boundary-specific scalar data semantics that are not available from file reader
+    APIs, scalar requests are normalized to element location and boundaryValues=False.
+    """
+    if node_value is not False or boundary_value is not False:
+        warnings.warn(
+            "FileSession scalar data is face-based only. "
+            "Ignoring 'node_value' and 'boundary_value' and using "
+            "node_value=False, boundary_value=False.",
+            PyFluentDeprecationWarning,
+        )
+    return False, False
+
+
 def _data_type_converter(args_dict):
     d_type_list = []
     d_type_map = {
@@ -118,11 +138,15 @@ class BatchFieldData:
         self,
         **kwargs,
     ) -> Dict[int | str, np.array]:
+        node_value, boundary_value = _normalize_file_session_scalar_options(
+            kwargs.get("node_value"),
+            kwargs.get("boundary_value"),
+        )
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
-                ("dataLocation", 0 if kwargs.get("node_value") else 1),
-                ("boundaryValues", kwargs.get("boundary_value")),
+                ("dataLocation", 0 if node_value else 1),
+                ("boundaryValues", boundary_value),
             )
         ]
         return self._returned_data._scalar_data(
@@ -226,10 +250,19 @@ class Batch(FieldBatch):
             self.provide_faces = provide_faces
 
     class _ScalarFieldTransaction:
-        def __init__(self, field_name, surface_ids, phase="phase-1"):
+        def __init__(
+            self,
+            field_name,
+            surface_ids,
+            phase="phase-1",
+            node_value=True,
+            boundary_value=True,
+        ):
             self.phase_name = phase
             self.field_name = field_name
             self.surface_ids = surface_ids
+            self.node_value = node_value
+            self.boundary_value = boundary_value
 
     class _VectorFieldTransaction:
         def __init__(self, field_name, surface_ids, phase="phase-1"):
@@ -366,18 +399,31 @@ class Batch(FieldBatch):
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> None:
+        node_value, boundary_value = _normalize_file_session_scalar_options(
+            node_value,
+            boundary_value,
+        )
         surface_ids = self.get_surface_ids(surfaces)
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
             self._scalar_field_batches.append(
                 Batch._ScalarFieldTransaction(
-                    field_name, surface_ids, field_name.split(":")[0]
+                    field_name,
+                    surface_ids,
+                    field_name.split(":")[0],
+                    node_value,
+                    boundary_value,
                 )
             )
         else:
             self._scalar_field_batches.append(
-                Batch._ScalarFieldTransaction(field_name, surface_ids)
+                Batch._ScalarFieldTransaction(
+                    field_name,
+                    surface_ids,
+                    node_value=node_value,
+                    boundary_value=boundary_value,
+                )
             )
 
     @deprecate_arguments(
@@ -542,22 +588,19 @@ class Batch(FieldBatch):
         mesh = self._file_session._case_file.get_mesh()
         field_data = {}
 
-        scalar_field_tag = (
-            ("type", "scalar-field"),
-            (
-                "dataLocation",
-                DataLocation.Elements,
-            ),
-            ("boundaryValues", False),
-        )
-
         for batch in self._scalar_field_batches:
-            if scalar_field_tag not in field_data:
-                field_data[scalar_field_tag] = {}
-            field_data_surface = field_data[scalar_field_tag]
+            scalar_field_tag = (
+                ("type", "scalar-field"),
+                (
+                    "dataLocation",
+                    DataLocation.Nodes if batch.node_value else DataLocation.Elements,
+                ),
+                ("boundaryValues", batch.boundary_value),
+            )
+            field_data_surface = field_data.setdefault(scalar_field_tag, {})
             for surface_id in batch.surface_ids:
-                field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][batch.field_name] = (
+                surface_data = field_data_surface.setdefault(surface_id, {})
+                surface_data[batch.field_name] = (
                     self._file_session._data_file.get_face_scalar_field_data(
                         batch.phase_name, batch.field_name, surface_id
                     )
@@ -566,31 +609,28 @@ class Batch(FieldBatch):
         vector_field_tag = (("type", "vector-field"),)
 
         for batch in self._vector_field_batches:
-            if "velocity" not in batch.field_name:
+            bare_name = batch.field_name.split(":", 1)[-1]
+            if bare_name.lower() != "velocity":
                 raise InvalidFieldName()
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
             for surface_id in batch.surface_ids:
-                field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][batch.field_name] = (
+                surface_data = field_data_surface.setdefault(surface_id, {})
+                surface_data[batch.field_name] = (
                     self._file_session._data_file.get_face_vector_field_data(
                         batch.phase_name, surface_id
                     )
                 )
-                field_data_surface[surface_id]["vector-scale"] = np.array([0.1])
+                surface_data["vector-scale"] = np.array([0.1])
 
         for batch in self._surface_batches:
             if (("type", "surface-data"),) not in field_data:
                 field_data[(("type", "surface-data"),)] = {}
             field_data_surface = field_data[(("type", "surface-data"),)]
-            field_data_surface[batch.surface_id] = {}
-            field_data_surface[batch.surface_id]["faces"] = mesh.get_connectivity(
-                batch.surface_id
-            )
-            field_data_surface[batch.surface_id]["vertices"] = mesh.get_vertices(
-                batch.surface_id
-            )
+            surface_data = field_data_surface.setdefault(batch.surface_id, {})
+            surface_data["faces"] = mesh.get_connectivity(batch.surface_id)
+            surface_data["vertices"] = mesh.get_vertices(batch.surface_id)
         return BatchFieldData(
             field_data,
             self._field_info,
@@ -805,6 +845,7 @@ class FileFieldData(FieldDataSource):
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
+        _normalize_file_session_scalar_options(node_value, boundary_value)
         field_name = _to_scalar_field_name(field_name)
         surface_ids = self.get_surface_ids(surfaces=surfaces)
         scalar_data = {}
@@ -1044,6 +1085,7 @@ class _FileFieldInfo(BaseFieldInfo):
     def _get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
+        _normalize_file_session_scalar_options(node_value, False)
         minimum = None
         maximum = None
         if not surface_ids:
