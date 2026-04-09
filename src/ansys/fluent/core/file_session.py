@@ -36,6 +36,7 @@ from ansys.fluent.core.field_data_interfaces import (
     FieldDataSource,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
+    SurfaceData,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
@@ -45,7 +46,6 @@ from ansys.fluent.core.field_data_interfaces import (
     _ScalarFields,
     _SurfaceIds,
     _SurfaceNames,
-    _transform_faces_connectivity_data,
     _VectorFields,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
@@ -611,6 +611,7 @@ class FileFieldData(FieldDataSource):
         )
         self.vector_fields = _VectorFields(self._field_info._get_vector_fields_info)
         self.surfaces = _SurfaceNames(self._field_info._get_surfaces_info)
+        self._returned_data = _ReturnFieldData()
 
     @property
     def surface_ids(self):
@@ -657,23 +658,41 @@ class FileFieldData(FieldDataSource):
     ):
         """Get surface data (vertices and faces connectivity).
 
+        Only ``SurfaceDataType.Vertices`` and ``SurfaceDataType.FacesConnectivity``
+        are supported. Requesting any other type raises ``NotImplementedError``.
+
         Parameters
         ----------
-        data_types : List[SurfaceDataType] | List[str],
-            SurfaceDataType Enum members.
+        data_types : List[SurfaceDataType] | List[str]
+            Surface data types to retrieve. Accepted values are
+            ``SurfaceDataType.Vertices`` (or ``"vertices"``) and
+            ``SurfaceDataType.FacesConnectivity`` (or ``"faces"``).
         surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
+            List of surface IDs or surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
-        flatten_connectivity: bool, optional
-            Whether to provide faces connectivity data in flattened format.
+        flatten_connectivity : bool, optional
+            When ``True``, face connectivity is returned as a single flat
+            ``ndarray``. When ``False`` (default), it is returned as a list
+            of per-face vertex-index arrays.
 
         Returns
         -------
-        Vertices | FacesConnectivity | Dict[int, Vertices | FacesConnectivity]
-             If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
-             If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
-             vertices, connectivity data, and normal or centroid data is returned.
+        Dict[int | str, SurfaceData]
+            Dictionary mapping each surface name or ID to a ``SurfaceData``
+            object. Requested data is available via its attributes:
+
+            - ``SurfaceData.vertices`` – ``ndarray`` of shape ``(N, 3)``
+              containing vertex coordinates, or ``None`` if not requested.
+            - ``SurfaceData.connectivity`` – flat ``ndarray`` (when
+              ``flatten_connectivity=True``) or list of per-face
+              ``ndarray`` objects, or ``None`` if not requested.
+
+        Raises
+        ------
+        NotImplementedError
+            If any entry in *data_types* is not ``Vertices`` or
+            ``FacesConnectivity``.
         """
         return self._get_surface_data(
             data_types=data_types,
@@ -682,6 +701,11 @@ class FileFieldData(FieldDataSource):
             flatten_connectivity=flatten_connectivity,
         )
 
+    _SUPPORTED_SURFACE_DATA_TYPES = {
+        SurfaceDataType.Vertices,
+        SurfaceDataType.FacesConnectivity,
+    }
+
     def _get_surface_data(
         self,
         data_types: List[SurfaceDataType] | List[str],
@@ -689,44 +713,38 @@ class FileFieldData(FieldDataSource):
         overset_mesh: bool | None = False,
         flatten_connectivity: bool = False,
     ):
-        for d_type in data_types:
-            if isinstance(d_type, str):
-                data_types.remove(d_type)
-                data_types.append(SurfaceDataType(d_type))
-
-        surface_ids = self.get_surface_ids(surfaces=surfaces)
-
-        if SurfaceDataType.Vertices in data_types:
-            return {
-                surface: self._file_session._case_file.get_mesh()
-                .get_vertices(surface_ids[count])
-                .reshape(-1, 3)
-                for count, surface in enumerate(surfaces)
-            }
-
-        if SurfaceDataType.FacesConnectivity in data_types:
-            if flatten_connectivity:
-                return {
-                    surface: self._file_session._case_file.get_mesh().get_connectivity(
-                        surface_ids[count]
-                    )
-                    for count, surface in enumerate(surfaces)
-                }
-            else:
-                warnings.warn(
-                    "Structured face connectivity output is deprecated and will be replaced by the flat format "
-                    "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
-                    "'SurfaceFieldDataRequest' to request data in the flat format.",
-                    PyFluentDeprecationWarning,
+        data_types = [SurfaceDataType(d) for d in data_types]
+        unsupported = [
+            d for d in data_types if d not in self._SUPPORTED_SURFACE_DATA_TYPES
+        ]
+        if unsupported:
+            raise NotImplementedError(
+                f"The following SurfaceDataType(s) are not supported by FileSession: "
+                f"{[d.value for d in unsupported]}. "
+                f"Supported types are: {[d.value for d in self._SUPPORTED_SURFACE_DATA_TYPES]}."
+            )
+        surface_ids = self.get_surface_ids(surfaces)
+        surface_data = {}
+        for surface_id in surface_ids:
+            surface_data[surface_id] = {}
+            if SurfaceDataType.Vertices in data_types:
+                surface_data[surface_id][
+                    "vertices"
+                ] = self._file_session._case_file.get_mesh().get_vertices(surface_id)
+            if SurfaceDataType.FacesConnectivity in data_types:
+                surface_data[surface_id][
+                    "faces"
+                ] = self._file_session._case_file.get_mesh().get_connectivity(
+                    surface_id
                 )
-                return {
-                    surface: _transform_faces_connectivity_data(
-                        self._file_session._case_file.get_mesh().get_connectivity(
-                            surface_ids[count]
-                        )
-                    )
-                    for count, surface in enumerate(surfaces)
-                }
+
+        return self._returned_data._surface_data(
+            data_types=data_types,
+            surfaces=surfaces,
+            surface_ids=surface_ids,
+            surface_data=surface_data,
+            flatten_connectivity=flatten_connectivity,
+        )
 
     @deprecate_arguments(
         old_args="surface_names",
@@ -787,25 +805,35 @@ class FileFieldData(FieldDataSource):
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
+        field_name = _to_scalar_field_name(field_name)
         surface_ids = self.get_surface_ids(surfaces=surfaces)
+        scalar_data = {}
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            return {
-                surface: self._file_session._data_file.get_face_scalar_field_data(
-                    field_name.split(":")[0],
-                    field_name.split(":")[1],
-                    surface_ids[count],
-                )
-                for count, surface in enumerate(surfaces)
-            }
+            phase_name, scalar_field_name = field_name.split(":", 1)
+            for surface_id in surface_ids:
+                scalar_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_scalar_field_data(
+                        phase_name,
+                        scalar_field_name,
+                        surface_id,
+                    )
+                }
         else:
-            return {
-                surface: self._file_session._data_file.get_face_scalar_field_data(
-                    "phase-1", field_name, surface_ids[count]
-                )
-                for count, surface in enumerate(surfaces)
-            }
+            for surface_id in surface_ids:
+                scalar_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_scalar_field_data(
+                        "phase-1", field_name, surface_id
+                    )
+                }
+
+        return self._returned_data._scalar_data(
+            field_name=field_name,
+            surfaces=surfaces,
+            surface_ids=surface_ids,
+            scalar_field_data=scalar_data,
+        )
 
     @deprecate_arguments(
         old_args="surface_names",
@@ -858,28 +886,36 @@ class FileFieldData(FieldDataSource):
     ):
         field_name = _to_vector_field_name(field_name)
         surface_ids = self.get_surface_ids(surfaces=surfaces)
-        if (
-            field_name.lower() != "velocity"
-            and field_name.split(":")[1].lower() != "velocity"
-        ):
+        parts = field_name.split(":", 1)
+        bare_name = parts[1] if len(parts) == 2 else parts[0]
+        if bare_name.lower() != "velocity":
             raise InvalidFieldName()
 
+        vector_data = {}
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            return {
-                surface: self._file_session._data_file.get_face_vector_field_data(
-                    field_name.split(":")[0], surface_ids[count]
-                ).reshape(-1, 3)
-                for count, surface in enumerate(surfaces)
-            }
+            phase_name = field_name.split(":", 1)[0]
+            for surface_id in surface_ids:
+                vector_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_vector_field_data(
+                        phase_name, surface_id
+                    )
+                }
         else:
-            return {
-                surface: self._file_session._data_file.get_face_vector_field_data(
-                    "phase-1", surface_ids[count]
-                ).reshape(-1, 3)
-                for count, surface in enumerate(surfaces)
-            }
+            for surface_id in surface_ids:
+                vector_data[surface_id] = {
+                    field_name: self._file_session._data_file.get_face_vector_field_data(
+                        "phase-1", surface_id
+                    )
+                }
+
+        return self._returned_data._vector_data(
+            field_name=field_name,
+            surfaces=surfaces,
+            surface_ids=surface_ids,
+            vector_field_data=vector_data,
+        )
 
     @deprecate_arguments(
         old_args="surface_names",
@@ -930,20 +966,39 @@ class FileFieldData(FieldDataSource):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> Dict[int | str, Dict | np.array]:
-        """Get the surface, scalar, vector or path-lines field data on a surface.
+    ) -> Dict[int | str, SurfaceData | np.ndarray]:
+        """Get the surface, scalar, vector, or path-lines field data on a surface.
+
+        Parameters
+        ----------
+        obj : SurfaceFieldDataRequest | ScalarFieldDataRequest | VectorFieldDataRequest | PathlinesFieldDataRequest
+            Request object describing the data to retrieve.
 
         Returns
         -------
-        Dict[int | str, Dict | np.array]
-            Field data for the requested surface. If field data is unavailable for the surface,
-            an empty array is returned and a warning is issued. Users should always check
-            the array size before using the data.
+        Dict[int | str, SurfaceData | np.ndarray]
+            Dictionary mapping each surface name or ID to the requested data:
 
-            Example:
-                data = get_field_data(field_data_request)[surface_id]
-                if data.size == 0:
-                    # Handle missing data
+            - **SurfaceFieldDataRequest** -- values are ``SurfaceData`` objects.
+              Access retrieved data via attributes:
+
+              - ``.vertices`` -- ``ndarray`` of shape ``(N, 3)``, or ``None``.
+              - ``.connectivity`` -- flat ``ndarray`` (when
+                ``flatten_connectivity=True``) or list of per-face
+                ``ndarray`` objects, or ``None``.
+
+            - **ScalarFieldDataRequest** -- values are ``ndarray`` of scalar
+              field values per face/node.
+
+            - **VectorFieldDataRequest** -- values are ``ndarray`` of shape
+              ``(N, 3)`` containing vector components.
+
+        Raises
+        ------
+        NotImplementedError
+            If a ``SurfaceFieldDataRequest`` includes unsupported
+            ``SurfaceDataType`` entries (only ``Vertices`` and
+            ``FacesConnectivity`` are supported by ``FileSession``).
         """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
