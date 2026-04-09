@@ -92,6 +92,7 @@ def _normalize_file_session_scalar_options(
             "Ignoring 'node_value' and 'boundary_value' and using "
             "node_value=False, boundary_value=False.",
             PyFluentDeprecationWarning,
+            stacklevel=2,
         )
     return False, False
 
