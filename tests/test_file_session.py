@@ -22,6 +22,7 @@
 
 from pathlib import Path
 
+import numpy as np
 import pytest
 
 from ansys.fluent.core import (
@@ -144,10 +145,10 @@ def test_field_data_single_phase():
         data_types=[SurfaceDataType.Vertices], surfaces=[3]
     )
     surface_data_wall = surface_data(surface_data_wall_request)
-    assert surface_data_wall[3].shape == (3810, 3)
-    assert round(surface_data_wall[3][1500][0], 5) == 0.12406
-    assert round(surface_data_wall[3][1500][1], 5) == 0.09525
-    assert round(surface_data_wall[3][1500][2], 5) == 0.04216
+    assert surface_data_wall[3].vertices.shape == (3810, 3)
+    assert round(surface_data_wall[3].vertices[1500][0], 5) == 0.12406
+    assert round(surface_data_wall[3].vertices[1500][1], 5) == 0.09525
+    assert round(surface_data_wall[3].vertices[1500][2], 5) == 0.04216
 
     surface_data_symmetry_request = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity],
@@ -155,7 +156,7 @@ def test_field_data_single_phase():
         flatten_connectivity=True,
     )
     surface_data_symmetry = surface_data(surface_data_symmetry_request)
-    assert len(surface_data_symmetry["symmetry"]) == 10090
+    assert len(surface_data_symmetry["symmetry"].connectivity) == 10090
 
     surface_data_symmetry_request_deprecated = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity],
@@ -164,7 +165,7 @@ def test_field_data_single_phase():
     surface_data_symmetry_deprecated = surface_data(
         surface_data_symmetry_request_deprecated
     )
-    assert list((surface_data_symmetry_deprecated["symmetry"])[1000]) == [
+    assert list((surface_data_symmetry_deprecated["symmetry"].connectivity)[1000]) == [
         1259,
         1260,
         1227,
@@ -446,23 +447,29 @@ def test_field_data_single_phase_deprecated():
     surface_data_wall = surface_data(
         data_types=[SurfaceDataType.Vertices], surfaces=[3]
     )
-    assert surface_data_wall[3].shape == (3810, 3)
-    assert round(surface_data_wall[3][1500][0], 5) == 0.12406
-    assert round(surface_data_wall[3][1500][1], 5) == 0.09525
-    assert round(surface_data_wall[3][1500][2], 5) == 0.04216
+    assert surface_data_wall[3].vertices.shape == (3810, 3)
+    assert round(surface_data_wall[3].vertices[1500][0], 5) == 0.12406
+    assert round(surface_data_wall[3].vertices[1500][1], 5) == 0.09525
+    assert round(surface_data_wall[3].vertices[1500][2], 5) == 0.04216
 
     surface_data_symmetry_deprecated = surface_data(
         data_types=[SurfaceDataType.FacesConnectivity],
         surfaces=["symmetry"],
     )
-    assert len(surface_data_symmetry_deprecated["symmetry"]) == 2018
+    assert len(surface_data_symmetry_deprecated["symmetry"].connectivity) == 2018
 
     surface_data_symmetry = surface_data(
         data_types=[SurfaceDataType.FacesConnectivity],
         surfaces=["symmetry"],
         flatten_connectivity=True,
     )
-    assert list(surface_data_symmetry["symmetry"][:5]) == [4, 295, 294, 33, 34]
+    assert list(surface_data_symmetry["symmetry"].connectivity[:5]) == [
+        4,
+        295,
+        294,
+        33,
+        34,
+    ]
 
     vector_data = file_session.fields.field_data.get_vector_field_data
     assert vector_data("velocity", surfaces=["wall"])["wall"].shape == (3630, 3)
@@ -743,3 +750,31 @@ def test_faces_connectivity_behaviour():
     assert data.get_field_data(vertices_and_faces_connectivity_request)[
         4
     ].connectivity.shape == (10090,)
+
+
+def test_surface_data_request_with_string_data_types_returns_expected_types():
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
+    file_session = FileSession(case_file_name, data_file_name)
+
+    request = SurfaceFieldDataRequest(
+        data_types=["vertices", "faces"], surfaces=[3], flatten_connectivity=True
+    )
+    surface_data = file_session.fields.field_data.get_field_data(request)[3]
+
+    assert surface_data.vertices.shape[-1] == 3
+    assert isinstance(surface_data.connectivity, np.ndarray)
+    assert len(surface_data.connectivity) > 0
+
+    request = SurfaceFieldDataRequest(
+        data_types=["faces", "vertices"], surfaces=[3], flatten_connectivity=True
+    )
+    surface_data = file_session.fields.field_data.get_field_data(request)[3]
+
+    assert surface_data.vertices.shape[-1] == 3
+    assert isinstance(surface_data.connectivity, np.ndarray)
+    assert len(surface_data.connectivity) > 0
