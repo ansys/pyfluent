@@ -7,6 +7,7 @@ import inspect
 import os
 import platform
 import subprocess
+import sys
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
@@ -300,9 +301,40 @@ def skip(app, what, name, obj, would_skip, options):
     return would_skip
 
 
+def _inject_dataclass_field_docs(app, what, name, obj, options, lines):
+    """Inject per-field docs from ``__dataclass_field_docs__`` into attribute docstrings.
+
+    Dataclass field attributes do not carry ``__doc__`` descriptors the way
+    ``NamedTuple`` properties do.  This hook reads the mapping stored by
+    :func:`~ansys.fluent.core.field_data_interfaces._set_namedtuple_field_docs`
+    on the class and injects the relevant documentation so that Sphinx/autodoc
+    renders per-field member docs correctly.
+    """
+    if what != "attribute" or lines:
+        return
+    # name is the fully qualified attribute name, e.g.
+    # "ansys.fluent.core.field_data_interfaces.SurfaceFieldDataRequest.data_types"
+    class_path, _, attr_name = name.rpartition(".")
+    if not class_path or not attr_name:
+        return
+    module_name, _, class_name = class_path.rpartition(".")
+    if not module_name:
+        return
+    module = sys.modules.get(module_name)
+    if module is None:
+        return
+    cls = getattr(module, class_name, None)
+    if cls is None:
+        return
+    field_docs = getattr(cls, "__dataclass_field_docs__", None)
+    if field_docs and attr_name in field_docs:
+        lines[:] = [field_docs[attr_name]]
+
+
 def setup(app):
     """Setup function for Sphinx builder."""
     app.connect("autodoc-skip-member", skip)
+    app.connect("autodoc-process-docstring", _inject_dataclass_field_docs)
 
 
 # PyAnsys tags configuration
