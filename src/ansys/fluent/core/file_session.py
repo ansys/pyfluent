@@ -259,8 +259,8 @@ class Batch(FieldBatch):
             field_name,
             surface_ids,
             phase="phase-1",
-            node_value=True,
-            boundary_value=True,
+            node_value=False,
+            boundary_value=False,
         ):
             self.phase_name = phase
             self.field_name = field_name
