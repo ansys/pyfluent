@@ -41,7 +41,11 @@ import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
+from google.protobuf.descriptor_pool import DescriptorPool
 import grpc
+from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
+    ProtoReflectionDescriptorDatabase,
+)
 
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
@@ -349,11 +353,11 @@ def _get_channel(
 
 
 class _ConnectionInterface:
-    def __init__(self, create_grpc_service, error_state):
+    def __init__(self, create_grpc_service, error_state, supports_v1):
         self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
+        self.scheme_eval = service_creator(
+            "scheme_eval", supports_v1=supports_v1
+        ).create(self._scheme_eval_service)
         self._app_utilities_service = create_grpc_service(
             AppUtilitiesService, error_state
         )
@@ -367,9 +371,9 @@ class _ConnectionInterface:
                 )
 
             case _:
-                self._app_utilities = service_creator("app_utilities").create(
-                    self._app_utilities_service
-                )
+                self._app_utilities = service_creator(
+                    "app_utilities", supports_v1=supports_v1
+                ).create(self._app_utilities_service)
 
     @property
     def product_build_info(self) -> str:
@@ -429,6 +433,22 @@ def _pid_exists(pid):
         else:
             ctypes.windll.kernel32.CloseHandle(process_handle)
             return True
+
+
+def _server_supports_v1(channel) -> bool:
+    try:
+        reflection_db = ProtoReflectionDescriptorDatabase(channel)
+        desc_pool = DescriptorPool(reflection_db)
+        service_desc = desc_pool.FindServiceByName(
+            "ansys.api.fluent.v1.app_utilities.AppUtilities"
+        )
+        method_desc = service_desc.FindMethodByName("RegisterSolutionEventsPause")
+        return (
+            method_desc.full_name
+            == "ansys.api.fluent.v1.app_utilities.AppUtilities.RegisterSolutionEventsPause"
+        )
+    except KeyError:
+        return False
 
 
 class FluentConnection:
@@ -550,9 +570,9 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self._health_check = service_creator("health_check").create(
-            self._channel, self._metadata, self._error_state
-        )
+        self._health_check = service_creator(
+            "health_check", supports_v1=_server_supports_v1(channel=self._channel)
+        ).create(self._channel, self._metadata, self._error_state)
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
@@ -576,7 +596,9 @@ class FluentConnection:
             FluentConnection._monitor_thread.start()
 
         self._connection_interface = _ConnectionInterface(
-            self.create_grpc_service, self._error_state
+            self.create_grpc_service,
+            self._error_state,
+            supports_v1=_server_supports_v1(channel=self._channel),
         )
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()

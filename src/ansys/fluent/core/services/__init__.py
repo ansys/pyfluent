@@ -22,7 +22,8 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.app_utilities import AppUtilities
+from ansys.fluent.core.services.app_utilities import AppUtilities as AppUtilitiesV0
+from ansys.fluent.core.services.app_utilities_v1 import AppUtilities
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
@@ -33,10 +34,14 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import LiveFieldData, _FieldInfo
-from ansys.fluent.core.services.health_check import HealthCheckService
+from ansys.fluent.core.services.health_check import (
+    HealthCheckService as HealthCheckServiceV0,
+)
+from ansys.fluent.core.services.health_check_v1 import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction
-from ansys.fluent.core.services.scheme_eval import SchemeEval
+from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
@@ -44,6 +49,26 @@ from ansys.fluent.core.services.solution_variables import (
 )
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
+
+_service_cls_by_name_v0 = {
+    "app_utilities": AppUtilitiesV0,
+    "health_check": HealthCheckServiceV0,
+    "datamodel": DatamodelService_SE,
+    "tui": DatamodelService_TUI,
+    "settings": SettingsService,
+    "scheme_eval": SchemeEvalV0,
+    "events": EventsService,
+    "field_data": LiveFieldData,
+    "field_data_old": DeprecatedFieldData,
+    "field_info": _FieldInfo,
+    "monitors": MonitorsService,
+    "reduction": Reduction,
+    "svar": SolutionVariableService,
+    "svar_data": SolutionVariableData,
+    "transcript": TranscriptService,
+    "batch_ops": BatchOpsService,
+    "field_data_streaming": FieldDataStreaming,
+}
 
 _service_cls_by_name = {
     "app_utilities": AppUtilities,
@@ -69,9 +94,12 @@ _service_cls_by_name = {
 class service_creator:
     """A gRPC service creator."""
 
-    def __init__(self, service_name: str):
+    def __init__(self, service_name: str, supports_v1: bool | None = None):
         """Initialize service_creator."""
-        self._service_cls = _service_cls_by_name[service_name]
+        if supports_v1:
+            self._service_cls = _service_cls_by_name[service_name]
+        else:
+            self._service_cls = _service_cls_by_name_v0[service_name]
 
     def create(self, *args, **kwargs):
         """Create a gRPC service."""
