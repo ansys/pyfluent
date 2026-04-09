@@ -416,8 +416,8 @@ class Batch(FieldBatch):
                     field_name,
                     surface_ids,
                     field_name.split(":")[0],
-                    node_value,
-                    boundary_value,
+                    node_value=node_value,
+                    boundary_value=boundary_value,
                 )
             )
         else:
