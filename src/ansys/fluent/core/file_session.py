@@ -374,11 +374,11 @@ class Batch(FieldBatch):
         surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
         node_value : bool, optional
-            Whether to provide the nodal location. The default is ``True``. If
-            ``False``, the element location is provided.
+            Ignored for FileSession. FileSession only provides face/element data.
+            Passing ``True`` will emit a deprecation warning.
         boundary_value : bool, optional
-            Whether to provide the slip velocity at the wall boundaries. The default
-            is ``True``. When ``True``, no slip velocity is provided.
+            Ignored for FileSession. FileSession only provides face/element data.
+            Passing ``True`` will emit a deprecation warning.
 
         Returns
         -------
@@ -819,11 +819,11 @@ class FileFieldData(FieldDataSource):
         surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
         node_value : bool, optional
-            Whether to provide data for the nodal location. The default is ``True``.
-            When ``False``, data is provided for the element location.
+            Ignored for FileSession. FileSession only provides face/element data.
+            Passing ``True`` will emit a deprecation warning.
         boundary_value : bool, optional
-            Whether to provide slip velocity at the wall boundaries. The default is
-            ``True``. When ``True``, no slip velocity is provided.
+            Ignored for FileSession. FileSession only provides face/element data.
+            Passing ``True`` will emit a deprecation warning.
 
         Returns
         -------
