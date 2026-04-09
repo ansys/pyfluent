@@ -629,8 +629,10 @@ class Batch(FieldBatch):
                 field_data[(("type", "surface-data"),)] = {}
             field_data_surface = field_data[(("type", "surface-data"),)]
             surface_data = field_data_surface.setdefault(batch.surface_id, {})
-            surface_data["faces"] = mesh.get_connectivity(batch.surface_id)
-            surface_data["vertices"] = mesh.get_vertices(batch.surface_id)
+            if batch.provide_faces:
+                surface_data["faces"] = mesh.get_connectivity(batch.surface_id)
+            if batch.provide_vertices:
+                surface_data["vertices"] = mesh.get_vertices(batch.surface_id)
         return BatchFieldData(
             field_data,
             self._field_info,
