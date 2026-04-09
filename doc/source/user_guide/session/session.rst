@@ -10,7 +10,7 @@ example :meth:`Solver.from_install() <ansys.fluent.core.session_utilities.Sessio
 :meth:`Solver.from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>`,
 :meth:`Solver.from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`, or
 :meth:`Solver.from_pim() <ansys.fluent.core.session_utilities.SessionBase.from_pim>`.
-For full details see :ref:`ref_launch_guide`.
+For full details, see :ref:`ref_launch_guide`.
 
 For example, to launch a solver session from a local Fluent installation:
 
