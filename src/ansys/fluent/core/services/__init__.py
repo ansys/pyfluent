@@ -41,11 +41,19 @@ from ansys.fluent.core.services.health_check import (
 )
 from ansys.fluent.core.services.health_check_v1 import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
-from ansys.fluent.core.services.reduction import Reduction
+from ansys.fluent.core.services.reduction import Reduction as ReductionV0
+from ansys.fluent.core.services.reduction_v1 import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
 from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval
-from ansys.fluent.core.services.settings import SettingsService
+from ansys.fluent.core.services.settings import SettingsService as SettingsServiceV0
+from ansys.fluent.core.services.settings_v1 import SettingsService
 from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData as SolutionVariableDataV0,
+)
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableService as SolutionVariableServiceV0,
+)
+from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
     SolutionVariableService,
 )
@@ -57,16 +65,16 @@ _service_cls_by_name_v0 = {
     "health_check": HealthCheckServiceV0,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
-    "settings": SettingsService,
+    "settings": SettingsServiceV0,
     "scheme_eval": SchemeEvalV0,
     "events": EventsService,
     "field_data": LiveFieldDataV0,
     "field_data_old": DeprecatedFieldData,
     "field_info": _FieldInfoV0,
     "monitors": MonitorsService,
-    "reduction": Reduction,
-    "svar": SolutionVariableService,
-    "svar_data": SolutionVariableData,
+    "reduction": ReductionV0,
+    "svar": SolutionVariableServiceV0,
+    "svar_data": SolutionVariableDataV0,
     "transcript": TranscriptService,
     "batch_ops": BatchOpsService,
     "field_data_streaming": FieldDataStreaming,
