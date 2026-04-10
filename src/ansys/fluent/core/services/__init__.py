@@ -33,7 +33,9 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService
-from ansys.fluent.core.services.field_data import LiveFieldData, _FieldInfo
+from ansys.fluent.core.services.field_data import LiveFieldData as LiveFieldDataV0
+from ansys.fluent.core.services.field_data import _FieldInfo as _FieldInfoV0
+from ansys.fluent.core.services.field_data_v1 import LiveFieldData, _FieldInfo
 from ansys.fluent.core.services.health_check import (
     HealthCheckService as HealthCheckServiceV0,
 )
@@ -58,9 +60,9 @@ _service_cls_by_name_v0 = {
     "settings": SettingsService,
     "scheme_eval": SchemeEvalV0,
     "events": EventsService,
-    "field_data": LiveFieldData,
+    "field_data": LiveFieldDataV0,
     "field_data_old": DeprecatedFieldData,
-    "field_info": _FieldInfo,
+    "field_info": _FieldInfoV0,
     "monitors": MonitorsService,
     "reduction": Reduction,
     "svar": SolutionVariableService,

@@ -570,8 +570,10 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
+        self._server_supports_v1 = _server_supports_v1(channel=self._channel)
+
         self._health_check = service_creator(
-            "health_check", supports_v1=_server_supports_v1(channel=self._channel)
+            "health_check", supports_v1=self._server_supports_v1
         ).create(self._channel, self._metadata, self._error_state)
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
@@ -598,7 +600,7 @@ class FluentConnection:
         self._connection_interface = _ConnectionInterface(
             self.create_grpc_service,
             self._error_state,
-            supports_v1=_server_supports_v1(channel=self._channel),
+            supports_v1=self._server_supports_v1,
         )
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
