@@ -35,7 +35,9 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
-from ansys.fluent.core.services.reduction import ReductionService
+from ansys.fluent.core.services.reduction import Reduction as ReductionV0
+from ansys.fluent.core.services.reduction import ReductionService as ReductionServiceV0
+from ansys.fluent.core.services.reduction_v1 import Reduction, ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
@@ -146,12 +148,16 @@ class Solver(BaseSession):
         self.fields.solution_variable_info = SolutionVariableInfo(
             self._solution_variable_service
         )
-        self._reduction_service = self._fluent_connection.create_grpc_service(
-            ReductionService, self._error_state
-        )
-        self.fields.reduction = service_creator("reduction").create(
-            self._reduction_service, self
-        )
+        if fluent_connection._server_supports_v1:
+            self._reduction_service = self._fluent_connection.create_grpc_service(
+                ReductionService, self._error_state
+            )
+            self.fields.reduction = Reduction(self._reduction_service, self)
+        else:
+            self._reduction_service = self._fluent_connection.create_grpc_service(
+                ReductionServiceV0, self._error_state
+            )
+            self.fields.reduction = ReductionV0(self._reduction_service, self)
         self.fields.solution_variable_data = self._solution_variable_data()
 
         monitors_service = service_creator("monitors").create(
