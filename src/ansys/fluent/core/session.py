@@ -50,8 +50,14 @@ from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.events_streaming import EventsManager
-from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.fluent.core.streaming_services.events_streaming import (
+    EventsManager as EventsManagerV0,
+)
+from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
+from ansys.fluent.core.streaming_services.transcript_streaming import (
+    Transcript as TranscriptV0,
+)
+from ansys.fluent.core.streaming_services.transcript_streaming_v1 import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
@@ -199,7 +205,10 @@ class BaseSession:
         self._transcript_service = service_creator("transcript").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.transcript = Transcript(self._transcript_service)
+        if fluent_connection._server_supports_v1:
+            self.transcript = Transcript(self._transcript_service)
+        else:
+            self.transcript = TranscriptV0(self._transcript_service)
         if self._start_transcript:
             self.transcript.start()
 
@@ -236,9 +245,14 @@ class BaseSession:
             events_service = service_creator("events").create(
                 fluent_connection._channel, fluent_connection._metadata
             )
-            self.events = EventsManager[event_type](
-                event_type, events_service, self._error_state, weakref.proxy(self)
-            )
+            if fluent_connection._server_supports_v1:
+                self.events = EventsManager[event_type](
+                    event_type, events_service, self._error_state, weakref.proxy(self)
+                )
+            else:
+                self.events = EventsManagerV0[event_type](
+                    event_type, events_service, self._error_state, weakref.proxy(self)
+                )
             self.events.start()
         else:
             self.events = None

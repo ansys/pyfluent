@@ -37,7 +37,7 @@ from ansys.fluent.core.services.app_utilities import (  # noqa: F401 – re-expo
 from ansys.fluent.core.services.app_utilities import AppUtilities as _AppUtilitiesV0
 from ansys.fluent.core.services.app_utilities import BuildInfo  # noqa: F401
 from ansys.fluent.core.services.app_utilities import ProcessInfo  # noqa: F401
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
 
 
 class AppUtilitiesService(_AppUtilitiesServiceV0):

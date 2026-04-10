@@ -56,7 +56,10 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.streaming_services.events_streaming import (
+    SolverEvent as SolverEventV0,
+)
+from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
@@ -113,13 +116,16 @@ class Solver(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
+        _solver_event = (
+            SolverEvent if fluent_connection._server_supports_v1 else SolverEventV0
+        )
         super(Solver, self).__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
-            event_type=SolverEvent,
+            event_type=_solver_event,
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._settings = None
@@ -165,11 +171,18 @@ class Solver(BaseSession):
         )
         #: Manage Fluent's solution monitors.
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
-        if not config.disable_monitor_refresh_on_init:
-            self.events.register_callback(
-                (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
-                self.monitors.refresh,
-            )
+        if fluent_connection._server_supports_v1:
+            if not config.disable_monitor_refresh_on_init:
+                self.events.register_callback(
+                    (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
+                    self.monitors.refresh,
+                )
+        else:
+            if not config.disable_monitor_refresh_on_init:
+                self.events.register_callback(
+                    (SolverEventV0.SOLUTION_INITIALIZED, SolverEventV0.DATA_LOADED),
+                    self.monitors.refresh,
+                )
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
 
@@ -305,7 +318,11 @@ class Solver(BaseSession):
         super(Solver, self)._build_from_fluent_connection(
             bg_session._fluent_connection,
             bg_session._fluent_connection._connection_interface.scheme_eval,
-            event_type=SolverEvent,
+            event_type=(
+                SolverEvent
+                if bg_session._fluent_connection._server_supports_v1
+                else SolverEventV0
+            ),
             launcher_args=launcher_args,
         )
         self._build_from_fluent_connection(

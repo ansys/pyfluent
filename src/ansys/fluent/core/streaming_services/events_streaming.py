@@ -27,7 +27,7 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Literal, Sequence, Type, TypeVar
+from typing import Callable, Generic, Sequence, Type, TypeVar
 import warnings
 
 from google.protobuf.json_format import MessageToDict
@@ -130,7 +130,7 @@ class EventInfoBase:
 
     def __init_subclass__(cls, event, **kwargs):
         super().__init_subclass__(**kwargs)
-        cls.derived_classes[event] = cls
+        cls.derived_classes[event.name] = cls
 
     def __post_init__(self):
         for f in fields(self):
@@ -406,8 +406,7 @@ class EventsManager(Generic[TEvent]):
         event_info_msg = getattr(response, event.value.lower())
         # Note: MessageToDict's parameter names are different in different protobuf versions
         event_info_dict = MessageToDict(event_info_msg, True)
-        solver_event = SolverEvent(event.value)
-        event_info_cls = EventInfoBase.derived_classes.get(solver_event)
+        event_info_cls = EventInfoBase.derived_classes.get(event.name)
         # Key names can be different, but their order is the same
         return event_info_cls(*event_info_dict.values())
 
@@ -422,17 +421,15 @@ class EventsManager(Generic[TEvent]):
             try:
                 response = next(responses)
                 event_name = self._event_type(response.WhichOneof("as"))
+                event_info = self._construct_event_info(response, event_name)
                 with service._lock:
                     service._streaming = True
                     # error-code 0 from Fluent indicates server running without error
-                    if (
-                        event_name == self._event_type.FATAL_ERROR
-                        and response.errorevent.errorCode != 0
-                    ):
-                        error_message = response.errorevent.message.rstrip()
+                    if event_name.name == "FATAL_ERROR" and event_info.error_code != 0:
+                        error_message = event_info.message.rstrip()
                         network_logger.error(
                             f"gRPC - {error_message}, "
-                            f"errorCode {response.errorevent.errorCode}"
+                            f"errorCode {event_info.error_code}"
                         )
                         self._fluent_error_state.set("fatal", error_message)
                         continue
@@ -440,7 +437,7 @@ class EventsManager(Generic[TEvent]):
                     for callback in callbacks_map.values():
                         callback(
                             session=self._session,
-                            event_info=self._construct_event_info(response, event_name),
+                            event_info=event_info,
                         )
             except StopIteration:
                 break
@@ -511,10 +508,7 @@ class EventsManager(Generic[TEvent]):
             callback_to_call = EventsManager._make_callback_to_call(
                 callback, args, kwargs
             )
-            if event_name in [
-                SolverEvent.ITERATION_ENDED,
-                SolverEvent.TIMESTEP_ENDED,
-            ]:
+            if event_name.name in ["ITERATION_ENDED", "TIMESTEP_ENDED"]:
                 event_name, callback_to_call = (
                     self._register_solution_event_sync_callback(
                         event_name, callback_id, callback_to_call
@@ -603,17 +597,17 @@ class EventsManager(Generic[TEvent]):
 
     def _register_solution_event_sync_callback(
         self,
-        event_type: Literal[SolverEvent.ITERATION_ENDED, SolverEvent.TIMESTEP_ENDED],
+        event_type,
         callback_id: str,
         callback: Callable,
-    ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
+    ) -> tuple[TEvent, Callable]:
         unique_id: int = self._session._app_utilities.register_pause_on_solution_events(
             solution_event=event_type
         )
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
             if unique_id == int(event_info.level):
-                if event_type == SolverEvent.ITERATION_ENDED:
+                if event_type.name == "ITERATION_ENDED":
                     event_info = IterationEndedEventInfo(index=event_info.index)
                 else:
                     event_info = TimestepEndedEventInfo(
@@ -634,4 +628,4 @@ class EventsManager(Generic[TEvent]):
                     )
 
         self._sync_event_ids[callback_id] = unique_id
-        return SolverEvent.SOLUTION_PAUSED, on_pause
+        return self._event_type.SOLUTION_PAUSED, on_pause
