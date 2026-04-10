@@ -59,7 +59,10 @@ from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
     SolutionVariableService,
 )
-from ansys.fluent.core.services.transcript import TranscriptService
+from ansys.fluent.core.services.transcript import (
+    TranscriptService as TranscriptServiceV0,
+)
+from ansys.fluent.core.services.transcript_v1 import TranscriptService
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 
 _service_cls_by_name_v0 = {
@@ -77,7 +80,7 @@ _service_cls_by_name_v0 = {
     "reduction": ReductionV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
-    "transcript": TranscriptService,
+    "transcript": TranscriptServiceV0,
     "batch_ops": BatchOpsServiceV0,
     "field_data_streaming": FieldDataStreaming,
 }
