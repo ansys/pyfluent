@@ -80,18 +80,24 @@ def _normalize_file_session_scalar_options(
     node_value: bool | None,
     boundary_value: bool | None,
 ) -> tuple[bool, bool]:
-    """Normalize scalar options for FileSession face-based scalar data.
+    """Normalize scalar options for file-session scalar data.
 
-    FileSession scalar data comes from face values only. To avoid claiming nodal or
-    boundary-specific scalar data semantics that are not available from file reader
-    APIs, scalar requests are normalized to element location and boundaryValues=False.
+    Scalar data read from file sources is limited to face/element locations.
+    Nodal and boundary-specific scalar semantics are not available from file
+    reader APIs, so both options are overridden to ensure consistent behavior.
     """
-    if node_value is not False or boundary_value is not False:
+    if node_value is not False:
         warnings.warn(
-            "FileSession scalar data is face-based only. "
-            "Ignoring 'node_value' and 'boundary_value' and using "
-            "node_value=False, boundary_value=False.",
-            PyFluentDeprecationWarning,
+            "Scalar data from a file session is limited to face/element locations. "
+            "'node_value' will be overridden to False.",
+            UserWarning,
+            stacklevel=2,
+        )
+    if boundary_value is not False:
+        warnings.warn(
+            "Scalar data from a file session is limited to face/element locations. "
+            "'boundary_value' will be overridden to False.",
+            UserWarning,
             stacklevel=2,
         )
     return False, False
