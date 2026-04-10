@@ -20,26 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the events gRPC service of Fluent."""
+"""Batch RPC service (v1 proto API).
 
-from typing import List, Tuple
+All shared logic lives in batch_ops.py (v0). This module keeps only
+v1-specific proto and stub bindings required for compatibility.
+"""
 
-import grpc
+import ansys.api.fluent.v1 as api
+from ansys.api.fluent.v1 import batch_ops_pb2, batch_ops_pb2_grpc
+import ansys.fluent.core.services.batch_ops as _v0
 
-from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule
-from ansys.fluent.core.services.streaming import StreamingService
+network_logger = _v0.network_logger
 
 
-class EventsService(StreamingService):
-    """Class wrapping the events gRPC service of Fluent."""
+class BatchOpsService(_v0.BatchOpsService):
+    """Class wrapping methods in batch RPC service (v1 proto API)."""
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        """__init__ method of EventsService class."""
-        super().__init__(
-            stub=self._create_stub(channel),
-            metadata=metadata,
-        )
+    def _create_stub(self, intercept_channel):
+        """Create the v1 gRPC stub."""
+        return batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
 
-    def _create_stub(self, channel: grpc.Channel):
-        """Create the gRPC stub. Override in subclasses to use a different proto version."""
-        return EventsGrpcModule.EventsStub(channel)
+
+class BatchOps(_v0.BatchOps):
+    """Class to execute operations in batch in Fluent (v1 proto API)."""
+
+    _api_module = api
+    _proto_module = batch_ops_pb2

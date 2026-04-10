@@ -24,7 +24,8 @@
 
 from ansys.fluent.core.services.app_utilities import AppUtilities as AppUtilitiesV0
 from ansys.fluent.core.services.app_utilities_v1 import AppUtilities
-from ansys.fluent.core.services.batch_ops import BatchOpsService
+from ansys.fluent.core.services.batch_ops import BatchOpsService as BatchOpsServiceV0
+from ansys.fluent.core.services.batch_ops_v1 import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -32,7 +33,8 @@ from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
-from ansys.fluent.core.services.events import EventsService
+from ansys.fluent.core.services.events import EventsService as EventsServiceV0
+from ansys.fluent.core.services.events_v1 import EventsService
 from ansys.fluent.core.services.field_data import LiveFieldData as LiveFieldDataV0
 from ansys.fluent.core.services.field_data import _FieldInfo as _FieldInfoV0
 from ansys.fluent.core.services.field_data_v1 import LiveFieldData, _FieldInfo
@@ -67,7 +69,7 @@ _service_cls_by_name_v0 = {
     "tui": DatamodelService_TUI,
     "settings": SettingsServiceV0,
     "scheme_eval": SchemeEvalV0,
-    "events": EventsService,
+    "events": EventsServiceV0,
     "field_data": LiveFieldDataV0,
     "field_data_old": DeprecatedFieldData,
     "field_info": _FieldInfoV0,
@@ -76,7 +78,7 @@ _service_cls_by_name_v0 = {
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
     "transcript": TranscriptService,
-    "batch_ops": BatchOpsService,
+    "batch_ops": BatchOpsServiceV0,
     "field_data_streaming": FieldDataStreaming,
 }
 
