@@ -857,7 +857,9 @@ class FileFieldData(FieldDataSource):
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
-        _normalize_file_session_scalar_options(node_value, boundary_value)
+        node_value, boundary_value = _normalize_file_session_scalar_options(
+            node_value, boundary_value
+        )
         field_name = _to_scalar_field_name(field_name)
         surface_ids = self.get_surface_ids(surfaces=surfaces)
         scalar_data = {}
