@@ -41,7 +41,11 @@ from ansys.fluent.core.pyfluent_warnings import (
 )
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
-from ansys.fluent.core.services.field_data import FieldDataService, ZoneInfo
+from ansys.fluent.core.services.field_data import (
+    ZoneInfo,
+)
+from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
+from ansys.fluent.core.services.field_data_v1 import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
@@ -239,9 +243,14 @@ class BaseSession:
         else:
             self.events = None
 
-        self._field_data_service = self._fluent_connection.create_grpc_service(
-            FieldDataService, self._error_state
-        )
+        if fluent_connection._server_supports_v1:
+            self._field_data_service = self._fluent_connection.create_grpc_service(
+                FieldDataService, self._error_state
+            )
+        else:
+            self._field_data_service = self._fluent_connection.create_grpc_service(
+                FieldDataServiceV0, self._error_state
+            )
 
         self.fields = Fields(
             self, get_zones_info, fluent_connection._server_supports_v1
