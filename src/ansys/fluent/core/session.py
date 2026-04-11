@@ -202,9 +202,9 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = service_creator("transcript").create(
-            fluent_connection._channel, fluent_connection._metadata
-        )
+        self._transcript_service = service_creator(
+            "transcript", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
         if fluent_connection._server_supports_v1:
             self.transcript = Transcript(self._transcript_service)
         else:
@@ -237,14 +237,14 @@ class BaseSession:
         self._datamodel_events = DatamodelEvents(self._datamodel_service_se)
         self._datamodel_events.start()
 
-        self._batch_ops_service = service_creator("batch_ops").create(
-            fluent_connection._channel, fluent_connection._metadata
-        )
+        self._batch_ops_service = service_creator(
+            "batch_ops", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
 
         if event_type:
-            events_service = service_creator("events").create(
-                fluent_connection._channel, fluent_connection._metadata
-            )
+            events_service = service_creator(
+                "events", supports_v1=fluent_connection._server_supports_v1
+            ).create(fluent_connection._channel, fluent_connection._metadata)
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
                     event_type, events_service, self._error_state, weakref.proxy(self)
@@ -270,7 +270,9 @@ class BaseSession:
             self, get_zones_info, fluent_connection._server_supports_v1
         )
 
-        self._settings_service = service_creator("settings").create(
+        self._settings_service = service_creator(
+            "settings", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,

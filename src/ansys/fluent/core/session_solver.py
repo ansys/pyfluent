@@ -148,9 +148,9 @@ class Solver(BaseSession):
         self._fluent_version = None
         self._bg_session_threads = []
         self._launcher_args = launcher_args
-        self._solution_variable_service = service_creator("svar").create(
-            fluent_connection._channel, fluent_connection._metadata
-        )
+        self._solution_variable_service = service_creator(
+            "svar", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
         self.fields.solution_variable_info = SolutionVariableInfo(
             self._solution_variable_service
         )

@@ -407,6 +407,14 @@ class EventsManager(Generic[TEvent]):
         # Note: MessageToDict's parameter names are different in different protobuf versions
         event_info_dict = MessageToDict(event_info_msg, True)
         event_info_cls = EventInfoBase.derived_classes.get(event.name)
+        # Some event-info classes intentionally have no fields. Instantiate them without payload.
+        dataclass_fields = getattr(event_info_cls, "__dataclass_fields__", None)
+        if (
+            dataclass_fields is None
+            or len(dataclass_fields) == 0
+            or not event_info_dict
+        ):
+            return event_info_cls()
         # Key names can be different, but their order is the same
         return event_info_cls(*event_info_dict.values())
 
