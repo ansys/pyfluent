@@ -247,11 +247,19 @@ class BaseSession:
             ).create(fluent_connection._channel, fluent_connection._metadata)
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
-                    event_type, events_service, self._error_state, weakref.proxy(self)
+                    event_type,
+                    events_service,
+                    self._error_state,
+                    weakref.proxy(self),
+                    server_supports_v1=True,
                 )
             else:
                 self.events = EventsManagerV0[event_type](
-                    event_type, events_service, self._error_state, weakref.proxy(self)
+                    event_type,
+                    events_service,
+                    self._error_state,
+                    weakref.proxy(self),
+                    server_supports_v1=False,
                 )
             self.events.start()
         else:
