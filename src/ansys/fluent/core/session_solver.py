@@ -28,7 +28,8 @@ from typing import Any, Dict
 import warnings
 import weakref
 
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
+from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.module_config import config
@@ -248,11 +249,11 @@ class Solver(BaseSession):
         for (
             zone_info
         ) in self.fields.solution_variable_info.get_zones_info()._zones_info.values():
-            zone_type = (
-                ZoneType.CELL
-                if zone_info.thread_type == SvarProtoModule.ThreadType.CELL_THREAD
-                else ZoneType.FACE
-            )
+            is_cell_thread = zone_info.thread_type in {
+                SvarProtoModuleV0.ThreadType.CELL_THREAD,
+                SvarProtoModule.ThreadType.THREAD_TYPE_CELL,
+            }
+            zone_type = ZoneType.CELL if is_cell_thread else ZoneType.FACE
             zones_info.append(
                 ZoneInfo(
                     _id=zone_info.zone_id, name=zone_info.name, zone_type=zone_type
