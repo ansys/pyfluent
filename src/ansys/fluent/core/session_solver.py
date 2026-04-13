@@ -39,6 +39,12 @@ from ansys.fluent.core.services.reduction import Reduction as ReductionV0
 from ansys.fluent.core.services.reduction import ReductionService as ReductionServiceV0
 from ansys.fluent.core.services.reduction_v1 import Reduction, ReductionService
 from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData as SolutionVariableDataV0,
+)
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableInfo as SolutionVariableInfoV0,
+)
+from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
@@ -151,20 +157,25 @@ class Solver(BaseSession):
         self._solution_variable_service = service_creator(
             "svar", supports_v1=fluent_connection._server_supports_v1
         ).create(fluent_connection._channel, fluent_connection._metadata)
-        self.fields.solution_variable_info = SolutionVariableInfo(
-            self._solution_variable_service
-        )
         if fluent_connection._server_supports_v1:
             self._reduction_service = self._fluent_connection.create_grpc_service(
                 ReductionService, self._error_state
             )
             self.fields.reduction = Reduction(self._reduction_service, self)
+            self.fields.solution_variable_info = SolutionVariableInfo(
+                self._solution_variable_service
+            )
         else:
             self._reduction_service = self._fluent_connection.create_grpc_service(
                 ReductionServiceV0, self._error_state
             )
             self.fields.reduction = ReductionV0(self._reduction_service, self)
-        self.fields.solution_variable_data = self._solution_variable_data()
+            self.fields.solution_variable_info = SolutionVariableInfoV0(
+                self._solution_variable_service
+            )
+        self.fields.solution_variable_data = self._solution_variable_data(
+            fluent_connection._server_supports_v1
+        )
 
         monitors_service = service_creator("monitors").create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
@@ -192,9 +203,11 @@ class Solver(BaseSession):
             weakref.WeakMethod(self._stop_bg_sessions), at_start=True
         )
 
-    def _solution_variable_data(self) -> SolutionVariableData:
+    def _solution_variable_data(
+        self, supports_v1: bool
+    ) -> SolutionVariableDataV0 | SolutionVariableData:
         """Return the SolutionVariableData handle."""
-        return service_creator("svar_data").create(
+        return service_creator("svar_data", supports_v1=supports_v1).create(
             self._solution_variable_service, self.fields.solution_variable_info
         )
 
