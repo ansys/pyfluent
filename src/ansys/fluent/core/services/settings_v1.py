@@ -26,6 +26,7 @@ All shared logic lives in settings.py (v0). This module keeps only
 v1-specific proto and stub bindings required for compatibility.
 """
 
+from ansys.api.fluent.v1 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v1 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.settings import (
     _SettingsServiceImpl as _SettingsServiceImplV0,
@@ -45,6 +46,7 @@ class SettingsService(_SettingsServiceV0):
     """Service for accessing and modifying Fluent settings (v1 proto API)."""
 
     _list_field: str = "lsts"
+    _settings_module = SettingsModule
 
     def _create_service_impl(self, channel, metadata, fluent_error_state):
         """Create the v1 settings service implementation."""
