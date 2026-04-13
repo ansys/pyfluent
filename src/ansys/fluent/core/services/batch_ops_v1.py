@@ -26,6 +26,9 @@ All shared logic lives in batch_ops.py (v0). This module keeps only
 v1-specific proto and stub bindings required for compatibility.
 """
 
+import importlib
+import pkgutil
+
 import ansys.api.fluent.v1 as api
 from ansys.api.fluent.v1 import batch_ops_pb2, batch_ops_pb2_grpc
 import ansys.fluent.core.services.batch_ops as _v0
@@ -44,5 +47,18 @@ class BatchOpsService(_v0.BatchOpsService):
 class BatchOps(_v0.BatchOps):
     """Class to execute operations in batch in Fluent (v1 proto API)."""
 
+    @staticmethod
+    def _load_proto_modules():
+        """Load v1 proto modules exposing DESCRIPTOR for batch support checks."""
+        proto_modules = []
+        for module_info in pkgutil.iter_modules(api.__path__, api.__name__ + "."):
+            if not module_info.name.endswith("_pb2"):
+                continue
+            module = importlib.import_module(module_info.name)
+            if hasattr(module, "DESCRIPTOR"):
+                proto_modules.append(module)
+        return proto_modules
+
     _api_module = api
     _proto_module = batch_ops_pb2
+    _proto_files = _load_proto_modules.__func__()

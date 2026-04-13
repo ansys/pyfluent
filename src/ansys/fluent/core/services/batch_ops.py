@@ -24,6 +24,7 @@
 
 import inspect
 import logging
+import sys
 from types import ModuleType
 from typing import TypeVar
 import weakref
@@ -131,10 +132,20 @@ class BatchOps:
                 request_body=request_body,
             )
             if not owner_cls._proto_files:
-                owner_cls._proto_files = [
+                owner_proto_files = [
                     x[1]
                     for x in inspect.getmembers(owner_cls._api_module, inspect.ismodule)
                     if hasattr(x[1], "DESCRIPTOR")
+                ]
+                loaded_proto_files = [
+                    module
+                    for name, module in sys.modules.items()
+                    if name.endswith("_pb2") and hasattr(module, "DESCRIPTOR")
+                ]
+                owner_cls._proto_files = owner_proto_files + [
+                    module
+                    for module in loaded_proto_files
+                    if module not in owner_proto_files
                 ]
             self._supported = False
             self.response_cls = None
