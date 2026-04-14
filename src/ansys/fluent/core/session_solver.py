@@ -246,13 +246,20 @@ class Solver(BaseSession):
 
     def _get_zones_info(self) -> list[ZoneInfo]:
         zones_info = []
+        # v0 ThreadType: CELL_THREAD=0, FACE_THREAD=1
+        # v1 ThreadType: THREAD_TYPE_CELL=1, THREAD_TYPE_FACE=2
+        # WARNING: v0 FACE_THREAD and v1 THREAD_TYPE_CELL share the numeric value 1.
+        # Never compare thread_type values from both proto versions in the same
+        # expression — pick one constant based on the active API version.
+        cell_thread_type = (
+            SvarProtoModule.ThreadType.THREAD_TYPE_CELL
+            if self._fluent_connection._server_supports_v1
+            else SvarProtoModuleV0.ThreadType.CELL_THREAD
+        )
         for (
             zone_info
         ) in self.fields.solution_variable_info.get_zones_info()._zones_info.values():
-            is_cell_thread = zone_info.thread_type in {
-                SvarProtoModuleV0.ThreadType.CELL_THREAD,
-                SvarProtoModule.ThreadType.THREAD_TYPE_CELL,
-            }
+            is_cell_thread = zone_info.thread_type == cell_thread_type
             zone_type = ZoneType.CELL if is_cell_thread else ZoneType.FACE
             zones_info.append(
                 ZoneInfo(

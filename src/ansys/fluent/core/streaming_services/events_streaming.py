@@ -69,8 +69,18 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 def _missing_for_events(cls, value):
+    # Top-level imports can expose the v0 or v1 event enums depending on how
+    # the package was imported. Accept equivalent enum members from either
+    # version by matching on the stable enum name first.
+    if isinstance(value, Enum):
+        for member in cls:
+            if member.name == value.name:
+                return member
+        value = value.value
+    # Fall back to value-based matching for string inputs and for cross-version
+    # enum values whose wire names differ only by case or naming convention.
     for member in cls:
-        if member.value.lower() == value:
+        if member.value.lower() == str(value).lower():
             return member
     raise ValueError(f"'{value}' is not a supported '{cls.__name__}'.")
 
