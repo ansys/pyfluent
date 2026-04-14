@@ -86,7 +86,7 @@ from ansys.fluent.core.solver import (
     PressureInlet,
     PressureOutlet,
     Residual,
-    RunCalculation,    git apply --check -p1 C:\ANSYSDev\pyfluent\the-patch.utf8.diff    git apply --check -p1 C:\ANSYSDev\pyfluent\the-patch.utf8.diff    Get-Content C:\ANSYSDev\pyfluent\patch.patch -TotalCount 60    Get-Content C:\ANSYSDev\pyfluent\patch.patch -TotalCount 60write_case_data
+    RunCalculation,
 )
 from ansys.units import VariableCatalog
 from ansys.units.common import Pa, kg, m, s
