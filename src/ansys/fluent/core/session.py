@@ -48,6 +48,9 @@ from ansys.fluent.core.services.field_data import FieldDataService as FieldDataS
 from ansys.fluent.core.services.field_data_v1 import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
+    DatamodelEvents as DatamodelEventsV0,
+)
+from ansys.fluent.core.streaming_services.datamodel_event_streaming_v1 import (
     DatamodelEvents,
 )
 from ansys.fluent.core.streaming_services.events_streaming import (
@@ -226,7 +229,9 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = service_creator("datamodel").create(
+        self._datamodel_service_se = service_creator(
+            "datamodel", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.get_fluent_version(),
@@ -234,7 +239,11 @@ class BaseSession:
             self._file_transfer_service,
         )
 
-        self._datamodel_events = DatamodelEvents(self._datamodel_service_se)
+        self._datamodel_events = (
+            DatamodelEvents(self._datamodel_service_se)
+            if fluent_connection._server_supports_v1
+            else DatamodelEventsV0(self._datamodel_service_se)
+        )
         self._datamodel_events.start()
 
         self._batch_ops_service = service_creator(

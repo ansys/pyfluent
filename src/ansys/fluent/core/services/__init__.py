@@ -27,6 +27,9 @@ from ansys.fluent.core.services.app_utilities_v1 import AppUtilities
 from ansys.fluent.core.services.batch_ops import BatchOpsService as BatchOpsServiceV0
 from ansys.fluent.core.services.batch_ops_v1 import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
+    DatamodelService as DatamodelService_SE_V0,
+)
+from ansys.fluent.core.services.datamodel_se_v1 import (
     DatamodelService as DatamodelService_SE,
 )
 from ansys.fluent.core.services.datamodel_tui import (
@@ -73,7 +76,7 @@ from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
 _service_cls_by_name_v0 = {
     "app_utilities": AppUtilitiesV0,
     "health_check": HealthCheckServiceV0,
-    "datamodel": DatamodelService_SE,
+    "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI,
     "settings": SettingsServiceV0,
     "scheme_eval": SchemeEvalV0,
