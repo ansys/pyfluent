@@ -1,0 +1,36 @@
+{
+    "fluent_debug": {
+        "type": "bool",
+        "fluent_map": {
+            "true": "_debug",
+            "false": ""
+        },
+        "fluent_format": "{}"
+    },
+    "py": {
+        "type": "bool",
+        "default": "null",
+        "fluent_required": false,
+        "fluent_map": {
+            "true": " -py",
+            "false": ""
+        },
+        "fluent_format": "{}"
+    },
+    "scheduler": {
+        "type": "str",
+        "fluent_format": " -scheduler={}"
+    },
+    "scheduler_headnode": {
+        "type": "str",
+        "fluent_format": " -scheduler_headnode={}"
+    },
+    "scheduler_queue": {
+        "type": "str",
+        "fluent_format": " -scheduler_queue={}"
+    },
+    "scheduler_account": {
+        "type": "str",
+        "fluent_format": " -scheduler_account={}"
+    }
+}

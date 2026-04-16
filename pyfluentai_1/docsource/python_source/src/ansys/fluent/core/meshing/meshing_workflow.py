@@ -1,0 +1,388 @@
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Meshing workflow specialization of the Workflow module that wraps and extends the
+core functionality."""
+
+from __future__ import annotations
+
+from enum import Enum
+import os
+
+from ansys.fluent.core._types import PathType
+from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.workflow import Workflow
+
+name_to_identifier_map = {
+    "Watertight Geometry": "EnableCleanCAD",
+    "Fault-tolerant Meshing": "EnableComplexMeshing",
+    "2D Meshing": "EnablePrime2dMeshing",
+    "Topology Based Meshing": "EnablePrimeMeshing",
+}
+
+
+class MeshingWorkflow(Workflow):
+    """Provides meshing specialization of the workflow wrapper that extends the core
+    functionality in an object-oriented manner."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        name: str,
+        identifier: str,
+        fluent_version: FluentVersion,
+        initialize: bool = True,
+    ) -> None:
+        """Initialize MeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        name: str
+            Workflow name to initialize it.
+        identifier: str
+            Workflow name to identify it from global settings.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+        self._name = name
+        self._identifier = identifier
+        self._unsubscribe_root_affected_callback()
+        if initialize:
+            self._new_workflow(name=self._name)
+        else:
+            self._activate_dynamic_interface(dynamic_interface=True)
+        self._initialized = True
+
+    def __getattribute__(self, item: str):
+        if (
+            not item.startswith("_")
+            and super().__getattribute__("_initialized")
+            and not getattr(self._meshing.GlobalSettings, self._identifier)()
+        ):
+            raise RuntimeError(
+                f"'{self._name}' objects are inaccessible from other workflows."
+            )
+        return super().__getattribute__(item)
+
+
+class WatertightMeshingWorkflow(MeshingWorkflow):
+    """Provides watertight meshing specialization of the workflow wrapper."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        fluent_version: FluentVersion,
+        initialize: bool = True,
+    ) -> None:
+        """Initialize WatertightMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
+        """
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="Watertight Geometry",
+            identifier=name_to_identifier_map["Watertight Geometry"],
+            fluent_version=fluent_version,
+            initialize=initialize,
+        )
+
+
+class FaultTolerantMeshingWorkflow(MeshingWorkflow):
+    """Provides fault-tolerant meshing specialization of the workflow wrapper."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        part_management: PyMenuGeneric,
+        pm_file_management: PyMenuGeneric,
+        fluent_version: FluentVersion,
+        initialize: bool = True,
+    ) -> None:
+        """Initialize FaultTolerantMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        part_management : PyMenuGeneric
+            Part management object.
+        pm_file_management : PyMenuGeneric
+            File management object in the part management object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
+        """
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="Fault-tolerant Meshing",
+            identifier=name_to_identifier_map["Fault-tolerant Meshing"],
+            fluent_version=fluent_version,
+            initialize=initialize,
+        )
+        self._part_management = part_management
+        self._pm_file_management = pm_file_management
+
+    @property
+    def part_management(self) -> PyMenuGeneric | None:
+        """Access part-management in fault-tolerant mode.
+
+        Returns
+        -------
+        PyMenuGeneric | None
+            Part-management.
+        """
+        return self._part_management
+
+    @property
+    def pm_file_management(self):
+        """Access the part-management file-management object in fault-tolerant mode.
+
+        Returns
+        -------
+        PyMenuGeneric | None
+            File management object in the part management object.
+        """
+        return self._pm_file_management
+
+
+class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
+    """Provides 2D meshing specialization of the workflow wrapper."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        fluent_version: FluentVersion,
+        initialize: bool = True,
+    ) -> None:
+        """Initialize TwoDimensionalMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
+        """
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="2D Meshing",
+            identifier=name_to_identifier_map["2D Meshing"],
+            fluent_version=fluent_version,
+            initialize=initialize,
+        )
+
+
+class TopologyBasedMeshingWorkflow(MeshingWorkflow):
+    """Provides topology-based meshing specialization of the workflow wrapper."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        fluent_version: FluentVersion,
+        initialize: bool = True,
+    ) -> None:
+        """Initialize TopologyBasedMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
+        """
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="Topology Based Meshing",
+            identifier=name_to_identifier_map["Topology Based Meshing"],
+            fluent_version=fluent_version,
+            initialize=initialize,
+        )
+
+
+class WorkflowMode(Enum):
+    """Provides an enum of supported Fluent meshing workflow modes."""
+
+    WATERTIGHT_MESHING_MODE = WatertightMeshingWorkflow
+    FAULT_TOLERANT_MESHING_MODE = FaultTolerantMeshingWorkflow
+    TWO_DIMENSIONAL_MESHING_MODE = TwoDimensionalMeshingWorkflow
+    TOPOLOGY_BASED_MESHING_MODE = TopologyBasedMeshingWorkflow
+
+
+class LoadWorkflow(Workflow):
+    """Provides a specialization of the workflow wrapper for a loaded workflow."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        file_path: PathType,
+        fluent_version: FluentVersion,
+    ) -> None:
+        """Initialize a ``LoadWorkflow`` instance.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        file_path: os.PathLike[str | bytes] | str | bytes
+            Path to the saved workflow file.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+        self._unsubscribe_root_affected_callback()
+        self._load_workflow(file_path=os.fspath(file_path))
+
+
+class CreateWorkflow(Workflow):
+    """Provides a specialization of the workflow wrapper for a newly created
+    workflow."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        fluent_version: FluentVersion,
+        initialize: bool = True,
+    ) -> None:
+        """Initialize a ``CreateWorkflow`` instance.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+        self._unsubscribe_root_affected_callback()
+        if initialize:
+            self._create_workflow()
+        else:
+            self._activate_dynamic_interface(dynamic_interface=True)
+
+
+def _is_workflow_active(meshing_root, name: str):
+    return getattr(meshing_root.GlobalSettings, name_to_identifier_map[name])()
+
+
+def _get_current_workflow(current_workflow, name: str):
+    if current_workflow and current_workflow._name == name:
+        return current_workflow
+
+
+def get_current_workflow(
+    meshing_root, current_workflow, workflow_factories
+) -> Workflow:
+    """Get the currently active meshing workflow (legacy mode).
+
+    Determines which workflow type is currently active by checking GlobalSettings
+    flags, and returns the appropriate workflow instance. This is the legacy
+    implementation.
+
+    Parameters
+    ----------
+    meshing_root : PyMenuGeneric
+        Root meshing datamodel object containing GlobalSettings and workflow state.
+    current_workflow : Workflow or None
+        Currently cached workflow instance (may be None or outdated).
+    workflow_factories : dict[str, callable]
+        Mapping of workflow type names to factory functions that create workflow instances.
+
+    Returns
+    -------
+    Workflow
+        The currently active workflow instance (either cached or newly created).
+
+    Raises
+    ------
+    RuntimeError
+        If no workflow is initialized (both watertight and fault-tolerant are active).
+
+    """
+    if _is_workflow_active(meshing_root, "Watertight Geometry") and _is_workflow_active(
+        meshing_root, "Fault-tolerant Meshing"
+    ):
+        raise RuntimeError("No workflow initialized.")
+
+    # Find active workflow type
+    for workflow_name, factory in workflow_factories.items():
+        if _is_workflow_active(meshing_root, workflow_name):
+            return _get_current_workflow(current_workflow, workflow_name) or factory(
+                initialize=False, legacy=True
+            )
+    # Default to create_workflow if no specific type matches
+    return _get_current_workflow(current_workflow, "Create New") or workflow_factories[
+        "Create New"
+    ](initialize=False, legacy=True)

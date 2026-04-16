@@ -1,0 +1,45 @@
+# Used to configure PyFluent logging to file
+# More logging examples and references:
+# https://docs.python.org/3/howto/logging.html
+# https://docs.python.org/3/howto/logging-cookbook.html
+# https://docs.python.org/3/library/logging.html#logging-levels
+# https://gist.github.com/kingspp/9451566a5555fb022215ca2b7b802f19
+
+version: 1
+disable_existing_loggers: no
+
+formatters:
+  logfile_fmt:
+    format: "%(asctime)s %(name)-21s %(levelname)-8s %(message)s"
+
+handlers:
+  pyfluent_file:
+    class: logging.handlers.RotatingFileHandler
+    level: NOTSET #  no log level filtering on this handler, message log levels are managed by the loggers instead
+    formatter: logfile_fmt
+    filename: "pyfluent.log"
+    maxBytes: 10485760 # 10 Megabytes
+    backupCount: 9 # if .log file size > maxBytes, roll over to another file .log.1, then .log.2, and so on
+
+loggers:
+  pyfluent.general:
+    level: DEBUG
+    handlers: [pyfluent_file]
+  pyfluent.datamodel:
+    level: DEBUG
+    handlers: [pyfluent_file]
+  pyfluent.tui:
+    level: DEBUG
+    handlers: [pyfluent_file]
+  pyfluent.settings_api:
+    level: DEBUG
+    handlers: [pyfluent_file]
+  pyfluent.launcher:
+    level: DEBUG
+    handlers: [pyfluent_file]
+  pyfluent.networking:
+    level: DEBUG
+    handlers: [pyfluent_file]
+  pyfluent.field_data:
+    level: DEBUG
+    handlers: [pyfluent_file]

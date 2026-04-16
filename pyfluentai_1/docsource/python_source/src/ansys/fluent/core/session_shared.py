@@ -1,0 +1,80 @@
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""Provides a module for codegen messages."""
+
+import logging
+
+from ansys.fluent.core.module_config import config
+from ansys.fluent.core.pyfluent_warnings import warning_for_fluent_dev_version
+from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+from ansys.fluent.core.services.datamodel_tui import TUIMenu
+from ansys.fluent.core.utils import load_module
+
+_CODEGEN_MSG_DATAMODEL = (
+    "Currently calling the datamodel API in a generic manner. "
+    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
+    "directory to generate the local datamodel API classes."
+)
+
+_CODEGEN_MSG_TUI = (
+    "Currently calling the TUI commands in a generic manner. "
+    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
+    "directory to generate the local TUI commands classes."
+)
+
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
+tui_logger = logging.getLogger("pyfluent.tui")
+
+
+def _make_tui_module(session, module_name):
+    try:
+        tui_module = load_module(
+            f"{module_name}_tui_{session._version}",
+            config.codegen_outdir / module_name / f"tui_{session._version}.py",
+        )
+        warning_for_fluent_dev_version(session._version)
+        return tui_module.main_menu(
+            session._tui_service, session._version, module_name, []
+        )
+    except (ImportError, FileNotFoundError) as ex:
+        tui_logger.debug(ex)
+        tui_logger.warning(_CODEGEN_MSG_TUI)
+        return TUIMenu(session._tui_service, session._version, module_name, [])
+
+
+def _make_datamodel_module(session, module_name):
+    try:
+        from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
+
+        file_name = datamodel_file_name_map[module_name]
+        module = load_module(
+            f"{module_name}_{session._version}",
+            config.codegen_outdir / f"datamodel_{session._version}" / f"{file_name}.py",
+        )
+        warning_for_fluent_dev_version(session._version)
+        return module.Root(session._se_service, module_name, [])
+    except (ImportError, FileNotFoundError) as ex:
+        datamodel_logger.debug(ex)
+        datamodel_logger.warning("Generated API not found for %s.", module_name)
+        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
+        return PyMenuGeneric(session._se_service, module_name)
