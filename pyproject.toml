@@ -8,14 +8,14 @@ name = "ansys-fluent-core"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
 requires-python = ">=3.10,<3.15"
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 maintainers = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: OS Independent"
 ]
 dependencies = [
     "ansys-api-fluent>=0.3.37",
@@ -32,7 +32,7 @@ dependencies = [
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
-    "pyyaml>=6.0",
+    "pyyaml>=6.0"
 ]
 dynamic = ["version"]
 
@@ -74,7 +74,7 @@ docs = [
     "python-pptx>=0.6.23",
     "quarto-cli==1.8.27",
     "pdf2image==1.17.0",
-    "seaborn>=0.13.2",
+    "seaborn>=0.13.2"
 ]
 
 [tool.flit.module]
@@ -135,7 +135,7 @@ ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 in-place = "true"
 exclude = [
     "tests/",
-    "src/ansys/fluent/core/generated/",
+    "src/ansys/fluent/core/generated/"
 ]
 black = "true"
 non-cap = [
@@ -158,7 +158,7 @@ non-cap = [
 [tool.coverage.run]
 source = ["ansys/fluent"]
 omit = [
-    "*/ansys/fluent/core/generated/*",
+    "*/ansys/fluent/core/generated/*"
 ]
 
 [tool.coverage.report]
@@ -221,5 +221,5 @@ skips = [
     "B602",
     "B603",
     "B604",
-    "B607",
-    ]
+    "B607"
+]
