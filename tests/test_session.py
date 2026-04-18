@@ -519,6 +519,17 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
     assert "solverworkflow" not in dir(new_solver_session)
 
 
+@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.parametrize(
+    "session_fixture_name",
+    ["new_solver_session", "new_meshing_session"],
+)
+def test_server_supports_v1_by_version(session_fixture_name, request):
+    fluent_session = request.getfixturevalue(session_fixture_name)
+    expected = fluent_session.get_fluent_version() >= FluentVersion.v271
+    assert fluent_session._fluent_connection._server_supports_v1 is expected
+
+
 @pytest.mark.standalone
 @pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode():

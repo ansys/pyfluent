@@ -63,7 +63,7 @@ def _convert_py_value_to_scheme_pointer(
             _convert_py_value_to_scheme_pointer(item, p.list.items.add(), version)
     elif isinstance(val, dict):
         for k, v in val.items():
-            item = p.list.item.add()
+            item = p.list.items.add()
             _convert_py_value_to_scheme_pointer(k, item.pair.car, version)
             _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
 
