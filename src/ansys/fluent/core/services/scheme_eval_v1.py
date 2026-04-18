@@ -36,7 +36,6 @@ from ansys.fluent.core.services.scheme_eval import (
 )
 from ansys.fluent.core.services.scheme_eval import (  # noqa: F401 - re-exported for consumers
     Symbol,
-    _convert_scheme_pointer_to_py_value,
 )
 from ansys.fluent.core.services.scheme_eval import SchemeEval as _SchemeEvalV0
 
@@ -66,6 +65,42 @@ def _convert_py_value_to_scheme_pointer(
             item = p.list.items.add()
             _convert_py_value_to_scheme_pointer(k, item.pair.car, version)
             _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
+
+
+def _convert_scheme_pointer_to_py_value(p: SchemePointer, version: str) -> Any:
+    """Convert Scheme pointer to Python datatype for v1 proto."""
+    if p.HasField("b"):
+        return p.b
+    elif p.HasField("fixednum"):
+        return p.fixednum
+    elif p.HasField("flonum"):
+        return p.flonum
+    elif p.HasField("c"):
+        return p.c
+    elif p.HasField("str"):
+        return p.str
+    elif p.HasField("sym"):
+        return Symbol(p.sym)
+    elif p.HasField("pair"):
+        car = _convert_scheme_pointer_to_py_value(p.pair.car, version)
+        cdr = _convert_scheme_pointer_to_py_value(p.pair.cdr, version)
+        return (car,) if cdr is None else (car, cdr)
+    elif p.HasField("list"):
+        is_dict = all(item.HasField("pair") for item in p.list.items)
+        if is_dict:
+            return {
+                _convert_scheme_pointer_to_py_value(
+                    item.pair.car, version
+                ): _convert_scheme_pointer_to_py_value(item.pair.cdr, version)
+                for item in p.list.items
+            }
+        else:
+            return [
+                _convert_scheme_pointer_to_py_value(item, version)
+                for item in p.list.items
+            ]
+
+    return None
 
 
 class SchemeEvalService(_SchemeEvalServiceV0):
