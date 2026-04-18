@@ -221,7 +221,9 @@ class BaseSession:
 
         self.journal = Journal(self._app_utilities)
 
-        self._datamodel_service_tui = service_creator("tui").create(
+        self._datamodel_service_tui = service_creator(
+            "tui", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,

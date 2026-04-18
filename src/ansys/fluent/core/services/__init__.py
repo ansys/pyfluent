@@ -33,6 +33,9 @@ from ansys.fluent.core.services.datamodel_se_v1 import (
     DatamodelService as DatamodelService_SE,
 )
 from ansys.fluent.core.services.datamodel_tui import (
+    DatamodelService as DatamodelService_TUI_V0,
+)
+from ansys.fluent.core.services.datamodel_tui_v1 import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
@@ -77,7 +80,7 @@ _service_cls_by_name_v0 = {
     "app_utilities": AppUtilitiesV0,
     "health_check": HealthCheckServiceV0,
     "datamodel": DatamodelService_SE_V0,
-    "tui": DatamodelService_TUI,
+    "tui": DatamodelService_TUI_V0,
     "settings": SettingsServiceV0,
     "scheme_eval": SchemeEvalV0,
     "events": EventsServiceV0,
