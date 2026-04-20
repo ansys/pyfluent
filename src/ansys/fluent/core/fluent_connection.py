@@ -59,10 +59,18 @@ from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
-    AppUtilitiesService,
+)
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesService as AppUtilitiesServiceV0,
+)
+from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesV252,
 )
-from ansys.fluent.core.services.scheme_eval import SchemeEvalService
+from ansys.fluent.core.services.app_utilities_v1 import AppUtilitiesService
+from ansys.fluent.core.services.scheme_eval import (
+    SchemeEvalService as SchemeEvalServiceV0,
+)
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -354,13 +362,23 @@ def _get_channel(
 
 class _ConnectionInterface:
     def __init__(self, create_grpc_service, error_state, supports_v1):
-        self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
+        if supports_v1:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalService, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesService, error_state
+            )
+        else:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalServiceV0, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesServiceV0, error_state
+            )
         self.scheme_eval = service_creator(
             "scheme_eval", supports_v1=supports_v1
         ).create(self._scheme_eval_service)
-        self._app_utilities_service = create_grpc_service(
-            AppUtilitiesService, error_state
-        )
         match FluentVersion(self.scheme_eval.version):
             case v if v < FluentVersion.v252:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
