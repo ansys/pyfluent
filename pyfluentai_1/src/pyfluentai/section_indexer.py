@@ -38,5 +38,5 @@ class SectionIndexer:
             self.doc_dir,
             self.persist_dir,
             lambda docs: build_section_documents(docs),
-            file_name_key_name='source_file'
+            file_name_key_name="source_file",
         )

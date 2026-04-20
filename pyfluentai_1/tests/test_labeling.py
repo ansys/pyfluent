@@ -1,6 +1,5 @@
 from pyfluentai.labeling import build_relation_edges, parse_rst_sections
 
-
 SAMPLE_RST = """.. _ref_launch:
 
 Launching Fluent

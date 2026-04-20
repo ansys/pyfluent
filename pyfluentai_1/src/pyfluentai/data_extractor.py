@@ -4,7 +4,11 @@ from typing import Any
 
 from pyfluentai._constants import FETCH_K
 from pyfluentai.prompt_generator import build_llm_messages
-from pyfluentai.reranker import CrossEncoderRerankerWithMetadataBoost, NoOpReranker, Reranker
+from pyfluentai.reranker import (
+    CrossEncoderRerankerWithMetadataBoost,
+    NoOpReranker,
+    Reranker,
+)
 from pyfluentai.retriever import PyFluentRetriever
 from pyfluentai.section_indexer import SectionIndexer
 
@@ -18,7 +22,6 @@ PERSIST_DIR = ROOT / "pyfluent_index" / "SectionIndexer"
 
 class DataExtractor:
     """Extract query results into a compact ordered dictionary payload."""
-
 
     def __init__(
         self,
@@ -64,13 +67,13 @@ class DataExtractor:
         baseline = self._retriever.retrieve(query)
         reranked = self._re_ranker.rerank(query, baseline)
         return self._build_payload(reranked)
-    
+
     def extract(self, query: str) -> list[dict[str, str]]:
         return build_llm_messages(
             user_query=query,
             ordered_results=self._extract(query),
         )
-    
+
     def update_re_ranker(self, re_ranker: Reranker) -> None:
         """Update the reranker used for post-retrieval processing."""
         self._re_ranker = re_ranker

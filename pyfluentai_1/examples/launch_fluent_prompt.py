@@ -1,7 +1,14 @@
-from llama_index.core import SimpleDirectoryReader, VectorStoreIndex, Settings, StorageContext, load_index_from_storage
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.core.node_parser import SentenceSplitter
 import os
+
+from llama_index.core import (
+    Settings,
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+    load_index_from_storage,
+)
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 PERSIST_DIR = "./pyfluent_index"
 
@@ -23,7 +30,8 @@ else:
             "contributing_contents.rst",
             "sg_execution_times.rst",
             "index.rst",
-            "*_contents.rst"]
+            "*_contents.rst",
+        ],
     ).load_data()
 
     splitter = SentenceSplitter(chunk_size=512, chunk_overlap=50)
@@ -32,14 +40,15 @@ else:
     MIN_CHARS = 300
     file_total_chars = {}
     for node in nodes:
-        fname = node.metadata['file_name']
+        fname = node.metadata["file_name"]
         file_total_chars[fname] = file_total_chars.get(fname, 0) + len(node.text)
 
     stub_files = {fname for fname, total in file_total_chars.items() if total < 1000}
 
     filtered_nodes = [
-        node for node in nodes
-        if len(node.text) >= MIN_CHARS or node.metadata['file_name'] in stub_files
+        node
+        for node in nodes
+        if len(node.text) >= MIN_CHARS or node.metadata["file_name"] in stub_files
     ]
 
     index = VectorStoreIndex(filtered_nodes)

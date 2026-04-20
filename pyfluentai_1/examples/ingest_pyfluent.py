@@ -11,7 +11,8 @@ documents = SimpleDirectoryReader(
         "contributing_contents.rst",
         "sg_execution_times.rst",
         "index.rst",
-        "*_contents.rst"]
+        "*_contents.rst",
+    ],
 ).load_data()
 
 print(f"Loaded {len(documents)} documents")
@@ -19,4 +20,4 @@ print(f"\nFirst document metadata:\n{documents[0].metadata}")
 print(f"\nFirst document text snippet:\n{documents[0].text[:500]}")
 
 for doc in documents:
-    print(doc.metadata['file_name'])
+    print(doc.metadata["file_name"])

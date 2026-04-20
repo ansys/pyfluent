@@ -1,4 +1,3 @@
-
 """Retrieval wrapper for semantic search over pyfluentai indexes."""
 
 from typing import Any

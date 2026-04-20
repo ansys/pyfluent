@@ -14,9 +14,14 @@ already exists, so the demo starts quickly on repeated runs.
 
 from pathlib import Path
 
-from pyfluentai.reranker import CrossEncoderReranker, CrossEncoderRerankerWithMetadataBoost, MergingReranker, NoOpReranker
-from pyfluentai.section_indexer import SectionIndexer
+from pyfluentai.reranker import (
+    CrossEncoderReranker,
+    CrossEncoderRerankerWithMetadataBoost,
+    MergingReranker,
+    NoOpReranker,
+)
 from pyfluentai.retriever import PyFluentRetriever
+from pyfluentai.section_indexer import SectionIndexer
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -57,7 +62,7 @@ def _print_results(label: str, results, query: str) -> None:
             f"  ({content_type}, refs={explicit_refs}, anchors={anchors})"
         )
         snippet = node.text[:120].replace("\n", " ").strip()
-        print(f"       \"{snippet}...\"")
+        print(f'       "{snippet}..."')
     print()
 
 
@@ -82,7 +87,9 @@ def main():
         # 1. Baseline: plain cosine similarity, no reranking.
         baseline = retriever.retrieve(query)
         reranker = NoOpReranker()
-        no_op = reranker.rerank(query, baseline)  # Keep the baseline on the same reranker API path as the other strategies.
+        no_op = reranker.rerank(
+            query, baseline
+        )  # Keep the baseline on the same reranker API path as the other strategies.
         _print_results("1 · Baseline  (bi-encoder cosine, top-5)", no_op, query)
 
         # 2. Cross-encoder: 50-candidate recall + cross-encoder reranking.
@@ -103,10 +110,12 @@ def main():
             query,
         )
 
-        reranker = MergingReranker([
-            CrossEncoderReranker(top_n=2),
-            CrossEncoderRerankerWithMetadataBoost(top_n=5)
-        ])
+        reranker = MergingReranker(
+            [
+                CrossEncoderReranker(top_n=2),
+                CrossEncoderRerankerWithMetadataBoost(top_n=5),
+            ]
+        )
         merging = reranker.rerank(query, baseline)
         _print_results(
             "4 · Merging reranker  (average of cross-encoder and metadata boost)",

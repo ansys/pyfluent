@@ -37,5 +37,5 @@ class DocumentIndexer:
             self.doc_dir,
             self.persist_dir,
             lambda docs: docs,  # identity function since no sectioning
-            file_name_key_name='file_name'
+            file_name_key_name="file_name",
         )

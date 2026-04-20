@@ -14,14 +14,13 @@ comparable across runs and can be versioned reliably.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from pathlib import Path, PurePosixPath
 import hashlib
 import json
+from pathlib import Path, PurePosixPath
 import re
 from typing import Any
 
 from llama_index.core.schema import Document
-
 
 HEADING_LEVELS = {
     "=": 1,
@@ -154,7 +153,9 @@ def _find_heading_rows(lines: list[str]) -> list[tuple[int, str, int]]:
     return headings
 
 
-def _expand_heading_start(lines: list[str], heading_index: int, lower_bound: int) -> int:
+def _expand_heading_start(
+    lines: list[str], heading_index: int, lower_bound: int
+) -> int:
     """Expand section start upward to include labels adjacent to a heading."""
     cursor = heading_index
     while cursor - 1 >= lower_bound:
@@ -278,7 +279,7 @@ def parse_rst_sections(text: str, source_file: str) -> list[SectionRecord]:
     heading_path: list[str] = []
 
     if adjusted_starts[0] > 0:
-        preamble_lines = lines[:adjusted_starts[0]]
+        preamble_lines = lines[: adjusted_starts[0]]
         preamble_text = "\n".join(preamble_lines).strip()
         if preamble_text:
             records.append(
@@ -431,7 +432,9 @@ def build_section_documents(documents: list[Document]) -> list[Document]:
     return build_section_documents_with_records_and_edges(documents)[0]
 
 
-def export_label_artifacts(records: list[SectionRecord], edges: list[RelationEdge], output_dir: str) -> None:
+def export_label_artifacts(
+    records: list[SectionRecord], edges: list[RelationEdge], output_dir: str
+) -> None:
     """Write section records and edges as JSONL artifacts.
 
     The exported files are intentionally line-oriented to make them easy to diff,

@@ -10,9 +10,6 @@ graph-aware or metadata-rich retrieval pipelines.
 
 from pyfluentai._constants import FETCH_K
 from pyfluentai.document_indexer import DocumentIndexer
-from pyfluentai.section_indexer import SectionIndexer
-from pyfluentai.retriever import PyFluentRetriever
-from pyfluentai.reranker import CrossEncoderReranker, MergingReranker, NoOpReranker, Reranker
 from pyfluentai.labeling import (
     RelationEdge,
     SectionRecord,
@@ -22,6 +19,14 @@ from pyfluentai.labeling import (
     export_label_artifacts,
     parse_rst_sections,
 )
+from pyfluentai.reranker import (
+    CrossEncoderReranker,
+    MergingReranker,
+    NoOpReranker,
+    Reranker,
+)
+from pyfluentai.retriever import PyFluentRetriever
+from pyfluentai.section_indexer import SectionIndexer
 
 __all__ = [
     "FETCH_K",

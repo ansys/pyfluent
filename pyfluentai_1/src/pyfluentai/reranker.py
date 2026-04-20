@@ -1,10 +1,10 @@
 """Abstract and concrete reranker strategies for retrieval results."""
 
 from __future__ import annotations
-import re
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from abc import ABC, abstractmethod
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import re
 from typing import Any
 
 # Fast, well-tested cross-encoder for passage reranking.  Runs locally via
@@ -14,16 +14,37 @@ _DEFAULT_RERANK_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 # Keyword hints used to infer what content_type the query is targeting.
 _CONTENT_TYPE_HINTS: dict[str, set[str]] = {
     "api_reference": {
-        "api", "func", "function", "class", "method", "module",
-        "returns", "parameter", "argument", "signature",
+        "api",
+        "func",
+        "function",
+        "class",
+        "method",
+        "module",
+        "returns",
+        "parameter",
+        "argument",
+        "signature",
     },
     "user_guide": {
-        "how", "guide", "tutorial", "setup", "configure",
-        "workflow", "step", "use", "using", "enable",
+        "how",
+        "guide",
+        "tutorial",
+        "setup",
+        "configure",
+        "workflow",
+        "step",
+        "use",
+        "using",
+        "enable",
     },
     "getting_started": {
-        "install", "launch", "start", "begin", "quickstart",
-        "introduction", "first",
+        "install",
+        "launch",
+        "start",
+        "begin",
+        "quickstart",
+        "introduction",
+        "first",
     },
 }
 
@@ -62,7 +83,9 @@ class Reranker(ABC):
         else:
             # Normalize to 0-1 range
             for item in items:
-                normalized = (float(item.score or 0.0) - min_score) / (max_score - min_score)
+                normalized = (float(item.score or 0.0) - min_score) / (
+                    max_score - min_score
+                )
                 # Ensure score is exactly in [0, 1] (handles floating point precision)
                 item.score = max(0.0, min(1.0, normalized))
 
@@ -82,20 +105,30 @@ class CrossEncoderReranker(Reranker):
 
     def __init__(self, model_name: str = _DEFAULT_RERANK_MODEL, top_n: int = 5):
         from llama_index.core.postprocessor import SentenceTransformerRerank
-        self._cross_encoder = SentenceTransformerRerank(model=model_name or _DEFAULT_RERANK_MODEL, top_n=top_n)
+
+        self._cross_encoder = SentenceTransformerRerank(
+            model=model_name or _DEFAULT_RERANK_MODEL, top_n=top_n
+        )
 
     def rerank(self, query: str, candidates: list[Any]) -> list[Any]:
         from llama_index.core.schema import QueryBundle
+
         reranked = self._cross_encoder.postprocess_nodes(
             candidates, query_bundle=QueryBundle(query_str=query)
         )
         # Normalize scores based on all fetched candidates
         return self._normalize_scores(reranked)
 
+
 class CrossEncoderRerankerWithMetadataBoost(Reranker):
     """Cross-encoder reranker with metadata-based score boosting."""
 
-    def __init__(self, model_name: str = _DEFAULT_RERANK_MODEL, top_n: int = 5, boost_factor: float = 0.1):
+    def __init__(
+        self,
+        model_name: str = _DEFAULT_RERANK_MODEL,
+        top_n: int = 5,
+        boost_factor: float = 0.1,
+    ):
         self._boost_factor = boost_factor
         self._cross_encoder = CrossEncoderReranker(model_name=model_name, top_n=top_n)
 
@@ -106,30 +139,28 @@ class CrossEncoderRerankerWithMetadataBoost(Reranker):
         rescored = [
             (
                 float(item.score or 0.0)
-                + self._boost_factor * self._metadata_bonus(item.node, content_type_hint),
+                + self._boost_factor
+                * self._metadata_bonus(item.node, content_type_hint),
                 item,
             )
             for item in reranked
         ]
         rescored.sort(key=lambda x: x[0], reverse=True)
-        
+
         # Update item scores to boosted scores, then normalize to [0, 1]
         for score, item in rescored:
             item.score = score
-        
+
         reranked = [item for _, item in rescored]
         # Normalize scores based on all fetched candidates to ensure [0, 1] range
         reranked = self._normalize_scores(reranked)
 
         return reranked
-    
+
     def _tokenize_query(self, query: str) -> set[str]:
         return {
-            t.lower()
-            for t in re.findall(r"[A-Za-z0-9_./:-]+", query)
-            if len(t) >= 3
+            t.lower() for t in re.findall(r"[A-Za-z0-9_./:-]+", query) if len(t) >= 3
         }
-
 
     def _infer_content_type_hint(self, query_tokens: set[str]) -> str | None:
         """Return the most likely content_type for this query, or None."""
@@ -178,7 +209,9 @@ class MergingReranker(Reranker):
 
     def rerank(self, query: str, candidates: list[Any]) -> list[Any]:
         with ThreadPoolExecutor() as executor:
-            futures = [executor.submit(r.rerank, query, candidates) for r in self._rerankers]
+            futures = [
+                executor.submit(r.rerank, query, candidates) for r in self._rerankers
+            ]
             all_results = [f.result() for f in as_completed(futures)]
 
         # Accumulate scores per node across all rerankers. Candidates omitted by

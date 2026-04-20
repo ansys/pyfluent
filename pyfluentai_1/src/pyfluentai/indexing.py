@@ -12,8 +12,14 @@ small but potentially important files available to retrieval.
 """
 
 import os
-from llama_index.core import VectorStoreIndex, StorageContext, load_index_from_storage
-from llama_index.core import SimpleDirectoryReader, Settings
+
+from llama_index.core import (
+    Settings,
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+    load_index_from_storage,
+)
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
@@ -30,6 +36,7 @@ EXCLUDE_FILES = [
     "*_contents.rst",
 ]
 
+
 def _configure_embedding():
     """Configure the global embedding model used by llama-index.
 
@@ -37,6 +44,7 @@ def _configure_embedding():
     can find conceptually related passages, not only keyword matches.
     """
     Settings.embed_model = HuggingFaceEmbedding(model_name=EMBED_MODEL_NAME)
+
 
 def _load_documents(doc_dir):
     """Load supported documentation files from disk.
@@ -85,12 +93,7 @@ def _build_indexed_nodes(source_documents, file_name_key_name):
     return nodes
 
 
-def load_or_build_index(
-        doc_dir,
-        persist_dir,
-        document_to_section,
-        file_name_key_name
-        ):
+def load_or_build_index(doc_dir, persist_dir, document_to_section, file_name_key_name):
     """Load a persisted vector index or build one from source documents.
 
     Parameters
@@ -117,7 +120,9 @@ def load_or_build_index(
         return load_index_from_storage(storage_context)
     else:
         documents = _load_documents(doc_dir)
-        nodes = _build_indexed_nodes(document_to_section(documents), file_name_key_name=file_name_key_name)
+        nodes = _build_indexed_nodes(
+            document_to_section(documents), file_name_key_name=file_name_key_name
+        )
         index = VectorStoreIndex(nodes)
         if persist_dir:
             index.storage_context.persist(persist_dir=persist_dir)
