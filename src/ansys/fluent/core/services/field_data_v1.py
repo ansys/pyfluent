@@ -213,10 +213,15 @@ class BaseFieldData(_v0.BaseFieldData):
         **kwargs,
     ) -> Dict[int | str, np.array]:
         """Get scalar field data on surfaces from cached batch data."""
+        data_location = (
+            FieldDataProtoModule.DataLocation.DATA_LOCATION_NODES
+            if kwargs.get("node_value")
+            else FieldDataProtoModule.DataLocation.DATA_LOCATION_ELEMENTS
+        )
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
-                ("dataLocation", 1 if kwargs.get("node_value") else 0),
+                ("dataLocation", data_location),
                 ("boundaryValues", kwargs.get("boundary_value")),
             )
         ]
