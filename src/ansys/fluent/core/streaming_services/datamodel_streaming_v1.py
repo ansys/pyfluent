@@ -69,11 +69,12 @@ class DatamodelStream(StreamingService):
         while True:
             try:
                 response: datamodel_se_pb2.BeginStreamingResponse = next(responses)
-                network_logger.debug(
-                    "GRPC_TRACE: RPC = "
-                    "/ansys.api.fluent.v1.datamodel_se.DataModelService/BeginStreaming, "
-                    f"response = {MessageToDict(response)}"
-                )
+                if not config.hide_log_secrets:
+                    network_logger.debug(
+                        "GRPC_TRACE: RPC = "
+                        "/ansys.api.fluent.v1.datamodel_se.DataModelService/BeginStreaming, "
+                        f"response = {MessageToDict(response)}"
+                    )
                 with self._lock:
                     self._streaming = True
                     for _, cb_list in self._service_callbacks.items():
