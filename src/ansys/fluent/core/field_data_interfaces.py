@@ -766,7 +766,7 @@ class _ReturnFieldData:
         pathlines_data: Dict,
         deprecated_flag: bool | None = False,
         flatten_connectivity: bool = False,
-    ) -> Dict:
+    ) -> Dict[int | str, Dict[str, np.array | List[np.array]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
@@ -776,7 +776,7 @@ class _ReturnFieldData:
                 warnings.warn(
                     "Structured face connectivity output is deprecated and will be replaced by the flat format "
                     "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
-                    "'SurfaceFieldDataRequest' to request data in the flat format.",
+                    "'PathlinesFieldDataRequest' to request data in the flat format.",
                     PyFluentDeprecationWarning,
                 )
                 lines_data = _transform_faces_connectivity_data(
