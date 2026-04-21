@@ -28,7 +28,6 @@ This module intentionally reuses the shared menu/runtime logic from
 
 from typing import Any
 
-from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.api.fluent.v1 import datamodel_tui_pb2 as DataModelProtoModule
@@ -91,14 +90,6 @@ class DatamodelService(_v0.DatamodelService):
         name = attribute.upper()
         return name if name.startswith("ATTRIBUTE_") else f"ATTRIBUTE_{name}"
 
-    @staticmethod
-    def _split_path_and_command(path: str) -> tuple[str, str]:
-        stripped = path.rstrip("/")
-        if "/" not in stripped:
-            return "/", stripped
-        parent, command = stripped.rsplit("/", 1)
-        return parent or "/", command
-
     def get_attribute_value(
         self, path: str, attribute: str, include_unavailable: bool
     ) -> Any:
@@ -113,17 +104,6 @@ class DatamodelService(_v0.DatamodelService):
         response = self._impl.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
-    def execute_command(self, path: str, *args, **kwargs) -> Any:
-        """Execute the command."""
-        request = DataModelProtoModule.ExecuteCommandRequest()
-        request.path, request.command = self._split_path_and_command(path)
-        if kwargs:
-            for k, v in kwargs.items():
-                _convert_value_to_gvalue(v, request.args.fields[k])
-        elif args:
-            _convert_value_to_gvalue(args, request.args.fields["tui_args"])
-        return self._impl.execute_command(request)
-
     def execute_query(self, path: str, *args, **kwargs) -> Any:
         """Execute the query."""
         request = DataModelProtoModule.ExecuteQueryRequest()
@@ -133,11 +113,3 @@ class DatamodelService(_v0.DatamodelService):
                 "Ignoring query args for v1 TUI ExecuteQuery; request schema has no args field."
             )
         return self._impl.execute_query(request)
-
-    def get_static_info(self, path: str):
-        """Get static info."""
-        request = DataModelProtoModule.GetStaticInfoRequest()
-        request.path = path
-        response = self._impl.get_static_info(request)
-        # Note: MessageToDict's parameter names are different in different protobuf versions
-        return MessageToDict(response.info, True)
