@@ -32,7 +32,9 @@ import grpc
 
 from ansys.api.fluent.v1 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v1 import datamodel_tui_pb2_grpc as DataModelGrpcModule
-from ansys.fluent.core.services import datamodel_tui as _v0
+from ansys.fluent.core.services import (
+    datamodel_tui as _v0,  # v0 base: shared menu/runtime logic is reused; only v1-specific proto/stub differences are overridden below
+)
 
 Path = _v0.Path
 logger = _v0.logger

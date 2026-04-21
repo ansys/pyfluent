@@ -36,7 +36,9 @@ from ansys.api.fluent.v1 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.services import datamodel_se as _v0
+from ansys.fluent.core.services import (
+    datamodel_se as _v0,  # v0 base: shared logic is reused; only v1-specific proto/stub differences are overridden below
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
