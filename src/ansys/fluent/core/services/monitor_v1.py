@@ -30,9 +30,7 @@ from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v1 import monitor_pb2 as MonitorModuleV1
 from ansys.api.fluent.v1 import monitor_pb2_grpc as MonitorGrpcModuleV1
-from ansys.fluent.core.services import (
-    monitor as _v0,  # v0 base: shared logic is reused; only v1-specific proto/stub differences are overridden below
-)
+import ansys.fluent.core.services.monitor as _v0
 
 # v1 MessageToDict produces camelCase keys for the renamed snake_case fields
 # (x_label → xLabel, y_label → yLabel, unit_info → unitInfo). Callers of
