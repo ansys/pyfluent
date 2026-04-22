@@ -67,7 +67,10 @@ from ansys.fluent.core.streaming_services.events_streaming import (
     SolverEvent as SolverEventV0,
 )
 from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
-from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
+from ansys.fluent.core.streaming_services.monitor_streaming import (
+    MonitorsManager as MonitorsManagerV0,
+)
+from ansys.fluent.core.streaming_services.monitor_streaming_v1 import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
@@ -178,11 +181,18 @@ class Solver(BaseSession):
             fluent_connection._server_supports_v1
         )
 
-        monitors_service = service_creator("monitors").create(
+        monitors_service = service_creator(
+            "monitors", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
         #: Manage Fluent's solution monitors.
-        self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
+        _MonitorsManager = (
+            MonitorsManager
+            if fluent_connection._server_supports_v1
+            else MonitorsManagerV0
+        )
+        self.monitors = _MonitorsManager(fluent_connection._id, monitors_service)
         if fluent_connection._server_supports_v1:
             if not config.disable_monitor_refresh_on_init:
                 self.events.register_callback(
