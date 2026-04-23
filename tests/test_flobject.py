@@ -72,6 +72,7 @@ class PrimitiveSetting(Setting):
     """Primitive setting objects."""
 
     value = None
+    api_exposure_level = None  # Can be None, "alpha", "beta", or "stable"
 
     def get_state(self):
         return self.value
@@ -84,6 +85,8 @@ class PrimitiveSetting(Setting):
         ret = {"type": cls.objtype}
         if cls.__doc__:
             ret["help"] = cls.__doc__
+        if cls.api_exposure_level:
+            ret["api_exposure_level"] = cls.api_exposure_level
         return ret
 
 
@@ -125,6 +128,7 @@ class Group(Setting):
     objtype = "group"
     children = {}
     commands = {}
+    api_exposure_level = None  # Can be None, "alpha", "beta", or "stable"
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -159,6 +163,8 @@ class Group(Setting):
             ret["children"] = {c: v.get_static_info() for c, v in cls.children.items()}
         if cls.commands:
             ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
+        if cls.api_exposure_level:
+            ret["api_exposure_level"] = cls.api_exposure_level
         return ret
 
 
@@ -329,11 +335,29 @@ class Root(Group):
                 "deprecated-version": lambda self: None,
             }
 
+        class R_Alpha(Real):
+            """Real value with alpha exposure level."""
+
+            api_exposure_level = "alpha"
+
+        class R_Beta(Real):
+            """Real value with beta exposure level."""
+
+            api_exposure_level = "beta"
+
+        class R_Stable(Real):
+            """Real value with stable exposure level."""
+
+            api_exposure_level = "stable"
+
         children = {
             "r-1": Real,
             "i-2": Int,
             "b-3": Bool,
             "s-4": S1,
+            "r-alpha": R_Alpha,
+            "r-beta": R_Beta,
+            "r-stable": R_Stable,
         }
 
     class N1(NamedObject):
@@ -579,6 +603,31 @@ def test_attrs():
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError):
         r.g_1.s_4.get_attr("allowed-values")
+
+
+def test_api_exposure_level():
+    """Test that api_exposure_level method returns the correct exposure level."""
+    from ansys.fluent.core.solver.flobject import APIExposureLevel
+
+    r = flobject.get_root(Proxy())
+    r._setattr("_version", "252")
+
+    # Test default exposure level (should be STABLE when not specified)
+    assert r.api_exposure_level() == APIExposureLevel.STABLE
+    assert r.g_1.api_exposure_level() == APIExposureLevel.STABLE
+    assert r.g_1.r_1.api_exposure_level() == APIExposureLevel.STABLE
+
+    # Test alpha exposure level
+    assert r.g_1.r_alpha.api_exposure_level() == APIExposureLevel.ALPHA
+    assert r.g_1.r_alpha.api_exposure_level().value == "alpha"
+
+    # Test beta exposure level
+    assert r.g_1.r_beta.api_exposure_level() == APIExposureLevel.BETA
+    assert r.g_1.r_beta.api_exposure_level().value == "beta"
+
+    # Test stable exposure level
+    assert r.g_1.r_stable.api_exposure_level() == APIExposureLevel.STABLE
+    assert r.g_1.r_stable.api_exposure_level().value == "stable"
 
 
 # The following test is commented out as codegen module is not packaged in the

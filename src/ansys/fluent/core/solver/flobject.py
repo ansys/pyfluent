@@ -94,7 +94,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 _static_class_attributes = [
     "_version",
-    "_exposure_level",
+    "_api_exposure_level",
     "_deprecated_version",
     "_python_name",
     "fluent_name",
@@ -117,8 +117,8 @@ class ReadOnlyActionError(RuntimeError):
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
 
-class ExposureLevel(Enum):
-    """Exposure level of a settings object."""
+class APIExposureLevel(Enum):
+    """API exposure level of a settings object."""
 
     ALPHA = "alpha"
     BETA = "beta"
@@ -129,7 +129,7 @@ class ExposureLevel(Enum):
         # Extra defensive check: server is expected to return only
         # alpha, beta, stable, so this should not occur.
         raise ValueError(
-            f"Invalid exposure-level '{value}'. Allowed values are: alpha, beta, stable."
+            f"Invalid api-exposure-level '{value}'. Allowed values are: alpha, beta, stable."
         )
 
 
@@ -142,6 +142,7 @@ class _InlineConstants:
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
     file_purpose = "file-purpose"
+    api_exposure_level = "api-exposure-level"
 
 
 # Type hints
@@ -481,19 +482,19 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
 
-    def exposure_level(self) -> ExposureLevel | None:
-        """Get the exposure level of the object.
+    def api_exposure_level(self) -> APIExposureLevel:
+        """Get the API exposure level of the object.
 
         Returns
         -------
-        ExposureLevel | None
-            The exposure level of the object (Alpha, Beta, or Stable).
+        APIExposureLevel
+            The API exposure level of the object (Alpha, Beta, or Stable).
         """
-        attr = getattr(self, "_exposure_level", None)
+        attr = getattr(self, "_api_exposure_level", None)
         if attr is None:
-            return ExposureLevel.STABLE
+            return APIExposureLevel.STABLE
         else:
-            return ExposureLevel(attr)
+            return APIExposureLevel(attr)
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -2333,10 +2334,10 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
-        exposure_level = info.get("exposure_level", None)
-        if exposure_level:
-            print(cls.__name__, exposure_level)
-            cls._exposure_level = exposure_level
+        api_exposure_level = info.get("api_exposure_level", None)
+        if api_exposure_level:
+            print(cls.__name__, api_exposure_level)
+            cls._api_exposure_level = api_exposure_level
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:
             cls._deprecated_version = deprecated_version
