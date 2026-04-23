@@ -97,10 +97,15 @@ Single-phase
    >>> data.get_field_data(velocity_request)[4].shape
    (2018, 3)
 
-   >>> vertices_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[3, 4])
-   >>> file_session.fields.field_data.get_field_data(vertices_request)[3].shape
+   >>> vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
+   ...      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+   ...      surfaces=[3, 4],
+   ...      flatten_connectivity=True,
+   ... )
+
+   >>> file_session.fields.field_data.get_field_data(vertices_and_faces_connectivity_request)[3].vertices.shape
    (3810, 3)
-   >>> file_session.fields.field_data.get_field_data(vertices_request)[3][1500][0]
+   >>> file_session.fields.field_data.get_field_data(vertices_and_faces_connectivity_request)[3].vertices[1500][0]
    0.12405861914157867
    >>> file_session.fields.field_data.get_field_data(ScalarFieldDataRequest(field_name=VariableCatalog.TEMPERATURE, surfaces=["wall"]))["wall"].shape
    (3630,)
@@ -171,9 +176,9 @@ Multiphase
    (55, 3)
 
    >>> vertices_data_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[30])
-   >>> file_session.fields.field_data.get_field_data(vertices_data_request)[30].shape
+   >>> file_session.fields.field_data.get_field_data(vertices_data_request)[30].vertices.shape
    (79, 3)
-   >>> file_session.fields.field_data.get_field_data(vertices_data_request)[30][50][0]
+   >>> file_session.fields.field_data.get_field_data(vertices_data_request)[30].vertices[50][0]
    0.14896461503555408
    >>> ph1_pressure_request = ScalarFieldDataRequest(field_name="phase-1:SV_P", surfaces=["wall-elbow"])
    >>> file_session.fields.field_data.get_field_data(ph1_pressure_request)["wall-elbow"].shape
