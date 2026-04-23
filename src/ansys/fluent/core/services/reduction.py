@@ -59,8 +59,12 @@ class ReductionService:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = ReductionGrpcModule.ReductionStub(intercept_channel)
+        self._stub = self._create_stub(intercept_channel)
         self._metadata = metadata
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return ReductionGrpcModule.ReductionStub(intercept_channel)
 
     def area(
         self, request: ReductionProtoModule.AreaRequest
@@ -274,6 +278,8 @@ def _locns(locns, ctxt=None):
 class Reduction:
     """Reduction."""
 
+    _proto_module = ReductionProtoModule
+
     def __init__(self, service: ReductionService, ctxt=None):
         """__init__ method of Reduction class."""
         self.service = service
@@ -312,7 +318,7 @@ class Reduction:
         weight=None,
         condition=None,
     ) -> Any:
-        request = getattr(ReductionProtoModule, requestName)()
+        request = getattr(self._proto_module, requestName)()
         if expression is not None:
             if hasattr(expression, "definition"):
                 expression = expression.definition()
