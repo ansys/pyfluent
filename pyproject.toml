@@ -8,14 +8,14 @@ name = "ansys-fluent-core"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
 requires-python = ">=3.10,<3.15"
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 maintainers = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: OS Independent"
 ]
 dependencies = [
     "ansys-api-fluent>=0.3.37",
@@ -29,10 +29,11 @@ dependencies = [
     "grpcio>=1.30.0",
     "grpcio-health-checking>=1.30.0",
     "grpcio-status>=1.26.0",
+    "grpcio-reflection>=1.30.0",
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
-    "pyyaml>=6.0",
+    "pyyaml>=6.0"
 ]
 dynamic = ["version"]
 
@@ -45,10 +46,10 @@ ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 tests = [
     "pytest==9.0.2",
-    "pytest-cov==7.0.0",
+    "pytest-cov==7.1.0",
     "pytest-mock==3.15.1",
     "pytest-xdist==3.8.0",
-    "pyfakefs==5.10.1"
+    "pyfakefs==6.1.6"
 ]
 docs = [
     "Sphinx==8.1.3",
@@ -56,7 +57,7 @@ docs = [
     "numpydoc==1.10.0",
     "matplotlib==3.10.8",
     "ansys-sphinx-theme==1.7.2",
-    "pypandoc==1.16.2",
+    "pypandoc==1.17",
     "pytest-sphinx==0.7.1",
     "sphinx-autobuild==2024.10.3",
     "sphinx-autodoc-typehints==3.0.1",
@@ -72,9 +73,9 @@ docs = [
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.8.27",
+    "quarto-cli==1.9.36",
     "pdf2image==1.17.0",
-    "seaborn>=0.13.2",
+    "seaborn>=0.13.2"
 ]
 
 [tool.flit.module]
@@ -135,7 +136,7 @@ ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 in-place = "true"
 exclude = [
     "tests/",
-    "src/ansys/fluent/core/generated/",
+    "src/ansys/fluent/core/generated/"
 ]
 black = "true"
 non-cap = [
@@ -158,7 +159,7 @@ non-cap = [
 [tool.coverage.run]
 source = ["ansys/fluent"]
 omit = [
-    "*/ansys/fluent/core/generated/*",
+    "*/ansys/fluent/core/generated/*"
 ]
 
 [tool.coverage.report]
@@ -221,5 +222,5 @@ skips = [
     "B602",
     "B603",
     "B604",
-    "B607",
-    ]
+    "B607"
+]
