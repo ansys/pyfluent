@@ -486,33 +486,105 @@ def test_primitives():
 def test_group():
     r = flobject.get_root(Proxy())
     r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
-    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": -3,
+        "b_3": False,
+        "s_4": "foo",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
     r.g_1 = {"s_4": "bar"}
-    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": -3,
+        "b_3": False,
+        "s_4": "bar",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
     r.g_1.i_2 = 4
-    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": 4,
+        "b_3": False,
+        "s_4": "bar",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
 
 
 def test_settings_input_set_state():
     r = flobject.get_root(Proxy())
     r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1.set_state(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
-    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": -3,
+        "b_3": False,
+        "s_4": "foo",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
     r.g_1.set_state(s_4="bar")
-    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": -3,
+        "b_3": False,
+        "s_4": "bar",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
     r.g_1.set_state(i_2=4)
-    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": 4,
+        "b_3": False,
+        "s_4": "bar",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
 
 
 def test_settings_input():
     r = flobject.get_root(Proxy())
     r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
-    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": -3,
+        "b_3": False,
+        "s_4": "foo",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
     r.g_1(s_4="bar")
-    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": -3,
+        "b_3": False,
+        "s_4": "bar",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
     r.g_1(i_2=4)
-    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
+    assert r.g_1() == {
+        "r_1": 3.2,
+        "i_2": 4,
+        "b_3": False,
+        "s_4": "bar",
+        "r_alpha": None,
+        "r_beta": None,
+        "r_stable": None,
+    }
 
 
 def test_named_object():
