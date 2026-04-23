@@ -19,63 +19,50 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Pure-Python REST client for Fluent solver settings.
+"""Pure-Python REST client for the Fluent solver settings (DataModel API).
 
-Provisional REST API Contract
-------------------------------
-All endpoints share the base URL ``<base_url>/settings``.  JSON is used for
-both request bodies and response payloads.  When a real Fluent REST API is
-published, only the constants in :data:`_Endpoints` and the helper
-:meth:`FluentRestClient._request` need updating.
+Fluent embeds an HTTP server (SimBA - Simulation Bridge Application) that
+serves the solver settings via a DataModel REST API.  The base path for all
+settings endpoints is ``/api/{component}/`` where *component* is ``"fluent_1"``
+for a solver session (``"fluent_meshing_1"`` for a meshing session).
 
-Endpoint summary
-~~~~~~~~~~~~~~~~
+API endpoints (from ``/openapi.json`` on a live Fluent server)
+--------------------------------------------------------------
 
 .. code-block:: text
 
-    GET  /settings/static-info
-         → { "info": <static-info-dict> }
+    GET  /api/fluent_1/static-info
+         Returns the full settings schema.
 
-    GET  /settings/var?path=<path>
-         → { "value": <json-value> }
+    POST /api/fluent_1/get_var
+         body: { "path": "<path>" }
+         Returns the current value at <path>.
 
-    PUT  /settings/var?path=<path>
+    GET  /api/fluent_1/{dmpath}
+         Returns the value / object at <dmpath>.
+
+    PUT  /api/fluent_1/{dmpath}
          body: { "value": <json-value> }
-         → {}
+         Sets the value at <dmpath>.
 
-    GET  /settings/attrs?path=<path>&attrs=<a1>&attrs=<a2>[&recursive=true]
-         → { "attrs": <json-value>, "group_children": {...} }   (group_children
-            only present when recursive=true)
+    POST /api/fluent_1/{dmpath}
+         body: { <command-args> }
+         Executes a command at <dmpath>.
 
-    GET  /settings/object-names?path=<path>
-         → { "names": [<str>, ...] }
+    DELETE /api/fluent_1/{path}
+         Deletes the named object at <path>.
 
-    POST /settings/create?path=<path>&name=<name>
-         → {}
-
-    DELETE /settings/object?path=<path>&name=<name>
-         → {}
-
-    PATCH /settings/rename?path=<path>
-          body: { "new": <str>, "old": <str> }
-          → {}
-
-    GET  /settings/list-size?path=<path>
-         → { "size": <int> }
-
-    POST /settings/commands/<cmd>?path=<path>
-         body: { <kwarg-key>: <value>, ... }
-         → { "reply": <json-value> }
-
-    POST /settings/queries/<query>?path=<path>
-         body: { <kwarg-key>: <value>, ... }
-         → { "reply": <json-value> }
+    POST /api/fluent_1/get_attrs
+         body: { "path": "<path>", "attrs": [<str>, ...] }
+         Returns attribute info for the setting at <path>.
 
 Authentication
 ~~~~~~~~~~~~~~
-When *auth_token* is supplied, every request carries the header::
+Every request carries the header::
 
     Authorization: Bearer <auth_token>
+
+where *auth_token* is the password set when the Fluent session was started.
 
 Error handling
 ~~~~~~~~~~~~~~
@@ -105,47 +92,34 @@ class FluentRestError(RuntimeError):
         super().__init__(f"HTTP {status}: {message}")
 
 
-class _Endpoints:
-    """Centralised endpoint paths – update here when the real spec ships."""
-
-    BASE = "settings"
-    STATIC_INFO = "settings/static-info"
-    VAR = "settings/var"
-    ATTRS = "settings/attrs"
-    OBJECT_NAMES = "settings/object-names"
-    CREATE = "settings/create"
-    DELETE = "settings/object"
-    RENAME = "settings/rename"
-    LIST_SIZE = "settings/list-size"
-    RESIZE_LIST = "settings/resize-list"
-    COMMANDS = "settings/commands"
-    QUERIES = "settings/queries"
-
-
 class FluentRestClient:
-    """Pure-Python HTTP client for Fluent solver settings.
+    """Pure-Python HTTP client for the Fluent DataModel REST API.
 
     The public method signatures are intentionally identical to the duck-typed
     *flproxy* interface consumed by
     :func:`~ansys.fluent.core.solver.flobject.get_root`, so this client can be
-    passed directly as *flproxy* in Step 2 of the componentisation work.
+    passed directly as *flproxy* to build the full settings tree over HTTP
+    instead of gRPC.
 
     Parameters
     ----------
     base_url : str
-        Root URL of the Fluent REST server, e.g. ``"http://localhost:8000"``.
+        Root URL of the Fluent REST server, e.g. ``"http://10.18.44.175:5000"``.
         A trailing slash is stripped automatically.
     auth_token : str, optional
-        Bearer token added to every request as ``Authorization: Bearer …``.
+        Bearer token (the password set when Fluent was started).  Added to
+        every request as ``Authorization: Bearer ...``.
+    component : str, optional
+        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
+        Use ``"fluent_meshing_1"`` for a meshing session.
     timeout : float, optional
         Socket timeout in seconds for every request.  Defaults to ``30.0``.
 
     Examples
     --------
     >>> from ansys.fluent.core.rest import FluentRestClient, FluentRestMockServer
-    >>> server = FluentRestMockServer()
-    >>> server.start()
-    >>> client = FluentRestClient(f"http://localhost:{server.port}")
+    >>> server = FluentRestMockServer().start()
+    >>> client = FluentRestClient(server.base_url)
     >>> client.get_var("setup/models/energy/enabled")
     True
     >>> client.set_var("setup/models/energy/enabled", False)
@@ -157,6 +131,7 @@ class FluentRestClient:
         base_url: str,
         *,
         auth_token: str | None = None,
+        component: str = "fluent_1",
         timeout: float = 30.0,
     ) -> None:
         parsed = urllib.parse.urlparse(base_url)
@@ -166,32 +141,24 @@ class FluentRestClient:
             raise ValueError("base_url must include host")
         self._base_url = base_url.rstrip("/")
         self._auth_token = auth_token
+        self._component = component
         self._timeout = timeout
+        # All DataModel endpoints live under this prefix, e.g. "api/fluent_1"
+        self._api_base = f"api/{component}"
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _url(self, endpoint: str, **query_params) -> str:
-        """Build a full URL from *endpoint* and optional query params."""
-        url = f"{self._base_url}/{endpoint}"
-        # urllib.parse.urlencode does not support multi-value keys natively
-        # when passed a dict, but doseq=True handles list values.
-        if query_params:
-            # Convert single values to strings; keep lists as-is for doseq.
-            encoded = urllib.parse.urlencode(
-                {k: v for k, v in query_params.items() if v is not None},
-                doseq=True,
-            )
-            url = f"{url}?{encoded}"
-        return url
+    def _url(self, endpoint: str) -> str:
+        """Build a full URL from *endpoint*."""
+        return f"{self._base_url}/{endpoint}"
 
     def _request(
         self,
         method: str,
         endpoint: str,
         *,
-        query_params: dict | None = None,
         body: Any = None,
     ) -> Any:
         """Send an HTTP request and return the decoded JSON response body.
@@ -199,13 +166,9 @@ class FluentRestClient:
         Parameters
         ----------
         method : str
-            HTTP verb (``"GET"``, ``"PUT"``, ``"POST"``, ``"PATCH"``,
-            ``"DELETE"``).
+            HTTP verb (``"GET"``, ``"PUT"``, ``"POST"``, ``"DELETE"``).
         endpoint : str
-            Path relative to *base_url*, e.g. ``"settings/var"``.
-        query_params : dict, optional
-            Mapping of URL query parameters.  List values produce repeated
-            keys (``?attrs=a&attrs=b``).
+            Path relative to *base_url*, e.g. ``"api/fluent_1/static-info"``.
         body : any JSON-serialisable object, optional
             Request body; encoded as UTF-8 JSON.
 
@@ -219,7 +182,7 @@ class FluentRestClient:
         FluentRestError
             For any HTTP 4xx or 5xx response.
         """
-        url = self._url(endpoint, **(query_params or {}))
+        url = self._url(endpoint)
         data: bytes | None = None
         headers: dict[str, str] = {}
 
@@ -241,7 +204,7 @@ class FluentRestClient:
                 return json.loads(raw) if raw.strip() else {}
         except urllib.error.HTTPError as exc:
             try:
-                detail = json.loads(exc.read()).get("error", exc.reason)
+                detail = json.loads(exc.read()).get("detail", exc.reason)
             except Exception:
                 detail = exc.reason
             raise FluentRestError(exc.code, detail) from exc
@@ -251,138 +214,125 @@ class FluentRestClient:
     # ------------------------------------------------------------------
 
     def get_static_info(self) -> dict[str, Any]:
-        """Return the full static-info tree for all solver settings.
+        """Return the full settings schema.
 
-        Corresponds to ``GET /settings/static-info``.
+        Calls ``GET /api/{component}/static-info``.
         """
-        return self._request("GET", _Endpoints.STATIC_INFO)["info"]
+        return self._request("GET", f"{self._api_base}/static-info")
 
     def get_var(self, path: str) -> Any:
         """Return the current value of the setting at *path*.
 
-        Corresponds to ``GET /settings/var?path=<path>``.
+        Calls ``POST /api/{component}/get_var`` with body ``{"path": path}``.
         """
-        return self._request("GET", _Endpoints.VAR, query_params={"path": path})[
-            "value"
-        ]
+        return self._request(
+            "POST", f"{self._api_base}/get_var", body={"path": path}
+        )
 
     def set_var(self, path: str, value: Any) -> None:
         """Set the value of the setting at *path*.
 
-        Corresponds to ``PUT /settings/var?path=<path>`` with body
-        ``{"value": <value>}``.
+        Calls ``PUT /api/{component}/{path}`` with body ``{"value": value}``.
         """
-        self._request(
-            "PUT",
-            _Endpoints.VAR,
-            query_params={"path": path},
-            body={"value": value},
-        )
+        self._request("PUT", f"{self._api_base}/{path}", body={"value": value})
 
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
 
-        Corresponds to
-        ``GET /settings/attrs?path=<path>&attrs=<a1>&attrs=<a2>[&recursive=true]``.
+        Calls ``POST /api/{component}/get_attrs`` with body
+        ``{"path": path, "attrs": attrs}``.
         """
         return self._request(
-            "GET",
-            _Endpoints.ATTRS,
-            query_params={
-                "path": path,
-                "attrs": attrs,
-                "recursive": str(recursive).lower(),
-            },
+            "POST",
+            f"{self._api_base}/get_attrs",
+            body={"path": path, "attrs": attrs, "recursive": recursive},
         )
 
     def get_object_names(self, path: str) -> list[str]:
         """Return the child named-object names at *path*.
 
-        Corresponds to ``GET /settings/object-names?path=<path>``.
+        Calls ``GET /api/{component}/{path}`` and returns the list of names.
+        Returns an empty list if the path does not exist.
         """
-        return self._request(
-            "GET", _Endpoints.OBJECT_NAMES, query_params={"path": path}
-        )["names"]
+        try:
+            result = self._request("GET", f"{self._api_base}/{path}")
+        except FluentRestError as exc:
+            if exc.status == 404:
+                return []
+            raise
+        if isinstance(result, list):
+            return result
+        if isinstance(result, dict):
+            return result.get("names", [])
+        return []
 
     def create(self, path: str, name: str) -> None:
-        """Create a named child object at *path*.
+        """Create a named child object *name* at *path*.
 
-        Corresponds to ``POST /settings/create?path=<path>&name=<name>``.
+        Calls ``POST /api/{component}/{path}`` with body ``{"name": name}``.
         """
-        self._request(
-            "POST", _Endpoints.CREATE, query_params={"path": path, "name": name}
-        )
+        self._request("POST", f"{self._api_base}/{path}", body={"name": name})
 
     def delete(self, path: str, name: str) -> None:
-        """Delete the named child object at *path*.
+        """Delete the named child object *name* at *path*.
 
-        Corresponds to ``DELETE /settings/object?path=<path>&name=<name>``.
+        Calls ``DELETE /api/{component}/{path}/{name}``.
         """
-        self._request(
-            "DELETE", _Endpoints.DELETE, query_params={"path": path, "name": name}
-        )
+        self._request("DELETE", f"{self._api_base}/{path}/{name}")
 
     def rename(self, path: str, new: str, old: str) -> None:
         """Rename a child object at *path* from *old* to *new*.
 
-        Corresponds to ``PATCH /settings/rename?path=<path>`` with body
-        ``{"new": <new>, "old": <old>}``.
+        Calls ``PUT /api/{component}/{path}`` with body
+        ``{"rename": {"new": new, "old": old}}``.
         """
         self._request(
-            "PATCH",
-            _Endpoints.RENAME,
-            query_params={"path": path},
-            body={"new": new, "old": old},
+            "PUT",
+            f"{self._api_base}/{path}",
+            body={"rename": {"new": new, "old": old}},
         )
 
     def get_list_size(self, path: str) -> int:
         """Return the number of elements in the list-object at *path*.
 
-        Corresponds to ``GET /settings/list-size?path=<path>``.
+        Calls ``GET /api/{component}/{path}`` and reads the list length.
+        Returns ``0`` if the path does not exist.
         """
-        return self._request("GET", _Endpoints.LIST_SIZE, query_params={"path": path})[
-            "size"
-        ]
+        try:
+            result = self._request("GET", f"{self._api_base}/{path}")
+        except FluentRestError as exc:
+            if exc.status == 404:
+                return 0
+            raise
+        if isinstance(result, list):
+            return len(result)
+        if isinstance(result, dict):
+            return result.get("size", 0)
+        return 0
 
     def resize_list_object(self, path: str, size: int) -> None:
-        """Resize the list-object at *path*.
+        """Resize the list-object at *path* to *size* elements.
 
-        Corresponds to ``PUT /settings/resize-list?path=<path>`` with body
-        ``{"size": <size>}``.
+        Calls ``PUT /api/{component}/{path}`` with body ``{"size": size}``.
         """
-        self._request(
-            "PUT",
-            _Endpoints.RESIZE_LIST,
-            query_params={"path": path},
-            body={"size": size},
-        )
+        self._request("PUT", f"{self._api_base}/{path}", body={"size": size})
 
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute *command* at *path* with keyword arguments *kwds*.
 
-        Corresponds to
-        ``POST /settings/commands/<command>?path=<path>`` with body
-        ``{<kwarg>: <value>, ...}``.
+        Calls ``POST /api/{component}/{path}/{command}`` with body ``kwds``.
         """
         return self._request(
-            "POST",
-            f"{_Endpoints.COMMANDS}/{command}",
-            query_params={"path": path},
-            body=kwds,
+            "POST", f"{self._api_base}/{path}/{command}", body=kwds
         ).get("reply")
 
     def execute_query(self, path: str, query: str, **kwds) -> Any:
         """Execute *query* at *path* with keyword arguments *kwds*.
 
-        Corresponds to
-        ``POST /settings/queries/<query>?path=<path>`` with body
-        ``{<kwarg>: <value>, ...}``.
+        Calls ``POST /api/{component}/{path}/{query}`` with body ``kwds``.
         """
         return self._request(
-            "POST",
-            f"{_Endpoints.QUERIES}/{query}",
-            query_params={"path": path},
-            body=kwds,
+            "POST", f"{self._api_base}/{path}/{query}", body=kwds
         ).get("reply")
 
     # ------------------------------------------------------------------

@@ -19,19 +19,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Lightweight in-process HTTP mock server for the provisional Fluent REST
-settings API.
+"""Lightweight in-process HTTP mock server for the Fluent DataModel REST API.
 
 Uses only the Python standard library (``http.server``, ``threading``,
 ``socketserver``).  No Flask or any external packages are required.
 
-The server is backed by an in-memory *settings store* pre-populated with a
-realistic slice of Fluent solver settings.  It is intended for:
+The server mimics the SimBA (Simulation Bridge Application) embedded in the
+Fluent solver and uses the same URL scheme::
 
-* Unit-testing :class:`~ansys.fluent.core.rest.client.FluentRestClient`
-  without a running Fluent instance.
-* Local development and demos.
-* Acting as a reference implementation of the provisional REST contract.
+    /api/{component}/...
+
+where *component* defaults to ``"fluent_1"``.
+
+Endpoints implemented
+---------------------
+
+.. code-block:: text
+
+    GET  /api/fluent_1/static-info
+    POST /api/fluent_1/get_var          body: {"path": ...}
+    POST /api/fluent_1/get_attrs        body: {"path": ..., "attrs": [...]}
+    GET  /api/fluent_1/{dmpath}         returns value, names or size
+    PUT  /api/fluent_1/{dmpath}         set value / resize / rename
+    POST /api/fluent_1/{dmpath}         create named object or execute cmd/query
+    DELETE /api/fluent_1/{dmpath}       delete named object
 
 Usage
 -----
@@ -39,12 +50,9 @@ Usage
 
     from ansys.fluent.core.rest import FluentRestMockServer, FluentRestClient
 
-    server = FluentRestMockServer()
-    server.start()                  # starts in a background thread
-
-    client = FluentRestClient(f"http://localhost:{server.port}")
+    server = FluentRestMockServer().start()
+    client = FluentRestClient(server.base_url)
     print(client.get_var("setup/models/energy/enabled"))  # True
-
     server.stop()
 
 Pytest fixture
@@ -56,9 +64,8 @@ Pytest fixture
 
     @pytest.fixture()
     def rest_client():
-        server = FluentRestMockServer()
-        server.start()
-        yield FluentRestClient(f"http://localhost:{server.port}")
+        server = FluentRestMockServer().start()
+        yield FluentRestClient(server.base_url)
         server.stop()
 """
 
@@ -316,89 +323,87 @@ class _Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def _send_error(self, status: int, message: str) -> None:
-        self._send_json({"error": message}, status)
+        self._send_json({"detail": message}, status)
 
     @property
     def _store(self) -> dict:
         return self.server.store  # type: ignore[attr-defined]
 
+    # -- helpers to strip component prefix --------------------------------
+
+    _API_PREFIX = "api/"
+
+    def _strip_prefix(self, path: str) -> str | None:
+        """Strip ``api/<component>/`` and return the settings path, or None."""
+        if not path.startswith(self._API_PREFIX):
+            return None
+        rest = path[len(self._API_PREFIX):]
+        # rest is now "fluent_1/..."
+        slash = rest.find("/")
+        if slash == -1:
+            # path is "api/<component>" with no trailing segment
+            return ""
+        return rest[slash + 1:]  # e.g. "static-info" or "setup/models/..."
+
     # -- GET ------------------------------------------------------------
 
     def do_GET(self):  # noqa: N802
-        """Handle HTTP GET requests for REST settings endpoints."""
-        path, params = self._parse_url()
+        """Handle HTTP GET requests."""
+        path, _params = self._parse_url()
+        setting_path = self._strip_prefix(path)
+        if setting_path is None:
+            return self._send_error(404, f"Unknown endpoint: {path}")
 
-        if path == "settings/static-info":
-            self._send_json({"info": self._store["static_info"]})
+        if setting_path == "static-info":
+            self._send_json(self._store["static_info"])
+            return
 
-        elif path == "settings/var":
-            setting_path = params.get("path")
-            if setting_path is None:
-                return self._send_error(400, "Missing 'path' parameter")
-            if setting_path in self._store["vars"]:
-                self._send_json({"value": self._store["vars"][setting_path]})
-            else:
-                # Group-level read: aggregate all leaf paths under the prefix
-                # into a nested dict.
-                prefix = setting_path + "/"
-                group = {}
-                for k, v in self._store["vars"].items():
-                    if k.startswith(prefix):
-                        remainder = k[len(prefix) :]
-                        parts = remainder.split("/")
-                        target = group
-                        for part in parts[:-1]:
-                            target = target.setdefault(part, {})
-                        target[parts[-1]] = v
-                if group:
-                    self._send_json({"value": group})
-                else:
-                    self._send_error(404, f"Path not found: {setting_path}")
+        # Lookup in vars (leaf or group)
+        if setting_path in self._store["vars"]:
+            self._send_json(self._store["vars"][setting_path])
+            return
 
-        elif path == "settings/attrs":
-            setting_path = params.get("path")
-            if setting_path is None:
-                return self._send_error(400, "Missing 'path' parameter")
-            recursive = params.get("recursive", "false").lower() == "true"
-            entry = self._store["attrs"].get(setting_path, {"attrs": {}})
-            if recursive:
-                self._send_json(entry)
-            else:
-                self._send_json({"attrs": entry.get("attrs", {})})
+        # Named-object names
+        if setting_path in self._store["named_objects"]:
+            self._send_json(self._store["named_objects"][setting_path])
+            return
 
-        elif path == "settings/object-names":
-            setting_path = params.get("path")
-            if setting_path is None:
-                return self._send_error(400, "Missing 'path' parameter")
-            names = self._store["named_objects"].get(setting_path, [])
-            self._send_json({"names": names})
+        # List size
+        if setting_path in self._store["list_sizes"]:
+            self._send_json({"size": self._store["list_sizes"][setting_path]})
+            return
 
-        elif path == "settings/list-size":
-            setting_path = params.get("path")
-            if setting_path is None:
-                return self._send_error(400, "Missing 'path' parameter")
-            size = self._store["list_sizes"].get(setting_path, 0)
-            self._send_json({"size": size})
+        # Group-level read: aggregate all leaf paths under the prefix
+        prefix = setting_path + "/"
+        group = {}
+        for k, v in self._store["vars"].items():
+            if k.startswith(prefix):
+                remainder = k[len(prefix):]
+                parts = remainder.split("/")
+                target = group
+                for part in parts[:-1]:
+                    target = target.setdefault(part, {})
+                target[parts[-1]] = v
+        if group:
+            self._send_json(group)
+            return
 
-        else:
-            self._send_error(404, f"Unknown endpoint: {path}")
+        self._send_error(404, f"Path not found: {setting_path}")
 
     # -- PUT ------------------------------------------------------------
 
     def do_PUT(self):  # noqa: N802
-        """Handle HTTP PUT requests for REST settings endpoints."""
-        path, params = self._parse_url()
+        """Handle HTTP PUT requests."""
+        path, _params = self._parse_url()
+        setting_path = self._strip_prefix(path)
+        if setting_path is None:
+            return self._send_error(404, f"Unknown endpoint: {path}")
         body = self._read_body()
 
-        if path == "settings/var":
-            setting_path = params.get("path")
-            if setting_path is None:
-                return self._send_error(400, "Missing 'path' parameter")
-            if "value" not in body:
-                return self._send_error(400, "Missing 'value' in request body")
+        if "value" in body:
+            # Set value
             value = body["value"]
             if isinstance(value, dict):
-                # Group-level write: flatten the nested dict into leaf paths.
                 def _flatten(prefix, d):
                     for k, v in d.items():
                         full = f"{prefix}/{k}"
@@ -406,113 +411,135 @@ class _Handler(BaseHTTPRequestHandler):
                             _flatten(full, v)
                         else:
                             self._store["vars"][full] = v
-
                 _flatten(setting_path, value)
             else:
                 self._store["vars"][setting_path] = value
             self._send_json({})
 
-        elif path == "settings/resize-list":
-            setting_path = params.get("path")
-            if setting_path is None:
-                return self._send_error(400, "Missing 'path' parameter")
-            if "size" not in body:
-                return self._send_error(400, "Missing 'size' in request body")
+        elif "size" in body:
+            # Resize list object
             self._store["list_sizes"][setting_path] = body["size"]
             self._send_json({})
 
-        else:
-            self._send_error(404, f"Unknown endpoint: {path}")
-
-    # -- POST -----------------------------------------------------------
-
-    def do_POST(self):  # noqa: N802
-        """Handle HTTP POST requests for REST settings endpoints."""
-        path, params = self._parse_url()
-        body = self._read_body()
-
-        if path == "settings/create":
-            setting_path = params.get("path")
-            name = params.get("name")
-            if not setting_path or not name:
-                return self._send_error(400, "Missing 'path' or 'name' parameter")
-            bucket = self._store["named_objects"].setdefault(setting_path, [])
-            if name not in bucket:
-                bucket.append(name)
-            self._send_json({})
-
-        elif path.startswith("settings/commands/"):
-            command = path[len("settings/commands/") :]
-            setting_path = params.get("path", "")
-            handler = self._store["command_handlers"].get((setting_path, command))
-            if handler is None:
-                # Generic fallback: echo the command name
-                reply = f"Executed command '{command}' at path '{setting_path}'"
-            else:
-                reply = handler(self._store, **body)
-            self._send_json({"reply": reply})
-
-        elif path.startswith("settings/queries/"):
-            query = path[len("settings/queries/") :]
-            setting_path = params.get("path", "")
-            handler = self._store["query_handlers"].get((setting_path, query))
-            if handler is None:
-                reply = f"Query '{query}' at path '{setting_path}' returned no data"
-            else:
-                reply = handler(self._store, **body)
-            self._send_json({"reply": reply})
-
-        else:
-            self._send_error(404, f"Unknown endpoint: {path}")
-
-    # -- DELETE ---------------------------------------------------------
-
-    def do_DELETE(self):  # noqa: N802
-        """Handle HTTP DELETE requests for REST settings endpoints."""
-        path, params = self._parse_url()
-
-        if path == "settings/object":
-            setting_path = params.get("path")
-            name = params.get("name")
-            if not setting_path or not name:
-                return self._send_error(400, "Missing 'path' or 'name' parameter")
-            bucket = self._store["named_objects"].get(setting_path, [])
-            if name not in bucket:
-                return self._send_error(
-                    404, f"Object '{name}' not found at path '{setting_path}'"
-                )
-            bucket.remove(name)
-            self._send_json({})
-
-        else:
-            self._send_error(404, f"Unknown endpoint: {path}")
-
-    # -- PATCH ----------------------------------------------------------
-
-    def do_PATCH(self):  # noqa: N802
-        """Handle HTTP PATCH requests for REST settings endpoints."""
-        path, params = self._parse_url()
-        body = self._read_body()
-
-        if path == "settings/rename":
-            setting_path = params.get("path")
-            new_name = body.get("new")
-            old_name = body.get("old")
-            if not setting_path or not new_name or not old_name:
-                return self._send_error(
-                    400, "Missing 'path', 'new', or 'old' parameter"
-                )
+        elif "rename" in body:
+            # Rename named object
+            new_name = body["rename"].get("new")
+            old_name = body["rename"].get("old")
+            if not new_name or not old_name:
+                return self._send_error(400, "Missing 'new' or 'old' in rename body")
             bucket = self._store["named_objects"].get(setting_path, [])
             if old_name not in bucket:
                 return self._send_error(
                     404, f"Object '{old_name}' not found at path '{setting_path}'"
                 )
-            idx = bucket.index(old_name)
-            bucket[idx] = new_name
+            bucket[bucket.index(old_name)] = new_name
             self._send_json({})
 
         else:
-            self._send_error(404, f"Unknown endpoint: {path}")
+            self._send_error(400, "PUT body must contain 'value', 'size', or 'rename'")
+
+    # -- POST -----------------------------------------------------------
+
+    def do_POST(self):  # noqa: N802
+        """Handle HTTP POST requests."""
+        path, _params = self._parse_url()
+        setting_path = self._strip_prefix(path)
+        if setting_path is None:
+            return self._send_error(404, f"Unknown endpoint: {path}")
+        body = self._read_body()
+
+        if setting_path == "get_var":
+            var_path = body.get("path")
+            if var_path is None:
+                return self._send_error(400, "Missing 'path' in request body")
+            if var_path in self._store["vars"]:
+                self._send_json(self._store["vars"][var_path])
+                return
+            # Group-level read
+            prefix = var_path + "/"
+            group = {}
+            for k, v in self._store["vars"].items():
+                if k.startswith(prefix):
+                    remainder = k[len(prefix):]
+                    parts = remainder.split("/")
+                    target = group
+                    for part in parts[:-1]:
+                        target = target.setdefault(part, {})
+                    target[parts[-1]] = v
+            if group:
+                self._send_json(group)
+            else:
+                self._send_error(404, f"Path not found: {var_path}")
+            return
+
+        if setting_path == "get_attrs":
+            attr_path = body.get("path")
+            if attr_path is None:
+                return self._send_error(400, "Missing 'path' in request body")
+            recursive = body.get("recursive", False)
+            entry = self._store["attrs"].get(attr_path, {"attrs": {}})
+            if recursive:
+                self._send_json(entry)
+            else:
+                self._send_json({"attrs": entry.get("attrs", {})})
+            return
+
+        if "name" in body and "/" not in body.get("name", "/"):
+            # Create named object: POST /api/fluent_1/{path}, body: {"name": ...}
+            name = body["name"]
+            bucket = self._store["named_objects"].setdefault(setting_path, [])
+            if name not in bucket:
+                bucket.append(name)
+            self._send_json({})
+            return
+
+        # Command or query: last path segment is the command name
+        # e.g. "solution/initialization/initialize"
+        slash = setting_path.rfind("/")
+        if slash == -1:
+            return self._send_error(404, f"Unknown endpoint: {path}")
+        parent_path = setting_path[:slash]
+        command = setting_path[slash + 1:]
+
+        handler = self._store["command_handlers"].get((parent_path, command))
+        if handler is not None:
+            reply = handler(self._store, **body)
+            self._send_json({"reply": reply})
+            return
+
+        handler = self._store["query_handlers"].get((parent_path, command))
+        if handler is not None:
+            reply = handler(self._store, **body)
+            self._send_json({"reply": reply})
+            return
+
+        # Generic fallback
+        reply = f"Executed '{command}' at '{parent_path}'"
+        self._send_json({"reply": reply})
+
+    # -- DELETE ---------------------------------------------------------
+
+    def do_DELETE(self):  # noqa: N802
+        """Handle HTTP DELETE requests."""
+        path, _params = self._parse_url()
+        full_path = self._strip_prefix(path)
+        if full_path is None:
+            return self._send_error(404, f"Unknown endpoint: {path}")
+
+        # DELETE /api/fluent_1/{parent_path}/{name}
+        slash = full_path.rfind("/")
+        if slash == -1:
+            return self._send_error(400, "DELETE path must include parent and name")
+        parent_path = full_path[:slash]
+        name = full_path[slash + 1:]
+
+        bucket = self._store["named_objects"].get(parent_path, [])
+        if name not in bucket:
+            return self._send_error(
+                404, f"Object '{name}' not found at path '{parent_path}'"
+            )
+        bucket.remove(name)
+        self._send_json({})
 
 
 # ---------------------------------------------------------------------------

@@ -732,3 +732,173 @@ In one sentence:
 
 > This folder makes it possible for PyFluent settings to work over REST with
 > almost the same high-level behavior as the existing gRPC path.
+
+---
+
+## 11. Very simple end-to-end connected explanation
+
+- First, the user imports the REST entry points from the package:
+
+  ```python
+  from ansys.fluent.core.rest import FluentRestMockServer, launch_fluent_rest
+  ```
+
+- Then the user creates and starts the mock server:
+
+  ```python
+  server = FluentRestMockServer()
+  server.start()
+  ```
+
+- `FluentRestMockServer` comes from `mock_server.py`.
+
+- `server.start()` also comes from `mock_server.py`.
+
+- Inside `server.start()`:
+  - the mock HTTP server is created,
+  - `_Handler` is attached as the request handler,
+  - the server starts in a background thread,
+  - `server.base_url` becomes available.
+
+- After that, the user calls:
+
+  ```python
+  session = launch_fluent_rest("127.0.0.1", server.port, version="261")
+  ```
+
+- `launch_fluent_rest()` comes from `rest_launcher.py`.
+
+- Inside `launch_fluent_rest()`:
+  - it builds `base_url` from `scheme`, `host`, and `port`,
+  - then it calls:
+
+  ```python
+  RestSolverSession(
+      base_url, auth_token=auth_token, version=version, timeout=timeout
+  )
+  ```
+
+- `RestSolverSession(...)` comes from `rest_session.py`.
+
+- Inside `RestSolverSession.__init__(...)`:
+  - it creates `FluentRestClient(base_url, auth_token=..., timeout=...)`,
+  - then it calls `get_root(self._client, version=version)`.
+
+- `FluentRestClient(...)` comes from `client.py`.
+
+- Inside `FluentRestClient.__init__(...)`:
+  - it validates the URL,
+  - stores the base URL,
+  - stores auth token and timeout,
+  - and becomes the `flproxy` object for `flobject`.
+
+- `get_root(...)` comes from `ansys.fluent.core.solver.flobject`.
+
+- Inside `get_root(...)`:
+  - it needs the full static schema of the settings tree,
+  - so it calls `self._client.get_static_info()`.
+
+- `get_static_info()` comes from `client.py`.
+
+- Inside `FluentRestClient.get_static_info()`:
+  - it calls `_request("GET", _Endpoints.STATIC_INFO)`.
+
+- `_request(...)` also comes from `client.py`.
+
+- Inside `_request(...)`:
+  - it calls `_url(...)` to build the final HTTP URL,
+  - sends the request with `urllib`,
+  - reads the JSON response,
+  - converts it into a Python dictionary,
+  - and returns it back.
+
+- That request reaches the mock server in `mock_server.py`.
+
+- Inside the server, `_Handler.do_GET()` receives the request.
+
+- `_Handler.do_GET()` sees `settings/static-info` and returns `_STATIC_INFO`.
+
+- That `_STATIC_INFO` dictionary goes back to `FluentRestClient`, then back to
+  `get_root(...)`.
+
+- Now `get_root(...)` has enough information to build the settings tree.
+
+- `get_root(...)` creates the root settings object and attaches the REST client
+  as the backend proxy.
+
+- `RestSolverSession` stores that root object in `self._settings`.
+
+- After that, the user can use:
+
+  ```python
+  session.settings
+  ```
+
+- `session.settings` is now the Python settings tree.
+
+- If the user reads a value like:
+
+  ```python
+  session.settings.setup.models.energy.enabled()
+  ```
+
+  then this happens:
+
+  - the settings object knows its own path,
+  - it calls `flproxy.get_var(path)`,
+  - here `flproxy` is `FluentRestClient`,
+  - `FluentRestClient.get_var(...)` sends `GET /settings/var?...`,
+  - `_Handler.do_GET()` in `mock_server.py` returns the value,
+  - the client converts JSON to Python,
+  - the final value is returned to the user.
+
+- If the user writes a value like:
+
+  ```python
+  session.settings.setup.models.energy.enabled.set_state(False)
+  ```
+
+  then this happens:
+
+  - the settings object calls `flproxy.set_var(path, value)`,
+  - `FluentRestClient.set_var(...)` sends a `PUT` request,
+  - `_Handler.do_PUT()` receives it,
+  - the in-memory store is updated,
+  - future reads return the updated value.
+
+- If the user runs a command like:
+
+  ```python
+  session.settings.solution.initialization.initialize()
+  ```
+
+  then this happens:
+
+  - the command object calls `flproxy.execute_cmd(path, command, **kwds)`,
+  - `FluentRestClient.execute_cmd(...)` sends a `POST` request,
+  - `_Handler.do_POST()` receives it,
+  - `_COMMAND_HANDLERS` returns the command reply,
+  - the reply travels back through the client,
+  - the final result is returned to the user.
+
+- So the short full chain is:
+
+  - user calls `launch_fluent_rest()`
+  - `launch_fluent_rest()` creates `RestSolverSession(...)`
+  - `RestSolverSession(...)` creates `FluentRestClient(...)`
+  - `RestSolverSession(...)` calls `get_root(...)`
+  - `get_root(...)` calls `FluentRestClient.get_static_info()`
+  - `FluentRestClient.get_static_info()` calls `_request(...)`
+  - `_request(...)` sends HTTP to the server
+  - `_Handler` returns JSON
+  - `get_root(...)` builds the settings tree
+  - the tree becomes `session.settings`
+  - later reads, writes, and commands use that same REST client
+
+- In one final simple line:
+
+  - `rest_launcher.py` starts the flow,
+  - `rest_session.py` connects the client to `flobject`,
+  - `client.py` sends HTTP,
+  - `mock_server.py` answers HTTP,
+  - and `flobject` turns it all into the settings tree the user works with.

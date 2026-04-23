@@ -90,11 +90,12 @@ class RestSolverSession:
         base_url: str,
         *,
         auth_token: str | None = None,
+        component: str = "fluent_1",
         version: str = "",
         timeout: float = 30.0,
     ) -> None:
         self._client = FluentRestClient(
-            base_url, auth_token=auth_token, timeout=timeout
+            base_url, auth_token=auth_token, component=component, timeout=timeout
         )
         # Force runtime class generation so we don't need a version-specific
         # pre-generated settings module.  get_root already falls back to

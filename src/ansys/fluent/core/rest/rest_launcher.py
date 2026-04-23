@@ -44,6 +44,7 @@ def launch_fluent_rest(
     port: int = 8000,
     *,
     auth_token: str | None = None,
+    component: str = "fluent_1",
     version: str = "",
     scheme: str = "http",
     timeout: float = 30.0,
@@ -61,6 +62,9 @@ def launch_fluent_rest(
         TCP port.  Defaults to ``8000``.
     auth_token : str, optional
         Bearer token for authentication.
+    component : str, optional
+        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
+        Use ``"fluent_meshing_1"`` for a meshing session.
     version : str, optional
         Fluent version string (e.g. ``"261"``).
     scheme : str, optional
@@ -85,5 +89,9 @@ def launch_fluent_rest(
     """
     base_url = f"{scheme}://{host}:{port}"
     return RestSolverSession(
-        base_url, auth_token=auth_token, version=version, timeout=timeout
+        base_url,
+        auth_token=auth_token,
+        component=component,
+        version=version,
+        timeout=timeout,
     )

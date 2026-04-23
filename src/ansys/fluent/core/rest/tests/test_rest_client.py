@@ -254,7 +254,6 @@ class TestListSize:
 # execute_cmd
 # ---------------------------------------------------------------------------
 
-
 class TestExecuteCmd:
     def test_registered_command(self, rest_client):
         reply = rest_client.execute_cmd("solution/initialization", "initialize")
