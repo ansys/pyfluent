@@ -325,7 +325,8 @@ class BaseTask:
         """
         return []
 
-    def get_id(self) -> str:
+    # pylint: disable=missing-raises-doc
+    def get_id(self) -> str:  
         """Get the unique string identifier of this task, as it is in the application.
 
         Returns
