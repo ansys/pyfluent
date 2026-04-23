@@ -20,26 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the events gRPC service of Fluent."""
+"""Provides a module for transcript streaming (v1 proto API).
 
-from typing import List, Tuple
+All shared logic lives in transcript_streaming.py (v0). This module keeps only
+v1-specific proto binding required for compatibility.
+"""
 
-import grpc
+from ansys.api.fluent.v1 import transcript_pb2 as TranscriptModule
+from ansys.fluent.core.streaming_services.transcript_streaming import (
+    Transcript as _TranscriptV0,
+)
 
-from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule
-from ansys.fluent.core.services.streaming import StreamingService
 
+class Transcript(_TranscriptV0):
+    """Encapsulates a Fluent Transcript streaming service (v1 proto API)."""
 
-class EventsService(StreamingService):
-    """Class wrapping the events gRPC service of Fluent."""
-
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        """__init__ method of EventsService class."""
-        super().__init__(
-            stub=self._create_stub(channel),
-            metadata=metadata,
-        )
-
-    def _create_stub(self, channel: grpc.Channel):
-        """Create the gRPC stub. Override in subclasses to use a different proto version."""
-        return EventsGrpcModule.EventsStub(channel)
+    _proto_module = TranscriptModule

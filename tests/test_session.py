@@ -28,6 +28,7 @@ import time
 
 import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
+from grpc_reflection.v1alpha import reflection
 import pytest
 
 from ansys.api.fluent.v0 import (
@@ -37,6 +38,8 @@ from ansys.api.fluent.v0 import (
     settings_pb2_grpc,
 )
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.api.fluent.v1 import health_pb2 as health_pb2_v1
+from ansys.api.fluent.v1 import health_pb2_grpc as health_pb2_grpc_v1
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
@@ -120,6 +123,29 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
+class MockHealthServicerV1(health_pb2_grpc_v1.HealthServicer):
+    def Check(self, request, context: grpc.ServicerContext):  # noqa N802
+        metadata = dict(context.invocation_metadata())
+        password = metadata.get("password", None)
+        if password != "12345":
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            return health_pb2_v1.HealthCheckResponse()
+        return health_pb2_v1.HealthCheckResponse(
+            status=health_pb2_v1.HealthCheckResponse.SERVING_STATUS_SERVING
+        )
+
+    def Watch(self, request, context: grpc.ServicerContext):  # noqa N802
+        metadata = dict(context.invocation_metadata())
+        password = metadata.get("password", None)
+        if password != "12345":
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            yield health_pb2_v1.HealthCheckResponse()
+            return
+        yield health_pb2_v1.HealthCheckResponse(
+            status=health_pb2_v1.HealthCheckResponse.SERVING_STATUS_SERVING
+        )
+
+
 def test_download_file():
     with pytest.raises(examples.RemoteFileNotFoundError):
         examples.download_file(
@@ -134,8 +160,17 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
     port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    reflection.enable_server_reflection(
+        (
+            health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+            scheme_eval_pb2.DESCRIPTOR.services_by_name["SchemeEval"].full_name,
+            reflection.SERVICE_NAME,
+        ),
+        server,
     )
     server.start()
 
@@ -181,8 +216,17 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    reflection.enable_server_reflection(
+        (
+            health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+            scheme_eval_pb2.DESCRIPTOR.services_by_name["SchemeEval"].full_name,
+            reflection.SERVICE_NAME,
+        ),
+        server,
     )
     server.start()
     monkeypatch.setattr(pyfluent.config, "launch_fluent_ip", ip)
@@ -210,8 +254,17 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    reflection.enable_server_reflection(
+        (
+            health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+            scheme_eval_pb2.DESCRIPTOR.services_by_name["SchemeEval"].full_name,
+            reflection.SERVICE_NAME,
+        ),
+        server,
     )
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
@@ -235,8 +288,17 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path, monkeypatch) 
     port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    reflection.enable_server_reflection(
+        (
+            health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+            scheme_eval_pb2.DESCRIPTOR.services_by_name["SchemeEval"].full_name,
+            reflection.SERVICE_NAME,
+        ),
+        server,
     )
     server.start()
     server_info_file = tmp_path / "server_info.txt"
@@ -266,6 +328,15 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
         MockSchemeEvalServicer(), server
     )
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
+    reflection.enable_server_reflection(
+        (
+            health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+            scheme_eval_pb2.DESCRIPTOR.services_by_name["SchemeEval"].full_name,
+            reflection.SERVICE_NAME,
+        ),
+        server,
+    )
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
@@ -292,10 +363,19 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
     port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
+    reflection.enable_server_reflection(
+        (
+            health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+            scheme_eval_pb2.DESCRIPTOR.services_by_name["SchemeEval"].full_name,
+            reflection.SERVICE_NAME,
+        ),
+        server,
+    )
     server.start()
 
     fluent_connection = FluentConnection(
@@ -330,10 +410,19 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
+    reflection.enable_server_reflection(
+        (
+            health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
+            scheme_eval_pb2.DESCRIPTOR.services_by_name["SchemeEval"].full_name,
+            reflection.SERVICE_NAME,
+        ),
+        server,
+    )
     server.start()
     monkeypatch.setattr(pyfluent.config, "launch_fluent_ip", ip)
     monkeypatch.setattr(pyfluent.config, "launch_fluent_port", port)
@@ -428,6 +517,17 @@ def test_expected_interfaces_in_solver_session(new_solver_session):
 @pytest.mark.fluent_version(">=24.1")
 def test_solverworkflow_not_in_solver_session(new_solver_session):
     assert "solverworkflow" not in dir(new_solver_session)
+
+
+@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.parametrize(
+    "session_fixture_name",
+    ["new_solver_session", "new_meshing_session"],
+)
+def test_server_supports_v1_by_version(session_fixture_name, request):
+    fluent_session = request.getfixturevalue(session_fixture_name)
+    expected = fluent_session.get_fluent_version() >= FluentVersion.v271
+    assert fluent_session._fluent_connection._server_supports_v1 is expected
 
 
 @pytest.mark.standalone
