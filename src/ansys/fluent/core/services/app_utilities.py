@@ -55,8 +55,12 @@ class AppUtilitiesService:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = AppUtilitiesGrpcModule.AppUtilitiesStub(intercept_channel)
+        self._stub = self._create_stub(intercept_channel)
         self._metadata = metadata
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return AppUtilitiesGrpcModule.AppUtilitiesStub(intercept_channel)
 
     def get_product_version(
         self, request: AppUtilitiesProtoModule.GetProductVersionRequest

@@ -67,9 +67,17 @@ class HealthCheckService:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = HealthCheckGrpcModule.HealthStub(intercept_channel)
+        self._stub = self._create_stub(intercept_channel)
         self._metadata = metadata
         self._channel = channel
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return HealthCheckGrpcModule.HealthStub(intercept_channel)
+
+    def _create_health_check_request(self):
+        """Create a health-check request. Override in subclasses for different proto modules."""
+        return HealthCheckModule.HealthCheckRequest()
 
     def check_health(self) -> Status:
         """Check the health of the Fluent connection.
@@ -78,13 +86,13 @@ class HealthCheckService:
         -------
         Status
         """
-        request = HealthCheckModule.HealthCheckRequest()
+        request = self._create_health_check_request()
         response = self._stub.Check(
             request,
             metadata=self._metadata,
             timeout=config.check_health_timeout,
         )
-        return HealthCheckService.Status(response.status)
+        return self.Status(response.status)
 
     def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
@@ -101,7 +109,7 @@ class HealthCheckService:
         TimeoutError
             If the connection to the Fluent server could not be established within the timeout.
         """
-        request = HealthCheckModule.HealthCheckRequest()
+        request = self._create_health_check_request()
         responses = self._stub.Watch(request, metadata=self._metadata, timeout=timeout)
 
         while True:
