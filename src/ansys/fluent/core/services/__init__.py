@@ -48,7 +48,8 @@ from ansys.fluent.core.services.health_check import (
     HealthCheckService as HealthCheckServiceV0,
 )
 from ansys.fluent.core.services.health_check_v1 import HealthCheckService
-from ansys.fluent.core.services.monitor import MonitorsService
+from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServiceV0
+from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
 from ansys.fluent.core.services.reduction import Reduction as ReductionV0
 from ansys.fluent.core.services.reduction_v1 import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
@@ -87,7 +88,7 @@ _service_cls_by_name_v0 = {
     "field_data": LiveFieldDataV0,
     "field_data_old": DeprecatedFieldData,
     "field_info": _FieldInfoV0,
-    "monitors": MonitorsService,
+    "monitors": MonitorsServiceV0,
     "reduction": ReductionV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
