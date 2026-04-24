@@ -2336,7 +2336,6 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         api_exposure_level = info.get("api_exposure_level", None)
         if api_exposure_level:
-            print(cls.__name__, api_exposure_level)
             cls._api_exposure_level = api_exposure_level
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:
