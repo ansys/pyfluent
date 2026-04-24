@@ -84,10 +84,6 @@ class PrimitiveSetting(Setting):
         ret = {"type": cls.objtype}
         if cls.__doc__:
             ret["help"] = cls.__doc__
-        if getattr(cls, "api_exposure_level", None):
-            ret["api_exposure_level"] = cls.api_exposure_level
-        else:
-            ret["api_exposure_level"] = "stable"
         return ret
 
 
@@ -163,10 +159,6 @@ class Group(Setting):
             ret["children"] = {c: v.get_static_info() for c, v in cls.children.items()}
         if cls.commands:
             ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
-        if getattr(cls, "api_exposure_level", None):
-            ret["api_exposure_level"] = cls.api_exposure_level
-        else:
-            ret["api_exposure_level"] = "stable"
         return ret
 
 
@@ -337,29 +329,11 @@ class Root(Group):
                 "deprecated-version": lambda self: None,
             }
 
-        class R_Alpha(Real):
-            """Real value with alpha exposure level."""
-
-            api_exposure_level = "alpha"
-
-        class R_Beta(Real):
-            """Real value with beta exposure level."""
-
-            api_exposure_level = "beta"
-
-        class R_Stable(Real):
-            """Real value with stable exposure level."""
-
-            api_exposure_level = "stable"
-
         children = {
             "r-1": Real,
             "i-2": Int,
             "b-3": Bool,
             "s-4": S1,
-            "r-alpha": R_Alpha,
-            "r-beta": R_Beta,
-            "r-stable": R_Stable,
         }
 
     class N1(NamedObject):
@@ -488,105 +462,33 @@ def test_primitives():
 def test_group():
     r = flobject.get_root(Proxy())
     r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": -3,
-        "b_3": False,
-        "s_4": "foo",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1 = {"s_4": "bar"}
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": -3,
-        "b_3": False,
-        "s_4": "bar",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
     r.g_1.i_2 = 4
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": 4,
-        "b_3": False,
-        "s_4": "bar",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
 
 
 def test_settings_input_set_state():
     r = flobject.get_root(Proxy())
     r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1.set_state(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": -3,
-        "b_3": False,
-        "s_4": "foo",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1.set_state(s_4="bar")
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": -3,
-        "b_3": False,
-        "s_4": "bar",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
     r.g_1.set_state(i_2=4)
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": 4,
-        "b_3": False,
-        "s_4": "bar",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
 
 
 def test_settings_input():
     r = flobject.get_root(Proxy())
     r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": -3,
-        "b_3": False,
-        "s_4": "foo",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
     r.g_1(s_4="bar")
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": -3,
-        "b_3": False,
-        "s_4": "bar",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
     r.g_1(i_2=4)
-    assert r.g_1() == {
-        "r_1": 3.2,
-        "i_2": 4,
-        "b_3": False,
-        "s_4": "bar",
-        "r_alpha": None,
-        "r_beta": None,
-        "r_stable": None,
-    }
+    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
 
 
 def test_named_object():
@@ -677,31 +579,6 @@ def test_attrs():
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError):
         r.g_1.s_4.get_attr("allowed-values")
-
-
-def test_api_exposure_level():
-    """Test that api_exposure_level method returns the correct exposure level."""
-    from ansys.fluent.core.solver.flobject import ExposureLevel
-
-    r = flobject.get_root(Proxy())
-    r._setattr("_version", "252")
-
-    # Test default exposure level (should be STABLE when not specified)
-    assert r.api_exposure_level() == ExposureLevel.STABLE
-    assert r.g_1.api_exposure_level() == ExposureLevel.STABLE
-    assert r.g_1.r_1.api_exposure_level() == ExposureLevel.STABLE
-
-    # Test alpha exposure level
-    assert r.g_1.r_alpha.api_exposure_level() == ExposureLevel.ALPHA
-    assert r.g_1.r_alpha.api_exposure_level().value == "alpha"
-
-    # Test beta exposure level
-    assert r.g_1.r_beta.api_exposure_level() == ExposureLevel.BETA
-    assert r.g_1.r_beta.api_exposure_level().value == "beta"
-
-    # Test stable exposure level
-    assert r.g_1.r_stable.api_exposure_level() == ExposureLevel.STABLE
-    assert r.g_1.r_stable.api_exposure_level().value == "stable"
 
 
 # The following test is commented out as codegen module is not packaged in the
