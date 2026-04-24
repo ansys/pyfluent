@@ -142,7 +142,6 @@ class _InlineConstants:
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
     file_purpose = "file-purpose"
-    api_exposure_level = "api-exposure-level"
 
 
 # Type hints
@@ -490,11 +489,7 @@ class Base:
         APIExposureLevel
             The API exposure level of the object (Alpha, Beta, or Stable).
         """
-        attr = getattr(self, "_api_exposure_level", None)
-        if attr is None:
-            return APIExposureLevel.STABLE
-        else:
-            return APIExposureLevel(attr)
+        return APIExposureLevel(getattr(self, "_api_exposure_level"))
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -2334,9 +2329,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
-        api_exposure_level = info.get("api_exposure_level", None)
-        if api_exposure_level:
-            cls._api_exposure_level = api_exposure_level
+        cls._api_exposure_level = info.get("api_exposure_level", None) or "stable"
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:
             cls._deprecated_version = deprecated_version

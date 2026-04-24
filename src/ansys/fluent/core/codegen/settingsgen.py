@@ -237,7 +237,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if deprecated:
         s.write(f"    _deprecated_version = {deprecated!r}\n")
         s_stub.write("    _deprecated_version: str\n")
-    api_exposure_level = data["api_exposure_level"] or "stable"
+    api_exposure_level = data["api_exposure_level"]
     s.write(f"    _api_exposure_level = {api_exposure_level!r}\n")
     s_stub.write("    _api_exposure_level: str\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
