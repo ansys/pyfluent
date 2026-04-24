@@ -35,7 +35,7 @@ def _is_grpc_patched(image_tag: str):
     if image_tag.startswith("sha256:"):
         return True
 
-    if image_tag == "v26.1.latest":
+    if image_tag > "v26.1":
         return True
 
     min_patched_versions = {

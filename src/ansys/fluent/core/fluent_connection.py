@@ -24,6 +24,7 @@
 
 from __future__ import annotations
 
+from contextlib import suppress
 import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
@@ -40,9 +41,12 @@ import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
+from google.protobuf.descriptor_pool import DescriptorPool
 import grpc
+from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
+    ProtoReflectionDescriptorDatabase,
+)
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -50,16 +54,26 @@ from ansys.fluent.core.launcher.error_warning_messages import (
     INSECURE_MODE_WARNING,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
-    AppUtilitiesService,
+)
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesService as AppUtilitiesServiceV0,
+)
+from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesV252,
 )
-from ansys.fluent.core.services.scheme_eval import SchemeEvalService
+from ansys.fluent.core.services.app_utilities_v1 import AppUtilitiesService
+from ansys.fluent.core.services.scheme_eval import (
+    SchemeEvalService as SchemeEvalServiceV0,
+)
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
 from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
@@ -262,9 +276,9 @@ class FluentConnectionProperties:
 
 def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
-        ip = pyfluent.config.launch_fluent_ip or "127.0.0.1"
+        ip = config.launch_fluent_ip or "127.0.0.1"
     if not port:
-        port = pyfluent.config.launch_fluent_port
+        port = config.launch_fluent_port
     if not port:
         raise PortNotProvided()
     return ip, port
@@ -326,36 +340,58 @@ def _get_channel(
                 grpc_options=options,
             )
         else:
-            return create_channel(
-                transport_mode="wnua",
-                host=ip,
-                port=port,
-                grpc_options=options,
-            )
+            if os.name == "nt":
+                # Note: As WNUA is purely a server-side implementation, the following code works on Windows
+                # even for unsupported Fluent versions that do not have WNUA implemented on the server side.
+                return create_channel(
+                    transport_mode="wnua",
+                    host=ip,
+                    port=port,
+                    grpc_options=options,
+                )
+            else:
+                # Got non-uds transport mode on non-Windows system on local connection.
+                # User is most likely using an unsupported Fluent server version that uses TCP for local connections.
+                # The supported Fluent versions on Linux should always use UDS for local connections.
+                raise RuntimeError(
+                    "Unexpected transport mode for a local connection on this platform. "
+                    "This may indicate that the Fluent version is not supported by PyFluent. "
+                    "Please check the PyFluent documentation for supported Fluent versions."
+                )
 
 
 class _ConnectionInterface:
-    def __init__(self, create_grpc_service, error_state):
-        self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
-        self._app_utilities_service = create_grpc_service(
-            AppUtilitiesService, error_state
-        )
-        match pyfluent.FluentVersion(self.scheme_eval.version):
-            case v if v < pyfluent.FluentVersion.v252:
+    def __init__(self, create_grpc_service, error_state, supports_v1):
+        if supports_v1:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalService, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesService, error_state
+            )
+        else:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalServiceV0, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesServiceV0, error_state
+            )
+        self.scheme_eval = service_creator(
+            "scheme_eval", supports_v1=supports_v1
+        ).create(self._scheme_eval_service)
+        match FluentVersion(self.scheme_eval.version):
+            case v if v < FluentVersion.v252:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
 
-            case pyfluent.FluentVersion.v252:
+            case FluentVersion.v252:
                 self._app_utilities = AppUtilitiesV252(
                     self._app_utilities_service, self.scheme_eval
                 )
 
             case _:
-                self._app_utilities = service_creator("app_utilities").create(
-                    self._app_utilities_service
-                )
+                self._app_utilities = service_creator(
+                    "app_utilities", supports_v1=supports_v1
+                ).create(self._app_utilities_service)
 
     @property
     def product_build_info(self) -> str:
@@ -415,6 +451,22 @@ def _pid_exists(pid):
         else:
             ctypes.windll.kernel32.CloseHandle(process_handle)
             return True
+
+
+def _server_supports_v1(channel) -> bool:
+    try:
+        reflection_db = ProtoReflectionDescriptorDatabase(channel)
+        desc_pool = DescriptorPool(reflection_db)
+        service_desc = desc_pool.FindServiceByName(
+            "ansys.api.fluent.v1.app_utilities.AppUtilities"
+        )
+        method_desc = service_desc.FindMethodByName("RegisterSolutionEventsPause")
+        return (
+            method_desc.full_name
+            == "ansys.api.fluent.v1.app_utilities.AppUtilities.RegisterSolutionEventsPause"
+        )
+    except KeyError:
+        return False
 
 
 class FluentConnection:
@@ -536,13 +588,15 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self._health_check = service_creator("health_check").create(
-            self._channel, self._metadata, self._error_state
-        )
+        self._server_supports_v1 = _server_supports_v1(channel=self._channel)
+
+        self._health_check = service_creator(
+            "health_check", supports_v1=self._server_supports_v1
+        ).create(self._channel, self._metadata, self._error_state)
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
-        if pyfluent.config.check_health:
+        if config.check_health:
             try:
                 self._health_check.check_health()
             except RuntimeError:
@@ -562,7 +616,9 @@ class FluentConnection:
             FluentConnection._monitor_thread.start()
 
         self._connection_interface = _ConnectionInterface(
-            self.create_grpc_service, self._error_state
+            self.create_grpc_service,
+            self._error_state,
+            supports_v1=self._server_supports_v1,
         )
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
@@ -857,7 +913,7 @@ class FluentConnection:
             )
 
         if timeout is None:
-            config_timeout = pyfluent.config.force_exit_timeout
+            config_timeout = config.force_exit_timeout
             if config_timeout is not None:
                 logger.debug(f"Found force_exit_timeout config: '{config_timeout}'")
                 try:
@@ -923,10 +979,10 @@ class FluentConnection:
             for cb in finalizer_cbs:
                 cb()
             if cleanup_on_exit:
-                try:
+                # Use suppress to ignore exceptions during server exit cleanup without triggering B110
+                # TODO: Investigate and document which exceptions exit_server() may raise during shutdown and why they can be safely ignored.
+                with suppress(Exception):
                     connection_interface.exit_server()
-                except Exception:
-                    pass
             channel.close()
             channel = None
 

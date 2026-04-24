@@ -47,11 +47,13 @@ class AppendToFile:
 class Transcript(StreamingService):
     """Encapsulates a Fluent Transcript streaming service."""
 
+    _proto_module = TranscriptModule
+
     def __init__(self, transcript_service):
         """__init__ method of Transcript class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
-            target=Transcript._process_streaming,
+            target=type(self)._process_streaming,
             streaming_service=transcript_service,
         )
         self.callback_ids = []
@@ -96,7 +98,7 @@ class Transcript(StreamingService):
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Performs processes on transcript depending on the callback functions."""
-        request = TranscriptModule.TranscriptRequest(*args, **kwargs)
+        request = self._proto_module.TranscriptRequest(*args, **kwargs)
         responses = self._streaming_service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
