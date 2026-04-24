@@ -117,20 +117,12 @@ class ReadOnlyActionError(RuntimeError):
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
 
-class APIExposureLevel(Enum):
+class ExposureLevel(Enum):
     """API exposure level of a settings object."""
 
     ALPHA = "alpha"
     BETA = "beta"
     STABLE = "stable"
-
-    @classmethod
-    def _missing_(cls, value):
-        # Extra defensive check: server is expected to return only
-        # alpha, beta, stable, so this should not occur.
-        raise ValueError(
-            f"Invalid api-exposure-level '{value}'. Allowed values are: alpha, beta, stable."
-        )
 
 
 class _InlineConstants:
@@ -481,15 +473,15 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
 
-    def api_exposure_level(self) -> APIExposureLevel:
+    def api_exposure_level(self) -> ExposureLevel:
         """Get the API exposure level of the object.
 
         Returns
         -------
-        APIExposureLevel
+        ExposureLevel
             The API exposure level of the object (Alpha, Beta, or Stable).
         """
-        return APIExposureLevel(getattr(self, "_api_exposure_level"))
+        return ExposureLevel(self._api_exposure_level)
 
     def __setattr__(self, name, value):
         raise AttributeError(name)

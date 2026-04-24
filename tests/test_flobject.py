@@ -72,7 +72,6 @@ class PrimitiveSetting(Setting):
     """Primitive setting objects."""
 
     value = None
-    api_exposure_level = None  # Can be None, "alpha", "beta", or "stable"
 
     def get_state(self):
         return self.value
@@ -85,8 +84,10 @@ class PrimitiveSetting(Setting):
         ret = {"type": cls.objtype}
         if cls.__doc__:
             ret["help"] = cls.__doc__
-        if cls.api_exposure_level:
+        if getattr(cls, "api_exposure_level", None):
             ret["api_exposure_level"] = cls.api_exposure_level
+        else:
+            ret["api_exposure_level"] = "stable"
         return ret
 
 
@@ -128,7 +129,6 @@ class Group(Setting):
     objtype = "group"
     children = {}
     commands = {}
-    api_exposure_level = None  # Can be None, "alpha", "beta", or "stable"
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -163,8 +163,10 @@ class Group(Setting):
             ret["children"] = {c: v.get_static_info() for c, v in cls.children.items()}
         if cls.commands:
             ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
-        if cls.api_exposure_level:
+        if getattr(cls, "api_exposure_level", None):
             ret["api_exposure_level"] = cls.api_exposure_level
+        else:
+            ret["api_exposure_level"] = "stable"
         return ret
 
 
@@ -679,26 +681,26 @@ def test_attrs():
 
 def test_api_exposure_level():
     """Test that api_exposure_level method returns the correct exposure level."""
-    from ansys.fluent.core.solver.flobject import APIExposureLevel
+    from ansys.fluent.core.solver.flobject import ExposureLevel
 
     r = flobject.get_root(Proxy())
     r._setattr("_version", "252")
 
     # Test default exposure level (should be STABLE when not specified)
-    assert r.api_exposure_level() == APIExposureLevel.STABLE
-    assert r.g_1.api_exposure_level() == APIExposureLevel.STABLE
-    assert r.g_1.r_1.api_exposure_level() == APIExposureLevel.STABLE
+    assert r.api_exposure_level() == ExposureLevel.STABLE
+    assert r.g_1.api_exposure_level() == ExposureLevel.STABLE
+    assert r.g_1.r_1.api_exposure_level() == ExposureLevel.STABLE
 
     # Test alpha exposure level
-    assert r.g_1.r_alpha.api_exposure_level() == APIExposureLevel.ALPHA
+    assert r.g_1.r_alpha.api_exposure_level() == ExposureLevel.ALPHA
     assert r.g_1.r_alpha.api_exposure_level().value == "alpha"
 
     # Test beta exposure level
-    assert r.g_1.r_beta.api_exposure_level() == APIExposureLevel.BETA
+    assert r.g_1.r_beta.api_exposure_level() == ExposureLevel.BETA
     assert r.g_1.r_beta.api_exposure_level().value == "beta"
 
     # Test stable exposure level
-    assert r.g_1.r_stable.api_exposure_level() == APIExposureLevel.STABLE
+    assert r.g_1.r_stable.api_exposure_level() == ExposureLevel.STABLE
     assert r.g_1.r_stable.api_exposure_level().value == "stable"
 
 

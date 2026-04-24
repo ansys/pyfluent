@@ -127,13 +127,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
     data["return_type"] = getattr(cls, "return_type", None)
     data["deprecated_version"] = getattr(cls, "_deprecated_version", None)
-    try:
-        data["api_exposure_level"] = getattr(cls, "_api_exposure_level")
-    except AttributeError:
-        raise AttributeError(
-            f"Class '{cls.__name__}' is missing '_api_exposure_level' attribute. "
-            "This attribute should be set by get_cls() in flobject.py during class creation."
-        )
+    data["api_exposure_level"] = cls._api_exposure_level
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
         if k in command_names:
