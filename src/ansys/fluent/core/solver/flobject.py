@@ -44,6 +44,7 @@ import collections
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
+from functools import total_ordering
 import hashlib
 import inspect
 import keyword
@@ -94,7 +95,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 _static_class_attributes = [
     "_version",
-    "_api_exposure_level",
+    "exposure_level",
     "_deprecated_version",
     "_python_name",
     "fluent_name",
@@ -117,12 +118,33 @@ class ReadOnlyActionError(RuntimeError):
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
 
+@total_ordering
 class ExposureLevel(Enum):
     """API exposure level of a settings object."""
 
     ALPHA = "alpha"
     BETA = "beta"
     STABLE = "stable"
+
+    def __lt__(self, other):
+        """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
+        if isinstance(other, ExposureLevel):
+            return self._member_names_.index(self.name) < self._member_names_.index(
+                other.name
+            )
+        return NotImplemented
+
+    def __eq__(self, other):
+        """Check equality of exposure levels."""
+        if isinstance(other, ExposureLevel):
+            return self._member_names_.index(self.name) == self._member_names_.index(
+                other.name
+            )
+        return NotImplemented
+
+    def __repr__(self):
+        """Return the string representation of the ExposureLevel."""
+        return f"ExposureLevel.{self.name}"
 
 
 class _InlineConstants:
@@ -472,16 +494,6 @@ class Base:
         """Whether the object is read-only."""
         attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
-
-    def api_exposure_level(self) -> ExposureLevel:
-        """Get the API exposure level of the object.
-
-        Returns
-        -------
-        ExposureLevel
-            The API exposure level of the object (Alpha, Beta, or Stable).
-        """
-        return ExposureLevel(self._api_exposure_level)
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -2321,7 +2333,18 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
-        cls._api_exposure_level = info.get("api_exposure_level", None) or "stable"
+        # If root, set it explicitly to stable
+        if parent is None:
+            cls.exposure_level = ExposureLevel.STABLE
+        else:
+            exposure_level_str = info.get("api_exposure_level")
+            if exposure_level_str is None:
+                cls.exposure_level = parent.exposure_level
+            else:
+                cls.exposure_level = min(
+                    ExposureLevel(exposure_level_str), parent.exposure_level
+                )
+
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:
             cls._deprecated_version = deprecated_version

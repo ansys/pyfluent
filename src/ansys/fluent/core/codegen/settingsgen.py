@@ -127,7 +127,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
     data["return_type"] = getattr(cls, "return_type", None)
     data["deprecated_version"] = getattr(cls, "_deprecated_version", None)
-    data["api_exposure_level"] = cls._api_exposure_level
+    data["exposure_level"] = cls.exposure_level
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
         if k in command_names:
@@ -237,9 +237,9 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if deprecated:
         s.write(f"    _deprecated_version = {deprecated!r}\n")
         s_stub.write("    _deprecated_version: str\n")
-    api_exposure_level = data["api_exposure_level"]
-    s.write(f"    _api_exposure_level = {api_exposure_level!r}\n")
-    s_stub.write("    _api_exposure_level: str\n")
+    exposure_level = data["exposure_level"]
+    s.write(f"    exposure_level = {exposure_level!r}\n")
+    s_stub.write("    exposure_level: ExposureLevel\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     # _python_name preserves the original non-suffixed name of the class.
     s.write(f"    _python_name = {python_name!r}\n")
@@ -387,6 +387,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write("\n")
         header.write("from ansys.fluent.core.solver.flobject import *\n\n")
         header.write("from ansys.fluent.core.solver.flobject import (\n")
+        header.write("    ExposureLevel,\n")
         header.write("    _ChildNamedObjectAccessorMixin,\n")
         header.write("    _NonCreatableNamedObjectMixin,\n")
         header.write("    _InputFile,\n")
