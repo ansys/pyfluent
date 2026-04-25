@@ -137,10 +137,6 @@ class ExposureLevel(Enum):
             return order[self] < order[other]
         return NotImplemented
 
-    def __repr__(self):
-        """Return the string representation of the ExposureLevel."""
-        return f"ExposureLevel.{self.name}"
-
 
 class _InlineConstants:
     is_active = "active?"

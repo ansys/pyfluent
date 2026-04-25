@@ -238,7 +238,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         s.write(f"    _deprecated_version = {deprecated!r}\n")
         s_stub.write("    _deprecated_version: str\n")
     exposure_level = data["exposure_level"]
-    s.write(f"    exposure_level = {exposure_level!r}\n")
+    s.write(f"    exposure_level = ExposureLevel.{exposure_level.name}\n")
     s_stub.write("    exposure_level: ExposureLevel\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     # _python_name preserves the original non-suffixed name of the class.
