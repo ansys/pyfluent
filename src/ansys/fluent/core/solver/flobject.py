@@ -129,9 +129,12 @@ class ExposureLevel(Enum):
     def __lt__(self, other):
         """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
         if isinstance(other, ExposureLevel):
-            return self._member_names_.index(self.name) < self._member_names_.index(
-                other.name
-            )
+            order = {
+                ExposureLevel.ALPHA: 0,
+                ExposureLevel.BETA: 1,
+                ExposureLevel.STABLE: 2,
+            }
+            return order[self] < order[other]
         return NotImplemented
 
     def __repr__(self):
