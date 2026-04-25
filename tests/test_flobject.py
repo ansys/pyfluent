@@ -459,6 +459,33 @@ def test_primitives():
     assert r.g_1.s_4() == "foo"
 
 
+def test_list_object_to_python_keys_uses_object_type_child_fallback():
+    class _Child:
+        @classmethod
+        def to_python_keys(cls, value):
+            return f"py:{value}"
+
+        @classmethod
+        def to_scheme_keys(cls, value, root_cls, path):
+            return f"scm:{value}"
+
+    class _ListObjectWithObjectType(flobject.ListObject[None]):
+        _child_classes = {"_object_type_": _Child}
+
+    assert _ListObjectWithObjectType.to_python_keys([1, 2]) == ["py:1", "py:2"]
+    assert _ListObjectWithObjectType.to_scheme_keys([1, 2], None, []) == [
+        "scm:1",
+        "scm:2",
+    ]
+
+
+def test_list_object_to_python_keys_without_child_metadata_returns_sequence_copy():
+    class _ListObjectWithoutChild(flobject.ListObject[None]):
+        pass
+
+    assert _ListObjectWithoutChild.to_python_keys((1, 2, 3)) == [1, 2, 3]
+
+
 def test_group():
     r = flobject.get_root(Proxy())
     r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}

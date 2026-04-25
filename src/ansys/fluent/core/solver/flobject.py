@@ -1647,12 +1647,20 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             self._setattr(query, _create_child(cls, None, self))
 
     @classmethod
+    def _get_list_child_type(cls):
+        child_cls = getattr(cls, "child_object_type", None)
+        if child_cls is not None:
+            return child_cls
+        return cls._child_classes.get("_object_type_")
+
+    @classmethod
     def to_scheme_keys(cls, value, root_cls, path: list[str]):
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Sequence):
-            return [
-                cls.child_object_type.to_scheme_keys(v, root_cls, path) for v in value
-            ]
+            child_cls = cls._get_list_child_type()
+            if child_cls is None:
+                return list(value)
+            return [child_cls.to_scheme_keys(v, root_cls, path) for v in value]
         else:
             return value
 
@@ -1660,7 +1668,10 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def to_python_keys(cls, value):
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Sequence):
-            return [cls.child_object_type.to_python_keys(v) for v in value]
+            child_cls = cls._get_list_child_type()
+            if child_cls is None:
+                return list(value)
+            return [child_cls.to_python_keys(v) for v in value]
         else:
             return []
 
@@ -1670,7 +1681,10 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     _child_aliases = {}
 
     def _update_objects(self):
-        cls = self.__class__.child_object_type
+        cls = self.__class__._get_list_child_type()
+        if cls is None:
+            self._setattr("_objects", [])
+            return
         self._setattr(
             "_objects",
             [_create_child(cls, str(x), self) for x in range(self.get_size())],
