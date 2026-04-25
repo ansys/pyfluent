@@ -8,7 +8,7 @@ PyFluent provides both **functional** and **object-oriented** approaches to appl
 While both are supported, the **functional approach** is emphasized for its flexibility,
 particularly when working with multiple solver sessions.
 
-Introduction to Reduction Functions
+Introduction to reduction functions
 -----------------------------------
 
 Reduction functions perform operations like computing averages, integrals, and sums over specified data locations,
@@ -36,7 +36,7 @@ with two separate examples case files as follows:
     >>> solver_session =solver1
 
 
-Functional Usage
+Functional usage
 ----------------
 
 The **functional approach** is preferred for its:
@@ -59,7 +59,7 @@ Here's how to set up a simple example:
     101343.2241809384
 
 
-Object-Oriented Usage
+Object-oriented usage
 ---------------------
 The **object-oriented approach** leverages solver instance attributes
 like `solver_session.fields.reduction` to perform reductions. While this approach
@@ -87,7 +87,7 @@ For convenience, context-aware reductions are also supported:
   0.002555675491754098
 
 
-Reduction Functions: Capabilities
+Reduction functions: capabilities
 ----------------------------------
 
 The following reduction functions are available in PyFluent:
@@ -251,7 +251,7 @@ Functional:
 
   >>> reduction.area_average(
   ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
-  ...     locations=solver_session.setup.boundary_conditions.velocity_inlet,
+  ...     locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
 
@@ -271,8 +271,8 @@ Object-Oriented:
 
   >>> reduction.minimum(
   ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
-  ...     locations=solver1.setup.boundary_conditions.pressure_outlet
-  ...     + solver2.setup.boundary_conditions.pressure_outlet,
+  ...     locations=solver1.settings.setup.boundary_conditions.pressure_outlet
+  ...     + solver2.settings.setup.boundary_conditions.pressure_outlet,
   ... )
   101325.0
 

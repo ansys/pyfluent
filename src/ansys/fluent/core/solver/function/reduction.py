@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -62,23 +62,24 @@ Examples
 >>> # condition surfaces of the given solver
 >>> reduction.area_average(
 ...     expr = "AbsolutePressure",
-...     locations = solver.setup.boundary_conditions.velocity_inlet
+...     locations = solver.settings.setup.boundary_conditions.velocity_inlet
 ... )
 10623.0
 
 >>> from ansys.fluent.core.solver.function import reduction
 >>> # Compute the minimum of the square of velocity magnitude
 >>> # for all pressure outlets across two solvers
->>> named_exprs = solver1.setup.named_expressions
+>>> named_exprs = solver1.settings.setup.named_expressions
 >>> vsquared = named_exprs["vsquared"] = {}
 >>> vsquared.definition = "VelocityMagnitude ** 2"
 >>> reduction.minimum(
 ...     expr = vsquared,
-...     locations = solver1.setup.boundary_conditions.pressure_outlet
-...     + solver2.setup.boundary_conditions.pressure_outlet
+...     locations = solver1.settings.setup.boundary_conditions.pressure_outlet
+...     + solver2.settings.setup.boundary_conditions.pressure_outlet
 ...     )
 19.28151
 """
+
 from collections.abc import Iterable
 from enum import Enum
 

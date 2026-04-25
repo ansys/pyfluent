@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -23,6 +23,7 @@
 from pathlib import Path, PurePosixPath
 import tempfile
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import pytest_approx
 
@@ -32,7 +33,8 @@ from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferS
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/3855")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/3855
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 def test_parametric_workflow():
@@ -60,6 +62,7 @@ def test_parametric_workflow():
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
                 container_dict=config_dict,
+                insecure_mode=True,
             )
         container_workdir = PurePosixPath(pyfluent.config.container_mount_target)
     else:

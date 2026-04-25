@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -60,24 +60,28 @@ class SolutionVariableService:
             GrpcErrorInterceptor(),
             TracingInterceptor(),
         )
-        self.__stub = SvarGrpcModule.svarStub(intercept_channel)
-        self.__metadata = metadata
+        self._stub = self._create_stub(intercept_channel)
+        self._metadata = metadata
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return SvarGrpcModule.svarStub(intercept_channel)
 
     def get_data(self, request):
         """GetSvarData RPC of SVAR service."""
-        return self.__stub.GetSvarData(request, metadata=self.__metadata)
+        return self._stub.GetSvarData(request, metadata=self._metadata)
 
     def set_data(self, request):
         """SetSvarData RPC of SVAR service."""
-        return self.__stub.SetSvarData(request, metadata=self.__metadata)
+        return self._stub.SetSvarData(request, metadata=self._metadata)
 
     def get_variables_info(self, request):
         """GetSvarsInfo RPC of SVAR service."""
-        return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
+        return self._stub.GetSvarsInfo(request, metadata=self._metadata)
 
     def get_zones_info(self, request):
         """GetZonesInfo RPC of SVAR service."""
-        return self.__stub.GetZonesInfo(request, metadata=self.__metadata)
+        return self._stub.GetZonesInfo(request, metadata=self._metadata)
 
 
 class SolutionVariableInfo:
@@ -608,6 +612,11 @@ class SolutionVariableData:
         This array can be populated  with values to set SVAR data.
         """
         self._update_solution_variable_info()
+        variable_name = self._allowed_solution_variable_names.valid_name(
+            variable_name,
+            [zone_name],
+            domain_name,
+        )
 
         zones_info = self._solution_variable_info.get_zones_info()
         if zone_name in zones_info.zone_names:
@@ -720,6 +729,11 @@ class SolutionVariableData:
         None
         """
         self._update_solution_variable_info()
+        variable_name = self._allowed_solution_variable_names.valid_name(
+            variable_name,
+            list(zone_names_to_data.keys()),
+            domain_name,
+        )
         domain_id = self._allowed_domain_names.valid_name(domain_name)
         zone_ids_to_svar_data = {
             self._allowed_zone_names.valid_name(zone_name): solution_variable_data

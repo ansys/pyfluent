@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,7 +27,7 @@ import logging
 import os
 from pathlib import Path, PurePosixPath
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.execution import asynchronous
 
 network_logger = logging.getLogger("pyfluent.networking")
@@ -49,9 +49,11 @@ def _read_case_into(solver, file_type, file_name, full_file_name_container=None)
     except AttributeError:
         pass
     if full_file_name_container:
-        solver.file.read(file_name=full_file_name_container, file_type=file_type)
+        solver.settings.file.read(
+            file_name=full_file_name_container, file_type=file_type
+        )
     else:
-        solver.file.read(file_name=file_name, file_type=file_type)
+        solver.settings.file.read(file_name=file_name, file_type=file_type)
     network_logger.info(f"Have read case: {file_name}")
 
 
@@ -114,7 +116,7 @@ def transfer_case(
     """
     inside_container = source_instance.connection_properties.inside_container
     if not workdir:
-        workdir = Path(pyfluent.config.examples_path)
+        workdir = Path(config.examples_path)
     else:
         workdir = Path(workdir)
     if inside_container:
@@ -122,9 +124,9 @@ def transfer_case(
             network_logger.warning(
                 "Fluent is running inside a container, and no 'container_workdir' was specified for "
                 "'transfer_case'. Assuming that the default container mount path "
-                f"'{pyfluent.config.container_mount_target}' is being used. "
+                f"'{config.container_mount_target}' is being used. "
             )
-            container_workdir = PurePosixPath(pyfluent.config.container_mount_target)
+            container_workdir = PurePosixPath(config.container_mount_target)
             network_logger.debug(f"container_workdir: {container_workdir}")
         else:
             container_workdir = PurePosixPath(container_workdir)

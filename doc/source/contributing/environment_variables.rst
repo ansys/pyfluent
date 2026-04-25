@@ -1,7 +1,7 @@
 .. _ref_environment_variables:
 
 =====================
-Environment Variables
+Environment variables
 =====================
 
 This page lists the environment variables that can be set to control various aspects of PyFluent.

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -153,29 +153,34 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
 def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:
-    session1 = pyfluent.launch_fluent(insecure_mode=True)
+    kwargs = get_grpc_launcher_args_for_gh_runs()
+    session1 = pyfluent.launch_fluent(**kwargs)
 
     with pytest.raises(IpPortNotProvided):
         session2 = pyfluent.connect_to_fluent(
             ip=session1.connection_properties.ip,
             password=session1.connection_properties.password,
+            allow_remote_host=True,
+            **kwargs,
         )
 
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
+        allow_remote_host=True,
+        **kwargs,
     )
-    assert session2.is_server_healthy()
+    assert session2.is_active()
     session2.exit()
 
     timeout_loop(
-        session1.is_server_healthy(),
+        session1.is_active(),
         5.0,
         expected="truthy",
     )
 
-    assert session1.is_server_healthy()
+    assert session1.is_active()
     session1.exit()
 
 
@@ -183,22 +188,25 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
 def test_exit_fluent_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:  # import ansys.fluent.core as pyfluent
-    session1 = pyfluent.launch_fluent(cleanup_on_exit=False, insecure_mode=True)
+    kwargs = get_grpc_launcher_args_for_gh_runs()
+    session1 = pyfluent.launch_fluent(cleanup_on_exit=False, **kwargs)
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
         cleanup_on_exit=True,
+        allow_remote_host=True,
+        **kwargs,
     )
     session2.exit()
 
     timeout_loop(
-        session1.is_server_healthy(),
+        session1.is_active(),
         5.0,
         expected="falsy",
     )
 
-    assert not session1.is_server_healthy()
+    assert not session1.is_active()
 
 
 def test_fluent_connection_properties(
@@ -303,7 +311,12 @@ def test_wait_process_finished():
     assert meshing_session.is_active()
     assert meshing_session.tui
     meshing_session.exit()
-    assert dir(meshing_session) == ["is_active", "wait_process_finished"]
+    public_meshing_attrs = [
+        name
+        for name in dir(meshing_session)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_meshing_attrs == ["is_active", "wait_process_finished"]
     assert not meshing_session.is_active()
     with pytest.raises(AttributeError):
         meshing_session.tui
@@ -314,7 +327,12 @@ def test_wait_process_finished():
     assert solver_session.is_active()
     assert solver_session.settings
     solver_session.exit()
-    assert dir(solver_session) == ["is_active", "wait_process_finished"]
+    public_solver_attrs = [
+        name
+        for name in dir(solver_session)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_solver_attrs == ["is_active", "wait_process_finished"]
     assert not solver_session.is_active()
     with pytest.raises(AttributeError):
         solver_session.settings

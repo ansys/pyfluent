@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -96,11 +96,11 @@ from ansys.fluent.visualization import GraphicsWindow, Monitor
 
 session = pyfluent.launch_fluent(mode="meshing")
 
-meshing = session.workflow
-
 # %%
 # Meshing workflow
 # ----------------
+
+workflow = session.workflow
 
 filenames = {
     "Windows": "nozzle.dsco",
@@ -113,11 +113,11 @@ geometry_filename = examples.download_file(
     save_path=os.getcwd(),
 )
 
-meshing.InitializeWorkflow(WorkflowType="Watertight Geometry")
-meshing.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
-meshing.TaskObject["Import Geometry"].Execute()
+workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
+workflow.TaskObject["Import Geometry"].Execute()
 
-meshing.TaskObject["Add Local Sizing"].Execute()
+workflow.TaskObject["Add Local Sizing"].Execute()
 
 # %%
 # Generate surface mesh
@@ -130,8 +130,8 @@ surface_mesh = {
         "SizeFunctions": "Curvature",
     }
 }
-meshing.TaskObject["Generate the Surface Mesh"].Arguments.set_state(surface_mesh)
-meshing.TaskObject["Generate the Surface Mesh"].Execute()
+workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(surface_mesh)
+workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 # %%
 # Describe geometry
@@ -143,8 +143,8 @@ geometry_describe = {
     "InvokeShareTopology": "No",
     "Multizone": "No",
 }
-meshing.TaskObject["Describe Geometry"].Arguments.set_state(geometry_describe)
-meshing.TaskObject["Describe Geometry"].Execute()
+workflow.TaskObject["Describe Geometry"].Arguments.set_state(geometry_describe)
+workflow.TaskObject["Describe Geometry"].Execute()
 
 # %%
 # Update boundaries and region
@@ -156,10 +156,10 @@ boundary_condition = {
     "OldBoundaryLabelList": ["inlet"],
     "OldBoundaryLabelTypeList": ["velocity-inlet"],
 }
-meshing.TaskObject["Update Boundaries"].Arguments.set_state(boundary_condition)
-meshing.TaskObject["Update Boundaries"].Execute()
+workflow.TaskObject["Update Boundaries"].Arguments.set_state(boundary_condition)
+workflow.TaskObject["Update Boundaries"].Execute()
 
-meshing.TaskObject["Update Regions"].Execute()
+workflow.TaskObject["Update Regions"].Execute()
 
 # %%
 # Add boundary layers
@@ -169,14 +169,14 @@ boundary_layer = {
     "NumberOfLayers": 8,
     "TransitionRatio": 0.35,
 }
-meshing.TaskObject["Add Boundary Layers"].Arguments.update_dict(boundary_layer)
-meshing.TaskObject["Add Boundary Layers"].Execute()
+workflow.TaskObject["Add Boundary Layers"].Arguments.update_dict(boundary_layer)
+workflow.TaskObject["Add Boundary Layers"].Execute()
 
 # %%
 # Generate volume mesh
 # --------------------
 
-meshing.TaskObject["Generate the Volume Mesh"].Arguments.setState(
+workflow.TaskObject["Generate the Volume Mesh"].Arguments.setState(
     {
         "VolumeFill": "poly-hexcore",
         # Poly-hexcore mesh combines polyhedral cells with hexahedral core for accuracy and computational efficiency.
@@ -193,7 +193,7 @@ meshing.TaskObject["Generate the Volume Mesh"].Arguments.setState(
         },
     }
 )
-meshing.TaskObject["Generate the Volume Mesh"].Execute()
+workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
 # %%
 # Switch to solver
@@ -417,9 +417,8 @@ Transient_controls.max_iter_per_time_step = (
 
 calculation.calculate()
 
-mass_bal_rplot = Monitor(solver)
+mass_bal_rplot = Monitor(solver=solver, monitor_set_name="mass_flow_rate_out_rplot")
 plot_window = GraphicsWindow()
-mass_bal_rplot.monitor_set_name = "mass_flow_rate_out_rplot"
 plot_window.add_plot(mass_bal_rplot)
 plot_window.show()
 

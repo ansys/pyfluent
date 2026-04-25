@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -174,5 +174,5 @@ class FluentExprNamingStrategy(MappingConversionStrategy):
         _c.mesh.CELL_ZONE_INDEX: "CellZoneIndex",
         _c.mesh.CELL_ZONE_TYPE: "CellZoneType",
         _c.mesh.PARTITION_NEIGHBOURS: "PartitionNeighbors",
-        _c.mesh.STORED_CELL_PARTITIION: "StoredElementPartition",
+        _c.mesh.STORED_CELL_PARTITION: "StoredElementPartition",
     }

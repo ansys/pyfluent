@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,29 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module for the event loop."""
+"""Provides a module for transcript streaming (v1 proto API).
 
-import asyncio
-from functools import partial
+All shared logic lives in transcript_streaming.py (v0). This module keeps only
+v1-specific proto binding required for compatibility.
+"""
 
-loop = asyncio.get_event_loop()
-
-
-def execute_in_event_loop_threadsafe(f):
-    """Decorates function to be executed in an event loop from another thread."""
-
-    def cb(*args, **kwargs):
-        par = partial(f, *args, **kwargs)
-        loop.call_soon_threadsafe(par)
-
-    return cb
+from ansys.api.fluent.v1 import transcript_pb2 as TranscriptModule
+from ansys.fluent.core.streaming_services.transcript_streaming import (
+    Transcript as _TranscriptV0,
+)
 
 
-def execute_in_event_loop(f):
-    """Decorates function to be executed in an event loop."""
+class Transcript(_TranscriptV0):
+    """Encapsulates a Fluent Transcript streaming service (v1 proto API)."""
 
-    def cb(*args, **kwargs):
-        par = partial(f, *args, **kwargs)
-        loop.call_soon(par)
-
-    return cb
+    _proto_module = TranscriptModule

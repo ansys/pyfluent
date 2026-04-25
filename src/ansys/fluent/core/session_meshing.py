@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,6 +26,7 @@ from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 
@@ -95,18 +96,15 @@ class Meshing(PureMeshing):
         return solver_session
 
     def __getattribute__(self, item: str):
+        if item.startswith("__") and item.endswith("__"):
+            return super().__getattribute__(item)
         try:
             _connection = super(Meshing, self).__getattribute__("_fluent_connection")
         except AttributeError:
             _connection = False
-        if _connection is None and item not in [
-            "is_active",
-            "_fluent_connection",
-            "_fluent_connection_backup",
-            "wait_process_finished",
-        ]:
+        if _connection is None and item not in BaseSession._inactive_session_allow_list:
             raise AttributeError(
-                f"'{__class__.__name__}' object has no attribute '{item}'"
+                f"'{type(self).__name__}' object has no attribute '{item}'"
             )
 
         return super(Meshing, self).__getattribute__(item)

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -346,7 +346,7 @@ class Mesh:
         key = np.unique(key)
         value = np.arange(0, len(key))
         replace = np.array([key, value])
-        mask = np.in1d(nodes, key)
+        mask = np.isin(nodes, key)
         nodes[mask] = replace[1, np.searchsorted(replace[0, :], nodes[mask])]
         obj = np.cumsum(nnodes)
         obj = np.insert(obj, 0, 0)

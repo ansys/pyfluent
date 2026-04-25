@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -45,7 +45,7 @@ class ApiUpgradeAdvisor:
         self._id = None
 
     def _can_advise(self) -> bool:
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         return not config.skip_api_upgrade_advice and self._mode == "solver"
 

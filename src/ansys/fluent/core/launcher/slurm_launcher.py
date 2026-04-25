@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -70,9 +70,11 @@ import subprocess
 import time
 from typing import Any, Callable, Dict
 
-from ansys.fluent.core import config
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.launcher.error_warning_messages import (
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+)
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -81,6 +83,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
@@ -89,6 +92,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -517,16 +521,11 @@ class SlurmLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        from ansys.fluent.core import config
-
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
         if certificates_folder is None and not insecure_mode:
-            raise ValueError(
-                "To launch Fluent in Slurm environment, set `certificates_folder`."
-            )
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(
-                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
-            )
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         if not _SlurmWrapper.is_available():
             logger.debug(

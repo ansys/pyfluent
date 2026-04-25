@@ -1,4 +1,11 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
+# ]
+# ///
+
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -98,7 +105,6 @@ import_filename = examples.download_file(
 # ==================================================================================
 
 solver_session = pyfluent.launch_fluent(
-    dimension=3,
     precision="double",
     processor_count=4,
 )
@@ -108,52 +114,54 @@ print(solver_session.get_fluent_version())
 # Import mesh
 # ==================================================================================
 
-solver_session.file.read_case(file_name=import_filename)
+solver_session.settings.file.read_case(file_name=import_filename)
 
 ####################################################################################
 # Define models
 # ==================================================================================
 
-solver_session.setup.general.solver.type = "density-based-implicit"
-solver_session.setup.general.solver.time = "unsteady-1st-order"
-solver_session.setup.general.operating_conditions.operating_pressure = 0.0
-solver_session.setup.models.energy = {"enabled": True}
-solver_session.setup.models.ablation = {"enabled": True}
+solver_session.settings.setup.general.solver.type = "density-based-implicit"
+solver_session.settings.setup.general.solver.time = "unsteady-1st-order"
+solver_session.settings.setup.general.operating_conditions.operating_pressure = 0.0
+solver_session.settings.setup.models.energy = {"enabled": True}
+solver_session.settings.setup.models.ablation = {"enabled": True}
 
 ###################################################################
 # Define material
 # =================================================================
 
-solver_session.setup.materials.fluid["air"] = {
+solver_session.settings.setup.materials.fluid["air"] = {
     "density": {"option": "ideal-gas"},
     "molecular_weight": {"value": 28.966, "option": "constant"},
 }
-solver_session.setup.materials.fluid["air"] = {"density": {"option": "ideal-gas"}}
+solver_session.settings.setup.materials.fluid["air"] = {
+    "density": {"option": "ideal-gas"}
+}
 
 ############################
 # Define boundary conditions
 # ==========================
 
-solver_session.setup.boundary_conditions.set_zone_type(
+solver_session.settings.setup.boundary_conditions.set_zone_type(
     zone_list=["inlet"], new_type="pressure-far-field"
 )
-solver_session.setup.boundary_conditions.pressure_far_field[
+solver_session.settings.setup.boundary_conditions.pressure_far_field[
     "inlet"
 ].momentum.gauge_pressure = 13500
-solver_session.setup.boundary_conditions.pressure_far_field[
+solver_session.settings.setup.boundary_conditions.pressure_far_field[
     "inlet"
 ].momentum.mach_number = 3
-solver_session.setup.boundary_conditions.pressure_far_field[
+solver_session.settings.setup.boundary_conditions.pressure_far_field[
     "inlet"
 ].thermal.temperature = 4500
-solver_session.setup.boundary_conditions.pressure_far_field[
+solver_session.settings.setup.boundary_conditions.pressure_far_field[
     "inlet"
 ].turbulence.turbulent_intensity = 0.001
 
-solver_session.setup.boundary_conditions.pressure_outlet[
+solver_session.settings.setup.boundary_conditions.pressure_outlet[
     "outlet"
 ].momentum.gauge_pressure = 13500
-solver_session.setup.boundary_conditions.pressure_outlet[
+solver_session.settings.setup.boundary_conditions.pressure_outlet[
     "outlet"
 ].momentum.prevent_reverse_flow = True
 
@@ -165,13 +173,13 @@ solver_session.setup.boundary_conditions.pressure_outlet[
 # Remeshing options, #creates the wall-ablation dynamic mesh zone, and configure
 # appropriate dynamic mesh settings.
 
-solver_session.setup.boundary_conditions.wall[
+solver_session.settings.setup.boundary_conditions.wall[
     "wall_ablation"
 ].ablation.ablation_select_model = "Vielle's Model"
-solver_session.setup.boundary_conditions.wall[
+solver_session.settings.setup.boundary_conditions.wall[
     "wall_ablation"
 ].ablation.ablation_vielle_a = 5
-solver_session.setup.boundary_conditions.wall[
+solver_session.settings.setup.boundary_conditions.wall[
     "wall_ablation"
 ].ablation.ablation_vielle_n = 0.1
 
@@ -278,9 +286,11 @@ solver_session.settings.setup.dynamic_mesh.dynamic_zones = {
 # Define solver settings
 # =======================
 
-solver_session.setup.general.solver.time = "unsteady-2nd-order"
-solver_session.solution.controls.limits = {"max_temperature": 25000}
-solver_session.solution.monitor.residual.equations["energy"].absolute_criteria = 1e-06
+solver_session.settings.setup.general.solver.time = "unsteady-2nd-order"
+solver_session.settings.solution.controls.limits = {"max_temperature": 25000}
+solver_session.settings.solution.monitor.residual.equations[
+    "energy"
+].absolute_criteria = 1e-06
 
 ############################################
 # Create report definitions
@@ -350,21 +360,23 @@ solver_session.settings.solution.monitor.report_files["recede_point"] = {
 # Initialize and Save case
 # ========================
 
-solver_session.solution.initialization.compute_defaults(
+solver_session.settings.solution.initialization.compute_defaults(
     from_zone_type="pressure-far-field", from_zone_name="inlet", phase="mixture"
 )
-solver_session.solution.initialization.initialization_type = "standard"
-solver_session.solution.initialization.standard_initialize()
-solver_session.solution.run_calculation.transient_controls.time_step_size = 1e-06
+solver_session.settings.solution.initialization.initialization_type = "standard"
+solver_session.settings.solution.initialization.standard_initialize()
+solver_session.settings.solution.run_calculation.transient_controls.time_step_size = (
+    1e-06
+)
 
-solver_session.file.write(file_type="case", file_name="ablation.cas.h5")
+solver_session.settings.file.write(file_type="case", file_name="ablation.cas.h5")
 
 ############################################
 # Run the calculation
 # ===================
 # Note: It may take about half an hour to finish the calculation.
 
-solver_session.solution.run_calculation.dual_time_iterate(
+solver_session.settings.solution.run_calculation.dual_time_iterate(
     time_step_count=100, max_iter_per_step=20
 )
 
@@ -372,7 +384,9 @@ solver_session.solution.run_calculation.dual_time_iterate(
 # Save simulation data
 # ====================
 # Write case and data files
-solver_session.file.write(file_type="case-data", file_name="ablation_Solved.cas.h5")
+solver_session.settings.file.write(
+    file_type="case-data", file_name="ablation_Solved.cas.h5"
+)
 
 ####################################################################################
 # Post Processing
@@ -419,22 +433,22 @@ solver_session.file.write(file_type="case-data", file_name="ablation_Solved.cas.
 # ================
 # Following contours are displayed in the Fluent GUI:
 
-solver_session.results.surfaces.plane_surface.create(name="mid_plane")
-solver_session.results.surfaces.plane_surface["mid_plane"].method = "zx-plane"
+solver_session.settings.results.surfaces.plane_surface.create(name="mid_plane")
+solver_session.settings.results.surfaces.plane_surface["mid_plane"].method = "zx-plane"
 
-solver_session.results.graphics.contour.create(name="contour_pressure")
-solver_session.results.graphics.contour["contour_pressure"] = {
+solver_session.settings.results.graphics.contour.create(name="contour_pressure")
+solver_session.settings.results.graphics.contour["contour_pressure"] = {
     "field": "pressure",
     "surfaces_list": ["mid_plane"],
 }
-solver_session.results.graphics.contour.display(object_name="contour_pressure")
+solver_session.settings.results.graphics.contour.display(object_name="contour_pressure")
 
-solver_session.results.graphics.contour.create(name="contour_mach")
-solver_session.results.graphics.contour["contour_mach"] = {
+solver_session.settings.results.graphics.contour.create(name="contour_mach")
+solver_session.settings.results.graphics.contour["contour_mach"] = {
     "field": "mach-number",
     "surfaces_list": ["mid_plane"],
 }
-solver_session.results.graphics.contour.display(object_name="contour_mach")
+solver_session.settings.results.graphics.contour.display(object_name="contour_mach")
 
 ###############################################
 # Post processing with PyVista (3D visualization)

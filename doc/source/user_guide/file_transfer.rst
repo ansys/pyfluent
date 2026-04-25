@@ -3,15 +3,15 @@
 File transfer
 =============
 
-PyFluent provides a file transfer service that manages how files are uploaded to and downloaded from the Fluent server.  
-This service allows file-based API methods like `read_case()` and `write_mesh()` to work seamlessly—even when Fluent is running remotely, 
+PyFluent provides a file transfer service that manages how files are uploaded to and downloaded from the Fluent server.
+This service allows file-based API methods like `read_case()` and `write_mesh()` to work seamlessly—even when Fluent is running remotely,
 in a container, or in a PIM-managed environment.
 
 Depending on how Fluent is launched, different file transfer strategies are available:
 
 1. **PIM file transfer service**
 
-   When launching Fluent through the `Product Instance Management (PIM) <https://pypim.docs.pyansys.com/version/stable/>`_ file transfer is fully automated.  
+   When launching Fluent through the `Product Instance Management (PIM) <https://pypim.docs.pyansys.com/version/stable/>`_ file transfer is fully automated.
    You don’t need to call `upload()` or `download()`—files are transferred transparently when you use file-based API methods.
 
    Use this service when:
@@ -29,13 +29,13 @@ Depending on how Fluent is launched, different file transfer strategies are avai
       >>> case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
       >>> session = pyfluent.launch_fluent()
-      >>> session.file.read_case(file_name=case_file)
-      >>> session.file.write_case(file_name="write_mixing_elbow.cas.h5")
+      >>> session.settings.file.read_case(file_name=case_file)
+      >>> session.settings.file.write_case(file_name="write_mixing_elbow.cas.h5")
 
 
 2. **Container file transfer service**
 
-   When Fluent runs in a Docker container, files cannot be shared directly between client and server.  
+   When Fluent runs in a Docker container, files cannot be shared directly between client and server.
    The remote file transfer service uses a gRPC-based mechanism to manage transfers.
 
    Use this service when:
@@ -56,13 +56,13 @@ Depending on how Fluent is launched, different file transfer strategies are avai
       >>> file_transfer_service = ContainerFileTransferStrategy()
       >>> container_dict = {"mount_source": file_transfer_service.mount_source}
       >>> session = pyfluent.launch_fluent(file_transfer_service=file_transfer_service, container_dict=container_dict)
-      >>> session.file.read_case(file_name=case_file)
-      >>> session.file.write_case(file_name="write_mixing_elbow.cas.h5")
+      >>> session.settings.file.read_case(file_name=case_file)
+      >>> session.settings.file.write_case(file_name="write_mixing_elbow.cas.h5")
 
 
 3. **Standalone file transfer service**
 
-   When Fluent is launched in standalone mode on the same machine as the Python client, files can be accessed directly from the local file system. 
+   When Fluent is launched in standalone mode on the same machine as the Python client, files can be accessed directly from the local file system.
    In this case, the local file transfer service is used.
 
    Use this service when:

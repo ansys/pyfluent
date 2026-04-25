@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -26,16 +26,24 @@ import functools
 import os
 from typing import Any, Dict
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
-from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
-from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
+from ansys.fluent.core.streaming_services.datamodel_streaming import (
+    DatamodelStream as DatamodelStreamV0,
+)
+from ansys.fluent.core.streaming_services.datamodel_streaming_v1 import (
+    DatamodelStream,
+)
+from ansys.fluent.core.streaming_services.events_streaming import (
+    MeshingEvent as MeshingEventV0,
+)
+from ansys.fluent.core.streaming_services.events_streaming_v1 import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
@@ -85,13 +93,16 @@ class PureMeshing(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
+        _meshing_event = (
+            MeshingEvent if fluent_connection._server_supports_v1 else MeshingEventV0
+        )
         super(PureMeshing, self).__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
-            event_type=MeshingEvent,
+            event_type=_meshing_event,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
@@ -114,7 +125,11 @@ class PureMeshing(BaseSession):
                         else NameKey.INTERNAL
                     ),
                 )
-                stream = DatamodelStream(datamodel_service_se)
+                stream = (
+                    DatamodelStream(datamodel_service_se)
+                    if fluent_connection._server_supports_v1
+                    else DatamodelStreamV0(datamodel_service_se)
+                )
                 stream.register_callback(
                     functools.partial(
                         datamodel_service_se.cache.update_cache,
@@ -125,7 +140,7 @@ class PureMeshing(BaseSession):
                 self.datamodel_streams[rules] = stream
                 stream.start(
                     rules=rules,
-                    no_commands_diff_state=pyfluent.config.datamodel_use_nocommands_diff_state,
+                    no_commands_diff_state=config.datamodel_use_nocommands_diff_state,
                 )
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 
@@ -155,42 +170,159 @@ class PureMeshing(BaseSession):
         """Full API to meshing and meshing_workflow."""
         return self._base_meshing.meshing_workflow
 
-    def watertight(self):
-        """Get a new watertight workflow."""
-        return self._base_meshing.watertight_workflow()
+    def watertight(self, legacy: bool | None = None):
+        """Get a new watertight meshing workflow.
 
-    def fault_tolerant(self):
-        """Get a new fault-tolerant workflow."""
-        return self._base_meshing.fault_tolerant_workflow()
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
 
-    def two_dimensional_meshing(self):
-        """Get a new 2D meshing workflow."""
-        return self._base_meshing.two_dimensional_meshing_workflow()
+        Returns
+        -------
+        Workflow
+            A new watertight workflow instance ready for configuration and execution.
+        """
+        return self._base_meshing.watertight_workflow(legacy=legacy)
 
-    def load_workflow(self, file_path: PathType):
-        """Load a saved workflow."""
-        return self._base_meshing.load_workflow(file_path=os.fspath(file_path))
+    def fault_tolerant(self, legacy: bool | None = None):
+        """Get a new fault-tolerant meshing workflow.
 
-    def create_workflow(self):
-        """Create a meshing workflow."""
-        return self._base_meshing.create_workflow()
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        Workflow
+            A new fault-tolerant workflow instance ready for configuration and execution.
+        """
+        return self._base_meshing.fault_tolerant_workflow(legacy=legacy)
+
+    def two_dimensional_meshing(self, legacy: bool | None = None):
+        """Get a new 2D meshing workflow.
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        Workflow
+            A new 2D meshing workflow instance ready for configuration and execution.
+        """
+        return self._base_meshing.two_dimensional_meshing_workflow(legacy=legacy)
+
+    def load_workflow(self, file_path: PathType, legacy: bool | None = None):
+        """Load a saved meshing workflow from a file.
+
+        Restores a previously saved workflow configuration, including all task
+        settings, sizing controls, and intermediate state. This allows resuming
+        work or reusing established workflows on new geometry.
+
+        Parameters
+        ----------
+        file_path : str or PathType
+            Path to the saved workflow file (typically with .wft extension).
+        legacy : bool, optional
+            If True, loads as a legacy workflow implementation.
+            If False, loads as a new workflow implementation.
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        Workflow
+            The loaded workflow instance with all saved state restored.
+        """
+        return self._base_meshing.load_workflow(
+            file_path=os.fspath(file_path), legacy=legacy
+        )
+
+    def create_workflow(self, legacy: bool | None = None):
+        """Create a new blank meshing workflow.
+
+        Initializes an empty workflow that can be manually configured with tasks.
+        Unlike predefined workflows (watertight, fault-tolerant), this gives you
+        full control to build a custom task sequence from scratch.
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        Workflow
+            A new empty workflow instance ready for task insertion.
+        """
+        return self._base_meshing.create_workflow(legacy=legacy)
 
     @property
     def current_workflow(self):
-        """Current meshing workflow."""
-        return self._base_meshing.current_workflow
+        """Get the current active meshing workflow.
 
-    def topology_based(self):
-        """Get a new topology-based meshing workflow.
+        Returns the workflow instance that is currently loaded and active in the
+        meshing session. This is the workflow you're actively working on, whether
+        it was created from scratch, loaded from a file, or initiated as a
+        predefined workflow type.
+
+        Returns
+        -------
+        Workflow
+            The currently active workflow instance, or None if no workflow is loaded.
+        """
+        return self._base_meshing.current_workflow()
+
+    @property
+    def legacy_current_workflow(self):
+        """Get the current active meshing workflow (legacy implementation).
+
+        Returns the legacy implementation of the currently active workflow. This
+        is provided for backward compatibility with code written for Fluent 25R2
+        and earlier versions.
+        """
+        return self._base_meshing.current_workflow(legacy=True)
+
+    def topology_based(self, legacy: bool | None = None):
+        """Get a new topology-based meshing workflow (beta feature).
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        Workflow
+            A new topology-based workflow instance ready for configuration and execution.
 
         Raises
         ------
-        AttributeError
-            If beta features are not enabled in Fluent.
+        BetaFeaturesNotEnabled
+            If beta features are not enabled in the Fluent session. Enable by launching
+            Fluent with the ``-beta`` flag or setting the appropriate environment variable.
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("Topology-based meshing")
-        return self._base_meshing.topology_based_meshing_workflow()
+        return self._base_meshing.topology_based_meshing_workflow(legacy=legacy)
 
     @property
     def PartManagement(self):

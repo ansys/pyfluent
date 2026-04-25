@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -41,16 +41,30 @@ from ansys.fluent.core.pyfluent_warnings import (
 )
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
-from ansys.fluent.core.services.field_data import FieldDataService, ZoneInfo
+from ansys.fluent.core.services.field_data import (
+    ZoneInfo,
+)
+from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
+from ansys.fluent.core.services.field_data_v1 import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
+    DatamodelEvents as DatamodelEventsV0,
+)
+from ansys.fluent.core.streaming_services.datamodel_event_streaming_v1 import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.events_streaming import EventsManager
-from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.fluent.core.streaming_services.events_streaming import (
+    EventsManager as EventsManagerV0,
+)
+from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
+from ansys.fluent.core.streaming_services.transcript_streaming import (
+    Transcript as TranscriptV0,
+)
+from ansys.fluent.core.streaming_services.transcript_streaming_v1 import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
+from .utils.deprecate import deprecate_function
 
 try:
     from ansys.fluent.core.solver.settings import root
@@ -161,6 +175,16 @@ class BaseSession:
         )
         self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
+    _inactive_session_allow_list = [
+        "is_active",
+        "_fluent_connection",
+        "_fluent_connection_backup",
+        "wait_process_finished",
+        # `_exit` is kept accessible even for inactive sessions to allow callers
+        # to trigger a clean shutdown/teardown on sessions that are no longer active.
+        "_exit",
+    ]
+
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
@@ -181,10 +205,13 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = service_creator("transcript").create(
-            fluent_connection._channel, fluent_connection._metadata
-        )
-        self.transcript = Transcript(self._transcript_service)
+        self._transcript_service = service_creator(
+            "transcript", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
+        if fluent_connection._server_supports_v1:
+            self.transcript = Transcript(self._transcript_service)
+        else:
+            self.transcript = TranscriptV0(self._transcript_service)
         if self._start_transcript:
             self.transcript.start()
 
@@ -194,7 +221,9 @@ class BaseSession:
 
         self.journal = Journal(self._app_utilities)
 
-        self._datamodel_service_tui = service_creator("tui").create(
+        self._datamodel_service_tui = service_creator(
+            "tui", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
@@ -202,7 +231,9 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = service_creator("datamodel").create(
+        self._datamodel_service_se = service_creator(
+            "datamodel", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.get_fluent_version(),
@@ -210,31 +241,57 @@ class BaseSession:
             self._file_transfer_service,
         )
 
-        self._datamodel_events = DatamodelEvents(self._datamodel_service_se)
+        self._datamodel_events = (
+            DatamodelEvents(self._datamodel_service_se)
+            if fluent_connection._server_supports_v1
+            else DatamodelEventsV0(self._datamodel_service_se)
+        )
         self._datamodel_events.start()
 
-        self._batch_ops_service = service_creator("batch_ops").create(
-            fluent_connection._channel, fluent_connection._metadata
-        )
+        self._batch_ops_service = service_creator(
+            "batch_ops", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
 
         if event_type:
-            events_service = service_creator("events").create(
-                fluent_connection._channel, fluent_connection._metadata
-            )
-            self.events = EventsManager[event_type](
-                event_type, events_service, self._error_state, weakref.proxy(self)
-            )
+            events_service = service_creator(
+                "events", supports_v1=fluent_connection._server_supports_v1
+            ).create(fluent_connection._channel, fluent_connection._metadata)
+            if fluent_connection._server_supports_v1:
+                self.events = EventsManager[event_type](
+                    event_type,
+                    events_service,
+                    self._error_state,
+                    weakref.proxy(self),
+                    server_supports_v1=True,
+                )
+            else:
+                self.events = EventsManagerV0[event_type](
+                    event_type,
+                    events_service,
+                    self._error_state,
+                    weakref.proxy(self),
+                    server_supports_v1=False,
+                )
             self.events.start()
         else:
             self.events = None
 
-        self._field_data_service = self._fluent_connection.create_grpc_service(
-            FieldDataService, self._error_state
+        if fluent_connection._server_supports_v1:
+            self._field_data_service = self._fluent_connection.create_grpc_service(
+                FieldDataService, self._error_state
+            )
+        else:
+            self._field_data_service = self._fluent_connection.create_grpc_service(
+                FieldDataServiceV0, self._error_state
+            )
+
+        self.fields = Fields(
+            self, get_zones_info, fluent_connection._server_supports_v1
         )
 
-        self.fields = Fields(self, get_zones_info)
-
-        self._settings_service = service_creator("settings").create(
+        self._settings_service = service_creator(
+            "settings", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,
@@ -251,13 +308,18 @@ class BaseSession:
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
+    @deprecate_function(version="v0.38.0", new_func="is_active")
     def is_server_healthy(self) -> bool:
-        """Whether the current session is healthy (i.e. The server is 'SERVING')."""
+        """Whether the current session is healthy (i.e. the server is 'SERVING')."""
+        return self._is_server_healthy()
+
+    def _is_server_healthy(self) -> bool:
+        """Whether the current session is healthy (i.e. the server is 'SERVING')."""
         return self._health_check.is_serving
 
     def is_active(self) -> bool:
         """Whether the current session is active."""
-        return True if self._fluent_connection else False
+        return self._fluent_connection is not None and self._is_server_healthy()
 
     @property
     @deprecated(version="0.32", reason="Use ``session.scheme``.")
@@ -400,8 +462,16 @@ class BaseSession:
         return self._fluent_connection_backup.wait_process_finished()
 
     def exit(self, **kwargs) -> None:
-        """Exit session."""
+        """Exit session.
+
+        This public method is a convenience wrapper that delegates directly to
+        :meth:`_exit`.
+        """
         logger.debug("session.exit() called")
+        self._exit(**kwargs)
+
+    def _exit(self, **kwargs) -> None:
+        """Exit session."""
         if self._fluent_connection:
             self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
@@ -447,8 +517,10 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        warnings.warn(self._file_transfer_api_warning("upload()"), PyFluentUserWarning)
         if self._file_transfer_service:
+            warnings.warn(
+                self._file_transfer_api_warning("upload()"), PyFluentUserWarning
+            )
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_directory: str | None = None):
@@ -461,10 +533,10 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        warnings.warn(
-            self._file_transfer_api_warning("download()"), PyFluentUserWarning
-        )
         if self._file_transfer_service:
+            warnings.warn(
+                self._file_transfer_api_warning("download()"), PyFluentUserWarning
+            )
             return self._file_transfer_service.download(file_name, local_directory)
 
     def chdir(self, path: PathType) -> None:
@@ -483,11 +555,17 @@ class BaseSession:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
-        self.exit()
+        self._exit()
 
     def __dir__(self):
         if self._fluent_connection is None:
-            return ["is_active", "wait_process_finished"]
+            names = super().__dir__()
+            return [
+                name
+                for name in names
+                if (name.startswith("__") and name.endswith("__"))
+                or name in {"is_active", "wait_process_finished"}
+            ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",
@@ -514,25 +592,30 @@ class Fields:
         self,
         _session: BaseSession,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+        server_supports_v1: bool = False,
     ):
         """Initialize Fields."""
         self._is_solution_data_valid = (
             _session._app_utilities.is_solution_data_available
         )
-        self._field_info = service_creator("field_info").create(
+        self._field_info = service_creator(
+            "field_info", supports_v1=server_supports_v1
+        ).create(
             _session._field_data_service,
             self._is_solution_data_valid,
         )
-        self.field_data = service_creator("field_data").create(
+        self.field_data = service_creator(
+            "field_data", supports_v1=server_supports_v1
+        ).create(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,
             _session.scheme,
             get_zones_info,
         )
-        self.field_data_streaming = service_creator("field_data_streaming").create(
-            _session._fluent_connection._id, _session._field_data_service
-        )
+        self.field_data_streaming = service_creator(
+            "field_data_streaming", supports_v1=server_supports_v1
+        ).create(_session._fluent_connection._id, _session._field_data_service)
         self.field_data_old = service_creator("field_data_old").create(
             _session._field_data_service,
             self._field_info,
