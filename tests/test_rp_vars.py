@@ -46,6 +46,49 @@ def test_get_and_set_rp_vars(new_solver_session) -> None:
     before_init_mod_2 = rp_vars("strategy/solution-strategy/before-init-modification")
     assert before_init_mod_2[1][1][1] == ("value", True)
 
+    # Test string assignment to rp vars
+    assert (
+        solver.rp_vars("dynamesh/smooth/laplace/amg-cpld-relaxation-method")
+        == '"gauss-seidel"'
+    )
+    solver.rp_vars(
+        "dynamesh/smooth/laplace/amg-cpld-relaxation-method", '"least-squares"'
+    )
+    assert (
+        solver.rp_vars("dynamesh/smooth/laplace/amg-cpld-relaxation-method")
+        == '"least-squares"'
+    )
+    solver.rp_vars("dynamesh/smooth/laplace/amg-cpld-relaxation-method", "gauss-seidel")
+    assert (
+        solver.rp_vars("dynamesh/smooth/laplace/amg-cpld-relaxation-method")
+        == '"gauss-seidel"'
+    )
+    solver.rp_vars(
+        "dynamesh/smooth/laplace/amg-cpld-relaxation-method", "least-squares"
+    )
+    assert (
+        solver.rp_vars("dynamesh/smooth/laplace/amg-cpld-relaxation-method")
+        == '"least-squares"'
+    )
+    solver.rp_vars(
+        "dynamesh/smooth/laplace/amg-cpld-relaxation-method", """gauss-seidel"""
+    )
+    assert (
+        solver.rp_vars("dynamesh/smooth/laplace/amg-cpld-relaxation-method")
+        == '"gauss-seidel"'
+    )
+    solver.rp_vars(
+        "dynamesh/smooth/laplace/amg-cpld-relaxation-method", """least-squares"""
+    )
+    assert (
+        solver.rp_vars("dynamesh/smooth/laplace/amg-cpld-relaxation-method")
+        == '"least-squares"'
+    )
+
+    assert solver.rp_vars("dynamesh/remesh/rdc/size-field-name") == '"sizes.sf"'
+    solver.rp_vars("dynamesh/remesh/rdc/size-field-name", '"sizes_1.sf"')
+    assert solver.rp_vars("dynamesh/remesh/rdc/size-field-name") == '"sizes_1.sf"'
+
 
 @pytest.mark.fluent_version(">=23.1, !=24.1")
 def test_get_all_rp_vars(new_solver_session) -> None:
