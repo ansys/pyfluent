@@ -23,7 +23,7 @@
 import time
 from typing import Iterable
 
-from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
+from conftest import SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples

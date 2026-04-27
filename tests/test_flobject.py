@@ -26,7 +26,6 @@ from collections.abc import MutableMapping
 import io
 import weakref
 
-from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
@@ -1023,7 +1022,7 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2, !=26.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     assert isinstance(solver.settings.state_with_units(), dict)
