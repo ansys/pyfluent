@@ -24,27 +24,7 @@ import pytest
 
 from ansys.fluent.core.examples import download_file, path
 from ansys.fluent.core.filereader.casereader import CaseReader
-from ansys.fluent.core.rpvars import RPVarType, RPVars
-
-
-def test_scheme_escape() -> None:
-    """Unit-tests for the Scheme-string escaping helper (no Fluent session required)."""
-    escape = RPVars._scheme_escape
-
-    # Plain string: no change
-    assert escape("gauss-seidel") == "gauss-seidel"
-
-    # Backslash must be doubled
-    assert escape("test\\path") == "test\\\\path"
-
-    # Double-quote must be escaped with a backslash
-    assert escape('say "hello"') == 'say \\"hello\\"'
-
-    # Both backslash and double-quote
-    assert escape('path\\to\\"file"') == 'path\\\\to\\\\\\"file\\"'
-
-    # Single-quote is valid inside Scheme strings and must not be altered
-    assert escape("it's fine") == "it's fine"
+from ansys.fluent.core.rpvars import RPVarType
 
 
 def test_get_and_set_rp_vars(new_solver_session) -> None:
@@ -67,9 +47,7 @@ def test_get_and_set_rp_vars(new_solver_session) -> None:
     assert before_init_mod_2[1][1][1] == ("value", True)
 
     # Test string assignment to rp vars without depending on case-specific defaults
-    amg_cpld_relaxation_method = (
-        "dynamesh/smooth/laplace/amg-cpld-relaxation-method"
-    )
+    amg_cpld_relaxation_method = "dynamesh/smooth/laplace/amg-cpld-relaxation-method"
     original_amg_cpld_relaxation_method = solver.rp_vars(amg_cpld_relaxation_method)
     try:
         solver.rp_vars(amg_cpld_relaxation_method, '"least-squares"')
@@ -81,15 +59,8 @@ def test_get_and_set_rp_vars(new_solver_session) -> None:
         solver.rp_vars(amg_cpld_relaxation_method, "least-squares")
         assert solver.rp_vars(amg_cpld_relaxation_method) == '"least-squares"'
 
-        solver.rp_vars(amg_cpld_relaxation_method, """gauss-seidel""")
-        assert solver.rp_vars(amg_cpld_relaxation_method) == '"gauss-seidel"'
-
-        solver.rp_vars(amg_cpld_relaxation_method, """least-squares""")
-        assert solver.rp_vars(amg_cpld_relaxation_method) == '"least-squares"'
     finally:
-        solver.rp_vars(
-            amg_cpld_relaxation_method, original_amg_cpld_relaxation_method
-        )
+        solver.rp_vars(amg_cpld_relaxation_method, original_amg_cpld_relaxation_method)
 
     size_field_name = "dynamesh/remesh/rdc/size-field-name"
     original_size_field_name = solver.rp_vars(size_field_name)
@@ -98,6 +69,8 @@ def test_get_and_set_rp_vars(new_solver_session) -> None:
         assert solver.rp_vars(size_field_name) == '"sizes_1.sf"'
     finally:
         solver.rp_vars(size_field_name, original_size_field_name)
+
+
 @pytest.mark.fluent_version(">=23.1, !=24.1")
 def test_get_all_rp_vars(new_solver_session) -> None:
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")

@@ -148,26 +148,15 @@ class RPVars:
         list_val = self._execute("(cx-send 'rp-variables)")
         return {val[0]: val[1] for val in list_val}
 
-    @staticmethod
-    def _scheme_escape(text: str) -> str:
-        """Escape a Python string for safe embedding in a Scheme string literal.
-
-        Escapes backslashes and double-quotes so that the resulting string can
-        be safely placed between double-quote delimiters in a Scheme command
-        without producing invalid syntax or allowing command injection.
-        """
-        return text.replace("\\", "\\\\").replace('"', '\\"')
-
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
         if type(val) is str:
             text = val.strip()
-            # If caller already passed quoted content ('...','"...",'''...'''), peel outer quotes.
-            while len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
+            # If caller already passed quoted content ('...','"..."), peel outer quotes.
+            if len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
                 text = text[1:-1].strip()
-
             # Escape backslashes and double-quotes before embedding in the Scheme command.
-            cmd = f'(rpsetvar {RPVars._var(var)} "{RPVars._scheme_escape(text)}")'
+            cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(text)}")'
         else:
             cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
         return self._execute(cmd)
