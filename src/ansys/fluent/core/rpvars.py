@@ -152,7 +152,7 @@ class RPVars:
         prefix = "'" if isinstance(val, (list, tuple)) else ""
         if type(val) is str:
             text = val.strip()
-            # If caller already passed quoted content ('...','"..."), peel outer quotes.
+            # If caller already passed quoted content ('...', "..."), peel outer quotes.
             if len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
                 text = text[1:-1].strip()
             cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(text)}")'
