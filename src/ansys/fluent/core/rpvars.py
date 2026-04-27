@@ -142,20 +142,34 @@ class RPVars:
             )
 
         cmd = f"(rpgetvar {RPVars._var(var)})"
-        return self._execute(cmd)
+        ret_val = self._execute(cmd)
+        if isinstance(ret_val, str):
+            return self._strip_string_of_quotes(ret_val)
+        return ret_val
 
     def _get_vars(self):
         list_val = self._execute("(cx-send 'rp-variables)")
-        return {val[0]: val[1] for val in list_val}
+        return {
+            val[0]: (
+                self._strip_string_of_quotes(val[1])
+                if isinstance(val[1], str)
+                else val[1]
+            )
+            for val in list_val
+        }
 
     @staticmethod
     def _strip_string_of_quotes(input_string: str) -> str:
-        """Normalize user-provided string values for ``rpsetvar`` string writes.
+        """Normalize rpvar string values when handling quoted edge cases.
 
-        This helper addresses a narrow interoperability case where callers may pass
-        a value already wrapped in matching outer quotes (for example ``'"value"'``.
-        In that specific case, only the outer quote pair is
-        removed before the value is embedded in the Scheme command.
+        Fluent may return string rpvar values wrapped in an extra layer of quotes
+        (for example ``'"value"'``), and callers may similarly pass pre-quoted
+        strings when writing. In both cases, only the single outermost matching
+        quote pair is removed so the value round-trips correctly between Python
+        and Scheme.
+
+        This normalization applies to the string-specific read paths
+        (``_get_var``, ``_get_vars``).
         """
         text = input_string.strip()
         if len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
@@ -165,8 +179,7 @@ class RPVars:
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
         if type(val) is str:
-            # Only normalize pre-quoted string payloads.
-            cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(self._strip_string_of_quotes(val))}")'
+            cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(val)}")'
         else:
             cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
         return self._execute(cmd)
