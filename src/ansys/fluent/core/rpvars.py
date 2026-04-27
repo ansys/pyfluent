@@ -155,7 +155,6 @@ class RPVars:
             # If caller already passed quoted content ('...','"..."), peel outer quotes.
             if len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
                 text = text[1:-1].strip()
-            # Escape backslashes and double-quotes before embedding in the Scheme command.
             cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(text)}")'
         else:
             cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
