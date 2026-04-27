@@ -148,14 +148,25 @@ class RPVars:
         list_val = self._execute("(cx-send 'rp-variables)")
         return {val[0]: val[1] for val in list_val}
 
+    @staticmethod
+    def _strip_string_of_quotes(input_string: str) -> str:
+        """Normalize user-provided string values for ``rpsetvar`` string writes.
+
+        This helper addresses a narrow interoperability case where callers may pass
+        a value already wrapped in matching outer quotes (for example ``'"value"'``.
+        In that specific case, only the outer quote pair is
+        removed before the value is embedded in the Scheme command.
+        """
+        text = input_string.strip()
+        if len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
+            text = text[1:-1]
+        return text
+
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
         if type(val) is str:
-            text = val.strip()
-            # If caller already passed quoted content ('...', "..."), peel outer quotes.
-            if len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
-                text = text[1:-1]
-            cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(text)}")'
+            # Only normalize pre-quoted string payloads for this string-specific rpsetvar path.
+            cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(self._strip_string_of_quotes(val))}")'
         else:
             cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
         return self._execute(cmd)
