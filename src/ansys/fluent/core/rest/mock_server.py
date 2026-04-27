@@ -337,19 +337,26 @@ class _Handler(BaseHTTPRequestHandler):
         """Strip ``api/<component>/`` and return the settings path, or None."""
         if not path.startswith(self._API_PREFIX):
             return None
-        rest = path[len(self._API_PREFIX):]
+        rest = path[len(self._API_PREFIX) :]
         # rest is now "fluent_1/..."
         slash = rest.find("/")
         if slash == -1:
             # path is "api/<component>" with no trailing segment
             return ""
-        return rest[slash + 1:]  # e.g. "static-info" or "setup/models/..."
+        return rest[slash + 1 :]  # e.g. "static-info" or "setup/models/..."
 
     # -- GET ------------------------------------------------------------
 
     def do_GET(self):  # noqa: N802
         """Handle HTTP GET requests."""
         path, _params = self._parse_url()
+        
+        # Special endpoint: /api/connection/run_mode (not under component)
+        if path == "api/connection/run_mode":
+            # Return "batch" by default (mock is non-interactive)
+            self._send_json("batch")
+            return
+        
         setting_path = self._strip_prefix(path)
         if setting_path is None:
             return self._send_error(404, f"Unknown endpoint: {path}")
@@ -365,7 +372,11 @@ class _Handler(BaseHTTPRequestHandler):
 
         # Named-object names
         if setting_path in self._store["named_objects"]:
-            self._send_json(self._store["named_objects"][setting_path])
+            # Real Fluent server returns named objects as dict with names as keys
+            # Convert list to dict format: {"name1": {"name": "name1"}, ...}
+            names_list = self._store["named_objects"][setting_path]
+            names_dict = {name: {"name": name} for name in names_list}
+            self._send_json(names_dict)
             return
 
         # List size
@@ -378,7 +389,7 @@ class _Handler(BaseHTTPRequestHandler):
         group = {}
         for k, v in self._store["vars"].items():
             if k.startswith(prefix):
-                remainder = k[len(prefix):]
+                remainder = k[len(prefix) :]
                 parts = remainder.split("/")
                 target = group
                 for part in parts[:-1]:
@@ -404,6 +415,7 @@ class _Handler(BaseHTTPRequestHandler):
             # Set value
             value = body["value"]
             if isinstance(value, dict):
+
                 def _flatten(prefix, d):
                     for k, v in d.items():
                         full = f"{prefix}/{k}"
@@ -411,6 +423,7 @@ class _Handler(BaseHTTPRequestHandler):
                             _flatten(full, v)
                         else:
                             self._store["vars"][full] = v
+
                 _flatten(setting_path, value)
             else:
                 self._store["vars"][setting_path] = value
@@ -460,7 +473,7 @@ class _Handler(BaseHTTPRequestHandler):
             group = {}
             for k, v in self._store["vars"].items():
                 if k.startswith(prefix):
-                    remainder = k[len(prefix):]
+                    remainder = k[len(prefix) :]
                     parts = remainder.split("/")
                     target = group
                     for part in parts[:-1]:
@@ -499,7 +512,7 @@ class _Handler(BaseHTTPRequestHandler):
         if slash == -1:
             return self._send_error(404, f"Unknown endpoint: {path}")
         parent_path = setting_path[:slash]
-        command = setting_path[slash + 1:]
+        command = setting_path[slash + 1 :]
 
         handler = self._store["command_handlers"].get((parent_path, command))
         if handler is not None:
@@ -531,7 +544,7 @@ class _Handler(BaseHTTPRequestHandler):
         if slash == -1:
             return self._send_error(400, "DELETE path must include parent and name")
         parent_path = full_path[:slash]
-        name = full_path[slash + 1:]
+        name = full_path[slash + 1 :]
 
         bucket = self._store["named_objects"].get(parent_path, [])
         if name not in bucket:

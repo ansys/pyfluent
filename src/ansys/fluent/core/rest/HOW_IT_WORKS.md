@@ -12,6 +12,214 @@ API the user already knows.
 
 ---
 
+## Quick Start — How to Run Things
+
+### 1. Run all unit tests (70 tests, ~18 seconds)
+
+```bash
+cd D:\ANSYSDev\pyfluent-dev\pyfluent
+pytest src/ansys/fluent/core/rest/tests/ -v
+```
+
+**What this does:** Runs all 70 tests against the mock server (no Fluent needed).
+All tests should pass. If any fail, something is broken.
+
+---
+
+### 2. Test against a real Fluent server
+
+**Prerequisites:**
+- A running Fluent instance with REST/SimBA enabled
+- The server's IP, port, and auth token (from the `.sifile`)
+
+**Edit the token in the test file:**
+
+Open `src/ansys/fluent/core/rest/test_real_server.py` and update line 18:
+```python
+AUTH_TOKEN = "your_actual_token_here"
+```
+
+**Run the test:**
+```bash
+python src/ansys/fluent/core/rest/test_real_server.py
+```
+
+**What to expect:**
+- `get_static_info` → PASS
+- `get_var` (5 paths) → PASS  
+- `get_attrs` → PASS (or 500 if SimBA bug)
+- `get_object_names` → PASS
+- `set_var` round-trip → PASS
+- `execute_cmd` → 500 (expected if no mesh loaded)
+
+---
+
+### 3. Use the client directly in Python (no flobject tree)
+
+```python
+from ansys.fluent.core.rest import FluentRestClient
+
+# Connect to a running Fluent server
+client = FluentRestClient(
+    "http://10.18.44.175:5000",
+    auth_token="5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"
+)
+
+# Read a value
+energy_on = client.get_var("setup/models/energy/enabled")
+print(f"Energy model: {energy_on}")
+
+# Write a value (use kebab-case paths)
+client.set_var("setup/models/energy/enabled", True)
+
+# Execute a command
+client.execute_cmd("solution/initialization", "initialize")
+```
+
+**Important:** When calling `client.get_var()` or `client.set_var()` directly,
+you must use the server's path format (kebab-case: `run-calculation`, not
+`run_calculation`).
+
+---
+
+### 4. Use the full session with settings tree (like normal PyFluent)
+
+```python
+from ansys.fluent.core.rest import launch_fluent_rest
+
+# Connect to Fluent
+session = launch_fluent_rest(
+    host="10.18.44.175",
+    port=5000,
+    auth_token="your_token_here"
+)
+
+# Use the settings tree just like gRPC PyFluent
+print(session.settings.setup.models.energy.enabled())
+session.settings.setup.models.energy.enabled.set_state(True)
+
+# Access via Python snake_case — flobject converts to kebab-case automatically
+vel = session.settings.setup.general.solver.velocity_formulation()
+print(f"Velocity formulation: {vel}")
+```
+
+**Key difference:** With the session, you use **Python snake_case** attribute
+names (`run_calculation`). flobject automatically converts them to the server's
+kebab-case format (`run-calculation`) before calling `client.get_var()`.
+
+---
+
+### 5. Work with the mock server (for development/testing)
+
+```python
+from ansys.fluent.core.rest import FluentRestMockServer, FluentRestClient
+
+# Start the mock server
+server = FluentRestMockServer().start()
+print(f"Mock server running at: {server.base_url}")
+
+# Connect a client to it
+client = FluentRestClient(server.base_url)
+
+# Use it like a real client
+print(client.get_var("setup/models/energy/enabled"))  # True
+client.set_var("setup/models/energy/enabled", False)
+print(client.get_var("setup/models/energy/enabled"))  # False
+
+# Stop the server when done
+server.stop()
+```
+
+**Or use as a context manager:**
+```python
+with FluentRestMockServer() as server:
+    client = FluentRestClient(server.base_url)
+    print(client.get_var("setup/general/solver/time"))
+# server stops automatically
+```
+
+---
+
+### 6. Interactive exploration with Python REPL
+
+```bash
+python
+```
+
+```python
+>>> from ansys.fluent.core.rest import FluentRestClient
+>>> client = FluentRestClient("http://10.18.44.175:5000", auth_token="...")
+>>> 
+>>> # Get the full schema
+>>> info = client.get_static_info()
+>>> print(info.keys())
+dict_keys(['type', 'children'])
+>>> 
+>>> # Explore top-level children
+>>> print(list(info['children'].keys()))
+['file', 'mesh', 'server', 'setup', 'solution', 'results', 'design', 'parametric-studies']
+>>> 
+>>> # Read a few values
+>>> client.get_var("setup/models/energy/enabled")
+True
+>>> client.get_var("setup/models/viscous/model")
+'laminar'
+>>> client.get_var("setup/general/solver/time")
+'steady'
+```
+
+---
+
+### 7. Finding the auth token from a running Fluent session
+
+The token is in the `.sifile` created when Fluent starts. On the machine running
+Fluent:
+
+```bash
+# Find the sifile
+find /tmp -name "*.sifile" 2>/dev/null
+
+# Read it (2 lines: host:port, then password)
+cat /tmp/fl_pyfluent_abc123.sifile
+```
+
+Output looks like:
+```
+10.18.44.175:5000
+5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5
+```
+
+Line 2 is your `AUTH_TOKEN`.
+
+---
+
+### 8. Debugging tips
+
+**Check if the server is reachable:**
+```python
+import urllib.request
+response = urllib.request.urlopen("http://10.18.44.175:5000/api/connection/run_mode")
+print(response.read())  # Should print: "fluent_proxy"
+```
+
+**Check client errors:**
+```python
+from ansys.fluent.core.rest.client import FluentRestError
+
+try:
+    client.get_var("invalid/path")
+except FluentRestError as e:
+    print(f"HTTP {e.status}: {e}")
+```
+
+**Enable detailed error messages:**
+All `FluentRestError` exceptions include both the HTTP status code and the
+server's `detail` message. Read both.
+
+---
+
+
+
 ## Part 1 — The Workflow: What Happens Step by Step
 
 ### What is "SimBA"?
@@ -380,7 +588,36 @@ launch_fluent_rest(host, port, auth_token)
 
 ---
 
-## Part 3 — What is Pending
+## Key Discovery: Path Naming Convention
+
+**The real Fluent server uses kebab-case (dashes) in paths.**
+
+| What | Format | Example |
+|---|---|---|
+| Real Fluent server (SimBA) | kebab-case | `solution/run-calculation` |
+| Mock server (unit tests) | snake_case | `solution/run_calculation` |
+| Python user API (flobject) | snake_case attribute names | `session.settings.solution.run_calculation` |
+
+**Why this works automatically:**
+
+When you use the settings tree (`session.settings.solution.run_calculation`),
+flobject builds the path from each node's `fluent_name` — which it reads
+directly from `get_static_info()`. On a real server, the schema already has
+kebab-case names, so flobject naturally calls `client.get_var("solution/run-calculation")`.
+
+**`client.py` does not do any path conversion.** It passes whatever string it
+receives directly to the server. This is correct — the conversion is handled
+upstream by flobject.
+
+**The mock server uses snake_case** in its internal store because the mock's
+hand-written `_STATIC_INFO` uses snake_case keys. This means the mock is
+internally consistent for unit testing, but its paths don't perfectly mirror
+the real Fluent server. This is acceptable — the mock is for testing the
+client/protocol, not for replicating Fluent's exact schema.
+
+---
+
+
 
 ### 1. Real authentication token (BLOCKER for live server)
 
@@ -466,3 +703,160 @@ integration test that confirms a real Fluent list-type setting accepts the
 | Use meshing session instead of solver | Pass `component="fluent_meshing_1"` |
 | Handle HTTP errors | Catch `FluentRestError` — has `.status` (int) and message |
 | Check the formal API contract | `SettingsProxy` in `protocol.py` |
+
+---
+
+## Troubleshooting Common Issues
+
+### Error: `HTTP 401: Invalid password`
+
+**Cause:** Wrong auth token.
+
+**Solution:**
+1. Find the `.sifile` on the machine running Fluent (usually in `/tmp/`)
+2. Read line 2 — that's the correct token
+3. Update your code: `FluentRestClient(..., auth_token="<line_2>")`
+
+**Example:**
+```bash
+cat /tmp/fl_pyfluent_abc123.sifile
+# Output:
+# 10.18.44.175:5000
+# 5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5
+```
+Use `5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5` as your token.
+
+---
+
+### Error: `HTTP 404: Request /.../... not found`
+
+**Cause:** Path doesn't exist in the current Fluent session's state.
+
+**Common reasons:**
+- You used snake_case (`run_calculation`) when calling `client.get_var()` directly — should be kebab-case (`run-calculation`)
+- The path legitimately doesn't exist (no case loaded, no BCs defined, etc.)
+- You're looking at a leaf that's actually inside a group (e.g. `iter_count` doesn't exist as a standalone path, it's inside `run-calculation`)
+
+**Solution:**
+1. Call `client.get_static_info()` to see the full schema
+2. Navigate step-by-step: `client.get_var("solution")`, then `client.get_var("solution/run-calculation")`, etc.
+3. For the settings tree (`session.settings...`), use snake_case — flobject converts automatically
+
+---
+
+### Error: `HTTP 500: Internal Server Error`
+
+**Known cases:**
+- `get_attrs` → SimBA bug in current build (V261). The endpoint crashes server-side.
+- `execute_cmd("...initialize")` → No mesh loaded, Fluent can't initialize
+
+**What to do:**
+- For `get_attrs`, this is a known SimBA issue. Report to the Fluent team.
+- For solver commands, ensure a valid case/mesh is loaded first.
+
+---
+
+### Tests fail with `Connection refused` or timeout
+
+**Cause:** The server isn't running / isn't reachable.
+
+**Solution:**
+- Check the server is actually running: `curl http://10.18.44.175:5000/api/connection/run_mode`
+- Check firewall rules allow access to port 5000
+- Verify the IP is correct (not `localhost` if Fluent is on a remote machine)
+
+---
+
+### `set_var` doesn't change the value (silent failure)
+
+**Cause:** Fluent's solver validation rejected the change.
+
+**Example:** Trying to disable energy when a case is loaded that requires it.
+
+**What happens:**
+1. Your `PUT /api/.../enabled` with `{"value": false}` reaches SimBA ✅
+2. Fluent internally overrides it back to `true` (solver validation)
+3. No error is returned (HTTP 200)
+4. But readback shows the old value
+
+**Solution:** Always check the readback value if you need confirmation:
+```python
+client.set_var("setup/models/energy/enabled", False)
+actual = client.get_var("setup/models/energy/enabled")
+if actual != False:
+    print("Warning: Fluent rejected the change")
+```
+
+---
+
+### Import error: `ModuleNotFoundError: No module named 'ansys.fluent.core.rest'`
+
+**Cause:** The package isn't installed or you're running from the wrong directory.
+
+**Solution:**
+```bash
+cd D:\ANSYSDev\pyfluent-dev\pyfluent
+pip install -e .    # editable install
+```
+
+Then run your code.
+
+---
+
+### Mock server paths don't match what I see in real Fluent
+
+**Cause:** Mock uses snake_case (`run_calculation`), real server uses kebab-case (`run-calculation`).
+
+**Why:** The mock's hand-written `_STATIC_INFO` was created before we discovered
+real Fluent's path format. The mock is internally consistent for unit testing.
+
+**Solution:**
+- For unit tests against the mock: use snake_case
+- For real server: use kebab-case
+- For settings tree: use snake_case (flobject converts it)
+
+---
+
+### How do I know if I'm using kebab-case or snake_case correctly?
+
+**Simple rule:**
+
+| When you're using… | Path format |
+|---|---|
+| `client.get_var("...")` directly | Use exact server format (kebab-case for real Fluent) |
+| `client.get_var("...")` against mock | Use mock format (snake_case) |
+| `session.settings.X.Y.Z()` | Always Python snake_case — flobject converts automatically |
+
+**Example:**
+```python
+# Direct client call → use server's kebab-case
+client.get_var("solution/run-calculation")  ✅
+client.get_var("solution/run_calculation")  ❌
+
+# Settings tree → use Python snake_case
+session.settings.solution.run_calculation   ✅
+session.settings.solution.run-calculation   ❌ (not valid Python)
+```
+
+---
+
+### The session hangs when executing a long-running command
+
+**Cause:** All HTTP calls are synchronous. Long solver operations block.
+
+**Temporary workaround:** Run in a separate thread:
+```python
+import threading
+
+def run_calc():
+    session.settings.solution.run_calculation.iterate(100)
+
+thread = threading.Thread(target=run_calc)
+thread.start()
+# Do other work while it runs...
+thread.join()  # Wait for completion
+```
+
+**Future solution:** Async client (not yet implemented).
+
+---

@@ -126,11 +126,13 @@ class TestGetSetVar:
         assert rest_client.get_var("setup/models/energy/enabled") is False
         # Restore
         rest_client.set_var("setup/models/energy/enabled", True)
+        assert rest_client.get_var("setup/models/energy/enabled") is True
 
     def test_set_then_get_string(self, rest_client):
         rest_client.set_var("setup/general/solver/time", "transient")
         assert rest_client.get_var("setup/general/solver/time") == "transient"
         rest_client.set_var("setup/general/solver/time", "steady")
+        assert rest_client.get_var("setup/general/solver/time") == "steady"
 
     def test_set_then_get_float(self, rest_client):
         rest_client.set_var("solution/controls/under_relaxation/pressure", 0.5)
@@ -254,6 +256,7 @@ class TestListSize:
 # execute_cmd
 # ---------------------------------------------------------------------------
 
+
 class TestExecuteCmd:
     def test_registered_command(self, rest_client):
         reply = rest_client.execute_cmd("solution/initialization", "initialize")
@@ -290,6 +293,7 @@ class TestExecuteQuery:
 
 class TestHelpers:
     def test_is_interactive_mode_returns_false(self, rest_client):
+        """Mock server returns 'batch' mode, so is_interactive_mode is False."""
         assert rest_client.is_interactive_mode() is False
 
     @pytest.mark.parametrize(
