@@ -24,7 +24,27 @@ import pytest
 
 from ansys.fluent.core.examples import download_file, path
 from ansys.fluent.core.filereader.casereader import CaseReader
-from ansys.fluent.core.rpvars import RPVarType
+from ansys.fluent.core.rpvars import RPVarType, RPVars
+
+
+def test_scheme_escape() -> None:
+    """Unit-tests for the Scheme-string escaping helper (no Fluent session required)."""
+    escape = RPVars._scheme_escape
+
+    # Plain string: no change
+    assert escape("gauss-seidel") == "gauss-seidel"
+
+    # Backslash must be doubled
+    assert escape("test\\path") == "test\\\\path"
+
+    # Double-quote must be escaped with a backslash
+    assert escape('say "hello"') == 'say \\"hello\\"'
+
+    # Both backslash and double-quote
+    assert escape('path\\to\\"file"') == 'path\\\\to\\\\\\"file\\"'
+
+    # Single-quote is valid inside Scheme strings and must not be altered
+    assert escape("it's fine") == "it's fine"
 
 
 def test_get_and_set_rp_vars(new_solver_session) -> None:
