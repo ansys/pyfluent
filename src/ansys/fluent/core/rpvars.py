@@ -165,7 +165,7 @@ class RPVars:
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
         if type(val) is str:
-            # Only normalize pre-quoted string payloads for this string-specific rpsetvar path.
+            # Only normalize pre-quoted string payloads.
             cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(self._strip_string_of_quotes(val))}")'
         else:
             cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
