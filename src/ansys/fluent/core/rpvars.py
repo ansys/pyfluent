@@ -154,7 +154,7 @@ class RPVars:
             text = val.strip()
             # If caller already passed quoted content ('...', "..."), peel outer quotes.
             if len(text) >= 2 and text[0] == text[-1] and text[0] in ("'", '"'):
-                text = text[1:-1].strip()
+                text = text[1:-1]
             cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(text)}")'
         else:
             cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
