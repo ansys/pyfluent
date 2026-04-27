@@ -100,7 +100,8 @@ markers = [
     "nightly: Tests that run under nightly CI",
     "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
-    "standalone: Tests that cannot be run within container"
+    "standalone: Tests that cannot be run within container",
+    "real_server: Tests that require a live Fluent / SimBA server at 10.18.44.175:5000"
 ]
 
 
