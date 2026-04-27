@@ -289,7 +289,11 @@ class TestExecuteQuery:
 
 
 class TestHelpers:
-    def test_is_interactive_mode_returns_false(self, rest_client):
+    def test_is_interactive_mode_returns_false_for_mock(self, rest_client):
+        """Mock server returns 'batch' mode, so is_interactive_mode is False.
+
+        Against a real Fluent server in 'fluent_proxy' mode this returns True.
+        """
         assert rest_client.is_interactive_mode() is False
 
     @pytest.mark.parametrize(

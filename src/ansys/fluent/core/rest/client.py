@@ -234,7 +234,7 @@ class FluentRestClient:
 
         Calls ``PUT /api/{component}/{path}`` with body ``{"value": value}``.
         """
-        self._request("PUT", f"{self._api_base}/{path}", body={"value": value})
+        self._request("PUT", f"{self._api_base}/{path}", body=value)
 
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
@@ -263,7 +263,9 @@ class FluentRestClient:
         if isinstance(result, list):
             return result
         if isinstance(result, dict):
-            return result.get("names", [])
+            # Real Fluent returns named objects as dict with names as keys:
+            # {"hot-inlet": {...}, "cold-inlet": {...}}
+            return list(result.keys())
         return []
 
     def create(self, path: str, name: str) -> None:
@@ -307,7 +309,11 @@ class FluentRestClient:
         if isinstance(result, list):
             return len(result)
         if isinstance(result, dict):
-            return result.get("size", 0)
+            # Explicit size field from list-objects
+            if "size" in result:
+                return result["size"]
+            # Named-object containers: count the keys (object names)
+            return len(result)
         return 0
 
     def resize_list_object(self, path: str, size: int) -> None:
@@ -322,18 +328,20 @@ class FluentRestClient:
 
         Calls ``POST /api/{component}/{path}/{command}`` with body ``kwds``.
         """
-        return self._request(
+        result = self._request(
             "POST", f"{self._api_base}/{path}/{command}", body=kwds
-        ).get("reply")
+        )
+        return result.get("reply") if isinstance(result, dict) else result
 
     def execute_query(self, path: str, query: str, **kwds) -> Any:
         """Execute *query* at *path* with keyword arguments *kwds*.
 
         Calls ``POST /api/{component}/{path}/{query}`` with body ``kwds``.
         """
-        return self._request(
+        result = self._request(
             "POST", f"{self._api_base}/{path}/{query}", body=kwds
-        ).get("reply")
+        )
+        return result.get("reply") if isinstance(result, dict) else result
 
     # ------------------------------------------------------------------
     # Additional proxy interface helpers (no server round-trip required)
@@ -348,5 +356,22 @@ class FluentRestClient:
         return any(c in name for c in ("*", "?", "["))
 
     def is_interactive_mode(self) -> bool:
-        """Always returns ``False`` for a REST client."""
-        return False
+        """Check whether the server is running in interactive mode.
+
+        Queries ``GET /api/connection/run_mode`` on the real server.
+        Returns ``True`` if mode is anything other than ``"batch"``.
+        Returns ``False`` on any error (safe default — only gates
+        interactive prompts in ``flobject.BaseCommand``).
+        """
+        try:
+            url = f"{self._base_url}/api/connection/run_mode"
+            headers: dict[str, str] = {}
+            if self._auth_token:
+                headers["Authorization"] = f"Bearer {self._auth_token}"
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                data = resp.read()
+                mode = json.loads(data) if data.strip() else ""
+            return mode != "batch"
+        except Exception:
+            return False

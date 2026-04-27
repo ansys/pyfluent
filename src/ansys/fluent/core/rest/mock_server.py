@@ -350,6 +350,12 @@ class _Handler(BaseHTTPRequestHandler):
     def do_GET(self):  # noqa: N802
         """Handle HTTP GET requests."""
         path, _params = self._parse_url()
+
+        # /api/connection/run_mode — not under component prefix
+        if path == "api/connection/run_mode":
+            self._send_json("batch")
+            return
+
         setting_path = self._strip_prefix(path)
         if setting_path is None:
             return self._send_error(404, f"Unknown endpoint: {path}")
@@ -363,9 +369,11 @@ class _Handler(BaseHTTPRequestHandler):
             self._send_json(self._store["vars"][setting_path])
             return
 
-        # Named-object names
+        # Named-object names — return dict with names as keys (matches real Fluent)
         if setting_path in self._store["named_objects"]:
-            self._send_json(self._store["named_objects"][setting_path])
+            names_list = self._store["named_objects"][setting_path]
+            names_dict = {name: {"name": name} for name in names_list}
+            self._send_json(names_dict)
             return
 
         # List size
