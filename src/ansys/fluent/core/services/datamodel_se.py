@@ -960,11 +960,190 @@ def convert_se_path_to_path(se_path: str) -> Path:
     for comp in se_path.split("/"):
         if comp:
             if ":" in comp:
-                name, value = comp.split(":")
+                name, value = comp.split(":", maxsplit=1)
             else:
                 name, value = comp, ""
             path.append((name, value))
     return path
+
+
+def path_to_display_str(path: Path) -> str:
+    """Convert a structured datamodel path to a human-readable display string.
+
+    Each component is rendered as ``type`` for singletons (empty name) or
+    ``type:name`` for named objects. Components are joined with a forward-slash
+    (``/``) separator.
+
+    Parameters
+    ----------
+    path : Path
+        Structured datamodel path — a list of ``(type, name)`` tuples.
+
+    Returns
+    -------
+    str
+        Human-readable path string.
+
+    Examples
+    --------
+    >>> path_to_display_str([
+    ...     ('task_object', ''),
+    ...     ('import_geometry', 'Import Geometry'),
+    ...     ('arguments', ''),
+    ...     ('file_name', ''),
+    ... ])
+    'task_object/import_geometry:Import Geometry/arguments/file_name'
+    """
+    parts = [f"{t}:{n}" if n else t for t, n in path]
+    return "/".join(parts)
+
+
+class PathInfo:
+    """Structured representation of a single datamodel path component.
+
+    Exposes the ``type``, ``name``, ``path_str``, and ``parent_path_str`` of a
+    specific component in a datamodel path without requiring any string
+    manipulation by the caller.
+
+    Supports tuple unpacking (``obj_type, obj_name = PathInfo(...)``) and
+    equality comparison with ``(type, name)`` tuples for backwards compatibility.
+    """
+
+    def __init__(self, path: "Path | str", index: int = -1) -> None:
+        """Initialize PathInfo.
+
+        Parameters
+        ----------
+        path : Path | str
+            Datamodel path as a structured ``Path`` or a StateEngine path string.
+        index : int, optional
+            Index of the component to inspect. Defaults to ``-1`` (last component).
+
+        Raises
+        ------
+        ValueError
+            If ``path`` is empty.
+        IndexError
+            If ``index`` is out of range.
+        """
+        components = (
+            convert_se_path_to_path(path) if isinstance(path, str) else list(path)
+        )
+        if not components:
+            raise ValueError("Path is empty; no component to extract.")
+        resolved = index if index >= 0 else len(components) + index
+        if not (0 <= resolved < len(components)):
+            raise IndexError(
+                f"Path component index {index} is out of range for a path of "
+                f"length {len(components)}."
+            )
+        self.type: str = components[resolved][0]
+        self.name: str = components[resolved][1]
+        self._parent_path: "Path" = components[:resolved]
+        self._path: "Path" = components
+
+    @property
+    def parent_path_str(self) -> str:
+        """Return the parent path as a human-readable display string.
+
+        Singletons appear as their type only; named objects appear as
+        ``type:name``. Components are joined with a forward-slash separator.
+        Returns an empty string when there is no parent (root component).
+
+        Examples
+        --------
+        >>> info = PathInfo([
+        ...     ('task_object', ''),
+        ...     ('import_geometry', 'Import Geometry'),
+        ...     ('arguments', ''),
+        ...     ('file_name', ''),
+        ... ])
+        >>> info.parent_path_str
+        'task_object/import_geometry:Import Geometry/arguments'
+        """
+        return path_to_display_str(self._parent_path)
+
+    @property
+    def path_str(self) -> str:
+        """Return the full path as a human-readable display string.
+
+        Singletons appear as their type only; named objects appear as
+        ``type:name``. Components are joined with a forward-slash separator.
+        Returns an empty string when there is no parent (root component).
+
+        Examples
+        --------
+        >>> info = PathInfo([
+        ...     ('task_object', ''),
+        ...     ('import_geometry', 'Import Geometry'),
+        ...     ('arguments', ''),
+        ...     ('file_name', ''),
+        ... ])
+        >>> info.path_str
+        'task_object/import_geometry:Import Geometry/arguments/file_name'
+        """
+        return path_to_display_str(self._path)
+
+    def __iter__(self):
+        """Support tuple unpacking: ``obj_type, obj_name = PathInfo(...)``."""
+        yield self.type
+        yield self.name
+
+    def __eq__(self, other: object) -> bool:
+        """Support equality with both ``PathInfo`` instances and ``(type, name)`` tuples."""
+        if isinstance(other, tuple):
+            return (self.type, self.name) == other
+        if isinstance(other, PathInfo):
+            return (
+                self.type == other.type
+                and self.name == other.name
+                and self._path == other._path
+            )
+        return NotImplemented
+
+
+def get_type_and_name(path: "Path | str", index: int = -1) -> PathInfo:
+    """Return a :class:`PathInfo` for a datamodel path component.
+
+    Provides a structured, class-based way to access the type, display name,
+    parent path, and full path of an object referenced by a datamodel path.
+    Use this instead of splitting a StateEngine path string such as
+    ``"import_geometry:Import Geometry"`` by hand — that approach is fragile
+    when names contain ``:`` characters.
+
+    The returned :class:`PathInfo` supports tuple unpacking
+    (``obj_type, obj_name = get_type_and_name(...)``) and equality comparison
+    with ``(type, name)`` tuples for backwards compatibility.
+
+    Parameters
+    ----------
+    path : Path | str
+        Datamodel path, either as a structured ``Path`` or a StateEngine
+        path string.
+    index : int, optional
+        Index of the component to inspect. Defaults to ``-1`` (the last
+        component).
+
+    Returns
+    -------
+    PathInfo
+        Structured path component with ``.type``, ``.name``, ``.path_str``,
+        and ``.parent_path_str`` attributes.
+
+    Examples
+    --------
+    >>> info = get_type_and_name([('task_object', ''), ('import_geometry', 'Import Geometry')])
+    >>> info.type, info.name
+    ('import_geometry', 'Import Geometry')
+    >>> info.parent_path_str
+    'task_object'
+    >>> obj_type, obj_name = get_type_and_name([('task_object', ''), ('import_geometry', 'Import Geometry')])
+
+    >>> info = get_type_and_name([('task_object', ''), ('import_geometry', 'Import Geometry'), ('arguments', ''), ('file_name', '')], index=-2)
+    >>> info.type, info.name
+    ('arguments', '')
+    """
+    return PathInfo(path, index)
 
 
 class PyCallableStateObject:
@@ -1109,6 +1288,66 @@ class PyStateContainer(PyCallableStateObject):
     def is_read_only(self) -> bool:
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
+
+    @property
+    def node_info(self) -> PathInfo:
+        """Return structured identity and location information for this datamodel object.
+
+        Returns a :class:`PathInfo` instance that exposes the object's datamodel
+        type, display name, full structured path, and parent path — without
+        requiring any string manipulation by the caller.
+
+        Attributes on the returned object
+        ----------------------------------
+        type : str
+            The datamodel type key of this object, e.g. ``'TaskObject'``.
+        name : str
+            The display name of this object, e.g. ``'Import Geometry'``.
+            Empty string for singleton components that carry no name.
+        path_str : str
+            The full path as a human-readable string with ``/`` separators.
+            Singletons render as ``type``; named objects as ``type:name``.
+            Example: ``'task_object/import_geometry:Import Geometry'``.
+        parent_path_str : str
+            The parent path as a human-readable string, using the same
+            ``/``-separated format as ``path_str``.
+            Example: ``'task_object'``.
+
+        Examples
+        --------
+        Basic attribute access::
+
+            info = task.node_info
+            info.type          # 'TaskObject'
+            info.name          # 'Import Geometry'
+            info.path_str      # 'task_object/import_geometry:Import Geometry'
+            info.parent_path_str  # 'task_object'
+
+        Tuple unpacking (backwards-compatible with code that previously
+        received a raw ``(type, name)`` tuple)::
+
+            obj_type, obj_name = task.node_info
+
+        Equality comparison with a ``(type, name)`` tuple::
+
+            task.node_info == ('TaskObject', 'Import Geometry')  # True
+
+        Equality comparison between two objects::
+
+            task1.node_info == task2.node_info  # True if same path and type
+
+        Inspecting the parent container using the string form::
+
+            info = arg_item.node_info
+            info.parent_path_str  # e.g. 'task_object/arguments'
+            info.type             # parameter key, e.g. 'file_name'
+
+        Returns
+        -------
+        PathInfo
+            Structured object with ``.type``, ``.name``, ``.path_str``, and ``.parent_path_str``.
+        """
+        return get_type_and_name(self.path)
 
     def __call__(self, *args, **kwargs) -> Any:
         if kwargs:
@@ -1648,6 +1887,66 @@ class PyNamedObjectContainer:
         )
 
     getChildObjectDisplayNames = get_object_names
+
+    @property
+    def node_info(self) -> PathInfo:
+        """Return structured identity and location information for this datamodel object.
+
+        Returns a :class:`PathInfo` instance that exposes the object's datamodel
+        type, display name, full structured path, and parent path — without
+        requiring any string manipulation by the caller.
+
+        Attributes on the returned object
+        ----------------------------------
+        type : str
+            The datamodel type key of this object, e.g. ``'TaskObject'``.
+        name : str
+            The display name of this object, e.g. ``'Import Geometry'``.
+            Empty string for singleton components that carry no name.
+        path_str : str
+            The full path as a human-readable string with ``/`` separators.
+            Singletons render as ``type``; named objects as ``type:name``.
+            Example: ``'task_object/import_geometry:Import Geometry'``.
+        parent_path_str : str
+            The parent path as a human-readable string, using the same
+            ``/``-separated format as ``path_str``.
+            Example: ``'task_object'``.
+
+        Examples
+        --------
+        Basic attribute access::
+
+            info = task.node_info
+            info.type          # 'TaskObject'
+            info.name          # 'Import Geometry'
+            info.path_str      # 'task_object/import_geometry:Import Geometry'
+            info.parent_path_str  # 'task_object'
+
+        Tuple unpacking (backwards-compatible with code that previously
+        received a raw ``(type, name)`` tuple)::
+
+            obj_type, obj_name = task.node_info
+
+        Equality comparison with a ``(type, name)`` tuple::
+
+            task.node_info == ('TaskObject', 'Import Geometry')  # True
+
+        Equality comparison between two objects::
+
+            task1.node_info == task2.node_info  # True if same path and type
+
+        Inspecting the parent container using the string form::
+
+            info = arg_item.node_info
+            info.parent_path_str  # e.g. 'task_object/arguments'
+            info.type             # parameter key, e.g. 'file_name'
+
+        Returns
+        -------
+        PathInfo
+            Structured object with ``.type``, ``.name``, ``.path_str``, and ``.parent_path_str``.
+        """
+        return get_type_and_name(self.path)
 
     def __len__(self) -> int:
         """Return a count of child objects.

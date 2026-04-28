@@ -33,6 +33,7 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PathInfo,
     PyArguments,
     PyArgumentsSingletonSubItem,
     PyArgumentsTextualSubItem,
@@ -44,6 +45,8 @@ from ansys.fluent.core.services.datamodel_se import (
     _convert_value_to_variant,
     _convert_variant_to_value,
     convert_path_to_se_path,
+    get_type_and_name,
+    path_to_display_str,
 )
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -70,6 +73,219 @@ def test_convert_value_to_variant_to_value(value, expected):
     variant = Variant()
     _convert_value_to_variant(value, variant)
     assert expected == _convert_variant_to_value(variant)
+
+
+@pytest.mark.parametrize(
+    "se_path,expected",
+    [
+        # Meshing workflow: TaskObject under Workflow root
+        ("/TaskObject:Import Geometry", ("TaskObject", "Import Geometry")),
+        (
+            "/Workflow/TaskObject:Import Geometry",
+            ("TaskObject", "Import Geometry"),
+        ),
+        # Nested: child task under a parent task
+        (
+            "/Workflow/TaskObject:Generate the Volume Mesh/TaskObject:Auto Node Move",
+            ("TaskObject", "Auto Node Move"),
+        ),
+        # Singleton (no name)
+        ("/Workflow/Workflow", ("Workflow", "")),
+        # Name containing a colon (must be preserved by maxsplit=1)
+        (
+            "/TaskObject:Import CAD: Geometry",
+            ("TaskObject", "Import CAD: Geometry"),
+        ),
+    ],
+)
+def test_get_type_and_name_from_se_path(se_path, expected):
+    info = get_type_and_name(se_path)
+    # PathInfo supports tuple equality for backwards compatibility
+    assert info == expected
+    assert info.type == expected[0]
+    assert info.name == expected[1]
+    # parent_path contains all components before the selected one
+    assert isinstance(info._parent_path, list)
+    assert isinstance(info._path, list)
+    assert info._path[-1] == (info.type, info.name)
+
+
+def test_get_type_and_name_from_structured_path():
+    # Realistic meshing workflow Path structure
+    path = [
+        ("Workflow", ""),
+        ("TaskObject", "Import Geometry"),
+    ]
+    info = get_type_and_name(path)
+    assert info == ("TaskObject", "Import Geometry")
+    assert info.type == "TaskObject"
+    assert info.name == "Import Geometry"
+    assert info._parent_path == [("Workflow", "")]
+    assert info._path == path
+    # Tuple unpacking must still work
+    obj_type, obj_name = info
+    assert obj_type == "TaskObject"
+    assert obj_name == "Import Geometry"
+
+
+def test_path_info_arguments_subitem():
+    # Command argument path: type=arguments container, name=parameter key
+    path = [
+        ("task_object", ""),
+        ("import_geometry", "Import Geometry"),
+        ("arguments", ""),
+        ("file_name", ""),
+    ]
+    info = get_type_and_name(path)  # index=-1 → ('file_name', '')
+    assert info.type == "file_name"
+    assert info.name == ""
+    assert info._parent_path == path[:-1]
+    # Callers that need the semantic container/key split can use parent_path:
+    assert info._parent_path[-1][0] == "arguments"  # container type
+    assert info.type == "file_name"  # parameter key
+
+
+def test_path_info_equality_between_instances():
+    path = [("TaskObject", "Import Geometry")]
+    assert PathInfo(path) == PathInfo(path)
+
+
+# ---------------------------------------------------------------------------
+# path_to_display_str tests
+# ---------------------------------------------------------------------------
+
+
+def test_path_to_display_str_full_path():
+    # The canonical example from the user request
+    path = [
+        ("task_object", ""),
+        ("import_geometry", "Import Geometry"),
+        ("arguments", ""),
+        ("file_name", ""),
+    ]
+    assert (
+        path_to_display_str(path)
+        == "task_object/import_geometry:Import Geometry/arguments/file_name"
+    )
+
+
+def test_path_to_display_str_all_singletons():
+    path = [("Workflow", ""), ("Arguments", ""), ("FileSettings", "")]
+    assert path_to_display_str(path) == "Workflow/Arguments/FileSettings"
+
+
+def test_path_to_display_str_all_named():
+    path = [
+        ("TaskObject", "Import Geometry"),
+        ("TaskObject", "Generate the Volume Mesh"),
+    ]
+    assert (
+        path_to_display_str(path)
+        == "TaskObject:Import Geometry/TaskObject:Generate the Volume Mesh"
+    )
+
+
+def test_path_to_display_str_single_singleton():
+    assert path_to_display_str([("Workflow", "")]) == "Workflow"
+
+
+def test_path_to_display_str_single_named():
+    assert (
+        path_to_display_str([("TaskObject", "Import Geometry")])
+        == "TaskObject:Import Geometry"
+    )
+
+
+def test_path_to_display_str_empty():
+    assert path_to_display_str([]) == ""
+
+
+def test_path_to_display_str_name_with_colon():
+    # Names containing colons must be preserved as-is
+    path = [("TaskObject", "Import CAD: Geometry")]
+    assert path_to_display_str(path) == "TaskObject:Import CAD: Geometry"
+
+
+def test_path_info_parent_path_str():
+    path = [
+        ("task_object", ""),
+        ("import_geometry", "Import Geometry"),
+        ("arguments", ""),
+        ("file_name", ""),
+    ]
+    info = PathInfo(path)  # index=-1 → file_name
+    assert (
+        info.parent_path_str == "task_object/import_geometry:Import Geometry/arguments"
+    )
+
+
+def test_path_info_parent_path_str_root_component():
+    # Root component has no parent → empty string
+    info = PathInfo([("Workflow", "")])
+    assert info.parent_path_str == ""
+
+
+def test_path_info_parent_path_str_one_level():
+    path = [("Workflow", ""), ("TaskObject", "Import Geometry")]
+    info = PathInfo(path)  # index=-1
+    assert info.parent_path_str == "Workflow"
+
+
+def test_get_type_and_name_with_explicit_index():
+    path = [
+        ("Workflow", ""),
+        ("TaskObject", "Generate the Volume Mesh"),
+        ("TaskObject", "Auto Node Move"),
+    ]
+    info0 = get_type_and_name(path, index=0)
+    assert info0 == ("Workflow", "")
+    assert info0._parent_path == []
+    assert info0._path == path
+
+    info1 = get_type_and_name(path, index=1)
+    assert info1 == ("TaskObject", "Generate the Volume Mesh")
+    assert info1._parent_path == [("Workflow", "")]
+
+    info_last = get_type_and_name(path, index=-1)
+    assert info_last == ("TaskObject", "Auto Node Move")
+    assert info_last._parent_path == path[:-1]
+
+
+def test_get_type_and_name_empty_path_raises():
+    with pytest.raises(ValueError):
+        get_type_and_name([])
+    with pytest.raises(ValueError):
+        get_type_and_name("")
+
+
+def test_get_type_and_name_index_out_of_range_raises():
+    path = [("TaskObject", "Import Geometry")]
+    with pytest.raises(IndexError):
+        get_type_and_name(path, index=5)
+
+
+@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.codegen_required
+def test_get_type_and_name_with_meshing_workflow(new_meshing_session):
+    session = new_meshing_session
+    session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    task = session.workflow.TaskObject["Import Geometry"]
+    # task.path is a structured Path; the helper must return the leaf
+    # (type, name) without any string manipulation by the caller.
+    info = get_type_and_name(task.path)
+    assert (info.type, info.name) == ("TaskObject", "Import Geometry")
+    # The same SE-path string form must yield identical results.
+    se_path = convert_path_to_se_path(task.path)
+    info = get_type_and_name(se_path)
+    assert (info.type, info.name) == ("TaskObject", "Import Geometry")
+    # The method exposed on the object itself must agree.
+    assert isinstance(task.node_info, PathInfo)
+    assert (task.node_info.type, task.node_info.name) == (
+        "TaskObject",
+        "Import Geometry",
+    )
+    assert task.node_info.type == "TaskObject"
+    assert task.node_info.name == "Import Geometry"
 
 
 @pytest.mark.fluent_version(">=23.2")
