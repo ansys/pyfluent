@@ -17,7 +17,7 @@ body:
       options:
         - label: I have searched the [existing issues](https://github.com/ansys/pyfluent/issues) and did not find a duplicate.
           required: true
-        - label: I have read the [PyFluent documentation](https://fluent.docs.pyansys.com/).
+        - label: I am using a Python virtual environment.
           required: true
 
   - type: textarea
@@ -57,29 +57,42 @@ body:
       description: What actually happened? Paste the full traceback if any.
       render: shell
     validations:
-      required: true
+      required: false
 
   - type: input
     id: pyfluent-version
     attributes:
       label: 📦 PyFluent version
-      placeholder: e.g. 0.34.0
+      description: Run `python -c "import ansys.fluent.core as pf; print(pf.__version__)"` to get the exact version.
+      placeholder: e.g. 0.34.2
     validations:
       required: true
 
-  - type: input
+  - type: dropdown
     id: fluent-version
     attributes:
       label: 🌀 Ansys Fluent version
-      placeholder: e.g. 2025 R2 (25.2)
+      options:
+        - "2027 R1 (27.1)"
+        - "2026 R1 (26.1)"
+        - "2025 R2 (25.2)"
+        - "2025 R1 (25.1)"
+        - "2024 R2 (24.2)"
+        - "Other / not listed"
     validations:
       required: true
 
-  - type: input
+  - type: dropdown
     id: python-version
     attributes:
       label: 🐍 Python version
-      placeholder: e.g. 3.12.4
+      options:
+        - "3.14"
+        - "3.13"
+        - "3.12"
+        - "3.11"
+        - "3.10"
+        - "Other / not listed"
     validations:
       required: true
 

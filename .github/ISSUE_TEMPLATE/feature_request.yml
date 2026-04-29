@@ -1,7 +1,7 @@
-name: ✨ New feature
+name: 💡 New feature
 description: Suggest a new feature or enhancement for PyFluent.
 title: "[FEAT]: <short description>"
-labels: ["new feature"]
+labels: ["new feature", "enhancement"]
 body:
   - type: markdown
     attributes:
