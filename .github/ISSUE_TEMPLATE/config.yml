@@ -4,15 +4,6 @@
 blank_issues_enabled: true
 
 contact_links:
-  - name: Ansys PyFluent Discussions
+  - name: Help and community resources
     url: https://github.com/ansys/pyfluent/discussions
-    about: Ask questions, share ideas, or start a discussion with the PyFluent community.
-  - name: Ansys Developer Portal
-    url: https://developer.ansys.com/
-    about: Browse Ansys developer resources, tutorials, and APIs.
-  - name: Ansys Learning Forum
-    url: https://discuss.ansys.com/
-    about: Get help from Ansys experts and the wider Ansys user community.
-  - name: PyFluent Documentation
-    url: https://fluent.docs.pyansys.com/
-    about: Read the official PyFluent documentation before opening an issue.
+    about: "Discussions, Ansys Developer Portal (https://developer.ansys.com/), Ansys Learning Forum (https://discuss.ansys.com/), and PyFluent docs (https://fluent.docs.pyansys.com/)."

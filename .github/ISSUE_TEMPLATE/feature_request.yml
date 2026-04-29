@@ -1,4 +1,4 @@
-name: New feature
+name: ✨ New feature
 description: Suggest a new feature or enhancement for PyFluent.
 title: "[FEAT]: <short description>"
 labels: ["new feature"]
@@ -12,7 +12,7 @@ body:
   - type: textarea
     id: problem
     attributes:
-      label: Problem statement
+      label: ❓ Problem statement
       description: What problem are you trying to solve? Why is the current behavior insufficient?
     validations:
       required: true
@@ -20,7 +20,7 @@ body:
   - type: textarea
     id: proposal
     attributes:
-      label: Proposed solution
+      label: 💡 Proposed solution
       description: Describe the API or behavior you would like to see.
     validations:
       required: true
@@ -28,11 +28,11 @@ body:
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives considered
+      label: 🔀 Alternatives considered
       description: Any alternative solutions or workarounds you have considered.
 
   - type: textarea
     id: additional
     attributes:
-      label: Additional context
+      label: 📌 Additional context
       description: Links, references, screenshots, or related issues.

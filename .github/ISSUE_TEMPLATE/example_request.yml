@@ -1,4 +1,4 @@
-name: Adding an example
+name: 📝 Adding an example
 description: Request a new PyFluent example or improvement to an existing one.
 title: "[EXAMPLE]: <short description>"
 labels: ["examples"]
@@ -6,7 +6,7 @@ body:
   - type: textarea
     id: use-case
     attributes:
-      label: Use case
+      label: 🎯 Use case
       description: What workflow or simulation should the example demonstrate?
     validations:
       required: true
@@ -14,11 +14,11 @@ body:
   - type: textarea
     id: details
     attributes:
-      label: Details
+      label: 🔧 Details
       description: Physics, geometry, solver settings, post-processing, etc.
 
   - type: textarea
     id: references
     attributes:
-      label: References
+      label: 📚 References
       description: Papers, tutorials, or existing scripts related to this example.

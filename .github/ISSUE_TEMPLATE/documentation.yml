@@ -1,4 +1,4 @@
-name: Documentation
+name: 📖 Documentation
 description: Report a problem or suggest an improvement to the PyFluent documentation.
 title: "[DOC]: <short description>"
 labels: ["documentation"]
@@ -6,7 +6,7 @@ body:
   - type: input
     id: page
     attributes:
-      label: Affected page or URL
+      label: 🔗 Affected page or URL
       placeholder: https://fluent.docs.pyansys.com/version/stable/...
     validations:
       required: true
@@ -14,7 +14,7 @@ body:
   - type: textarea
     id: issue
     attributes:
-      label: What is wrong or missing?
+      label: ⚠️ What is wrong or missing?
       description: Describe the documentation problem (typo, unclear text, missing example, broken link, etc.).
     validations:
       required: true
@@ -22,10 +22,10 @@ body:
   - type: textarea
     id: suggestion
     attributes:
-      label: Suggested improvement
+      label: ✏️ Suggested improvement
       description: How would you improve this documentation?
 
   - type: textarea
     id: additional
     attributes:
-      label: Additional context
+      label: 📌 Additional context
