@@ -80,11 +80,11 @@ def launch_fluent_rest(
 
     Examples
     --------
-    >>> from ansys.fluent.core.rest import FluentRestMockServer
     >>> from ansys.fluent.core.rest.rest_launcher import launch_fluent_rest
-    >>> with FluentRestMockServer() as srv:
-    ...     session = launch_fluent_rest("127.0.0.1", srv.port)
-    ...     print(session.settings.setup.models.energy.enabled())
+    >>> session = launch_fluent_rest(
+    ...     "10.18.44.175", 5000, auth_token="<token>"
+    ... )
+    >>> session.settings.setup.models.energy.enabled()
     True
     """
     base_url = f"{scheme}://{host}:{port}"

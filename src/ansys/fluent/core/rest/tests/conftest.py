@@ -23,7 +23,7 @@
 
 Provides:
 - ``real_client``: A :class:`FluentRestClient` connected to the real Fluent /
-  SimBA server.  Auto-skips when the server is unreachable.
+  PyFluent server.  Auto-skips when the server is unreachable.
 
 Real-server connection parameters can be supplied via:
 - Environment variables: ``FLUENT_REST_HOST``, ``FLUENT_REST_PORT``,
@@ -79,23 +79,3 @@ def real_client():
         auth_token=_REAL_SERVER_TOKEN,
         component=_REAL_SERVER_COMPONENT,
     )
-
-
-# ---------------------------------------------------------------------------
-# Mock-server fixtures (used by test_rest_client.py)
-# ---------------------------------------------------------------------------
-
-from ansys.fluent.core.rest.mock_server import FluentRestMockServer  # noqa: E402
-
-
-@pytest.fixture(scope="module")
-def rest_server():
-    """Provide a shared mock server for the test module."""
-    with FluentRestMockServer() as srv:
-        yield srv
-
-
-@pytest.fixture()
-def rest_client(rest_server):
-    """Return a FluentRestClient pointed at the shared mock server."""
-    return FluentRestClient(rest_server.base_url)

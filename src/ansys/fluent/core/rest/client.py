@@ -117,13 +117,15 @@ class FluentRestClient:
 
     Examples
     --------
-    >>> from ansys.fluent.core.rest import FluentRestClient, FluentRestMockServer
-    >>> server = FluentRestMockServer().start()
-    >>> client = FluentRestClient(server.base_url)
+    >>> from ansys.fluent.core.rest import FluentRestClient
+    >>> client = FluentRestClient(
+    ...     "http://10.18.44.175:5000",
+    ...     auth_token="<token>",
+    ...     component="fluent_1",
+    ... )
     >>> client.get_var("setup/models/energy/enabled")
     True
     >>> client.set_var("setup/models/energy/enabled", False)
-    >>> server.stop()
     """
 
     def __init__(
@@ -225,14 +227,13 @@ class FluentRestClient:
 
         Calls ``POST /api/{component}/get_var`` with body ``{"path": path}``.
         """
-        return self._request(
-            "POST", f"{self._api_base}/get_var", body={"path": path}
-        )
+        return self._request("POST", f"{self._api_base}/get_var", body={"path": path})
 
     def set_var(self, path: str, value: Any) -> None:
         """Set the value of the setting at *path*.
 
-        Calls ``PUT /api/{component}/{path}`` with body ``{"value": value}``.
+        Calls ``PUT /api/{component}/{path}`` with the value as the JSON body.
+        SimBA expects the raw value directly, not wrapped in ``{"value": ...}``.
         """
         self._request("PUT", f"{self._api_base}/{path}", body=value)
 
@@ -248,12 +249,12 @@ class FluentRestClient:
     #         f"{self._api_base}/get_attrs",
     #         body={"path": path, "attrs": attrs, "recursive": recursive, "children": {}, "filters":[]},
     #     )
-        # params = {"attrs": ",".join(attrs)}
-        # if recursive:
-        #     params["recursive"] = "true"
-        # query = urllib.parse.urlencode(params)
-        # return self._request("GET", f"{self._api_base}/{path}?{query}")
-    
+    # params = {"attrs": ",".join(attrs)}
+    # if recursive:
+    #     params["recursive"] = "true"
+    # query = urllib.parse.urlencode(params)
+    # return self._request("GET", f"{self._api_base}/{path}?{query}")
+
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
 
@@ -347,9 +348,7 @@ class FluentRestClient:
 
         Calls ``POST /api/{component}/{path}/{command}`` with body ``kwds``.
         """
-        result = self._request(
-            "POST", f"{self._api_base}/{path}/{command}", body=kwds
-        )
+        result = self._request("POST", f"{self._api_base}/{path}/{command}", body=kwds)
         return result.get("reply") if isinstance(result, dict) else result
 
     def execute_query(self, path: str, query: str, **kwds) -> Any:
@@ -357,9 +356,7 @@ class FluentRestClient:
 
         Calls ``POST /api/{component}/{path}/{query}`` with body ``kwds``.
         """
-        result = self._request(
-            "POST", f"{self._api_base}/{path}/{query}", body=kwds
-        )
+        result = self._request("POST", f"{self._api_base}/{path}/{query}", body=kwds)
         return result.get("reply") if isinstance(result, dict) else result
 
     # ------------------------------------------------------------------

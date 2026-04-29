@@ -21,25 +21,12 @@
 
 """REST-based PyFluent settings client and session.
 
-This package provides a transport-agnostic alternative to the gRPC
-``SettingsService``.  It contains:
+HTTP transport layer for PyFluent, connecting to Fluent's embedded PyFluent
+server via REST instead of gRPC.  It contains:
 
-* :class:`~ansys.fluent.core.rest.client.FluentRestClient` – a pure-Python
-  HTTP client whose public interface is identical to the duck-typed proxy
-  expected by :mod:`~ansys.fluent.core.solver.flobject`.  Written against a
-  provisional REST API contract; the contract is documented in ``client.py``
-  and can be adjusted to match the real Fluent REST API when it becomes
-  available.
-
-* :class:`~ansys.fluent.core.rest.mock_server.FluentRestMockServer` – a
-  lightweight in-process HTTP server (stdlib only, no Flask) that implements
-  the same provisional REST contract backed by an in-memory settings store.
-  Useful for local development, unit-tests, and demos without a running Fluent
-  instance.
-
-* :class:`~ansys.fluent.core.rest.protocol.SettingsProxy` – a
-  ``typing.Protocol`` formalising the 14-method *flproxy* contract shared by
-  the gRPC ``SettingsService`` and ``FluentRestClient``.
+* :class:`~ansys.fluent.core.rest.client.FluentRestClient` – pure-Python
+  HTTP client implementing the 14-method proxy interface expected by
+  :mod:`~ansys.fluent.core.solver.flobject`.  Uses stdlib ``urllib`` only.
 
 * :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession` – a
   lightweight solver session that wires ``FluentRestClient`` into
@@ -51,15 +38,11 @@ This package provides a transport-agnostic alternative to the gRPC
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient
-from ansys.fluent.core.rest.mock_server import FluentRestMockServer
-from ansys.fluent.core.rest.protocol import SettingsProxy
 from ansys.fluent.core.rest.rest_launcher import launch_fluent_rest
 from ansys.fluent.core.rest.rest_session import RestSolverSession
 
 __all__ = [
     "FluentRestClient",
-    "FluentRestMockServer",
     "RestSolverSession",
-    "SettingsProxy",
     "launch_fluent_rest",
 ]

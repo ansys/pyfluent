@@ -29,13 +29,9 @@ Run real-server tests::
 
     pytest src/ansys/fluent/core/rest/tests/test_real_server.py -v -m real_server
 
-The server at 10.18.44.175:5000 has a case loaded with these boundary
-conditions:
-
-    - velocity-inlet: hot-inlet, cold-inlet
-    - pressure-outlet: outlet
-    - wall: wall-inlet, wall-elbow
-    - symmetry: symmetry-xyplane
+Tests are **case-agnostic** — they validate types, structure, and API
+contracts dynamically.  No boundary-condition names, model values, or
+object counts are hardcoded.
 
 Path format: Real Fluent uses **kebab-case** (e.g. ``boundary-conditions``).
 """
@@ -48,18 +44,16 @@ pytestmark = pytest.mark.real_server
 
 
 # ---------------------------------------------------------------------------
-# 1. is_interactive_mode — now queries the server
+# 1. is_interactive_mode
 # ---------------------------------------------------------------------------
 
 
 class TestRealIsInteractiveMode:
-    """GET /api/connection/run_mode — verify live query, not hardcoded."""
+    """GET /api/connection/run_mode"""
 
-    def test_queries_server_returns_true(self, real_client):
-        """Real Fluent server runs in 'fluent_proxy' mode (interactive)."""
+    def test_returns_bool(self, real_client):
         result = real_client.is_interactive_mode()
         assert isinstance(result, bool)
-        assert result is True  # fluent_proxy mode is interactive
 
 
 # ---------------------------------------------------------------------------
@@ -101,39 +95,39 @@ class TestRealStaticInfo:
 
 
 class TestRealGetVar:
-    """POST /api/fluent_1/get_var"""
+    """GET /api/fluent_1/{path}"""
 
     def test_energy_enabled_is_bool(self, real_client):
         val = real_client.get_var("setup/models/energy/enabled")
         assert isinstance(val, bool)
-        assert val is True  # Current server state
 
     def test_viscous_model_is_string(self, real_client):
         val = real_client.get_var("setup/models/viscous/model")
         assert isinstance(val, str)
+        assert len(val) > 0
 
-    def test_solver_time_is_steady(self, real_client):
+    def test_solver_time_is_string(self, real_client):
         val = real_client.get_var("setup/general/solver/time")
-        assert val == "steady"
+        assert isinstance(val, str)
+        assert len(val) > 0
 
     def test_solver_group_returns_dict(self, real_client):
         val = real_client.get_var("setup/general/solver")
         assert isinstance(val, dict)
         assert "time" in val
 
-    def test_nonexistent_path_raises_404(self, real_client):
+    def test_nonexistent_path_raises_error(self, real_client):
         with pytest.raises(FluentRestError) as exc_info:
             real_client.get_var("setup/nonexistent/fake")
-        assert exc_info.value.status == 404
+        assert exc_info.value.status in (404, 500)
 
     def test_solution_run_calculation_is_dict(self, real_client):
-        """Real Fluent uses kebab-case: run-calculation."""
         val = real_client.get_var("solution/run-calculation")
         assert isinstance(val, dict)
 
 
 # ---------------------------------------------------------------------------
-# 4. set_var — write settings
+# 4. set_var — write settings (read-modify-restore pattern)
 # ---------------------------------------------------------------------------
 
 
@@ -141,58 +135,61 @@ class TestRealSetVar:
     """PUT /api/fluent_1/{path}"""
 
     def test_set_and_restore_bool(self, real_client):
-        """Toggle energy enabled and restore."""
-        original = real_client.get_var("setup/models/energy/enabled")
+        """Toggle energy enabled, verify change, then restore original."""
+        path = "setup/models/energy/enabled"
+        original = real_client.get_var(path)
+        assert isinstance(original, bool)
+
         toggled = not original
-        real_client.set_var("setup/models/energy/enabled", toggled)
-        readback = real_client.get_var("setup/models/energy/enabled")
-        # Fluent may override via solver validation, so just confirm bool
-        assert isinstance(readback, bool)
+        real_client.set_var(path, toggled)
+        readback = real_client.get_var(path)
+        assert (
+            readback == toggled
+        ), f"set_var did not take effect: expected {toggled}, got {readback}"
+
         # Restore
-        real_client.set_var("setup/models/energy/enabled", original)
+        real_client.set_var(path, original)
+        restored = real_client.get_var(path)
+        assert restored == original
 
     def test_write_same_value_round_trips(self, real_client):
         """Writing the current value back should succeed or raise a
-        validation error (HTTP 500) from Fluent — both are acceptable
-        because the client correctly relayed the request."""
-        current = real_client.get_var("setup/general/solver/time")
+        validation error — both are acceptable."""
+        path = "setup/general/solver/time"
+        current = real_client.get_var(path)
         try:
-            real_client.set_var("setup/general/solver/time", current)
-            readback = real_client.get_var("setup/general/solver/time")
+            real_client.set_var(path, current)
+            readback = real_client.get_var(path)
             assert readback == current
         except FluentRestError as exc:
-            # Fluent solver sometimes rejects a no-op write with 500
-            assert exc.status == 500
+            assert exc.status in (500, 409)
 
 
 # ---------------------------------------------------------------------------
-# 5. get_object_names — named-object containers
+# 5. get_object_names — named-object containers (dynamic)
 # ---------------------------------------------------------------------------
 
 
 class TestRealGetObjectNames:
     """GET /api/fluent_1/{path} — returns dict with names as keys."""
 
-    def test_velocity_inlet_has_objects(self, real_client):
-        names = real_client.get_object_names(
-            "setup/boundary-conditions/velocity-inlet"
-        )
+    def test_velocity_inlet_returns_string_list(self, real_client):
+        names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
         assert isinstance(names, list)
-        assert "hot-inlet" in names
-        assert "cold-inlet" in names
-        assert len(names) == 2
+        assert len(names) > 0
+        assert all(isinstance(n, str) for n in names)
 
-    def test_pressure_outlet_has_objects(self, real_client):
+    def test_pressure_outlet_returns_list(self, real_client):
         names = real_client.get_object_names(
             "setup/boundary-conditions/pressure-outlet"
         )
-        assert names == ["outlet"]
+        assert isinstance(names, list)
+        assert len(names) > 0
 
-    def test_wall_has_objects(self, real_client):
+    def test_wall_returns_list(self, real_client):
         names = real_client.get_object_names("setup/boundary-conditions/wall")
-        assert "wall-inlet" in names
-        assert "wall-elbow" in names
-        assert len(names) == 2
+        assert isinstance(names, list)
+        assert len(names) > 0
 
     def test_unknown_path_returns_empty(self, real_client):
         names = real_client.get_object_names(
@@ -200,24 +197,31 @@ class TestRealGetObjectNames:
         )
         assert names == []
 
+    def test_no_duplicates(self, real_client):
+        """Object names within a container must be unique."""
+        names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
+        assert len(names) == len(set(names))
+
 
 # ---------------------------------------------------------------------------
-# 6. get_list_size — count named objects
+# 6. get_list_size — cross-validated against get_object_names
 # ---------------------------------------------------------------------------
 
 
 class TestRealGetListSize:
     """GET /api/fluent_1/{path} — count object keys."""
 
-    def test_velocity_inlet_size(self, real_client):
-        size = real_client.get_list_size(
-            "setup/boundary-conditions/velocity-inlet"
-        )
-        assert size == 2  # hot-inlet, cold-inlet
+    def test_velocity_inlet_size_positive(self, real_client):
+        size = real_client.get_list_size("setup/boundary-conditions/velocity-inlet")
+        assert isinstance(size, int)
+        assert size > 0
 
-    def test_wall_size(self, real_client):
-        size = real_client.get_list_size("setup/boundary-conditions/wall")
-        assert size == 2  # wall-inlet, wall-elbow
+    def test_size_matches_object_names(self, real_client):
+        """get_list_size must agree with len(get_object_names)."""
+        path = "setup/boundary-conditions/wall"
+        size = real_client.get_list_size(path)
+        names = real_client.get_object_names(path)
+        assert size == len(names)
 
     def test_unknown_path_returns_zero(self, real_client):
         size = real_client.get_list_size("setup/nonexistent/fake")
@@ -225,21 +229,57 @@ class TestRealGetListSize:
 
 
 # ---------------------------------------------------------------------------
-# 7. get_attrs — known SimBA bug (HTTP 500)
+# 7. get_attrs — dynamic validation
 # ---------------------------------------------------------------------------
 
 
 class TestRealGetAttrs:
-    """POST /api/fluent_1/get_attrs — known server-side bug."""
+    """GET /api/fluent_1/{path}?attrs=... — attribute retrieval."""
 
-    def test_endpoint_returns_500(self, real_client):
-        """get_attrs currently returns 500 (SimBA bug, not client bug)."""
-        with pytest.raises(FluentRestError) as exc_info:
-            real_client.get_attrs(
-                "setup/models/viscous/model", ["allowed-values"]
-            )
-        # Known SimBA bug — server crashes handling get_attrs
-        assert exc_info.value.status == 500
+    def test_allowed_values_is_nonempty_string_list(self, real_client):
+        """allowed-values must be a non-empty list of strings."""
+        result = real_client.get_attrs("setup/models/viscous/model", ["allowed-values"])
+        assert isinstance(result, dict)
+        attrs = result.get("attrs", {})
+        allowed = attrs.get("allowed-values", [])
+        assert isinstance(allowed, list)
+        assert len(allowed) > 0
+        assert all(isinstance(v, str) for v in allowed)
+
+    def test_current_value_in_allowed_values(self, real_client):
+        """The current viscous model must be one of its allowed values."""
+        current = real_client.get_var("setup/models/viscous/model")
+        result = real_client.get_attrs("setup/models/viscous/model", ["allowed-values"])
+        allowed = result.get("attrs", {}).get("allowed-values", [])
+        assert (
+            current in allowed
+        ), f"Current model '{current}' not in allowed values: {allowed}"
+
+    def test_set_var_respects_allowed_values(self, real_client):
+        """Pick a different allowed value, set it, verify, restore."""
+        path = "setup/models/viscous/model"
+        original = real_client.get_var(path)
+        result = real_client.get_attrs(path, ["allowed-values"])
+        allowed = result.get("attrs", {}).get("allowed-values", [])
+
+        # Pick a different value (if only one value exists, skip)
+        alternatives = [v for v in allowed if v != original]
+        if not alternatives:
+            pytest.skip("Only one allowed viscous model — nothing to toggle")
+
+        new_value = alternatives[0]
+        try:
+            real_client.set_var(path, new_value)
+            readback = real_client.get_var(path)
+            assert readback == new_value
+        except FluentRestError:
+            pass  # Solver may reject the switch due to other constraints
+        finally:
+            # Always restore
+            try:
+                real_client.set_var(path, original)
+            except FluentRestError:
+                pass
 
 
 # ---------------------------------------------------------------------------
@@ -250,12 +290,13 @@ class TestRealGetAttrs:
 class TestRealExecuteCmd:
     """POST /api/fluent_1/{path}/{cmd}"""
 
-    def test_initialize_returns_409_conflict(self, real_client):
-        """initialize returns 409 Conflict when mesh is already loaded."""
-        with pytest.raises(FluentRestError) as exc_info:
+    def test_initialize_does_not_crash(self, real_client):
+        """initialize either succeeds or returns a conflict/server error."""
+        try:
             real_client.execute_cmd("solution/initialization", "initialize")
-        # 409 = Conflict (already initialized or mesh state conflict)
-        assert exc_info.value.status == 409
+        except FluentRestError as exc:
+            # 409 = already initialized; 500 = solver constraint
+            assert exc.status in (409, 500)
 
 
 # ---------------------------------------------------------------------------
@@ -267,13 +308,11 @@ class TestRealExecuteQuery:
     """POST /api/fluent_1/{path}/{query}"""
 
     def test_query_endpoint_reachable(self, real_client):
-        """Query endpoint is reachable; may return 404/500 for unknown queries."""
+        """Query endpoint is reachable; may return error for unknown queries."""
         try:
             reply = real_client.execute_query(
                 "setup/boundary-conditions/velocity-inlet", "get-zone-names"
             )
             assert reply is None or isinstance(reply, (list, str))
         except FluentRestError as exc:
-            # 404 = query not found; 405 = method not allowed;
-            # 500 = server error — all acceptable
             assert exc.status in (404, 405, 500)

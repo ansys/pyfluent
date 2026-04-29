@@ -77,11 +77,12 @@ class RestSolverSession:
 
     Examples
     --------
-    >>> from ansys.fluent.core.rest import FluentRestMockServer
     >>> from ansys.fluent.core.rest.rest_session import RestSolverSession
-    >>> with FluentRestMockServer() as srv:
-    ...     session = RestSolverSession(srv.base_url)
-    ...     print(session.settings.setup.models.energy.enabled())
+    >>> session = RestSolverSession(
+    ...     "http://10.18.44.175:5000",
+    ...     auth_token="<token>",
+    ... )
+    >>> session.settings.setup.models.energy.enabled()
     True
     """
 
