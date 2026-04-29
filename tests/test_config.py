@@ -105,6 +105,7 @@ def test_set_deprecated_var_after_config(reset_examples_path):
 
 
 def test_launch_timeout_environment_variable(monkeypatch):
+    monkeypatch.delattr(pyfluent.config, "_launch_fluent_timeout", raising=False)
     monkeypatch.setitem(pyfluent.config._env, "PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "120")
 
     assert pyfluent.config.launch_fluent_timeout == 120
