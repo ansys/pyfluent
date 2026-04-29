@@ -42,8 +42,8 @@ API endpoints (from ``/openapi.json`` on a live Fluent server)
          Returns the value / object at <dmpath>.
 
     PUT  /api/fluent_1/{dmpath}
-         body: { "value": <json-value> }
-         Sets the value at <dmpath>.
+         body: <json-value>
+         Sets the value at <dmpath> (raw value, not wrapped).
 
     POST /api/fluent_1/{dmpath}
          body: { <command-args> }
@@ -153,7 +153,18 @@ class FluentRestClient:
     # ------------------------------------------------------------------
 
     def _url(self, endpoint: str) -> str:
-        """Build a full URL from *endpoint*."""
+        """Build a full URL by joining *base_url* with *endpoint*.
+
+        Parameters
+        ----------
+        endpoint : str
+            Relative path, e.g. ``"api/fluent_1/static-info"``.
+
+        Returns
+        -------
+        str
+            Absolute URL.
+        """
         return f"{self._base_url}/{endpoint}"
 
     def _request(
@@ -219,6 +230,12 @@ class FluentRestClient:
         """Return the full settings schema.
 
         Calls ``GET /api/{component}/static-info``.
+
+        Returns
+        -------
+        dict[str, Any]
+            A nested dict describing the settings tree structure, with keys
+            such as ``"type"``, ``"children"``, ``"commands"``.
         """
         return self._request("GET", f"{self._api_base}/static-info")
 
@@ -226,6 +243,24 @@ class FluentRestClient:
         """Return the current value of the setting at *path*.
 
         Calls ``POST /api/{component}/get_var`` with body ``{"path": path}``.
+
+        Parameters
+        ----------
+        path : str
+            Slash-delimited settings path, e.g.
+            ``"setup/models/energy/enabled"``.
+
+        Returns
+        -------
+        Any
+            The value at *path* — may be a bool, int, float, str, list, or
+            dict (for group-level reads).
+
+        Raises
+        ------
+        FluentRestError
+            If the path does not exist (HTTP 404) or the server returns an
+            error.
         """
         return self._request("POST", f"{self._api_base}/get_var", body={"path": path})
 
@@ -234,6 +269,18 @@ class FluentRestClient:
 
         Calls ``PUT /api/{component}/{path}`` with the value as the JSON body.
         SimBA expects the raw value directly, not wrapped in ``{"value": ...}``.
+
+        Parameters
+        ----------
+        path : str
+            Slash-delimited settings path.
+        value : Any
+            New value (bool, int, float, str, list, or dict).
+
+        Raises
+        ------
+        FluentRestError
+            If the server rejects the value (e.g. validation failure).
         """
         self._request("PUT", f"{self._api_base}/{path}", body=value)
 
@@ -249,18 +296,41 @@ class FluentRestClient:
     #         f"{self._api_base}/get_attrs",
     #         body={"path": path, "attrs": attrs, "recursive": recursive, "children": {}, "filters":[]},
     #     )
-    # params = {"attrs": ",".join(attrs)}
-    # if recursive:
-    #     params["recursive"] = "true"
-    # query = urllib.parse.urlencode(params)
-    # return self._request("GET", f"{self._api_base}/{path}?{query}")
-
+        # params = {"attrs": ",".join(attrs)}
+        # if recursive:
+        #     params["recursive"] = "true"
+        # query = urllib.parse.urlencode(params)
+        # return self._request("GET", f"{self._api_base}/{path}?{query}")
+    
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
 
-        Calls ``GET /api/{component}/{path}?attrs=attr1,attr2&recursive=true``
-        using query parameters, per the server-side ``handleGet`` implementation
-        which routes to ``getAttrs`` when the ``attrs`` query param is present.
+        Calls ``GET /api/{component}/{path}?attrs=attr1,attr2&recursive=true``.
+        The server-side ``handleGet`` routes to ``getAttrs`` when the ``attrs``
+        query parameter is present.
+
+        Parameters
+        ----------
+        path : str
+            Slash-delimited settings path.
+        attrs : list[str]
+            Attribute names to retrieve, e.g. ``["allowed-values"]``,
+            ``["active?", "read-only?"]``.
+        recursive : bool, optional
+            If ``True``, include attributes of child nodes.  Defaults to
+            ``False``.
+
+        Returns
+        -------
+        dict
+            A dict with an ``"attrs"`` key mapping to the requested
+            attribute values, e.g.
+            ``{"attrs": {"allowed-values": ["laminar", "k-epsilon", ...]}}``.
+
+        Notes
+        -----
+        Attributes like ``active?`` and ``read-only?`` are solver-computed
+        metadata and cannot be modified via :meth:`set_var`.
         """
         params = {"attrs": ",".join(attrs)}
         if recursive:
@@ -271,8 +341,20 @@ class FluentRestClient:
     def get_object_names(self, path: str) -> list[str]:
         """Return the child named-object names at *path*.
 
-        Calls ``GET /api/{component}/{path}`` and returns the list of names.
-        Returns an empty list if the path does not exist.
+        Calls ``GET /api/{component}/{path}`` and extracts the object names
+        from the response dict keys.
+
+        Parameters
+        ----------
+        path : str
+            Path to a named-object container, e.g.
+            ``"setup/boundary-conditions/velocity-inlet"``.
+
+        Returns
+        -------
+        list[str]
+            Sorted or insertion-order list of child names.  Returns ``[]``
+            if the path does not exist (HTTP 404).
         """
         try:
             result = self._request("GET", f"{self._api_base}/{path}")
@@ -292,6 +374,18 @@ class FluentRestClient:
         """Create a named child object *name* at *path*.
 
         Calls ``POST /api/{component}/{path}`` with body ``{"name": name}``.
+
+        Parameters
+        ----------
+        path : str
+            Path to the named-object container.
+        name : str
+            Name of the new child object.
+
+        Raises
+        ------
+        FluentRestError
+            If the server rejects the creation.
         """
         self._request("POST", f"{self._api_base}/{path}", body={"name": name})
 
@@ -299,6 +393,18 @@ class FluentRestClient:
         """Delete the named child object *name* at *path*.
 
         Calls ``DELETE /api/{component}/{path}/{name}``.
+
+        Parameters
+        ----------
+        path : str
+            Path to the named-object container.
+        name : str
+            Name of the child object to delete.
+
+        Raises
+        ------
+        FluentRestError
+            If the object does not exist (HTTP 404).
         """
         self._request("DELETE", f"{self._api_base}/{path}/{name}")
 
@@ -307,6 +413,20 @@ class FluentRestClient:
 
         Calls ``PUT /api/{component}/{path}`` with body
         ``{"rename": {"new": new, "old": old}}``.
+
+        Parameters
+        ----------
+        path : str
+            Path to the named-object container.
+        new : str
+            New name for the child object.
+        old : str
+            Current name of the child object.
+
+        Raises
+        ------
+        FluentRestError
+            If the object *old* does not exist.
         """
         self._request(
             "PUT",
@@ -317,8 +437,18 @@ class FluentRestClient:
     def get_list_size(self, path: str) -> int:
         """Return the number of elements in the list-object at *path*.
 
-        Calls ``GET /api/{component}/{path}`` and reads the list length.
-        Returns ``0`` if the path does not exist.
+        Calls ``GET /api/{component}/{path}`` and counts the entries.
+
+        Parameters
+        ----------
+        path : str
+            Path to a named-object container or list-object.
+
+        Returns
+        -------
+        int
+            Number of child objects.  Returns ``0`` if the path does not
+            exist (HTTP 404).
         """
         try:
             result = self._request("GET", f"{self._api_base}/{path}")
@@ -340,21 +470,73 @@ class FluentRestClient:
         """Resize the list-object at *path* to *size* elements.
 
         Calls ``PUT /api/{component}/{path}`` with body ``{"size": size}``.
+
+        Parameters
+        ----------
+        path : str
+            Path to the list-object.
+        size : int
+            Desired number of elements.
+
+        Raises
+        ------
+        FluentRestError
+            If the server rejects the resize.
         """
         self._request("PUT", f"{self._api_base}/{path}", body={"size": size})
 
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute *command* at *path* with keyword arguments *kwds*.
+        """Execute *command* at *path* with keyword arguments.
 
         Calls ``POST /api/{component}/{path}/{command}`` with body ``kwds``.
+
+        Parameters
+        ----------
+        path : str
+            Path to the parent object containing the command.
+        command : str
+            Command name, e.g. ``"initialize"``.
+        **kwds
+            Arbitrary keyword arguments forwarded as the JSON request body.
+
+        Returns
+        -------
+        Any
+            The ``"reply"`` field from the response, or the raw response
+            if no ``"reply"`` key is present.
+
+        Raises
+        ------
+        FluentRestError
+            If the server rejects the command (e.g. HTTP 409 conflict).
         """
         result = self._request("POST", f"{self._api_base}/{path}/{command}", body=kwds)
         return result.get("reply") if isinstance(result, dict) else result
 
     def execute_query(self, path: str, query: str, **kwds) -> Any:
-        """Execute *query* at *path* with keyword arguments *kwds*.
+        """Execute *query* at *path* with keyword arguments.
 
         Calls ``POST /api/{component}/{path}/{query}`` with body ``kwds``.
+
+        Parameters
+        ----------
+        path : str
+            Path to the parent object containing the query.
+        query : str
+            Query name, e.g. ``"get-zone-names"``.
+        **kwds
+            Arbitrary keyword arguments forwarded as the JSON request body.
+
+        Returns
+        -------
+        Any
+            The ``"reply"`` field from the response, or the raw response
+            if no ``"reply"`` key is present.
+
+        Raises
+        ------
+        FluentRestError
+            If the server rejects the query.
         """
         result = self._request("POST", f"{self._api_base}/{path}/{query}", body=kwds)
         return result.get("reply") if isinstance(result, dict) else result
@@ -367,17 +549,31 @@ class FluentRestClient:
         """Return ``True`` if *name* contains an ``fnmatch``-style wildcard.
 
         Recognised wildcard characters: ``*``, ``?``, ``[``.
-        Performs the check locally – no server round-trip required.
+        Performs the check locally — no server round-trip required.
+
+        Parameters
+        ----------
+        name : str
+            The name to check.
+
+        Returns
+        -------
+        bool
+            ``True`` if *name* contains a wildcard character.
         """
         return any(c in name for c in ("*", "?", "["))
 
     def is_interactive_mode(self) -> bool:
         """Check whether the server is running in interactive mode.
 
-        Queries ``GET /api/connection/run_mode`` on the real server.
-        Returns ``True`` if mode is anything other than ``"batch"``.
-        Returns ``False`` on any error (safe default — only gates
-        interactive prompts in ``flobject.BaseCommand``).
+        Queries ``GET /api/connection/run_mode`` on the server.
+
+        Returns
+        -------
+        bool
+            ``True`` if the server mode is anything other than ``"batch"``.
+            Returns ``False`` on any error (safe default — only gates
+            interactive prompts in ``flobject.BaseCommand``).
         """
         try:
             url = f"{self._base_url}/api/connection/run_mode"

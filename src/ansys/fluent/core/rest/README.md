@@ -10,10 +10,9 @@ src/ansys/fluent/core/rest/
 ├── client.py            # FluentRestClient — HTTP client
 ├── rest_session.py      # RestSolverSession — wires client to flobject
 ├── rest_launcher.py     # launch_fluent_rest() — convenience function
-├── HOW_IT_WORKS.md      # Detailed technical walkthrough
 └── tests/
     ├── conftest.py          # Shared fixtures (auto-skip when server unreachable)
-    └── test_real_server.py  # 24 tests against live Fluent/SimBA server
+    └── test_real_server.py  # 27 tests against live Fluent/SimBA server
 ```
 
 ## Components

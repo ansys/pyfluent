@@ -23,7 +23,7 @@
 
 Provides:
 - ``real_client``: A :class:`FluentRestClient` connected to the real Fluent /
-  PyFluent server.  Auto-skips when the server is unreachable.
+  SimBA server.  Auto-skips when the server is unreachable.
 
 Real-server connection parameters can be supplied via:
 - Environment variables: ``FLUENT_REST_HOST``, ``FLUENT_REST_PORT``,
@@ -51,10 +51,14 @@ _REAL_SERVER_COMPONENT = os.environ.get("FLUENT_REST_COMPONENT", "fluent_1")
 
 
 def _real_server_reachable() -> bool:
-    """Return True if the real server responds to a lightweight probe."""
+    """Return ``True`` if the real server responds to a lightweight probe.
+
+    Sends ``GET /api/connection/run_mode`` with the configured auth token.
+    A successful response (any 2xx) indicates the server is up.
+    """
     url = f"http://{_REAL_SERVER_HOST}:{_REAL_SERVER_PORT}/api/connection/run_mode"
     req = urllib.request.Request(url, method="GET")
-    req.add_header("token", _REAL_SERVER_TOKEN)
+    req.add_header("Authorization", f"Bearer {_REAL_SERVER_TOKEN}")
     try:
         with urllib.request.urlopen(req, timeout=3):
             return True
@@ -66,7 +70,8 @@ def _real_server_reachable() -> bool:
 def real_client():
     """Provide a :class:`FluentRestClient` connected to the real server.
 
-    Automatically **skips** the entire module when the server is not reachable.
+    Automatically **skips** the entire module when the server is not
+    reachable, so tests can be run safely in any environment.
     """
     if not _real_server_reachable():
         pytest.skip(

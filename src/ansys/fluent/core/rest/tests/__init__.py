@@ -19,4 +19,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Tests for the REST settings transport layer (Step 1 exploration)."""
+"""Tests for the REST settings transport layer."""
