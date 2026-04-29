@@ -1,0 +1,152 @@
+name: Fluent issue
+description: Report an issue that originates in Ansys Fluent itself (solver, GUI, journals) rather than in PyFluent.
+title: "[FLUENT]: <short description>"
+labels: ["bug", "fluent"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when the problem appears to be in **Ansys Fluent**
+        (solver, meshing, GUI, TUI, journal, or licensing) rather than in the
+        PyFluent Python layer. If you are unsure, file a regular bug report
+        instead and we will reclassify it.
+
+  - type: checkboxes
+    id: prior-search
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched the [existing issues](https://github.com/ansys/pyfluent/issues) and did not find a duplicate.
+          required: true
+        - label: I can reproduce this from PyFluent (or have a journal that reproduces it in standalone Fluent).
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Fluent area
+      description: Which part of Fluent does the issue relate to?
+      options:
+        - Solver
+        - Meshing
+        - GUI
+        - TUI / Scheme
+        - Journals
+        - Field data / post-processing
+        - Licensing
+        - Launcher / startup
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: fluent-version
+    attributes:
+      label: Ansys Fluent version
+      placeholder: e.g. 2025 R2 (25.2)
+    validations:
+      required: true
+
+  - type: input
+    id: pyfluent-version
+    attributes:
+      label: PyFluent version
+      placeholder: e.g. 0.34.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: launch-mode
+    attributes:
+      label: Launch mode
+      options:
+        - Local
+        - Container (Docker / Podman)
+        - Remote (PIM / cluster)
+        - Slurm
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: solver-mode
+    attributes:
+      label: Solver mode
+      options:
+        - solver
+        - meshing
+        - pure-meshing
+        - aero
+        - icing
+        - Not applicable
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of the issue
+      description: What is happening in Fluent? Include any error dialogs or solver messages.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal PyFluent script or Fluent journal that reproduces the issue.
+      render: python
+      placeholder: |
+        import ansys.fluent.core as pyfluent
+        session = pyfluent.launch_fluent(mode="solver")
+        # ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the full traceback or Fluent transcript output.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: transcript
+    attributes:
+      label: Fluent transcript / log
+      description: Attach or paste the relevant portion of the Fluent transcript (`.trn`) or console log.
+      render: shell
+
+  - type: input
+    id: case-file
+    attributes:
+      label: Case / mesh file
+      description: If possible, share a minimal case or mesh file (link or attachment) that reproduces the issue.
+      placeholder: e.g. attached `mixing_elbow.cas.h5`
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Hardware, parallel configuration, license type, screenshots, etc.
