@@ -90,6 +90,21 @@ Post issues
 Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
 submit questions, report bugs, and request new features.
 
+.. note::
+
+   The PyFluent GitHub repository is intended for issues with the **PyFluent
+   client library** itself. Problems that arise only with unreleased Fluent
+   versions, or that clearly originate in the Fluent API or server rather than
+   the Python client, should be reported through the appropriate channels:
+
+   - **Ansys employees:** Use Ansys internal channels or the
+     `Ansys Developer Forum <https://discuss.ansys.com>`_.
+   - **External users:** Contact `Ansys Support <https://support.ansys.com>`_
+     or Synopsys support.
+
+   If you are unsure whether an issue belongs in this repository, feel free to
+   open it — maintainers will help triage and redirect if necessary.
+
 
 Adhere to code style
 --------------------

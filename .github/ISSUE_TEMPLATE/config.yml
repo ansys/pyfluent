@@ -1,0 +1,12 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Ansys Developer Forum
+    url: https://discuss.ansys.com
+    about: >-
+      For questions about Fluent solver behavior, Fluent API, or general
+      simulation topics, post on the Ansys Developer Forum.
+  - name: Ansys Support
+    url: https://support.ansys.com
+    about: >-
+      For issues that originate in the Fluent solver or server (not the
+      PyFluent Python client), contact Ansys Support.

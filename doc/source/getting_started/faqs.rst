@@ -287,6 +287,13 @@ feature requests are available in their respective GitHub repositories.
 - To log an issue for PyFluent, use the `PyFluent Issues page <https://github.com/ansys/pyfluent/issues>`_.
 - To start a discussion, use the `PyFluent Discussions page <https://github.com/ansys/pyfluent/discussions>`_.
 
+.. note::
+
+   The PyFluent GitHub repository is intended for issues with the **PyFluent
+   client library** itself. Problems that clearly originate in the Fluent solver,
+   API, or server should be reported via `Ansys Support <https://support.ansys.com>`_
+   or the `Ansys Developer Forum <https://discuss.ansys.com>`_.
+
 For discussions about developer tools, engineering simulation, and physics for
 Ansys software, visit the `Ansys Developer portal
 <https://developer.ansys.com/>`_. The `Ansys Discuss
