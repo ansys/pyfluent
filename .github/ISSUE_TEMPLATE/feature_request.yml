@@ -1,0 +1,38 @@
+name: 💡 New feature
+description: Suggest a new feature or enhancement for PyFluent.
+title: "[FEAT]: <short description>"
+labels: ["new feature", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a new feature! Please describe the motivation
+        and the desired behavior so we can evaluate it.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: ❓ Problem statement
+      description: What problem are you trying to solve? Why is the current behavior insufficient?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 💡 Proposed solution
+      description: Describe the API or behavior you would like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔀 Alternatives considered
+      description: Any alternative solutions or workarounds you have considered.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📌 Additional context
+      description: Links, references, screenshots, or related issues.

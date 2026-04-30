@@ -373,6 +373,22 @@ class Root(Group):
             else:
                 self.parent.objs["g-1"].objs["r-1"].value -= a1
 
+    class CommandWithReturnType(Command):
+        """Command with return type."""
+
+        arguments = {}
+
+        def cb(self):
+            return ["A", "B", "C"]
+
+    class CommandWithWrongReturnType(Command):
+        """Command with wrong return type."""
+
+        arguments = {}
+
+        def cb(self):
+            return [1, 2, 3]
+
     children = {
         "g-1": G1,
         "n-1": N1,
@@ -381,6 +397,8 @@ class Root(Group):
 
     commands = {
         "c-1": Command1,
+        "c-2": CommandWithReturnType,
+        "c-3": CommandWithWrongReturnType,
     }
 
 
@@ -567,6 +585,14 @@ def test_command():
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2
     r.c_1(a_1=4.5, a_2=False)
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2 - 4.5
+    r.c_2._setattr("_version", FluentVersion.v271)
+    r.c_3._setattr("_version", FluentVersion.v271)
+    r.c_2._setattr("return_type", "string-list")
+    r.c_3._setattr("return_type", "string-list")
+    ret = r.c_2()
+    assert ret == ["A", "B", "C"]
+    with pytest.raises(TypeError):
+        ret = r.c_3()
 
 
 def test_attrs():
