@@ -5,5 +5,5 @@ blank_issues_enabled: true
 
 contact_links:
   - name: Fluent issue
-    url: https://developer.ansys.com/
+    url: https://discuss.ansys.com/
     about: "Hitting a problem in Ansys Fluent itself or its APIs (not in PyFluent)? Please report it on the Ansys Developer Portal or through the usual support channel."
