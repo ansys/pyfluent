@@ -38,7 +38,7 @@ from ansys.fluent.core.services import MonitorsServiceV0, SchemeEval
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction as ReductionV0
-from ansys.fluent.core.services.reduction import Reduction, ReductionService as ReductionServiceV0
+from ansys.fluent.core.services.reduction import ReductionService as ReductionServiceV0
 from ansys.fluent.core.services.reduction_v1 import Reduction, ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData as SolutionVariableDataV0,
@@ -192,9 +192,11 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             fluent_connection._server_supports_v1
         )
 
-        monitors_service = (MonitorsService if fluent_connection._server_supports_v1 else MonitorsServiceV0)(
-            fluent_connection._channel, fluent_connection._metadata, self._error_state
-        )
+        monitors_service = (
+            MonitorsService
+            if fluent_connection._server_supports_v1
+            else MonitorsServiceV0
+        )(fluent_connection._channel, fluent_connection._metadata, self._error_state)
         #: Manage Fluent's solution monitors.
         _MonitorsManager = (
             MonitorsManager

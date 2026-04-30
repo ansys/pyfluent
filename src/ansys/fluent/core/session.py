@@ -42,30 +42,31 @@ from ansys.fluent.core.pyfluent_warnings import (
 )
 from ansys.fluent.core.services import (
     BatchOpsService,
+    BatchOpsServiceV0,
+    DatamodelService_SE,
+    DatamodelService_SE_V0,
+    DatamodelService_TUI,
+    DatamodelService_TUI_V0,
+    DeprecatedFieldData,
+    DeprecatedFieldDataV0,
     EventsService,
+    EventsServiceV0,
+    FieldDataService,
+    FieldDataServiceV0,
+    FieldDataStreamingV0,
+    LiveFieldData,
+    SchemeEval,
     SettingsService,
+    SettingsServiceV0,
     SolutionVariableData,
     SolutionVariableService,
     TranscriptService,
+    TranscriptServiceV0,
+    ZoneInfo,
+    _FieldInfo,
+    _FieldInfoV0,
 )
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
-from ansys.fluent.core.services import (
-     DatamodelService_SE,
-)
-from ansys.fluent.core.services import (
-    DatamodelService_TUI,
-)
-from ansys.fluent.core.services import DeprecatedFieldData
-from ansys.fluent.core.services import (
-    FieldDataService,
-    LiveFieldData,
-    _FieldInfo,
-)
-from ansys.fluent.core.services import (
-    ZoneInfo,
-)
-from ansys.fluent.core.services import FieldDataServiceV0,  FieldDataService
-from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -75,10 +76,10 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming_v1 import (
 from ansys.fluent.core.streaming_services.events_streaming import (
     EventsManager as EventsManagerV0,
 )
+from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
 )
-from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptV0,
 )
@@ -230,10 +231,14 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = (TranscriptService if fluent_connection._server_supports_v1 else TranscriptServiceV0)(
-            fluent_connection._channel, fluent_connection._metadata
-        )
-        self.transcript = (Transcript if fluent_connection._server_supports_v1 else TranscriptV0)(self._transcript_service)
+        self._transcript_service = (
+            TranscriptService
+            if fluent_connection._server_supports_v1
+            else TranscriptServiceV0
+        )(fluent_connection._channel, fluent_connection._metadata)
+        self.transcript = (
+            Transcript if fluent_connection._server_supports_v1 else TranscriptV0
+        )(self._transcript_service)
         if self._start_transcript:
             self.transcript.start()
 
@@ -243,7 +248,11 @@ class BaseSession:
 
         self.journal = Journal(self._app_utilities)
 
-        self._datamodel_service_tui = (DatamodelService_TUI if fluent_connection._server_supports_v1 else DatamodelService_TUI_V0)(
+        self._datamodel_service_tui = (
+            DatamodelService_TUI
+            if fluent_connection._server_supports_v1
+            else DatamodelService_TUI_V0
+        )(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
@@ -251,7 +260,11 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = (DatamodelService_SE if fluent_connection._server_supports_v1 else DatamodelService_SE_V0)(
+        self._datamodel_service_se = (
+            DatamodelService_SE
+            if fluent_connection._server_supports_v1
+            else DatamodelService_SE_V0
+        )(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.get_fluent_version(),
@@ -266,12 +279,18 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = (BatchOpsService if fluent_connection._server_supports_v1 else BatchOpsServiceV0)(
-            fluent_connection._channel, fluent_connection._metadata
-        )
+        self._batch_ops_service = (
+            BatchOpsService
+            if fluent_connection._server_supports_v1
+            else BatchOpsServiceV0
+        )(fluent_connection._channel, fluent_connection._metadata)
 
         if event_type:
-            events_service = (EventsService if fluent_connection._server_supports_v1 else EventsServiceV0)(fluent_connection._channel, fluent_connection._metadata)
+            events_service = (
+                EventsService
+                if fluent_connection._server_supports_v1
+                else EventsServiceV0
+            )(fluent_connection._channel, fluent_connection._metadata)
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
                     event_type,
@@ -305,7 +324,11 @@ class BaseSession:
             self, get_zones_info, fluent_connection._server_supports_v1
         )
 
-        self._settings_service = (SettingsService if fluent_connection._server_supports_v1 else SettingsServiceV0)(
+        self._settings_service = (
+            SettingsService
+            if fluent_connection._server_supports_v1
+            else SettingsServiceV0
+        )(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,
@@ -616,17 +639,21 @@ class Fields:
             _session._field_data_service,
             self._is_solution_data_valid,
         )
-        self.field_data = (FieldDataService if server_supports_v1 else FieldDataServiceV0)(
+        self.field_data = (
+            FieldDataService if server_supports_v1 else FieldDataServiceV0
+        )(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,
             _session.scheme,
             get_zones_info,
         )
-        self.field_data_streaming = (FieldDataStreaming if server_supports_v1 else FieldDataStreamingV0)(
-            _session._fluent_connection._id, _session._field_data_service
-        )
-        self.field_data_old = (DeprecatedFieldData if server_supports_v1 else DeprecatedFieldDataV0)(
+        self.field_data_streaming = (
+            FieldDataStreaming if server_supports_v1 else FieldDataStreamingV0
+        )(_session._fluent_connection._id, _session._field_data_service)
+        self.field_data_old = (
+            DeprecatedFieldData if server_supports_v1 else DeprecatedFieldDataV0
+        )(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,

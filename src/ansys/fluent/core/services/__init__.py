@@ -23,21 +23,15 @@
 """Provides a module to create gRPC services."""
 
 from ansys.fluent.core.services.app_utilities import (
-    AppUtilities as AppUtilitiesV0,
-)
-from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesService as AppUtilitiesServiceV0,
 )
+from ansys.fluent.core.services.app_utilities import AppUtilities as AppUtilitiesV0
 from ansys.fluent.core.services.app_utilities_v1 import (
     AppUtilities,
     AppUtilitiesService,
 )
-from ansys.fluent.core.services.batch_ops import (
-    BatchOps as BatchOpsV0,
-)
-from ansys.fluent.core.services.batch_ops import (
-    BatchOpsService as BatchOpsServiceV0,
-)
+from ansys.fluent.core.services.batch_ops import BatchOps as BatchOpsV0
+from ansys.fluent.core.services.batch_ops import BatchOpsService as BatchOpsServiceV0
 from ansys.fluent.core.services.batch_ops_v1 import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
@@ -51,21 +45,18 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.datamodel_tui_v1 import (
     DatamodelService as DatamodelService_TUI,
 )
+from ansys.fluent.core.services.deprecated_field_data import (
+    DeprecatedFieldData as DeprecatedFieldDataV0,
+)
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService as EventsServiceV0
 from ansys.fluent.core.services.events_v1 import EventsService
 from ansys.fluent.core.services.field_data import (
-    FieldDataService as FieldDataServiceV0,
-)
-from ansys.fluent.core.services.field_data import (
-    LiveFieldData as LiveFieldDataV0,
-)
-from ansys.fluent.core.services.field_data import (
     ZoneInfo,
 )
-from ansys.fluent.core.services.field_data import (
-    _FieldInfo as _FieldInfoV0,
-)
+from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
+from ansys.fluent.core.services.field_data import LiveFieldData as LiveFieldDataV0
+from ansys.fluent.core.services.field_data import _FieldInfo as _FieldInfoV0
 from ansys.fluent.core.services.field_data_v1 import (
     FieldDataService,
     LiveFieldData,
@@ -80,11 +71,9 @@ from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsSer
 from ansys.fluent.core.services.reduction import Reduction as ReductionV0
 from ansys.fluent.core.services.reduction_v1 import Reduction
 from ansys.fluent.core.services.scheme_eval import (
-    SchemeEval as SchemeEvalV0,
-)
-from ansys.fluent.core.services.scheme_eval import (
     SchemeEvalService as SchemeEvalServiceV0,
 )
+from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
 from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService as SettingsServiceV0
 from ansys.fluent.core.services.settings_v1 import SettingsService
@@ -123,6 +112,7 @@ __all__ = (
     "DatamodelService_TUI",
     "DatamodelService_TUI_V0",
     "DeprecatedFieldData",
+    "DeprecatedFieldDataV0",
     "EventsService",
     "EventsServiceV0",
     "FieldDataService",

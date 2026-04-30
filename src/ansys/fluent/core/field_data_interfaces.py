@@ -22,24 +22,21 @@
 
 """Common interfaces for field data."""
 
-import warnings
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from enum import Enum
 from typing import TYPE_CHECKING, NamedTuple
+import warnings
 
 import numpy as np
 import numpy.typing as npt
-from ansys.units.variable_descriptor import VariableDescriptor
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
-
-if TYPE_CHECKING:
-    from .field_data_interfaces import SurfaceData
+from ansys.units.variable_descriptor import VariableDescriptor
 
 __all__ = (
     "PathlinesFieldDataRequest",
