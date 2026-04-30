@@ -99,8 +99,7 @@ submit questions, report bugs, and request new features.
 
    - **Ansys employees:** Use Ansys internal channels or the
      `Ansys Developer Forum <https://discuss.ansys.com>`_.
-   - **External users:** Contact `Ansys Support <https://support.ansys.com>`_
-     or Synopsys support.
+   - **External users:** Contact `Ansys Support <https://support.ansys.com>`_.
 
    If you are unsure whether an issue belongs in this repository, feel free to
    open it — maintainers will help triage and redirect if necessary.
