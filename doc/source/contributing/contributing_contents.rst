@@ -88,10 +88,14 @@ You can clear all HTML files from the ``_build/html`` directory with:
 Post issues
 -----------
 Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
-submit questions, report bugs, and request new features. For issues related to
-the Fluent solver or its APIs rather than the PyFluent client library, please
-report them on the `Ansys Developer Forum <https://discuss.ansys.com>`_ or
-through `Ansys Support <https://support.ansys.com>`_.
+submit questions, report bugs, and request new features.
+
+.. note::
+
+   The PyFluent GitHub repository is intended for issues with the **PyFluent
+   client library** itself. Experiencing a problem in Fluent or its API? Please
+   report it on the `Ansys Developer Forum <https://discuss.ansys.com>`_ or
+   through `Ansys Support <https://support.ansys.com>`_.
 
 
 Adhere to code style

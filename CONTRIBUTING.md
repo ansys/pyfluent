@@ -7,9 +7,9 @@ PyFluent.
 
 The following contribution information is specific to PyFluent.
 
-> **Note:** For issues related to the Fluent solver or its APIs rather than the PyFluent client library,
-> please report them on the [Ansys Developer Forum](https://discuss.ansys.com) or
-> through [Ansys Support](https://support.ansys.com).
+> **Note:** The PyFluent GitHub repository is intended for issues with the **PyFluent client library** itself.
+> Experiencing a problem in Fluent or its API? Please report it on the
+> [Ansys Developer Forum](https://discuss.ansys.com) or through [Ansys Support](https://support.ansys.com).
 
 [Contributing]: https://dev.docs.pyansys.com/how-to/contributing.html
 
