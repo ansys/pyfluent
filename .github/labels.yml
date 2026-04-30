@@ -170,7 +170,3 @@
 - name: CI/CD
   description: "Related to CI/CD"
   color: 85C1E9
-
-- name: fluent-side
-  description: "Issue originates in Fluent solver/API, not PyFluent client"
-  color: D35400
