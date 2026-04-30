@@ -42,7 +42,9 @@ from __future__ import annotations
 
 import collections
 from contextlib import contextmanager, nullcontext, suppress
+from enum import Enum
 import fnmatch
+from functools import total_ordering
 import hashlib
 import inspect
 import keyword
@@ -93,6 +95,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 _static_class_attributes = [
     "_version",
+    "exposure_level",
     "_deprecated_version",
     "_python_name",
     "fluent_name",
@@ -113,6 +116,26 @@ class ReadOnlyActionError(RuntimeError):
     def __init__(self, python_path):
         """Initialize ReadOnlyActionError."""
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
+
+
+@total_ordering
+class ExposureLevel(Enum):
+    """API exposure level of a settings object."""
+
+    ALPHA = "alpha"
+    BETA = "beta"
+    STABLE = "stable"
+
+    def __lt__(self, other):
+        """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
+        if isinstance(other, ExposureLevel):
+            order = {
+                ExposureLevel.ALPHA: 0,
+                ExposureLevel.BETA: 1,
+                ExposureLevel.STABLE: 2,
+            }
+            return order[self] < order[other]
+        return NotImplemented
 
 
 class _InlineConstants:
@@ -2300,6 +2323,18 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
+
+        # If root, set it explicitly to stable
+        if parent is None:
+            cls.exposure_level = ExposureLevel.STABLE
+        else:
+            exposure_level_str = info.get("api_exposure_level")
+            if exposure_level_str is None:
+                cls.exposure_level = parent.exposure_level
+            else:
+                cls.exposure_level = min(
+                    ExposureLevel(exposure_level_str), parent.exposure_level
+                )
 
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:

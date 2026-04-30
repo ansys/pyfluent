@@ -255,6 +255,114 @@ def test_batch_request_single_phase():
     assert round(vector_data[5][50][2], 5) == 0.00468
 
 
+def test_batch_request_single_phase_preserves_scalar_request_options():
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
+    file_session = FileSession()
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
+
+    batch = file_session.fields.field_data.new_batch()
+    default_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=[3, 5])
+    element_request = ScalarFieldDataRequest(
+        field_name="SV_T",
+        surfaces=["wall", "symmetry"],
+        node_value=False,
+        boundary_value=False,
+    )
+
+    data = batch.add_requests(default_request, element_request).get_response()
+
+    default_scalar_data = data.get_field_data(default_request)
+    assert len(default_scalar_data) == 2
+    assert default_scalar_data[5].shape == (100,)
+    assert round(default_scalar_data[5][50], 2) == 295.43
+
+    element_scalar_data = data.get_field_data(element_request)
+    assert len(element_scalar_data) == 2
+    assert round(element_scalar_data["wall"][50], 2) == 293.15
+    assert round(element_scalar_data["symmetry"][50], 2) == 293.15
+
+
+def test_batch_request_single_phase_merges_multiple_fields_per_surface():
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
+    file_session = FileSession()
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
+
+    batch = file_session.fields.field_data.new_batch()
+    temperature_request = ScalarFieldDataRequest(
+        field_name="SV_T",
+        surfaces=[5],
+        node_value=False,
+        boundary_value=False,
+    )
+    pressure_request = ScalarFieldDataRequest(
+        field_name="SV_P",
+        surfaces=[5],
+        node_value=False,
+        boundary_value=False,
+    )
+
+    data = batch.add_requests(temperature_request, pressure_request).get_response()
+
+    temperature_data = data.get_field_data(temperature_request)
+    pressure_data = data.get_field_data(pressure_request)
+
+    assert temperature_data[5].shape == (100,)
+    assert pressure_data[5].shape == (100,)
+
+    scalar_field_tag = (
+        ("type", "scalar-field"),
+        ("dataLocation", 1),
+        ("boundaryValues", False),
+    )
+    assert set(data()[scalar_field_tag][5]) == {"SV_T", "SV_P"}
+
+
+def test_batch_request_single_phase_merges_surface_data_per_surface():
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
+    file_session = FileSession()
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
+
+    batch = file_session.fields.field_data.new_batch()
+    vertices_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices],
+        surfaces=[3],
+    )
+    connectivity_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=[3],
+        flatten_connectivity=True,
+    )
+
+    data = batch.add_requests(vertices_request, connectivity_request).get_response()
+
+    vertices = data.get_field_data(vertices_request)
+    connectivity = data.get_field_data(connectivity_request)
+
+    assert vertices[3].vertices.shape == (3810, 3)
+    assert len(connectivity[3].connectivity) > 0
+
+    surface_data = data()[(("type", "surface-data"),)]
+    assert set(surface_data[3]) == {"faces", "vertices"}
+
+
 def test_batch_request_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
@@ -579,7 +687,9 @@ def test_batch_request_single_phase_deprecated():
 
     batch_1 = field_data.new_batch()
 
-    batch_1.add_surfaces_request(provide_vertices=True, surfaces=[3, 5])
+    batch_1.add_surfaces_request(
+        provide_vertices=True, provide_faces=True, surfaces=[3, 5]
+    )
 
     batch_1.add_scalar_fields_request("SV_T", surfaces=[3, 5])
     batch_1.add_scalar_fields_request("SV_T", surfaces=["wall", "symmetry"])
