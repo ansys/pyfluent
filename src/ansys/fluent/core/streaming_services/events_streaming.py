@@ -70,8 +70,18 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 def _missing_for_events(cls, value):
+    # Top-level imports can expose the v0 or v1 event enums depending on how
+    # the package was imported. Accept equivalent enum members from either
+    # version by matching on the stable enum name first.
+    if isinstance(value, Enum):
+        for member in cls:
+            if member.name == value.name:
+                return member
+        value = value.value
+    # Fall back to value-based matching for string inputs and for cross-version
+    # enum values whose wire names differ only by case or naming convention.
     for member in cls:
-        if member.value.lower() == value:
+        if member.value.lower() == str(value).lower():
             return member
     raise ValueError(f"'{value}' is not a supported '{cls.__name__}'.")
 
@@ -131,7 +141,7 @@ class EventInfoBase:
 
     def __init_subclass__(cls, event, **kwargs):
         super().__init_subclass__(**kwargs)
-        cls.derived_classes[event] = cls
+        cls.derived_classes[event.name] = cls
 
     def __post_init__(self):
         for f in fields(self):
@@ -387,6 +397,7 @@ class EventsManager(Generic[TEvent]):
         session_events_service,
         fluent_error_state,
         session,
+        server_supports_v1: bool = False,
     ):
         """__init__ method of EventsManager class."""
         self._event_type = event_type
@@ -399,6 +410,7 @@ class EventsManager(Generic[TEvent]):
         # This has been updated from id to session, which
         # can also be done in other streaming services
         self._session = session
+        self._server_supports_v1 = server_supports_v1
         self._sync_event_ids = {}
 
     def _construct_event_info(
@@ -407,8 +419,15 @@ class EventsManager(Generic[TEvent]):
         event_info_msg = getattr(response, event.value.lower())
         # Note: MessageToDict's parameter names are different in different protobuf versions
         event_info_dict = MessageToDict(event_info_msg, True)
-        solver_event = SolverEvent(event.value)
-        event_info_cls = EventInfoBase.derived_classes.get(solver_event)
+        event_info_cls = EventInfoBase.derived_classes.get(event.name)
+        # Some event-info classes intentionally have no fields. Instantiate them without payload.
+        dataclass_fields = getattr(event_info_cls, "__dataclass_fields__", None)
+        if dataclass_fields is None or len(dataclass_fields) == 0:
+            return event_info_cls()
+        # v1 servers can emit empty payloads for some events; keep fallback v1-only
+        # to avoid changing backward-compatible v0 behavior.
+        if self._server_supports_v1 and not event_info_dict:
+            return event_info_cls()
         # Key names can be different, but their order is the same
         return event_info_cls(*event_info_dict.values())
 
@@ -423,17 +442,15 @@ class EventsManager(Generic[TEvent]):
             try:
                 response = next(responses)
                 event_name = self._event_type(response.WhichOneof("as"))
+                event_info = self._construct_event_info(response, event_name)
                 with service._lock:
                     service._streaming = True
                     # error-code 0 from Fluent indicates server running without error
-                    if (
-                        event_name == self._event_type.FATAL_ERROR
-                        and response.errorevent.errorCode != 0
-                    ):
-                        error_message = response.errorevent.message.rstrip()
+                    if event_name.name == "FATAL_ERROR" and event_info.error_code != 0:
+                        error_message = event_info.message.rstrip()
                         network_logger.error(
                             f"gRPC - {error_message}, "
-                            f"errorCode {response.errorevent.errorCode}"
+                            f"errorCode {event_info.error_code}"
                         )
                         self._fluent_error_state.set("fatal", error_message)
                         continue
@@ -441,7 +458,7 @@ class EventsManager(Generic[TEvent]):
                     for callback in callbacks_map.values():
                         callback(
                             session=self._session,
-                            event_info=self._construct_event_info(response, event_name),
+                            event_info=event_info,
                         )
             except StopIteration:
                 break
@@ -512,10 +529,7 @@ class EventsManager(Generic[TEvent]):
             callback_to_call = EventsManager._make_callback_to_call(
                 callback, args, kwargs
             )
-            if event_name in [
-                SolverEvent.ITERATION_ENDED,
-                SolverEvent.TIMESTEP_ENDED,
-            ]:
+            if event_name.name in ["ITERATION_ENDED", "TIMESTEP_ENDED"]:
                 event_name, callback_to_call = (
                     self._register_solution_event_sync_callback(
                         event_name, callback_id, callback_to_call
@@ -604,17 +618,17 @@ class EventsManager(Generic[TEvent]):
 
     def _register_solution_event_sync_callback(
         self,
-        event_type: Literal[SolverEvent.ITERATION_ENDED, SolverEvent.TIMESTEP_ENDED],
+        event_type,
         callback_id: str,
         callback: Callable,
-    ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
+    ) -> tuple[TEvent, Callable]:
         unique_id: int = self._session._app_utilities.register_pause_on_solution_events(
             solution_event=event_type
         )
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
             if unique_id == int(event_info.level):
-                if event_type == SolverEvent.ITERATION_ENDED:
+                if event_type.name == "ITERATION_ENDED":
                     event_info = IterationEndedEventInfo(index=event_info.index)
                 else:
                     event_info = TimestepEndedEventInfo(
@@ -635,4 +649,4 @@ class EventsManager(Generic[TEvent]):
                     )
 
         self._sync_event_ids[callback_id] = unique_id
-        return SolverEvent.SOLUTION_PAUSED, on_pause
+        return self._event_type.SOLUTION_PAUSED, on_pause

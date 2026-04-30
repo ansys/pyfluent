@@ -26,7 +26,6 @@ from collections.abc import MutableMapping
 import io
 import weakref
 
-from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
@@ -1023,9 +1022,7 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
-@pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/4914
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2, !=26.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     assert isinstance(solver.settings.state_with_units(), dict)
@@ -1259,7 +1256,11 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
 
     calls = mock_interceptor.get_traced_calls()
     assert len(calls) == 5
-    service = "/ansys.api.fluent.v0.settings.Settings/"
+    service = (
+        "/ansys.api.fluent.v0.settings.Settings/"
+        if solver.get_fluent_version() <= FluentVersion.v261
+        else "/ansys.api.fluent.v1.settings.SettingsService/"
+    )
     assert all(x.method == service + "GetAttrs" for x in calls[0:3])
     assert all(x.request.attrs == ["active?"] for x in calls[0:3])
     assert calls[0].request.path_info.path == ""

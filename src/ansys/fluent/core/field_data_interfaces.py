@@ -21,21 +21,25 @@
 # SOFTWARE.
 
 """Common interfaces for field data."""
+
+import warnings
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from enum import Enum
-from typing import NamedTuple
-import warnings
+from typing import TYPE_CHECKING, NamedTuple
 
 import numpy as np
 import numpy.typing as npt
+from ansys.units.variable_descriptor import VariableDescriptor
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
-from ansys.units.variable_descriptor import VariableDescriptor
+
+if TYPE_CHECKING:
+    from .field_data_interfaces import SurfaceData
 
 __all__ = (
     "PathlinesFieldDataRequest",
@@ -269,7 +273,7 @@ class BaseFieldDataSource(ABC):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> dict[int | str, dict | np.ndarray]:
+    ) -> "dict[int | str, SurfaceData | np.ndarray]":
         """
         Retrieve the field data for a given request.
 
@@ -278,7 +282,7 @@ class BaseFieldDataSource(ABC):
 
         Returns
         -------
-            Dict[int | str, Dict | np.array]: A dictionary where keys represent surface
+            Dict[int | str, SurfaceData | np.ndarray]: A dictionary where keys represent surface
             IDs or names, and values contain the corresponding field data.
         """
         pass
@@ -700,7 +704,6 @@ class PathlinesData:
 
 
 class _ReturnFieldData:
-
     @staticmethod
     def _scalar_data(
         field_name: str,

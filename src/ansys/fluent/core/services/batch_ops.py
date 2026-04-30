@@ -24,6 +24,7 @@
 
 import inspect
 import logging
+import sys
 from types import ModuleType
 from typing import TypeVar
 import weakref
@@ -54,8 +55,12 @@ class BatchOpsService(ServiceProtocol):
             channel,
             GrpcErrorInterceptor(),
         )
-        self._stub = batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
+        self._stub = self._create_stub(intercept_channel)
         self._metadata = metadata
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
 
     def execute(
         self, request: batch_ops_pb2.ExecuteRequest
@@ -94,6 +99,8 @@ class BatchOps:
     """
 
     _proto_files: list[ModuleType] | None = None
+    _api_module = api
+    _proto_module = batch_ops_pb2
 
     def _instance():
         return None
@@ -113,24 +120,39 @@ class BatchOps:
         """Class to create a single batch operation."""
 
         def __init__(
-            self, package: str, service: str, method: str, request_body: bytes
+            self,
+            owner_cls: type["BatchOps"],
+            package: str,
+            service: str,
+            method: str,
+            request_body: bytes,
         ) -> None:
             """__init__ method of Op class."""
-            self._request = batch_ops_pb2.ExecuteRequest(
+            self._request = owner_cls._proto_module.ExecuteRequest(
                 package=package,
                 service=service,
                 method=method,
                 request_body=request_body,
             )
-            if not BatchOps._proto_files:
-                BatchOps._proto_files = [
+            if not owner_cls._proto_files:
+                owner_proto_files = [
                     x[1]
-                    for x in inspect.getmembers(api, inspect.ismodule)
+                    for x in inspect.getmembers(owner_cls._api_module, inspect.ismodule)
                     if hasattr(x[1], "DESCRIPTOR")
+                ]
+                loaded_proto_files = [
+                    module
+                    for name, module in sys.modules.items()
+                    if name.endswith("_pb2") and hasattr(module, "DESCRIPTOR")
+                ]
+                owner_cls._proto_files = owner_proto_files + [
+                    module
+                    for module in loaded_proto_files
+                    if module not in owner_proto_files
                 ]
             self._supported = False
             self.response_cls = None
-            for file in BatchOps._proto_files:
+            for file in owner_cls._proto_files:
                 file_desc = file.DESCRIPTOR
                 if file_desc.package == package:
                     service_desc = file_desc.services_by_name.get(service)
@@ -154,7 +176,7 @@ class BatchOps:
                                 except AttributeError:
                                     pass
             if self._supported:
-                self._request = batch_ops_pb2.ExecuteRequest(
+                self._request = owner_cls._proto_module.ExecuteRequest(
                     package=package,
                     service=service,
                     method=method,
@@ -221,7 +243,13 @@ class BatchOps:
             BatchOps.Op object with a queued attribute which is true if the operation
             has been queued.
         """
-        op = BatchOps.Op(package, service, method, request.SerializeToString())
+        op = self.__class__.Op(
+            self.__class__,
+            package,
+            service,
+            method,
+            request.SerializeToString(),
+        )
         if op._supported:
             network_logger.debug(
                 f"Adding batch operation with package {package}, service {service} and method {method}"

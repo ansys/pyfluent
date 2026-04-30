@@ -24,24 +24,30 @@
 
 from __future__ import annotations
 
-from contextlib import suppress
 import ctypes
-from ctypes import c_int, sizeof
-from dataclasses import dataclass
 import itertools
 import logging
 import os
-from pathlib import Path
 import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, TypeVar
 import warnings
 import weakref
+from contextlib import suppress
+from ctypes import c_int, sizeof
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Callable, TypeVar
 
-from deprecated.sphinx import deprecated
 import grpc
+from ansys.platform.instancemanagement import Instance
+from ansys.tools.common.cyberchannel import create_channel
+from deprecated.sphinx import deprecated
+from google.protobuf.descriptor_pool import DescriptorPool
+from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
+    ProtoReflectionDescriptorDatabase,
+)
 
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
@@ -52,21 +58,27 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
+from ansys.fluent.core.services import (
+    AppUtilitiesService,
+    HealthCheckService,
+    SchemeEval,
+    SchemeEvalService,
+    SchemeEvalServiceV0,
+    SchemeEvalV0,
+)
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
     AppUtilities,
     AppUtilitiesOld,
-    AppUtilitiesService,
     AppUtilitiesV252,
 )
-from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesService as AppUtilitiesServiceV0,
+)
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
-from ansys.platform.instancemanagement import Instance
-from ansys.tools.common.cyberchannel import create_channel
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -350,12 +362,33 @@ def _get_channel(
                 )
 
 
+T = TypeVar("T", bound=type)
+E = TypeVar("E")
+
+
 class _ConnectionInterface:
-    def __init__(self, create_grpc_service, error_state):
-        self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
-        self._app_utilities_service = create_grpc_service(
-            AppUtilitiesService, error_state
+    def __init__(
+        self,
+        create_grpc_service: Callable[[T, E], T],
+        error_state: E,
+        supports_v1: bool,
+    ):
+        if supports_v1:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalService, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesService, error_state
+            )
+        else:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalServiceV0, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesServiceV0, error_state
+            )
+        self.scheme_eval = (SchemeEval if supports_v1 else SchemeEvalV0)(
+            self._scheme_eval_service
         )
         match FluentVersion(self.scheme_eval.version):
             case v if v < FluentVersion.v252:
@@ -367,7 +400,9 @@ class _ConnectionInterface:
                 )
 
             case _:
-                self._app_utilities = AppUtilities(self._app_utilities_service)
+                self._app_utilities = (AppUtilities if supports_v1 else AppUtilitiesV0)(
+                    self._app_utilities_service
+                )
 
     @property
     def product_build_info(self) -> str:
@@ -427,6 +462,22 @@ def _pid_exists(pid):
         else:
             ctypes.windll.kernel32.CloseHandle(process_handle)
             return True
+
+
+def _server_supports_v1(channel) -> bool:
+    try:
+        reflection_db = ProtoReflectionDescriptorDatabase(channel)
+        desc_pool = DescriptorPool(reflection_db)
+        service_desc = desc_pool.FindServiceByName(
+            "ansys.api.fluent.v1.app_utilities.AppUtilities"
+        )
+        method_desc = service_desc.FindMethodByName("RegisterSolutionEventsPause")
+        return (
+            method_desc.full_name
+            == "ansys.api.fluent.v1.app_utilities.AppUtilities.RegisterSolutionEventsPause"
+        )
+    except KeyError:
+        return False
 
 
 S = TypeVar("S", bound=ServiceProtocol)
@@ -551,9 +602,11 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self._health_check = HealthCheckService(
-            self._channel, self._metadata, self._error_state
-        )
+        self._server_supports_v1 = _server_supports_v1(channel=self._channel)
+
+        self._health_check = (
+            HealthCheckService if self._server_supports_v1 else HealthCheckServiceV0
+        )(self._channel, self._metadata, self._error_state)
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
@@ -577,7 +630,9 @@ class FluentConnection:
             FluentConnection._monitor_thread.start()
 
         self._connection_interface = _ConnectionInterface(
-            self.create_grpc_service, self._error_state
+            self.create_grpc_service,
+            self._error_state,
+            supports_v1=self._server_supports_v1,
         )
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
@@ -813,8 +868,10 @@ class FluentConnection:
             )
         else:
             _response = timeout_loop(
-                lambda connection: _pid_exists(connection.fluent_host_pid)
-                or _pid_exists(connection.cortex_pid),
+                lambda connection: (
+                    _pid_exists(connection.fluent_host_pid)
+                    or _pid_exists(connection.cortex_pid)
+                ),
                 wait,
                 args=(self.connection_properties,),
                 idle_period=0.5,
