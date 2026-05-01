@@ -70,10 +70,18 @@ HTTP 4xx / 5xx responses raise :class:`FluentRestError`.
 """
 
 import json
+import logging
+import time
 from typing import Any
 import urllib.error
 import urllib.parse
 import urllib.request
+import warnings
+
+logger = logging.getLogger(__name__)
+
+# HTTP status codes eligible for automatic retry.
+_RETRYABLE_STATUS_CODES = frozenset({502, 503, 504})
 
 
 class FluentRestError(RuntimeError):
@@ -114,6 +122,13 @@ class FluentRestClient:
         Use ``"fluent_meshing_1"`` for a meshing session.
     timeout : float, optional
         Socket timeout in seconds for every request.  Defaults to ``30.0``.
+    max_retries : int, optional
+        Maximum number of automatic retries on transient connection errors
+        (``URLError``) or HTTP 502/503/504 responses.  Defaults to ``0``
+        (no retries — fail immediately).
+    retry_delay : float, optional
+        Base delay in seconds between retries.  Uses exponential back-off:
+        ``retry_delay * 2 ** attempt``.  Defaults to ``1.0``.
 
     Examples
     --------
@@ -135,16 +150,26 @@ class FluentRestClient:
         auth_token: str | None = None,
         component: str = "fluent_1",
         timeout: float = 30.0,
+        max_retries: int = 0,
+        retry_delay: float = 1.0,
     ) -> None:
         parsed = urllib.parse.urlparse(base_url)
         if parsed.scheme not in {"http", "https"}:
             raise ValueError("base_url scheme must be http or https")
         if not parsed.netloc:
             raise ValueError("base_url must include host")
+        if auth_token and parsed.scheme == "http":
+            warnings.warn(
+                "auth_token is being sent over plain HTTP. "
+                "Use https:// to protect credentials in transit.",
+                stacklevel=2,
+            )
         self._base_url = base_url.rstrip("/")
         self._auth_token = auth_token
         self._component = component
         self._timeout = timeout
+        self._max_retries = max_retries
+        self._retry_delay = retry_delay
         # All DataModel endpoints live under this prefix, e.g. "api/fluent_1"
         self._api_base = f"api/{component}"
 
@@ -209,18 +234,46 @@ class FluentRestClient:
         req = urllib.request.Request(
             url, data=data, headers=headers, method=method.upper()
         )
-        try:
-            with urllib.request.urlopen(
-                req, timeout=self._timeout
-            ) as resp:  # nosec B310
-                raw = resp.read()
-                return json.loads(raw) if raw.strip() else {}
-        except urllib.error.HTTPError as exc:
+
+        last_exc: Exception | None = None
+        for attempt in range(self._max_retries + 1):
             try:
-                detail = json.loads(exc.read()).get("detail", exc.reason)
-            except Exception:
-                detail = exc.reason
-            raise FluentRestError(exc.code, detail) from exc
+                with urllib.request.urlopen(
+                    req, timeout=self._timeout
+                ) as resp:  # nosec B310
+                    raw = resp.read()
+                    return json.loads(raw) if raw.strip() else {}
+            except urllib.error.HTTPError as exc:
+                try:
+                    detail = json.loads(exc.read()).get("detail", exc.reason)
+                except Exception:
+                    detail = exc.reason
+                if exc.code in _RETRYABLE_STATUS_CODES and attempt < self._max_retries:
+                    wait = self._retry_delay * (2**attempt)
+                    logger.warning(
+                        "HTTP %d on %s %s — retry %d/%d in %.1fs",
+                        exc.code, method, url, attempt + 1,
+                        self._max_retries, wait,
+                    )
+                    time.sleep(wait)
+                    last_exc = FluentRestError(exc.code, detail)
+                    continue
+                raise FluentRestError(exc.code, detail) from exc
+            except urllib.error.URLError as exc:
+                if attempt < self._max_retries:
+                    wait = self._retry_delay * (2**attempt)
+                    logger.warning(
+                        "Connection error on %s %s: %s — retry %d/%d in %.1fs",
+                        method, url, exc.reason, attempt + 1,
+                        self._max_retries, wait,
+                    )
+                    time.sleep(wait)
+                    last_exc = exc
+                    continue
+                raise FluentRestError(0, str(exc.reason)) from exc
+
+        # Should not be reached, but guard against it.
+        raise last_exc  # type: ignore[misc]
 
     # ------------------------------------------------------------------
     # flobject proxy interface
@@ -389,7 +442,7 @@ class FluentRestClient:
         """
         self._request("POST", f"{self._api_base}/{path}", body={"name": name})
 
-    def delete(self, path: str, name: str) -> None:
+    def delete(self, path: str, name: str, *, ignore_not_found: bool = False) -> None:
         """Delete the named child object *name* at *path*.
 
         Calls ``DELETE /api/{component}/{path}/{name}``.
@@ -400,13 +453,23 @@ class FluentRestClient:
             Path to the named-object container.
         name : str
             Name of the child object to delete.
+        ignore_not_found : bool, optional
+            If ``True``, silently ignore HTTP 404 (object already absent).
+            Defaults to ``False`` for consistency with the gRPC proxy, but
+            callers performing idempotent cleanup should pass ``True``.
 
         Raises
         ------
         FluentRestError
-            If the object does not exist (HTTP 404).
+            If *ignore_not_found* is ``False`` and the object does not exist
+            (HTTP 404), or on any other server error.
         """
-        self._request("DELETE", f"{self._api_base}/{path}/{name}")
+        try:
+            self._request("DELETE", f"{self._api_base}/{path}/{name}")
+        except FluentRestError as exc:
+            if ignore_not_found and exc.status == 404:
+                return
+            raise
 
     def rename(self, path: str, new: str, old: str) -> None:
         """Rename a child object at *path* from *old* to *new*.
@@ -434,10 +497,69 @@ class FluentRestClient:
             body={"rename": {"new": new, "old": old}},
         )
 
+    def delete_child_objects(
+        self,
+        path: str,
+        obj_type: str,
+        child_names: list[str],
+    ) -> None:
+        """Delete specific named children of *obj_type* under *path*.
+
+        Calls ``DELETE /api/{component}/{path}/{obj_type}/{name}`` once for
+        each entry in *child_names*.  This is the REST equivalent of the gRPC
+        ``DeleteChildObjectsRequest`` with an explicit name list.
+
+        Parameters
+        ----------
+        path : str
+            Path to the parent container, e.g. ``"setup/boundary-conditions"``.
+        obj_type : str
+            Child object type (sub-container name), e.g. ``"velocity-inlet"``.
+        child_names : list[str]
+            Names of the child objects to delete.
+
+        Raises
+        ------
+        FluentRestError
+            If any individual delete fails (e.g. HTTP 404 — object not found).
+        """
+        for name in child_names:
+            self.delete(f"{path}/{obj_type}", name)
+
+    def delete_all_child_objects(self, path: str, obj_type: str) -> None:
+        """Delete all named children of *obj_type* under *path*.
+
+        Discovers children via :meth:`get_object_names` and then calls
+        :meth:`delete_child_objects` for all of them.  This is the REST
+        equivalent of the gRPC ``DeleteChildObjectsRequest`` with
+        ``delete_all = True``.
+
+        Parameters
+        ----------
+        path : str
+            Path to the parent container, e.g. ``"setup/boundary-conditions"``.
+        obj_type : str
+            Child object type (sub-container name), e.g. ``"velocity-inlet"``.
+
+        Raises
+        ------
+        FluentRestError
+            If any individual delete fails.
+        """
+        names = self.get_object_names(f"{path}/{obj_type}")
+        self.delete_child_objects(path, obj_type, names)
+
     def get_list_size(self, path: str) -> int:
         """Return the number of elements in the list-object at *path*.
 
         Calls ``GET /api/{component}/{path}`` and counts the entries.
+
+        .. note::
+
+            This method makes an independent ``GET`` request rather than
+            delegating to :meth:`get_object_names` because it also handles
+            list-objects that carry a ``"size"`` key and raw arrays, which
+            ``get_object_names`` does not support.
 
         Parameters
         ----------
@@ -485,10 +607,40 @@ class FluentRestClient:
         """
         self._request("PUT", f"{self._api_base}/{path}", body={"size": size})
 
+    def _execute(self, path: str, name: str, **kwds) -> Any:
+        """Post a command or query and return the ``"reply"`` payload.
+
+        Shared implementation for :meth:`execute_cmd` and
+        :meth:`execute_query`.  Both methods are required by the
+        ``flobject`` proxy interface (``BaseCommand`` calls ``execute_cmd``,
+        ``BaseQuery`` calls ``execute_query``), but the transport-level
+        logic is identical.
+
+        Parameters
+        ----------
+        path : str
+            Path to the parent object.
+        name : str
+            Command or query name.
+        **kwds
+            Arbitrary keyword arguments forwarded as the JSON request body.
+
+        Returns
+        -------
+        Any
+            The ``"reply"`` field from the response, or the raw response
+            if no ``"reply"`` key is present.
+        """
+        result = self._request("POST", f"{self._api_base}/{path}/{name}", body=kwds)
+        return result.get("reply") if isinstance(result, dict) else result
+
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute *command* at *path* with keyword arguments.
 
         Calls ``POST /api/{component}/{path}/{command}`` with body ``kwds``.
+        Identical to :meth:`execute_query` at the transport level; both are
+        required by the ``flobject`` proxy interface (``BaseCommand`` calls
+        ``execute_cmd``, ``BaseQuery`` calls ``execute_query``).
 
         Parameters
         ----------
@@ -510,13 +662,15 @@ class FluentRestClient:
         FluentRestError
             If the server rejects the command (e.g. HTTP 409 conflict).
         """
-        result = self._request("POST", f"{self._api_base}/{path}/{command}", body=kwds)
-        return result.get("reply") if isinstance(result, dict) else result
+        return self._execute(path, command, **kwds)
 
     def execute_query(self, path: str, query: str, **kwds) -> Any:
         """Execute *query* at *path* with keyword arguments.
 
         Calls ``POST /api/{component}/{path}/{query}`` with body ``kwds``.
+        Identical to :meth:`execute_cmd` at the transport level; both are
+        required by the ``flobject`` proxy interface (``BaseCommand`` calls
+        ``execute_cmd``, ``BaseQuery`` calls ``execute_query``).
 
         Parameters
         ----------
@@ -538,8 +692,7 @@ class FluentRestClient:
         FluentRestError
             If the server rejects the query.
         """
-        result = self._request("POST", f"{self._api_base}/{path}/{query}", body=kwds)
-        return result.get("reply") if isinstance(result, dict) else result
+        return self._execute(path, query, **kwds)
 
     # ------------------------------------------------------------------
     # Additional proxy interface helpers (no server round-trip required)
@@ -576,14 +729,7 @@ class FluentRestClient:
             interactive prompts in ``flobject.BaseCommand``).
         """
         try:
-            url = f"{self._base_url}/api/connection/run_mode"
-            headers: dict[str, str] = {}
-            if self._auth_token:
-                headers["Authorization"] = f"Bearer {self._auth_token}"
-            req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req, timeout=3) as resp:
-                data = resp.read()
-                mode = json.loads(data) if data.strip() else ""
+            mode = self._request("GET", "api/connection/run_mode")
             return mode != "batch"
         except Exception:
             return False

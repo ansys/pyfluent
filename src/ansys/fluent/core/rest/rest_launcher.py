@@ -40,14 +40,16 @@ __all__ = ["launch_fluent_rest"]
 
 
 def launch_fluent_rest(
-    host: str = "localhost",
-    port: int = 8000,
+    host: str = "10.18.44.175",
+    port: int = 5000,
     *,
     auth_token: str | None = None,
     component: str = "fluent_1",
     version: str = "",
     scheme: str = "http",
     timeout: float = 30.0,
+    max_retries: int = 0,
+    retry_delay: float = 1.0,
 ) -> RestSolverSession:
     """Create a :class:`RestSolverSession` connected to a Fluent REST server.
 
@@ -68,15 +70,26 @@ def launch_fluent_rest(
     version : str, optional
         Fluent version string (e.g. ``"261"``).
     scheme : str, optional
-        URL scheme.  Defaults to ``"http"``.
+        URL scheme.  Must be ``"http"`` or ``"https"``.  Defaults to
+        ``"http"``.
     timeout : float, optional
         HTTP socket timeout in seconds.  Defaults to ``30.0``.
+    max_retries : int, optional
+        Maximum automatic retries on transient errors.  Defaults to ``0``.
+    retry_delay : float, optional
+        Base delay in seconds between retries (exponential back-off).
+        Defaults to ``1.0``.
 
     Returns
     -------
     RestSolverSession
         A fully initialised solver session whose settings tree communicates
         over REST.
+
+    Raises
+    ------
+    ValueError
+        If *scheme* is not ``"http"`` or ``"https"``.
 
     Examples
     --------
@@ -87,6 +100,10 @@ def launch_fluent_rest(
     >>> session.settings.setup.models.energy.enabled()
     True
     """
+    if scheme not in ("http", "https"):
+        raise ValueError(
+            f"scheme must be 'http' or 'https', got {scheme!r}"
+        )
     base_url = f"{scheme}://{host}:{port}"
     return RestSolverSession(
         base_url,
@@ -94,4 +111,6 @@ def launch_fluent_rest(
         component=component,
         version=version,
         timeout=timeout,
+        max_retries=max_retries,
+        retry_delay=retry_delay,
     )

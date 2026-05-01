@@ -42,8 +42,15 @@ Usage
     print(session.settings.setup.models.energy.enabled())
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.solver.flobject import get_root
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.solver.flobject import Group
 
 __all__ = ["RestSolverSession"]
 
@@ -94,9 +101,16 @@ class RestSolverSession:
         component: str = "fluent_1",
         version: str = "",
         timeout: float = 30.0,
+        max_retries: int = 0,
+        retry_delay: float = 1.0,
     ) -> None:
         self._client = FluentRestClient(
-            base_url, auth_token=auth_token, component=component, timeout=timeout
+            base_url,
+            auth_token=auth_token,
+            component=component,
+            timeout=timeout,
+            max_retries=max_retries,
+            retry_delay=retry_delay,
         )
         # Force runtime class generation so we don't need a version-specific
         # pre-generated settings module.  get_root already falls back to
@@ -112,7 +126,7 @@ class RestSolverSession:
         return self._client
 
     @property
-    def settings(self):
+    def settings(self) -> "Group":
         """Root of the solver settings tree.
 
         Returns
