@@ -273,7 +273,7 @@ class DockerLauncher:
     def __call__(
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | dict[str, Any]":
-        if self.argvals["dry_run"]:
+        if self.argvals.get("dry_run"):
             config_dict, *_ = configure_container_dict(
                 self._args,
                 compose_config=self._compose_config,
