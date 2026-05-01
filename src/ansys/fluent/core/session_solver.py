@@ -156,7 +156,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     def _build_from_fluent_connection(
         self,
-        fluent_connection: FluentConnection,
+        fluent_connection: "FluentConnection",
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         launcher_args: dict[str, Any] | None = None,
