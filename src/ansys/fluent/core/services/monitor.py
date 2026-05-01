@@ -46,12 +46,20 @@ class MonitorsService(StreamingService):
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = MonitorGrpcModule.MonitorStub(intercept_channel)
+        self._stub = self._create_stub(intercept_channel)
         self._metadata = metadata
         super().__init__(
             stub=self._stub,
             metadata=self._metadata,
         )
+
+    def _create_stub(self, intercept_channel):
+        """Create the Monitor gRPC stub.
+
+        Extracted as a hook so that the v1 adapter can swap in the v1 stub
+        without duplicating the entire ``__init__`` interceptor chain.
+        """
+        return MonitorGrpcModule.MonitorStub(intercept_channel)
 
     def get_monitors_info(self) -> dict:
         """Get monitors information.

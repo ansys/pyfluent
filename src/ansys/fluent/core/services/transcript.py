@@ -34,6 +34,10 @@ class TranscriptService(StreamingService):
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of TranscriptService class."""
         super().__init__(
-            stub=TranscriptGrpcModule.TranscriptStub(channel),
+            stub=self._create_stub(channel),
             metadata=metadata,
         )
+
+    def _create_stub(self, channel: grpc.Channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return TranscriptGrpcModule.TranscriptStub(channel)

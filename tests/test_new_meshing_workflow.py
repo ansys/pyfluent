@@ -23,7 +23,7 @@
 import time
 from typing import Iterable
 
-from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
+from conftest import SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples
@@ -1313,37 +1313,44 @@ def test_loaded_workflow(new_meshing_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/3065
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2")
 def test_created_workflow(new_meshing_session):
     meshing = new_meshing_session
     created_workflow = meshing.create_workflow(legacy=True)
 
+    expected_insertable_tasks = [
+        "<Insertable 'import_geometry' task>",
+        "<Insertable 'load_cad_geometry' task>",
+        "<Insertable 'import_cad_and_part_management' task>",
+        "<Insertable 'custom_journal_task' task>",
+    ]
+    if meshing.get_fluent_version() >= FluentVersion.v252:
+        expected_insertable_tasks.append("<Insertable 'create_group' task>")
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        expected_insertable_tasks.append(
+            "<Insertable 'prepare_for_volume_meshing' task>"
+        )
+
     assert sorted([repr(x) for x in created_workflow.insertable_tasks()]) == sorted(
-        [
-            "<Insertable 'import_geometry' task>",
-            "<Insertable 'load_cad_geometry' task>",
-            "<Insertable 'import_cad_and_part_management' task>",
-            "<Insertable 'custom_journal_task' task>",
-        ]
+        expected_insertable_tasks
     )
 
-    created_workflow.insertable_tasks()[0].insert()
+    created_workflow.insertable_tasks()[1].insert()
 
     assert created_workflow.insertable_tasks() == []
 
-    assert "<Insertable 'add_local_sizing' task>" in [
-        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
-    ]
-    created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
-    assert "<Insertable 'add_local_sizing' task>" not in [
-        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
-    ]
-    assert sorted(created_workflow.task_names()) == sorted(
-        ["import_geometry", "add_local_sizing"]
-    )
+    # https://github.com/ansys/pyfluent/issues/5082
+    # assert "<Insertable 'add_local_sizing' task>" in [
+    #     repr(x) for x in created_workflow.import_geometry.insertable_tasks()
+    # ]
+    # created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
+    # assert "<Insertable 'add_local_sizing' task>" not in [
+    #     repr(x) for x in created_workflow.import_geometry.insertable_tasks()
+    # ]
+    # assert sorted(created_workflow.task_names()) == sorted(
+    #     ["import_geometry", "add_local_sizing"]
+    # )
 
 
 @pytest.fixture
