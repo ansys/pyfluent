@@ -139,11 +139,10 @@ def test_allowed_ips():
 
 def test_insecure_mode_warning():
     with pytest.warns(InsecureGrpcWarning, match=INSECURE_MODE_WARNING):
-        with pytest.raises(RuntimeError) as ex:
+        with pytest.raises(grpc.RpcError) as ex:
             connect_to_fluent(
                 allow_remote_host=True,
                 insecure_mode=True,
                 address=_generate_random_remote_address(),
             )
-        assert isinstance(ex.value.__context__, grpc.RpcError)
-        assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE
+        assert ex.value.code() == grpc.StatusCode.UNAVAILABLE

@@ -26,8 +26,10 @@ import logging
 import os
 from pathlib import Path
 import platform
+import shutil
 import socket
 import subprocess
+import sys
 import time
 from typing import Any, Dict
 import warnings
@@ -47,7 +49,7 @@ class ComposeConfig:
         use_docker_compose: bool | None = None,
         use_podman_compose: bool | None = None,
     ):
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         self._env_docker = config.use_docker_compose
         self._env_podman = config.use_podman_compose
@@ -149,14 +151,41 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     return kwargs
 
 
+def _get_app_data_root() -> Path:
+    if sys.platform == "win32":
+        return Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Application Support"
+    if sys.platform.startswith(("linux", "freebsd", "openbsd")):
+        return Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share"))
+    return Path.home() / ".config"
+
+
+def _update_server_info_file(server_info_file_name: str, pid: int | None = None):
+    try:
+        servers_dir = _get_app_data_root() / "pyfluent" / "servers"
+        servers_dir.mkdir(parents=True, exist_ok=True)
+        si_file = servers_dir / Path(server_info_file_name).name
+        shutil.copy2(server_info_file_name, si_file)
+        if pid is not None:
+            with open(si_file, "a", encoding="utf-8") as f:
+                f.write(f"\n{pid}")
+    except PermissionError:
+        logger.warning("Insufficient permissions to update server info file. Skipping.")
+
+
 def _await_fluent_launch(
-    server_info_file_name: str, start_timeout: int, sifile_last_mtime: float
+    server_info_file_name: str,
+    start_timeout: int,
+    sifile_last_mtime: float,
+    pid: int | None = None,
 ):
     """Wait for successful fluent launch or raise an error."""
     while True:
         if Path(server_info_file_name).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
             logger.info("Fluent has been successfully launched.")
+            _update_server_info_file(server_info_file_name, pid)
             break
         if start_timeout == 0:
             raise TimeoutError("The launch process has timed out.")

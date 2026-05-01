@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
-
 from enum import Enum
 import functools
 import itertools
@@ -36,8 +35,8 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -514,9 +513,7 @@ class DatamodelService(StreamingService):
         self.event_streaming = None
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
-        self.cache = (
-            DataModelCache() if pyfluent.config.datamodel_use_state_cache else None
-        )
+        self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
@@ -1075,14 +1072,15 @@ class PyStateContainer(PyCallableStateObject):
         cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
-            try:  # will fail for Fluent 23.1 or before
+            try:
                 self.add_on_attribute_changed(
                     attrib,
                     functools.partial(dict.__setitem__, self._cached_attrs, attrib),
                 )
                 self._cached_attrs[attrib] = cached_val
-            except Exception:
-                pass
+            except Exception as ex:
+                # will fail for Fluent 23.1 or before
+                logger.warning(ex)
         return cached_val
 
     def get_attr(self, attrib: str) -> Any:
@@ -1098,10 +1096,7 @@ class PyStateContainer(PyCallableStateObject):
         Any
             Value of the attribute.
         """
-        if (
-            pyfluent.config.datamodel_use_attr_cache
-            and self.rules != "meshing_workflow"
-        ):
+        if config.datamodel_use_attr_cache and self.rules != "meshing_workflow":
             return self._get_cached_attr(attrib)
         return self._get_remote_attr(attrib)
 

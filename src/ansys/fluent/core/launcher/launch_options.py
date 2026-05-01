@@ -270,7 +270,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     fluent_launch_mode: LaunchMode
         Fluent launch mode.
     """
-    from ansys.fluent.core import config
+    from ansys.fluent.core.module_config import config
 
     if pypim.is_configured():
         fluent_launch_mode = LaunchMode.PIM

@@ -135,6 +135,7 @@ mesh.surfaces_list = all_walls
 mesh.options.edges = True
 mesh.display()
 
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_1.png")
 
 # %%
@@ -330,6 +331,7 @@ temp_contour.field = "temperature"
 temp_contour.display()
 
 graphics.views.restore_view(view_name="front")
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_2.png")
 
 # %%
@@ -351,6 +353,7 @@ scene.graphics_objects.add(name="temperature-mushy")
 scene.display()
 
 graphics.views.restore_view(view_name="front")
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_3.png")
 
 # %%
@@ -388,6 +391,7 @@ liquid_fraction_contour = Contour(solver, new_instance_name="liquid-fraction")
 liquid_fraction_contour.field = "liquid-fraction"
 liquid_fraction_contour.display()
 
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_4.png")
 
 # %%
@@ -408,6 +412,7 @@ liquid_fraction_contour_t_5_sec = Contour(
 liquid_fraction_contour_t_5_sec.field = "liquid-fraction"
 liquid_fraction_contour_t_5_sec.display()
 
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_5.png")
 
 # %%
