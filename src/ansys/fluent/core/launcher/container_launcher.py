@@ -270,7 +270,9 @@ class DockerLauncher:
             self._args.append(" -grpc-allow-remote-host")
             self._args.append(" -grpc-certs-folder=/tmp/certs")
 
-    def __call__(self) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero":
+    def __call__(
+        self,
+    ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | dict[str, Any]":
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
                 self._args,
