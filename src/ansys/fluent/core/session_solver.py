@@ -80,6 +80,7 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 if TYPE_CHECKING:
+    from ansys.fluent.core.fluent_connection import FluentConnection
     from ansys.fluent.core.generated.datamodel_252.preferences import (
         Root as preferences_root,
     )
@@ -155,7 +156,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     def _build_from_fluent_connection(
         self,
-        fluent_connection,
+        fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         launcher_args: dict[str, Any] | None = None,
@@ -168,19 +169,19 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self._fluent_version = None
         self._bg_session_threads = []
         self._launcher_args = launcher_args
-        if fluent_connection._supports_v1:
-            self._reduction_service = self._fluent_connection.create_grpc_service(
+        if fluent_connection._server_supports_v1:
+            self._reduction_service = fluent_connection.create_grpc_service(
                 ReductionService, self._error_state
             )
             self.fields.reduction = Reduction(self._reduction_service, self)
-            self.fields.solution_variable_info = SolutionVariableInfo(
-                self._solution_variable_service
-            )
             self._solution_variable_service = SolutionVariableService(
                 fluent_connection._channel, fluent_connection._metadata
             )
+            self.fields.solution_variable_info = SolutionVariableInfo(
+                self._solution_variable_service
+            )
         else:
-            self._reduction_service = self._fluent_connection.create_grpc_service(
+            self._reduction_service = fluent_connection.create_grpc_service(
                 ReductionServiceV0, self._error_state
             )
             self.fields.reduction = ReductionV0(self._reduction_service, self)
