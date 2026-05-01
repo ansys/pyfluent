@@ -40,10 +40,13 @@ Example
 
 from __future__ import annotations
 
+import collections
 import collections.abc
 from collections.abc import Sequence
-from contextlib import contextmanager, nullcontext
+from contextlib import contextmanager, nullcontext, suppress
+from enum import Enum
 import fnmatch
+from functools import total_ordering
 import hashlib
 import inspect
 import keyword
@@ -98,6 +101,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 _static_class_attributes = [
     "_version",
+    "exposure_level",
     "_deprecated_version",
     "_python_name",
     "fluent_name",
@@ -118,6 +122,26 @@ class ReadOnlyActionError(RuntimeError):
     def __init__(self, python_path):
         """Initialize ReadOnlyActionError."""
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
+
+
+@total_ordering
+class ExposureLevel(Enum):
+    """API exposure level of a settings object."""
+
+    ALPHA = "alpha"
+    BETA = "beta"
+    STABLE = "stable"
+
+    def __lt__(self, other):
+        """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
+        if isinstance(other, ExposureLevel):
+            order = {
+                ExposureLevel.ALPHA: 0,
+                ExposureLevel.BETA: 1,
+                ExposureLevel.STABLE: 2,
+            }
+            return order[self] < order[other]
+        return NotImplemented
 
 
 class _InlineConstants:
@@ -1742,6 +1766,77 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         else:
             return getattr(super(), name)
 
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the list object.
+
+        For Quantity-like inputs containing sequence values, convert once to the
+        child target units (when available) and apply in a single bulk update.
+
+        Raises
+        ------
+        UnhandledQuantity
+            If a Quantity-like input cannot be interpreted or converted to
+            target units.
+        """
+        if kwargs or state is None:
+            return super().set_state(state=state, **kwargs)
+
+        quantity = None
+        try:
+            # Accept either a concrete Quantity or tuple shorthand
+            # (sequence, units) for list-style unit-aware updates.
+            if isinstance(state, ansys.units.Quantity):
+                quantity = state
+            elif (
+                isinstance(state, tuple)
+                and len(state) == 2
+                and isinstance(state[0], collections.abc.Sequence)
+                and not isinstance(state[0], (str, bytes, bytearray))
+            ):
+                quantity = ansys.units.Quantity(*state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        if quantity is None:
+            return super().set_state(state=state, **kwargs)
+
+        try:
+            # Materialize values once so we can determine target size before
+            # any conversion or server update.
+            values = list(quantity.value)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        # Keep list-object cardinality in sync before the final bulk set.
+        size = len(values)
+        if self.get_size() != size:
+            with self._while_resizing():
+                self.flproxy.resize_list_object(self.path, size)
+        if len(self._objects) != size:
+            self._update_objects()
+
+        target_units = None
+        if size > 0:
+            child = self[0]
+            # First support direct numerical list children.
+            if isinstance(child, RealNumerical):
+                target_units = child.units()
+            else:
+                # Then support wrapped schemas where units live under .value.
+                child_value = getattr(child, "value", None)
+                if isinstance(child_value, RealNumerical):
+                    target_units = child_value.units()
+
+        if target_units is not None:
+            try:
+                # Convert once using the resolved target units and send plain
+                # floats in a single bulk update.
+                values = [float(v) for v in quantity.to(target_units).value]
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
+
+        return super().set_state(state=values, **kwargs)
+
 
 class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
@@ -1831,7 +1926,7 @@ class BaseCommand(Action):
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -2041,10 +2136,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object lookup without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 return cobj[name]
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __setitem__(self, name, value):
@@ -2055,21 +2150,21 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object deletion without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 del cobj[name]
                 return
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __iter__(self):
         """Iterator for child named objects."""
         for cname in self.child_names:
-            try:
+            # Use suppress to ignore exceptions during child object iteration without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 for item in getattr(self, cname):
                     yield item
-            except Exception:
-                continue
 
     def __len__(self):
         """Number of child named objects."""
@@ -2277,6 +2372,18 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
+        # If root, set it explicitly to stable
+        if parent is None:
+            cls.exposure_level = ExposureLevel.STABLE
+        else:
+            exposure_level_str = info.get("api_exposure_level")
+            if exposure_level_str is None:
+                cls.exposure_level = parent.exposure_level
+            else:
+                cls.exposure_level = min(
+                    ExposureLevel(exposure_level_str), parent.exposure_level
+                )
+
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:
             cls._deprecated_version = deprecated_version
@@ -2441,14 +2548,15 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import config, utils
+    from ansys.fluent.core.module_config import config
+    from ansys.fluent.core.utils import load_module as _load_module
 
     if config.use_runtime_python_classes:
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
-            settings = utils.load_module(
+            settings = _load_module(
                 f"settings_{version}",
                 config.codegen_outdir / "solver" / f"settings_{version}.py",
             )

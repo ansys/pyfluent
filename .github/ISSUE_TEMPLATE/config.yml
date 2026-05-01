@@ -1,0 +1,9 @@
+# Controls the "New issue" chooser page.
+# Keep this true so the "Blank issue" card continues to appear,
+# matching the previous behavior inherited from the ansys org defaults.
+blank_issues_enabled: true
+
+contact_links:
+  - name: Fluent issue
+    url: https://discuss.ansys.com/
+    about: "Experiencing a problem in Fluent or its API? Please report it on the Ansys Developer Forum or through the usual support channel."
