@@ -101,9 +101,7 @@ def launch_fluent_rest(
     True
     """
     if scheme not in ("http", "https"):
-        raise ValueError(
-            f"scheme must be 'http' or 'https', got {scheme!r}"
-        )
+        raise ValueError(f"scheme must be 'http' or 'https', got {scheme!r}")
     base_url = f"{scheme}://{host}:{port}"
     return RestSolverSession(
         base_url,
