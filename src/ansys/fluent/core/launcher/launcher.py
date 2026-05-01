@@ -155,8 +155,8 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
-class LaunchFluentArgs(LauncherArgsBase, TypedDict, total=False):
-    """Arguments for launch_fluent()."""
+class LaunchFluentArgsNoContainer(LauncherArgsBase, TypedDict, total=False):
+    """Most of the arguments for launch_fluent()"""
 
     journal_file_names: None | str | list[str]
     """The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
@@ -166,16 +166,7 @@ class LaunchFluentArgs(LauncherArgsBase, TypedDict, total=False):
     """Mapping to modify environment variables in Fluent. The default
     is ``None``.
     """
-    start_container: bool | None
-    """Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-    :mod:`~ansys.fluent.core.launcher.fluent_container`.
-    """
-    container_dict: dict[str, Any] | None
-    """Dictionary for Fluent Docker container configuration. If specified,
-    setting ``start_container = True`` as well is redundant.
-    Will launch Fluent inside a Docker container using the configuration changes specified.
-    See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
-    """
+
     case_file_name: str | None
     """If provided, the case file at ``case_file_name`` is read into the Fluent session."""
     case_data_file_name: str | None
@@ -202,6 +193,21 @@ class LaunchFluentArgs(LauncherArgsBase, TypedDict, total=False):
     """Whether to use Docker Compose to launch Fluent."""
     use_podman_compose: bool
     """Whether to use Podman Compose to launch Fluent."""
+
+
+class LaunchFluentArgs(LaunchFluentArgsNoContainer, TypedDict, total=False):
+    """Arguments for launch_fluent()."""
+
+    start_container: Literal[False] | None
+    """Specifies whether to launch a Fluent Docker container image. For more details about containers, see
+    :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    """
+    container_dict: None
+    """Dictionary for Fluent Docker container configuration. If specified,
+    setting ``start_container = True`` as well is redundant.
+    Will launch Fluent inside a Docker container using the configuration changes specified.
+    See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    """
 
 
 class SlurmSchedulerOptions(
@@ -282,6 +288,16 @@ def launch_fluent(
 def launch_fluent(
     *,
     dry_run: Literal[True],
+    start_container: Literal[True],
+    container_dict: dict[str, Any],
+    **kwargs: Unpack[LaunchFluentArgsNoContainer],
+) -> dict[str, Any]: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[True],
     **kwargs: Unpack[LaunchFluentArgs],
 ) -> tuple[str, str]: ...
 
@@ -352,6 +368,7 @@ def launch_fluent(
     | SolverIcing
     | SolverAero
     | SlurmFuture
+    | dict[str, Any]
     | tuple[str, str]
 ):
     """Launch Fluent locally in server mode or connect to a running Fluent server
@@ -363,7 +380,8 @@ def launch_fluent(
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str]]
-        Session object or configuration dictionary if ``dry_run = True``.
+        Session object or configuration dictionary if ``dry_run = True`` for docker or a tuple of
+        (fluent executable path, startup arguments) if ``dry_run = True`` for standalone launch.
 
     Raises
     ------
@@ -524,10 +542,7 @@ def launch_fluent(
         case _:
             assert_never(fluent_launch_mode)
 
-    return cast(
-        Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str],
-        launcher(),
-    )
+    return launcher()
 
 
 def connect_to_fluent(
