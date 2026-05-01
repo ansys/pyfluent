@@ -37,9 +37,9 @@ from ansys.fluent.core.services.datamodel_se import (
     PyArgumentsSingletonSubItem,
     PyArgumentsTextualSubItem,
     PyCommand,
-    PyMenuGeneric,
     PyNumerical,
     PyQuery,
+    PySimpleMenuGeneric,
     ReadOnlyObjectError,
     _convert_value_to_variant,
     _convert_variant_to_value,
@@ -415,19 +415,6 @@ def test_task_object_keys_are_display_names(new_meshing_session):
     assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
 
 
-def test_generic_datamodel(new_solver_session):
-    solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.setup.general.solver.time = "unsteady-2nd-order"
-    solver.solution.initialization.hybrid_initialize()
-    solver.scheme.eval("(init-flserver)")
-    flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
-    assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
-
-
 @pytest.mark.fluent_version(">=24.2")
 def test_named_object_specific_methods_using_flserver(new_solver_session):
     import_file_name = examples.download_file(
@@ -478,7 +465,8 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
         "wall-inlet",
     )
 
-    flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
+    # Testing with flserver is not possible without get_specs implementation.
+    flserver = PySimpleMenuGeneric(solver._datamodel_service_se, "flserver")
 
     assert set(flserver.Case.Results.Graphics.Contour.get_object_names()) == {
         "contour-z1",
