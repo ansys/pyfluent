@@ -46,7 +46,6 @@ __all__ = (
     "VectorFieldDataRequest",
 )
 
-_to_field_name_str = naming_strategy().to_string
 _naming_strategy_instance = naming_strategy()
 _to_field_name_str = _naming_strategy_instance.to_string
 

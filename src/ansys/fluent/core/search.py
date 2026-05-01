@@ -172,9 +172,9 @@ def _get_api_tree_data():
     """Get API tree data."""
     api_tree_data_file_path = _get_api_tree_data_file_path()
     if api_tree_data_file_path.exists():
-        json_file = open(api_tree_data_file_path)
-        api_tree_data = json.load(json_file)
-        return api_tree_data
+        with open(api_tree_data_file_path) as json_file:
+            api_tree_data = json.load(json_file)
+            return api_tree_data
 
 
 def _print_search_results(
