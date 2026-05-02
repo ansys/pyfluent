@@ -29,7 +29,7 @@ from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+from ansys.fluent.core.services.datamodel_se import PySimpleMenuGeneric
 from ansys.fluent.core.session_solver import Solver
 
 
@@ -104,7 +104,8 @@ class SolverAero(Solver):
     @property
     def _flserver(self):
         """Root datamodel object."""
-        return PyMenuGeneric(service=self._se_service, rules="flserver")
+        # TODO: Have the generated files for this first before implementing this property
+        return PySimpleMenuGeneric(service=self._se_service, rules="flserver")
 
     @property
     def aero(self):

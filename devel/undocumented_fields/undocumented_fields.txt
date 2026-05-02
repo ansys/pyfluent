@@ -209,8 +209,6 @@
   Class: PyMenu
     - deleteAllChildObjects
     - deleteChildObjects
-  Class: PyMenuGeneric
-    - attrs
   Class: PyNamedObjectContainer
     - getChildObjectDisplayNames
     - getState

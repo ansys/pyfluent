@@ -291,12 +291,6 @@ class DatamodelServiceImpl:
                 "supported from Ansys 2023R2 onward."
             ) from None
 
-    def get_specs(
-        self, request: DataModelProtoModule.GetSpecsRequest
-    ) -> DataModelProtoModule.GetSpecsResponse:
-        """RPC GetSpecs of DataModel service."""
-        return self._stub.GetSpecs(request, metadata=self._metadata)
-
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
@@ -561,22 +555,6 @@ class DatamodelService(StreamingService):
         )
         self._impl.delete_command_arguments(request)
 
-    def get_specs(
-        self,
-        rules: str,
-        path: str,
-    ) -> dict[str, Any]:
-        """Get specifications."""
-        request = DataModelProtoModule.GetSpecsRequest(
-            rules=rules,
-            path=path,
-        )
-        return _normalize_v1_datamodel_dict_keys(
-            MessageToDict(
-                self._impl.get_specs(request).member, use_integers_for_enums=True
-            )
-        )
-
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
         request = DataModelProtoModule.GetStaticInfoRequest(rules=rules)
@@ -810,9 +788,7 @@ PyArgumentsDictionarySubItem = _v0.PyArgumentsDictionarySubItem
 PyArgumentsParameterSubItem = _v0.PyArgumentsParameterSubItem
 PyArgumentsSingletonSubItem = _v0.PyArgumentsSingletonSubItem
 arg_class_by_type = _v0.arg_class_by_type
-PyMenuGeneric = _v0.PyMenuGeneric
 PySimpleMenuGeneric = _v0.PySimpleMenuGeneric
-PyNamedObjectContainerGeneric = _v0.PyNamedObjectContainerGeneric
 
 _bool_value_if_none = _v0._bool_value_if_none
 true_if_none = _v0.true_if_none
