@@ -149,7 +149,6 @@ non-cap = [
     "executeCommand",
     "createCommandArguments",
     "deleteCommandArguments",
-    "getSpecs",
     "getStaticInfo",
     "subscribeEvents",
     "unsubscribeEvents"
