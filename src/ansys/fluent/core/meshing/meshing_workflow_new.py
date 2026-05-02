@@ -27,8 +27,10 @@ from __future__ import annotations
 
 from enum import Enum
 import os
+from typing import TYPE_CHECKING, override
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.generated.datamodel_261.meshing_workflow import Root
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow_new import Workflow
@@ -71,7 +73,9 @@ class MeshingWorkflow(Workflow):
         self._initialized = True
 
 
-class WatertightMeshingWorkflow(MeshingWorkflow):
+class WatertightMeshingWorkflow(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    MeshingWorkflow, Root if TYPE_CHECKING else object
+):
     """Provides watertight meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -103,7 +107,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         )
 
 
-class FaultTolerantMeshingWorkflow(MeshingWorkflow):
+class FaultTolerantMeshingWorkflow(MeshingWorkflow, Root if TYPE_CHECKING else object):
     """Provides fault-tolerant meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -144,6 +148,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         self._pm_file_management = pm_file_management
 
     @property
+    @override
     def parts(self) -> PyMenuGeneric | None:
         """Access part-management in fault-tolerant mode.
 
@@ -155,6 +160,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         return self._parent_workflow.parts
 
     @property
+    @override
     def parts_files(self):
         """Access the part-management file-management object in fault-tolerant mode.
 
@@ -190,7 +196,9 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         return self._pm_file_management
 
 
-class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
+class TwoDimensionalMeshingWorkflow(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    MeshingWorkflow, Root if TYPE_CHECKING else object
+):
     """Provides 2D meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -222,7 +230,9 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         )
 
 
-class TopologyBasedMeshingWorkflow(MeshingWorkflow):
+class TopologyBasedMeshingWorkflow(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    MeshingWorkflow, Root if TYPE_CHECKING else object
+):
     """Provides topology-based meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -263,7 +273,9 @@ class WorkflowMode(Enum):
     TOPOLOGY_BASED_MESHING_MODE = TopologyBasedMeshingWorkflow
 
 
-class LoadWorkflow(Workflow):
+class LoadWorkflow(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    Workflow, Root if TYPE_CHECKING else object
+):
     """Provides a specialization of the workflow wrapper for a loaded workflow."""
 
     def __init__(
@@ -297,7 +309,9 @@ class LoadWorkflow(Workflow):
             self._load_workflow(file_path=os.fspath(file_path))
 
 
-class CreateWorkflow(Workflow):
+class CreateWorkflow(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    Workflow, Root if TYPE_CHECKING else object
+):
     """Provides a specialization of the workflow wrapper for a newly created
     workflow."""
 
