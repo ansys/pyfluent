@@ -57,7 +57,19 @@ class SolutionVariableService(_v0.SolutionVariableService):
 
     def _create_stub(self, intercept_channel):
         """Create the v1 gRPC stub."""
-        return SvarGrpcModule.SvarStub(intercept_channel)
+        return SvarGrpcModule.SolutionVariableStub(intercept_channel)
+
+    def get_data(self, request):
+        """GetSolutionVariableData RPC of SolutionVariable service (v1)."""
+        return self._stub.GetSolutionVariableData(request, metadata=self._metadata)
+
+    def set_data(self, request):
+        """SetSolutionVariableData RPC of SolutionVariable service (v1)."""
+        return self._stub.SetSolutionVariableData(request, metadata=self._metadata)
+
+    def get_variables_info(self, request):
+        """GetSolutionVariableInfo RPC of SolutionVariable service (v1)."""
+        return self._stub.GetSolutionVariableInfo(request, metadata=self._metadata)
 
 
 class SolutionVariableInfo(_v0.SolutionVariableInfo):
@@ -134,7 +146,7 @@ class SolutionVariableInfo(_v0.SolutionVariableInfo):
         allowed_domain_names = _AllowedDomainNames(self)
         solution_variables_info = None
         for zone_name in zone_names:
-            request = SvarProtoModule.GetSvarsInfoRequest(
+            request = SvarProtoModule.GetSolutionVariableInfoRequest(
                 domain_id=allowed_domain_names.valid_name(domain_name),
                 zone_id=allowed_zone_names.valid_name(zone_name),
             )
@@ -223,7 +235,7 @@ class SolutionVariableData(_v0.SolutionVariableData):
     ) -> _v0.SolutionVariableData.Data:
         """Get SVAR data on zones."""
         self._update_solution_variable_info()
-        svars_request = SvarProtoModule.GetSvarDataRequest(
+        svars_request = SvarProtoModule.GetSolutionVariableDataRequest(
             provide_bytes_stream=_FieldDataConstants.bytes_stream,
             chunk_size=_FieldDataConstants.chunk_size,
         )
@@ -273,8 +285,8 @@ class SolutionVariableData(_v0.SolutionVariableData):
             set_data_requests = []
 
             set_data_requests.append(
-                SvarProtoModule.SetSvarDataRequest(
-                    header=SvarProtoModule.SvarHeader(
+                SvarProtoModule.SetSolutionVariableDataRequest(
+                    header=SvarProtoModule.SolutionVariableHeader(
                         name=variable_name, domain_id=domain_id
                     )
                 )
@@ -290,7 +302,7 @@ class SolutionVariableData(_v0.SolutionVariableData):
                     math.ceil(solution_variable_data.size / max_array_size),
                 )
                 set_data_requests.append(
-                    SvarProtoModule.SetSvarDataRequest(
+                    SvarProtoModule.SetSolutionVariableDataRequest(
                         payload_info=SvarProtoModule.Info(
                             field_type=_FieldDataConstants.np_data_type_to_proto_field_type[
                                 solution_variable_data.dtype.type
@@ -301,7 +313,7 @@ class SolutionVariableData(_v0.SolutionVariableData):
                     )
                 )
                 set_data_requests += [
-                    SvarProtoModule.SetSvarDataRequest(
+                    SvarProtoModule.SetSolutionVariableDataRequest(
                         payload=(
                             SvarProtoModule.Payload(
                                 float_payload=FieldDataProtoModule.FloatPayload(

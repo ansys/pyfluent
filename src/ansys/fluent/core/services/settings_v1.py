@@ -39,7 +39,7 @@ class _SettingsServiceImpl(_SettingsServiceImplV0):
 
     def _create_stub(self, intercept_channel):
         """Create the v1 gRPC stub."""
-        return SettingsGrpcModule.SettingsServiceStub(intercept_channel)
+        return SettingsGrpcModule.SettingsStub(intercept_channel)
 
 
 class SettingsService(_SettingsServiceV0):
