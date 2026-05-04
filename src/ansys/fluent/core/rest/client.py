@@ -252,8 +252,12 @@ class FluentRestClient:
                     wait = self._retry_delay * (2**attempt)
                     logger.warning(
                         "HTTP %d on %s %s — retry %d/%d in %.1fs",
-                        exc.code, method, url, attempt + 1,
-                        self._max_retries, wait,
+                        exc.code,
+                        method,
+                        url,
+                        attempt + 1,
+                        self._max_retries,
+                        wait,
                     )
                     time.sleep(wait)
                     last_exc = FluentRestError(exc.code, detail)
@@ -264,8 +268,12 @@ class FluentRestClient:
                     wait = self._retry_delay * (2**attempt)
                     logger.warning(
                         "Connection error on %s %s: %s — retry %d/%d in %.1fs",
-                        method, url, exc.reason, attempt + 1,
-                        self._max_retries, wait,
+                        method,
+                        url,
+                        exc.reason,
+                        attempt + 1,
+                        self._max_retries,
+                        wait,
                     )
                     time.sleep(wait)
                     last_exc = exc
@@ -349,12 +357,11 @@ class FluentRestClient:
     #         f"{self._api_base}/get_attrs",
     #         body={"path": path, "attrs": attrs, "recursive": recursive, "children": {}, "filters":[]},
     #     )
-        # params = {"attrs": ",".join(attrs)}
-        # if recursive:
-        #     params["recursive"] = "true"
-        # query = urllib.parse.urlencode(params)
-        # return self._request("GET", f"{self._api_base}/{path}?{query}")
-    
+    # params = {"attrs": ",".join(attrs)}
+    # if recursive:
+    #     params["recursive"] = "true"
+    # query = urllib.parse.urlencode(params)
+    # return self._request("GET", f"{self._api_base}/{path}?{query}")
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
 
@@ -408,7 +415,10 @@ class FluentRestClient:
         list[str]
             Sorted or insertion-order list of child names.  Returns ``[]``
             if the path does not exist (HTTP 404).
-        """
+        Raises
+        ------
+        FluentRestError
+            If the server returns an unexpected error."""
         try:
             result = self._request("GET", f"{self._api_base}/{path}")
         except FluentRestError as exc:
@@ -571,6 +581,11 @@ class FluentRestClient:
         int
             Number of child objects.  Returns ``0`` if the path does not
             exist (HTTP 404).
+
+        Raises
+        ------
+        FluentRestError
+            If the server returns an unexpected error.
         """
         try:
             result = self._request("GET", f"{self._api_base}/{path}")

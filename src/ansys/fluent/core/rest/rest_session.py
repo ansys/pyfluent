@@ -38,7 +38,7 @@ Usage
 
     from ansys.fluent.core.rest.rest_session import RestSolverSession
 
-    session = RestSolverSession("http://localhost:8000", version="261")
+    session = RestSolverSession("http://10.18.44.175:5000", version="261")
     print(session.settings.setup.models.energy.enabled())
 """
 
