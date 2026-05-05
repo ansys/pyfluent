@@ -110,23 +110,23 @@ the ``get_data`` method and passing the particular ``variable_name``.
 
 .. code-block:: python
   
-    >>> sv_p_wall_fluid = solution_variable_data.get_data(variable_name=VariableCatalog.PRESSURE, zone_names=["elbow-fluid", "wall-elbow"], domain_name="mixture")
+    >>> net_fluid_pressure = solution_variable_data.get_data(variable_name=VariableCatalog.PRESSURE, zone_names=["elbow-fluid", "wall-elbow"], domain_name="mixture")
     >>>
-    >>> sv_p_wall_fluid.domain
+    >>> net_fluid_pressure.domain
     'mixture'
     >>>
-    >>> sv_p_wall_fluid.zone_names
+    >>> net_fluid_pressure.zone_names
     ['wall-elbow', 'elbow-fluid']
     >>>
-    >>> fluid_press = sv_p_wall_fluid["elbow-fluid"]
+    >>> fluid_pressure = net_fluid_pressure["elbow-fluid"]
     >>>
-    >>> fluid_press.size
+    >>> fluid_pressure.size
     17822
     >>>
-    >>> fluid_press.dtype
+    >>> fluid_pressure.dtype
     'float64'
     >>>
-    >>> fluid_press
+    >>> fluid_pressure
     array([0.01635187, 0.35772967, 0.40971006, ..., 0.40919935, 0.39503292, 0.41322547], shape=(17822,))
   
 Set solution variable data
@@ -141,9 +141,9 @@ generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and
 
 .. code-block:: python
   
-    >>> wall_press_array = solution_variable_data.create_empty_array(VariableCatalog.PRESSURE, "wall-elbow", "mixture")
-    >>> fluid_press_array = solution_variable_data.create_empty_array(VariableCatalog.PRESSURE, "elbow-fluid", "mixture")
-    >>> wall_press_array[:] = 500
-    >>> fluid_press_array[:] = 600
-    >>> zone_names_to_solution_variable_data = {"wall-elbow": wall_press_array, "elbow-fluid": fluid_press_array}
+    >>> wall_pressure_array = solution_variable_data.create_empty_array(VariableCatalog.PRESSURE, "wall-elbow", "mixture")
+    >>> fluid_pressure_array = solution_variable_data.create_empty_array(VariableCatalog.PRESSURE, "elbow-fluid", "mixture")
+    >>> wall_pressure_array[:] = 500
+    >>> fluid_pressure_array[:] = 600
+    >>> zone_names_to_solution_variable_data = {"wall-elbow": wall_pressure_array, "elbow-fluid": fluid_pressure_array}
     >>> solution_variable_data.set_data(variable_name=VariableCatalog.PRESSURE, zone_names_to_data=zone_names_to_solution_variable_data, domain_name="mixture")
