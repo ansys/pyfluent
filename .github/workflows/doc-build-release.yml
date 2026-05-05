@@ -111,7 +111,7 @@ jobs:
       pull-requests: write # Required when deployment action creates or updates pull requests.
     steps:
       - name: "Deploy release documentation"
-        uses: ansys/actions/doc-deploy-stable@v10.2.12
+        uses: ansys/actions/doc-deploy-stable@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           doc-artifact-name: "HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}"
           decompress-artifact: true

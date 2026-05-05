@@ -131,7 +131,7 @@ jobs:
       pull-requests: write # Required when the changelog action updates pull request metadata.
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/doc-changelog@v10.2.12
+      - uses: ansys/actions/doc-changelog@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
