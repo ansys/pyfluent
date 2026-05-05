@@ -38,12 +38,13 @@ Usage
 
     from ansys.fluent.core.rest.rest_session import RestSolverSession
 
-    session = RestSolverSession("http://10.18.44.175:5000", version="261")
+    session = RestSolverSession("http://127.0.0.1:54321", version="261")
     print(session.settings.setup.models.energy.enabled())
 """
 
 from __future__ import annotations
 
+import subprocess
 from typing import TYPE_CHECKING
 
 from ansys.fluent.core.rest.client import FluentRestClient
@@ -65,15 +66,21 @@ class RestSolverSession:
     Parameters
     ----------
     base_url : str
-        Root URL of the Fluent REST server, e.g. ``"http://localhost:8000"``.
+        Root URL of the Fluent REST server, e.g. ``"http://127.0.0.1:54321"``.
     auth_token : str, optional
         Bearer token for authentication.
+    component : str, optional
+        DataModel component name.  Defaults to ``"fluent_1"``.
     version : str, optional
         Fluent version string (e.g. ``"261"``).  Passed through to
         ``get_root`` so the correct code-generated settings module is loaded
         when available.
     timeout : float, optional
         HTTP socket timeout in seconds.  Defaults to ``30.0``.
+    max_retries : int, optional
+        Maximum automatic retries on transient errors.  Defaults to ``0``.
+    retry_delay : float, optional
+        Base delay in seconds between retries.  Defaults to ``1.0``.
 
     Attributes
     ----------
@@ -81,12 +88,21 @@ class RestSolverSession:
         Root of the solver settings tree.
     client : FluentRestClient
         The underlying REST transport proxy.
+    ip : str
+        IP address of the connected server.  Set by :func:`launch_webserver`
+        or :func:`connect_to_webserver`; otherwise ``None``.
+    port : int | None
+        Port of the connected server.  Set by :func:`launch_webserver`
+        or :func:`connect_to_webserver`; otherwise ``None``.
+    auth_token : str | None
+        Auth token used for the connection.  Set by :func:`launch_webserver`
+        or :func:`connect_to_webserver`; otherwise ``None``.
 
     Examples
     --------
     >>> from ansys.fluent.core.rest.rest_session import RestSolverSession
     >>> session = RestSolverSession(
-    ...     "http://10.18.44.175:5000",
+    ...     "http://127.0.0.1:54321",
     ...     auth_token="<token>",
     ... )
     >>> session.settings.setup.models.energy.enabled()
@@ -118,6 +134,14 @@ class RestSolverSession:
         # this works out-of-the-box.
         self._settings = get_root(self._client, version=version)
 
+        # Connection metadata — set by launch_webserver / connect_to_webserver
+        self.ip: str | None = None
+        self.port: int | None = None
+        self.auth_token: str | None = auth_token
+
+        # Subprocess handle — set by launch_webserver when it starts Fluent
+        self._process: subprocess.Popen | None = None
+
     # -- Public properties -----------------------------------------------
 
     @property
@@ -136,3 +160,27 @@ class RestSolverSession:
             settings hierarchy.
         """
         return self._settings
+
+    # -- Lifecycle -------------------------------------------------------
+
+    def exit(self) -> None:
+        """Terminate the attached Fluent process (if any) and clean up.
+
+        If no subprocess is attached (e.g. when the session was created via
+        :func:`connect_to_webserver`), this method is a no-op.
+        """
+        proc = self._process
+        if proc is None:
+            return
+        proc.terminate()
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+        self._process = None
+
+    def __enter__(self) -> "RestSolverSession":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        self.exit()

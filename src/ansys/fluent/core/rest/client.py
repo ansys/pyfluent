@@ -112,7 +112,7 @@ class FluentRestClient:
     Parameters
     ----------
     base_url : str
-        Root URL of the Fluent REST server, e.g. ``"http://10.18.44.175:5000"``.
+        Root URL of the Fluent REST server, e.g. ``"http://127.0.0.1:<port>"``.
         A trailing slash is stripped automatically.
     auth_token : str, optional
         Bearer token (the password set when Fluent was started).  Added to
@@ -134,7 +134,7 @@ class FluentRestClient:
     --------
     >>> from ansys.fluent.core.rest import FluentRestClient
     >>> client = FluentRestClient(
-    ...     "http://10.18.44.175:5000",
+    ...     "http://127.0.0.1:<port>",
     ...     auth_token="<token>",
     ...     component="fluent_1",
     ... )
