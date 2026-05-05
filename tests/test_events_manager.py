@@ -124,7 +124,6 @@ def test_receive_meshing_events_on_case_loaded(new_meshing_session) -> None:
     # assert on_case_loaded.loaded
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_iteration_ended_sync_event(static_mixer_case_session):
     solver = static_mixer_case_session
     solver.settings.solution.initialization.hybrid_initialize()
@@ -143,7 +142,6 @@ def test_iteration_ended_sync_event(static_mixer_case_session):
     assert count == 10
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_multiple_register_callback_event(static_mixer_case_session, caplog):
     solver = static_mixer_case_session
     solver.settings.solution.initialization.hybrid_initialize()
@@ -206,7 +204,6 @@ def test_iteration_ended_sync_event_multiple_connections():
     assert solver2_count == 3
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_timestep_ended_sync_event(static_mixer_case_session):
     solver = static_mixer_case_session
     solver.settings.setup.general.solver.time = "unsteady-2nd-order"
@@ -230,7 +227,6 @@ def test_timestep_ended_sync_event(static_mixer_case_session):
     assert count == 10
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_sync_event_exception_in_callback(static_mixer_case_session, caplog):
     solver = static_mixer_case_session
     solver.settings.solution.initialization.hybrid_initialize()

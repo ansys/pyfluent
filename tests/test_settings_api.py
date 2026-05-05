@@ -45,7 +45,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.1")
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -63,7 +62,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 
 
 # Failing for 24.1 but passes for 24.2 and 25.1
-@pytest.mark.fluent_version(">=24.2")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -172,7 +170,6 @@ def test_wildcard(new_solver_session):
         boundary_conditions.velocity_inlet["inl*"].moment
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -201,7 +198,6 @@ def test_wildcard_fnmatch(new_solver_session):
     assert sorted(mesh["mesh-[!2-5]"]()) == sorted(["mesh-1", "mesh-a"])
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -231,7 +227,6 @@ def test_wildcard_path_is_iterable(new_solver_session):
     assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
@@ -440,7 +435,6 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
     }
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -461,7 +455,6 @@ def warning_record():
         yield wrec
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
     icing_cls = solver.setup.boundary_conditions._child_classes[
@@ -795,7 +788,6 @@ def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(config, "use_runtime_python_classes", True)
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_runtime_python_classes(
     use_runtime_python_classes, mixing_elbow_settings_session
 ):
@@ -837,7 +829,6 @@ def test_setting_string_constants(mixing_elbow_settings_session):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_named_object_commands(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     inlets = VelocityInlets(solver)

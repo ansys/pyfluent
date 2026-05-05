@@ -255,7 +255,6 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_parameters_list_function(static_mixer_settings_session):
     solver = static_mixer_settings_session
     solver.tui.define.parameters.enable_in_TUI("yes")
