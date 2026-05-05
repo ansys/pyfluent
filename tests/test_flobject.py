@@ -821,27 +821,6 @@ def test_accessor_methods_on_settings_object_types(static_mixer_settings_session
     assert max_refinements.get_attr("max") == 1000000
 
 
-@pytest.mark.fluent_version("==24.1")
-def test_find_children_from_settings_root(static_mixer_settings_session):
-    setup_cls = static_mixer_settings_session.setup.__class__
-    assert len(find_children(setup_cls())) >= 10000
-    assert len(find_children(setup_cls(), "gen*")) >= 9
-    assert set(find_children(setup_cls(), "general*")) >= {
-        "general",
-        "models/discrete_phase/general_settings",
-        "models/virtual_blade_model/rotor/general",
-    }
-    assert set(find_children(setup_cls(), "general")) >= {
-        "general",
-        "models/virtual_blade_model/rotor/general",
-    }
-    assert any(
-        path
-        for path in find_children(setup_cls(), "*gen")
-        if path.endswith("p_backflow_spec_gen")
-    )
-
-
 @pytest.mark.fluent_version("latest")
 def test_find_children_from_fluent_solver_session(static_mixer_settings_session):
     setup_children = find_children(static_mixer_settings_session.setup)
