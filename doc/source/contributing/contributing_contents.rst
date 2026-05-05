@@ -93,7 +93,7 @@ submit questions, report bugs, and request new features.
 .. note::
 
    The PyFluent GitHub repository is intended for issues with the **PyFluent
-   client library** itself. Experiencing a problem in Fluent or its API? Please
+   library** itself. Experiencing a problem in Fluent or its API? Please
    report it on the `Ansys Developer Forum <https://discuss.ansys.com>`_ or
    through `Ansys Support <https://support.ansys.com>`_.
 
