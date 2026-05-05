@@ -520,8 +520,16 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
         "results.surfaces.rake_surface",
         "RakeSurfaces",
     ),
-    "PlaneSurfaces": ("Singleton", "results.surfaces.plane_surface", None),
-    "PlaneSurface": ("NamedObject", "results.surfaces.plane_surface", None),
+    "PlaneSurfaces": (
+        "Singleton",
+        "results.surfaces.plane_surface",
+        "PlaneSurface",
+    ),
+    "PlaneSurface": (
+        "NamedObject",
+        "results.surfaces.plane_surface",
+        "PlaneSurfaces",
+    ),
     "IsoSurfaces": (
         "Singleton",
         "results.surfaces.iso_surface",
@@ -655,8 +663,8 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
     "Mesh": ("NamedObject", "results.graphics.mesh", "Meshes"),
     "Contours": ("Singleton", "results.graphics.contour", "Contour"),
     "Contour": ("NamedObject", "results.graphics.contour", "Contours"),
-    "Vectors": ("Singleton", "results.graphics.vector", None),
-    "Vector": ("NamedObject", "results.graphics.vector", None),
+    "Vectors": ("Singleton", "results.graphics.vector", "Vector"),
+    "Vector": ("NamedObject", "results.graphics.vector", "Vectors"),
     "Pathlines": (
         "Singleton",
         "results.graphics.pathline",
@@ -677,8 +685,8 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
         "results.graphics.particle_track",
         "ParticleTracks",
     ),
-    "LICs": ("Singleton", "results.graphics.lic", None),
-    "LIC": ("NamedObject", "results.graphics.lic", None),
+    "LICs": ("Singleton", "results.graphics.lic", "LIC"),
+    "LIC": ("NamedObject", "results.graphics.lic", "LICs"),
     "Plots": (
         "Singleton",
         "results.plot",
@@ -747,6 +755,11 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
     "Fluxes": (
         "Singleton",
         "results.report.fluxes",
+        "Flux",
+    ),
+    "Flux": (
+        "NamedObject",
+        "results.report.fluxes",
         None,
     ),
     "SurfaceIntegrals": (
@@ -798,10 +811,10 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
         "results.report.simulation_reports",
         None,
     ),
-    "ParametricStudies": ("Singleton", "parametric_studies", None),
-    "ParametricStudy": ("NamedObject", "parametric_studies", None),
-    "DesignPoints": ("Singleton", "parametric_studies.design_points", None),
-    "DesignPoint": ("NamedObject", "parametric_studies.design_points", None),
+    "ParametricStudies": ("Singleton", "parametric_studies", "ParametricStudy"),
+    "ParametricStudy": ("NamedObject", "parametric_studies", "ParametricStudies"),
+    "DesignPoints": ("Singleton", "parametric_studies.design_points", "DesignPoint"),
+    "DesignPoint": ("NamedObject", "parametric_studies.design_points", "DesignPoints"),
     "ReadCase": ("Command", "file.read_case", None),
     "read_case": ("Command", "file.read_case", None),
     "ReadData": ("Command", "file.read_data", None),
