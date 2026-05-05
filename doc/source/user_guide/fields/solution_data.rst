@@ -90,7 +90,7 @@ by calling the ``get_variables_info`` method.
   'SV_CENTROID'
   >>>
   >>> solution_variable_info_centroid.dimension 
-  >>> 3
+  3
   >>>
   >>> solution_variable_info_centroid.field_type 
   <class 'numpy.float64'> 
@@ -110,7 +110,7 @@ the ``get_data`` method and passing the particular ``variable_name``.
 
 .. code-block:: python
   
-    >>> sv_p_wall_fluid = solution_variable_data.get_data(variable_name="SV_P", zone_names=["elbow-fluid", "wall-elbow"], domain_name="mixture")
+    >>> sv_p_wall_fluid = solution_variable_data.get_data(variable_name=VariableCatalog.PRESSURE, zone_names=["elbow-fluid", "wall-elbow"], domain_name="mixture")
     >>>
     >>> sv_p_wall_fluid.domain
     'mixture'
@@ -127,8 +127,7 @@ the ``get_data`` method and passing the particular ``variable_name``.
     'float64'
     >>>
     >>> fluid_press
-    array([0.01635187, 0.35772967, 0.40971006, ..., 0.40919935, 0.39503292,
-       0.41322547], shape=(17822,))
+    array([0.01635187, 0.35772967, 0.40971006, ..., 0.40919935, 0.39503292, 0.41322547], shape=(17822,))
   
 Set solution variable data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
