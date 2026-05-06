@@ -909,14 +909,13 @@ def test_read_only_command_execution(mixing_elbow_case_session):
 
 def test_copy_accepts_sequence_types(mixing_elbow_settings_session: Solver):
     solver = mixing_elbow_settings_session
-    bc = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-    bc.momentum.velocity = 1.0
+    hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    hot_inlet.momentum.velocity = 1.0
+    cold_inlet.momentum.velocity = 2.0
+
+    assert cold_inlet.momentum.velocity.value() == 2.0
 
     seq = UserList(["cold-inlet"])
     solver.settings.setup.boundary_conditions.copy(from_="hot-inlet", to=seq)
-    assert (
-        solver.settings.setup.boundary_conditions.velocity_inlet[
-            "cold-inlet"
-        ].momentum.velocity.value()
-        == 1.0
-    )
+    assert cold_inlet.momentum.velocity.value() == 1.0
