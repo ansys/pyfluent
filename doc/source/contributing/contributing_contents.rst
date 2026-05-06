@@ -92,7 +92,7 @@ submit questions, report bugs, and feature requests directly pertaining to PyFlu
 
 .. note::
 
-   For problems with Fluent or its API, please use the 
+   For problems with Fluent or its API, please use the
    `Ansys Developer Forum <https://discuss.ansys.com>`_ or
    `Ansys Support <https://support.ansys.com>`_.
 
