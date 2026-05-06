@@ -91,7 +91,7 @@ Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
 submit questions, bug reports, and feature requests directly pertaining to PyFluent.
 
 .. note::
-    
+
     For questions and issues concerning Fluent or its API, please use the
    `Ansys Developer Forum <https://discuss.ansys.com>`_ or
    `Ansys Support <https://support.ansys.com>`_.
