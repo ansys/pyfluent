@@ -59,6 +59,14 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
 )
+from ansys.fluent.core.meshing.meshing_workflow_new import (  # noqa: F401
+    CreateWorkflow,
+    FaultTolerantMeshing,
+    LoadWorkflow,
+    TopologyBasedMeshing,
+    TwoDimensionalMeshing,
+    WatertightMeshing,
+)
 from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
 from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
     PyFluentDeprecationWarning,

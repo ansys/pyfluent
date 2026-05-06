@@ -2064,3 +2064,84 @@ def test_rename(new_meshing_session):
     with pytest.raises(LookupError):
         watertight.import_geometry["Import Geometry"]
     assert watertight.import_geometry["IG"]
+
+
+# ---------------------------------------------------------------------------
+# Direct-construction tests  (issue #5112)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_direct_construction_watertight(new_meshing_session):
+    """WatertightMeshing(session=meshing) should work identically to
+    meshing.watertight()."""
+    from ansys.fluent.core import WatertightMeshing
+    from ansys.fluent.core.meshing.meshing_workflow_new import (
+        WatertightMeshingWorkflow,
+    )
+
+    meshing = new_meshing_session
+    watertight = WatertightMeshing(session=meshing)
+
+    # Correct type
+    assert isinstance(watertight, WatertightMeshingWorkflow)
+    # Session's current_workflow is kept in sync
+    assert meshing.current_workflow is watertight
+    # Workflow is usable – the first task exists
+    assert watertight.import_geometry
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_direct_construction_fault_tolerant(new_meshing_session):
+    """FaultTolerantMeshing(session=meshing) should set up part management."""
+    from ansys.fluent.core import FaultTolerantMeshing
+    from ansys.fluent.core.meshing.meshing_workflow_new import (
+        FaultTolerantMeshingWorkflow,
+    )
+
+    meshing = new_meshing_session
+    fault_tolerant = FaultTolerantMeshing(session=meshing)
+
+    assert isinstance(fault_tolerant, FaultTolerantMeshingWorkflow)
+    assert meshing.current_workflow is fault_tolerant
+    assert fault_tolerant.import_cad_and_part_management
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_direct_construction_2d_meshing(new_meshing_session):
+    """TwoDimensionalMeshing(session=meshing) should produce a 2D workflow."""
+    from ansys.fluent.core import TwoDimensionalMeshing
+    from ansys.fluent.core.meshing.meshing_workflow_new import (
+        TwoDimensionalMeshingWorkflow,
+    )
+
+    meshing = new_meshing_session
+    two_d = TwoDimensionalMeshing(session=meshing)
+
+    assert isinstance(two_d, TwoDimensionalMeshingWorkflow)
+    assert meshing.current_workflow is two_d
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_direct_construction_create_workflow(new_meshing_session):
+    """CreateWorkflow(session=meshing) should create a blank workflow."""
+    from ansys.fluent.core import CreateWorkflow
+
+    meshing = new_meshing_session
+    blank = CreateWorkflow(session=meshing)
+
+    assert meshing.current_workflow is blank
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_direct_construction_invalid_session():
+    """Passing a non-session object should raise TypeError."""
+    from ansys.fluent.core import WatertightMeshing
+
+    with pytest.raises(TypeError):
+        WatertightMeshing(session="not_a_session")
