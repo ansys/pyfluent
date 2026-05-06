@@ -166,7 +166,10 @@ hierarchy = {
     "solver": [
         "error_message",
         "flobject",
-        "datamodel/datamodel_contents",
+        "datamodel/flicing/flicing_contents",
+        "datamodel/preferences/preferences_contents",
+        "datamodel/solver_workflow/solver_workflow_contents",
+        "datamodel/workflow/workflow_contents",
         "settings_root",
         "tui/tui_contents",
     ],
@@ -248,12 +251,50 @@ Methods
 Child classes
 ^^^^^^^^^^^^^
 
-- application(service, rules, path): application group.
-- general(service, rules, path): general group.
-- parts(service, rules, path): parts group.
-- parts_files(service, rules, path): parts_files group.
-- task_object(service, rules, path): task_object group.
+- :doc:`application <datamodel/meshing_workflow/application/application_contents>`: application group.
+- :doc:`general <datamodel/meshing_workflow/general/general_contents>`: general group.
+- :doc:`parts <datamodel/meshing_workflow/parts/parts_contents>`: parts group.
+- :doc:`parts_files <datamodel/meshing_workflow/parts_files/parts_files_contents>`: parts_files group.
+- :doc:`task_object <datamodel/meshing_workflow/task_object/task_object_contents>`: task_object group.
 
+"""
+
+meshing_legacy_bridge_content = """Legacy meshing API
+~~~~~~~~~~~~~~~~~
+
+The legacy meshing interface provides backward-compatible access to earlier meshing workflows and utilities.
+
+Main components
+^^^^^^^^^^^^^^^
+
+- :doc:`meshing <datamodel/meshing/meshing_contents>`: Core meshing datamodel.
+- :doc:`part_management <datamodel/part_management/part_management_contents>`: Part management tools.
+- :doc:`pm_file_management <datamodel/pm_file_management/pm_file_management_contents>`: Part management file operations.
+- :doc:`workflow <datamodel/workflow/workflow_contents>`: Legacy workflow definitions.
+- :doc:`tui <tui/tui_contents>`: Text user interface commands.
+"""
+
+
+solver_bridge_content = """Solver API
+~~~~~~~~~~
+
+The solver interface provides settings, TUI access, and solver datamodel workflows.
+
+Main components
+^^^^^^^^^^^^^^^
+
+- :doc:`error_message <error_message>`: Solver error message helpers.
+- :doc:`flobject <flobject>`: Fluent object wrappers for solver APIs.
+- :doc:`settings <settings_root>`: Top-level solver settings object.
+- :doc:`tui <tui/tui_contents>`: Solver text user interface commands.
+
+Solver datamodel components
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- :doc:`flicing <datamodel/flicing/flicing_contents>`: Flicing datamodel APIs.
+- :doc:`preferences <datamodel/preferences/preferences_contents>`: Solver preferences datamodel APIs.
+- :doc:`solver_workflow <datamodel/solver_workflow/solver_workflow_contents>`: Solver workflow datamodel APIs.
+- :doc:`workflow <datamodel/workflow/workflow_contents>`: Solver workflow definitions and operations.
 """
 
 
@@ -279,8 +320,8 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 rst.write(f".. _ref_{file}:\n\n")
                 if folder:
                     if "root" in file:
-                        rst.write("solver.settings\n")
-                        rst.write(f'{"="*(len("solver.settings"))}\n\n')
+                        rst.write("settings\n")
+                        rst.write(f'{"="*(len("settings"))}\n\n')
                         rst.write(
                             "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
                         )
@@ -333,6 +374,10 @@ def _generate_api_index_rst_files():
                 for file in files:
                     index.write(f"    {file}\n")
                 index.write("\n")
+                if folder == "meshing_legacy":
+                    index.write(meshing_legacy_bridge_content)
+                if folder == "solver":
+                    index.write(solver_bridge_content)
             _generate_api_source_rst_files(folder, files)
 
 
