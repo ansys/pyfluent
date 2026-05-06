@@ -44,8 +44,8 @@ extensions = [
 
 toggleprompt_offset_right = 35
 
-if os.getenv("PYFLUENT_DOC_SKIP_EXAMPLES") != "1":
-    extensions.append("sphinx_gallery.gen_gallery")
+# if os.getenv("PYFLUENT_DOC_SKIP_EXAMPLES") != "1":
+#     extensions.append("sphinx_gallery.gen_gallery")
 
 typehints_document_rtype = False
 

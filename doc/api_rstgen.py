@@ -46,6 +46,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     filereader/filereader_contents
     launcher/launcher_contents
     meshing/meshing_contents
+    meshing_legacy/meshing_legacy_contents
     scheduler/scheduler_contents
     services/services_contents
     solver/solver_contents
@@ -137,7 +138,7 @@ hierarchy = {
         "datamodel/meshing_utilities/meshing_utilities_contents",
         "datamodel/preferences/preferences_contents",
     ],
-    "meshing (legacy)": [
+    "meshing_legacy": [
         "datamodel/meshing/meshing_contents",
         "datamodel/part_management/part_management_contents",
         "datamodel/pm_file_management/pm_file_management_contents",
