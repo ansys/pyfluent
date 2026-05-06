@@ -32,12 +32,15 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 class DatamodelEvents(_BaseDatamodelEvents):
     """Encapsulates a datamodel events streaming service."""
 
-    _streaming_rpc_path = (
-        "/ansys.api.fluent.v1.datamodel_se.DataModelService/BeginEventStreaming"
-    )
+    _streaming_rpc_path = "/ansys.api.fluent.v1.datamodel_se.DataModel/StreamEvents"
+
+    def __init__(self, service):
+        """Initialize DatamodelEvents."""
+        super().__init__(service)
+        self._stream_begin_method = "StreamEvents"
 
     def _make_request(self, *args, **kwargs):
-        return DataModelProtoModule.BeginEventStreamingRequest(*args, **kwargs)
+        return DataModelProtoModule.StreamEventsRequest()
 
     def _has_created_event_response(self, response) -> bool:
         return response.HasField("created_event_response")
