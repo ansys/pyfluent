@@ -134,7 +134,14 @@ hierarchy = {
     ],
     "meshing": [
         "meshing_workflow_new",
-        "datamodel/datamodel_contents",
+        "datamodel/meshing_utilities/meshing_utilities_contents",
+        "datamodel/preferences/preferences_contents",
+    ],
+    "meshing (legacy)": [
+        "datamodel/meshing/meshing_contents",
+        "datamodel/part_management/part_management_contents",
+        "datamodel/pm_file_management/pm_file_management_contents",
+        "datamodel/workflow/workflow_contents",
         "tui/tui_contents",
     ],
     "scheduler": ["load_machines", "machine_list"],
@@ -209,6 +216,12 @@ hierarchy = {
 }
 
 
+# Maps a file name to additional toctree entries to append to its generated RST page.
+sub_toctrees = {
+    "meshing_workflow_new": ["datamodel/meshing_workflow/meshing_workflow_contents"],
+}
+
+
 def _write_common_rst_members(rst_file):
     rst_file.write("    :members:\n")
     rst_file.write("    :show-inheritance:\n")
@@ -253,6 +266,13 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
                 if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
+                if file in sub_toctrees:
+                    rst.write(".. toctree::\n")
+                    rst.write("    :maxdepth: 2\n")
+                    rst.write("    :hidden:\n\n")
+                    for sub_file in sub_toctrees[file]:
+                        rst.write(f"    {sub_file}\n")
+                    rst.write("\n")
 
 
 def _generate_api_index_rst_files():

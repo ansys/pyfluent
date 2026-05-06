@@ -294,6 +294,6 @@ if __name__ == "__main__":
     settings = importlib.import_module(
         f"ansys.fluent.core.generated.solver.settings_{version}"
     )
-    _populate_parents_list(settings.root)
-    _populate_rst_from_settings(rst_dir, settings.root, version)
-    _write_deprecated_rst_table(rst_dir, deprecated_class_version)
+    # _populate_parents_list(settings.root)
+    # _populate_rst_from_settings(rst_dir, settings.root, version)
+    # _write_deprecated_rst_table(rst_dir, deprecated_class_version)
