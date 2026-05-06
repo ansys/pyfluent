@@ -139,11 +139,11 @@ hierarchy = {
         "datamodel/preferences/preferences_contents",
     ],
     "meshing_legacy": [
-        "datamodel/meshing/meshing_contents",
-        "datamodel/part_management/part_management_contents",
-        "datamodel/pm_file_management/pm_file_management_contents",
-        "datamodel/workflow/workflow_contents",
-        "tui/tui_contents",
+        "../meshing/datamodel/meshing/meshing_contents",
+        "../meshing/datamodel/part_management/part_management_contents",
+        "../meshing/datamodel/pm_file_management/pm_file_management_contents",
+        "../meshing/datamodel/workflow/workflow_contents",
+        "../meshing/tui/tui_contents",
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
@@ -267,11 +267,11 @@ The legacy meshing interface provides backward-compatible access to earlier mesh
 Main components
 ^^^^^^^^^^^^^^^
 
-- :doc:`meshing <datamodel/meshing/meshing_contents>`: Core meshing datamodel.
-- :doc:`part_management <datamodel/part_management/part_management_contents>`: Part management tools.
-- :doc:`pm_file_management <datamodel/pm_file_management/pm_file_management_contents>`: Part management file operations.
-- :doc:`workflow <datamodel/workflow/workflow_contents>`: Legacy workflow definitions.
-- :doc:`tui <tui/tui_contents>`: Text user interface commands.
+- :doc:`meshing <../meshing/datamodel/meshing/meshing_contents>`: Core meshing datamodel.
+- :doc:`part_management <../meshing/datamodel/part_management/part_management_contents>`: Part management tools.
+- :doc:`pm_file_management <../meshing/datamodel/pm_file_management/pm_file_management_contents>`: Part management file operations.
+- :doc:`workflow <../meshing/datamodel/workflow/workflow_contents>`: Legacy workflow definitions.
+- :doc:`tui <../meshing/tui/tui_contents>`: Text user interface commands.
 """
 
 
@@ -320,10 +320,12 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 rst.write(f".. _ref_{file}:\n\n")
                 if folder:
                     if "root" in file:
+                        # Keep legacy references working while preserving the specific page anchor.
+                        rst.write(".. _ref_root:\n\n")
                         rst.write("settings\n")
                         rst.write(f'{"="*(len("settings"))}\n\n')
                         rst.write(
-                            "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
+                            "The :ref:`root <ref_settings_root>` is the top-level solver settings object. It contains all\n"
                         )
                         rst.write(
                             "other settings objects in a hierarchical structure.\n"
@@ -366,8 +368,9 @@ def _generate_api_index_rst_files():
                 index.write(f".. _ref_{folder}:\n\n")
                 index.write(f"{folder}\n")
                 index.write(f'{"="*(len(f"{folder}"))}\n\n')
-                index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
-                _write_common_rst_members(rst_file=index)
+                if folder != "meshing_legacy":
+                    index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
+                    _write_common_rst_members(rst_file=index)
                 index.write(".. toctree::\n")
                 index.write("    :maxdepth: 2\n")
                 index.write("    :hidden:\n\n")
