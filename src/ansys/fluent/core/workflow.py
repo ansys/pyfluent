@@ -39,7 +39,6 @@ from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
     PyCommand,
     PyMenu,
-    PyMenuGeneric,
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -1333,17 +1332,17 @@ class Workflow:
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        command_source: PyMenuGeneric,
+        workflow: PyMenu,
+        command_source: PyMenu,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize WorkflowWrapper.
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             The workflow object.
-        command_source : PyMenuGeneric
+        command_source : PyMenu
             The application root for commanding.
         """
         self.__dict__.update(
@@ -1712,17 +1711,17 @@ class ClassicWorkflow:
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        command_source: PyMenuGeneric,
+        workflow: PyMenu,
+        command_source: PyMenu,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize ClassicWorkflow.
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             The workflow object.
-        command_source : PyMenuGeneric
+        command_source : PyMenu
             The application root for commanding.
         """
         self._workflow = workflow
