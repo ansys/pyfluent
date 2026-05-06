@@ -219,8 +219,42 @@ hierarchy = {
 
 # Maps a file name to additional toctree entries to append to its generated RST page.
 sub_toctrees = {
-    "meshing_workflow_new": ["datamodel/meshing_workflow/meshing_workflow_contents"],
+    "meshing_workflow_new": [
+        "datamodel/meshing_workflow/application/application_contents",
+        "datamodel/meshing_workflow/general/general_contents",
+        "datamodel/meshing_workflow/parts/parts_contents",
+        "datamodel/meshing_workflow/parts_files/parts_files_contents",
+        "datamodel/meshing_workflow/task_object/task_object_contents",
+    ],
 }
+
+
+meshing_workflow_bridge_content = """meshing.datamodel.meshing_workflow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Meshing workflow datamodel API.
+
+Root class
+^^^^^^^^^^
+
+- Signature: Root(service, rules, path)
+- Base class: PyMenu
+
+Methods
+^^^^^^^
+
+- __init__(service, rules, path): Initialize the PyMenu root.
+
+Child classes
+^^^^^^^^^^^^^
+
+- application(service, rules, path): application group.
+- general(service, rules, path): general group.
+- parts(service, rules, path): parts group.
+- parts_files(service, rules, path): parts_files group.
+- task_object(service, rules, path): task_object group.
+
+"""
 
 
 def _write_common_rst_members(rst_file):
@@ -274,6 +308,8 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     for sub_file in sub_toctrees[file]:
                         rst.write(f"    {sub_file}\n")
                     rst.write("\n")
+                if file == "meshing_workflow_new":
+                    rst.write(meshing_workflow_bridge_content)
 
 
 def _generate_api_index_rst_files():
