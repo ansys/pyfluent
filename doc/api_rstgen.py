@@ -6,6 +6,12 @@ import shutil
 
 from ansys.fluent.core import FluentVersion
 
+from bridge_content import (
+    meshing_legacy_bridge_content,
+    meshing_workflow_bridge_content,
+    solver_bridge_content,
+)
+
 api_contents_path = (
     Path(__file__).parents[0].resolve() / "source" / "api" / "api_contents.rst"
 )
@@ -230,72 +236,6 @@ sub_toctrees = {
         "datamodel/meshing_workflow/task_object/task_object_contents",
     ],
 }
-
-
-meshing_workflow_bridge_content = """meshing.datamodel.meshing_workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Meshing workflow datamodel API.
-
-Root class
-^^^^^^^^^^
-
-- Signature: Root(service, rules, path)
-- Base class: PyMenu
-
-Methods
-^^^^^^^
-
-- __init__(service, rules, path): Initialize the PyMenu root.
-
-Child classes
-^^^^^^^^^^^^^
-
-- :doc:`application <datamodel/meshing_workflow/application/application_contents>`: application group.
-- :doc:`general <datamodel/meshing_workflow/general/general_contents>`: general group.
-- :doc:`parts <datamodel/meshing_workflow/parts/parts_contents>`: parts group.
-- :doc:`parts_files <datamodel/meshing_workflow/parts_files/parts_files_contents>`: parts_files group.
-- :doc:`task_object <datamodel/meshing_workflow/task_object/task_object_contents>`: task_object group.
-
-"""
-
-meshing_legacy_bridge_content = """Legacy meshing API
-~~~~~~~~~~~~~~~~~
-
-The legacy meshing interface provides backward-compatible access to earlier meshing workflows and utilities.
-
-Main components
-^^^^^^^^^^^^^^^
-
-- :doc:`meshing <../meshing/datamodel/meshing/meshing_contents>`: Core meshing datamodel.
-- :doc:`part_management <../meshing/datamodel/part_management/part_management_contents>`: Part management tools.
-- :doc:`pm_file_management <../meshing/datamodel/pm_file_management/pm_file_management_contents>`: Part management file operations.
-- :doc:`workflow <../meshing/datamodel/workflow/workflow_contents>`: Legacy workflow definitions.
-- :doc:`tui <../meshing/tui/tui_contents>`: Text user interface commands.
-"""
-
-
-solver_bridge_content = """Solver API
-~~~~~~~~~~
-
-The solver interface provides settings, TUI access, and solver datamodel workflows.
-
-Main components
-^^^^^^^^^^^^^^^
-
-- :doc:`error_message <error_message>`: Solver error message helpers.
-- :doc:`flobject <flobject>`: Fluent object wrappers for solver APIs.
-- :doc:`settings <settings_root>`: Top-level solver settings object.
-- :doc:`tui <tui/tui_contents>`: Solver text user interface commands.
-
-Solver datamodel components
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- :doc:`flicing <datamodel/flicing/flicing_contents>`: Flicing datamodel APIs.
-- :doc:`preferences <datamodel/preferences/preferences_contents>`: Solver preferences datamodel APIs.
-- :doc:`solver_workflow <datamodel/solver_workflow/solver_workflow_contents>`: Solver workflow datamodel APIs.
-- :doc:`workflow <datamodel/workflow/workflow_contents>`: Solver workflow definitions and operations.
-"""
 
 
 def _write_common_rst_members(rst_file):
