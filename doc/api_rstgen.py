@@ -318,12 +318,13 @@ def _generate_api_index_rst_files():
                 for file in files:
                     index.write(f"    {file}\n")
                 index.write("\n")
-                if folder == "meshing":
-                    index.write(meshing_bridge_content)
-                if folder == "meshing_legacy":
-                    index.write(meshing_legacy_bridge_content)
-                if folder == "solver":
-                    index.write(solver_bridge_content)
+                match folder:
+                    case "meshing":
+                        index.write(meshing_bridge_content)
+                    case "meshing_legacy":
+                        index.write(meshing_legacy_bridge_content)
+                    case "solver":
+                        index.write(solver_bridge_content)
             _generate_api_source_rst_files(folder, files)
 
 
