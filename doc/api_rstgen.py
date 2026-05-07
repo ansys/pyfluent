@@ -4,13 +4,14 @@ import os
 from pathlib import Path
 import shutil
 
-from ansys.fluent.core import FluentVersion
-
 from bridge_content import (
+    meshing_bridge_content,
     meshing_legacy_bridge_content,
     meshing_workflow_bridge_content,
     solver_bridge_content,
 )
+
+from ansys.fluent.core import FluentVersion
 
 api_contents_path = (
     Path(__file__).parents[0].resolve() / "source" / "api" / "api_contents.rst"
@@ -317,6 +318,8 @@ def _generate_api_index_rst_files():
                 for file in files:
                     index.write(f"    {file}\n")
                 index.write("\n")
+                if folder == "meshing":
+                    index.write(meshing_bridge_content)
                 if folder == "meshing_legacy":
                     index.write(meshing_legacy_bridge_content)
                 if folder == "solver":

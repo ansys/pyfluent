@@ -18,31 +18,40 @@ perspective of that file's location under ``doc/source/api/``.
 # Describes the Root class of the meshing_workflow datamodel and links to the
 # five generated child datamodel pages living under meshing/datamodel/meshing_workflow/.
 # ---------------------------------------------------------------------------
-meshing_workflow_bridge_content = """meshing.datamodel.meshing_workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+meshing_workflow_bridge_content = """Meshing workflow API
+~~~~~~~~~~~~~~~~~~~~
 
-Meshing workflow datamodel API.
+The meshing workflow provides task-based guided workflows for surface and volume meshing.
 
-Root class
-^^^^^^^^^^
+Main components
+^^^^^^^^^^^^^^^
 
-- Signature: Root(service, rules, path)
-- Base class: PyMenu
+- :doc:`application <datamodel/meshing_workflow/application/application_contents>`: Application settings for the meshing workflow.
+- :doc:`general <datamodel/meshing_workflow/general/general_contents>`: General meshing workflow settings.
+- :doc:`parts <datamodel/meshing_workflow/parts/parts_contents>`: Parts managed within the meshing workflow.
+- :doc:`parts_files <datamodel/meshing_workflow/parts_files/parts_files_contents>`: File associations for workflow parts.
+- :doc:`task_object <datamodel/meshing_workflow/task_object/task_object_contents>`: Individual task objects in the meshing workflow.
+"""
 
-Methods
-^^^^^^^
+# ---------------------------------------------------------------------------
+# meshing_contents.rst
+# Injected into: doc/source/api/meshing/meshing_contents.rst
+# The ansys.fluent.core.meshing module exists but carries no module-level
+# docstring, so automodule alone produces a blank page.  This section
+# provides a brief description and links to the three generated child pages.
+# ---------------------------------------------------------------------------
+meshing_bridge_content = """Meshing API
+~~~~~~~~~~~
 
-- __init__(service, rules, path): Initialize the PyMenu root.
+The meshing interface provides APIs to query mesh data, set meshing-session preferences,
+and use guided workflows for surface and volume mesh generation.
 
-Child classes
-^^^^^^^^^^^^^
+Main components
+^^^^^^^^^^^^^^^
 
-- :doc:`application <datamodel/meshing_workflow/application/application_contents>`: application group.
-- :doc:`general <datamodel/meshing_workflow/general/general_contents>`: general group.
-- :doc:`parts <datamodel/meshing_workflow/parts/parts_contents>`: parts group.
-- :doc:`parts_files <datamodel/meshing_workflow/parts_files/parts_files_contents>`: parts_files group.
-- :doc:`task_object <datamodel/meshing_workflow/task_object/task_object_contents>`: task_object group.
-
+- :doc:`meshing_workflow <meshing_workflow_new>`: Meshing workflow datamodel APIs.
+- :doc:`meshing_utilities <datamodel/meshing_utilities/meshing_utilities_contents>`: Meshing utility datamodel APIs.
+- :doc:`preferences <datamodel/preferences/preferences_contents>`: Meshing preferences datamodel APIs.
 """
 
 # ---------------------------------------------------------------------------
@@ -86,10 +95,6 @@ Main components
 - :doc:`flobject <flobject>`: Fluent object wrappers for solver APIs.
 - :doc:`settings <settings_root>`: Top-level solver settings object.
 - :doc:`tui <tui/tui_contents>`: Solver text user interface commands.
-
-Solver datamodel components
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 - :doc:`flicing <datamodel/flicing/flicing_contents>`: Flicing datamodel APIs.
 - :doc:`preferences <datamodel/preferences/preferences_contents>`: Solver preferences datamodel APIs.
 - :doc:`solver_workflow <datamodel/solver_workflow/solver_workflow_contents>`: Solver workflow datamodel APIs.
