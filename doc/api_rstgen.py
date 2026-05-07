@@ -247,12 +247,27 @@ sub_toctrees = {
 
 # Wrapper pages keep flattened API navigation while preserving links to
 # canonical generated datamodel/tui content pages.
-wrapper_targets = {
-    "meshing_utilities": "datamodel/meshing_utilities/meshing_utilities_contents",
-    "preferences": "datamodel/preferences/preferences_contents",
-    "flicing": "datamodel/flicing/flicing_contents",
-    "solver_workflow": "datamodel/solver_workflow/solver_workflow_contents",
-    "workflow": "datamodel/workflow/workflow_contents",
+wrapper_configs = {
+    "meshing_utilities": {
+        "overview": "datamodel/meshing_utilities/meshing_utilities_contents",
+        "globs": ["datamodel/meshing_utilities/*/*_contents"],
+    },
+    "preferences": {
+        "overview": "datamodel/preferences/preferences_contents",
+        "globs": ["datamodel/preferences/*/*_contents"],
+    },
+    "flicing": {
+        "overview": "datamodel/flicing/flicing_contents",
+        "globs": ["datamodel/flicing/*/*_contents"],
+    },
+    "solver_workflow": {
+        "overview": "datamodel/solver_workflow/solver_workflow_contents",
+        "globs": ["datamodel/solver_workflow/*/*_contents"],
+    },
+    "workflow": {
+        "overview": "datamodel/workflow/workflow_contents",
+        "globs": ["datamodel/workflow/*/*_contents"],
+    },
 }
 
 
@@ -279,16 +294,20 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 if file == "flobject":
                     rst.write(":orphan:\n\n")
                 rst.write(f".. _ref_{file}:\n\n")
-                if file in wrapper_targets:
+                if file in wrapper_configs:
+                    wrapper = wrapper_configs[file]
                     title = file
                     rst.write(f"{title}\n")
                     rst.write(f'{"="*(len(title))}\n\n')
                     rst.write(".. toctree::\n")
                     rst.write("    :maxdepth: 1\n")
                     rst.write("    :hidden:\n\n")
-                    rst.write(f"    {wrapper_targets[file]}\n\n")
+                    rst.write("    :glob:\n\n")
+                    for pattern in wrapper["globs"]:
+                        rst.write(f"    {pattern}\n")
+                    rst.write("\n")
                     rst.write(
-                        f"See :doc:`{title} <{wrapper_targets[file]}>` for full details.\n"
+                        f"See :doc:`{title} overview <{wrapper['overview']}>` for full details.\n"
                     )
                     continue
                 if folder:
