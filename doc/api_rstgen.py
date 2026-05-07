@@ -5,8 +5,8 @@ from pathlib import Path
 import shutil
 
 from bridge_content import (
+    legacy_bridge_content,
     meshing_bridge_content,
-    meshing_legacy_bridge_content,
     meshing_workflow_bridge_content,
     solver_bridge_content,
 )
@@ -53,12 +53,12 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     filereader/filereader_contents
     launcher/launcher_contents
     meshing/meshing_contents
-    meshing_legacy/meshing_legacy_contents
     scheduler/scheduler_contents
     services/services_contents
     solver/solver_contents
     streaming_services/streaming_services_contents
     utils/utils_contents
+    legacy/legacy_contents
     data_model_cache
     exceptions
     file_session
@@ -145,13 +145,6 @@ hierarchy = {
         "datamodel/meshing_utilities/meshing_utilities_contents",
         "datamodel/preferences/preferences_contents",
     ],
-    "meshing_legacy": [
-        "../meshing/datamodel/meshing/meshing_contents",
-        "../meshing/datamodel/part_management/part_management_contents",
-        "../meshing/datamodel/pm_file_management/pm_file_management_contents",
-        "../meshing/datamodel/workflow/workflow_contents",
-        "../meshing/tui/tui_contents",
-    ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
         "api_upgrade",
@@ -222,6 +215,13 @@ hierarchy = {
         "system_coupling",
         "pyfluent_warnings",
         "workflow_new",
+    ],
+    "legacy": [
+        "../meshing/datamodel/meshing/meshing_contents",
+        "../meshing/datamodel/part_management/part_management_contents",
+        "../meshing/datamodel/pm_file_management/pm_file_management_contents",
+        "../meshing/datamodel/workflow/workflow_contents",
+        "../meshing/tui/tui_contents",
     ],
 }
 
@@ -311,7 +311,7 @@ def _generate_api_index_rst_files():
                 index.write(f".. _ref_{folder}:\n\n")
                 index.write(f"{folder}\n")
                 index.write(f'{"="*(len(f"{folder}"))}\n\n')
-                if folder != "meshing_legacy":
+                if folder != "legacy":
                     index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
                     _write_common_rst_members(rst_file=index)
                 index.write(".. toctree::\n")
@@ -323,8 +323,8 @@ def _generate_api_index_rst_files():
                 match folder:
                     case "meshing":
                         index.write(meshing_bridge_content)
-                    case "meshing_legacy":
-                        index.write(meshing_legacy_bridge_content)
+                    case "legacy":
+                        index.write(legacy_bridge_content)
                     case "solver":
                         index.write(solver_bridge_content)
             _generate_api_source_rst_files(folder, files)

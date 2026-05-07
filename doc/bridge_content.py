@@ -55,17 +55,15 @@ Main components
 """
 
 # ---------------------------------------------------------------------------
-# meshing_legacy_contents.rst
-# Injected into: doc/source/api/meshing_legacy/meshing_legacy_contents.rst
-# ansys.fluent.core.meshing_legacy does not exist as an importable module so
-# automodule produces nothing.  This section provides a human-readable overview
-# and links to the actual generated pages, which live under the sibling meshing/
-# folder, hence the ``../meshing/`` relative prefix.
+# legacy_contents.rst
+# Injected into: doc/source/api/legacy/legacy_contents.rst
+# Backward-compatible legacy APIs.  This section provides a human-readable
+# overview and links to the actual generated pages.
 # ---------------------------------------------------------------------------
-meshing_legacy_bridge_content = """Legacy meshing API
-~~~~~~~~~~~~~~~~~
+legacy_bridge_content = """Legacy APIs
+~~~~~~~~~~~
 
-The legacy meshing interface provides backward-compatible access to earlier meshing workflows and utilities.
+Legacy APIs provide backward-compatible access to earlier interface versions.
 
 Main components
 ^^^^^^^^^^^^^^^
