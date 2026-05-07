@@ -51,17 +51,17 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     filereader/filereader_contents
     launcher/launcher_contents
     meshing/meshing_workflow_new
-    meshing/datamodel/meshing_utilities/meshing_utilities_contents
-    meshing/datamodel/preferences/preferences_contents
+    meshing/meshing_utilities
+    meshing/preferences
     scheduler/scheduler_contents
     services/services_contents
     solver/error_message
     solver/settings_root
     solver/tui/tui_contents
-    solver/datamodel/flicing/flicing_contents
-    solver/datamodel/preferences/preferences_contents
-    solver/datamodel/solver_workflow/solver_workflow_contents
-    solver/datamodel/workflow/workflow_contents
+    solver/flicing
+    solver/preferences
+    solver/solver_workflow
+    solver/workflow
     streaming_services/streaming_services_contents
     utils/utils_contents
     legacy/legacy_contents
@@ -148,8 +148,8 @@ hierarchy = {
     ],
     "meshing": [
         "meshing_workflow_new",
-        "datamodel/meshing_utilities/meshing_utilities_contents",
-        "datamodel/preferences/preferences_contents",
+        "meshing_utilities",
+        "preferences",
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
@@ -171,10 +171,11 @@ hierarchy = {
     ],
     "solver": [
         "error_message",
-        "datamodel/flicing/flicing_contents",
-        "datamodel/preferences/preferences_contents",
-        "datamodel/solver_workflow/solver_workflow_contents",
-        "datamodel/workflow/workflow_contents",
+        "flobject",
+        "flicing",
+        "preferences",
+        "solver_workflow",
+        "workflow",
         "settings_root",
         "tui/tui_contents",
     ],
@@ -244,6 +245,17 @@ sub_toctrees = {
 }
 
 
+# Wrapper pages keep flattened API navigation while preserving links to
+# canonical generated datamodel/tui content pages.
+wrapper_targets = {
+    "meshing_utilities": "datamodel/meshing_utilities/meshing_utilities_contents",
+    "preferences": "datamodel/preferences/preferences_contents",
+    "flicing": "datamodel/flicing/flicing_contents",
+    "solver_workflow": "datamodel/solver_workflow/solver_workflow_contents",
+    "workflow": "datamodel/workflow/workflow_contents",
+}
+
+
 def _write_common_rst_members(rst_file):
     rst_file.write("    :members:\n")
     rst_file.write("    :show-inheritance:\n")
@@ -264,7 +276,21 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 rst_file = _get_file_path("", file)
             os.makedirs(os.path.dirname(rst_file), exist_ok=True)
             with open(rst_file, "w", encoding="utf8") as rst:
+                if file == "flobject":
+                    rst.write(":orphan:\n\n")
                 rst.write(f".. _ref_{file}:\n\n")
+                if file in wrapper_targets:
+                    title = file
+                    rst.write(f"{title}\n")
+                    rst.write(f'{"="*(len(title))}\n\n')
+                    rst.write(".. toctree::\n")
+                    rst.write("    :maxdepth: 1\n")
+                    rst.write("    :hidden:\n\n")
+                    rst.write(f"    {wrapper_targets[file]}\n\n")
+                    rst.write(
+                        f"See :doc:`{title} <{wrapper_targets[file]}>` for full details.\n"
+                    )
+                    continue
                 if folder:
                     if "root" in file:
                         # Keep legacy references working while preserving the specific page anchor.
@@ -309,7 +335,9 @@ def _generate_api_index_rst_files():
     for folder, files in hierarchy.items():
         if Path(_get_folder_path(folder)).is_dir():
             shutil.rmtree(_get_folder_path(folder))
-        if folder in ["other", "meshing", "solver"]:
+        if folder == "other":
+            _generate_api_source_rst_files(None, files)
+        elif folder in ["meshing", "solver"]:
             Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
             _generate_api_source_rst_files(folder, files)
         else:
