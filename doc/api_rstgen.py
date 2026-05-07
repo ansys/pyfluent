@@ -172,7 +172,6 @@ hierarchy = {
     ],
     "solver": [
         "error_message",
-        "flobject",
         "datamodel/flicing/flicing_contents",
         "datamodel/preferences/preferences_contents",
         "datamodel/solver_workflow/solver_workflow_contents",
@@ -270,6 +269,9 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         )
                         rst.write(
                             "other settings objects in a hierarchical structure.\n"
+                        )
+                        rst.write(
+                            "\nSee :ref:`ref_flobject` for details on working with Fluent objects within the settings API.\n"
                         )
                     else:
                         temp_file_name = file.removesuffix("_new")
