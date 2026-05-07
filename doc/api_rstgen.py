@@ -6,9 +6,7 @@ import shutil
 
 from bridge_content import (
     legacy_bridge_content,
-    meshing_bridge_content,
     meshing_workflow_bridge_content,
-    solver_bridge_content,
 )
 
 from ansys.fluent.core import FluentVersion
@@ -52,10 +50,18 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     docker/docker_contents
     filereader/filereader_contents
     launcher/launcher_contents
-    meshing/meshing_contents
+    meshing/meshing_workflow_new
+    meshing/datamodel/meshing_utilities/meshing_utilities_contents
+    meshing/datamodel/preferences/preferences_contents
     scheduler/scheduler_contents
     services/services_contents
-    solver/solver_contents
+    solver/error_message
+    solver/settings_root
+    solver/tui/tui_contents
+    solver/datamodel/flicing/flicing_contents
+    solver/datamodel/preferences/preferences_contents
+    solver/datamodel/solver_workflow/solver_workflow_contents
+    solver/datamodel/workflow/workflow_contents
     streaming_services/streaming_services_contents
     utils/utils_contents
     legacy/legacy_contents
@@ -256,6 +262,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 rst_file = _get_file_path(folder, file)
             else:
                 rst_file = _get_file_path("", file)
+            os.makedirs(os.path.dirname(rst_file), exist_ok=True)
             with open(rst_file, "w", encoding="utf8") as rst:
                 rst.write(f".. _ref_{file}:\n\n")
                 if folder:
@@ -302,8 +309,9 @@ def _generate_api_index_rst_files():
     for folder, files in hierarchy.items():
         if Path(_get_folder_path(folder)).is_dir():
             shutil.rmtree(_get_folder_path(folder))
-        if folder == "other":
-            _generate_api_source_rst_files(None, files)
+        if folder in ["other", "meshing", "solver"]:
+            Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
+            _generate_api_source_rst_files(folder, files)
         else:
             Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
             folder_index = _get_file_path(folder, f"{folder}_contents")
@@ -321,12 +329,8 @@ def _generate_api_index_rst_files():
                     index.write(f"    {file}\n")
                 index.write("\n")
                 match folder:
-                    case "meshing":
-                        index.write(meshing_bridge_content)
                     case "legacy":
                         index.write(legacy_bridge_content)
-                    case "solver":
-                        index.write(solver_bridge_content)
             _generate_api_source_rst_files(folder, files)
 
 
