@@ -49,9 +49,9 @@ and use guided workflows for surface and volume mesh generation.
 Main components
 ^^^^^^^^^^^^^^^
 
-- :doc:`meshing_workflow <meshing_workflow_new>`: Meshing workflow datamodel APIs.
-- :doc:`meshing_utilities <datamodel/meshing_utilities/meshing_utilities_contents>`: Meshing utility datamodel APIs.
-- :doc:`preferences <datamodel/preferences/preferences_contents>`: Meshing preferences datamodel APIs.
+- :doc:`meshing_workflow <meshing_workflow_new>`: Meshing workflow datamodel API.
+- :doc:`meshing_utilities <datamodel/meshing_utilities/meshing_utilities_contents>`: Meshing utility datamodel API.
+- :doc:`preferences <datamodel/preferences/preferences_contents>`: Meshing preferences datamodel API.
 """
 
 # ---------------------------------------------------------------------------
@@ -71,7 +71,7 @@ Main components
 ^^^^^^^^^^^^^^^
 
 - :doc:`meshing <../meshing/datamodel/meshing/meshing_contents>`: Core meshing datamodel.
-- :doc:`part_management <../meshing/datamodel/part_management/part_management_contents>`: Part management tools.
+- :doc:`part_management <../meshing/datamodel/part_management/part_management_contents>`: Part management tool.
 - :doc:`pm_file_management <../meshing/datamodel/pm_file_management/pm_file_management_contents>`: Part management file operations.
 - :doc:`workflow <../meshing/datamodel/workflow/workflow_contents>`: Legacy workflow definitions.
 - :doc:`tui <../meshing/tui/tui_contents>`: Text user interface commands.
@@ -92,11 +92,11 @@ Main components
 ^^^^^^^^^^^^^^^
 
 - :doc:`error_message <error_message>`: Solver error message helpers.
-- :doc:`flobject <flobject>`: Fluent object wrappers for solver APIs.
+
 - :doc:`settings <settings_root>`: Top-level solver settings object.
 - :doc:`tui <tui/tui_contents>`: Solver text user interface commands.
-- :doc:`flicing <datamodel/flicing/flicing_contents>`: Flicing datamodel APIs.
-- :doc:`preferences <datamodel/preferences/preferences_contents>`: Solver preferences datamodel APIs.
-- :doc:`solver_workflow <datamodel/solver_workflow/solver_workflow_contents>`: Solver workflow datamodel APIs.
+- :doc:`flicing <datamodel/flicing/flicing_contents>`: Flicing datamodel API.
+- :doc:`preferences <datamodel/preferences/preferences_contents>`: Solver preferences datamodel API.
+- :doc:`solver_workflow <datamodel/solver_workflow/solver_workflow_contents>`: Solver workflow datamodel API.
 - :doc:`workflow <datamodel/workflow/workflow_contents>`: Solver workflow definitions and operations.
 """
