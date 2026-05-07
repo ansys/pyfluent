@@ -266,7 +266,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         rst.write("settings\n")
                         rst.write(f'{"="*(len("settings"))}\n\n')
                         rst.write(
-                            "The :ref:`root <ref_settings_root>` is the top-level solver settings object. It contains all\n"
+                            "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
                         )
                         rst.write(
                             "other settings objects in a hierarchical structure.\n"
