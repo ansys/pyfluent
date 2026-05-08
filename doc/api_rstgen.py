@@ -266,6 +266,29 @@ wrapper_toctree_patterns = {
 }
 
 
+# Optional display-name overrides for toctree node/page titles.
+# Keys should match generated node names (for example: meshing_utilities).
+NODE_DISPLAY_NAMES = {
+    # "meshing_utilities": "Meshing Utilities",
+}
+
+
+def _get_display_name(node_name: str) -> str:
+    """Return display name for a node with fallback formatting.
+
+    If no override exists, fallback converts underscores to spaces and
+    capitalizes only the first character.
+    """
+    if node_name in NODE_DISPLAY_NAMES:
+        return NODE_DISPLAY_NAMES[node_name]
+
+    fallback = node_name.replace("_", " ")
+    # If any node name is empty
+    if not fallback:
+        return fallback
+    return fallback[0].upper() + fallback[1:]
+
+
 def _write_common_rst_members(rst_file):
     rst_file.write("    :members:\n")
     rst_file.write("    :show-inheritance:\n")
@@ -290,8 +313,9 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     rst.write(":orphan:\n\n")
                 rst.write(f".. _ref_{file}:\n\n")
                 if file in wrapper_toctree_patterns:
-                    rst.write(f"{file}\n")
-                    rst.write(f'{"="*(len(file))}\n\n')
+                    title = _get_display_name(file)
+                    rst.write(f"{title}\n")
+                    rst.write(f'{"="*(len(title))}\n\n')
                     rst.write(".. toctree::\n")
                     rst.write("    :maxdepth: 2\n")
                     rst.write("    :hidden:\n")
@@ -320,15 +344,17 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         )
                     else:
                         temp_file_name = file.removesuffix("_new")
-                        rst.write(f"{temp_file_name}\n")
-                        rst.write(f'{"="*(len(temp_file_name))}\n\n')
+                        title = _get_display_name(temp_file_name)
+                        rst.write(f"{title}\n")
+                        rst.write(f'{"="*(len(title))}\n\n')
                         rst.write(
                             f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
                         )
                 else:
                     temp_file_name = file.removesuffix("_new")
-                    rst.write(f"{temp_file_name}\n")
-                    rst.write(f'{"="*(len(temp_file_name))}\n\n')
+                    title = _get_display_name(temp_file_name)
+                    rst.write(f"{title}\n")
+                    rst.write(f'{"="*(len(title))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
                 if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
@@ -357,8 +383,9 @@ def _generate_api_index_rst_files():
             folder_index = _get_file_path(folder, f"{folder}_contents")
             with open(folder_index, "w", encoding="utf8") as index:
                 index.write(f".. _ref_{folder}:\n\n")
-                index.write(f"{folder}\n")
-                index.write(f'{"="*(len(f"{folder}"))}\n\n')
+                folder_title = _get_display_name(folder)
+                index.write(f"{folder_title}\n")
+                index.write(f'{"="*(len(folder_title))}\n\n')
                 if folder != "legacy":
                     index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
                     _write_common_rst_members(rst_file=index)
