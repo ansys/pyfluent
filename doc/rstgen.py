@@ -336,6 +336,8 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
         title = menu_path if menu["name"].__name__ == "Root" else menu["name"].__name__
     else:
         title = "tui" if menu["name"].__name__ == "main_menu" else menu["name"].__name__
+    if title and menu["name"].__name__ != "Root":
+        title = title[0].upper() + title[1:]
     return title
 
 

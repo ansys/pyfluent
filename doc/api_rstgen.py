@@ -57,7 +57,6 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     services/services_contents
     solver/error_message
     solver/settings_root
-    solver/tui/tui_contents
     solver/flicing
     solver/preferences
     solver/solver_workflow
@@ -229,6 +228,7 @@ hierarchy = {
         "../meshing/datamodel/pm_file_management/pm_file_management_contents",
         "../meshing/datamodel/workflow/workflow_contents",
         "../meshing/tui/tui_contents",
+        "../solver/tui/tui_contents",
     ],
 }
 
@@ -263,6 +263,13 @@ wrapper_toctree_patterns = {
     "workflow": [
         "datamodel/workflow/*/*_contents",
     ],
+}
+
+
+# Display name overrides for entries listed in the legacy toctree.
+legacy_toctree_display_names = {
+    "../meshing/tui/tui_contents": "Tui (meshing)",
+    "../solver/tui/tui_contents": "Tui (solver)",
 }
 
 
@@ -331,8 +338,8 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     if "root" in file:
                         # Keep legacy references working while preserving the specific page anchor.
                         rst.write(".. _ref_root:\n\n")
-                        rst.write("settings\n")
-                        rst.write(f'{"="*(len("settings"))}\n\n')
+                        rst.write("Settings\n")
+                        rst.write(f'{"="*(len("Settings"))}\n\n')
                         rst.write(
                             "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
                         )
@@ -393,7 +400,12 @@ def _generate_api_index_rst_files():
                 index.write("    :maxdepth: 2\n")
                 index.write("    :hidden:\n\n")
                 for file in files:
-                    index.write(f"    {file}\n")
+                    if folder == "legacy" and file in legacy_toctree_display_names:
+                        index.write(
+                            f"    {legacy_toctree_display_names[file]} <{file}>\n"
+                        )
+                    else:
+                        index.write(f"    {file}\n")
                 index.write("\n")
                 match folder:
                     case "legacy":
