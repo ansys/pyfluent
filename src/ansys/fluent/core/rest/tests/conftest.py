@@ -57,6 +57,7 @@ Before running the real-server tests, set the variables in your shell::
 """
 
 import os
+import hashlib
 import urllib.request
 
 import pytest
@@ -93,7 +94,7 @@ def _real_server_reachable() -> bool:
         "/api/connection/run_mode"
     )
     req = urllib.request.Request(url, method="GET")
-    req.add_header("Authorization", f"Bearer {_REAL_SERVER_TOKEN}")
+    req.add_header("Authorization", f"Bearer {hashlib.sha256(_REAL_SERVER_TOKEN.encode()).hexdigest()}")
     try:
         with urllib.request.urlopen(req, timeout=3):  # nosec B310
             return True
@@ -133,4 +134,3 @@ def real_client():
         auth_token=_REAL_SERVER_TOKEN,
         component=_REAL_SERVER_COMPONENT,
     )
-

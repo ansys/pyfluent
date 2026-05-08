@@ -44,7 +44,9 @@ Usage
 
 from __future__ import annotations
 
+import logging
 import subprocess
+import time
 from typing import TYPE_CHECKING
 
 from ansys.fluent.core.rest.client import FluentRestClient
@@ -52,6 +54,8 @@ from ansys.fluent.core.solver.flobject import get_root
 
 if TYPE_CHECKING:
     from ansys.fluent.core.solver.flobject import Group
+
+logger = logging.getLogger(__name__)
 
 __all__ = ["RestSolverSession"]
 
@@ -128,11 +132,9 @@ class RestSolverSession:
             max_retries=max_retries,
             retry_delay=retry_delay,
         )
-        # Force runtime class generation so we don't need a version-specific
-        # pre-generated settings module.  get_root already falls back to
-        # flproxy.get_static_info() when the generated file is missing, so
-        # this works out-of-the-box.
-        self._settings = get_root(self._client, version=version)
+        # Build the settings tree.  Retried a few times so transient startup
+        # delays between port-open and auth-ready don't cause a hard failure.
+        self._settings = self._build_settings_with_retry(version=version)
 
         # Connection metadata — set by launch_webserver / connect_to_webserver
         self.ip: str | None = None
@@ -141,6 +143,53 @@ class RestSolverSession:
 
         # Subprocess handle — set by launch_webserver when it starts Fluent
         self._process: subprocess.Popen | None = None
+
+    def _build_settings_with_retry(
+        self, version: str, retries: int = 5, delay: float = 2.0
+    ):
+        """Call get_root() with retries to handle transient 401s on startup.
+
+        After ``_probe_server`` confirms the static-info endpoint responds,
+        the
+        ``/static-info`` endpoint usually also works.  In rare cases there is
+        a short gap — this retry loop covers it.
+
+        Parameters
+        ----------
+        version : str
+            Passed through to :func:`get_root`.
+        retries : int
+            Total attempts before giving up.  Defaults to ``5``.
+        delay : float
+            Seconds to wait between attempts.  Defaults to ``2.0``.
+        """
+        for attempt in range(retries):
+            try:
+                return get_root(self._client, version=version)
+            except Exception as exc:
+                msg = str(exc)
+                is_auth = (
+                    "401" in msg
+                    or "Unauthorized" in msg
+                    or "Invalid password" in msg
+                )
+                if is_auth and attempt < retries - 1:
+                    logger.debug(
+                        "get_root attempt %d/%d failed (auth), retrying in %.1fs",
+                        attempt + 1,
+                        retries,
+                        delay,
+                    )
+                    time.sleep(delay)
+                    continue
+                if is_auth:
+                    raise RuntimeError(
+                        "Server returned 401 Unauthorized — wrong token?\n"
+                        "Set the token before calling launch_webserver():\n"
+                        "  Python     : os.environ['FLUENT_WEBSERVER_TOKEN'] = '<token>'\n"
+                        "  PowerShell : $Env:FLUENT_WEBSERVER_TOKEN = '<token>'"
+                    ) from exc
+                raise
 
     # -- Public properties -----------------------------------------------
 
@@ -160,6 +209,53 @@ class RestSolverSession:
             settings hierarchy.
         """
         return self._settings
+
+    # -- Case file convenience methods -----------------------------------
+
+    def read_case(self, file_name: str) -> None:
+        """Read a Fluent case file via the REST settings tree.
+
+        Delegates to ``settings.file.read_case(file_name=file_name)``, which
+        issues ``POST /api/fluent_1/file/read-case`` with
+        ``{"file_name": file_name}`` under the hood.
+
+        Parameters
+        ----------
+        file_name : str
+            Server-side path to the ``.cas`` or ``.cas.h5`` file.
+        """
+        logger.info("Reading case file: %s", file_name)
+        self._settings.file.read_case(file_name=file_name)
+
+    def read_case_data(self, file_name: str) -> None:
+        """Read a Fluent case+data file via the REST settings tree.
+
+        Delegates to ``settings.file.read_case_data(file_name=file_name)``,
+        which issues ``POST /api/fluent_1/file/read-case-data`` with
+        ``{"file_name": file_name}`` under the hood.
+
+        Parameters
+        ----------
+        file_name : str
+            Server-side path to the ``.cas`` or ``.cas.h5`` file.
+        """
+        logger.info("Reading case+data file: %s", file_name)
+        self._settings.file.read_case_data(file_name=file_name)
+
+    def read_data(self, file_name: str) -> None:
+        """Read a Fluent data file via the REST settings tree.
+
+        Delegates to ``settings.file.read_data(file_name=file_name)``, which
+        issues ``POST /api/fluent_1/file/read-data`` with
+        ``{"file_name": file_name}`` under the hood.
+
+        Parameters
+        ----------
+        file_name : str
+            Server-side path to the ``.dat`` or ``.dat.h5`` file.
+        """
+        logger.info("Reading data file: %s", file_name)
+        self._settings.file.read_data(file_name=file_name)
 
     # -- Lifecycle -------------------------------------------------------
 

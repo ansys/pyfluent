@@ -70,6 +70,7 @@ HTTP 4xx / 5xx responses raise :class:`FluentRestError`.
 """
 
 import json
+import hashlib
 import logging
 import time
 from typing import Any
@@ -134,7 +135,7 @@ class FluentRestClient:
     --------
     >>> from ansys.fluent.core.rest import FluentRestClient
     >>> client = FluentRestClient(
-    ...     "http://127.0.0.1:<port>",
+    ...     "http://127.0.0.1:",
     ...     auth_token="<token>",
     ...     component="fluent_1",
     ... )
@@ -229,7 +230,7 @@ class FluentRestClient:
             headers["Content-Type"] = "application/json"
 
         if self._auth_token:
-            headers["Authorization"] = f"Bearer {self._auth_token}"
+            headers["Authorization"] = f"Bearer {hashlib.sha256(self._auth_token.encode()).hexdigest()}"
 
         req = urllib.request.Request(
             url, data=data, headers=headers, method=method.upper()
@@ -362,6 +363,7 @@ class FluentRestClient:
     #     params["recursive"] = "true"
     # query = urllib.parse.urlencode(params)
     # return self._request("GET", f"{self._api_base}/{path}?{query}")
+
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
 

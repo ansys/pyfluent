@@ -66,6 +66,7 @@ Usage — connect (SimBA already running)
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
 import socket
@@ -148,9 +149,11 @@ def _read_auth_token() -> str:
 
 
 def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
-    """Return ``True`` if the SimBA server responds to a lightweight probe.
+    """Return ``True`` if the SimBA server responds to an authenticated probe.
 
-    Sends ``GET /api/connection/run_mode`` with the auth token.
+    Sends ``GET /api/fluent_1/static-info`` with the auth token.
+    This matches the first authenticated settings call used by
+    :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession`.
 
     Parameters
     ----------
@@ -166,47 +169,24 @@ def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
     bool
         ``True`` if the server returns any 2xx response.
     """
-    url = f"{base_url}/api/connection/run_mode"
+    url = f"{base_url}/api/fluent_1/static-info"
     req = urllib.request.Request(url, method="GET")
-    req.add_header("Authorization", f"Bearer {auth_token}")
+    req.add_header("Authorization", f"Bearer {hashlib.sha256(auth_token.encode()).hexdigest()}")
     try:
         with urllib.request.urlopen(req, timeout=timeout):  # nosec B310
             return True
     except Exception:
         return False
 
-
-def _wait_for_server(port: int, timeout: int = 60) -> None:
-    """Block until the SimBA server at *port* responds, or raise on timeout.
-
-    Polls ``http://localhost:{port}/`` every second.
-
-    Parameters
-    ----------
-    port : int
-        Local TCP port the Fluent web server should be listening on.
-    timeout : int, optional
-        Maximum seconds to wait.  Defaults to ``60``.
-
-    Raises
-    ------
-    TimeoutError
-        If the server does not respond within *timeout* seconds.
-    """
+def _wait_for_server(port: int, timeout: int = 120) -> None:
     start = time.time()
     while time.time() - start < timeout:
         try:
-            urllib.request.urlopen(
-                f"http://localhost:{port}", timeout=2
-            )  # nosec B310
-            logger.info("Fluent web server is ready on port %d.", port)
-            return
-        except Exception:
-            time.sleep(1)
-    raise TimeoutError(
-        f"Fluent web server on port {port} did not start within {timeout}s."
-    )
-
+            with socket.create_connection((_LOCALHOST, port), timeout=2):
+                return   # port open — server is up
+        except OSError:
+            time.sleep(2)   # not ready yet — wait 2s and retry
+    raise TimeoutError(f"Server on port {port} not responding after {timeout} seconds.")
 
 def _get_fluent_exe(
     product_version: str | None = None,
@@ -261,7 +241,7 @@ def launch_webserver(
     start_timeout: int = 60,
     scheme: str = "http",
     component: str = "fluent_1",
-    version: str = "",
+    version: str = "261",
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
@@ -318,7 +298,7 @@ def launch_webserver(
     version : str, optional
         Fluent version string passed to
         :func:`~ansys.fluent.core.solver.flobject.get_root` for code-
-        generated settings.
+        generated settings.  Defaults to ``"261"``.
     timeout : float, optional
         HTTP socket timeout in seconds for every REST request.  Defaults
         to ``30.0``.
@@ -394,28 +374,26 @@ def launch_webserver(
             f"Fluent process exited immediately with return code "
             f"{process.returncode}. Command: {launch_cmd}"
         )
+    
+    # Wait for the server to become reachable
+    _wait_for_server(port, timeout=start_timeout)
 
-    # 5 — wait for the web server to become reachable
-    try:
-        _wait_for_server(port, timeout=start_timeout)
-    except TimeoutError:
-        process.terminate()
-        raise
-
-    # 6 — connect via the normal connect_to_webserver path
-    session = connect_to_webserver(
-        ip=_LOCALHOST,
-        port=port,
+    # 5 — build session (Fluent web server starting in background — no blocking wait)
+    base_url = f"{scheme}://{_LOCALHOST}:{port}"
+    session = RestSolverSession(
+        base_url,
         auth_token=auth_token,
-        scheme=scheme,
         component=component,
         version=version,
         timeout=timeout,
         max_retries=max_retries,
         retry_delay=retry_delay,
     )
+    session.ip = _LOCALHOST
+    session.port = port
+    session.auth_token = auth_token
 
-    # 7 — attach the subprocess so session.exit() terminates Fluent
+    # 6 — attach the subprocess so session.exit() terminates Fluent
     session._process = process
 
     return session
@@ -428,7 +406,7 @@ def connect_to_webserver(
     *,
     scheme: str = "http",
     component: str = "fluent_1",
-    version: str = "",
+    version: str = "261",
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
@@ -453,7 +431,7 @@ def connect_to_webserver(
     component : str, optional
         DataModel component name.  Defaults to ``"fluent_1"`` (solver).
     version : str, optional
-        Fluent version string (e.g. ``"261"``).
+        Fluent version string (e.g. ``"261"``).  Defaults to ``"261"``.
     timeout : float, optional
         HTTP socket timeout in seconds.  Defaults to ``30.0``.
     max_retries : int, optional
@@ -496,7 +474,7 @@ def connect_to_webserver(
     if not _probe_server(base_url, auth_token, timeout=min(timeout, 5.0)):
         raise ConnectionError(
             f"SimBA server at {base_url} did not respond to the reachability "
-            "probe (GET /api/connection/run_mode). "
+            "probe (GET /api/fluent_1/static-info). "
             "Verify that the server is running on the given ip and port, "
             "and that the auth_token is correct."
         )
