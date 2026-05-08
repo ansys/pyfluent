@@ -52,16 +52,16 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     launcher/launcher_contents
     meshing/meshing_workflow_new
     meshing/meshing_utilities
-    meshing/datamodel/preferences/preferences_contents
+    meshing/preferences
     scheduler/scheduler_contents
     services/services_contents
     solver/error_message
     solver/settings_root
     solver/tui/tui_contents
-    solver/datamodel/flicing/flicing_contents
-    solver/datamodel/preferences/preferences_contents
-    solver/datamodel/solver_workflow/solver_workflow_contents
-    solver/datamodel/workflow/workflow_contents
+    solver/flicing
+    solver/preferences
+    solver/solver_workflow
+    solver/workflow
     streaming_services/streaming_services_contents
     utils/utils_contents
     legacy/legacy_contents
@@ -149,7 +149,7 @@ hierarchy = {
     "meshing": [
         "meshing_workflow_new",
         "meshing_utilities",
-        "datamodel/preferences/preferences_contents",
+        "preferences",
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
@@ -172,10 +172,10 @@ hierarchy = {
     "solver": [
         "error_message",
         "flobject",
-        "datamodel/flicing/flicing_contents",
-        "datamodel/preferences/preferences_contents",
-        "datamodel/solver_workflow/solver_workflow_contents",
-        "datamodel/workflow/workflow_contents",
+        "flicing",
+        "preferences",
+        "solver_workflow",
+        "workflow",
         "settings_root",
         "tui/tui_contents",
     ],
@@ -246,10 +246,22 @@ sub_toctrees = {
 
 
 # Wrapper pages that should behave like top-level navigation nodes while
-# listing canonical child pages directly in the same tree context.
+# listing child pages directly in the same tree context.
 wrapper_toctree_patterns = {
     "meshing_utilities": [
         "datamodel/meshing_utilities/*/*_contents",
+    ],
+    "preferences": [
+        "datamodel/preferences/*/*_contents",
+    ],
+    "flicing": [
+        "datamodel/flicing/*/*_contents",
+    ],
+    "solver_workflow": [
+        "datamodel/solver_workflow/*/*_contents",
+    ],
+    "workflow": [
+        "datamodel/workflow/*/*_contents",
     ],
 }
 
@@ -288,7 +300,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         rst.write(f"    {pattern}\n")
                     rst.write("\n")
                     rst.write(
-                        "Meshing utilities APIs are listed below in this section.\n"
+                        "Please follow the tree to access the APIs under this section.\n"
                     )
                     continue
                 if folder:
