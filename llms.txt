@@ -1,0 +1,25 @@
+# PyFluent AI Context Index
+
+This file provides a compact index of high-value context for AI tools.
+
+## Core Documents
+
+- AGENTS.md: Root agent operating guidance for this repository.
+- .github/copilot-instructions.md: Copilot-specific guardrails and workflow.
+- README.rst: Project overview, install, and usage examples.
+- CONTRIBUTING.md: Contribution policy and process pointers.
+
+## Build, Test, And Tooling
+
+- pyproject.toml: Package metadata, dependencies, pytest markers/options.
+- Makefile: Common build, test, docs, and codegen tasks.
+- .pre-commit-config.yaml: Formatting and lint checks run by hooks.
+- .github/workflows/ci.yml: CI expectations and environment settings.
+
+## AI-Focused Guides
+
+- docs/ai/repo-map.md: Where key components live in the tree.
+- docs/ai/codegen-rules.md: Generated code boundaries and regeneration flow.
+- docs/ai/test-playbook.md: Test command matrix and environment constraints.
+- docs/ai/domain-glossary.md: Fluent and PyFluent terminology.
+- docs/ai/change-checklist.md: Practical pre-PR checklist.
