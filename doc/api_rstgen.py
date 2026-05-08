@@ -51,7 +51,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     filereader/filereader_contents
     launcher/launcher_contents
     meshing/meshing_workflow_new
-    meshing/datamodel/meshing_utilities/meshing_utilities_contents
+    meshing/meshing_utilities
     meshing/datamodel/preferences/preferences_contents
     scheduler/scheduler_contents
     services/services_contents
@@ -148,7 +148,7 @@ hierarchy = {
     ],
     "meshing": [
         "meshing_workflow_new",
-        "datamodel/meshing_utilities/meshing_utilities_contents",
+        "meshing_utilities",
         "datamodel/preferences/preferences_contents",
     ],
     "scheduler": ["load_machines", "machine_list"],
@@ -245,6 +245,15 @@ sub_toctrees = {
 }
 
 
+# Wrapper pages that should behave like top-level navigation nodes while
+# listing canonical child pages directly in the same tree context.
+wrapper_toctree_patterns = {
+    "meshing_utilities": [
+        "datamodel/meshing_utilities/*/*_contents",
+    ],
+}
+
+
 def _write_common_rst_members(rst_file):
     rst_file.write("    :members:\n")
     rst_file.write("    :show-inheritance:\n")
@@ -268,6 +277,20 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 if file == "flobject":
                     rst.write(":orphan:\n\n")
                 rst.write(f".. _ref_{file}:\n\n")
+                if file in wrapper_toctree_patterns:
+                    rst.write(f"{file}\n")
+                    rst.write(f'{"="*(len(file))}\n\n')
+                    rst.write(".. toctree::\n")
+                    rst.write("    :maxdepth: 2\n")
+                    rst.write("    :hidden:\n")
+                    rst.write("    :glob:\n\n")
+                    for pattern in wrapper_toctree_patterns[file]:
+                        rst.write(f"    {pattern}\n")
+                    rst.write("\n")
+                    rst.write(
+                        "Meshing utilities APIs are listed below in this section.\n"
+                    )
+                    continue
                 if folder:
                     if "root" in file:
                         # Keep legacy references working while preserving the specific page anchor.
