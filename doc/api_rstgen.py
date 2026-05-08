@@ -51,17 +51,17 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     filereader/filereader_contents
     launcher/launcher_contents
     meshing/meshing_workflow_new
-    meshing/meshing_utilities
-    meshing/preferences
+    meshing/datamodel/meshing_utilities/meshing_utilities_contents
+    meshing/datamodel/preferences/preferences_contents
     scheduler/scheduler_contents
     services/services_contents
     solver/error_message
     solver/settings_root
     solver/tui/tui_contents
-    solver/flicing
-    solver/preferences
-    solver/solver_workflow
-    solver/workflow
+    solver/datamodel/flicing/flicing_contents
+    solver/datamodel/preferences/preferences_contents
+    solver/datamodel/solver_workflow/solver_workflow_contents
+    solver/datamodel/workflow/workflow_contents
     streaming_services/streaming_services_contents
     utils/utils_contents
     legacy/legacy_contents
@@ -148,8 +148,8 @@ hierarchy = {
     ],
     "meshing": [
         "meshing_workflow_new",
-        "meshing_utilities",
-        "preferences",
+        "datamodel/meshing_utilities/meshing_utilities_contents",
+        "datamodel/preferences/preferences_contents",
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
@@ -172,10 +172,10 @@ hierarchy = {
     "solver": [
         "error_message",
         "flobject",
-        "flicing",
-        "preferences",
-        "solver_workflow",
-        "workflow",
+        "datamodel/flicing/flicing_contents",
+        "datamodel/preferences/preferences_contents",
+        "datamodel/solver_workflow/solver_workflow_contents",
+        "datamodel/workflow/workflow_contents",
         "settings_root",
         "tui/tui_contents",
     ],
@@ -245,32 +245,6 @@ sub_toctrees = {
 }
 
 
-# Wrapper pages keep flattened API navigation while preserving links to
-# canonical generated datamodel/tui content pages.
-wrapper_configs = {
-    "meshing_utilities": {
-        "overview": "datamodel/meshing_utilities/meshing_utilities_contents",
-        "globs": ["datamodel/meshing_utilities/*/*_contents"],
-    },
-    "preferences": {
-        "overview": "datamodel/preferences/preferences_contents",
-        "globs": ["datamodel/preferences/*/*_contents"],
-    },
-    "flicing": {
-        "overview": "datamodel/flicing/flicing_contents",
-        "globs": ["datamodel/flicing/*/*_contents"],
-    },
-    "solver_workflow": {
-        "overview": "datamodel/solver_workflow/solver_workflow_contents",
-        "globs": ["datamodel/solver_workflow/*/*_contents"],
-    },
-    "workflow": {
-        "overview": "datamodel/workflow/workflow_contents",
-        "globs": ["datamodel/workflow/*/*_contents"],
-    },
-}
-
-
 def _write_common_rst_members(rst_file):
     rst_file.write("    :members:\n")
     rst_file.write("    :show-inheritance:\n")
@@ -294,22 +268,6 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 if file == "flobject":
                     rst.write(":orphan:\n\n")
                 rst.write(f".. _ref_{file}:\n\n")
-                if file in wrapper_configs:
-                    wrapper = wrapper_configs[file]
-                    title = file
-                    rst.write(f"{title}\n")
-                    rst.write(f'{"="*(len(title))}\n\n')
-                    rst.write(".. toctree::\n")
-                    rst.write("    :maxdepth: 1\n")
-                    rst.write("    :hidden:\n\n")
-                    rst.write("    :glob:\n\n")
-                    for pattern in wrapper["globs"]:
-                        rst.write(f"    {pattern}\n")
-                    rst.write("\n")
-                    rst.write(
-                        f"See :doc:`{title} overview <{wrapper['overview']}>` for full details.\n"
-                    )
-                    continue
                 if folder:
                     if "root" in file:
                         # Keep legacy references working while preserving the specific page anchor.
