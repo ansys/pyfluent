@@ -627,29 +627,35 @@ class FluentRestClient:
     def _execute(self, path: str, name: str, **kwds) -> Any:
         """Post a command or query and return the ``"reply"`` payload.
 
-        Shared implementation for :meth:`execute_cmd` and
-        :meth:`execute_query`.  Both methods are required by the
-        ``flobject`` proxy interface (``BaseCommand`` calls ``execute_cmd``,
-        ``BaseQuery`` calls ``execute_query``), but the transport-level
-        logic is identical.
-
-        Parameters
-        ----------
-        path : str
-            Path to the parent object.
-        name : str
-            Command or query name.
-        **kwds
-            Arbitrary keyword arguments forwarded as the JSON request body.
-
-        Returns
-        -------
-        Any
-            The ``"reply"`` field from the response, or the raw response
-            if no ``"reply"`` key is present.
+        Retries automatically when the server returns
+        ``400 Fluent not running`` — the solver may still be initialising
+        after the web server port opened.  Gives up after *_SOLVER_READY_TIMEOUT*
+        seconds and re-raises the original error.
         """
-        result = self._request("POST", f"{self._api_base}/{path}/{name}", body=kwds)
-        return result.get("reply") if isinstance(result, dict) else result
+        _SOLVER_READY_TIMEOUT = 120   # seconds
+        _SOLVER_RETRY_DELAY   = 5     # seconds between retries
+        start = time.time()
+        while True:
+            try:
+                result = self._request(
+                    "POST", f"{self._api_base}/{path}/{name}", body=kwds
+                )
+                return result.get("reply") if isinstance(result, dict) else result
+            except FluentRestError as exc:
+                elapsed = time.time() - start
+                if (
+                    exc.status == 400
+                    and "Fluent not running" in str(exc)
+                    and elapsed < _SOLVER_READY_TIMEOUT
+                ):
+                    logger.debug(
+                        "Solver not ready yet (400 Fluent not running) — "
+                        "retrying in %ds (elapsed=%.0fs / %ds)...",
+                        _SOLVER_RETRY_DELAY, elapsed, _SOLVER_READY_TIMEOUT,
+                    )
+                    time.sleep(_SOLVER_RETRY_DELAY)
+                    continue
+                raise
 
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute *command* at *path* with keyword arguments.

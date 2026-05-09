@@ -179,14 +179,75 @@ def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
         return False
 
 def _wait_for_server(port: int, timeout: int = 120) -> None:
-    start = time.time()
-    while time.time() - start < timeout:
+    """Block until the Fluent web server is fully ready.
+
+    Two-phase check:
+
+    * **Phase 1** — TCP connect: waits until the port is open (server process
+      is listening).  Polls every 2 s.
+    * **Phase 2** — Solver-ready probe: ``GET /api/connection/run_mode``.
+      Returns as soon as the solver responds (any HTTP reply, including 401).
+      A ``400 Fluent not running`` means the web-server is up but the solver
+      is still initialising — keep waiting.  Polls every 3 s.
+
+    Both phases share the same *timeout* deadline so the total wait never
+    exceeds *timeout* seconds.
+
+    Parameters
+    ----------
+    port : int
+        TCP port to probe.
+    timeout : int
+        Maximum total seconds to wait.  Defaults to ``120``.
+
+    Raises
+    ------
+    TimeoutError
+        If the server is not ready within *timeout* seconds.
+    """
+    deadline = time.monotonic() + timeout
+
+    # ── Phase 1: wait for TCP port to open ──────────────────────────────
+    logger.info("[wait] Phase 1 — waiting for TCP port %d to open...", port)
+    while time.monotonic() < deadline:
         try:
-            with socket.create_connection((_LOCALHOST, port), timeout=2):
-                return   # port open — server is up
+            with socket.create_connection((_LOCALHOST, port), timeout=2.0):
+                logger.info("[wait] Port %d is open.", port)
+                break
         except OSError:
-            time.sleep(2)   # not ready yet — wait 2s and retry
-    raise TimeoutError(f"Server on port {port} not responding after {timeout} seconds.")
+            time.sleep(2)
+    else:
+        raise TimeoutError(
+            f"Fluent web server on port {port} did not open within {timeout}s."
+        )
+
+    # ── Phase 2: wait for solver to be ready (no 400) ───────────────────
+    logger.info("[wait] Phase 2 — waiting for solver to be ready on port %d...", port)
+    probe_url = f"http://{_LOCALHOST}:{port}/api/connection/run_mode"
+    while time.monotonic() < deadline:
+        try:
+            req = urllib.request.Request(probe_url, method="GET")
+            with urllib.request.urlopen(req, timeout=3):  # nosec B310
+                logger.info("[wait] Solver is ready on port %d.", port)
+                return
+        except urllib.error.HTTPError as exc:
+            if exc.code == 400:
+                # Web server up but solver not initialised yet — keep waiting
+                logger.debug("[wait] Solver not ready yet (400) — retrying...")
+                time.sleep(3)
+            elif exc.code == 401:
+                # Auth required — server and solver are fully up
+                logger.info("[wait] Solver ready (401 on probe) — proceeding.")
+                return
+            else:
+                logger.debug("[wait] Unexpected HTTP %d — retrying...", exc.code)
+                time.sleep(3)
+        except Exception:
+            time.sleep(3)
+
+    raise TimeoutError(
+        f"Fluent solver on port {port} not ready within {timeout}s."
+    )
 
 def _get_fluent_exe(
     product_version: str | None = None,
