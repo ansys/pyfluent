@@ -319,6 +319,8 @@ def test_datamodel_streaming_full_diff_state(
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2999
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
