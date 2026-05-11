@@ -84,7 +84,7 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 - The :obj:`~ansys.fluent.core.solver.flobject.ListObject` type is a container holding dynamically
   created, unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
-  :term:`sequence`\. ``ListObject`` behaves much like a tuple though it supports :meth:`object.__setitem__`. 
+  :term:`sequence`\. ``ListObject`` behaves much like a tuple though it supports :meth:`object.__setitem__`.
   Children of a ``ListObject`` object can be accessed using the index operator.
   For example, ``solver_session.settings.setup.cell_zone_conditions.fluid['fluid-1'].sources.terms['mass'][2]``
   refers to the third (starting from index 0) mass source entry for the fluid zone
