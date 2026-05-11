@@ -169,9 +169,7 @@ class RestSolverSession:
             except Exception as exc:
                 msg = str(exc)
                 is_auth = (
-                    "401" in msg
-                    or "Unauthorized" in msg
-                    or "Invalid password" in msg
+                    "401" in msg or "Unauthorized" in msg or "Invalid password" in msg
                 )
                 if is_auth and attempt < retries - 1:
                     logger.debug(
