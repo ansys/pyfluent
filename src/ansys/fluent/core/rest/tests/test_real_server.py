@@ -52,6 +52,7 @@ class TestRealIsInteractiveMode:
     """GET /api/connection/run_mode"""
 
     def test_returns_bool(self, real_client):
+        """Verify that ``is_interactive_mode()`` returns a boolean."""
         result = real_client.is_interactive_mode()
         assert isinstance(result, bool)
 
@@ -65,25 +66,30 @@ class TestRealStaticInfo:
     """GET /api/fluent_1/static-info"""
 
     def test_returns_dict(self, real_client):
+        """Verify that ``get_static_info()`` returns a dictionary."""
         info = real_client.get_static_info()
         assert isinstance(info, dict)
 
     def test_root_type_is_group(self, real_client):
+        """Verify that the root of the settings tree is a 'group'."""
         info = real_client.get_static_info()
         assert info.get("type") == "group"
 
     def test_has_setup_and_solution(self, real_client):
+        """Verify that 'setup' and 'solution' are top-level children."""
         info = real_client.get_static_info()
         children = set(info.get("children", {}).keys())
         assert "setup" in children
         assert "solution" in children
 
     def test_setup_has_models(self, real_client):
+        """Verify that 'setup' contains 'models'."""
         info = real_client.get_static_info()
         setup_children = info["children"]["setup"].get("children", {})
         assert "models" in setup_children
 
     def test_setup_has_boundary_conditions(self, real_client):
+        """Verify that 'setup' contains 'boundary-conditions'."""
         info = real_client.get_static_info()
         setup_children = info["children"]["setup"].get("children", {})
         assert "boundary-conditions" in setup_children
@@ -98,30 +104,36 @@ class TestRealGetVar:
     """GET /api/fluent_1/{path}"""
 
     def test_energy_enabled_is_bool(self, real_client):
+        """Verify that reading the energy model state returns a boolean."""
         val = real_client.get_var("setup/models/energy/enabled")
         assert isinstance(val, bool)
 
     def test_viscous_model_is_string(self, real_client):
+        """Verify that reading the viscous model returns a non-empty string."""
         val = real_client.get_var("setup/models/viscous/model")
         assert isinstance(val, str)
         assert len(val) > 0
 
     def test_solver_time_is_string(self, real_client):
+        """Verify that reading the solver time returns a non-empty string."""
         val = real_client.get_var("setup/general/solver/time")
         assert isinstance(val, str)
         assert len(val) > 0
 
     def test_solver_group_returns_dict(self, real_client):
+        """Verify that reading a settings group returns a dictionary."""
         val = real_client.get_var("setup/general/solver")
         assert isinstance(val, dict)
         assert "time" in val
 
     def test_nonexistent_path_raises_error(self, real_client):
+        """Verify that reading a nonexistent path raises an error."""
         with pytest.raises(FluentRestError) as exc_info:
             real_client.get_var("setup/nonexistent/fake")
         assert exc_info.value.status in (404, 500)
 
     def test_solution_run_calculation_is_dict(self, real_client):
+        """Verify that reading a command group returns a dictionary."""
         val = real_client.get_var("solution/run-calculation")
         assert isinstance(val, dict)
 
@@ -174,12 +186,14 @@ class TestRealGetObjectNames:
     """GET /api/fluent_1/{path} — returns dict with names as keys."""
 
     def test_velocity_inlet_returns_string_list(self, real_client):
+        """Verify that a named-object container returns a list of strings."""
         names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
         assert isinstance(names, list)
         assert len(names) > 0
         assert all(isinstance(n, str) for n in names)
 
     def test_pressure_outlet_returns_list(self, real_client):
+        """Verify that another named-object container also returns a list."""
         names = real_client.get_object_names(
             "setup/boundary-conditions/pressure-outlet"
         )
@@ -187,18 +201,20 @@ class TestRealGetObjectNames:
         assert len(names) > 0
 
     def test_wall_returns_list(self, real_client):
+        """Verify that the 'wall' container returns a list."""
         names = real_client.get_object_names("setup/boundary-conditions/wall")
         assert isinstance(names, list)
         assert len(names) > 0
 
     def test_unknown_path_returns_empty(self, real_client):
+        """Verify that a nonexistent container path returns an empty list."""
         names = real_client.get_object_names(
             "setup/boundary-conditions/nonexistent-bc-type"
         )
         assert names == []
 
     def test_no_duplicates(self, real_client):
-        """Object names within a container must be unique."""
+        """Verify that object names within a container are unique."""
         names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
         assert len(names) == len(set(names))
 
@@ -212,18 +228,20 @@ class TestRealGetListSize:
     """GET /api/fluent_1/{path} — count object keys."""
 
     def test_velocity_inlet_size_positive(self, real_client):
+        """Verify that a named-object container has a positive size."""
         size = real_client.get_list_size("setup/boundary-conditions/velocity-inlet")
         assert isinstance(size, int)
         assert size > 0
 
     def test_size_matches_object_names(self, real_client):
-        """get_list_size must agree with len(get_object_names)."""
+        """Verify that get_list_size agrees with len(get_object_names)."""
         path = "setup/boundary-conditions/wall"
         size = real_client.get_list_size(path)
         names = real_client.get_object_names(path)
         assert size == len(names)
 
     def test_unknown_path_returns_zero(self, real_client):
+        """Verify that a nonexistent path returns a size of zero."""
         size = real_client.get_list_size("setup/nonexistent/fake")
         assert size == 0
 

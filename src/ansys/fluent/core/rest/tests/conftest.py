@@ -56,8 +56,8 @@ Before running the real-server tests, set the variables in your shell::
     export FLUENT_REST_HOST=127.0.0.1           # optional
 """
 
-import os
 import hashlib
+import os
 import urllib.request
 
 import pytest
@@ -90,11 +90,13 @@ def _real_server_reachable() -> bool:
         return False
     port = int(_REAL_SERVER_PORT_STR)
     url = (
-        f"{_REAL_SERVER_SCHEME}://{_REAL_SERVER_HOST}:{port}"
-        "/api/connection/run_mode"
+        f"{_REAL_SERVER_SCHEME}://{_REAL_SERVER_HOST}:{port}" "/api/connection/run_mode"
     )
     req = urllib.request.Request(url, method="GET")
-    req.add_header("Authorization", f"Bearer {hashlib.sha256(_REAL_SERVER_TOKEN.encode()).hexdigest()}")
+    req.add_header(
+        "Authorization",
+        f"Bearer {hashlib.sha256(_REAL_SERVER_TOKEN.encode()).hexdigest()}",
+    )
     try:
         with urllib.request.urlopen(req, timeout=3):  # nosec B310
             return True

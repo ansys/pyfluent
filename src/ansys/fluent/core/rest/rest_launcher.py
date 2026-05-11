@@ -87,7 +87,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 _LOCALHOST = "127.0.0.1"
-_TOKEN_ENV_VAR = "FLUENT_WEBSERVER_TOKEN"
+_TOKEN_ENV_VAR = "FLUENT_WEBSERVER_TOKEN"  # nosec B105
 
 
 # ---------------------------------------------------------------------------
@@ -116,8 +116,7 @@ def _get_free_port() -> int:
             return sock.getsockname()[1]
     except OSError as exc:
         raise RuntimeError(
-            "Could not find a free local TCP port. "
-            f"OS error: {exc}"
+            "Could not find a free local TCP port. " f"OS error: {exc}"
         ) from exc
 
 
@@ -171,12 +170,15 @@ def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
     """
     url = f"{base_url}/api/fluent_1/static-info"
     req = urllib.request.Request(url, method="GET")
-    req.add_header("Authorization", f"Bearer {hashlib.sha256(auth_token.encode()).hexdigest()}")
+    req.add_header(
+        "Authorization", f"Bearer {hashlib.sha256(auth_token.encode()).hexdigest()}"
+    )
     try:
         with urllib.request.urlopen(req, timeout=timeout):  # nosec B310
             return True
     except Exception:
         return False
+
 
 def _wait_for_server(port: int, timeout: int = 120) -> None:
     """Block until the Fluent web server is fully ready.
@@ -245,9 +247,8 @@ def _wait_for_server(port: int, timeout: int = 120) -> None:
         except Exception:
             time.sleep(3)
 
-    raise TimeoutError(
-        f"Fluent solver on port {port} not ready within {timeout}s."
-    )
+    raise TimeoutError(f"Fluent solver on port {port} not ready within {timeout}s.")
+
 
 def _get_fluent_exe(
     product_version: str | None = None,
@@ -435,7 +436,7 @@ def launch_webserver(
             f"Fluent process exited immediately with return code "
             f"{process.returncode}. Command: {launch_cmd}"
         )
-    
+
     # Wait for the server to become reachable
     _wait_for_server(port, timeout=start_timeout)
 

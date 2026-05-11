@@ -69,8 +69,8 @@ Error handling
 HTTP 4xx / 5xx responses raise :class:`FluentRestError`.
 """
 
-import json
 import hashlib
+import json
 import logging
 import time
 from typing import Any
@@ -230,7 +230,9 @@ class FluentRestClient:
             headers["Content-Type"] = "application/json"
 
         if self._auth_token:
-            headers["Authorization"] = f"Bearer {hashlib.sha256(self._auth_token.encode()).hexdigest()}"
+            headers["Authorization"] = (
+                f"Bearer {hashlib.sha256(self._auth_token.encode()).hexdigest()}"
+            )
 
         req = urllib.request.Request(
             url, data=data, headers=headers, method=method.upper()
@@ -417,10 +419,12 @@ class FluentRestClient:
         list[str]
             Sorted or insertion-order list of child names.  Returns ``[]``
             if the path does not exist (HTTP 404).
+
         Raises
         ------
         FluentRestError
-            If the server returns an unexpected error."""
+            If the server returns an unexpected error.
+        """
         try:
             result = self._request("GET", f"{self._api_base}/{path}")
         except FluentRestError as exc:
@@ -632,8 +636,8 @@ class FluentRestClient:
         after the web server port opened.  Gives up after *_SOLVER_READY_TIMEOUT*
         seconds and re-raises the original error.
         """
-        _SOLVER_READY_TIMEOUT = 120   # seconds
-        _SOLVER_RETRY_DELAY   = 5     # seconds between retries
+        _SOLVER_READY_TIMEOUT = 120  # seconds
+        _SOLVER_RETRY_DELAY = 5  # seconds between retries
         start = time.time()
         while True:
             try:
@@ -651,7 +655,9 @@ class FluentRestClient:
                     logger.debug(
                         "Solver not ready yet (400 Fluent not running) — "
                         "retrying in %ds (elapsed=%.0fs / %ds)...",
-                        _SOLVER_RETRY_DELAY, elapsed, _SOLVER_READY_TIMEOUT,
+                        _SOLVER_RETRY_DELAY,
+                        elapsed,
+                        _SOLVER_READY_TIMEOUT,
                     )
                     time.sleep(_SOLVER_RETRY_DELAY)
                     continue
