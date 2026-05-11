@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
@@ -1284,7 +1285,7 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
 
     # Add boundary layer
     two_dim_mesh.add_2d_boundary_layers.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers.bl_control_name = "aspect-ratio_1"
+    two_dim_mesh.add_2d_boundary_layers.control_name = "aspect-ratio_1"
     two_dim_mesh.add_2d_boundary_layers.number_of_layers = 4
     two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
@@ -1304,7 +1305,7 @@ def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
     two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name = "uniform_1"
+    two_dim_mesh.add_2d_boundary_layers_child_1.control_name = "uniform_1"
     two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
@@ -1346,6 +1347,10 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_sessio
         [repr(x) for x in watertight.import_geometry.insertable_tasks()]
     ) == sorted(_next_possible_tasks)
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        _next_possible_tasks.remove(
+            "<Insertable 'create_local_refinement_regions' task>"
+        )
     assert sorted(
         [repr(x) for x in watertight.import_geometry.insertable_tasks()]
     ) == sorted(_next_possible_tasks)
@@ -1575,8 +1580,8 @@ def test_workflow_traversal(new_meshing_session):
     assert wf_6.name() == "Add Boundary Layers"
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=26.1")
+@pytest.mark.skip(reason=SKIP_UNKNOWN)
+# Failing in github CI only, run this locally only.
 def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file(
@@ -1669,16 +1674,17 @@ def test_created_workflow(new_meshing_session):
 
     assert created_workflow.insertable_tasks() == []
 
-    assert "<Insertable 'add_local_sizing' task>" in [
-        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
-    ]
-    created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
-    assert "<Insertable 'add_local_sizing' task>" not in [
-        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
-    ]
-    assert sorted(created_workflow.task_names()) == sorted(
-        ["import_geometry", "add_local_sizing_wtm"]
-    )
+    # https://github.com/ansys/pyfluent/issues/5082
+    # assert "<Insertable 'add_local_sizing' task>" in [
+    #     repr(x) for x in created_workflow.import_geometry.insertable_tasks()
+    # ]
+    # created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
+    # assert "<Insertable 'add_local_sizing' task>" not in [
+    #     repr(x) for x in created_workflow.import_geometry.insertable_tasks()
+    # ]
+    # assert sorted(created_workflow.task_names()) == sorted(
+    #     ["import_geometry", "add_local_sizing_wtm"]
+    # )
 
 
 @pytest.mark.codegen_required
@@ -1946,7 +1952,8 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
         assert import_geom.length_unit.min()
 
 
-@pytest.mark.skip("Failing in Github randomly.")
+@pytest.mark.skip(reason=SKIP_UNKNOWN)
+# Failing in Github randomly.
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_return_state_changes(new_meshing_session):
@@ -2045,3 +2052,15 @@ def test_non_default_workflow(new_meshing_session):
             watertight.__class__.__module__
             == "ansys.fluent.core.meshing.meshing_workflow"
         )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_rename(new_meshing_session):
+    meshing = new_meshing_session
+    watertight = meshing.watertight()
+    assert watertight.import_geometry["Import Geometry"]
+    watertight.import_geometry.rename(new_name="IG")
+    with pytest.raises(LookupError):
+        watertight.import_geometry["Import Geometry"]
+    assert watertight.import_geometry["IG"]

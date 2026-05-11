@@ -140,7 +140,8 @@ mesh.surfaces_list = all_walls
 mesh.options.edges = True
 mesh.display()
 
-# graphics.picture.save_picture(file_name="modeling_solidification_1.png")
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="modeling_solidification_1.png")
 
 # %%
 # .. image:: ../../_static/modeling_solidification_1.png
@@ -333,6 +334,7 @@ temp_contour.coloring.option = "banded"
 temp_contour.display()
 
 graphics.views.restore_view(view_name="front")
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_2.png")
 
 # %%
@@ -353,6 +355,7 @@ mushy_temp.range.auto_range_off.maximum = 1200 * K
 mushy_temp.display()
 
 graphics.views.restore_view(view_name="front")
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_3.png")
 
 # %%
@@ -390,6 +393,7 @@ liquid_fraction_contour = Contour.create(
 )
 liquid_fraction_contour.display()
 
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_4.png")
 
 # %%
@@ -408,6 +412,7 @@ liquid_fraction_contour_t_5_sec = Contour.create(
 )
 liquid_fraction_contour_t_5_sec.display()
 
+graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="modeling_solidification_5.png")
 
 # %%

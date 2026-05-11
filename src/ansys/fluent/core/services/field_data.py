@@ -97,9 +97,11 @@ class FieldDataService(StreamingService):
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        super().__init__(
-            stub=FieldGrpcModule.FieldDataStub(intercept_channel), metadata=metadata
-        )
+        super().__init__(stub=self._create_stub(intercept_channel), metadata=metadata)
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return FieldGrpcModule.FieldDataStub(intercept_channel)
 
     def get_scalar_field_range(self, request):
         """GetRange RPC of FieldData service."""
@@ -557,9 +559,6 @@ class BaseFieldData:
         self,
         **kwargs,
     ) -> Dict:
-        if kwargs.get("zones") is None:
-            zones = []
-        del zones
         field_name = _to_field_name_str(kwargs.get("field_name"))
         pathlines_data = self.data[(("type", "pathlines-field"), ("field", field_name))]
         return self._returned_data._pathlines_data(
@@ -748,8 +747,7 @@ class Batch(FieldBatch):
         self,
         **kwargs,
     ) -> None:
-        if kwargs.get("zones") is None:
-            zones = []
+        zones = kwargs.get("zones", [])
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
         )
@@ -1565,8 +1563,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self,
         **kwargs,
     ) -> Dict:
-        if kwargs.get("zones") is None:
-            zones = []
+        zones = kwargs.get("zones", [])
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_scalar_field_names.valid_name(
             kwargs.get("field_name")
@@ -1774,7 +1771,14 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                     facets = []
                     for facet_pb in element_pb.facets:
                         facet = Facet(
-                            node_indices=[node_index_by_id[id] for id in facet_pb.node]
+                            node_indices=[
+                                node_index_by_id[id]
+                                for id in getattr(
+                                    facet_pb,
+                                    "nodes",
+                                    getattr(facet_pb, "node", []),
+                                )
+                            ]
                         )
                         facets.append(facet)
                     element = Element(

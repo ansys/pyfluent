@@ -20,7 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over TUI-based datamodel gRPC service of Fluent."""
+"""Wrappers over TUI-based datamodel gRPC service of Fluent.
+
+This module contains the shared TUI runtime/menu logic reused by the v1
+adapter module, which overrides only v1 proto/stub/request differences.
+"""
 
 import keyword
 import logging

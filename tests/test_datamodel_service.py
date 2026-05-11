@@ -23,6 +23,7 @@
 import gc
 from time import sleep
 
+from conftest import SKIP_INVESTIGATING
 from google.protobuf.json_format import MessageToDict
 import pytest
 from util import create_datamodel_root_in_server, create_root_using_datamodelgen
@@ -36,7 +37,6 @@ from ansys.fluent.core.services.datamodel_se import (
     PyArgumentsSingletonSubItem,
     PyArgumentsTextualSubItem,
     PyCommand,
-    PyMenuGeneric,
     PyNumerical,
     PyQuery,
     ReadOnlyObjectError,
@@ -289,7 +289,8 @@ def test_add_on_command_executed(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2999
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(
@@ -411,100 +412,6 @@ def test_task_object_keys_are_display_names(new_meshing_session):
     task_object_state = meshing.workflow.TaskObject()
     assert len(task_object_state) > 0
     assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
-
-
-def test_generic_datamodel(new_solver_session):
-    solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.setup.general.solver.time = "unsteady-2nd-order"
-    solver.solution.initialization.hybrid_initialize()
-    solver.scheme.eval("(init-flserver)")
-    flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
-    assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
-
-
-@pytest.mark.fluent_version(">=24.2")
-def test_named_object_specific_methods_using_flserver(new_solver_session):
-    import_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
-    solver = new_solver_session
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.solution.initialization.hybrid_initialize()
-    solver.solution.run_calculation.iterate(iter_count=10)
-    solver.tui.display.objects.create(
-        "contour",
-        "contour-z1",
-        "field",
-        "velocity-magnitude",
-        "surfaces-list",
-        "cold-inlet",
-    )
-    solver.tui.display.objects.create(
-        "contour",
-        "contour-z2",
-        "field",
-        "velocity-magnitude",
-        "surfaces-list",
-        "hot-inlet",
-    )
-    solver.tui.display.objects.create(
-        "contour",
-        "contour-z3",
-        "field",
-        "velocity-magnitude",
-        "surfaces-list",
-        "outlet",
-    )
-    solver.tui.display.objects.create(
-        "contour",
-        "contour-z4",
-        "field",
-        "velocity-magnitude",
-        "surfaces-list",
-        "wall-elbow",
-    )
-    solver.tui.display.objects.create(
-        "contour",
-        "contour-z5",
-        "field",
-        "velocity-magnitude",
-        "surfaces-list",
-        "wall-inlet",
-    )
-
-    flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
-
-    assert set(flserver.Case.Results.Graphics.Contour.get_object_names()) == {
-        "contour-z1",
-        "contour-z2",
-        "contour-z3",
-        "contour-z4",
-        "contour-z5",
-    }
-
-    assert "contour-x1" not in flserver.Case.Results.Graphics.Contour.get_object_names()
-
-    flserver.Case.Results.Graphics.Contour["contour-z1"].rename("contour-x1")
-
-    assert "contour-x1" in flserver.Case.Results.Graphics.Contour.get_object_names()
-
-    flserver.Case.Results.Graphics.delete_child_objects(
-        "Contour", ["contour-x1", "contour-z2"]
-    )
-
-    assert set(flserver.Case.Results.Graphics.Contour.get_object_names()) == {
-        "contour-z3",
-        "contour-z4",
-        "contour-z5",
-    }
-
-    flserver.Case.Results.Graphics.delete_all_child_objects("Contour")
-
-    assert not flserver.Case.Results.Graphics.Contour.get_object_names()
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -839,6 +746,8 @@ def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session
     ic = meshing.meshing.LoadCADGeometry.create_instance()
 
+    ic.Refaceting.Refacet = True
+
     assert ic.Refaceting.FacetResolution() == "Medium"
     assert ic.Refaceting.NormalAngle() == 8.0
 
@@ -853,15 +762,27 @@ def test_field_level_help(new_meshing_session):
     deviation = meshing.PartManagement.AssemblyNode["node-1"].Refaceting.Deviation
     assert isinstance(deviation, PyNumerical)
     # Field-level help at parameter level
-    assert deviation.__doc__.strip().startswith(
-        "Specify the distance between facet edges and the geometry edges. Decreasing this value"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert deviation.__doc__.strip().startswith(
+            "The distance between facet edges and geometry edges, where lower values result in more facets along curved edges."
+        )
+    else:
+        assert deviation.__doc__.strip().startswith(
+            "Specify the distance between facet edges and the geometry edges. Decreasing this value"
+        )
     # TODO Test Field-level help at singleton level when we have that in the datamodel
     assert meshing.meshing.ImportGeometry, PyCommand
     # Field-level help at command level
-    assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
-        "Specify the CAD geometry that you want to work with. Choose from"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Imports a geometry file for meshing tasks."
+        )
+    else:
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Specify the CAD geometry that you want to work with. Choose from"
+        )
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
     assert isinstance(import_geometry.FileFormat, PyArgumentsTextualSubItem)
     # Field-level help at parameter-type command argument level
@@ -871,9 +792,15 @@ def test_field_level_help(new_meshing_session):
     linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
     assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
-    assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
-        "Specify a name for the mesh pattern or use the default value."
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Represents a vector defining the direction and magnitude of a linear mesh pattern within a meshing framework."
+        )
+    else:
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Specify a name for the mesh pattern or use the default value."
+        )
 
 
 @pytest.mark.codegen_required

@@ -588,7 +588,7 @@ surf_report_files.create(
 # ~~~~~~~~
 # Set the case to save only the data file at each timestep for post-processing.
 
-autosave = solver.settings.file.auto_save
+autosave = solver.settings.solution.calculation_activity.auto_save
 
 autosave.case_frequency = "if-mesh-is-modified"
 autosave.data_frequency = 1

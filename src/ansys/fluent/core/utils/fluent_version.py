@@ -31,6 +31,7 @@ import platform
 from typing import Any
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 
 
 class AnsysVersionNotFound(RuntimeError):
@@ -90,7 +91,7 @@ class FluentVersion(Enum):
     FluentVersion.v252.awp_var == 'AWP_ROOT252'
     """
 
-    v262 = "26.2.0"
+    v271 = "27.1.0"
     v261 = "26.1.0"
     v252 = "25.2.0"
     v251 = "25.1.0"
@@ -125,8 +126,12 @@ class FluentVersion(Enum):
             If an Ansys version cannot be found.
         """
         for member in cls:
-            if member.awp_var in os.environ and member.get_fluent_exe_path().exists():
-                return member
+            if os.environ.get(member.awp_var):
+                try:
+                    member.get_fluent_exe_path()
+                    return member
+                except FileNotFoundError:
+                    continue
 
         raise FileNotFoundError(
             "Unable to locate a compatible Ansys Fluent installation. "
@@ -135,6 +140,38 @@ class FluentVersion(Enum):
         )
 
     def get_fluent_exe_path(self) -> Path:
+        """Get the path for the Fluent executable file.
+
+        Returns
+        -------
+        Path
+            Fluent executable path.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the corresponding ``AWP_ROOTnnn`` environment variable is unset or invalid,
+            or if the Fluent executable path derived from it does not exist.
+        """
+        awp_root = os.getenv(self.awp_var)
+        if not awp_root:
+            raise FileNotFoundError(
+                f"Environment variable '{self.awp_var}' is not set or is empty. "
+                "Set it to the root of a valid Ansys installation containing Fluent."
+            )
+
+        exe_path = self._get_fluent_exe_path()
+        if exe_path.exists():
+            return exe_path
+
+        raise FileNotFoundError(
+            "Fluent executable not found (or is inaccessible) at the expected path "
+            f"'{exe_path}'. Environment variable '{self.awp_var}' is set to '{awp_root}', "
+            "but no Fluent executable was found there. Verify that it points to a valid "
+            "Ansys installation containing Fluent."
+        )
+
+    def _get_fluent_exe_path(self) -> Path:
         """Get the path for the Fluent executable file.
 
         Returns
@@ -159,7 +196,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(pyfluent.config.fluent_release_version)
+        return cls(config.fluent_release_version)
 
     @classmethod
     def current_dev(cls):
@@ -170,7 +207,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(pyfluent.config.fluent_dev_version)
+        return cls(config.fluent_dev_version)
 
     @classmethod
     def minimum_supported(cls):

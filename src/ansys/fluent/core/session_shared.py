@@ -24,16 +24,10 @@
 
 import logging
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import warning_for_fluent_dev_version
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-
-_CODEGEN_MSG_DATAMODEL = (
-    "Currently calling the datamodel API in a generic manner. "
-    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local datamodel API classes."
-)
+from ansys.fluent.core.utils import load_module
 
 _CODEGEN_MSG_TUI = (
     "Currently calling the TUI commands in a generic manner. "
@@ -47,9 +41,7 @@ tui_logger = logging.getLogger("pyfluent.tui")
 
 def _make_tui_module(session, module_name):
     try:
-        from ansys.fluent.core import config
-
-        tui_module = pyfluent.utils.load_module(
+        tui_module = load_module(
             f"{module_name}_tui_{session._version}",
             config.codegen_outdir / module_name / f"tui_{session._version}.py",
         )
@@ -65,18 +57,15 @@ def _make_tui_module(session, module_name):
 
 def _make_datamodel_module(session, module_name):
     try:
-        from ansys.fluent.core import config
         from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
 
         file_name = datamodel_file_name_map[module_name]
-        module = pyfluent.utils.load_module(
+        module = load_module(
             f"{module_name}_{session._version}",
             config.codegen_outdir / f"datamodel_{session._version}" / f"{file_name}.py",
         )
         warning_for_fluent_dev_version(session._version)
         return module.Root(session._se_service, module_name, [])
     except (ImportError, FileNotFoundError) as ex:
-        datamodel_logger.debug(ex)
-        datamodel_logger.warning("Generated API not found for %s.", module_name)
-        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-        return PyMenuGeneric(session._se_service, module_name)
+        msg = "Please run `python codegen/allapigen.py` from the top-level pyfluent directory to generate the local datamodel API classes."
+        raise RuntimeError(msg) from ex
