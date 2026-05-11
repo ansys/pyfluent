@@ -32,7 +32,6 @@ from typing import TYPE_CHECKING
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.session_shared import _make_datamodel_module
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow_new import Workflow
 
 if TYPE_CHECKING:
