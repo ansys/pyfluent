@@ -151,7 +151,8 @@ class AppUtilities(_AppUtilitiesV0):
     def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard (v1: Settings.IsWildcard)."""
         request = SettingsModule.IsWildcardRequest()
-        request.input = input
+        if input is not None:
+            request.input = input
         response = self.service.is_wildcard(request)
         return response.is_wildcard
 
