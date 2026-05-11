@@ -4,10 +4,12 @@ import os
 from pathlib import Path
 import shutil
 
-from bridge_content import (
+from doc_utils import (
     legacy_bridge_content,
     meshing_workflow_bridge_content,
+    solver_workflows_bridge_content,
 )
+from doc_utils import get_display_name as _format_display_name
 
 from ansys.fluent.core import FluentVersion
 
@@ -52,15 +54,13 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     launcher/launcher_contents
     meshing/meshing_workflow_new
     meshing/meshing_utilities
-    meshing/preferences
     scheduler/scheduler_contents
     services/services_contents
     solver/error_message
     solver/settings_root
     solver/flicing
     solver/preferences
-    solver/solver_workflow
-    solver/workflow
+    solver_workflows/solver_workflows_contents
     streaming_services/streaming_services_contents
     utils/utils_contents
     legacy/legacy_contents
@@ -148,7 +148,6 @@ hierarchy = {
     "meshing": [
         "meshing_workflow_new",
         "meshing_utilities",
-        "preferences",
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
@@ -230,6 +229,10 @@ hierarchy = {
         "../meshing/tui/tui_contents",
         "../solver/tui/tui_contents",
     ],
+    "solver_workflows": [
+        "../solver/solver_workflow",
+        "../solver/workflow",
+    ],
 }
 
 
@@ -268,8 +271,18 @@ wrapper_toctree_patterns = {
 
 # Display name overrides for entries listed in the legacy toctree.
 legacy_toctree_display_names = {
+    "../meshing/datamodel/meshing/meshing_contents": "Meshing",
+    "../meshing/datamodel/part_management/part_management_contents": "Part management",
+    "../meshing/datamodel/pm_file_management/pm_file_management_contents": "Part file management",
+    "../meshing/datamodel/workflow/workflow_contents": "Workflow",
     "../meshing/tui/tui_contents": "Tui (meshing)",
     "../solver/tui/tui_contents": "Tui (solver)",
+}
+
+# Display name overrides for entries listed in the solver_workflows toctree.
+solver_workflows_toctree_display_names = {
+    "../solver/solver_workflow": "Solver workflow",
+    "../solver/workflow": "Workflow",
 }
 
 
@@ -286,14 +299,7 @@ def _get_display_name(node_name: str) -> str:
     If no override exists, fallback converts underscores to spaces and
     capitalizes only the first character.
     """
-    if node_name in NODE_DISPLAY_NAMES:
-        return NODE_DISPLAY_NAMES[node_name]
-
-    fallback = node_name.replace("_", " ")
-    # If any node name is empty
-    if not fallback:
-        return fallback
-    return fallback[0].upper() + fallback[1:]
+    return _format_display_name(node_name, NODE_DISPLAY_NAMES)
 
 
 def _write_common_rst_members(rst_file):
@@ -393,7 +399,7 @@ def _generate_api_index_rst_files():
                 folder_title = _get_display_name(folder)
                 index.write(f"{folder_title}\n")
                 index.write(f'{"="*(len(folder_title))}\n\n')
-                if folder != "legacy":
+                if folder not in ["legacy", "solver_workflows"]:
                     index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
                     _write_common_rst_members(rst_file=index)
                 index.write(".. toctree::\n")
@@ -404,13 +410,23 @@ def _generate_api_index_rst_files():
                         index.write(
                             f"    {legacy_toctree_display_names[file]} <{file}>\n"
                         )
+                    elif (
+                        folder == "solver_workflows"
+                        and file in solver_workflows_toctree_display_names
+                    ):
+                        index.write(
+                            f"    {solver_workflows_toctree_display_names[file]} <{file}>\n"
+                        )
                     else:
                         index.write(f"    {file}\n")
                 index.write("\n")
                 match folder:
                     case "legacy":
                         index.write(legacy_bridge_content)
-            _generate_api_source_rst_files(folder, files)
+                    case "solver_workflows":
+                        index.write(solver_workflows_bridge_content)
+            if folder != "solver_workflows":
+                _generate_api_source_rst_files(folder, files)
 
 
 if __name__ == "__main__":

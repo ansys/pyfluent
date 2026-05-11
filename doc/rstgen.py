@@ -6,6 +6,8 @@ import pathlib
 from pathlib import Path
 import re
 
+from doc_utils import get_display_name as _format_display_name
+
 _THIS_DIRNAME = os.path.dirname(__file__)
 
 
@@ -337,7 +339,7 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
     else:
         title = "tui" if menu["name"].__name__ == "main_menu" else menu["name"].__name__
     if title and menu["name"].__name__ != "Root":
-        title = title[0].upper() + title[1:]
+        title = _format_display_name(title)
     return title
 
 
