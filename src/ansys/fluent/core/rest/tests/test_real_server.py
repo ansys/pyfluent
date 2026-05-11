@@ -42,7 +42,6 @@ from ansys.fluent.core.rest.client import FluentRestError
 
 pytestmark = pytest.mark.real_server
 
-
 # ---------------------------------------------------------------------------
 # 1. is_interactive_mode
 # ---------------------------------------------------------------------------
