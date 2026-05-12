@@ -24,8 +24,7 @@
 
 from ansys.fluent.core.services.app_utilities import AppUtilities as AppUtilitiesV0
 from ansys.fluent.core.services.app_utilities_v1 import AppUtilities
-from ansys.fluent.core.services.batch_ops import BatchOpsService as BatchOpsServiceV0
-from ansys.fluent.core.services.batch_ops_v1 import BatchOpsService
+from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
 )
@@ -93,7 +92,7 @@ _service_cls_by_name_v0 = {
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
     "transcript": TranscriptServiceV0,
-    "batch_ops": BatchOpsServiceV0,
+    "batch_ops": BatchOpsService,
     "field_data_streaming": FieldDataStreamingV0,
 }
 

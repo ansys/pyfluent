@@ -67,7 +67,7 @@ class DatamodelServiceImpl(_v0.DatamodelServiceImpl):
             _v0.TracingInterceptor(),
             _v0.BatchInterceptor(),
         )
-        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
+        self._stub = DataModelGrpcModule.TextInterfaceStub(intercept_channel)
         self._metadata = metadata
 
 
