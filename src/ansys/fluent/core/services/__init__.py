@@ -30,8 +30,7 @@ from ansys.fluent.core.services.app_utilities_v1 import (
     AppUtilities,
     AppUtilitiesService,
 )
-from ansys.fluent.core.services.batch_ops import BatchOps as BatchOpsV0
-from ansys.fluent.core.services.batch_ops import BatchOpsService as BatchOpsServiceV0
+from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
 )
@@ -104,8 +103,6 @@ __all__ = (
     "AppUtilitiesServiceV0",
     "BatchOpsService",
     "BatchOps",
-    "BatchOpsServiceV0",
-    "BatchOpsV0",
     "DatamodelService_SE",
     "DatamodelService_SE_V0",
     "DatamodelService_TUI",

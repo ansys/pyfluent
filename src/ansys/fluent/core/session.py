@@ -42,7 +42,6 @@ from ansys.fluent.core.pyfluent_warnings import (
 )
 from ansys.fluent.core.services import (
     BatchOpsService,
-    BatchOpsServiceV0,
     DatamodelService_SE,
     DatamodelService_SE_V0,
     DatamodelService_TUI,
@@ -279,11 +278,9 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = (
-            BatchOpsService
-            if fluent_connection._server_supports_v1
-            else BatchOpsServiceV0
-        )(fluent_connection._channel, fluent_connection._metadata)
+        self._batch_ops_service = BatchOpsService(
+            fluent_connection._channel, fluent_connection._metadata
+        )
 
         if event_type:
             events_service = (
