@@ -32,7 +32,6 @@ from ansys.fluent.core.services.app_utilities_v1 import (
 )
 from ansys.fluent.core.services.batch_ops import BatchOps as BatchOpsV0
 from ansys.fluent.core.services.batch_ops import BatchOpsService as BatchOpsServiceV0
-from ansys.fluent.core.services.batch_ops_v1 import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
 )
