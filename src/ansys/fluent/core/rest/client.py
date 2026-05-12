@@ -60,9 +60,11 @@ Authentication
 ~~~~~~~~~~~~~~
 Every request carries the header::
 
-    Authorization: Bearer <auth_token>
+    Authorization: Bearer <sha256_hexdigest(auth_token)>
 
-where *auth_token* is the password set when the Fluent session was started.
+where *auth_token* is the password set when the Fluent session was started,
+and the value sent in the header is the SHA-256 hexadecimal digest of that
+token.
 
 Error handling
 ~~~~~~~~~~~~~~
