@@ -9,11 +9,11 @@ Steady or transient solution model
 
 .. code:: python
 
-  >>> setup = pyfluent.solver.Setup(settings_source=solver_session)
+  >>> setup = pyfluent.solver.Setup(solver_session)
   >>> solver_time = setup.general.solver.time
-  >>> solver_time.get_state()
+  >>> solver_time()
   'steady'
-  >>> solver_time.allowed_values()
+  >>> solver_time.all()
   ['steady', 'unsteady-1st-order']
   >>> solver_time.set_state("unsteady-1st-order")
 
@@ -23,39 +23,39 @@ Pressure-based or density-based solver
 
 .. code:: python
 
-  >>> setup = pyfluent.solver.Setup(settings_source=solver_session)
-  >>> solver_type = setup.general.solver.type
-  >>> solver_type.get_state()
+  >>> setup = pyfluent.solver.Setup(solver_session)
+  >>> solver = setup.general.solver
+  >>> solver.type()
   'pressure-based'
-  >>> solver_type.allowed_values()
+  >>> solver.type.all()
   ['pressure-based', 'density-based-implicit', 'density-based-explicit']
-  >>> solver_session.settings.setup.general.solver.type.set_state("density-based-explicit")
-  >>> solver_type.get_state()
+  >>> solver.type = "density-based-explicit"
+  >>> solver.type()
   'density-based-explicit'
 
 
 Velocity coupling scheme and gradient options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
 .. code:: python
 
-  >>> methods = pyfluent.solver.Methods(settings_source=solver_session)
+  >>> methods = pyfluent.solver.Methods(solver_session)
   >>> flow_scheme = methods.p_v_coupling.flow_scheme
-  >>> flow_scheme.allowed_values()
+  >>> flow_scheme.all()
   ['SIMPLE', 'SIMPLEC', 'PISO', 'Coupled']
   >>> flow_scheme.set_state("Coupled")
   >>> gradient_scheme = methods.gradient_scheme
-  >>> gradient_scheme.allowed_values()
+  >>> gradient_scheme.all()
   ['green-gauss-node-based', 'green-gauss-cell-based', 'least-square-cell-based']
   >>> gradient_scheme.set_state("green-gauss-node-based")
 
 
-Solution controls 
+Solution controls
 ~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-  >>> controls = pyfluent.solver.Controls(settings_source=solver_session)
+  >>> controls = pyfluent.solver.Controls(solver_session)
   >>> p_v_controls = controls.p_v_controls
   >>> explicit_momentum_under_relaxation = p_v_controls.explicit_momentum_under_relaxation
   >>> explicit_momentum_under_relaxation.min()
@@ -75,16 +75,15 @@ Create a report definition
 
 .. code:: python
 
-  >>> rep_defs = pyfluent.solver.ReportDefinitions(settings_source=solver_session)
-  >>> surface_report_definitions = rep_defs.surface
-  >>> defn_name = "outlet-temp-avg"
-  >>> surface_report_definitions[defn_name] = {}
-  >>> outlet_temperature = surface_report_definitions[defn_name]
-  >>> outlet_temperature.report_type.set_state("surface-massavg")
-  >>> outlet_temperature.field.set_state("temperature")
+  >>> rep_defs = pyfluent.solver.ReportDefinitions(solver_session)
+  >>> outlet_temperature = rep_defs.surface.create(
+  ...     name="outlet-temp-avg",
+  ...     report_type="surface-massavg",
+  ...     field="temperature",
+  ... )
 
 
-Initialize and solve 
+Initialize and solve
 ~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
