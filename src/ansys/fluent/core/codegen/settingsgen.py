@@ -21,12 +21,12 @@
 # SOFTWARE.
 
 """Module to generate the classes corresponding to the Fluent settings API."""
-
 import argparse
 import hashlib
 from io import StringIO
 import keyword
 import pickle
+import re
 import time
 from typing import IO
 
@@ -184,6 +184,16 @@ def _get_unique_name(name):
     return name
 
 
+def camel_to_snake_case(name: str) -> str:
+    """Convert a CamelCase string to snake_case."""
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+
+
+def snake_to_camel_case(name: str) -> str:
+    """Convert a snake_case string to CamelCase."""
+    return "".join(part.capitalize() for part in name.split("_") if part)
+
+
 _arg_type_strings = {
     "Boolean": "bool",
     "Integer": "int",
@@ -230,12 +240,16 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s = StringIO()
     s_stub = StringIO()
     child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
+    child_object_name_stub = (
+        snake_to_camel_case(child_object_name) if child_object_name else None
+    )
+    stub_cls_name = snake_to_camel_case(cls_name)
     bases = _construct_bases(data["bases"], child_object_name)
     bases = ", ".join(bases)
-    bases_stub = _construct_bases_stub(data["bases"], child_object_name)
+    bases_stub = _construct_bases_stub(data["bases"], child_object_name_stub)
     bases_stub = ", ".join(bases_stub)
     s.write(f"class {cls_name}({bases}):\n")
-    s_stub.write(f"class {cls_name}({bases_stub}):\n")
+    s_stub.write(f"class {stub_cls_name}({bases_stub}):\n")
     doc = data["doc"]
     doc = doc.strip().replace("\n", "\n    ")
     s.write('    """\n')
@@ -293,7 +307,6 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             # to write only if it is not found in the _NAME_BY_HASH dict and avoid
             # the _CLASS_WRITTEN set.
             if k in command_names + query_names:
-
                 # Special handling for create commands that only expose a "name" child.
                 # In this case, the actual arguments of the create operation are
                 # described by the associated child_object_type, not by the "name"
@@ -307,7 +320,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
                 _write_function_stub(k, v, s_stub)
                 classes_to_write[unique_name] = (child_python_name, v, hash_, False)
             else:
-                s_stub.write(f"    {k}: {unique_name}\n")
+                s_stub.write(f"    {k}: {snake_to_camel_case(unique_name)}\n")
                 classes_to_write[unique_name] = (child_python_name, v, hash_, True)
         s.write("    )\n")
     if child_object_name:
@@ -319,7 +332,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             _gethash(child_object_type),
             True,
         )
-        s_stub.write(f"    child_object_type: {child_object_name}\n")
+        s_stub.write(f"    child_object_type: {child_object_name_stub}\n")
     child_aliases = data["child_aliases"]
     if child_aliases:
         s.write("    _child_aliases = dict(\n")
@@ -346,6 +359,8 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         s_stub.write("    _has_migration_adapter: bool\n")
     s.write("\n")
     s_stub.write("\n")
+    if stub_cls_name != cls_name:
+        s_stub.write(f"{cls_name} = {stub_cls_name}\n\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
         if name not in _CLASS_WRITTEN:
             _write_data(

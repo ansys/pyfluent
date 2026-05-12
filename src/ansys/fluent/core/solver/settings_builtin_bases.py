@@ -47,7 +47,7 @@ class Solver(Protocol):
         ...
 
 
-def _get_settings_root(settings_source: Solver | SettingsBase[object]):
+def _get_settings_root(settings_source: Solver | SettingsBase[object]) -> Settings:
     def is_root_obj(obj):
         return isinstance(obj, SettingsBase) and obj.parent is None
 
@@ -62,9 +62,11 @@ def _get_settings_root(settings_source: Solver | SettingsBase[object]):
 
 
 def _get_settings_obj(
-    settings_root: Settings, builtin_settings_obj: "_SettingsObjectMixin"
+    settings_root: Settings,
+    builtin_cls_db_name: str,
+    *,
+    extras: dict[str, Any] | None = None,
 ) -> SettingsBase[object]:
-    builtin_cls_db_name = builtin_settings_obj._db_name
     obj = settings_root
     path = DATA[builtin_cls_db_name][1]
     found_path = None
@@ -85,49 +87,60 @@ def _get_settings_obj(
         except InactiveObjectError:
             raise InactiveObjectError(builtin_cls_db_name) from None
         if i < len(comps) - 1 and isinstance(obj, NamedObject):
-            obj_name = getattr(builtin_settings_obj, comp)
+            obj_name = (extras or {}).get(comp)
+            if obj_name is None:
+                raise RuntimeError(
+                    f"Named object key for '{comp}' is required to resolve"
+                    f" '{builtin_cls_db_name}'."
+                )
             obj = obj[obj_name]
     return obj
 
 
+def _swap(instance, settings_root: Settings, obj: SettingsBase[object]) -> None:
+    """Replace *instance* in-place with the underlying settings object *obj*."""
+    instance.__class__ = obj.__class__
+    instance.__dict__.clear()
+    instance.__dict__.update(obj.__dict__)
+    instance.__dict__["settings_source"] = settings_root
+
+
 class _SettingsObjectMixin:
     _db_name: str
-    kwargs: dict[str, Any]
+    settings_source: SettingsBase[object] | None  # None when deferred
 
-    def __init__(
-        self,
-        settings_source: Solver | None = None,
-        _db_name: str | None = None,
-        **kwargs: Any,
-    ):
-        if _db_name is not None:
-            self._db_name = _db_name  # used to change the cardinality in .all()
-        active_session = _get_active_session()
-        self.kwargs = kwargs
-        if settings_source is not None:
-            self.settings_source = settings_source
-        elif active_session:
-            self.settings_source = active_session
-        else:
-            raise RuntimeError("No active session and no settings_source provided.")
-
-        settings_root = _get_settings_root(self.settings_source)
-        parent = _get_settings_obj(settings_root, self)
-        obj = self._init_settings_instance(parent)
-        self.__class__ = obj.__class__
-        self.__dict__.clear()
-        self.__dict__.update(obj.__dict__ | {"settings_source": settings_root})
+    def _should_materialize(self) -> bool:
+        # Singletons always materialize; subclasses override for named objects.
+        return True
 
     def _init_settings_instance(
         self, parent: SettingsBase[object]
     ) -> SettingsBase[object]:
         raise NotImplementedError
 
+    def _init_deferred_settings_instance(
+        self, parent: SettingsBase[object]
+    ) -> SettingsBase[object]:
+        return self._init_settings_instance(parent)
+
 
 class _SingletonSetting(_SettingsObjectMixin):
     # Covers groups, named-object containers and commands.
-    def __init__(self, settings_source: Solver | None = None, **kwargs):
-        super().__init__(settings_source, **kwargs)
+    def __init__(
+        self,
+        settings_source: SettingsBase[object] | Solver | None = None,
+        /,
+        **kwargs: Any,
+    ):
+        # Store extras (e.g. parametric_studies="...") for intermediate NamedObject paths.
+        self.__dict__.update(kwargs)
+        effective_source = _get_active_session() or settings_source
+        if effective_source is None:
+            raise TypeError("No active session or settings source provided.")
+        settings_root = _get_settings_root(effective_source)
+        parent = _get_settings_obj(settings_root, self._db_name, extras=self.__dict__)
+        obj = self._init_settings_instance(parent)
+        _swap(self, settings_root, obj)
 
     def _init_settings_instance(
         self, parent: SettingsBase[object]
@@ -138,119 +151,160 @@ class _SingletonSetting(_SettingsObjectMixin):
 class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
     def __init__(
         self,
-        settings_source: Solver | None = None,
+        settings_source: SettingsBase[object] | Solver | None = None,
+        /,
+        *,
+        name: str | None = None,
+    ):
+        # Store name only if not None to avoid polluting __dict__
+        if name is not None:
+            self.__dict__["name"] = name
+
+        effective_source = _get_active_session() or settings_source
+        if effective_source is None:
+            raise TypeError("No active session or settings source provided.")
+        db_name_to_use = DATA[self.__class__._db_name][2]
+        if db_name_to_use is not None:
+            self.__dict__["_db_name"] = db_name_to_use
+        settings_root = _get_settings_root(effective_source)
+        if self._should_materialize():
+            # Create extras dict with navigation params only (exclude wrapper params)
+            extras = {
+                k: v for k, v in self.__dict__.items() if k not in {"name", "kwargs"}
+            }
+            parent = _get_settings_obj(settings_root, self._db_name, extras=extras)
+            obj = self._init_settings_instance(parent)
+            _swap(self, settings_root, obj)
+            if db_name_to_use is not None:
+                self.__dict__["_db_name"] = db_name_to_use
+        else:
+            # Container proxy: store session for get()/all().
+            self.__dict__["settings_source"] = settings_root
+
+    def _init_settings_instance(
+        self, parent: SettingsBase[object]
+    ) -> SettingsBase[object]:
+        name = self.__dict__.get("name")
+        if name:
+            return parent[name]
+        else:
+            return parent
+
+    def _should_materialize(self) -> bool:
+        return self.__dict__.get("name") is not None
+
+    def all(self) -> list[Self]:
+        """Return a list of all instances of this object in Fluent."""
+        return cast(
+            list[Self],
+            list(
+                _get_settings_obj(
+                    self.settings_source,
+                    DATA[self._db_name][2],
+                )["*"]
+            ),
+        )
+
+    def get(self, name: str) -> Self:
+        """Get and return the named instance of this object in Fluent.
+
+        Parameters
+        ----------
+        name
+            Name of the object to get, if applicable, can be a wildcard pattern.
+        """
+        return cast(
+            Self,
+            _get_settings_obj(self.settings_source, self._db_name)[name],
+        )
+
+
+class _CreatableNamedObjectSetting(_SettingsObjectMixin):
+    def __init__(
+        self,
+        settings_source: SettingsBase[object] | Solver | None = None,
+        /,
+        *,
+        new_instance_name: str | None = None,
         name: str | None = None,
         **kwargs: Any,
     ):
-        self.name = name
-        super().__init__(
-            settings_source,
-            name=name,
-            **kwargs,
-            _db_name=(  # initialise as the parent container
-                (
-                    DATA[self.__class__._db_name][2]
-                    if name is None
-                    else kwargs.get("_db_name")
-                ),
-            ),
+
+        # Store only non-None wrapper params; avoid polluting __dict__ with None values
+        if new_instance_name is not None:
+            self.__dict__["new_instance_name"] = new_instance_name
+        if name is not None:
+            self.__dict__["name"] = name
+        # For proxy delegation, store only navigation kwargs (not wrapper-specific ones)
+        self.__dict__.update(kwargs)
+        self.__dict__["kwargs"] = kwargs
+
+        effective_source = _get_active_session() or settings_source
+        if effective_source is None:
+            raise TypeError("No active session or settings source provided.")
+        settings_root = _get_settings_root(effective_source)
+        if self._should_materialize():
+            # Create extras dict with navigation params only (exclude wrapper params)
+            extras = {
+                k: v
+                for k, v in self.__dict__.items()
+                if k not in {"new_instance_name", "name", "kwargs"}
+            }
+            parent = _get_settings_obj(settings_root, self._db_name, extras=extras)
+            obj = self._init_settings_instance(parent)
+            _swap(self, settings_root, obj)
+        else:
+            # Container proxy mode: store settings source without creating instance
+            self.__dict__["settings_source"] = settings_root
+
+    def _should_materialize(self) -> bool:
+        return (
+            self.__dict__.get("new_instance_name") is not None
+            or self.__dict__.get("name") is not None
         )
 
     def _init_settings_instance(
         self, parent: SettingsBase[object]
     ) -> SettingsBase[object]:
-        return parent[self.name]
+        new_instance_name = self.__dict__.get("new_instance_name")
+        name = self.__dict__.get("name")
+        if new_instance_name:
+            instance = parent.create(new_instance_name)
+            if self.__dict__.get("kwargs"):
+                instance.set_state(self.__dict__["kwargs"])
+            return instance
+        elif name:
+            return parent[name]
+        else:
+            return parent  # container proxy path -- not reached via eager init
 
-    @classmethod
-    def all(cls, solver: Solver | None = None, /) -> list[Self]:
-        """Return a list of all instances of this object in Fluent."""
-        return cast(
-            list[
-                Self
-            ],  # yes this looks like an unsafe cast but this works via clearing the instance's dict
-            list(
-                cast(
-                    Any,
-                    _NonCreatableNamedObjectSetting(
-                        settings_source=solver,
-                        name="*",
-                        _db_name=DATA[cls._db_name][2],  # initialise parent container
-                    ),
-                ),
-            ),
-        )
-
-    @classmethod
-    def get(
-        cls,
-        solver: Solver | None = None,
-        /,
-        *,
-        name: str,
-    ) -> Self:
-        """Get and return the named instance of this object in Fluent.
-
-        Parameters
-        ----------
-        solver
-            Something with a ``settings`` attribute. If omitted the active session is assumed from the :func:`using` context manager.
-        name
-            Name of the object to get, if applicable, can be a wildcard pattern.
-        """
-        return cls(settings_source=solver, name=name)
-
-
-class _CreatableNamedObjectSetting(_SettingsObjectMixin):
-    name: str | None
-    new_instance_name: str | None
-
-    def __init__(
-        self,
-        settings_source: Solver | None = None,
-        name: str | None = None,
-        new_instance_name: str | None = None,
-        _from_create: bool = False,
-        **kwargs: Any,
-    ):
-        if name and new_instance_name:
-            raise ValueError("Cannot specify both name and new_instance_name.")
-        self.name = name
-        self.new_instance_name = new_instance_name
-
-        super().__init__(
-            settings_source,
-            **kwargs,
-            # _db_name=(  # initialise as the parent container
-            #     DATA[self.__class__._db_name][2]
-            #     if name is None and not _from_create
-            #     else kwargs.get("_db_name"),
-            # ),
-        )
-
-    @classmethod
-    def get(
-        cls,
-        solver: Solver | None = None,
-        /,
-        *,
-        name: str,
-    ) -> Self:
+    def get(self, name: str) -> Self:
         """Get and return a named instance of this object in Fluent.
 
         Parameters
         ----------
-        solver
-            Something with a ``settings`` attribute. If omitted the active session is assumed from the :func:`using` context manager.
         name
             Name of the object to get, if applicable, can be a wildcard pattern.
         """
-        return cls(settings_source=solver, name=name)
+        return cast(
+            Self,
+            _get_settings_obj(self.settings_source, self._db_name)[name],
+        )
 
-    @classmethod
+    def all(self) -> list[Self]:
+        """Return a list of all instances of this object in Fluent."""
+        return cast(
+            list[Self],
+            list(
+                _get_settings_obj(
+                    self.settings_source,
+                    DATA[self._db_name][2],
+                )["*"]
+            ),
+        )
+
     def create(
-        cls,
-        solver: Solver | None = None,
-        /,
+        self,
         name: str | None = None,
         **kwargs: Any,
     ) -> Self:
@@ -258,36 +312,19 @@ class _CreatableNamedObjectSetting(_SettingsObjectMixin):
 
         Parameters
         ----------
-        solver
-            Something with a ``settings`` attribute. If omitted the active session is assumed from the :func:`using` context manager.
         name
             Name of the new object to create. If omitted, a default name will be assigned by Fluent.
         **kwargs
             Additional attributes to set on the created object. This only works for direct value assignments, not for nested objects.
         """
-        root = _get_settings_root(
-            solver or _get_active_session()
-        )  # validate settings_source
-        instance = _CreatableNamedObjectSetting(
-            settings_source=root,
-            _from_create=True,
-            new_instance_name=name,
-            _db_name=DATA[cls._db_name][2],
+        # Only pass name if it's not None to avoid sending name=None to Fluent
+
+        return cast(
+            Self,
+            _get_settings_obj(self.settings_source, self._db_name).create(
+                name, **kwargs
+            ),
         )
-
-        obj = _get_settings_obj(root, instance)
-        return obj.create(name=name, **kwargs)
-
-    def _init_settings_instance(
-        self, parent: SettingsBase[object]
-    ) -> SettingsBase[object]:
-        if self.name:
-            instance = parent[self.name]
-        elif self.new_instance_name:  # create a new potentially anonymous instance
-            instance = parent.create(self.new_instance_name, **self.kwargs)
-        else:  # using _db_name
-            instance = parent
-        return instance
 
 
 _CommandSetting = _SingletonSetting

@@ -20,9 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from pathlib import Path
-import tempfile
-
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -39,313 +36,232 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 def test_builtin_settings(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     fluent_version = solver.get_fluent_version()
-    assert Setup(settings_source=solver) == solver.setup
-    assert General(settings_source=solver) == solver.setup.general
-    assert Models(settings_source=solver) == solver.setup.models
-    assert Multiphase(settings_source=solver) == solver.setup.models.multiphase
-    assert Energy(settings_source=solver) == solver.setup.models.energy
-    assert Viscous(settings_source=solver) == solver.setup.models.viscous
-    assert Radiation(settings_source=solver) == solver.setup.models.radiation
-    assert Species(settings_source=solver) == solver.setup.models.species
-    assert DiscretePhase(settings_source=solver) == solver.setup.models.discrete_phase
+    assert Setup(solver) == solver.setup
+    assert General(solver) == solver.setup.general
+    assert Models(solver) == solver.setup.models
+    assert Multiphase(solver) == solver.setup.models.multiphase
+    assert Energy(solver) == solver.setup.models.energy
+    assert Viscous(solver) == solver.setup.models.viscous
+    assert Radiation(solver) == solver.setup.models.radiation
+    assert Species(solver) == solver.setup.models.species
+    assert DiscretePhase(solver) == solver.setup.models.discrete_phase
+    assert Injections(solver) == solver.setup.models.discrete_phase.injections
+    assert VirtualBladeModel(solver) == solver.setup.models.virtual_blade_model
+    assert Optics(solver) == solver.setup.models.optics
+    assert Structure(solver) == solver.setup.models.structure
+    assert Ablation(solver) == solver.setup.models.ablation
+    assert EChemistry(solver) == solver.setup.models.echemistry
+    assert Battery(solver) == solver.setup.models.battery
+    assert SystemCoupling(solver) == solver.setup.models.system_coupling
+    assert Sofc(solver) == solver.setup.models.sofc
+    assert Pemfc(solver) == solver.setup.models.pemfc
+    assert Materials(solver) == solver.setup.materials
+    assert FluidMaterials(solver) == solver.setup.materials.fluid
+    assert FluidMaterial(solver, name="air") == solver.setup.materials.fluid["air"]
+    assert SolidMaterials(solver) == solver.setup.materials.solid
     assert (
-        Injections(settings_source=solver)
-        == solver.setup.models.discrete_phase.injections
-    )
-    assert (
-        VirtualBladeModel(settings_source=solver)
-        == solver.setup.models.virtual_blade_model
-    )
-    assert Optics(settings_source=solver) == solver.setup.models.optics
-    assert Structure(settings_source=solver) == solver.setup.models.structure
-    assert Ablation(settings_source=solver) == solver.setup.models.ablation
-    assert EChemistry(settings_source=solver) == solver.setup.models.echemistry
-    assert Battery(settings_source=solver) == solver.setup.models.battery
-    assert SystemCoupling(settings_source=solver) == solver.setup.models.system_coupling
-    assert Sofc(settings_source=solver) == solver.setup.models.sofc
-    assert Pemfc(settings_source=solver) == solver.setup.models.pemfc
-    assert Materials(settings_source=solver) == solver.setup.materials
-    assert FluidMaterials(settings_source=solver) == solver.setup.materials.fluid
-    assert (
-        FluidMaterial(settings_source=solver, name="air")
-        == solver.setup.materials.fluid["air"]
-    )
-    assert SolidMaterials(settings_source=solver) == solver.setup.materials.solid
-    assert (
-        SolidMaterial(settings_source=solver, name="aluminum")
+        SolidMaterial(solver, name="aluminum")
         == solver.setup.materials.solid["aluminum"]
     )
+    assert CellZoneConditions(solver) == solver.setup.cell_zone_conditions
     assert (
-        CellZoneConditions(settings_source=solver) == solver.setup.cell_zone_conditions
-    )
-    assert (
-        CellZoneCondition(settings_source=solver, name="elbow-fluid")
+        CellZoneCondition(solver, name="elbow-fluid")
         == solver.setup.cell_zone_conditions["elbow-fluid"]
     )
+    assert FluidCellZones(solver) == solver.setup.cell_zone_conditions.fluid
     assert (
-        FluidCellZones(settings_source=solver)
-        == solver.setup.cell_zone_conditions.fluid
-    )
-    assert (
-        FluidCellZone(settings_source=solver, name="elbow-fluid")
+        FluidCellZone(solver, name="elbow-fluid")
         == solver.setup.cell_zone_conditions.fluid["elbow-fluid"]
     )
+    assert BoundaryConditions(solver) == solver.setup.boundary_conditions
     assert (
-        BoundaryConditions(settings_source=solver) == solver.setup.boundary_conditions
-    )
-    assert (
-        BoundaryCondition(settings_source=solver, name="cold-inlet")
+        BoundaryCondition(solver, name="cold-inlet")
         == solver.setup.boundary_conditions["cold-inlet"]
     )
     with pytest.raises(TypeError):
-        BoundaryCondition(settings_source=solver, new_instance_name="bc-1")
+        BoundaryCondition(solver, new_instance_name="bc-1")  # type: ignore
 
+    assert VelocityInlets(solver) == solver.setup.boundary_conditions.velocity_inlet
     assert (
-        VelocityInlets(settings_source=solver)
-        == solver.setup.boundary_conditions.velocity_inlet
-    )
-    assert (
-        VelocityInlet(settings_source=solver, name="cold-inlet")
+        VelocityInlet(solver, name="cold-inlet")
         == solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     )
+    assert InteriorBoundaries(solver) == solver.setup.boundary_conditions.interior
+    assert PressureOutlets(solver) == solver.setup.boundary_conditions.pressure_outlet
     assert (
-        InteriorBoundaries(settings_source=solver)
-        == solver.setup.boundary_conditions.interior
-    )
-    assert (
-        PressureOutlets(settings_source=solver)
-        == solver.setup.boundary_conditions.pressure_outlet
-    )
-    assert (
-        PressureOutlet(settings_source=solver, name="outlet")
+        PressureOutlet(solver, name="outlet")
         == solver.setup.boundary_conditions.pressure_outlet["outlet"]
     )
+    assert WallBoundaries(solver) == solver.setup.boundary_conditions.wall
     assert (
-        WallBoundaries(settings_source=solver) == solver.setup.boundary_conditions.wall
-    )
-    assert (
-        WallBoundary(settings_source=solver, name="wall-elbow")
+        WallBoundary(solver, name="wall-elbow")
         == solver.setup.boundary_conditions.wall["wall-elbow"]
     )
     if fluent_version < FluentVersion.v251:
         with pytest.raises(AttributeError):
-            WallBoundary(settings_source=solver, new_instance_name="wall-1")
-    assert MeshInterfaces(settings_source=solver) == solver.setup.mesh_interfaces
+            WallBoundary(solver, new_instance_name="wall-1")
+    assert MeshInterfaces(solver) == solver.setup.mesh_interfaces
     if fluent_version >= FluentVersion.v251:
-        assert DynamicMesh(settings_source=solver) == solver.setup.dynamic_mesh
+        assert DynamicMesh(solver) == solver.setup.dynamic_mesh
     else:
         with pytest.raises(RuntimeError):
-            DynamicMesh(settings_source=solver)
-    assert ReferenceValues(settings_source=solver) == solver.setup.reference_values
-    assert ReferenceFrames(settings_source=solver) == solver.setup.reference_frames
+            DynamicMesh(solver)
+    assert ReferenceValues(solver) == solver.setup.reference_values
+    assert ReferenceFrames(solver) == solver.setup.reference_frames
     # Fluent 25.1 issue
     if fluent_version != FluentVersion.v251:
         assert (
-            ReferenceFrame(settings_source=solver, name="global")
+            ReferenceFrame(solver, name="global")
             == solver.setup.reference_frames["global"]
         )
-    assert NamedExpressions(settings_source=solver) == solver.setup.named_expressions
-    assert Methods(settings_source=solver) == solver.solution.methods
-    assert Controls(settings_source=solver) == solver.solution.controls
+    assert NamedExpressions(solver) == solver.setup.named_expressions
+    assert Methods(solver) == solver.solution.methods
+    assert Controls(solver) == solver.solution.controls
+    assert ReportDefinitions(solver) == solver.solution.report_definitions
+    assert Monitor(solver) == solver.solution.monitor
+    assert Residual(solver) == solver.solution.monitor.residual
+    assert ReportFiles(solver) == solver.solution.monitor.report_files
     assert (
-        ReportDefinitions(settings_source=solver) == solver.solution.report_definitions
-    )
-    assert Monitor(settings_source=solver) == solver.solution.monitor
-    assert Residual(settings_source=solver) == solver.solution.monitor.residual
-    assert ReportFiles(settings_source=solver) == solver.solution.monitor.report_files
-    assert (
-        ReportFile(settings_source=solver, new_instance_name="report-file-1")
+        ReportFile(solver, new_instance_name="report-file-1")
         == solver.solution.monitor.report_files["report-file-1"]
     )
     assert (
-        ReportFile(settings_source=solver, name="report-file-1")
+        ReportFile(solver, name="report-file-1")
         == solver.solution.monitor.report_files["report-file-1"]
     )
     if fluent_version >= FluentVersion.v251:
         assert (
-            ReportFile(settings_source=solver)
-            == solver.solution.monitor.report_files["report-file-2"]
+            ReportFile(solver).get("report-file-1")
+            == solver.solution.monitor.report_files["report-file-1"]
         )
-    assert ReportPlots(settings_source=solver) == solver.solution.monitor.report_plots
+    assert ReportPlots(solver) == solver.solution.monitor.report_plots
     assert (
-        ReportPlot(settings_source=solver, new_instance_name="report-plot-1")
+        ReportPlot(solver, new_instance_name="report-plot-1")
         == solver.solution.monitor.report_plots["report-plot-1"]
     )
     assert (
-        ReportPlot(settings_source=solver, name="report-plot-1")
+        ReportPlot(solver, name="report-plot-1")
         == solver.solution.monitor.report_plots["report-plot-1"]
     )
     if fluent_version >= FluentVersion.v251:
         assert (
-            ReportPlot(settings_source=solver)
-            == solver.solution.monitor.report_plots["report-plot-2"]
+            ReportPlot(solver).get("report-plot-1")
+            == solver.solution.monitor.report_plots["report-plot-1"]
         )
     assert (
-        ConvergenceConditions(settings_source=solver)
-        == solver.solution.monitor.convergence_conditions
+        ConvergenceConditions(solver) == solver.solution.monitor.convergence_conditions
     )
-    assert CellRegisters(settings_source=solver) == solver.solution.cell_registers
+    assert CellRegisters(solver) == solver.solution.cell_registers
     assert (
-        CellRegister(settings_source=solver, new_instance_name="cell_register_1")
+        CellRegister(solver, new_instance_name="cell_register_1")
         == solver.solution.cell_registers["cell_register_1"]
     )
     assert (
-        CellRegister(settings_source=solver, name="cell_register_1")
+        CellRegister(solver, name="cell_register_1")
         == solver.solution.cell_registers["cell_register_1"]
     )
     if fluent_version >= FluentVersion.v251:
         assert (
-            CellRegister(settings_source=solver)
-            == solver.solution.cell_registers["cell_register_2"]
+            CellRegister(solver).get("cell_register_1")
+            == solver.solution.cell_registers["cell_register_1"]
         )
-    assert Initialization(settings_source=solver) == solver.solution.initialization
+    assert Initialization(solver) == solver.solution.initialization
+    assert CalculationActivity(solver) == solver.solution.calculation_activity
     assert (
-        CalculationActivity(settings_source=solver)
-        == solver.solution.calculation_activity
+        ExecuteCommands(solver) == solver.solution.calculation_activity.execute_commands
     )
     assert (
-        ExecuteCommands(settings_source=solver)
-        == solver.solution.calculation_activity.execute_commands
-    )
-    assert (
-        CaseModification(settings_source=solver)
+        CaseModification(solver)
         == solver.solution.calculation_activity.case_modification
     )
-    assert RunCalculation(settings_source=solver) == solver.solution.run_calculation
-    assert Solution(settings_source=solver) == solver.solution
-    assert Results(settings_source=solver) == solver.results
-    assert Surfaces(settings_source=solver) == solver.results.surfaces
+    assert RunCalculation(solver) == solver.solution.run_calculation
+    assert Solution(solver) == solver.solution
+    assert Results(solver) == solver.results
+    assert Surfaces(solver) == solver.results.surfaces
+    assert PointSurfaces(solver) == solver.results.surfaces.point_surface
+    assert LineSurfaces(solver) == solver.results.surfaces.line_surface
+    assert RakeSurfaces(solver) == solver.results.surfaces.rake_surface
+    assert IsoSurfaces(solver) == solver.results.surfaces.iso_surface
+    assert PlaneSurfaces(solver) == solver.results.surfaces.plane_surface
     assert (
-        PointSurfaces(settings_source=solver) == solver.results.surfaces.point_surface
-    )
-    assert LineSurfaces(settings_source=solver) == solver.results.surfaces.line_surface
-    assert RakeSurfaces(settings_source=solver) == solver.results.surfaces.rake_surface
-    assert IsoSurfaces(settings_source=solver) == solver.results.surfaces.iso_surface
-    assert (
-        PlaneSurfaces(settings_source=solver) == solver.results.surfaces.plane_surface
-    )
-    assert (
-        PlaneSurface(settings_source=solver, new_instance_name="plane-1")
+        PlaneSurface(solver, new_instance_name="plane-1")
         == solver.results.surfaces.plane_surface["plane-1"]
     )
     assert (
-        PlaneSurface(settings_source=solver, name="plane-1")
+        PlaneSurface(solver, name="plane-1")
         == solver.results.surfaces.plane_surface["plane-1"]
     )
-    assert IsoClips(settings_source=solver) == solver.results.surfaces.iso_clip
-    assert ZoneSurfaces(settings_source=solver) == solver.results.surfaces.zone_surface
-    assert (
-        PartitionSurfaces(settings_source=solver)
-        == solver.results.surfaces.partition_surface
-    )
-    assert (
-        TransformSurfaces(settings_source=solver)
-        == solver.results.surfaces.transform_surface
-    )
-    assert (
-        ImprintSurfaces(settings_source=solver)
-        == solver.results.surfaces.imprint_surface
-    )
-    assert PlaneSlices(settings_source=solver) == solver.results.surfaces.plane_slice
-    assert SphereSlices(settings_source=solver) == solver.results.surfaces.sphere_slice
-    assert (
-        QuadricSurfaces(settings_source=solver)
-        == solver.results.surfaces.quadric_surface
-    )
-    assert SurfaceCells(settings_source=solver) == solver.results.surfaces.surface_cells
+    assert IsoClips(solver) == solver.results.surfaces.iso_clip
+    assert ZoneSurfaces(solver) == solver.results.surfaces.zone_surface
+    assert PartitionSurfaces(solver) == solver.results.surfaces.partition_surface
+    assert TransformSurfaces(solver) == solver.results.surfaces.transform_surface
+    assert ImprintSurfaces(solver) == solver.results.surfaces.imprint_surface
+    assert PlaneSlices(solver) == solver.results.surfaces.plane_slice
+    assert SphereSlices(solver) == solver.results.surfaces.sphere_slice
+    assert QuadricSurfaces(solver) == solver.results.surfaces.quadric_surface
+    assert SurfaceCells(solver) == solver.results.surfaces.surface_cells
     if fluent_version >= FluentVersion.v251:
-        assert (
-            ExpressionVolumes(settings_source=solver)
-            == solver.results.surfaces.expression_volume
-        )
-        assert (
-            GroupSurfaces(settings_source=solver)
-            == solver.results.surfaces.group_surface
-        )
+        assert ExpressionVolumes(solver) == solver.results.surfaces.expression_volume
+        assert GroupSurfaces(solver) == solver.results.surfaces.group_surface
     else:
         with pytest.raises(RuntimeError):
-            ExpressionVolumes(settings_source=solver)
+            ExpressionVolumes(solver)
         with pytest.raises(RuntimeError):
-            GroupSurfaces(settings_source=solver)
-    assert Graphics(settings_source=solver) == solver.results.graphics
-    assert Meshes(settings_source=solver) == solver.results.graphics.mesh
-    assert Contours(settings_source=solver) == solver.results.graphics.contour
+            GroupSurfaces(solver)
+    assert Graphics(solver) == solver.results.graphics
+    assert Meshes(solver) == solver.results.graphics.mesh
+    assert Contours(solver) == solver.results.graphics.contour
     assert (
-        Contour(settings_source=solver, new_instance_name="contour-1")
+        Contour(solver, new_instance_name="contour-1")
         == solver.results.graphics.contour["contour-1"]
     )
     assert (
-        Contour(settings_source=solver, name="contour-1")
+        Contour(solver, name="contour-1")
         == solver.results.graphics.contour["contour-1"]
     )
-    assert Vectors(settings_source=solver) == solver.results.graphics.vector
-    assert LICs(settings_source=solver) == solver.results.graphics.lic
-    assert Pathlines(settings_source=solver) == solver.results.graphics.pathline
+    assert Vectors(solver) == solver.results.graphics.vector
+    assert LICs(solver) == solver.results.graphics.lic
+    assert Pathlines(solver) == solver.results.graphics.pathline
+    assert ParticleTracks(solver) == solver.results.graphics.particle_track
+    assert Plots(solver) == solver.results.plot
+    assert XYPlots(solver) == solver.results.plot.xy_plot
+    assert Histogram(solver) == solver.results.plot.histogram
+    assert CumulativePlots(solver) == solver.results.plot.cumulative_plot
+    assert ProfileData(solver) == solver.results.plot.profile_data
+    assert InterpolatedData(solver) == solver.results.plot.interpolated_data
+    assert Scenes(solver) == solver.results.scene
+    assert SceneAnimation(solver) == solver.results.animations.scene_animation
+    assert Report(solver) == solver.results.report
     assert (
-        ParticleTracks(settings_source=solver) == solver.results.graphics.particle_track
+        DiscretePhaseHistogram(solver) == solver.results.report.discrete_phase.histogram
     )
-    assert Plots(settings_source=solver) == solver.results.plot
-    assert XYPlots(settings_source=solver) == solver.results.plot.xy_plot
-    assert Histogram(settings_source=solver) == solver.results.plot.histogram
-    assert (
-        CumulativePlots(settings_source=solver) == solver.results.plot.cumulative_plot
-    )
-    assert ProfileData(settings_source=solver) == solver.results.plot.profile_data
-    assert (
-        InterpolatedData(settings_source=solver)
-        == solver.results.plot.interpolated_data
-    )
-    assert Scenes(settings_source=solver) == solver.results.scene
-    assert (
-        SceneAnimation(settings_source=solver)
-        == solver.results.animations.scene_animation
-    )
-    assert Report(settings_source=solver) == solver.results.report
-    assert (
-        DiscretePhaseHistogram(settings_source=solver)
-        == solver.results.report.discrete_phase.histogram
-    )
-    assert Fluxes(settings_source=solver) == solver.results.report.fluxes
-    assert (
-        SurfaceIntegrals(settings_source=solver)
-        == solver.results.report.surface_integrals
-    )
-    assert (
-        VolumeIntegrals(settings_source=solver)
-        == solver.results.report.volume_integrals
-    )
-    assert (
-        SimulationReports(settings_source=solver)
-        == solver.results.report.simulation_reports
-    )
-    assert InputParameters(settings_source=solver) == solver.parameters.input_parameters
-    assert (
-        OutputParameters(settings_source=solver) == solver.parameters.output_parameters
-    )
+    assert Fluxes(solver) == solver.results.report.fluxes
+    assert SurfaceIntegrals(solver) == solver.results.report.surface_integrals
+    assert VolumeIntegrals(solver) == solver.results.report.volume_integrals
+    assert SimulationReports(solver) == solver.results.report.simulation_reports
+    assert InputParameters(solver) == solver.parameters.input_parameters
+    assert OutputParameters(solver) == solver.parameters.output_parameters
     if fluent_version >= FluentVersion.v251:
-        assert (
-            CustomFieldFunctions(settings_source=solver)
-            == solver.results.custom_field_functions
-        )
+        assert CustomFieldFunctions(solver) == solver.results.custom_field_functions
     else:
         with pytest.raises(RuntimeError):
-            CustomFieldFunctions(settings_source=solver)
-    assert CustomVectors(settings_source=solver) == solver.results.custom_vectors
+            CustomFieldFunctions(solver)
+    assert CustomVectors(solver) == solver.results.custom_vectors
     solver.settings.parametric_studies.initialize(
         project_filename="mixing_elbow_param.flprj"
     )
-    assert ParametricStudies(settings_source=solver) == solver.parametric_studies
+    assert ParametricStudies(solver) == solver.parametric_studies
     assert (
-        ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
+        ParametricStudy(solver, name="mixing_elbow-Solve")
         == solver.parametric_studies["mixing_elbow-Solve"]
     )
     assert (
-        DesignPoints(settings_source=solver, parametric_studies="mixing_elbow-Solve")
+        DesignPoints(solver, parametric_studies="mixing_elbow-Solve")
         == solver.parametric_studies["mixing_elbow-Solve"].design_points
     )
     assert (
         DesignPoint(
-            settings_source=solver,
+            solver,
             parametric_studies="mixing_elbow-Solve",
             name="Base DP",
         )
@@ -353,27 +269,20 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     )
     read_case_and_data = globals()["ReadCaseAndData"]
     write_case_and_data = globals()["WriteCaseAndData"]
-    assert ReadCase(settings_source=solver) == solver.file.read_case
-    assert ReadData(settings_source=solver) == solver.file.read_data
-    assert read_case_and_data(settings_source=solver) == solver.file.read_case_data
+    assert ReadCase(solver) == solver.file.read_case
+    assert ReadData(solver) == solver.file.read_data
+    assert read_case_and_data(solver) == solver.file.read_case_data
     with pytest.warns(pyfluent.PyFluentDeprecationWarning, match="ReadCaseData"):
-        assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
-    assert WriteCase(settings_source=solver) == solver.file.write_case
-    assert WriteData(settings_source=solver) == solver.file.write_data
-    assert write_case_and_data(settings_source=solver) == solver.file.write_case_data
+        assert ReadCaseData(solver) == solver.file.read_case_data
+    assert WriteCase(solver) == solver.file.write_case
+    assert WriteData(solver) == solver.file.write_data
+    assert write_case_and_data(solver) == solver.file.write_case_data
     with pytest.warns(pyfluent.PyFluentDeprecationWarning, match="WriteCaseData"):
-        assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
-    assert (
-        Initialize(settings_source=solver) == solver.solution.initialization.initialize
-    )
-    assert (
-        Calculate(settings_source=solver) == solver.solution.run_calculation.calculate
-    )
-    assert Iterate(settings_source=solver) == solver.solution.run_calculation.iterate
-    assert (
-        DualTimeIterate(settings_source=solver)
-        == solver.solution.run_calculation.dual_time_iterate
-    )
+        assert WriteCaseData(solver) == solver.file.write_case_data
+    assert Initialize(solver) == solver.solution.initialization.initialize
+    assert Calculate(solver) == solver.solution.run_calculation.calculate
+    assert Iterate(solver) == solver.solution.run_calculation.iterate
+    assert DualTimeIterate(solver) == solver.solution.run_calculation.dual_time_iterate
 
     with using(solver):
         assert Setup() == solver.setup
@@ -383,20 +292,27 @@ def test_builtin_settings(mixing_elbow_case_data_session):
 @pytest.mark.codegen_required
 def test_builtin_settings_methods(mixing_elbow_case_data_session: Solver):
     solver = mixing_elbow_case_data_session
-    assert ReportFile.create(solver, name="report-file-1") == ReportFile.get(
-        solver, name="report-file-1"
+    report_files = ReportFile(solver)
+    assert report_files.create(name="report-file-1") == report_files.get(
+        name="report-file-1"
     )
 
-    file = ReportFile.create(solver, name="report-file-2", file_name="foo.out")
-    assert file == ReportFile.get(solver, name="report-file-2")
-    assert file.file_name() == r"./foo.out"
+    file = report_files.create(name="report-file-2", file_name="foo.out")
+    assert file == report_files.get(name="report-file-2")
+    assert "foo.out" in file.file_name()  # see #4935
+    assert ReportFile(solver, name="report-file-2") == report_files.get(
+        name="report-file-2"
+    )
 
-    file_2 = ReportFile.create(solver)
+    file_2 = report_files.create()
     assert file_2.name()  # it should have a default anonymous name assigned by Fluent
 
-    assert BoundaryCondition.get(solver, name="cold-inlet")
+    assert BoundaryCondition(solver).get(name="cold-inlet")
+    assert BoundaryCondition(solver, name="cold-inlet") == BoundaryCondition(
+        solver
+    ).get(name="cold-inlet")
 
-    assert list(BoundaryCondition.all(solver)) == list(
+    assert list(BoundaryCondition(solver).all()) == list(
         solver.settings.setup.boundary_conditions["*"]
     )
 

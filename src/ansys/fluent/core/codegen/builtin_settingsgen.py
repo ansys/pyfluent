@@ -22,8 +22,10 @@
 
 """Generate builtin setting classes."""
 
-import re
-
+from ansys.fluent.core.codegen.settingsgen import (
+    camel_to_snake_case,
+    snake_to_camel_case,
+)
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.flobject import (
     CreatableNamedObjectMixin,
@@ -49,13 +51,6 @@ def _get_settings_root(version: str):
         config.codegen_outdir / "solver" / f"settings_{version}.py",
     )
     return settings.root
-
-
-def _convert_camel_case_to_snake_case(name: str) -> str:
-    """Convert CamelCase to snake_case."""
-    # Replace uppercase letters with lowercase and prepend an underscore
-    name = re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
-    return name
 
 
 def _get_public_class_name(legacy_name: str) -> str:
@@ -89,7 +84,7 @@ def _has_create_method(root, path):
         comps = path.split(".")
         for comp in comps:
             cls = cls._child_classes[comp]
-        # Check if the class has 'create' in its child classes or command names
+        # Check if the class has 'create' its command names (singletons) or its child classes ()
         return "create" in getattr(cls, "_child_classes", {}) or "create" in getattr(
             cls, "command_names", []
         )
@@ -105,19 +100,41 @@ def _get_reciprocal_name(name: str) -> str | None:
         return None
 
 
+def _get_settings_runtime_class_name(root, path: str, kind: str) -> str:
+    """Return the generated settings class name for a path.
+
+    For named objects, this returns the child object class name.
+    """
+    cls = root
+    comps = path.split(".")
+    for i, comp in enumerate(comps):
+        cls = cls._child_classes[comp]
+        if i < len(comps) - 1 and issubclass(cls, NamedObject):
+            cls = cls.child_object_type
+    if kind == "NamedObject":
+        if issubclass(cls, NamedObject):
+            cls = cls.child_object_type
+        elif issubclass(cls, _ChildNamedObjectAccessorMixin):
+            # Accessor classes are already the concrete child settings type.
+            pass
+        else:
+            raise TypeError(f"{cls.__name__} is not NamedObject type.")
+    return cls.__name__
+
+
 def generate(version: str):
     """Generate builtin setting classes."""
     print("Generating builtin settings...")
     config.codegen_outdir.mkdir(exist_ok=True)
     root = _get_settings_root(version)
-    version = FluentVersion(version)
+    version: FluentVersion = FluentVersion(version)
     with open(_PY_FILE, "w") as f:
 
         def _write_name_to_all(name: str):
             f.write(f'    "{name}",\n')
 
         def _write_command_name_to_all(command_class_name: str):
-            _write_name_to_all(_convert_camel_case_to_snake_case(command_class_name))
+            _write_name_to_all(camel_to_snake_case(command_class_name))
 
         def _write_symbol_to_all(name: str, kind: str):
             _write_name_to_all(name)
@@ -172,32 +189,16 @@ def generate(version: str):
                         break
                 if not version_supported:
                     continue
-            named_objects, final_type = _get_named_objects_in_path(root, path, kind)
+            _, final_type = _get_named_objects_in_path(root, path, kind)
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
             doc_kind = "command object" if kind == "Command" else "setting"
             f.write(f'    """{name} {doc_kind}."""\n\n')
             f.write(f'    _db_name = "{legacy_name}"\n\n')
-            f.write("    def __init__(self")
-            for named_object in named_objects:
-                f.write(f", {named_object}: str")
-            f.write(", settings_source: SettingsBase | Solver | None = None")
-            if kind == "NonCreatableNamedObject":
-                f.write(", name: str = None")
-            elif kind == "CreatableNamedObject":
-                f.write(", name: str = None, new_instance_name: str = None")
-            f.write("):\n")
-            f.write("        super().__init__(settings_source=settings_source")
-            if kind == "NonCreatableNamedObject":
-                f.write(", name=name")
-            elif kind == "CreatableNamedObject":
-                f.write(", name=name, new_instance_name=new_instance_name")
-            for named_object in named_objects:
-                f.write(f", {named_object}={named_object}")
-            f.write(")\n\n")
+            f.write("\n\n")
             if kind == "Command":
-                command_name = _convert_camel_case_to_snake_case(name)
+                command_name = camel_to_snake_case(name)
                 f.write(f"class {command_name}(_{kind}Setting):\n")
                 f.write(f'    """{command_name} command."""\n\n')
                 f.write(f'    _db_name = "{legacy_name}"\n\n')
@@ -217,7 +218,7 @@ def generate(version: str):
                         preferred_name=name,
                         alias_kind_desc="command object",
                     )
-                    legacy_command_name = _convert_camel_case_to_snake_case(legacy_name)
+                    legacy_command_name = camel_to_snake_case(legacy_name)
                     f.write(f"class {legacy_command_name}({command_name}):\n")
                     f.write(
                         f'    """{legacy_command_name} command (deprecated alias of {command_name})."""\n\n'
@@ -232,92 +233,91 @@ def generate(version: str):
                         "        return super().__new__(cls, settings_source=settings_source, **kwargs)\n\n"
                     )
 
-
-    with open(_PYI_FILE, "w") as f:
-        for version in FluentVersion:
-            f.write(
-                f"from ansys.fluent.core.generated.solver.settings_{version.number} import root as settings_root_{version.number}\n"
-            )
-        f.write("\n\n")
-        for legacy_name, v in DATA.items():
-            kind, path = v
-            name = _get_public_class_name(legacy_name)
-            f.write(f"class {name}(\n")
-            if isinstance(path, str):
-                path = {all_versions(): path}
-            for version_set, p in path.items():
-                if kind == "NamedObject":
-                    p = f"{p}.child_object_type"
-                for v in reversed(list(version_set)):
-                    f.write(f"    type(settings_root_{v.number}.{p}),\n")
-            f.write("): ...\n\n")
-
     # Generate version-specific .pyi files
     pyi_file = (
         config.codegen_outdir / "solver" / f"settings_builtin_{version.number}.pyi"
     )
-    with open(pyi_file, "w") as f:
-        # Import base classes and deprecated decorator
+    pyi_entries = []  # list of (decorator: str|None, class_def: str)
+    base_class_names = set()  # PascalCase names to import from settings_{version}
+    for legacy_name, v in DATA.items():
+        kind, path, recip = v
+        name = _get_public_class_name(legacy_name)
+        if isinstance(path, dict):
+            version_supported = False
+            for version_set, p in path.items():
+                if version in version_set:
+                    path = p
+                    version_supported = True
+                    break
+            if not version_supported:
+                continue
+        _, final_type = _get_named_objects_in_path(root, path, kind)
+        # Resolve the concrete class name (PascalCase) for use as a base.
+        raw_cls_name = _get_settings_runtime_class_name(root, path, kind)
+        base_cls_name = snake_to_camel_case(raw_cls_name)
+        base_class_names.add(base_cls_name)
+        # Always alias base imports to avoid any shadowing
+        ref_name = f"{base_cls_name}Base"
+        decorator = None
+        if kind == "Singleton" and recip:
+            decorator = f'@deprecated("Use {recip}.all() instead")'
+        if kind == "NamedObject":
+            effective_kind = f"{final_type}NamedObject"
+            lines = [
+                f"class {name}(\n",
+                f"    _{effective_kind}Setting,\n",
+                f"    {ref_name},\n",
+                "):\n",
+            ]
+            if final_type == "Creatable":
+                lines.append(
+                    f"    create = settings_root_{version.number}.{path}.create\n"
+                )
+            else:
+                lines.append("    ...\n")
+        else:
+            lines = [
+                f"class {name}(\n",
+                f"    _{kind}Setting,\n",
+                f"    {ref_name},\n",
+                "):\n",
+            ]
+            if kind == "Singleton" and _has_create_method(root, path):
+                lines.append(
+                    f"    create = settings_root_{version.number}.{path}.create\n"
+                )
+            else:
+                lines.append("    ...\n")
+        lines.append("\n")
+        pyi_entries.append((decorator, "".join(lines)))
+
+        if name != legacy_name:
+            pyi_entries.append((None, f"class {legacy_name}({name}): ...\n\n"))
+
+    with pyi_file.open("w") as f:
         f.write(
             "from typing_extensions import deprecated\n"
             "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting\n"
         )
-        # Import version-specific root for type hints
+        # Import concrete base classes from the versioned settings stub with Base suffix
+        f.write(
+            f"from ansys.fluent.core.generated.solver.settings_{version.number} import (\n"
+        )
+        for cls_name in sorted(base_class_names):
+            f.write(f"    {cls_name} as {cls_name}Base,\n")
+        f.write(")\n")
+        # Keep root import for create-method body references.
         f.write(
             f"from ansys.fluent.core.generated.solver.settings_{version.number} import root as settings_root_{version.number}\n"
         )
         f.write("\n\n")
-        for legacy_name, v in DATA.items():
-            kind, path, recip = v
-            name = _get_public_class_name(legacy_name)
-            if isinstance(path, dict):
-                version_supported = False
-                for version_set, p in path.items():
-                    if version in version_set:
-                        path = p
-                        version_supported = True
-                        break
-                if not version_supported:
-                    continue
-            named_objects, final_type = _get_named_objects_in_path(root, path, kind)
-            if kind == "NamedObject":
-                kind = f"{final_type}NamedObject"
-                path_with_child = f"{path}.child_object_type"
-                f.write(f"class {name}(\n")
-                f.write(f"    _{kind}Setting,\n")
-                f.write(
-                    f"    type(settings_root_{version.number}.{path_with_child}),\n"
-                )
-                f.write("):\n")
-                if final_type == "Creatable":
-                    f.write(
-                        f"    create = settings_root_{version.number}.{path}.create\n"
-                    )
-                else:
-                    f.write("    ...\n")
-                f.write("\n")
-            else:
-                # For Singleton and Command types
-                # Check if this is a plural class by looking at its reciprocal
-                if kind == "Singleton" and recip:
-                    # Add deprecated decorator for plural container classes
-                    f.write(f'@deprecated("Use {recip}.all() instead")\n')
+        for decorator, cls_def in pyi_entries:
+            if decorator:
+                f.write(decorator + "\n")
+            f.write(cls_def)
 
-                f.write(f"class {name}(\n")
-                f.write(f"    _{kind}Setting,\n")
-                f.write(f"    type(settings_root_{version.number}.{path}),\n")
-                f.write("):\n")
-                # Check if singleton has create method
-                if kind == "Singleton" and _has_create_method(root, path):
-                    f.write(
-                        f"    create = settings_root_{version.number}.{path}.create\n"
-                    )
-                else:
-                    f.write("    ...\n")
-                f.write("\n")
-                        
-            if name != legacy_name:
-                f.write(f"class {legacy_name}({name}): ...\n\n")
+    # Keep main settings_builtin.pyi as a latest-version re-export.
+    generate_main_pyi(str(version.number))
 
 
 def generate_main_pyi(version_str: str):

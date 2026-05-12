@@ -35,7 +35,7 @@ Example
 >>> r = flobject.get_root(proxy)
 >>> is_energy_on = r.setup.models.energy.enabled()
 >>> r.setup.models.energy.enabled = True
->>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
+>>> r.boundary_conditions.velocity_inlet['inlet'].momentum.velocity_magnitude = 20
 """
 
 from __future__ import annotations
@@ -1399,7 +1399,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             "rename",
             types.MethodType(lambda obj, name: _rename(self, name, cname), ret),
         )
-        ret.set_state(kwargs)
+        if kwargs:
+            ret.set_state(kwargs)
         return ret
 
     def _update_objects(self):
@@ -2196,6 +2197,7 @@ class AllowedValuesMixin:
             return []
 
     allowed_values = all
+
 
 class _MaybeActiveString(str):
     """A string class with an is_active() method."""
