@@ -45,6 +45,7 @@ _to_field_name_str = _v0._to_field_name_str
 
 InvalidSolutionVariableNameError = _v0.InvalidSolutionVariableNameError
 ZoneError = _v0.ZoneError
+DomainError = _v0.DomainError
 _AllowedNames = _v0._AllowedNames
 _AllowedSvarNames = _v0._AllowedSvarNames
 _AllowedZoneNames = _v0._AllowedZoneNames
