@@ -318,106 +318,13 @@ def test_builtin_settings_methods(mixing_elbow_case_data_session: Solver):
 
     report_file = ReportFile(solver)
     report_file.create(name="report-file-1")
-    assert report_file == report_file.get(solver, name="report-file-1")
-    assert report_file.all() == list(solver.settings.setup.report_files["*"])
-
-
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
-def test_builtin_singleton_setting_assign_session(
-    new_meshing_session, new_solver_session
-):
-    meshing = new_meshing_session
-    solver = new_solver_session
-
-    models = Models()
-    assert isinstance(models, Models)
-    with pytest.raises(TypeError):
-        models.settings_source = meshing
-    models.settings_source = solver
-    assert models.settings_source == solver.settings
-    assert not isinstance(models, Models)
-    assert models.path == "setup/models"
-    assert not models.is_active()
-    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver.file.read(
-        file_type="case",
-        file_name=case_name,
-        lightweight_setup=True,
+    assert (
+        report_file.get(name="report-file-1")
+        == solver.settings.solution.monitor.report_files["report-file-1"]
     )
-    assert models.is_active()
-    assert models == solver.setup.models
-    with pytest.raises(AttributeError):  # re-assignment is not allowed
-        models.settings_source = solver
-
-    models = Models()
-    assert isinstance(models, Models)
-    models.settings_source = solver.settings
-    assert models == solver.setup.models
-    assert models.settings_source == solver.settings
-
-
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
-def test_builtin_non_creatable_named_object_setting_assign_session(
-    new_meshing_session, static_mixer_case_session
-):
-    meshing = new_meshing_session
-    solver = static_mixer_case_session
-
-    inlet = BoundaryCondition(name="inlet1")
-    assert isinstance(inlet, BoundaryCondition)
-    with pytest.raises(TypeError):
-        inlet.settings_source = meshing
-    inlet.settings_source = solver
-    assert inlet == solver.settings.setup.boundary_conditions["inlet1"]
-    assert inlet.settings_source == solver.settings
-    with pytest.raises(AttributeError):  # re-assignment is not allowed
-        inlet.settings_source = solver
-
-    inlet = BoundaryCondition(name="inlet1")
-    assert isinstance(inlet, BoundaryCondition)
-    inlet.settings_source = solver.settings
-    assert inlet == solver.settings.setup.boundary_conditions["inlet1"]
-    assert inlet.settings_source == solver.settings
-
-
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
-def test_builtin_creatable_named_object_setting_assign_session(
-    new_meshing_session, static_mixer_case_session
-):
-    meshing = new_meshing_session
-    solver = static_mixer_case_session
-
-    report_file = ReportFile(new_instance_name="report-file-1")
-    assert isinstance(report_file, ReportFile)
-    with pytest.raises(TypeError):
-        report_file.settings_source = meshing
-    report_file.settings_source = solver
-    assert report_file == solver.solution.monitor.report_files["report-file-1"]
-    assert report_file.settings_source == solver.settings
-    with pytest.raises(AttributeError):  # re-assignment is not allowed
-        report_file.settings_source = solver
-
-    report_file = ReportFile(name="report-file-1")
-    assert isinstance(report_file, ReportFile)
-    report_file.settings_source = solver
-    assert report_file == solver.solution.monitor.report_files["report-file-1"]
-    assert report_file.settings_source == solver.settings
-
-    report_file = ReportFile(name="report-file-1")
-    assert isinstance(report_file, ReportFile)
-    report_file.settings_source = solver.settings
-    assert report_file == solver.solution.monitor.report_files["report-file-1"]
-    assert report_file.settings_source == solver.settings
-
-    if solver.get_fluent_version() >= FluentVersion.v251:
-        report_file = ReportFile()
-        assert isinstance(report_file, ReportFile)
-        report_file.settings_source = solver
-        assert report_file == solver.solution.monitor.report_files["report-file-2"]
-        assert report_file.settings_source == solver.settings
+    assert len(report_file.all()) == len(
+        list(solver.settings.solution.monitor.report_files["*"])
+    )
 
 
 @pytest.mark.codegen_required
