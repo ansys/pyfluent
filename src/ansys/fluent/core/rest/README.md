@@ -38,14 +38,15 @@ src/ansys/fluent/core/rest/
 ## Architecture
 
 ```
-launch_webserver()
+launch_webserver(start_timeout=60)
        │
        ├─ subprocess.Popen(fluent.exe -ws -ws-port=PORT)
        │
-       ├─ _wait_for_server(port, timeout=180)
+       ├─ _wait_for_server(port, timeout=start_timeout)
        │     ├─ Phase 1: TCP socket.create_connection  ← port open?
        │     └─ Phase 2: GET /api/connection/run_mode  ← solver ready?
        │                 (400 = not ready yet, 401 = ready, 2xx = ready)
+       │                 (_wait_for_server defaults to 120 when called directly)
        │
        └─ RestSolverSession(base_url, auth_token)
              │
