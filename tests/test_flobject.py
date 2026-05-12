@@ -26,7 +26,6 @@ from collections.abc import MutableMapping
 import io
 import weakref
 
-from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
@@ -374,6 +373,22 @@ class Root(Group):
             else:
                 self.parent.objs["g-1"].objs["r-1"].value -= a1
 
+    class CommandWithReturnType(Command):
+        """Command with return type."""
+
+        arguments = {}
+
+        def cb(self):
+            return ["A", "B", "C"]
+
+    class CommandWithWrongReturnType(Command):
+        """Command with wrong return type."""
+
+        arguments = {}
+
+        def cb(self):
+            return [1, 2, 3]
+
     children = {
         "g-1": G1,
         "n-1": N1,
@@ -382,6 +397,8 @@ class Root(Group):
 
     commands = {
         "c-1": Command1,
+        "c-2": CommandWithReturnType,
+        "c-3": CommandWithWrongReturnType,
     }
 
 
@@ -568,6 +585,14 @@ def test_command():
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2
     r.c_1(a_1=4.5, a_2=False)
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2 - 4.5
+    r.c_2._setattr("_version", FluentVersion.v271)
+    r.c_3._setattr("_version", FluentVersion.v271)
+    r.c_2._setattr("return_type", "string-list")
+    r.c_3._setattr("return_type", "string-list")
+    ret = r.c_2()
+    assert ret == ["A", "B", "C"]
+    with pytest.raises(TypeError):
+        ret = r.c_3()
 
 
 def test_attrs():
@@ -1023,9 +1048,7 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
-@pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/4914
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2, !=26.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     assert isinstance(solver.settings.state_with_units(), dict)
@@ -1259,7 +1282,13 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
 
     calls = mock_interceptor.get_traced_calls()
     assert len(calls) == 5
-    service = "/ansys.api.fluent.v0.settings.Settings/"
+    is_v1 = solver.get_fluent_version() > FluentVersion.v261
+    service = (
+        "/ansys.api.fluent.v0.settings.Settings/"
+        if not is_v1
+        else "/ansys.api.fluent.v1.settings.Settings/"
+    )
+    set_var_method = "SetState" if is_v1 else "SetVar"
     assert all(x.method == service + "GetAttrs" for x in calls[0:3])
     assert all(x.request.attrs == ["active?"] for x in calls[0:3])
     assert calls[0].request.path_info.path == ""
@@ -1267,7 +1296,7 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
     assert calls[2].request.path_info.path == "setup/boundary-conditions"
     assert calls[3].method == service + "GetObjectNames"
     assert calls[3].request.path_info.path == "setup/boundary-conditions/velocity-inlet"
-    assert calls[4].method == service + "SetVar"
+    assert calls[4].method == service + set_var_method
     assert (
         calls[4].request.path_info.path
         == "setup/boundary-conditions/velocity-inlet/inlet1"

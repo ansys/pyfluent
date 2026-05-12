@@ -265,7 +265,6 @@ def test_old_workflow_structure(new_meshing_session):
 
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")

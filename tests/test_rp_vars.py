@@ -46,6 +46,30 @@ def test_get_and_set_rp_vars(new_solver_session) -> None:
     before_init_mod_2 = rp_vars("strategy/solution-strategy/before-init-modification")
     assert before_init_mod_2[1][1][1] == ("value", True)
 
+    # Test string assignment to rp vars without depending on case-specific defaults
+    amg_cpld_relaxation_method = "dynamesh/smooth/laplace/amg-cpld-relaxation-method"
+    original_amg_cpld_relaxation_method = solver.rp_vars(amg_cpld_relaxation_method)
+    try:
+        solver.rp_vars(amg_cpld_relaxation_method, "least-squares")
+        assert solver.rp_vars(amg_cpld_relaxation_method) == "least-squares"
+
+        solver.rp_vars(amg_cpld_relaxation_method, "gauss-seidel")
+        assert solver.rp_vars(amg_cpld_relaxation_method) == "gauss-seidel"
+
+        solver.rp_vars(amg_cpld_relaxation_method, "least-squares")
+        assert solver.rp_vars(amg_cpld_relaxation_method) == "least-squares"
+
+    finally:
+        solver.rp_vars(amg_cpld_relaxation_method, original_amg_cpld_relaxation_method)
+
+    size_field_name = "dynamesh/remesh/rdc/size-field-name"
+    original_size_field_name = solver.rp_vars(size_field_name)
+    try:
+        solver.rp_vars(size_field_name, "sizes_1.sf")
+        assert solver.rp_vars(size_field_name) == "sizes_1.sf"
+    finally:
+        solver.rp_vars(size_field_name, original_size_field_name)
+
 
 @pytest.mark.fluent_version(">=23.1, !=24.1")
 def test_get_all_rp_vars(new_solver_session) -> None:
@@ -119,9 +143,9 @@ def test_create_rp_vars(new_solver_session) -> None:
     solver.rp_vars.create(
         name="my-str-var", value="my-string", var_type=RPVarType.STRING
     )
-    assert solver.rp_vars("my-str-var") == '"my-string"'
+    assert solver.rp_vars("my-str-var") == "my-string"
     solver.rp_vars("my-str-var", "new-str")
-    assert solver.rp_vars("my-str-var") == '"new-str"'
+    assert solver.rp_vars("my-str-var") == "new-str"
 
     with pytest.raises(RuntimeError):
         # Since it was defined with string type
@@ -130,7 +154,7 @@ def test_create_rp_vars(new_solver_session) -> None:
     solver.rp_vars.create(name="my-custom-var", value=100, var_type=None)
     assert solver.rp_vars("my-custom-var") == 100
     solver.rp_vars("my-custom-var", "any-str")
-    assert solver.rp_vars("my-custom-var") == '"any-str"'
+    assert solver.rp_vars("my-custom-var") == "any-str"
 
     # Create RPVar with a list value and verify it is stored and retrieved correctly.
     solver.rp_vars.create(name="my-list-var", value=[1, 2, 3], var_type=None)

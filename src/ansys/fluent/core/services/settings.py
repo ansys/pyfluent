@@ -49,80 +49,84 @@ class _SettingsServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
-        self.__metadata = metadata
+        self._stub = self._create_stub(intercept_channel)
+        self._metadata = metadata
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return SettingsGrpcModule.SettingsStub(intercept_channel)
 
     def set_var(
         self, request: SettingsModule.SetVarRequest
     ) -> SettingsModule.SetVarResponse:
         """Set a variable."""
-        return self.__stub.SetVar(request, metadata=self.__metadata)
+        return self._stub.SetVar(request, metadata=self._metadata)
 
     def get_var(
         self, request: SettingsModule.GetVarRequest
     ) -> SettingsModule.GetVarResponse:
         """Get a variable."""
-        return self.__stub.GetVar(request, metadata=self.__metadata)
+        return self._stub.GetVar(request, metadata=self._metadata)
 
     def rename(
         self, request: SettingsModule.RenameRequest
     ) -> SettingsModule.RenameResponse:
         """Rename an object."""
-        return self.__stub.Rename(request, metadata=self.__metadata)
+        return self._stub.Rename(request, metadata=self._metadata)
 
     def create(
         self, request: SettingsModule.CreateRequest
     ) -> SettingsModule.CreateResponse:
         """Create an object."""
-        return self.__stub.Create(request, metadata=self.__metadata)
+        return self._stub.Create(request, metadata=self._metadata)
 
     def delete(
         self, request: SettingsModule.DeleteRequest
     ) -> SettingsModule.DeleteResponse:
         """Delete an object."""
-        return self.__stub.Delete(request, metadata=self.__metadata)
+        return self._stub.Delete(request, metadata=self._metadata)
 
     def get_object_names(
         self, request: SettingsModule.GetObjectNamesRequest
     ) -> SettingsModule.GetObjectNamesResponse:
         """Get object names."""
-        return self.__stub.GetObjectNames(request, metadata=self.__metadata)
+        return self._stub.GetObjectNames(request, metadata=self._metadata)
 
     def get_list_size(
         self, request: SettingsModule.GetListSizeRequest
     ) -> SettingsModule.GetListSizeResponse:
         """Get list size."""
-        return self.__stub.GetListSize(request, metadata=self.__metadata)
+        return self._stub.GetListSize(request, metadata=self._metadata)
 
     def resize_list_object(
         self, request: SettingsModule.ResizeListObjectRequest
     ) -> SettingsModule.ResizeListObjectResponse:
         """Resize list object."""
-        return self.__stub.ResizeListObject(request, metadata=self.__metadata)
+        return self._stub.ResizeListObject(request, metadata=self._metadata)
 
     def get_static_info(
         self, request: SettingsModule.GetStaticInfoRequest
     ) -> SettingsModule.GetStaticInfoResponse:
         """Get static info."""
-        return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
+        return self._stub.GetStaticInfo(request, metadata=self._metadata)
 
     def execute_cmd(
         self, request: SettingsModule.ExecuteCommandRequest
     ) -> SettingsModule.ExecuteCommandResponse:
         """Execute the command."""
-        return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
+        return self._stub.ExecuteCommand(request, metadata=self._metadata)
 
     def execute_query(
         self, request: SettingsModule.ExecuteQueryRequest
     ) -> SettingsModule.ExecuteQueryResponse:
         """Execute the query."""
-        return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
+        return self._stub.ExecuteQuery(request, metadata=self._metadata)
 
     def get_attrs(
         self, request: SettingsModule.GetAttrsRequest
     ) -> SettingsModule.GetAttrsResponse:
         """Get attributes."""
-        return self.__stub.GetAttrs(request, metadata=self.__metadata)
+        return self._stub.GetAttrs(request, metadata=self._metadata)
 
 
 trace: bool = False
@@ -158,13 +162,22 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
 class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
+    _list_field: str = "lst"
+    _settings_module = SettingsModule
+
     def __init__(
         self, channel, metadata, app_utilities, scheme_eval, fluent_error_state
     ) -> None:
         """__init__ method of SettingsService class."""
-        self._service_impl = _SettingsServiceImpl(channel, metadata, fluent_error_state)
+        self._service_impl = self._create_service_impl(
+            channel, metadata, fluent_error_state
+        )
         self._app_utilities = app_utilities
         self._scheme_eval = scheme_eval
+
+    def _create_service_impl(self, channel, metadata, fluent_error_state):
+        """Create the settings service implementation. Override in subclasses to use a different proto version."""
+        return _SettingsServiceImpl(channel, metadata, fluent_error_state)
 
     @_trace
     def _set_state_from_value(self, state: SettingsModule.Value, value: Any):
@@ -183,7 +196,9 @@ class SettingsService:
                 self._set_state_from_value(state.value_map.m[k], v)
         elif isinstance(value, collections.abc.Iterable):
             for v in value:
-                self._set_state_from_value(state.value_list.lst.add(), v)
+                self._set_state_from_value(
+                    getattr(state.value_list, self._list_field).add(), v
+                )
         else:  # fall back to string (for example, pathlib.Path)
             state.string = str(value)
 
@@ -199,7 +214,10 @@ class SettingsService:
         elif t == "string":
             return state.string
         elif t == "value_list":
-            return [self._get_state_from_value(v) for v in state.value_list.lst]
+            return [
+                self._get_state_from_value(v)
+                for v in getattr(state.value_list, self._list_field)
+            ]
         elif t == "value_map":
             return {
                 k: self._get_state_from_value(v)
@@ -211,21 +229,27 @@ class SettingsService:
     @_trace
     def set_var(self, path: str, value: Any) -> None:
         """Set the value for the given path."""
-        request = _get_request_instance_for_path(SettingsModule.SetVarRequest, path)
+        request = _get_request_instance_for_path(
+            self._settings_module.SetVarRequest, path
+        )
         self._set_state_from_value(request.value, value)
         self._service_impl.set_var(request)
 
     @_trace
     def get_var(self, path: str) -> Any:
         """Get the value for the given path."""
-        request = _get_request_instance_for_path(SettingsModule.GetVarRequest, path)
+        request = _get_request_instance_for_path(
+            self._settings_module.GetVarRequest, path
+        )
         response = self._service_impl.get_var(request)
         return self._get_state_from_value(response.value)
 
     @_trace
     def rename(self, path: str, new: str, old: str) -> None:
         """Rename the object at the given path."""
-        request = _get_request_instance_for_path(SettingsModule.RenameRequest, path)
+        request = _get_request_instance_for_path(
+            self._settings_module.RenameRequest, path
+        )
         request.old_name = old
         request.new_name = new
 
@@ -234,7 +258,9 @@ class SettingsService:
     @_trace
     def create(self, path: str, name: str) -> None:
         """Create a named object child for the given path."""
-        request = _get_request_instance_for_path(SettingsModule.CreateRequest, path)
+        request = _get_request_instance_for_path(
+            self._settings_module.CreateRequest, path
+        )
         request.name = name
 
         self._service_impl.create(request)
@@ -242,7 +268,9 @@ class SettingsService:
     @_trace
     def delete(self, path: str, name: str) -> None:
         """Delete the object with the given name at the given path."""
-        request = _get_request_instance_for_path(SettingsModule.DeleteRequest, path)
+        request = _get_request_instance_for_path(
+            self._settings_module.DeleteRequest, path
+        )
         request.name = name
 
         self._service_impl.delete(request)
@@ -251,7 +279,7 @@ class SettingsService:
     def get_object_names(self, path: str) -> list[str]:
         """Get a list of named objects."""
         request = _get_request_instance_for_path(
-            SettingsModule.GetObjectNamesRequest, path
+            self._settings_module.GetObjectNamesRequest, path
         )
         return self._service_impl.get_object_names(request).names
 
@@ -259,7 +287,7 @@ class SettingsService:
     def get_list_size(self, path: str) -> int:
         """Get the number of elements in a list object."""
         request = _get_request_instance_for_path(
-            SettingsModule.GetListSizeRequest, path
+            self._settings_module.GetListSizeRequest, path
         )
         return self._service_impl.get_list_size(request).size
 
@@ -267,7 +295,7 @@ class SettingsService:
     def resize_list_object(self, path: str, size: int) -> None:
         """Resize a list object."""
         request = _get_request_instance_for_path(
-            SettingsModule.ResizeListObjectRequest, path
+            self._settings_module.ResizeListObjectRequest, path
         )
         request.size = size
         return self._service_impl.resize_list_object(request)
@@ -333,7 +361,7 @@ class SettingsService:
         RuntimeError
             If type is empty.
         """
-        request = SettingsModule.GetStaticInfoRequest()
+        request = self._settings_module.GetStaticInfoRequest()
         request.root = "fluent"
         request.optional_attrs.extend(["allowed-values", "has-migration-adapter?"])
         response = self._service_impl.get_static_info(request)
@@ -347,7 +375,7 @@ class SettingsService:
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute a given command with the provided keyword arguments."""
         request = _get_request_instance_for_path(
-            SettingsModule.ExecuteCommandRequest, path
+            self._settings_module.ExecuteCommandRequest, path
         )
         request.command = command
         self._set_state_from_value(request.args, kwds)
@@ -359,7 +387,7 @@ class SettingsService:
     def execute_query(self, path: str, query: str, **kwds) -> Any:
         """Execute a given query with the provided keyword arguments."""
         request = _get_request_instance_for_path(
-            SettingsModule.ExecuteQueryRequest, path
+            self._settings_module.ExecuteQueryRequest, path
         )
         request.query = query
         self._set_state_from_value(request.args, kwds)
@@ -381,7 +409,9 @@ class SettingsService:
     @_trace
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return values of given attributes."""
-        request = _get_request_instance_for_path(SettingsModule.GetAttrsRequest, path)
+        request = _get_request_instance_for_path(
+            self._settings_module.GetAttrsRequest, path
+        )
         request.attrs[:] = attrs
         request.recursive = recursive
 

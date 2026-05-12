@@ -60,24 +60,28 @@ class SolutionVariableService:
             GrpcErrorInterceptor(),
             TracingInterceptor(),
         )
-        self.__stub = SvarGrpcModule.svarStub(intercept_channel)
-        self.__metadata = metadata
+        self._stub = self._create_stub(intercept_channel)
+        self._metadata = metadata
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return SvarGrpcModule.svarStub(intercept_channel)
 
     def get_data(self, request):
         """GetSvarData RPC of SVAR service."""
-        return self.__stub.GetSvarData(request, metadata=self.__metadata)
+        return self._stub.GetSvarData(request, metadata=self._metadata)
 
     def set_data(self, request):
         """SetSvarData RPC of SVAR service."""
-        return self.__stub.SetSvarData(request, metadata=self.__metadata)
+        return self._stub.SetSvarData(request, metadata=self._metadata)
 
     def get_variables_info(self, request):
         """GetSvarsInfo RPC of SVAR service."""
-        return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
+        return self._stub.GetSvarsInfo(request, metadata=self._metadata)
 
     def get_zones_info(self, request):
         """GetZonesInfo RPC of SVAR service."""
-        return self.__stub.GetZonesInfo(request, metadata=self.__metadata)
+        return self._stub.GetZonesInfo(request, metadata=self._metadata)
 
 
 class SolutionVariableInfo:

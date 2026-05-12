@@ -77,12 +77,13 @@ from ansys.fluent.core.session_utilities import (  # noqa: F401
     SolverIcing,
 )
 from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
+from ansys.fluent.core.streaming_services.events_streaming_v1 import *  # noqa: F401, F403
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.context_managers import using  # noqa: F401
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.39.dev0"
+__version__ = "0.39.dev1"
 
 _VERSION_INFO = None
 """

@@ -232,6 +232,13 @@ class DataModelCache:
         rules_str: str,
         version,
     ):
+        def get_variant_vector_items(variant_state):
+            return getattr(
+                variant_state.variant_vector_state,
+                "items",
+                getattr(variant_state.variant_vector_state, "item", None),
+            )
+
         # Helper function to update the source with the state value
         def update_source_with_state(state_field):
             if state.HasField(state_field):
@@ -256,7 +263,7 @@ class DataModelCache:
         # Handle variant vector state
         if state.HasField("variant_vector_state"):
             updater_fn(source, key, [])
-            for item in state.variant_vector_state.item:
+            for item in get_variant_vector_items(state):
                 self._update_cache_from_variant_state(
                     rules,
                     source,
