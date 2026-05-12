@@ -51,11 +51,6 @@ PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
 ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
-member_specs_oneof_fields = [
-    x.name
-    for x in DataModelProtoModule.MemberSpecs.DESCRIPTOR.oneofs_by_name["as"].fields
-]
-
 
 def _get_value_from_message_dict(d: dict[str, Any], key: list[str | Sequence[str]]):
     """Get value from a protobuf message dict by a sequence of keys.
