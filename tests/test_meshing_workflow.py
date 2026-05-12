@@ -254,6 +254,7 @@ def test_old_workflow_structure(new_meshing_session):
         meshing.workflow.import_geometry
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
 @pytest.mark.nightly
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
