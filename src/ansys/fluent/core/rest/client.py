@@ -135,7 +135,7 @@ class FluentRestClient:
     --------
     >>> from ansys.fluent.core.rest import FluentRestClient
     >>> client = FluentRestClient(
-    ...     "http://127.0.0.1:",
+    ...     "http://127.0.0.1:5000",
     ...     auth_token="<token>",
     ...     component="fluent_1",
     ... )
