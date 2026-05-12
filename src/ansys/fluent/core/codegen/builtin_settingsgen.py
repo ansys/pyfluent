@@ -23,12 +23,14 @@
 """Generate builtin setting classes."""
 
 import re
+from typing import Literal, cast
 
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.flobject import (
     CreatableNamedObjectMixin,
     NamedObject,
     _ChildNamedObjectAccessorMixin,
+    get_full_path,
 )
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 from ansys.fluent.core.utils.fluent_version import FluentVersion, all_versions
@@ -40,6 +42,8 @@ _CLASS_NAME_OVERRIDES = {
     "ReadCaseData": "ReadCaseAndData",
     "WriteCaseData": "WriteCaseAndData",
 }
+
+SettingKind = Literal["Singleton", "NamedObject", "Command"]
 
 
 def _get_settings_root(version: str):
@@ -63,24 +67,45 @@ def _get_public_class_name(legacy_name: str) -> str:
     return _CLASS_NAME_OVERRIDES.get(legacy_name, legacy_name)
 
 
-def _get_named_objects_in_path(root, path, kind):
+def _get_named_objects_in_path(
+    root, path: list[str], kind: SettingKind
+) -> tuple[list[str], bool]:
+    """Get the named objects in the path and whether the final type of the setting is creatable.
+
+    Parameters
+    ----------
+    root : type
+        The root class to start from.
+    path : list[str]
+        The path to traverse.
+    kind : {'Singleton', 'NamedObject', 'Command'}
+        The kind of setting.
+
+    Returns
+    -------
+    tuple[list[str], bool]
+        A tuple containing the list of named objects in the path and a boolean indicating if the final type of the setting is creatable.
+    """
     named_objects = []
     cls = root
-    comps = path.split(".")
+    comps = path.copy()
     for i, comp in enumerate(comps):
-        cls = cls._child_classes[comp]
+        if comp in cls._child_classes:
+            cls = cls._child_classes[comp]
+        elif comp in cls._child_aliases:
+            child_path = cls._child_aliases[comp][0]
+            full_path = get_full_path(comps[:i], child_path.split("/"))
+            return _get_named_objects_in_path(root, full_path, kind)
         if i < len(comps) - 1 and issubclass(cls, NamedObject):
             named_objects.append(comp)
             cls = cls.child_object_type
-    final_type = ""
+    is_creatable = False
     if kind == "NamedObject":
         if not issubclass(cls, (NamedObject, _ChildNamedObjectAccessorMixin)):
             raise TypeError(f"{cls.__name__} is not NamedObject type.")
         if issubclass(cls, CreatableNamedObjectMixin):
-            final_type = "Creatable"
-        else:
-            final_type = "NonCreatable"
-    return named_objects, final_type
+            is_creatable = True
+    return named_objects, is_creatable
 
 
 def generate(version: str):
@@ -150,9 +175,11 @@ def generate(version: str):
                         break
                 if not version_supported:
                     continue
-            named_objects, final_type = _get_named_objects_in_path(root, path, kind)
+            named_objects, is_creatable = _get_named_objects_in_path(
+                root, path.split("."), cast(SettingKind, kind)
+            )
             if kind == "NamedObject":
-                kind = f"{final_type}NamedObject"
+                kind = f"{'Creatable' if is_creatable else 'NonCreatable'}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
             doc_kind = "command object" if kind == "Command" else "setting"
             f.write(f'    """{name} {doc_kind}."""\n\n')
@@ -234,5 +261,5 @@ def generate(version: str):
 
 
 if __name__ == "__main__":
-    version = "261"  # for development
+    version = "271"  # for development
     generate(version)
