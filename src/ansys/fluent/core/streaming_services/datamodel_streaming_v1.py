@@ -39,7 +39,7 @@ class DatamodelStream(StreamingService):
     def __init__(self, service):
         """Initialize DatamodelStream."""
         super().__init__(
-            stream_begin_method="BeginStreaming",
+            stream_begin_method="StreamStateChanges",
             target=DatamodelStream._process_streaming,
             streaming_service=service,
         )
@@ -55,7 +55,7 @@ class DatamodelStream(StreamingService):
         **kwargs,
     ):
         """Processes datamodel events."""
-        data_model_request = datamodel_se_pb2.BeginStreamingRequest(*args, **kwargs)
+        data_model_request = datamodel_se_pb2.StreamStateChangesRequest(*args, **kwargs)
         data_model_request.rules = rules
         data_model_request.return_state_changes = config.datamodel_return_state_changes
         if no_commands_diff_state:
@@ -68,11 +68,11 @@ class DatamodelStream(StreamingService):
         )
         while True:
             try:
-                response: datamodel_se_pb2.BeginStreamingResponse = next(responses)
+                response: datamodel_se_pb2.StreamStateChangesResponse = next(responses)
                 if not config.hide_log_secrets:
                     network_logger.debug(
                         "GRPC_TRACE: RPC = "
-                        "/ansys.api.fluent.v1.datamodel_se.DataModelService/BeginStreaming, "
+                        "/ansys.api.fluent.v1.datamodel_se.DataModel/StreamStateChanges, "
                         f"response = {MessageToDict(response)}"
                     )
                 with self._lock:

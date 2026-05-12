@@ -52,11 +52,6 @@ PyMenuT = _v0.PyMenuT
 ValueT = _v0.ValueT
 logger = _v0.logger
 
-member_specs_oneof_fields = [
-    x.name
-    for x in DataModelProtoModule.MemberSpecs.DESCRIPTOR.oneofs_by_name["as"].fields
-]
-
 _get_value_from_message_dict = _v0._get_value_from_message_dict
 
 
@@ -188,7 +183,7 @@ class DatamodelServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = DataModelGrpcModule.DataModelServiceStub(intercept_channel)
+        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
 
@@ -246,6 +241,12 @@ class DatamodelServiceImpl:
         """RPC UpdateDict of DataModel service."""
         return self._stub.UpdateDict(request, metadata=self._metadata)
 
+    def create_object(
+        self, request: DataModelProtoModule.CreateObjectRequest
+    ) -> DataModelProtoModule.CreateObjectResponse:
+        """RPC CreateObject of DataModel service."""
+        return self._stub.CreateObject(request, metadata=self._metadata)
+
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
@@ -291,17 +292,11 @@ class DatamodelServiceImpl:
                 "supported from Ansys 2023R2 onward."
             ) from None
 
-    def get_specs(
-        self, request: DataModelProtoModule.GetSpecsRequest
-    ) -> DataModelProtoModule.GetSpecsResponse:
-        """RPC GetSpecs of DataModel service."""
-        return self._stub.GetSpecs(request, metadata=self._metadata)
-
-    def get_static_info(
-        self, request: DataModelProtoModule.GetStaticInfoRequest
-    ) -> DataModelProtoModule.GetStaticInfoResponse:
-        """RPC GetStaticInfo of DataModel service."""
-        return self._stub.GetStaticInfo(request, metadata=self._metadata)
+    def get_schema(
+        self, request: DataModelProtoModule.GetSchemaRequest
+    ) -> DataModelProtoModule.GetSchemaResponse:
+        """RPC GetSchema of DataModel service."""
+        return self._stub.GetSchema(request, metadata=self._metadata)
 
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
@@ -501,6 +496,20 @@ class DatamodelService(StreamingService):
                 version=self.version,
             )
 
+    def create_object(self, rules: str, path: str, name: str) -> None:
+        """Create a named object."""
+        request = DataModelProtoModule.CreateObjectRequest(
+            rules=rules, path=path, name=name, wait=True
+        )
+        response = self._impl.create_object(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deleted_paths,
+                version=self.version,
+            )
+
     def delete_object(self, rules: str, path: str) -> None:
         """Delete an object."""
         request = DataModelProtoModule.DeleteObjectRequest(
@@ -561,28 +570,12 @@ class DatamodelService(StreamingService):
         )
         self._impl.delete_command_arguments(request)
 
-    def get_specs(
-        self,
-        rules: str,
-        path: str,
-    ) -> dict[str, Any]:
-        """Get specifications."""
-        request = DataModelProtoModule.GetSpecsRequest(
-            rules=rules,
-            path=path,
-        )
-        return _normalize_v1_datamodel_dict_keys(
-            MessageToDict(
-                self._impl.get_specs(request).member, use_integers_for_enums=True
-            )
-        )
-
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
-        request = DataModelProtoModule.GetStaticInfoRequest(rules=rules)
+        request = DataModelProtoModule.GetSchemaRequest(rules=rules)
         return _normalize_v1_datamodel_dict_keys(
             MessageToDict(
-                self._impl.get_static_info(request).info, use_integers_for_enums=True
+                self._impl.get_schema(request).info, use_integers_for_enums=True
             )
         )
 
@@ -810,9 +803,7 @@ PyArgumentsDictionarySubItem = _v0.PyArgumentsDictionarySubItem
 PyArgumentsParameterSubItem = _v0.PyArgumentsParameterSubItem
 PyArgumentsSingletonSubItem = _v0.PyArgumentsSingletonSubItem
 arg_class_by_type = _v0.arg_class_by_type
-PyMenuGeneric = _v0.PyMenuGeneric
 PySimpleMenuGeneric = _v0.PySimpleMenuGeneric
-PyNamedObjectContainerGeneric = _v0.PyNamedObjectContainerGeneric
 
 _bool_value_if_none = _v0._bool_value_if_none
 true_if_none = _v0.true_if_none
