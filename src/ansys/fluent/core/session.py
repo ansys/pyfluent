@@ -54,6 +54,7 @@ from ansys.fluent.core.services import (
     FieldDataServiceV0,
     FieldDataStreamingV0,
     LiveFieldData,
+    LiveFieldDataV0,
     SchemeEval,
     SettingsService,
     SettingsServiceV0,
@@ -636,9 +637,7 @@ class Fields:
             _session._field_data_service,
             self._is_solution_data_valid,
         )
-        self.field_data = (
-            FieldDataService if server_supports_v1 else FieldDataServiceV0
-        )(
+        self.field_data = (LiveFieldData if server_supports_v1 else LiveFieldDataV0)(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,
