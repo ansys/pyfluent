@@ -76,5 +76,5 @@ class CommandArgumentsCleanupMixin(ABC):
     def _delete_command_arguments_rpc(
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
-        """Perform the RPC call to delete command arguments on the Fluent side."""
+        """Issue RPC to delete command arguments."""
         pass

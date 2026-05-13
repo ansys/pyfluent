@@ -568,7 +568,7 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
     def _delete_command_arguments_rpc(
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
-        """Perform the RPC call to delete command arguments on the Fluent side."""
+        """Issue RPC to delete command arguments."""
         request = DataModelProtoModule.DeleteCommandArgumentsRequest(
             rules=rules, path=path, command=command, command_id=commandid
         )
