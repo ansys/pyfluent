@@ -33,6 +33,7 @@ from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
     InactiveObjectError,
+    NamedObject,
     ReadOnlyActionError,
     _Alias,
     _InputFile,
@@ -842,6 +843,9 @@ def test_named_object_commands(mixing_elbow_settings_session):
     inlets = VelocityInlets(solver)
     inlets.list()
     inlets.list_properties(object_name="hot-inlet")
+    if solver.get_fluent_version() >= FluentVersion.v261:
+        NamedObject.list(inlets)
+        NamedObject.list_properties(inlets, object_name="hot-inlet")
 
 
 @pytest.mark.fluent_version(">=26.1")
