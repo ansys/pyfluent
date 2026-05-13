@@ -95,7 +95,13 @@ def _get_named_objects_in_path(
         elif comp in cls._child_aliases:
             child_path = cls._child_aliases[comp][0]
             full_path = get_full_path(comps[:i], child_path.split("/"))
+            full_path.extend(comps[i + 1 :])
             return _get_named_objects_in_path(root, full_path, kind)
+        else:
+            raise KeyError(
+                f"Unable to resolve path component {comp!r} in path {path!r} "
+                f"for setting kind {kind!r} from class {cls.__name__}."
+            )
         if i < len(comps) - 1 and issubclass(cls, NamedObject):
             named_objects.append(comp)
             cls = cls.child_object_type
