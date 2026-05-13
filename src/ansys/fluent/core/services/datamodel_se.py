@@ -506,7 +506,6 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
-        self._init_command_arguments_cleanup()
 
     def _delete_command_arguments_rpc(
         self, rules: str, path: str, command: str, commandid: str

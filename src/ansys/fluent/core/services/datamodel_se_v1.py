@@ -382,7 +382,6 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
-        self._init_command_arguments_cleanup()
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""

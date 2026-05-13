@@ -109,8 +109,8 @@ def test_pyarguments_registers_and_releases_command_arguments():
 def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
     class DummyService(CommandArgumentsCleanupMixin):
         def __init__(self):
+            super().__init__()
             self.deleted = []
-            self._init_command_arguments_cleanup()
 
         def _delete_command_arguments_rpc(self, rules, path, command, commandid):
             self.deleted.append((rules, path, command, commandid))

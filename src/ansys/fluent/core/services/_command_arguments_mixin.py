@@ -10,7 +10,8 @@ logger = logging.getLogger("pyfluent.datamodel")
 class CommandArgumentsCleanupMixin(ABC):
     """Shared command-argument lifecycle cleanup for datamodel services."""
 
-    def _init_command_arguments_cleanup(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         self._command_arguments: set[tuple[str, str, str, str]] = set()
         self._command_arguments_lock = RLock()
         self._shutdown_cleanup_started = False
