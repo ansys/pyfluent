@@ -21,10 +21,10 @@
 
 """Pure-Python REST client for the Fluent solver settings (DataModel API).
 
-Fluent embeds an HTTP server (SimBA - Simulation Bridge Application) that
-serves the solver settings via a DataModel REST API.  The base path for all
-settings endpoints is ``/api/{component}/`` where *component* is ``"fluent_1"``
-for a solver session (``"fluent_meshing_1"`` for a meshing session).
+Connects to the Fluent embedded web server that exposes the solver settings
+via a DataModel REST API.  The base path for all settings endpoints is
+``/api/{component}/`` where *component* is ``"fluent_1"`` for a solver session
+(``"fluent_meshing_1"`` for a meshing session).
 
 API endpoints (from ``/openapi.json`` on a live Fluent server)
 --------------------------------------------------------------
@@ -60,7 +60,7 @@ Authentication
 ~~~~~~~~~~~~~~
 Every request carries the header::
 
-    Authorization: Bearer <auth_token>
+    Authorization: Bearer <sha256(auth_token)>
 
 where *auth_token* is the password set when the Fluent session was started.
 
@@ -116,8 +116,9 @@ class FluentRestClient:
         Root URL of the Fluent REST server, e.g. ``"http://127.0.0.1:<port>"``.
         A trailing slash is stripped automatically.
     auth_token : str, optional
-        Bearer token (the password set when Fluent was started).  Added to
-        every request as ``Authorization: Bearer ...``.
+        Raw bearer token (the password set when Fluent was started).  Before
+        each request the token is SHA-256 hashed and sent as
+        ``Authorization: Bearer <sha256(auth_token)>``.
     component : str, optional
         DataModel component name.  Defaults to ``"fluent_1"`` (solver).
         Use ``"fluent_meshing_1"`` for a meshing session.
@@ -746,19 +747,16 @@ class FluentRestClient:
         return any(c in name for c in ("*", "?", "["))
 
     def is_interactive_mode(self) -> bool:
-        """Check whether the server is running in interactive mode.
+        """Return whether the server is running in interactive mode.
 
-        Queries ``GET /api/connection/run_mode`` on the server.
+        Always returns ``False`` to match the existing gRPC settings-proxy
+        behaviour.  Returning ``True`` would cause ``flobject.BaseCommand``
+        to call ``get_command_confirmation_prompt()``, which is not
+        implemented on this client.
 
         Returns
         -------
         bool
-            ``True`` if the server mode is anything other than ``"batch"``.
-            Returns ``False`` on any error (safe default — only gates
-            interactive prompts in ``flobject.BaseCommand``).
+            Always ``False``.
         """
-        try:
-            mode = self._request("GET", "api/connection/run_mode")
-            return mode != "batch"
-        except Exception:
-            return False
+        return False

@@ -26,11 +26,8 @@ src/ansys/fluent/core/rest/
 ├── client.py                # FluentRestClient — pure stdlib HTTP client
 ├── rest_session.py          # RestSolverSession — wires client into flobject
 ├── rest_launcher.py         # launch_webserver(), connect_to_webserver()
-├── xyz.py                   # Step-by-step developer smoke-test script
 └── tests/
-    ├── conftest.py              # Shared fixtures (auto-skip when server unreachable)
-    ├── test_client_unit.py      # Unit tests for FluentRestClient (no server needed)
-    └── test_launcher_unit.py    # Unit tests for launcher + session (no server needed)
+    └── conftest.py          # Shared fixtures (auto-skip when server unreachable)
 ```
 
 ---
@@ -42,7 +39,7 @@ launch_webserver()
        │
        ├─ subprocess.Popen(fluent.exe -ws -ws-port=PORT)
        │
-       ├─ _wait_for_server(port, timeout=180)
+       ├─ _wait_for_server(port, timeout=start_timeout)  # start_timeout default: 60 s
        │     ├─ Phase 1: TCP socket.create_connection  ← port open?
        │     └─ Phase 2: GET /api/connection/run_mode  ← solver ready?
        │                 (400 = not ready yet, 401 = ready, 2xx = ready)
@@ -178,8 +175,7 @@ print(list(schema.keys())[:10])
 
 ```python
 session.exit()
-# On Windows: taskkill /F /T — kills entire process tree (solver + GUI + web server)
-# On Linux:   proc.terminate() → proc.kill() fallback
+
 ```
 
 ---
@@ -216,7 +212,10 @@ os.environ["FLUENT_WEBSERVER_TOKEN"] = "my-secret-token"  # raw value here
 - `401 Unauthorized` → server + solver fully up → proceed (auth handled after)
 - `2xx` → proceed immediately
 
-Both phases share one deadline (`start_timeout`, default 180 s) — **no infinite loop possible**.
+Both phases share one deadline (`start_timeout`, default **60 s**) — **no infinite loop possible**.
+
+> `_wait_for_server()` internal default is 120 s; `launch_webserver(start_timeout=60)` overrides
+> this. Pass a larger value if Fluent startup is slow on your machine.
 
 Additionally, `execute_cmd` independently retries on `400 Fluent not running` for up to
 120 s / every 5 s at the call site, covering the rare case where the readiness probe passed
@@ -239,12 +238,25 @@ pytest src/ansys/fluent/core/rest/tests/ -v --noconftest
 
 ## Environment Variables
 
+### Launching Fluent locally (`launch_webserver`)
+
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `FLUENT_WEBSERVER_TOKEN` | **Yes** | Shared secret between client and Fluent web server |
-| `FLUENT_REST_PORT` | No | Port for integration tests against a live server |
-| `FLUENT_REST_HOST` | No | Host for integration tests (default: `127.0.0.1`) |
-| `PYFLUENT_FLUENT_ROOT` | No | Override path to Fluent installation |
+| `FLUENT_WEBSERVER_TOKEN` | **Yes** | Auth token passed to the Fluent process at launch. Set to any non-empty string before calling `launch_webserver()`. |
+| `PYFLUENT_FLUENT_ROOT` | No | Override to the Fluent installation root (developer use). |
+
+### Connecting to a running server (`connect_to_webserver`)
+
+Pass `auth_token` directly to `connect_to_webserver()` — no env var is required.
+The host and port are connection-specific and should be passed as arguments.
+
+### Integration tests against a live server
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `FLUENT_WEBSERVER_TOKEN` | **Yes** | Token for the running server |
+| `FLUENT_REST_PORT` | **Yes** | Port the server is listening on |
+| `FLUENT_REST_HOST` | No | Server host (default: `127.0.0.1`) |
 
 ---
 
@@ -252,7 +264,7 @@ pytest src/ansys/fluent/core/rest/tests/ -v --noconftest
 
 | Error | Cause | Fix |
 |-------|-------|-----|
-| `TimeoutError: did not start within 180s` | Fluent startup too slow | Pass `start_timeout=300` to `launch_webserver` |
+| `TimeoutError: did not start within Xs` | Fluent startup too slow | Pass `start_timeout=300` to `launch_webserver` (default is 60 s) |
 | `HTTP 401: Invalid password` | Token mismatch | Ensure same token in env var and Fluent process |
 | `HTTP 400: Fluent not running` | Solver not fully initialised | Handled automatically — retries 120 s |
 | `HTTP 0: ConnectionRefused` | Port not open yet | `_wait_for_server` handles this — increase `start_timeout` |

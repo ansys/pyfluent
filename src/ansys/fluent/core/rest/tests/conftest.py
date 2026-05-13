@@ -88,7 +88,10 @@ def _real_server_reachable() -> bool:
     """
     if not _env_vars_present():
         return False
-    port = int(_REAL_SERVER_PORT_STR)
+    try:
+        port = int(_REAL_SERVER_PORT_STR)
+    except ValueError:
+        return False
     url = (
         f"{_REAL_SERVER_SCHEME}://{_REAL_SERVER_HOST}:{port}" "/api/connection/run_mode"
     )
@@ -129,7 +132,13 @@ def real_client():
             f"Real Fluent server at {_REAL_SERVER_HOST}:{_REAL_SERVER_PORT_STR} "
             "is not reachable — skipping real-server tests."
         )
-    port = int(_REAL_SERVER_PORT_STR)
+    try:
+        port = int(_REAL_SERVER_PORT_STR)
+    except ValueError:
+        pytest.skip(
+            f"FLUENT_REST_PORT={_REAL_SERVER_PORT_STR!r} is not a valid integer — "
+            "skipping real-server tests."
+        )
     base_url = f"{_REAL_SERVER_SCHEME}://{_REAL_SERVER_HOST}:{port}"
     return FluentRestClient(
         base_url,

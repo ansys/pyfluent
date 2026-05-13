@@ -49,7 +49,7 @@ import subprocess
 import time
 from typing import TYPE_CHECKING
 
-from ansys.fluent.core.rest.client import FluentRestClient
+from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
 from ansys.fluent.core.solver.flobject import get_root
 
 if TYPE_CHECKING:
@@ -166,14 +166,11 @@ class RestSolverSession:
         for attempt in range(retries):
             try:
                 return get_root(self._client, version=version)
-            except Exception as exc:
-                msg = str(exc)
-                is_auth = (
-                    "401" in msg or "Unauthorized" in msg or "Invalid password" in msg
-                )
+            except FluentRestError as exc:
+                is_auth = exc.status == 401
                 if is_auth and attempt < retries - 1:
                     logger.debug(
-                        "get_root attempt %d/%d failed (auth), retrying in %.1fs",
+                        "get_root attempt %d/%d failed (HTTP 401), retrying in %.1fs",
                         attempt + 1,
                         retries,
                         delay,
@@ -187,6 +184,8 @@ class RestSolverSession:
                         "  Python     : os.environ['FLUENT_WEBSERVER_TOKEN'] = '<token>'\n"
                         "  PowerShell : $Env:FLUENT_WEBSERVER_TOKEN = '<token>'"
                     ) from exc
+                raise
+            except Exception:
                 raise
 
     # -- Public properties -----------------------------------------------

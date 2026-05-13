@@ -147,10 +147,15 @@ def _read_auth_token() -> str:
     return token
 
 
-def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
+def _probe_server(
+    base_url: str,
+    auth_token: str,
+    component: str = "fluent_1",
+    timeout: float = 5.0,
+) -> bool:
     """Return ``True`` if the SimBA server responds to an authenticated probe.
 
-    Sends ``GET /api/fluent_1/static-info`` with the auth token.
+    Sends ``GET /api/{component}/static-info`` with the auth token.
     This matches the first authenticated settings call used by
     :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession`.
 
@@ -160,6 +165,9 @@ def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
         Root URL, e.g. ``"http://127.0.0.1:54321"``.
     auth_token : str
         Bearer token.
+    component : str, optional
+        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
+        Use ``"fluent_meshing_1"`` for a meshing session.
     timeout : float, optional
         Socket timeout in seconds.  Defaults to ``5.0``.
 
@@ -168,7 +176,7 @@ def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
     bool
         ``True`` if the server returns any 2xx response.
     """
-    url = f"{base_url}/api/fluent_1/static-info"
+    url = f"{base_url}/api/{component}/static-info"
     req = urllib.request.Request(url, method="GET")
     req.add_header(
         "Authorization", f"Bearer {hashlib.sha256(auth_token.encode()).hexdigest()}"
@@ -180,7 +188,7 @@ def _probe_server(base_url: str, auth_token: str, timeout: float = 5.0) -> bool:
         return False
 
 
-def _wait_for_server(port: int, timeout: int = 120) -> None:
+def _wait_for_server(port: int, timeout: int = 120, scheme: str = "http") -> None:
     """Block until the Fluent web server is fully ready.
 
     Two-phase check:
@@ -201,6 +209,9 @@ def _wait_for_server(port: int, timeout: int = 120) -> None:
         TCP port to probe.
     timeout : int
         Maximum total seconds to wait.  Defaults to ``120``.
+    scheme : str, optional
+        URL scheme (``"http"`` or ``"https"``).  Defaults to ``"http"``.
+        Must match the scheme used by :func:`launch_webserver`.
 
     Raises
     ------
@@ -225,7 +236,7 @@ def _wait_for_server(port: int, timeout: int = 120) -> None:
 
     # ── Phase 2: wait for solver to be ready (no 400) ───────────────────
     logger.info("[wait] Phase 2 — waiting for solver to be ready on port %d...", port)
-    probe_url = f"http://{_LOCALHOST}:{port}/api/connection/run_mode"
+    probe_url = f"{scheme}://{_LOCALHOST}:{port}/api/connection/run_mode"
     while time.monotonic() < deadline:
         try:
             req = urllib.request.Request(probe_url, method="GET")
@@ -424,12 +435,12 @@ def launch_webserver(
     )
 
     # 4 — build the launch command and spawn Fluent
-    launch_cmd = f'"{fluent_exe}" {dimension} -ws -ws-port={port}'
+    launch_cmd = [fluent_exe, dimension, "-ws", f"-ws-port={port}"]
     logger.info("Launching Fluent: %s", launch_cmd)
 
     env = os.environ.copy()
     env[_TOKEN_ENV_VAR] = auth_token
-    process = subprocess.Popen(launch_cmd, env=env)  # nosec B603
+    process = subprocess.Popen(launch_cmd, env=env)  # nosec B603 B607
 
     if process.poll() is not None:
         raise RuntimeError(
@@ -438,7 +449,7 @@ def launch_webserver(
         )
 
     # Wait for the server to become reachable
-    _wait_for_server(port, timeout=start_timeout)
+    _wait_for_server(port, timeout=start_timeout, scheme=scheme)
 
     # 5 — build session (Fluent web server starting in background — no blocking wait)
     base_url = f"{scheme}://{_LOCALHOST}:{port}"
@@ -536,7 +547,7 @@ def connect_to_webserver(
     if not _probe_server(base_url, auth_token, timeout=min(timeout, 5.0)):
         raise ConnectionError(
             f"SimBA server at {base_url} did not respond to the reachability "
-            "probe (GET /api/fluent_1/static-info). "
+            f"probe (GET /api/{component}/static-info). "
             "Verify that the server is running on the given ip and port, "
             "and that the auth_token is correct."
         )
