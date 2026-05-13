@@ -46,6 +46,9 @@ from ansys.fluent.core.services.solution_variables import (
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo as SolutionVariableInfoV0,
 )
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableService as SolutionVariableServiceV0,
+)
 from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
     SolutionVariableInfo,
@@ -185,6 +188,9 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 ReductionServiceV0, self._error_state
             )
             self.fields.reduction = ReductionV0(self._reduction_service, self)
+            self._solution_variable_service = SolutionVariableServiceV0(
+                fluent_connection._channel, fluent_connection._metadata
+            )
             self.fields.solution_variable_info = SolutionVariableInfoV0(
                 self._solution_variable_service
             )
