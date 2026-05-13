@@ -1543,14 +1543,14 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
         return CombinedNamedObject([self, other])
 
-    def _list_fallback(self):
+    def list(self):
         """Print the object names."""
         if FluentVersion(self._version) >= FluentVersion.v261:
             return self._root.list(object_path=self.path)
         else:
             return self.list_1()
 
-    def _list_properties_fallback(self, object_name):
+    def list_properties(self, object_name):
         """Print the properties of the given object name.
 
         Parameters
@@ -2389,12 +2389,6 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         if commands:
             cls.command_names = []
             _process_cls_names(commands, cls.command_names)
-
-        if obj_type == "named-object":
-            if "list" not in cls.command_names:
-                cls.list = NamedObject._list_fallback
-            if "list_properties" not in cls.command_names:
-                cls.list_properties = NamedObject._list_properties_fallback
 
         queries = info.get("queries")
         if queries:
