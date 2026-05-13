@@ -2396,7 +2396,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                             object_path=f"{self.path}/{object_name}"
                         )
                     else:
-                        return self.list_properties_1(object_name)
+                        return self.list_properties_1(object_name=object_name)
 
                 cls.list_properties = _list_properties
 
