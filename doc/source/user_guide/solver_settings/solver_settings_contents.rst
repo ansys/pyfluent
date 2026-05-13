@@ -28,7 +28,7 @@ Example usage
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> with pyfluent.Solver.from_install as solver_session, pyfluent.using(solver_session):
+  >>> with pyfluent.Solver.from_install(...) as solver_session, pyfluent.using(solver_session):
   ...     inlet1 = VelocityInlet().create()
 
 
