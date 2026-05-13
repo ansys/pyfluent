@@ -2308,7 +2308,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         original_pname = pname
         i = 1
-        if parent_taboo:
+        if parent_taboo and original_pname not in ("list", "list_properties"):
             while pname in parent_taboo:
                 pname = f"{original_pname}_{i}"
                 i += 1
