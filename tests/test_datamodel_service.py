@@ -76,6 +76,32 @@ def test_convert_value_to_variant_to_value(value, expected):
     assert expected == _convert_variant_to_value(variant)
 
 
+def test_pyarguments_registers_and_releases_command_arguments():
+    class DummyService:
+        def __init__(self):
+            self.registered = []
+            self.released = []
+
+        def register_command_arguments(self, rules, path, command, commandid):
+            self.registered.append((rules, path, command, commandid))
+
+        def release_command_arguments(self, rules, path, command, commandid):
+            self.released.append((rules, path, command, commandid))
+
+    service = DummyService()
+    arguments = PyArguments(service, "workflow", "ImportGeometry", [], "cmd-id")
+
+    assert service.registered == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+    arguments.__del__()
+
+    assert service.released == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_event_subscription(new_meshing_session):
