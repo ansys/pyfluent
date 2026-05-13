@@ -1543,6 +1543,26 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
         return CombinedNamedObject([self, other])
 
+    def _list_fallback(self):
+        """Print the object names."""
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list(object_path=self.path)
+        else:
+            return self.list_1()
+
+    def _list_properties_fallback(self, object_name):
+        """Print the properties of the given object name.
+
+        Parameters
+        ----------
+        object_name : str
+            Name of the object whose properties are to be listed.
+        """
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
+        else:
+            return self.list_properties_1(object_name=object_name)
+
 
 class CombinedNamedObject:
     """A ``CombinedNamedObject`` contains the concatenated named-objects."""
@@ -2372,33 +2392,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         if obj_type == "named-object":
             if "list" not in cls.command_names:
-
-                def _list(self):
-                    """Print the object names."""
-                    if FluentVersion(self._version) >= FluentVersion.v261:
-                        return self._root.list(object_path=self.path)
-                    else:
-                        return self.list_1()
-
-                cls.list = _list
+                cls.list = NamedObject._list_fallback
             if "list_properties" not in cls.command_names:
-
-                def _list_properties(self, object_name):
-                    """Print the properties of the given object name.
-
-                    Parameters
-                    ----------
-                    object_name : str
-                        Name of the object whose properties are to be listed.
-                    """
-                    if FluentVersion(self._version) >= FluentVersion.v261:
-                        return self._root.list_properties(
-                            object_path=f"{self.path}/{object_name}"
-                        )
-                    else:
-                        return self.list_properties_1(object_name)
-
-                cls.list_properties = _list_properties
+                cls.list_properties = NamedObject._list_properties_fallback
 
         queries = info.get("queries")
         if queries:
