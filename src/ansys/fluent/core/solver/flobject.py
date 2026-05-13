@@ -2308,7 +2308,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         original_pname = pname
         i = 1
-        if parent_taboo and original_pname not in ("list", "list_properties"):
+        if parent_taboo:
             while pname in parent_taboo:
                 pname = f"{original_pname}_{i}"
                 i += 1
@@ -2343,6 +2343,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls._deprecated_version = ""
 
         taboo = set(dir(cls))
+        if version >= "261":
+            taboo -= {"list", "list_properties"}
         taboo |= set(
             [
                 "child_names",
