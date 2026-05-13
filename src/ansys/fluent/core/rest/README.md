@@ -228,11 +228,10 @@ but the case-read endpoint is not yet accepting commands.
 ## Running Tests
 
 ```bash
-# Unit tests — no Fluent server required
-pytest src/ansys/fluent/core/rest/tests/test_client_unit.py -v --noconftest
-pytest src/ansys/fluent/core/rest/tests/test_launcher_unit.py -v --noconftest
+# Integration test — requires a running Fluent web server
+pytest src/ansys/fluent/core/rest/tests/test_real_server.py -v --noconftest
 
-# Both together
+# All REST transport tests currently present
 pytest src/ansys/fluent/core/rest/tests/ -v --noconftest
 ```
 
