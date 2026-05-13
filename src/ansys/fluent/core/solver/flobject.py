@@ -1169,7 +1169,7 @@ class Group(SettingsBase[DictStateType]):
 
         Raises
         ------
-        RuntimeError
+        ValueError
             If key is invalid.
         """
         if isinstance(value, collections.abc.Mapping):
@@ -1187,7 +1187,7 @@ class Group(SettingsBase[DictStateType]):
                         v, root_cls, alias_path
                     )
                 else:
-                    raise RuntimeError("Key '" + str(k) + "' is invalid")
+                    raise ValueError("Key '" + str(k) + "' is invalid")
             return ret
         else:
             return value
