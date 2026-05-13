@@ -147,12 +147,13 @@ class RestSolverSession:
     def _build_settings_with_retry(
         self, version: str, retries: int = 5, delay: float = 2.0
     ):
-        """Call get_root() with retries to handle transient 401s on startup.
+        """Call :func:`get_root` with retries to handle transient startup errors.
 
-        After ``_probe_server`` confirms the static-info endpoint responds,
-        the
-        ``/static-info`` endpoint usually also works.  In rare cases there is
-        a short gap — this retry loop covers it.
+        When the REST server has only just started, the settings root may not
+        be immediately available even though the server is reachable.  In
+        particular, :func:`get_root` can briefly fail with authentication-
+        related errors such as HTTP 401 while startup is still settling. This
+        retry loop covers that short window before raising the final error.
 
         Parameters
         ----------
