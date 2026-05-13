@@ -180,7 +180,7 @@ def generate(version: str):
         for legacy_name, v in DATA.items():
             kind, path, _ = v
             name = _get_public_class_name(legacy_name)
-            if isinstance(path, dict):
+            if isinstance(path, dict):  # version constraint key with settings API path values
                 version_supported = False
                 for version_set, p in path.items():
                     if version in version_set:
@@ -240,7 +240,7 @@ def generate(version: str):
     pyi_entries = []  # list of (decorator: str|None, class_def: str)
     base_class_names = set()  # PascalCase names to import from settings_{version}
     for legacy_name, v in DATA.items():
-        kind, path, recip = v
+        kind, path, recip = v  # reciprical name (singleton -> parent, parent -> singleton)
         name = _get_public_class_name(legacy_name)
         if isinstance(path, dict):
             version_supported = False
