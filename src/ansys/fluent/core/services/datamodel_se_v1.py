@@ -39,6 +39,9 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services import (
     datamodel_se as _v0,  # v0 base: shared logic is reused; only v1-specific proto/stub differences are overridden below
 )
+from ansys.fluent.core.services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -357,7 +360,7 @@ class EventSubscription:
             self._service.subscriptions.remove(self.tag)
 
 
-class DatamodelService(StreamingService):
+class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl (v1)."""
 
     def __init__(
@@ -379,6 +382,7 @@ class DatamodelService(StreamingService):
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
+        self._init_command_arguments_cleanup()
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
@@ -561,14 +565,20 @@ class DatamodelService(StreamingService):
         response = self._impl.create_command_arguments(request)
         return response.command_id
 
-    def delete_command_arguments(
+    def _delete_command_arguments_rpc(
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
-        """Delete command arguments."""
+        """Perform the RPC call to delete command arguments on the Fluent side."""
         request = DataModelProtoModule.DeleteCommandArgumentsRequest(
             rules=rules, path=path, command=command, command_id=commandid
         )
         self._impl.delete_command_arguments(request)
+
+    def delete_command_arguments(
+        self, rules: str, path: str, command: str, commandid: str
+    ) -> None:
+        """Delete command arguments."""
+        return super().delete_command_arguments(rules, path, command, commandid)
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
