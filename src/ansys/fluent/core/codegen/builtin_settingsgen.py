@@ -84,7 +84,7 @@ def _has_create_method(root, path):
         comps = path.split(".")
         for comp in comps:
             cls = cls._child_classes[comp]
-        # Check if the class has 'create' its command names (singletons) or its child classes ()
+        # Check if the class has 'create' its command names (singletons) or its child classes (deprecated plural forms)
         return "create" in getattr(cls, "_child_classes", {}) or "create" in getattr(
             cls, "command_names", []
         )
