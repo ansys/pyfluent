@@ -213,7 +213,7 @@ def _write_function_stub(name, data, s_stub):
     s_stub.write(f"    def {name}(self")
     if name == "create":
         if not data["argument_names"] or "name" not in data["argument_names"]:
-            settings_logger.warning("Create method with no arguments %s", data)
+            settings_logger.warning("Create method with no arguments")
         else:
             s_stub.write(", *")  # allow only keyword arguments as best practice
     for arg_name in data["argument_names"]:
