@@ -139,7 +139,7 @@ solver.settings.file.read_mesh(file_name=mesh_file)
 # ------------
 
 graphics = Graphics(solver)
-mesh = Mesh.create(solver, name="mesh-1")
+mesh = Mesh(solver).create(name="mesh-1")
 
 graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
 graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
@@ -195,10 +195,12 @@ battery_model.zone_assignment.positive_tab = ["tab_p"]  # Positive terminal
 # ----------------
 
 materials = Materials(solver)
+solid_material = SolidMaterial(solver)
 
 # Active material (cells): conductivity via UDS-0 and UDS-1
-e_material = SolidMaterial.create(solver, name="e_material", chemical_formula="e")
-e_material.thermal_conductivity = 20 * W / (m * K)
+e_material = solid_material.create(
+    name="e_material", chemical_formula="e", thermal_conductivity=20 * W / (m * K)
+)
 e_material.uds_diffusivity.option = "defined-per-uds"
 e_material.uds_diffusivity.uds_diffusivities["uds-0"] = (
     1e6 * S / m
@@ -208,8 +210,9 @@ e_material.uds_diffusivity.uds_diffusivities["uds-1"] = (
 )  # Ionic conductivity
 
 # Passive material (busbars & tabs): high constant conductivity
-busbar_material = SolidMaterial.create(
-    solver, name="busbar_material", chemical_formula="bus"
+busbar_material = solid_material.create(
+    name="busbar_material",
+    chemical_formula="bus",
 )
 busbar_material.uds_diffusivity.option = "value"
 busbar_material.uds_diffusivity.value = 3.541e7 * S / m  # Copper-like conductivity
@@ -218,18 +221,19 @@ busbar_material.uds_diffusivity.value = 3.541e7 * S / m  # Copper-like conductiv
 # Assign materials to cell zones
 # ------------------------------
 
+solid_cell_zone = SolidCellZone(solver)
 # Assign e_material to cell_1 2 and 3 all at once
-SolidCellZone.get(solver, name="cell_*").general.material = e_material
+solid_cell_zone.get("cell_*").general.material = e_material
 
 # Assign busbar_material to bar1 and all passive zones
-SolidCellZone.get(solver, name="*bar*|*tabzone*").general.material = busbar_material
+solid_cell_zone.get("*bar*|*tabzone*").general.material = busbar_material
 
 # %%
 # Boundary conditions
 # -------------------
 
 # Convection on all walls (tabs, busbars, cells)
-wall_bc = WallBoundary.get(solver, name="wall*")
+wall_bc = WallBoundary(solver).get("wall*")
 wall_bc.thermal.thermal_condition = wall_bc.thermal.thermal_condition.CONVECTION
 wall_bc.thermal.heat_transfer_coeff = 5 * W / (m**2 * K)
 
@@ -264,7 +268,7 @@ definitions.surface.create(
 )
 
 # Format plot axes
-voltage_surface_areaavg = ReportPlot.get(solver, name="voltage_surface_areaavg-rplot")
+voltage_surface_areaavg = ReportPlot(solver).get("voltage_surface_areaavg-rplot")
 voltage_surface_areaavg.axes.x.number_format.precision = 0  # Integer time steps
 voltage_surface_areaavg.axes.y.number_format.precision = (
     2  # 2 decimal places for voltage
@@ -281,7 +285,7 @@ vol_max = definitions.volume.create(
 )
 
 # Format plot axes
-volume_max_temp = ReportPlot.get(solver, name="volume_max_temp-rplot")
+volume_max_temp = ReportPlot(solver).get("volume_max_temp-rplot")
 volume_max_temp.axes.x.number_format.precision = 0
 volume_max_temp.axes.y.number_format.precision = 2
 
@@ -308,8 +312,7 @@ calculation.calculate()  # Run transient simulation
 # ---------------
 
 # Current density vector plot
-vector = Vector.create(
-    solver,
+vector = Vector(solver).create(
     name="current-magnitude-vector",
     vector_field="current-density-j",  # A/m²  (Current density vector)
     field="current-magnitude",  # A/m²  (Magnitude for coloring)
@@ -329,8 +332,7 @@ graphics.picture.save_picture(file_name="battery_pack_2.png")
 #    :alt: Current density vector plot
 
 # Temperature contour
-temp_contour = Contour.create(
-    solver,
+temp_contour = Contour(solver).create(
     name="temp_contour",
     field=VariableCatalog.TEMPERATURE,  # K
     surfaces_list=["tab_n", "tab_p", "wall*"],
@@ -347,8 +349,7 @@ graphics.picture.save_picture(file_name="battery_pack_3.png")
 #    :alt: Temperature contour
 
 # Joule heat source contour
-joule_contour = Contour.create(
-    solver,
+joule_contour = Contour(solver).create(
     field="battery-joule-heat-source",  # W/m³
     surfaces_list=["tab_n", "tab_p", "wall*"],
 )
@@ -364,10 +365,9 @@ graphics.picture.save_picture(file_name="battery_pack_4.png")
 #    :alt: Joule heat source contour
 
 # Total heat source contour
-total_heat_contour = Contour.create(
-    solver,
+total_heat_contour = Contour(solver).create(
     name="total_heating_contour",
-    field="total-heat-source",  # W/m³  (Joule + reaction heat)
+    field="total-heat-source",  # W/m³  (Joule + reaction heat)  # Using a string as no enum is currently available
     surfaces_list=["tab_n", "tab_p", "wall*"],
 )
 total_heat_contour.colorings.banded = True

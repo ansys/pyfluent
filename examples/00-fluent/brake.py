@@ -58,6 +58,7 @@ import matplotlib.pyplot as plt
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
+    CalculationActivity,
     Controls,
     Energy,
     General,
@@ -122,7 +123,7 @@ controls.equations["temperature"] = True  # Energy
 ##########################################################################################
 # Define disc rotation
 # --------------------
-discs = SolidCellZone.get(solver, name="disc*")
+discs = SolidCellZone(solver).get("disc*")
 discs.solid_motion.enable = True
 discs.solid_motion.solid_motion_zone_motion_function = "none"
 discs.solid_motion.solid_motion_axis_direction = [0, 1, 0]
@@ -138,7 +139,9 @@ discs.solid_motion.solid_relative_to_thread = "absolute"
 # ----------------------------------------------
 # Wall thickness 0f 2 mm has been assumed and 2e9 w/m3 is the heat generation which
 # has been calculated from kinetic energy change due to braking.
-wall_pad_discs = WallBoundary.get(solver, name="wall-pad-disc*")
+wall_boundary = WallBoundary(solver)
+
+wall_pad_discs = wall_boundary.get("wall-pad-disc*")
 wall_pad_discs.thermal.q_dot = 2e9 * W / m**3
 wall_pad_discs.thermal.wall_thickness = 0.002 * m
 
@@ -148,7 +151,7 @@ wall_pad_discs.thermal.wall_thickness = 0.002 * m
 # Outer surfaces are applied a constant htc of 100 W/(m2 K)
 # and 300 K free stream temperature
 
-walls = WallBoundary.get(solver, name="wall-disc*|wall-geom*")
+walls = wall_boundary.get("wall-disc*|wall-geom*")
 walls.thermal.thermal_condition = walls.thermal.thermal_condition.CONVECTION
 walls.thermal.convection.convective_heat_transfer_coefficient = 100 * W / (m**2 * K)
 walls.thermal.convection.free_stream_temperature = 300 * K
@@ -173,7 +176,7 @@ report_defs = ReportDefinitions(solver)
 
 max_pad_temp = report_defs.volume.create(
     name="max-pad-temperature",
-    report_type="volume-max",
+    report_type=report_defs.volume.report_type.VOLUME_MAX,
     field=VariableCatalog.TEMPERATURE,
     cell_zones=["geom-1-innerpad", "geom-1-outerpad"],
 )
@@ -181,8 +184,8 @@ max_pad_temp = report_defs.volume.create(
 
 max_disc_temp = report_defs.volume.create(
     name="max-disc-temperature",
-    report_type="volume-max",
-    field="temperature",
+    report_type=report_defs.volume.report_type.VOLUME_MAX,
+    field=VariableCatalog.TEMPERATURE,
     cell_zones=["disc1", "disc2"],
 )
 
@@ -230,7 +233,7 @@ graphics.restore_view(view_name="top")
 graphics.views.camera.zoom(factor=2)
 graphics.views.save_view(view_name="animation-view")
 
-solver.solution.calculation_activity.solution_animations.create(
+CalculationActivity(solver).solution_animations.create(
     name="animate-temperature",
     animate_on="temperature",
     frequency_of="flow-time",
@@ -277,7 +280,9 @@ contour1 = Contour(solver=solver, field="temperature", surfaces=contour1_surface
 # Set contour properties
 # ----------------------
 
-contour1.range.option = "auto-range-off"
+contour1.range.option = (
+    "auto-range-off"  # Using a string as no enum is currently available.
+)
 contour1.range.auto_range_off.minimum = 300
 contour1.range.auto_range_off.maximum = 400
 

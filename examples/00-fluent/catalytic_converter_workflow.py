@@ -100,6 +100,7 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
 from ansys.fluent.core.solver import (  # noqa: E402
     CellZoneConditions,
     Energy,
@@ -139,8 +140,7 @@ meshing = pyfluent.Meshing.from_install(
 
 # Initialize watertight geometry workflow
 
-workflow = meshing.workflow
-workflow.InitializeWorkflow(WorkflowType=r"Watertight Geometry")
+workflow: mesh_wf_new.WatertightMeshingWorkflow = meshing.watertight(legacy=False)
 
 # %%
 # Import Geometry
@@ -160,9 +160,8 @@ geometry_filename = examples.download_file(
     save_path=Path.cwd(),
 )
 
-workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
-workflow.TaskObject["Import Geometry"].Execute()
+meshing.upload(geometry_filename)
+workflow.application.import_geometry(file_name=geometry_filename)
 
 # %%
 # Local Sizing Controls
@@ -171,22 +170,18 @@ workflow.TaskObject["Import Geometry"].Execute()
 
 # Add local sizing for sensor components
 
-workflow.TaskObject["Add Local Sizing"].Arguments = {
-    "AddChild": "yes",
-    "BOIControlName": "sensor",
-    "BOIExecution": "Curvature",
-    "BOIFaceLabelList": [
+workflow.application.add_local_sizing_wtm(
+    add_child=True,
+    boi_control_name="sensor",
+    boi_execution="Curvature",
+    boi_face_label_list=[
         "sensing_element-65-solid",
         "sensor_innertube-67-solid",
         "sensor_protectiontube-66-solid1",
     ],
-    "BOIMaxSize": 1.2,
-    "BOIMinSize": 0.1,
-}
-workflow.TaskObject["Add Local Sizing"].AddChildToTask()
-workflow.TaskObject["Add Local Sizing"].InsertCompoundChildTask()
-workflow.TaskObject["Add Local Sizing"].Arguments = {"AddChild": "yes"}
-workflow.TaskObject["sensor"].Execute()
+    boi_max_size=1.2,
+    boi_min_size=0.1,
+)
 
 # %%
 # Surface Mesh Generation
@@ -195,15 +190,10 @@ workflow.TaskObject["sensor"].Execute()
 
 # Configure surface mesh settings
 
-workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
-    "CFDSurfaceMeshControls": {"MinSize": 1.5},
-    "SurfaceMeshPreferences": {
-        "SMQualityImprove": "yes",
-        "SMQualityImproveLimit": 0.95,
-        "ShowSurfaceMeshPreferences": True,
-    },
-}
-workflow.TaskObject["Generate the Surface Mesh"].Execute()
+workflow.application.create_surface_mesh.cfd_surface_mesh_controls(
+    min_size=1.5,
+)
+workflow.application.improve_surface_mesh(face_quality_limit=0.95)
 
 # %%
 # Geometry Description
@@ -212,25 +202,11 @@ workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 # Describe geometry type
 
-workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
-workflow.TaskObject["Describe Geometry"].Arguments = {
-    "SetupType": "The geometry consists of both fluid and solid regions and/or voids"
-}
-workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
-
-# Enable capping and wall-to-internal conversion
-
-workflow.TaskObject["Describe Geometry"].Arguments = {
-    "CappingRequired": "Yes",
-    "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
-}
-workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
-workflow.TaskObject["Describe Geometry"].Arguments = {
-    "CappingRequired": "Yes",
-    "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
-    "WallToInternal": "Yes",
-}
-workflow.TaskObject["Describe Geometry"].Execute()
+workflow.application.describe_geometry(
+    capping_required=True,
+    setup_type="both",  # Using a string as no enum is currently available.  # TODO double check this is correct
+    wall_to_internal=True,
+)
 
 # %%
 # Boundary Capping
@@ -239,38 +215,24 @@ workflow.TaskObject["Describe Geometry"].Execute()
 
 # Create inlet boundary
 
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = {
-    "LabelSelectionList": ["in1"],
-    "PatchName": "inlet",
-}
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-workflow.TaskObject["inlet"].Execute()
+workflow.application.capping(
+    label_selection_list=["in1"],
+    patch_name="inlet",
+)
 
 # Create outlet boundary as pressure outlet
 
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = {
-    "LabelSelectionList": ["out1"],
-    "PatchName": "outlet",
-}
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-workflow.TaskObject["outlet"].Execute()
+workflow.application.capping(
+    label_selection_list=["out1"],
+    patch_name="outlet",
+    complete_label_selection_list=["out1"],
+    zone_type="pressure-outlet",  # Using a string as no enum is currently available.
+)
 
-# Configure outlet as pressure-outlet
-
-workflow.TaskObject["outlet"].Revert()
-workflow.TaskObject["outlet"].Arguments = {
-    "CompleteLabelSelectionList": ["out1"],
-    "LabelSelectionList": ["out1"],
-    "PatchName": "outlet",
-    "ZoneType": "pressure-outlet",
-}
-workflow.TaskObject["outlet"].Execute()
 
 # Update boundaries
 
-workflow.TaskObject["Update Boundaries"].Execute()
+workflow.application.update_boundaries()
 
 # %%
 # Region Setup
@@ -279,18 +241,16 @@ workflow.TaskObject["Update Boundaries"].Execute()
 
 # Create multiple flow volumes
 
-workflow.TaskObject["Create Regions"].Arguments = {"NumberOfFlowVolumes": 3}
-workflow.TaskObject["Create Regions"].Execute()
+workflow.application.create_regions(number_of_flow_volumes=3)
 
 # Convert solid substrate regions to fluid regions
 
-workflow.TaskObject["Update Regions"].Arguments = {
-    "OldRegionNameList": ["honeycomb-solid1", "honeycomb_af0-solid1"],
-    "OldRegionTypeList": ["solid", "solid"],
-    "RegionNameList": ["fluid:substrate:1", "fluid:substrate:2"],
-    "RegionTypeList": ["fluid", "fluid"],
-}
-workflow.TaskObject["Update Regions"].Execute()
+workflow.application.update_regions(
+    old_region_name_list=["honeycomb-solid1", "honeycomb_af0-solid1"],
+    old_region_type_list=["solid", "solid"],
+    region_name_list=["fluid:substrate:1", "fluid:substrate:2"],
+    region_type_list=["fluid", "fluid"],
+)
 
 # %%
 # Boundary Layer Mesh
@@ -299,13 +259,11 @@ workflow.TaskObject["Update Regions"].Execute()
 
 # Add boundary layers
 
-workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-workflow.TaskObject["smooth-transition_1"].Arguments = {
-    "BLControlName": "smooth-transition_1"
-}
-
-workflow.TaskObject["smooth-transition_1"].Execute()
+workflow.application.add_boundary_layers(
+    control_name="smooth-transition_1",
+    number_of_layers=10,
+    rate=1.1,
+)
 
 # %%
 # Volume Mesh Generation
@@ -314,10 +272,7 @@ workflow.TaskObject["smooth-transition_1"].Execute()
 
 # Generate volume mesh
 
-workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
-    "VolumeMeshPreferences": {"MergeBodyLabels": "yes"}
-}
-workflow.TaskObject["Generate the Volume Mesh"].Execute()
+workflow.application.create_volume_mesh_wtm(volume_fill="poly-hexcore")
 
 # %%
 # Mesh Quality Check & Write Mesh File
@@ -364,11 +319,7 @@ graphics.picture.color_mode = "color"
 # First, get all wall boundary names and create a mesh object for visualization context
 
 all_walls = WallBoundaries(solver).get_object_names()
-mesh = Mesh(
-    solver,
-    new_instance_name="mesh-1",
-    surfaces_list=all_walls,
-)
+mesh = Mesh(solver).create(surfaces_list=all_walls)
 mesh.options.edges = True
 mesh.display()
 graphics.picture.save_picture(file_name="out/catalytic_converter_mesh.png")
@@ -454,7 +405,7 @@ porous_media_settings.porous_zone.porous = True
 
 # Configure velocity inlet
 
-velocity_inlet = VelocityInlet.get(solver, name="inlet")
+velocity_inlet = VelocityInlet(solver).get(name="inlet")
 velocity_inlet.momentum.velocity_magnitude = 125.0 * m / s
 velocity_inlet.turbulence.hydraulic_diameter = 0.5 * m
 velocity_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
@@ -462,7 +413,7 @@ velocity_inlet.thermal.temperature = 800.0 * K
 
 # Configure pressure outlet
 
-pressure_outlet = PressureOutlet.get(solver, name="outlet")
+pressure_outlet = PressureOutlet(solver).get(name="outlet")
 pressure_outlet.momentum.gauge_pressure = 0.0 * Pa
 pressure_outlet.turbulence.backflow_hydraulic_diameter = 0.5 * m
 pressure_outlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
@@ -626,15 +577,15 @@ cont_velmag = results.graphics.contour.create(
 # Scene 1: Display velocity vectors with mesh context
 # Scenes combine multiple graphics objects for comprehensive visualization
 
-velocity_vectors_scene = Scene(solver, new_instance_name="scene-1")
-velocity_vectors_scene.graphics_objects.add(name="vector-vel")
+velocity_vectors_scene = Scene(solver).create()
+velocity_vectors_scene.graphics_objects.add(name=vec)
 
 # adding mesh for context which is created earlier steps just after switching to solver
 
 velocity_vectors_scene.graphics_objects.add(name="mesh-1")
 
 # Configure scene appearance and display settings
-scene_1 = Scene.create(solver, name="scene-1")
+scene_1 = Scene(solver).create()
 scene_1.graphics_objects = {
     "vector-vel": {"name": "vectors"},  # Label for the vector plot
     "mesh-1": {"transparency": 75},  # Semi-transparent mesh (75% transparent)
@@ -653,8 +604,10 @@ graphics.picture.save_picture(file_name="out/velocity_vectors.png")
 # Scene 2: Display static pressure contours with mesh context
 # This scene focuses on pressure distribution across the catalytic converter
 
-static_pressure_scene = Scene.create(solver, name="scene-2")
-pressure_contour_scene = static_pressure_scene.graphics_objects.add(name="contour-ps")
+static_pressure_scene = Scene(solver).create()
+pressure_contour_scene = static_pressure_scene.graphics_objects.add(
+    name=pressure_contour
+)
 mesh_1_scene = static_pressure_scene.graphics_objects.add(name="mesh-1")
 
 # Configure pressure contour scene settings
@@ -676,16 +629,14 @@ graphics.picture.save_picture(file_name="out/static_pressure.png")
 # Scene 3: Display velocity magnitude contours with mesh context
 # This scene shows speed distribution across multiple axial locations
 
-velocity_magnitude_scene = Scene.create(solver, name="scene-3")
+velocity_magnitude_scene = Scene(solver).create()
 velocity_mag_contour_scene = velocity_magnitude_scene.graphics_objects.add(
-    name="contour-velmag"
+    name=cont_velmag
 )
 mesh_1_scene = velocity_magnitude_scene.graphics_objects.add(name="mesh-1")
 
 # Configure velocity magnitude contour scene settings
-velocity_mag_contour_scene.name = (
-    velocity_mag_contour  # Label for velocity magnitude contour
-)
+velocity_mag_contour_scene.name = cont_velmag  # Label for velocity magnitude contour
 mesh_1_scene.transparency = 75  # Consistent mesh transparency
 
 velocity_magnitude_scene.display()

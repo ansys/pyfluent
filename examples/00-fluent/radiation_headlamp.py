@@ -77,19 +77,19 @@ from ansys.units import VariableCatalog
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin import CellZoneConditions
-from ansys.fluent.core.generated.solver.settings_builtin_261 import BoundaryCondition, ReportPlot, initialize, iterate, write_case, write_case_data
 from ansys.fluent.core.solver import (
-    BoundaryConditions,
-    Initialization,
     Models,
     Monitor,
     ReportDefinitions,
-    RunCalculation,
     SolidCellZone,
     SolidMaterial,
     Solution,
-    WallBoundary,
+    WallBoundary,BoundaryCondition,
+    ReportPlot,CellZoneConditions,
+    initialize,
+    iterate,
+    write_case,
+    write_case_data,
 )
 from ansys.units.common import J, K, W, kg, m
 
@@ -468,9 +468,13 @@ max_temp_surf_report = report_defs.surface.create(
 )
 
 monitor = Monitor(solver)
-max_temp_surf_report_plot = ReportPlot.create(name="max-temp-rplot", report_defs = [max_temp_surf_report], print = True)
+max_temp_surf_report_plot = ReportPlot.create(
+    name="max-temp-rplot", report_defs=[max_temp_surf_report], print=True
+)
 
-max_temp_rplot = ReportPlot.create(name="max-temp-rplot", report_defs = [max_temp_surf_report], print = True)
+max_temp_rplot = ReportPlot.create(
+    name="max-temp-rplot", report_defs=[max_temp_surf_report], print=True
+)
 
 ###############################################################################
 # Save case file

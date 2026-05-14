@@ -66,6 +66,8 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
+from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.solver import (
     FluidMaterial,
     Initialization,
@@ -89,7 +91,7 @@ from ansys.units.common import kg, m, s
 #######################################################################################
 # Launch Fluent session with meshing mode and print Fluent version
 # =====================================================================================
-meshing = pyfluent.Meshing.from_install()
+meshing: PureMeshing = pyfluent.Meshing.from_install()
 print(meshing.get_fluent_version())
 
 #######################################################################################
@@ -100,7 +102,7 @@ print(meshing.get_fluent_version())
 # Initialize the Meshing Workflow
 # =====================================================================================
 
-workflow = meshing.workflow
+workflow: mesh_wf_new.WatertightMeshingWorkflow = meshing.watertight(legacy=False)
 
 filenames = {
     "Windows": "ahmed_body_20_0degree_boi_half.scdoc",
@@ -114,117 +116,89 @@ geometry_filename = examples.download_file(
 )
 meshing.upload(geometry_filename)
 
-workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
-workflow.TaskObject["Import Geometry"].Execute()
+workflow.application.import_geometry(file_name=geometry_filename)
 
 #######################################################################################
 # Add Local Face Sizing
 # =====================================================================================
-add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = {
-    "AddChild": "yes",
-    "BOIControlName": "facesize_front",
-    "BOIFaceLabelList": ["wall_ahmed_body_front"],
-    "BOIGrowthRate": 1.15,
-    "BOISize": 8,
-}
-add_local_sizing.Execute()
 
-add_local_sizing.InsertCompoundChildTask()
-workflow.TaskObject["Add Local Sizing"].Execute()
-add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = {
-    "AddChild": "yes",
-    "BOIControlName": "facesize_rear",
-    "BOIFaceLabelList": ["wall_ahmed_body_rear"],
-    "BOIGrowthRate": 1.15,
-    "BOISize": 5,
-}
-add_local_sizing.Execute()
+add_local_sizing = workflow.application.add_local_sizing_wtm(
+    add_child=True,
+    boi_control_name="facesize_front",
+    boi_face_label_list=["wall_ahmed_body_front"],
+    boi_growth_rate=1.15,
+    boi_size=8,
+)
 
-add_local_sizing.InsertCompoundChildTask()
-workflow.TaskObject["Add Local Sizing"].Execute()
-add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = {
-    "AddChild": "yes",
-    "BOIControlName": "facesize_main",
-    "BOIFaceLabelList": ["wall_ahmed_body_main"],
-    "BOIGrowthRate": 1.15,
-    "BOISize": 12,
-}
-add_local_sizing.Execute()
+workflow.application.add_local_sizing_wtm(
+    add_child=True,
+    boi_control_name="facesize_rear",
+    boi_face_label_list=["wall_ahmed_body_rear"],
+    boi_growth_rate=1.15,
+    boi_size=5,
+)
+
+
+workflow.application.add_local_sizing_wtm(
+    add_child=True,
+    boi_control_name="facesize_main",
+    boi_face_label_list=["wall_ahmed_body_main"],
+    boi_growth_rate=1.15,
+    boi_size=12,
+)
 
 #######################################################################################
 # Add BOI (Body of Influence) Sizing
 # =====================================================================================
-add_boi_sizing = workflow.TaskObject["Add Local Sizing"]
-add_boi_sizing.InsertCompoundChildTask()
-add_boi_sizing.Arguments = {
-    "AddChild": "yes",
-    "BOIControlName": "boi_1",
-    "BOIExecution": "Body Of Influence",
-    "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
-    "BOISize": 20,
-}
-add_boi_sizing.Execute()
-add_boi_sizing.InsertCompoundChildTask()
+workflow.application.add_local_sizing_wtm(
+    add_child=True,
+    boi_control_name="boi_1",
+    boi_execution="Body Of Influence",  # Using a string as no enum is currently available
+    boi_face_label_list=["ahmed_body_20_0degree_boi_half-boi"],
+    boi_size=20,
+)
 
 
 #######################################################################################
 # Add Surface Mesh Sizing
 # =====================================================================================
-generate_surface_mesh = workflow.TaskObject["Generate the Surface Mesh"]
-generate_surface_mesh.Arguments = {
-    "CFDSurfaceMeshControls": {
-        "CurvatureNormalAngle": 12,
-        "GrowthRate": 1.15,
-        "MaxSize": 50,
-        "MinSize": 1,
-        "SizeFunctions": "Curvature",
-    }
-}
+workflow.application.create_surface_mesh.cfd_surface_mesh_controls(  # TODO double check this works (new_meshing_workflows.rst kinda implies it does)
+    curvature_normal_angle=12,
+    growth_rate=1.15,
+    max_size=50,
+    min_size=1,
+    size_functions="curvature",  # Using a string as no enum is currently available
+)
 
-generate_surface_mesh.Execute()
-generate_surface_mesh.InsertNextTask(CommandName="ImproveSurfaceMesh")
-improve_surface_mesh = workflow.TaskObject["Improve Surface Mesh"]
-improve_surface_mesh.Arguments.update_dict({"FaceQualityLimit": 0.4})
-improve_surface_mesh.Execute()
+workflow.application.improve_surface_mesh(face_quality_limit=0.4)
 
 #######################################################################################
 # Describe Geometry, Update Boundaries, Update Regions
 # =====================================================================================
-workflow.TaskObject["Describe Geometry"].Arguments = {
-    "CappingRequired": "Yes",
-    "SetupType": "The geometry consists of only fluid regions with no voids",
-}
-workflow.TaskObject["Describe Geometry"].Execute()
-workflow.TaskObject["Update Boundaries"].Execute()
-workflow.TaskObject["Update Regions"].Execute()
+workflow.application.describe_geometry(
+    capping_required=True,
+    setup_type="fluid",  # Using a string as no enum is currently available
+)
+update_boundaries = workflow.application.update_boundaries()
+update_regions = workflow.application.update_regions()
 
 #######################################################################################
 # Add Boundary Layers
 # =====================================================================================
-add_boundary_layers = workflow.TaskObject["Add Boundary Layers"]
-add_boundary_layers.AddChildToTask()
-add_boundary_layers.InsertCompoundChildTask()
-workflow.TaskObject["smooth-transition_1"].Arguments.update_dict(
-    {
-        "BLControlName": "smooth-transition_1",
-        "NumberOfLayers": 14,
-        "Rate": 1.15,
-        "TransitionRatio": 0.5,
-    }
+workflow.application.add_boundary_layers(
+    control_name="smooth-transition_1",
+    number_of_layers=14,
+    rate=1.15,
+    transition_ratio=0.5,
 )
-add_boundary_layers.Execute()
 
 
 #######################################################################################
 # Generate the Volume Mesh
 # =====================================================================================
-generate_volume_mesh = workflow.TaskObject["Generate the Volume Mesh"]
-generate_volume_mesh.Arguments.update_dict({"VolumeFill": "poly-hexcore"})
-generate_volume_mesh.Execute()
+workflow.application.create_volume_mesh_wtm(
+    volume_fill="poly-hexcore"  # Using a string as no enum is currently available
+)
 
 #######################################################################################
 # Switch to the Solver Mode
@@ -259,7 +233,7 @@ inlet_area = 0.11203202 * m**2
 #######################################################################################
 # Define Materials
 # =====================================================================================
-air = FluidMaterial.get(solver, name="air")
+air = FluidMaterial(solver).get("air")
 air.density = density
 
 viscous = Viscous(solver=solver)
@@ -270,7 +244,7 @@ viscous.options.curvature_correction = True
 #######################################################################################
 # Define Boundary Conditions
 # =====================================================================================
-inlet = VelocityInlet.get(solver, name="inlet")
+inlet = VelocityInlet(solver).get(name="inlet")
 inlet.turbulence.turb_intensity = 0.05
 inlet.momentum.velocity.value = inlet_velocity
 inlet.turbulence.turb_viscosity_ratio = 5
@@ -297,7 +271,7 @@ discretization_scheme["pressure"] = "second-order"
 discretization_scheme["k"] = "second-order-upwind"
 discretization_scheme["epsilon"] = "second-order-upwind"
 initialization = Initialization(solver)
-initialization.defaults.k = 0.000001
+initialization.defaults.k = 1e-6
 
 residual = Residual(solver)
 for monitor in (
@@ -342,7 +316,7 @@ iterate(solver, iter_count=5)
 #######################################################################################
 # Post-Processing Workflow
 # =====================================================================================
-iso = IsoSurface.create(solver, name="xmid", field="x-coordinate", iso_values=[0 * m])
+iso = IsoSurface(solver).create(name="xmid", field="x-coordinate", iso_values=[0 * m])
 
 velocity_mag = Contour(
     solver=solver, field=VariableCatalog.VELOCITY_MAGNITUDE, surfaces=["xmid"]
