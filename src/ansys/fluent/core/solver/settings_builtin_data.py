@@ -533,12 +533,12 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
     "IsoSurfaces": (
         "Singleton",
         "results.surfaces.iso_surface",
-        None,
+        "IsoSurface",
     ),
     "IsoSurface": (
         "NamedObject",
         "results.surfaces.iso_surface",
-        None,
+        "IsoSurfaces",
     ),
     "IsoClips": (
         "Singleton",
@@ -668,12 +668,12 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
     "Pathlines": (
         "Singleton",
         "results.graphics.pathline",
-        None,
+        "Pathline",
     ),
     "Pathline": (
         "NamedObject",
         "results.graphics.pathline",
-        None,
+        "Pathlines",
     ),
     "ParticleTracks": (
         "Singleton",
@@ -760,7 +760,7 @@ DATA: Mapping[str, tuple[str, str | dict[FluentVersionSet, str], str | None]] = 
     "Flux": (
         "NamedObject",
         "results.report.fluxes",
-        None,
+        "Fluxes",
     ),
     "SurfaceIntegrals": (
         "Singleton",
