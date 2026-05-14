@@ -175,18 +175,18 @@ def test_field_data_batches(new_solver_session) -> None:
     batch = field_data.new_batch()
 
     surface_request_with_faces_connectivity = SurfaceFieldDataRequest(
-        surfaces=VelocityInlets(settings_source=solver),
+        surfaces=VelocityInlets(solver),
         data_types=[SurfaceDataType.FacesConnectivity],
         flatten_connectivity=True,
     )
 
     surface_request_with_faces_connectivity_deprecated = SurfaceFieldDataRequest(
-        surfaces=VelocityInlets(settings_source=solver),
+        surfaces=VelocityInlets(solver),
         data_types=[SurfaceDataType.FacesConnectivity],
     )
 
     su1 = SurfaceFieldDataRequest(
-        surfaces=[1, VelocityInlet(settings_source=solver, name="hot-inlet")],
+        surfaces=[1, VelocityInlet(solver, name="hot-inlet")],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
     sux = SurfaceFieldDataRequest(
@@ -198,7 +198,7 @@ def test_field_data_batches(new_solver_session) -> None:
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
     sc1 = ScalarFieldDataRequest(
-        surfaces=[1] + [item for item in VelocityInlets(settings_source=solver)],
+        surfaces=[1] + [item for item in VelocityInlets(solver)],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
@@ -206,12 +206,12 @@ def test_field_data_batches(new_solver_session) -> None:
     sc2 = sc1._replace(surfaces=[2], boundary_value=False)
     vc1 = VectorFieldDataRequest(surfaces=[3, "hot-inlet"], field_name="velocity")
     pt1 = PathlinesFieldDataRequest(
-        surfaces=[1, VelocityInlet(settings_source=solver, name="hot-inlet")],
+        surfaces=[1, VelocityInlet(solver, name="hot-inlet")],
         field_name="temperature",
         provide_particle_time_field=True,
     )
     pt2 = PathlinesFieldDataRequest(
-        surfaces=[1, VelocityInlet(settings_source=solver, name="hot-inlet")],
+        surfaces=[1, VelocityInlet(solver, name="hot-inlet")],
         field_name="temperature",
         provide_particle_time_field=False,
     )
@@ -223,7 +223,12 @@ def test_field_data_batches(new_solver_session) -> None:
         surface_request_with_faces_connectivity_deprecated,
     )
     data = batch.add_requests(
-        su2, sux, sc1, sc2, vc1, pt1  # 'sux' is duplicate and will be ignored
+        su2,
+        sux,
+        sc1,
+        sc2,
+        vc1,
+        pt1,  # 'sux' is duplicate and will be ignored
     ).get_response()  # adding multiple requests.
 
     with pytest.raises(ValueError):
@@ -912,8 +917,7 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
     # For multiple surface objects
     scalar_object_from_surface_objects = ScalarFieldDataRequest(
         field_name="absolute-pressure",
-        surfaces=VelocityInlets(settings_source=solver)
-        + WallBoundaries(settings_source=solver),
+        surfaces=VelocityInlets(solver) + WallBoundaries(solver),
     )
     abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
     assert list(abs_press_data) == [
@@ -944,7 +948,7 @@ def test_field_data_objects_3d_with_location_objects_overall(
 
     su1 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices],
-        surfaces=[VelocityInlet(settings_source=solver, name="cold-inlet")],
+        surfaces=[VelocityInlet(solver, name="cold-inlet")],
     )
     vertices_data = field_data.get_field_data(su1)
     assert vertices_data["cold-inlet"].vertices.shape == (241, 3)
@@ -954,7 +958,7 @@ def test_field_data_objects_3d_with_location_objects_overall(
 
     su2 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
-        surfaces=VelocityInlets(settings_source=solver),
+        surfaces=VelocityInlets(solver),
     )
     vertices_and_faces_centroid_data = field_data.get_field_data(su2)
 
@@ -984,7 +988,7 @@ def test_field_data_objects_3d_with_location_objects_overall(
 
     su4 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity],
-        surfaces=[VelocityInlet(settings_source=solver, name="cold-inlet")],
+        surfaces=[VelocityInlet(solver, name="cold-inlet")],
     )
     faces_connectivity_data = field_data.get_field_data(su4)
     assert (
@@ -994,7 +998,7 @@ def test_field_data_objects_3d_with_location_objects_overall(
     velocity_vector_data = field_data.get_field_data(
         VectorFieldDataRequest(
             field_name="velocity",
-            surfaces=[VelocityInlet(settings_source=solver, name="cold-inlet")],
+            surfaces=[VelocityInlet(solver, name="cold-inlet")],
         )
     )
     assert velocity_vector_data["cold-inlet"].shape == (152, 3)
@@ -1002,7 +1006,7 @@ def test_field_data_objects_3d_with_location_objects_overall(
     path_lines_data = field_data.get_field_data(
         PathlinesFieldDataRequest(
             field_name="velocity-magnitude",
-            surfaces=VelocityInlets(settings_source=solver),
+            surfaces=VelocityInlets(solver),
         )
     )
 

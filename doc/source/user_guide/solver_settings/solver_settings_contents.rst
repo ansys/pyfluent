@@ -166,7 +166,7 @@ You can print the current state in a simple text format with the
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Models
-  >>> models = Models(settings_source=solver_session)
+  >>> models = Models(solver_session)
   >>> models.print_state()
 
 
@@ -220,7 +220,7 @@ for that object or returns ``None`` otherwise.
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model.all()
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
@@ -228,7 +228,7 @@ for that object or returns ``None`` otherwise.
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model.allowed_values()
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
@@ -236,7 +236,7 @@ for that object or returns ``None`` otherwise.
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
@@ -244,7 +244,7 @@ for that object or returns ``None`` otherwise.
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model.get_attrs(['allowed-values'])
   {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
 
@@ -314,7 +314,7 @@ in a single solver session:
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.is_active()
   True
   >>> viscous.model.is_read_only()
@@ -333,7 +333,7 @@ in a single solver session:
    'scale-adaptive-simulation',
    'detached-eddy-simulation',
    'large-eddy-simulation']
-  >>> cold_inlet = VelocityInlet(settings_source=solver_session, name="cold-inlet")
+  >>> cold_inlet = VelocityInlet(solver_session, name="cold-inlet")
   >>> cold_inlet.turb_intensity.min()
   0
   >>> cold_inlet.turb_intensity.max()
@@ -350,7 +350,7 @@ The ``get_active_child_names()`` method returns a list of
 active children::
 
   >>> from ansys.fluent.core.solver import Models
-  >>> models = Models(settings_source=solver_session)
+  >>> models = Models(solver_session)
   >>> models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
@@ -366,14 +366,14 @@ You can use wildcards when using named objects, list objects, and string list se
 For named objects and list objects, for instance::
 
   >>> from ansys.fluent.core.solver import FluidCellZone
-  >>> fluid = FluidCellZone(settings_source=solver_session, name="*")
+  >>> fluid = FluidCellZone(solver_session, name="*")
   >>> fluid.sources.terms["*mom*"]()
   {'fluid': {'sources': {'terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}}
 
 Also, when you have one or more velocity inlets with "inlet" in their names::
 
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> inlet = VelocityInlet(settings_source=solver_session, name="*inlet*")
+  >>> inlet = VelocityInlet(solver_session, name="*inlet*")
   >>> inlet.momentum.velocity_magnitude.value()
   {'hot-inlet': {'momentum': {'velocity_magnitude': {'value': 1.2}}},
    'cold-inlet': {'momentum': {'velocity_magnitude': {'value': 1}}}}

@@ -63,14 +63,14 @@ session = pyfluent.Solver.from_connection(ip, port, password)
 ### File I/O
 
 ```{python}
-ReadCase(settings_source=solver)(
+ReadCase(solver)(
   file_name="<case_file>")
-ReadCaseData(settings_source=solver)(
+ReadCaseData(solver)(
   file_name="<data_file>")
 
-WriteCase(settings_source=solver)(
+WriteCase(solver)(
   file_name="<output_case_file>")
-WriteCaseData(settings_source=solver)(
+WriteCaseData(solver)(
   file_name="<output_case_file>")
 ```
 
