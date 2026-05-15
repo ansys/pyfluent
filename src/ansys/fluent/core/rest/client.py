@@ -333,7 +333,7 @@ class FluentRestClient:
         """Set the value of the setting at *path*.
 
         Calls ``PUT /api/{component}/{path}`` with the value as the JSON body.
-        SimBA expects the raw value directly, not wrapped in ``{"value": ...}``.
+        The server expects the raw value directly, not wrapped in ``{"value": ...}``.
 
         Parameters
         ----------
@@ -747,19 +747,30 @@ class FluentRestClient:
         return any(c in name for c in ("*", "?", "["))
 
     def is_interactive_mode(self) -> bool:
-        """Return whether the server is running in interactive mode.
+        """Return ``False`` always.
 
-        Queries ``GET /api/connection/run_mode`` on the server.
+        The REST transport does not support interactive command prompts.
+        Returning ``False`` prevents ``flobject.BaseCommand`` from calling
+        :meth:`get_command_confirmation_prompt`, which is not meaningful
+        over HTTP.
 
         Returns
         -------
         bool
-            ``True`` if the server mode is anything other than ``"batch"``.
-            Returns ``False`` on any error (safe default — only gates
-            interactive prompts in ``flobject.BaseCommand``).
+            Always ``False``.
         """
-        try:
-            mode = self._request("GET", "api/connection/run_mode")
-            return mode != "batch"
-        except Exception:
-            return False
+        return False
+
+    def get_command_confirmation_prompt(self, path: str, **kwargs) -> str:
+        """Return an empty string — interactive prompts are not supported over REST.
+
+        This method satisfies the *flproxy* interface contract required by
+        ``flobject.BaseCommand``.  Since :meth:`is_interactive_mode` always
+        returns ``False``, this method will never be called in practice.
+
+        Returns
+        -------
+        str
+            Always an empty string.
+        """
+        return ""

@@ -37,8 +37,8 @@ mirror PyFluent's ``launch_fluent`` / ``connect_to_fluent`` pattern for HTTP:
   server.  Requires ``ip``, ``port``, and ``auth_token`` to be supplied
   explicitly.  Performs a reachability probe before returning the session.
 
-Usage — launch (starts Fluent + SimBA locally)
-----------------------------------------------
+Usage — launch (starts Fluent web server locally)
+-------------------------------------------------
 ::
 
     from ansys.fluent.core.rest import launch_webserver
@@ -47,8 +47,8 @@ Usage — launch (starts Fluent + SimBA locally)
     print(session.settings.setup.models.energy.enabled())
     session.exit()     # terminates the Fluent process
 
-Usage — connect (SimBA already running)
-----------------------------------------
+Usage — connect (web server already running)
+--------------------------------------------
 ::
 
     from ansys.fluent.core.rest import connect_to_webserver
@@ -140,7 +140,7 @@ def _probe_server(
     component: str = "fluent_1",
     timeout: float = 5.0,
 ) -> bool:
-    """Return ``True`` if the SimBA server responds to an authenticated probe.
+    """Return ``True`` if the Fluent web server responds to an authenticated probe.
 
     Sends ``GET /api/{component}/static-info`` with the auth token.
     This matches the first authenticated settings call used by
@@ -486,7 +486,7 @@ def launch_webserver(
     max_retries: int = 0,
     retry_delay: float = 1.0,
 ) -> RestSolverSession:
-    """Launch a local Fluent process with the SimBA web server enabled.
+    """Launch a local Fluent process with the embedded web server enabled.
 
     This is the **primary entry point** for using the REST transport layer.
     It mirrors :func:`ansys.fluent.core.launcher.launcher.launch_fluent` for
@@ -638,18 +638,18 @@ def connect_to_webserver(
     max_retries: int = 0,
     retry_delay: float = 1.0,
 ) -> RestSolverSession:
-    """Connect to an already-running Fluent REST (SimBA) server.
+    """Connect to an already-running Fluent REST server.
 
-    Use this function when the SimBA server is already running and you know
+    Use this function when the Fluent web server is already running and you know
     its ``ip``, ``port``, and ``auth_token``.  For a fully automated local
     launch use :func:`launch_webserver` instead.
 
     Parameters
     ----------
     ip : str
-        IP address or hostname of the SimBA server, e.g. ``"127.0.0.1"``.
+        IP address or hostname of the Fluent web server, e.g. ``"127.0.0.1"``.
     port : int
-        TCP port the SimBA server is listening on.
+        TCP port the Fluent web server is listening on.
     auth_token : str
         Bearer token (password) for authentication.
     scheme : str, optional
@@ -700,7 +700,7 @@ def connect_to_webserver(
     # Reachability probe — fail-fast before building the settings tree
     if not _probe_server(base_url, auth_token, timeout=min(timeout, 5.0)):
         raise ConnectionError(
-            f"SimBA server at {base_url} did not respond to the reachability "
+            f"Fluent web server at {base_url} did not respond to the reachability "
             f"probe (GET /api/{component}/static-info). "
             "Verify that the server is running on the given ip and port, "
             "and that the auth_token is correct."

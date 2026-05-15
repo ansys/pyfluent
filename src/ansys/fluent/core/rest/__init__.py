@@ -21,7 +21,7 @@
 
 """REST-based PyFluent settings client and session.
 
-HTTP transport layer for PyFluent, connecting to Fluent's embedded SimBA
+HTTP transport layer for PyFluent, connecting to Fluent's embedded web
 server via REST instead of gRPC.  It contains:
 
 * :class:`~ansys.fluent.core.rest.client.FluentRestClient` – pure-Python
@@ -38,7 +38,7 @@ server via REST instead of gRPC.  It contains:
   connected session.
 
 * :func:`~ansys.fluent.core.rest.rest_launcher.connect_to_webserver` –
-  connects to an already-running SimBA server using explicit ``ip``, ``port``,
+  connects to an already-running web server using explicit ``ip``, ``port``,
   and ``auth_token``.
 """
 
