@@ -60,13 +60,13 @@ jobs:
 
   update-changelog:
     name: "Update CHANGELOG (on release)"
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
     runs-on: ubuntu-latest
     permissions:
       contents: write # Required to commit and push CHANGELOG updates.
       pull-requests: write # Required to create or update changelog PRs.
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+      - uses: ansys/actions/doc-deploy-changelog@73fa84c704bb6691f254cfe4d4b928c338b0d4da # v10.3.0
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
@@ -595,7 +595,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test, update-changelog]
+    needs: [test]
     runs-on: ubuntu-latest
     permissions:
       id-token: write       # required for trusted publishing
