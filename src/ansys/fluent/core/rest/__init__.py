@@ -34,8 +34,8 @@ server via REST instead of gRPC.  It contains:
 
 * :func:`~ansys.fluent.core.rest.rest_launcher.launch_webserver` – **primary
   entry point**.  Spawns a local Fluent process with ``-ws -ws-port={port}``,
-  reads the mandatory ``FLUENT_WEBSERVER_TOKEN`` env var, and returns a
-  connected session.
+  configures the web server authentication token internally for the
+  subprocess, and returns a connected session.
 
 * :func:`~ansys.fluent.core.rest.rest_launcher.connect_to_webserver` –
   connects to an already-running web server using explicit ``ip``, ``port``,
