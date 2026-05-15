@@ -28,7 +28,7 @@ server via REST instead of gRPC.  It contains:
   HTTP client implementing the 14-method proxy interface expected by
   :mod:`~ansys.fluent.core.solver.flobject`.  Uses stdlib ``urllib`` only.
 
-* :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession` – a
+* :class:`~ansys.fluent.core.rest.rest_launcher.RestSolverSession` – a
   lightweight solver session that wires ``FluentRestClient`` into
   ``flobject.get_root`` so the full settings tree works over HTTP.
 
