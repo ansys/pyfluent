@@ -19,34 +19,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Launch and connect to a Fluent REST (SimBA) web server.
+"""Launch, connect, and session management for the Fluent REST transport.
 
-This module provides two public functions that mirror PyFluent's
-``launch_fluent`` / ``connect_to_fluent`` pattern for the HTTP transport:
+This module provides the session class and two public launcher functions that
+mirror PyFluent's ``launch_fluent`` / ``connect_to_fluent`` pattern for HTTP:
+
+* :class:`RestSolverSession` – lightweight solver session that wires
+  :class:`~ansys.fluent.core.rest.client.FluentRestClient` into
+  :func:`~ansys.fluent.core.solver.flobject.get_root`.
 
 * :func:`launch_webserver` – **primary entry point**.  Discovers a free local
-  port, reads the ``FLUENT_WEBSERVER_TOKEN`` environment variable, spawns the
-  Fluent process with ``-ws -ws-port={port}``, waits until the embedded SimBA
-  server is reachable, and returns a fully connected
-  :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession`.
+  port, generates a secure random auth token, spawns the Fluent process with
+  ``-ws -ws-port={port}``, waits until the embedded web server is reachable,
+  and returns a fully connected :class:`RestSolverSession`.
 
-* :func:`connect_to_webserver` – connects to an **already-running** SimBA
+* :func:`connect_to_webserver` – connects to an **already-running** web
   server.  Requires ``ip``, ``port``, and ``auth_token`` to be supplied
   explicitly.  Performs a reachability probe before returning the session.
-
-Environment variables
----------------------
-``FLUENT_WEBSERVER_TOKEN``
-    Bearer token (password) that the embedded SimBA server expects.
-    **Required** — set this variable before calling :func:`launch_webserver`.
 
 Usage — launch (starts Fluent + SimBA locally)
 ----------------------------------------------
 ::
-
-    # 1. Set the token in your shell:
-    #    export FLUENT_WEBSERVER_TOKEN=my-secret-token      (Linux/macOS)
-    #    $Env:FLUENT_WEBSERVER_TOKEN = 'my-secret-token'    (PowerShell)
 
     from ansys.fluent.core.rest import launch_webserver
 
@@ -69,6 +62,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import os
+import secrets
 import socket
 import subprocess
 import time
@@ -76,9 +70,10 @@ import urllib.error
 import urllib.request
 
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
-from ansys.fluent.core.rest.rest_session import RestSolverSession
+from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
+from ansys.fluent.core.solver.flobject import Group, get_root
 
-__all__ = ["connect_to_webserver", "launch_webserver"]
+__all__ = ["RestSolverSession", "connect_to_webserver", "launch_webserver"]
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +82,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 _LOCALHOST = "127.0.0.1"
-_TOKEN_ENV_VAR = "FLUENT_WEBSERVER_TOKEN"  # nosec B105
+_SESSION_TOKEN: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -120,31 +115,23 @@ def _get_free_port() -> int:
         ) from exc
 
 
-def _read_auth_token() -> str:
-    """Read the mandatory auth token from ``FLUENT_WEBSERVER_TOKEN``.
+def _resolve_auth_token() -> str:
+    """Return the session-cached auth token, generating it if needed.
+
+    The token is a random 4-character hex string generated via
+    :func:`secrets.token_hex`. It is cached at the module level for the
+    lifetime of the Python process.
 
     Returns
     -------
     str
-        The value of ``FLUENT_WEBSERVER_TOKEN``.
-
-    Raises
-    ------
-    RuntimeError
-        If ``FLUENT_WEBSERVER_TOKEN`` is not set or is empty.
+        The session auth token.
     """
-    token = os.environ.get(_TOKEN_ENV_VAR)
-    if not token:
-        raise RuntimeError(
-            f"Environment variable '{_TOKEN_ENV_VAR}' is not set. "
-            "Set it to the Bearer token (password) for the SimBA web server "
-            "before calling launch_webserver().\n"
-            "Example (Linux/macOS):\n"
-            f"    export {_TOKEN_ENV_VAR}=my-secret-token\n"
-            "Example (Windows PowerShell):\n"
-            f"    $Env:{_TOKEN_ENV_VAR} = 'my-secret-token'"
-        )
-    return token
+    global _SESSION_TOKEN
+    if _SESSION_TOKEN is None:
+        _SESSION_TOKEN = secrets.token_hex(2)  # 4 hex chars
+        logger.info("Generated session auth token (SHA-256 protected on wire).")
+    return _SESSION_TOKEN
 
 
 def _probe_server(
@@ -302,7 +289,187 @@ def _get_fluent_exe(
 
 
 # ---------------------------------------------------------------------------
-# Public API
+# RestSolverSession
+# ---------------------------------------------------------------------------
+
+
+class RestSolverSession:
+    """Solver session that communicates over REST.
+
+    Builds a :class:`FluentRestClient`, passes it as *flproxy* to
+    :func:`~ansys.fluent.core.solver.flobject.get_root`, and exposes the
+    resulting settings tree via :attr:`settings`.
+
+    Parameters
+    ----------
+    base_url : str
+        Root URL of the Fluent REST server, e.g. ``"http://127.0.0.1:54321"``.
+    auth_token : str, optional
+        Bearer token for authentication.
+    component : str, optional
+        DataModel component name.  Defaults to ``"fluent_1"``.
+    version : str, optional
+        Fluent version string (e.g. ``"261"``).  Passed through to
+        ``get_root`` so the correct code-generated settings module is loaded
+        when available.
+    timeout : float, optional
+        HTTP socket timeout in seconds.  Defaults to ``30.0``.
+    max_retries : int, optional
+        Maximum automatic retries on transient errors.  Defaults to ``0``.
+    retry_delay : float, optional
+        Base delay in seconds between retries.  Defaults to ``1.0``.
+
+    Attributes
+    ----------
+    settings : Group
+        Root of the solver settings tree.
+    client : FluentRestClient
+        The underlying REST transport proxy.
+    ip : str
+        IP address of the connected server.
+    port : int | None
+        Port of the connected server.
+    auth_token : str | None
+        Auth token used for the connection.
+
+    Examples
+    --------
+    >>> from ansys.fluent.core.rest import RestSolverSession
+    >>> session = RestSolverSession(
+    ...     "http://127.0.0.1:54321",
+    ...     auth_token="<token>",
+    ... )
+    >>> session.settings.setup.models.energy.enabled()
+    True
+    """
+
+    def __init__(
+        self,
+        base_url: str,
+        *,
+        auth_token: str | None = None,
+        component: str = "fluent_1",
+        version: str = "",
+        timeout: float = 30.0,
+        max_retries: int = 0,
+        retry_delay: float = 1.0,
+    ) -> None:
+        self._client = FluentRestClient(
+            base_url,
+            auth_token=auth_token,
+            component=component,
+            timeout=timeout,
+            max_retries=max_retries,
+            retry_delay=retry_delay,
+        )
+        self._settings = self._build_settings_with_retry(version=version)
+        self.ip: str | None = None
+        self.port: int | None = None
+        self.auth_token: str | None = auth_token
+        self._process: subprocess.Popen | None = None
+
+    def _build_settings_with_retry(
+        self, version: str, retries: int = 5, delay: float = 2.0
+    ):
+        """Call ``get_root()`` with retries to handle transient 401s on startup.
+
+        Parameters
+        ----------
+        version : str
+            Passed through to :func:`get_root`.
+        retries : int
+            Total attempts before giving up.  Defaults to ``5``.
+        delay : float
+            Seconds to wait between attempts.  Defaults to ``2.0``.
+        """
+        for attempt in range(retries):
+            try:
+                return get_root(self._client, version=version)
+            except FluentRestError as exc:
+                is_auth = exc.status == 401
+                if is_auth and attempt < retries - 1:
+                    logger.debug(
+                        "get_root attempt %d/%d failed (HTTP 401), retrying in %.1fs",
+                        attempt + 1,
+                        retries,
+                        delay,
+                    )
+                    time.sleep(delay)
+                    continue
+                if is_auth:
+                    raise RuntimeError(
+                        "Server returned 401 Unauthorized — wrong token?"
+                    ) from exc
+                raise
+            except Exception:
+                raise
+
+    @property
+    def client(self) -> FluentRestClient:
+        """The underlying REST transport proxy."""
+        return self._client
+
+    @property
+    def settings(self) -> "Group":
+        """Root of the solver settings tree."""
+        return self._settings
+
+    def read_case(self, file_name: str) -> None:
+        """Read a Fluent case file via the REST settings tree.
+
+        Parameters
+        ----------
+        file_name : str
+            Server-side path to the ``.cas`` or ``.cas.h5`` file.
+        """
+        logger.info("Reading case file: %s", file_name)
+        self._settings.file.read_case(file_name=file_name)
+
+    def read_case_data(self, file_name: str) -> None:
+        """Read a Fluent case+data file via the REST settings tree.
+
+        Parameters
+        ----------
+        file_name : str
+            Server-side path to the ``.cas`` or ``.cas.h5`` file.
+        """
+        logger.info("Reading case+data file: %s", file_name)
+        self._settings.file.read_case_data(file_name=file_name)
+
+    def read_data(self, file_name: str) -> None:
+        """Read a Fluent data file via the REST settings tree.
+
+        Parameters
+        ----------
+        file_name : str
+            Server-side path to the ``.dat`` or ``.dat.h5`` file.
+        """
+        logger.info("Reading data file: %s", file_name)
+        self._settings.file.read_data(file_name=file_name)
+
+    def exit(self) -> None:
+        """Terminate the attached Fluent process (if any) and clean up."""
+        proc = self._process
+        if proc is None:
+            return
+        proc.terminate()
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+        self._process = None
+
+    def __enter__(self) -> "RestSolverSession":
+        """Enter context manager."""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """Exit context manager."""
+        self.exit()
+
+
+# ---------------------------------------------------------------------------
+# Public API — launchers
 # ---------------------------------------------------------------------------
 
 
@@ -327,27 +494,18 @@ def launch_webserver(
 
     The function performs the following steps automatically:
 
-    1. Reads the mandatory auth token from the ``FLUENT_WEBSERVER_TOKEN``
-       environment variable (raises :class:`RuntimeError` if unset).
+    1. Generates a secure, random auth token for the session.
     2. Discovers a free local TCP port using the Python ``socket`` stdlib.
     3. Resolves the Fluent executable (via *fluent_path*, *product_version*,
        or the ``AWP_ROOT*`` / ``PYFLUENT_FLUENT_ROOT`` env vars).
-    4. Spawns Fluent with ``-ws -ws-port={port}`` and injects
-       ``FLUENT_WEBSERVER_TOKEN`` into the subprocess environment.
+    4. Spawns Fluent with ``-ws -ws-port={port}`` and injects the
+       auth token into the subprocess environment.
     5. Polls ``http://localhost:{port}/`` until the server responds or
        *start_timeout* expires (raises :class:`TimeoutError`).
     6. Calls :func:`connect_to_webserver` to build a
        :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession`.
     7. Attaches the subprocess handle so :meth:`RestSolverSession.exit`
        terminates Fluent.
-
-    .. note::
-
-        Before calling this function you **must** set the environment
-        variable::
-
-            export FLUENT_WEBSERVER_TOKEN=<token>     # Linux / macOS
-            $Env:FLUENT_WEBSERVER_TOKEN = '<token>'   # Windows PowerShell
 
     Parameters
     ----------
@@ -390,14 +548,13 @@ def launch_webserver(
 
         * ``session.ip`` — ``"127.0.0.1"``
         * ``session.port`` — the auto-discovered port
-        * ``session.auth_token`` — the token from the environment
+        * ``session.auth_token`` — the auto-generated token
         * ``session.exit()`` — terminates the Fluent process
 
     Raises
     ------
     RuntimeError
-        If ``FLUENT_WEBSERVER_TOKEN`` is not set, or if no free TCP port
-        can be found.
+        If no free TCP port can be found.
     FileNotFoundError
         If the Fluent executable cannot be located.
     ValueError
@@ -410,8 +567,6 @@ def launch_webserver(
 
     Examples
     --------
-    >>> import os
-    >>> os.environ["FLUENT_WEBSERVER_TOKEN"] = "my-secret-token"
     >>> from ansys.fluent.core.rest import launch_webserver
     >>> session = launch_webserver()
     >>> session.settings.setup.models.energy.enabled()
@@ -421,8 +576,8 @@ def launch_webserver(
     if scheme not in ("http", "https"):
         raise ValueError(f"scheme must be 'http' or 'https', got {scheme!r}")
 
-    # 1 — mandatory auth token from environment
-    auth_token = _read_auth_token()
+    # 1 — generate auth token
+    auth_token = _resolve_auth_token()
 
     # 2 — discover a free local TCP port (pure stdlib)
     port = _get_free_port()
@@ -439,7 +594,7 @@ def launch_webserver(
     logger.info("Launching Fluent: %s", launch_cmd)
 
     env = os.environ.copy()
-    env[_TOKEN_ENV_VAR] = auth_token
+    env["FLUENT_WEBSERVER_TOKEN"] = auth_token
     process = subprocess.Popen(launch_cmd, env=env)  # nosec B603 B607
 
     if process.poll() is not None:
@@ -447,7 +602,6 @@ def launch_webserver(
             f"Fluent process exited immediately with return code "
             f"{process.returncode}. Command: {launch_cmd}"
         )
-
     # Wait for the server to become reachable
     _wait_for_server(port, timeout=start_timeout, scheme=scheme)
 

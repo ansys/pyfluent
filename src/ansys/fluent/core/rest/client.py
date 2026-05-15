@@ -749,14 +749,17 @@ class FluentRestClient:
     def is_interactive_mode(self) -> bool:
         """Return whether the server is running in interactive mode.
 
-        Always returns ``False`` to match the existing gRPC settings-proxy
-        behaviour.  Returning ``True`` would cause ``flobject.BaseCommand``
-        to call ``get_command_confirmation_prompt()``, which is not
-        implemented on this client.
+        Queries ``GET /api/connection/run_mode`` on the server.
 
         Returns
         -------
         bool
-            Always ``False``.
+            ``True`` if the server mode is anything other than ``"batch"``.
+            Returns ``False`` on any error (safe default — only gates
+            interactive prompts in ``flobject.BaseCommand``).
         """
-        return False
+        try:
+            mode = self._request("GET", "api/connection/run_mode")
+            return mode != "batch"
+        except Exception:
+            return False

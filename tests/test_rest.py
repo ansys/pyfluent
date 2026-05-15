@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Pytest tests against a live Fluent / SimBA REST server.
+"""Pytest tests against a live Fluent REST server.
 
 All tests here are marked ``real_server`` and are **skipped automatically**
 when the real server is not reachable (the ``real_client`` fixture in
@@ -27,7 +27,7 @@ when the real server is not reachable (the ``real_client`` fixture in
 
 Run real-server tests::
 
-    pytest src/ansys/fluent/core/rest/tests/test_real_server.py -v -m real_server
+    pytest tests/test_rest.py -v -m real_server
 
 Tests are **case-agnostic** — they validate types, structure, and API
 contracts dynamically.  No boundary-condition names, model values, or
@@ -279,7 +279,6 @@ class TestRealGetAttrs:
         result = real_client.get_attrs(path, ["allowed-values"])
         allowed = result.get("attrs", {}).get("allowed-values", [])
 
-        # Pick a different value (if only one value exists, skip)
         alternatives = [v for v in allowed if v != original]
         if not alternatives:
             pytest.skip("Only one allowed viscous model — nothing to toggle")
@@ -292,7 +291,6 @@ class TestRealGetAttrs:
         except FluentRestError:
             pass  # Solver may reject the switch due to other constraints
         finally:
-            # Always restore
             try:
                 real_client.set_var(path, original)
             except FluentRestError:
@@ -312,7 +310,6 @@ class TestRealExecuteCmd:
         try:
             real_client.execute_cmd("solution/initialization", "initialize")
         except FluentRestError as exc:
-            # 409 = already initialized; 500 = solver constraint
             assert exc.status in (409, 500)
 
 

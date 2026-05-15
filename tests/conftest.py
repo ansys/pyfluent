@@ -521,3 +521,71 @@ def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture
 def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+
+
+# ---------------------------------------------------------------------------
+# REST transport fixtures (real-server integration tests)
+# ---------------------------------------------------------------------------
+
+_REST_TOKEN = os.environ.get("FLUENT_WEBSERVER_TOKEN", "")
+_REST_PORT_STR = os.environ.get("FLUENT_REST_PORT", "")
+_REST_HOST = os.environ.get("FLUENT_REST_HOST", "127.0.0.1")
+_REST_COMPONENT = os.environ.get("FLUENT_REST_COMPONENT", "fluent_1")
+_REST_SCHEME = os.environ.get("FLUENT_REST_SCHEME", "http")
+
+
+def _rest_env_vars_present() -> bool:
+    """Return ``True`` when mandatory REST env vars are set."""
+    return bool(_REST_TOKEN and _REST_PORT_STR)
+
+
+def _rest_server_reachable() -> bool:
+    """Return ``True`` if the real REST server responds to a probe."""
+    if not _rest_env_vars_present():
+        return False
+    try:
+        port = int(_REST_PORT_STR)
+    except ValueError:
+        return False
+    import hashlib
+    import urllib.request
+
+    url = f"{_REST_SCHEME}://{_REST_HOST}:{port}/api/connection/run_mode"
+    req = urllib.request.Request(url, method="GET")
+    req.add_header(
+        "Authorization",
+        f"Bearer {hashlib.sha256(_REST_TOKEN.encode()).hexdigest()}",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=3):  # nosec B310
+            return True
+    except Exception:
+        return False
+
+
+@pytest.fixture(scope="module")
+def real_client():
+    """Provide a :class:`FluentRestClient` connected to a live REST server.
+
+    Auto-skips when ``FLUENT_WEBSERVER_TOKEN`` / ``FLUENT_REST_PORT`` are
+    unset or the server is unreachable.
+    """
+    from ansys.fluent.core.rest.client import FluentRestClient
+
+    if not _rest_env_vars_present():
+        pytest.skip(
+            "REST env vars not set — set FLUENT_WEBSERVER_TOKEN and "
+            "FLUENT_REST_PORT to run real-server tests."
+        )
+    if not _rest_server_reachable():
+        pytest.skip(f"REST server at {_REST_HOST}:{_REST_PORT_STR} not reachable.")
+    try:
+        port = int(_REST_PORT_STR)
+    except ValueError:
+        pytest.skip(f"FLUENT_REST_PORT={_REST_PORT_STR!r} is not a valid integer.")
+    base_url = f"{_REST_SCHEME}://{_REST_HOST}:{port}"
+    return FluentRestClient(
+        base_url,
+        auth_token=_REST_TOKEN,
+        component=_REST_COMPONENT,
+    )

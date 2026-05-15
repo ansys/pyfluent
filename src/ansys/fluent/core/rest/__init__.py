@@ -44,10 +44,10 @@ server via REST instead of gRPC.  It contains:
 
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.rest.rest_launcher import (
+    RestSolverSession,
     connect_to_webserver,
     launch_webserver,
 )
-from ansys.fluent.core.rest.rest_session import RestSolverSession
 
 __all__ = [
     "FluentRestClient",
