@@ -33,9 +33,10 @@ server via REST instead of gRPC.  It contains:
   ``flobject.get_root`` so the full settings tree works over HTTP.
 
 * :func:`~ansys.fluent.core.rest.rest_launcher.launch_webserver` – **primary
-  entry point**.  Spawns a local Fluent process with ``-ws -ws-port={port}``,
-  configures the web server authentication token internally for the
-  subprocess, and returns a connected session.
+  entry point**. Spawns a local Fluent process with ``-ws -ws-port={port}``,
+  generates and configures the web server authentication token internally
+  for the subprocess, and returns a connected session. Callers do not need
+  to set ``FLUENT_WEBSERVER_TOKEN`` when using this launcher.
 
 * :func:`~ansys.fluent.core.rest.rest_launcher.connect_to_webserver` –
   connects to an already-running web server using explicit ``ip``, ``port``,
