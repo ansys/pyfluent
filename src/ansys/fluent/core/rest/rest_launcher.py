@@ -107,7 +107,7 @@ def _get_free_port() -> int:
     """
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.bind(("", 0))
+            sock.bind((_LOCALHOST, 0))
             return sock.getsockname()[1]
     except OSError as exc:
         raise RuntimeError(

@@ -18,7 +18,7 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "ansys-api-fluent==0.3.39",
+    "ansys-api-fluent>=0.3.40",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
@@ -101,7 +101,7 @@ markers = [
     "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
     "standalone: Tests that cannot be run within container",
-    "real_server: Tests that require a live Fluent / SimBA server at 10.18.44.175:5000"
+    "real_server: Tests that require a live Fluent / SimBA server"
 ]
 
 
