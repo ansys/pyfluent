@@ -349,24 +349,6 @@ class FluentRestClient:
         """
         self._request("PUT", f"{self._api_base}/{path}", body=value)
 
-    # def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
-    #     """Return the requested attributes for the setting at *path*.
-
-    #     Calls ``GET /api/{component}/{path}?attrs=attr1,attr2&recursive=true``
-    #     using query parameters, per the server-side ``handleGet`` implementation
-    #     which routes to ``getAttrs`` when the ``attrs`` query param is present.
-    #     """
-    #     return self._request(
-    #         "POST",
-    #         f"{self._api_base}/get_attrs",
-    #         body={"path": path, "attrs": attrs, "recursive": recursive, "children": {}, "filters":[]},
-    #     )
-    # params = {"attrs": ",".join(attrs)}
-    # if recursive:
-    #     params["recursive"] = "true"
-    # query = urllib.parse.urlencode(params)
-    # return self._request("GET", f"{self._api_base}/{path}?{query}")
-
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
 
