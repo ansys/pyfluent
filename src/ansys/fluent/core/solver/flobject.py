@@ -2343,6 +2343,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls._deprecated_version = ""
 
         taboo = set(dir(cls))
+        if version and version >= "261":
+            taboo -= {"list", "list_properties"}
         taboo |= set(
             [
                 "child_names",
