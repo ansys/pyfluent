@@ -1232,9 +1232,11 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
 
     assert set(solver.results.graphics.contour.rename.argument_names) == {"new", "old"}
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
+    # The following is the default behavior when no arguments are associated with the command.
     if solver.get_fluent_version() < FluentVersion.v261:
-        # The following is the default behavior when no arguments are associated with the command.
         assert solver.results.graphics.contour.list_1.argument_names == []
+    else:
+        assert solver.results.graphics.contour.list.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -1372,3 +1374,15 @@ def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
         list(solver.settings.setup.boundary_conditions.pressure_outlet.items())[0]
         in chained_named_objects.items()
     )
+
+
+def test_list_and_list_properties(new_solver_session):
+    solver = new_solver_session
+    if solver.get_fluent_version() < FluentVersion.v261:
+        assert {"list_1", "list_properties_1"}.issubset(
+            solver.settings.setup.materials.mixture.command_names
+        )
+    else:
+        assert {"list", "list_properties"}.issubset(
+            solver.settings.setup.materials.mixture.command_names
+        )
