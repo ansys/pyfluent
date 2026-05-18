@@ -46,13 +46,13 @@ simulation workflows, with automatic dependency management and validation.
 from __future__ import annotations
 
 from collections import OrderedDict
-import difflib
 from functools import wraps
 import inspect
 import re
 from typing import ValuesView
 
 from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -638,14 +638,14 @@ class Workflow:
             )
         try:
             return getattr(self._workflow, item)
-        except AttributeError:
-            msg = f"'{type(self._workflow).__name__}' object has no attribute '{item}'"
-            close_matches = difflib.get_close_matches(
-                item, self._task_dict.keys(), n=3, cutoff=0.6
-            )
-            if close_matches:
-                msg += f". Did you mean: {', '.join(repr(m) for m in close_matches)}?"
-            raise AttributeError(msg)
+        except AttributeError as ex:
+            raise AttributeError(
+                allowed_name_error_message(
+                    allowed_values=list(self._task_dict.keys()),
+                    context=type(self).__name__,
+                    trial_name=item,
+                )
+            ) from ex
 
     def __call__(self):
         """Get workflow state when called as a function."""
