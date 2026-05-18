@@ -100,7 +100,7 @@ class TestRealStaticInfo:
 
 
 class TestRealGetVar:
-    """GET /api/fluent_1/{path}"""
+    """POST /api/{component}/get_var — body: {"path": "<path>"}"""
 
     def test_energy_enabled_is_bool(self, real_client):
         """Verify that reading the energy model state returns a boolean."""
@@ -226,14 +226,11 @@ class TestRealGetObjectNames:
 class TestRealGetListSize:
     """GET /api/fluent_1/{path} — count object keys."""
 
-    def test_velocity_inlet_size_matches_object_names(self, real_client):
-        """Verify that get_list_size agrees with len(get_object_names)."""
-        path = "setup/boundary-conditions/velocity-inlet"
-        size = real_client.get_list_size(path)
-        names = real_client.get_object_names(path)
+    def test_velocity_inlet_size_positive(self, real_client):
+        """Verify that a named-object container has a positive size."""
+        size = real_client.get_list_size("setup/boundary-conditions/velocity-inlet")
         assert isinstance(size, int)
-        assert size >= 0
-        assert size == len(names)
+        assert size > 0
 
     def test_size_matches_object_names(self, real_client):
         """Verify that get_list_size agrees with len(get_object_names)."""

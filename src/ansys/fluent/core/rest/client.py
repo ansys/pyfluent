@@ -52,9 +52,10 @@ API endpoints (from ``/openapi.json`` on a live Fluent server)
     DELETE /api/fluent_1/{path}
          Deletes the named object at <path>.
 
-    POST /api/fluent_1/get_attrs
-         body: { "path": "<path>", "attrs": [<str>, ...] }
+    GET  /api/fluent_1/{path}?attrs=attr1,attr2[&recursive=true]
          Returns attribute info for the setting at <path>.
+         The server routes to ``getAttrs`` when the ``attrs`` query
+         parameter is present.
 
 Authentication
 ~~~~~~~~~~~~~~

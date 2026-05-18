@@ -59,6 +59,7 @@ Usage — connect (web server already running)
 
 from __future__ import annotations
 
+import atexit
 import hashlib
 import logging
 import os
@@ -113,38 +114,36 @@ def _get_free_port() -> int:
         ) from exc
 
 
-def _resolve_auth_token() -> str:
-    """Return the session-cached auth token, generating it if needed.
+def _generate_auth_token() -> str:
+    """Generate a fresh 4-digit random numeric auth token (1000–9999).
 
-    The token is a random 4-character hex string generated via
-    :func:`secrets.token_hex`. It is cached at the module level for the
-    lifetime of the Python process.
+    A new token is generated for **every call** so each launched Fluent
+    process gets its own independent credential.  The raw 4-digit number is
+    never sent over the wire — it is transmitted as
+    ``Authorization: Bearer <SHA-256(token)>``.
 
     Returns
     -------
     str
-        The session auth token.
+        A 4-digit decimal string in the range ``"1000"``–``"9999"``.
     """
-    global _SESSION_TOKEN
-    if _SESSION_TOKEN is None:
-        _SESSION_TOKEN = secrets.token_hex(2)  # 4 hex chars
-        logger.info("Generated session auth token (SHA-256 protected on wire).")
-    return _SESSION_TOKEN
+    # randbelow(9000) → 0–8999; +1000 → 1000–9999 (guaranteed 4 digits).
+    token = str(secrets.randbelow(9000) + 1000)
+    logger.debug("Generated per-launch auth token.")
+    return token
 
 
 def _probe_server(
     base_url: str,
     auth_token: str,
-    *,
-    component: str,
+    component: str = "fluent_1",
     timeout: float = 5.0,
 ) -> bool:
     """Return ``True`` if the Fluent web server responds to an authenticated probe.
 
-    Sends ``GET /api/{component}/static-info`` with the auth token.  The
-    *component* parameter is **required** (keyword-only) and must match the
-    component being connected so the probe validates the exact endpoint that
-    will be used, not a different component that may or may not be running.
+    Sends ``GET /api/{component}/static-info`` with the auth token.
+    This matches the first authenticated settings call used by
+    :class:`~ansys.fluent.core.rest.rest_launcher.RestSolverSession`.
 
     Parameters
     ----------
@@ -152,9 +151,9 @@ def _probe_server(
         Root URL, e.g. ``"http://127.0.0.1:54321"``.
     auth_token : str
         Bearer token.
-    component : str
-        DataModel component name — e.g. ``"fluent_1"`` (solver) or
-        ``"fluent_meshing_1"`` (meshing).  Required; no default.
+    component : str, optional
+        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
+        Use ``"fluent_meshing_1"`` for a meshing session.
     timeout : float, optional
         Socket timeout in seconds.  Defaults to ``5.0``.
 
@@ -182,9 +181,7 @@ def _wait_for_server(port: int, timeout: int = 120, scheme: str = "http") -> Non
 
     * **Phase 1** — TCP connect: waits until the port is open (server process
       is listening).  Polls every 2 s.
-    * **Phase 2** — Solver-ready probe: ``GET {base_url}/api/connection/run_mode``.
-      Uses *base_url* directly so the probe always uses the correct scheme
-      (the old ``scheme`` parameter is gone — scheme is embedded in *base_url*).
+    * **Phase 2** — Solver-ready probe: ``GET /api/connection/run_mode``.
       Returns as soon as the solver responds (any HTTP reply, including 401).
       A ``400 Fluent not running`` means the web-server is up but the solver
       is still initialising — keep waiting.  Polls every 3 s.
@@ -497,7 +494,7 @@ def launch_webserver(
 
     The function performs the following steps automatically:
 
-    1. Generates a secure, random auth token for the session.
+    1. Generates a random 4-digit numeric auth token for this launch.
     2. Discovers a free local TCP port using the Python ``socket`` stdlib.
     3. Resolves the Fluent executable (via *fluent_path*, *product_version*,
        or the ``AWP_ROOT*`` / ``PYFLUENT_FLUENT_ROOT`` env vars).
@@ -526,13 +523,17 @@ def launch_webserver(
         Maximum seconds to wait for the web server to become reachable.
         Defaults to ``60``.
     scheme : str, optional
-        URL scheme (``"http"`` or ``"https"``).  Defaults to ``"http"``.
+        URL scheme.  Only ``"http"`` is supported for launching; passing
+        ``"https"`` raises :class:`ValueError` because the Fluent CLI flags
+        ``-ws``/``-ws-port`` do not configure TLS.  Defaults to ``"http"``.
     component : str, optional
         DataModel component name.  Defaults to ``"fluent_1"`` (solver).
     version : str, optional
         Fluent version string passed to
         :func:`~ansys.fluent.core.solver.flobject.get_root` for code-
-        generated settings.  Defaults to ``"261"``.
+        generated settings.  Defaults to ``""`` (empty), which causes
+        ``get_root`` to introspect the running solver's static-info at
+        runtime — safe for any Fluent version.
     timeout : float, optional
         HTTP socket timeout in seconds for every REST request.  Defaults
         to ``30.0``.
@@ -556,6 +557,8 @@ def launch_webserver(
 
     Raises
     ------
+    Exception
+        If any unexpected error occurs during the launch process.
     RuntimeError
         If no free TCP port can be found.
     FileNotFoundError
@@ -579,8 +582,8 @@ def launch_webserver(
     if scheme not in ("http", "https"):
         raise ValueError(f"scheme must be 'http' or 'https', got {scheme!r}")
 
-    # 1 — generate auth token
-    auth_token = _resolve_auth_token()
+    # 1 — generate a fresh per-launch 4-digit auth token (fix #7/#10)
+    auth_token = _generate_auth_token()
 
     # 2 — discover a free local TCP port (pure stdlib)
     port = _get_free_port()
@@ -605,25 +608,54 @@ def launch_webserver(
             f"Fluent process exited immediately with return code "
             f"{process.returncode}. Command: {launch_cmd}"
         )
-    # Wait for the server to become reachable
-    _wait_for_server(port, timeout=start_timeout, scheme=scheme)
 
-    # 5 — build session (Fluent web server starting in background — no blocking wait)
-    base_url = f"{scheme}://{_LOCALHOST}:{port}"
-    session = RestSolverSession(
-        base_url,
-        auth_token=auth_token,
-        component=component,
-        version=version,
-        timeout=timeout,
-        max_retries=max_retries,
-        retry_delay=retry_delay,
-    )
+    # register atexit so Fluent is terminated even if session.exit()
+    # is never called (e.g. abrupt interpreter shutdown).
+    def _atexit_cleanup(proc: subprocess.Popen) -> None:
+        if proc.poll() is None:
+            logger.debug("atexit: terminating Fluent process (pid=%d).", proc.pid)
+            proc.terminate()
+            try:
+                proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
+
+    atexit.register(_atexit_cleanup, process)
+
+    # wrap post-Popen work in try/except so a failure (timeout,
+    # auth error, etc.) terminates the spawned process before re-raising.
+    try:
+        _wait_for_server(port, timeout=start_timeout, scheme=scheme)
+
+        base_url = f"{scheme}://{_LOCALHOST}:{port}"
+        session = RestSolverSession(
+            base_url,
+            auth_token=auth_token,
+            component=component,
+            version=version,
+            timeout=timeout,
+            max_retries=max_retries,
+            retry_delay=retry_delay,
+        )
+    except Exception:
+        logger.exception(
+            "Failed after launching Fluent (pid=%d) — terminating process.",
+            process.pid,
+        )
+        process.terminate()
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
+        raise
+
     session.ip = _LOCALHOST
     session.port = port
     session.auth_token = auth_token
 
-    # 6 — attach the subprocess so session.exit() terminates Fluent
+    # Attach subprocess so session.exit() terminates Fluent
     session._process = process
 
     return session
@@ -661,7 +693,9 @@ def connect_to_webserver(
     component : str, optional
         DataModel component name.  Defaults to ``"fluent_1"`` (solver).
     version : str, optional
-        Fluent version string (e.g. ``"261"``).  Defaults to ``"261"``.
+        Fluent version string (e.g. ``"261"``).  Defaults to ``""`` (empty),
+        which causes ``get_root`` to introspect the running solver's
+        static-info at runtime — safe for any Fluent version.
     timeout : float, optional
         HTTP socket timeout in seconds.  Defaults to ``30.0``.
     max_retries : int, optional
@@ -701,13 +735,11 @@ def connect_to_webserver(
     base_url = f"{scheme}://{ip}:{port}"
 
     # Reachability probe — fail-fast before building the settings tree.
-    # Pass component explicitly so meshing/non-default components are probed
-    # at the exact endpoint they will use, not the default fluent_1 one.
+    # pass component so meshing/custom components are probed at
+    # the correct endpoint (/api/{component}/static-info) rather than always
+    # falling back to the hard-coded fluent_1 default.
     if not _probe_server(
-        base_url,
-        auth_token,
-        component=component,
-        timeout=min(timeout, 5.0),
+        base_url, auth_token, component=component, timeout=min(timeout, 5.0)
     ):
         raise ConnectionError(
             f"Fluent web server at {base_url} did not respond to the reachability "
