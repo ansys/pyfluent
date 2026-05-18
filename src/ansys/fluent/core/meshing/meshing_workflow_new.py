@@ -45,7 +45,7 @@ def _get_base_meshing(session) -> "BaseMeshing":
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         A meshing session or its internal ``BaseMeshing`` helper.
 
     Returns
@@ -80,7 +80,7 @@ class MeshingWorkflow(Workflow):
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         The meshing session from which the workflow is constructed.
     name : str
         Workflow name used to initialise the workflow
@@ -96,7 +96,7 @@ class MeshingWorkflow(Workflow):
 
     def __init__(
         self,
-        session: "PureMeshing | Meshing | BaseMeshing",
+        session: "PureMeshing | Meshing ",
         name: str,
         initialize: bool = True,
     ) -> None:
@@ -127,7 +127,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         The meshing session from which the workflow is constructed.
     initialize : bool, optional
         If ``True`` (default), the workflow is initialised immediately.
@@ -140,7 +140,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        session: "PureMeshing | Meshing | BaseMeshing",
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
         super().__init__(
@@ -158,7 +158,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         The meshing session from which the workflow is constructed.
     initialize : bool, optional
         If ``True`` (default), the workflow is initialised immediately.
@@ -171,7 +171,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        session: "PureMeshing | Meshing | BaseMeshing",
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
         base = _get_base_meshing(session)
@@ -239,7 +239,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         The meshing session from which the workflow is constructed.
     initialize : bool, optional
         If ``True`` (default), the workflow is initialised immediately.
@@ -252,7 +252,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        session: "PureMeshing | Meshing | BaseMeshing",
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
         super().__init__(
@@ -270,7 +270,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         The meshing session from which the workflow is constructed.
     initialize : bool, optional
         If ``True`` (default), the workflow is initialised immediately.
@@ -283,7 +283,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        session: "PureMeshing | Meshing | BaseMeshing",
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
         super().__init__(
@@ -307,7 +307,7 @@ class LoadWorkflow(Workflow):
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         The meshing session from which the workflow is constructed.
     file_path : str or PathType, optional
         Path to the saved workflow file.
@@ -322,7 +322,7 @@ class LoadWorkflow(Workflow):
 
     def __init__(
         self,
-        session: "PureMeshing | Meshing | BaseMeshing",
+        session: "PureMeshing | Meshing ",
         file_path: PathType = None,
         initialize: bool = True,
     ) -> None:
@@ -348,7 +348,7 @@ class CreateWorkflow(Workflow):
 
     Parameters
     ----------
-    session : PureMeshing | Meshing | BaseMeshing
+    session : PureMeshing | Meshing
         The meshing session from which the workflow is constructed.
     initialize : bool, optional
         If ``True`` (default), an empty workflow is created immediately.
@@ -361,7 +361,7 @@ class CreateWorkflow(Workflow):
 
     def __init__(
         self,
-        session: "PureMeshing | Meshing | BaseMeshing",
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
         base = _get_base_meshing(session)
