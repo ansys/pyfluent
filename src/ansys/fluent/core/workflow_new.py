@@ -46,6 +46,7 @@ simulation workflows, with automatic dependency management and validation.
 from __future__ import annotations
 
 from collections import OrderedDict
+import difflib
 from functools import wraps
 import inspect
 import re
@@ -635,7 +636,16 @@ class Workflow:
             return make_task_wrapper(
                 self._task_dict[item], item, self._workflow, self, self._command_source
             )
-        return getattr(self._workflow, item)
+        try:
+            return getattr(self._workflow, item)
+        except AttributeError:
+            msg = f"'{type(self._workflow).__name__}' object has no attribute '{item}'"
+            close_matches = difflib.get_close_matches(
+                item, self._task_dict.keys(), n=3, cutoff=0.6
+            )
+            if close_matches:
+                msg += f". Did you mean: {', '.join(repr(m) for m in close_matches)}?"
+            raise AttributeError(msg)
 
     def __call__(self):
         """Get workflow state when called as a function."""
