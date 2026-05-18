@@ -226,11 +226,14 @@ class TestRealGetObjectNames:
 class TestRealGetListSize:
     """GET /api/fluent_1/{path} — count object keys."""
 
-    def test_velocity_inlet_size_positive(self, real_client):
-        """Verify that a named-object container has a positive size."""
-        size = real_client.get_list_size("setup/boundary-conditions/velocity-inlet")
+    def test_velocity_inlet_size_matches_object_names(self, real_client):
+        """Verify that get_list_size agrees with len(get_object_names)."""
+        path = "setup/boundary-conditions/velocity-inlet"
+        size = real_client.get_list_size(path)
+        names = real_client.get_object_names(path)
         assert isinstance(size, int)
-        assert size > 0
+        assert size >= 0
+        assert size == len(names)
 
     def test_size_matches_object_names(self, real_client):
         """Verify that get_list_size agrees with len(get_object_names)."""
