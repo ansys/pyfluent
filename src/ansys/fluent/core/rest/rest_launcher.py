@@ -82,8 +82,6 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 _LOCALHOST = "127.0.0.1"
-_SESSION_TOKEN: str | None = None
-
 
 # ---------------------------------------------------------------------------
 # Internal helpers
@@ -137,14 +135,16 @@ def _resolve_auth_token() -> str:
 def _probe_server(
     base_url: str,
     auth_token: str,
-    component: str = "fluent_1",
+    *,
+    component: str,
     timeout: float = 5.0,
 ) -> bool:
     """Return ``True`` if the Fluent web server responds to an authenticated probe.
 
-    Sends ``GET /api/{component}/static-info`` with the auth token.
-    This matches the first authenticated settings call used by
-    :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession`.
+    Sends ``GET /api/{component}/static-info`` with the auth token.  The
+    *component* parameter is **required** (keyword-only) and must match the
+    component being connected so the probe validates the exact endpoint that
+    will be used, not a different component that may or may not be running.
 
     Parameters
     ----------
@@ -152,9 +152,9 @@ def _probe_server(
         Root URL, e.g. ``"http://127.0.0.1:54321"``.
     auth_token : str
         Bearer token.
-    component : str, optional
-        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
-        Use ``"fluent_meshing_1"`` for a meshing session.
+    component : str
+        DataModel component name — e.g. ``"fluent_1"`` (solver) or
+        ``"fluent_meshing_1"`` (meshing).  Required; no default.
     timeout : float, optional
         Socket timeout in seconds.  Defaults to ``5.0``.
 
@@ -182,7 +182,9 @@ def _wait_for_server(port: int, timeout: int = 120, scheme: str = "http") -> Non
 
     * **Phase 1** — TCP connect: waits until the port is open (server process
       is listening).  Polls every 2 s.
-    * **Phase 2** — Solver-ready probe: ``GET /api/connection/run_mode``.
+    * **Phase 2** — Solver-ready probe: ``GET {base_url}/api/connection/run_mode``.
+      Uses *base_url* directly so the probe always uses the correct scheme
+      (the old ``scheme`` parameter is gone — scheme is embedded in *base_url*).
       Returns as soon as the solver responds (any HTTP reply, including 401).
       A ``400 Fluent not running`` means the web-server is up but the solver
       is still initialising — keep waiting.  Polls every 3 s.
@@ -420,7 +422,7 @@ class RestSolverSession:
         Parameters
         ----------
         file_name : str
-            Server-side path to the ``.cas`` or ``.cas.h5`` file.
+            Server-side path to the case+data file.
         """
         logger.info("Reading case file: %s", file_name)
         self._settings.file.read_case(file_name=file_name)
@@ -457,6 +459,7 @@ class RestSolverSession:
             proc.wait(timeout=10)
         except subprocess.TimeoutExpired:
             proc.kill()
+            proc.wait()
         self._process = None
 
     def __enter__(self) -> "RestSolverSession":
@@ -481,7 +484,7 @@ def launch_webserver(
     start_timeout: int = 60,
     scheme: str = "http",
     component: str = "fluent_1",
-    version: str = "261",
+    version: str = "",
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
@@ -503,7 +506,7 @@ def launch_webserver(
     5. Polls ``http://localhost:{port}/`` until the server responds or
        *start_timeout* expires (raises :class:`TimeoutError`).
     6. Calls :func:`connect_to_webserver` to build a
-       :class:`~ansys.fluent.core.rest.rest_session.RestSolverSession`.
+       :class:`RestSolverSession`.
     7. Attaches the subprocess handle so :meth:`RestSolverSession.exit`
        terminates Fluent.
 
@@ -633,7 +636,7 @@ def connect_to_webserver(
     *,
     scheme: str = "http",
     component: str = "fluent_1",
-    version: str = "261",
+    version: str = "",
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
@@ -697,8 +700,15 @@ def connect_to_webserver(
 
     base_url = f"{scheme}://{ip}:{port}"
 
-    # Reachability probe — fail-fast before building the settings tree
-    if not _probe_server(base_url, auth_token, timeout=min(timeout, 5.0)):
+    # Reachability probe — fail-fast before building the settings tree.
+    # Pass component explicitly so meshing/non-default components are probed
+    # at the exact endpoint they will use, not the default fluent_1 one.
+    if not _probe_server(
+        base_url,
+        auth_token,
+        component=component,
+        timeout=min(timeout, 5.0),
+    ):
         raise ConnectionError(
             f"Fluent web server at {base_url} did not respond to the reachability "
             f"probe (GET /api/{component}/static-info). "

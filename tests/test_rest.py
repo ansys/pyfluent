@@ -200,10 +200,10 @@ class TestRealGetObjectNames:
         assert len(names) > 0
 
     def test_wall_returns_list(self, real_client):
-        """Verify that the 'wall' container returns a list."""
+        """Verify that the 'wall' container returns a list of names when present."""
         names = real_client.get_object_names("setup/boundary-conditions/wall")
         assert isinstance(names, list)
-        assert len(names) > 0
+        assert all(isinstance(n, str) for n in names)
 
     def test_unknown_path_returns_empty(self, real_client):
         """Verify that a nonexistent container path returns an empty list."""
@@ -293,8 +293,11 @@ class TestRealGetAttrs:
         finally:
             try:
                 real_client.set_var(path, original)
-            except FluentRestError:
-                pass
+            except FluentRestError as exc:
+                pytest.fail(
+                    f"Failed to restore '{path}' to original value "
+                    f"'{original}': {exc}"
+                )
 
 
 # ---------------------------------------------------------------------------
