@@ -35,7 +35,7 @@ Example
 >>> r = flobject.get_root(proxy)
 >>> is_energy_on = r.setup.models.energy.enabled()
 >>> r.setup.models.energy.enabled = True
->>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
+>>> r.boundary_conditions.velocity_inlet['inlet'].momentum.velocity_magnitude = 20
 """
 
 from __future__ import annotations
@@ -1412,7 +1412,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     query_names = []
     _child_aliases = {}
 
-    def _create_child_object(self, cname: str):
+    def _create_child_object(self, cname: str, **kwargs: Any):
         ret = self._objects.get(cname)
         if not ret:
             cls = self.__class__.child_object_type
@@ -1422,6 +1422,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             "rename",
             types.MethodType(lambda obj, name: _rename(self, name, cname), ret),
         )
+        if kwargs:
+            ret.set_state(kwargs)
         return ret
 
     def _update_objects(self):
@@ -1474,7 +1476,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
-    def __getitem__(self, name: str) -> ChildTypeT:
+    def __getitem__(self, name: str, **kwargs: Any) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child_cls = self.__class__.child_object_type
@@ -1496,7 +1498,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
         obj = self._objects.get(name)
         if not obj:
-            obj = self._create_child_object(name)
+            obj = self._create_child_object(name, **kwargs)
         return obj
 
     def get(self, name: str) -> ChildTypeT:
@@ -1516,6 +1518,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return self.__getitem__(name)
         except Exception:
             return
+
+    def all(self) -> list[ChildTypeT]:
+        """Return all child objects."""
+        return list(self.values())
 
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
@@ -1821,7 +1827,7 @@ def _get_new_keywords(obj, *args, **kwds):
                 newkwds[alias] = v
             elif k in obj.argument_names:
                 newkwds[k] = v
-            else:
+            elif k not in obj.get_active_child_names():
                 unknown_keywords.add(k)
     for k in unknown_keywords:
         # Noisily ignore unknown keywords
@@ -1937,7 +1943,8 @@ class BaseCommand(Action):
             and isinstance(self._parent, NamedObject)
             and ret in self._parent
         ):
-            return self._parent[ret]
+            child_attributes = {k: v for k, v in kwds.items() if k != "name"}
+            return self._parent.__getitem__(ret, **child_attributes)
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)
@@ -2205,12 +2212,14 @@ class _NonCreatableNamedObjectMixin(
 class AllowedValuesMixin:
     """Provides allowed values."""
 
-    def allowed_values(self):
+    def all(self):
         """Get the allowed values of the object."""
         try:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
         except Exception:
             return []
+
+    allowed_values = all
 
 
 class _MaybeActiveString(str):

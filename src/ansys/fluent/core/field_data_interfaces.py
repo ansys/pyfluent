@@ -356,9 +356,11 @@ class _SurfaceNames:
     def __init__(self, allowed_surface_names):
         self._allowed_surface_names = allowed_surface_names
 
-    def allowed_values(self):
+    def all(self):
         """Lists available surface names."""
         return list(self._allowed_surface_names())
+
+    allowed_values = all
 
     def validate(self, surfaces: List[str]) -> bool:
         """
@@ -389,9 +391,11 @@ class _SurfaceIds:
     def __init__(self, allowed_surface_ids):
         self._allowed_surface_ids = allowed_surface_ids
 
-    def allowed_values(self):
+    def all(self):
         """Lists available surface ids."""
         return self._allowed_surface_ids()
+
+    allowed_values = all
 
     def validate(self, surface_ids: List[int]) -> bool:
         """
@@ -432,9 +436,11 @@ class _Fields:
         """
         return _to_field_name_str(field_name) in self._available_field_names()
 
-    def allowed_values(self):
+    def all(self):
         """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
+
+    allowed_values = all
 
     def allowed_variables(self) -> list[VariableDescriptor]:
         """Return allowed field names as VariableDescriptor objects.

@@ -54,7 +54,7 @@ Here's how to set up a simple example:
   >>> # Compute the minimum of absolute pressure across multiple solvers
   >>> reduction.minimum(
     ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
-    ...     locations=VelocityInlets(settings_source=solver1) + VelocityInlets(settings_source=solver2),
+    ...     locations=VelocityInlets(solver1) + VelocityInlets(solver2),
     ... )
     101343.2241809384
 
@@ -80,7 +80,7 @@ For convenience, context-aware reductions are also supported:
 .. code-block:: python
 
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> solver_session.fields.reduction.area(locations=[VelocityInlet(settings_source=solver_session, name="inlet1")])
+  >>> solver_session.fields.reduction.area(locations=[VelocityInlet(solver_session).get("inlet1")])
   0.002555675491754098
 
   >>> reduction.area(locations=["inlet1"], ctxt=solver_session)
@@ -301,7 +301,7 @@ Object-Oriented:
 .. code-block:: python
 
   >>> cent = reduction.centroid(
-  >>>   locations=VelocityInlets(settings_source=solver1) + VelocityInlets(settings_source=solver2)
+  >>>   locations=VelocityInlets(solver1) + VelocityInlets(solver2)
   >>> )
   >>> cent.array
   (np.float64(-0.35755705583644837), np.float64(-0.1570620132480841), np.float64(-0.023607876218682954))

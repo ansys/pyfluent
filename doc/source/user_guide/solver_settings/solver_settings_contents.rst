@@ -28,8 +28,8 @@ Example usage
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> solver_session = pyfluent.launch_fluent()
-  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
+  >>> with pyfluent.Solver.from_install(...) as solver_session, pyfluent.using(solver_session):
+  ...     inlet1 = VelocityInlet().create()
 
 
 This format provides a more natural way to create and interact with settings objects,
@@ -101,7 +101,7 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model()
   'k-epsilon-standard'
 
@@ -109,7 +109,7 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Energy, VelocityInlet
-  >>> energy = Energy(settings_source=solver_session)
+  >>> energy = Energy(solver_session)
   >>> from pprint import pprint
   >>> pprint (energy(), width=1)
   {'enabled': True,
@@ -117,8 +117,8 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
    'kinetic_energy': False,
    'pressure_work': False,
    'viscous_dissipation': False}
-  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet1")
-  >>> inlet1.vmag.constant()
+  >>> inlet1 = VelocityInlet(solver_session).create(name="inlet1")
+  >>> inlet1.momentum.velocity_magnitude.value()
   10.0
 
 
@@ -130,12 +130,12 @@ and ``NamedObject`` types, the state value is a dictionary. For the
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Energy, VelocityInlet, Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model = 'laminar'
-  >>> energy = Energy(settings_source=solver_session)
+  >>> energy = Energy(solver_session)
   >>> energy.enabled = False
-  >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet1")
-  >>> inlet1.vmag.constant = 14
+  >>> inlet1 = VelocityInlet(solver_session).create(name="inlet1")
+  >>> inlet1.momentum.velocity_magnitude = 14
 
 
 You can also access the state of an object with the ``get_state()`` method and
@@ -166,7 +166,7 @@ You can print the current state in a simple text format with the
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Models
-  >>> models = Models(settings_source=solver_session)
+  >>> models = Models(solver_session)
   >>> models.print_state()
 
 
@@ -220,7 +220,15 @@ for that object or returns ``None`` otherwise.
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
+  >>> viscous.model.all()
+  ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
+
+
+.. code-block::
+
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model.allowed_values()
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
@@ -228,7 +236,7 @@ for that object or returns ``None`` otherwise.
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
@@ -236,12 +244,19 @@ for that object or returns ``None`` otherwise.
 .. code-block::
 
   >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.model.get_attrs(['allowed-values'])
   {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
 
 
 These examples accesses the list of zone surfaces:
+
+.. code-block::
+
+  >>> solver_session.settings.solution.report_definitions.flux["mass_flow_rate"] = {}
+  >>> solver_session.settings.solution.report_definitions.flux["mass_flow_rate"].boundaries.all()
+  ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']
+
 
 .. code-block::
 
@@ -272,7 +287,7 @@ Metadata name       Method              Can return None    Type applicability   
 ``is-active?``      ``is_active``       no                 all                    ``bool``
 ``is-read-only?``   ``is_read_only``    no                 all                    ``bool``
 ``default-value``   ``default``         yes                all primitives         type of primitive
-``allowed-values``  ``allowed_values``  yes                ``str``, ``str list``  ``str list``
+``allowed-values``  ``all``             yes                ``str``, ``str list``  ``str list``
 ``min``             ``min``             yes                ``int``, ``float``     ``int`` or ``float``
 ``max``             ``max``             yes                ``int``, ``float``     ``int`` or ``float``
 ==================  ==================  =================  =====================  ====================
@@ -299,13 +314,13 @@ in a single solver session:
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
-  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous = Viscous(solver_session)
   >>> viscous.is_active()
   True
   >>> viscous.model.is_read_only()
   False
   >>> viscous.model.default_value()
-  >>> pprint(viscous.model.allowed_values(), width=1)
+  >>> pprint(viscous.model.all(), width=1)
   ['inviscid',
    'laminar',
    'k-epsilon',
@@ -318,7 +333,7 @@ in a single solver session:
    'scale-adaptive-simulation',
    'detached-eddy-simulation',
    'large-eddy-simulation']
-  >>> cold_inlet = VelocityInlet(settings_source=solver_session, name="cold-inlet")
+  >>> cold_inlet = VelocityInlet(solver_session, name="cold-inlet")
   >>> cold_inlet.turb_intensity.min()
   0
   >>> cold_inlet.turb_intensity.max()
@@ -335,7 +350,7 @@ The ``get_active_child_names()`` method returns a list of
 active children::
 
   >>> from ansys.fluent.core.solver import Models
-  >>> models = Models(settings_source=solver_session)
+  >>> models = Models(solver_session)
   >>> models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
@@ -351,17 +366,17 @@ You can use wildcards when using named objects, list objects, and string list se
 For named objects and list objects, for instance::
 
   >>> from ansys.fluent.core.solver import FluidCellZone
-  >>> fluid = FluidCellZone(settings_source=solver_session, name="*")
+  >>> fluid = FluidCellZone(solver_session, name="*")
   >>> fluid.sources.terms["*mom*"]()
   {'fluid': {'sources': {'terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}}
 
 Also, when you have one or more velocity inlets with "inlet" in their names::
 
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> inlet = VelocityInlet(settings_source=solver_session, name="*inlet*")
-  >>> inlet.vmag()
-  {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
-  'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
+  >>> inlet = VelocityInlet(solver_session, name="*inlet*")
+  >>> inlet.momentum.velocity_magnitude.value()
+  {'hot-inlet': {'momentum': {'velocity_magnitude': {'value': 1.2}}},
+   'cold-inlet': {'momentum': {'velocity_magnitude': {'value': 1}}}}
 
 For string lists with allowed values, for instance::
 

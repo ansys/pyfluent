@@ -11,7 +11,7 @@ Setting up and querying the model
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     >>> solver_session = pyfluent.launch_fluent()
     >>> solver_session.settings.file.read_case(file_name=file_name)
-    >>> energy = pyfluent.solver.Energy(settings_source=solver_session)
+    >>> energy = pyfluent.solver.Energy(solver_session)
     >>> energy.enabled.get_state()
     True
     >>> from pprint import pprint

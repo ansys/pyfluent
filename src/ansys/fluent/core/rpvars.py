@@ -120,7 +120,7 @@ class RPVars:
             else (self._get_var(var) if var is not None else self._get_vars())
         )
 
-    def allowed_values(self) -> List[str]:
+    def all(self) -> List[str]:
         """Returns list with the allowed rpvars names.
 
         Returns
@@ -129,6 +129,8 @@ class RPVars:
             List with all allowed rpvars names.
         """
         return lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))"))
+
+    allowed_values = all
 
     def _get_var(self, var: str):
         allowed_rp_vars = self.allowed_values()
