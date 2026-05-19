@@ -429,6 +429,13 @@ class Base:
 
     def get_attrs(self, attrs, recursive=False) -> Any:
         """Get the requested attributes for the object."""
+        if recursive and isinstance(self, Action):
+            warnings.warn(
+                f"Recursive attribute queries are not supported for command/query "
+                f"objects. Ignoring recursive=True for '{self.python_path}'.",
+                PyFluentUserWarning,
+            )
+            recursive = False
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
