@@ -2064,3 +2064,26 @@ def test_rename(new_meshing_session):
     with pytest.raises(LookupError):
         watertight.import_geometry["Import Geometry"]
     assert watertight.import_geometry["IG"]
+
+
+@pytest.mark.fluent_version(">=27.1")
+def test_workflow_getattr_suggests_close_match(new_meshing_session):
+    """AttributeError for a near-miss name should list the closest task name."""
+    meshing = new_meshing_session
+    watertight = meshing.watertight()
+    with pytest.raises(AttributeError) as exc_info:
+        _ = watertight.add_local_sizing  # typo — correct name is add_local_sizing_wtm
+
+    assert "add_local_sizing_wtm" in str(exc_info.value)
+
+    with pytest.raises(AttributeError) as exc_info:
+        _ = watertight.create  # wrong — correct name is create_regions
+
+    assert "create_regions" in str(exc_info.value)
+
+    with pytest.raises(AttributeError) as exc_info:
+        _ = (
+            watertight.create_volume_mesh
+        )  # typo — correct name is create_volume_mesh_wtm
+
+    assert "create_volume_mesh_wtm" in str(exc_info.value)
