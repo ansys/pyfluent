@@ -1385,6 +1385,13 @@ class Workflow:
             )
         )
 
+    def __del__(self):
+        """Unsubscribe the root affected callback on destruction."""
+        try:
+            self._unsubscribe_root_affected_callback()
+        except Exception as exc:
+            logger.debug("__del__ %s: %s", type(exc).__name__, exc)
+
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a ``BaseTask`` wrapper.
 

@@ -48,12 +48,15 @@ from __future__ import annotations
 from collections import OrderedDict
 from functools import wraps
 import inspect
+import logging
 import re
 from typing import ValuesView
 
 from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _get_task_type_name(task_obj: PyMenu) -> str:
@@ -192,6 +195,10 @@ class Workflow:
     - Managing task lifecycles (creation/deletion)
     """
 
+    # Keyed by service instance so a single subscription per connection is tracked
+    # and properly cleaned up on re-initialisation or object destruction.
+    _root_affected_cb_by_server: dict = {}
+
     def __init__(
         self,
         workflow: PyMenu,
@@ -204,6 +211,19 @@ class Workflow:
         self._fluent_version = fluent_version
         self._task_dict = {}
         self._compound_child_dict = {}
+
+    def __del__(self):
+        """Unsubscribe the root affected callback on destruction."""
+        try:
+            self._unsubscribe_root_affected_callback()
+        except Exception as exc:
+            logger.debug("__del__ %s: %s", type(exc).__name__, exc)
+
+    def _unsubscribe_root_affected_callback(self):
+        """Unsubscribe the root affected callback if one is registered."""
+        if self._workflow.service in self._root_affected_cb_by_server:
+            self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
+            self._root_affected_cb_by_server.pop(self._workflow.service)
 
     def tasks(self) -> ValuesView[PyMenu]:
         """Get the complete list of tasks in the workflow.

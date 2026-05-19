@@ -66,6 +66,7 @@ class MeshingWorkflow(Workflow):
         )
         self._meshing = meshing
         self._name = name
+        self._unsubscribe_root_affected_callback()
         if initialize:
             self._new_workflow(name=self._name)
         self._initialized = True

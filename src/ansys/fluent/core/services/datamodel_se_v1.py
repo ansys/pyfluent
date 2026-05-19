@@ -333,6 +333,7 @@ class EventSubscription:
         self.is_subscribed: bool = False
         self._service: DatamodelService = service
         self.path: str = path
+        self._on_unsubscribe = None
         response = service.subscribe_events(request_dict)[0]
         if response["status"] != DataModelProtoModule.SUBSCRIPTION_STATUS_SUBSCRIBED:
             raise SubscribeEventError(request_dict)
@@ -358,6 +359,8 @@ class EventSubscription:
                 raise UnsubscribeEventError(self.tag)
             self.is_subscribed = False
             self._service.subscriptions.remove(self.tag)
+            if self._on_unsubscribe is not None:
+                self._on_unsubscribe()
 
 
 class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
@@ -656,6 +659,15 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
         self, rules: str, path: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Add on changed."""
+        # Shared alive flag — flipped to False when the containing object is
+        # deleted (e.g. workflow re-initialisation) so stale callbacks become
+        # silent no-ops.  Mirrors the DataModelAPI::onChanged alive guard.
+        alive = [True]
+
+        def cb_guarded(value):
+            if alive[0]:
+                cb(value)
+
         request_dict = {
             "eventrequest": [
                 {
@@ -665,7 +677,47 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, cb)
+        self.event_streaming.register_callback(subscription.tag, cb_guarded)
+
+        # Auto-disable the callback when its containing object is deleted so it
+        # cannot fire on a dangling path (mirrors the DataModelRemoveEvent guard
+        # in DataModelAPI::onChanged).
+        guard_sub = None
+        containing = _parent_se_path(path)
+        if containing:
+            try:
+                guard_request_dict = {
+                    "eventrequest": [
+                        {
+                            "rules": rules,
+                            "deletedEventRequest": {"path": containing},
+                        }
+                    ]
+                }
+                guard_sub = EventSubscription(self, containing, guard_request_dict)
+                self.event_streaming.register_callback(
+                    guard_sub.tag, lambda: alive.__setitem__(0, False)
+                )
+            except (
+                Exception
+            ) as exc:  # best-effort; server-side alive guard remains in effect
+                logger.debug(
+                    "add_on_changed guard subscription failed: %s: %s",
+                    type(exc).__name__,
+                    exc,
+                )
+
+        def _cleanup():
+            alive[0] = False
+            if guard_sub is not None:
+                try:
+                    guard_sub.unsubscribe()
+                except Exception as exc:
+                    logger.debug(
+                        "guard_sub.unsubscribe: %s: %s", type(exc).__name__, exc
+                    )
+
+        subscription._on_unsubscribe = _cleanup
         return subscription
 
     def add_on_affected(
@@ -792,6 +844,7 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
 
 convert_path_to_se_path = _v0.convert_path_to_se_path
 convert_se_path_to_path = _v0.convert_se_path_to_path
+_parent_se_path = _v0._parent_se_path
 
 PyCallableStateObject = _v0.PyCallableStateObject
 PyStateContainer = _v0.PyStateContainer
