@@ -36,6 +36,9 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.module_config import config
+from ansys.fluent.core.services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -481,7 +484,7 @@ class SubscriptionList:
                 v.unsubscribe()
 
 
-class DatamodelService(StreamingService):
+class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(
@@ -503,6 +506,15 @@ class DatamodelService(StreamingService):
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
+
+    def _delete_command_arguments_rpc(
+        self, rules: str, path: str, command: str, commandid: str
+    ) -> None:
+        """Issue RPC to delete command arguments."""
+        request = DataModelProtoModule.DeleteCommandArgumentsRequest(
+            rules=rules, path=path, command=command, commandid=commandid
+        )
+        self._impl.delete_command_arguments(request)
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
@@ -682,10 +694,7 @@ class DatamodelService(StreamingService):
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
         """Delete command arguments."""
-        request = DataModelProtoModule.DeleteCommandArgumentsRequest(
-            rules=rules, path=path, command=command, commandid=commandid
-        )
-        self._impl.delete_command_arguments(request)
+        return super().delete_command_arguments(rules, path, command, commandid)
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
@@ -1987,10 +1996,16 @@ class PyArguments(PyStateContainer):
             )
         )
         self.path.append((command, id))
+        self.service.register_command_arguments(
+            self.rules,
+            convert_path_to_se_path(self.path[:-1]),
+            self.path[-1][0],
+            self.path[-1][1],
+        )
 
     def __del__(self) -> None:
         try:
-            self.service.delete_command_arguments(
+            self.service.release_command_arguments(
                 self.rules,
                 convert_path_to_se_path(self.path[:-1]),
                 self.path[-1][0],
