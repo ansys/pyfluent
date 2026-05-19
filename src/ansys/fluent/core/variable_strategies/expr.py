@@ -21,7 +21,8 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping VariableDescriptor to variable names used in Fluent expressions.
+Provides ConversionStrategy classes for mapping VariableDescriptor to variable names used in
+Fluent expressions, separated by field kind (scalar vs. vector).
 """
 
 from ansys.units.variable_descriptor import (
@@ -30,9 +31,11 @@ from ansys.units.variable_descriptor import (
 )
 
 
-class FluentExprNamingStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected VariableCatalog into Fluent's
-    server-side expression variable naming conventions.
+class FluentExprScalarNamingStrategy(MappingConversionStrategy):
+    """Maps scalar VariableDescriptor entries to Fluent expression scalar variable names.
+
+    Use this strategy when constructing scalar expression-based requests.
+    Scalar variables return a single float per cell or node.
     """
 
     _c = VariableCatalog
@@ -51,7 +54,6 @@ class FluentExprNamingStrategy(MappingConversionStrategy):
         _c.CELL_REYNOLDS_NUMBER: "ElementReynoldsNumber",
         _c.fluent.HELICITY: "Helicity",
         _c.fluent.LAMBDA_2_CRITERION: "Lambda2Criterion",
-        _c.MESH_VELOCITY: "MeshVelocity",
         _c.MESH_VELOCITY_X: "MeshVelocity.x",
         _c.MESH_VELOCITY_Y: "MeshVelocity.y",
         _c.MESH_VELOCITY_Z: "MeshVelocity.z",
@@ -60,13 +62,11 @@ class FluentExprNamingStrategy(MappingConversionStrategy):
         _c.Q_CRITERION: "QCriterionRaw",
         _c.RADIAL_VELOCITY: "RadialVelocity",
         _c.TANGENTIAL_VELOCITY: "TangentialVelocity",
-        _c.VELOCITY: "Velocity",
         _c.VELOCITY_X: "Velocity.x",
         _c.VELOCITY_Y: "Velocity.y",
         _c.VELOCITY_Z: "Velocity.z",
         _c.VELOCITY_MAGNITUDE: "VelocityMagnitude",
         _c.fluent.VELOCITY_ANGLE: "VelocityAngle",
-        _c.VORTICITY: "Vorticity",
         _c.VORTICITY_X: "Vorticity.x",
         _c.VORTICITY_Y: "Vorticity.y",
         _c.VORTICITY_Z: "Vorticity.z",
@@ -101,7 +101,6 @@ class FluentExprNamingStrategy(MappingConversionStrategy):
         _c.SURFACE_NUSSELT_NUMBER: "SurfaceNusseltNumber",
         _c.SURFACE_STANTON_NUMBER: "SurfaceStantonNumber",
         _c.WALL_ADJACENT_HEAT_TRANSFER_COEFFICIENT: "WallAdjacentHeatTransferCoef",
-        _c.WALL_SHEAR_STRESS: "WallShearStressVector",
         _c.WALL_SHEAR_STRESS_X: "WallShearStressVector.x",
         _c.WALL_SHEAR_STRESS_Y: "WallShearStressVector.y",
         _c.WALL_SHEAR_STRESS_Z: "WallShearStressVector.z",
@@ -112,17 +111,14 @@ class FluentExprNamingStrategy(MappingConversionStrategy):
         # derivatives
         _c.fluent.PRESSURE_HESSIAN_INDICATOR: "PressureHessianIndicator",
         _c.STRAIN_RATE: "StrainRate",
-        _c.fluent.DVELOCITY_DX: "dVelocitydx",
         _c.fluent.DVELOCITY_DX_X: "dVelocitydx.x",
         _c.fluent.DVELOCITY_DX_Y: "dVelocitydx.y",
         _c.fluent.DVELOCITY_DX_Z: "dVelocitydx.z",
         _c.fluent.DVELOCITY_DX_MAGNITUDE: "dVelocitydx.mag",
-        _c.fluent.DVELOCITY_DY: "dVelocitydy",
         _c.fluent.DVELOCITY_DY_X: "dVelocitydy.x",
         _c.fluent.DVELOCITY_DY_Y: "dVelocitydy.y",
         _c.fluent.DVELOCITY_DY_Z: "dVelocitydy.z",
         _c.fluent.DVELOCITY_DY_MAGNITUDE: "dVelocitydy.mag",
-        _c.fluent.DVELOCITY_DZ: "dVelocitydz",
         _c.fluent.DVELOCITY_DZ_X: "dVelocitydz.x",
         _c.fluent.DVELOCITY_DZ_Y: "dVelocitydz.y",
         _c.fluent.DVELOCITY_DZ_Z: "dVelocitydz.z",
@@ -175,4 +171,39 @@ class FluentExprNamingStrategy(MappingConversionStrategy):
         _c.mesh.CELL_ZONE_TYPE: "CellZoneType",
         _c.mesh.PARTITION_NEIGHBOURS: "PartitionNeighbors",
         _c.mesh.STORED_CELL_PARTITION: "StoredElementPartition",
+    }
+
+
+class FluentExprVectorNamingStrategy(MappingConversionStrategy):
+    """Maps vector VariableDescriptor entries to Fluent expression vector variable names.
+
+    Use this strategy when constructing vector expression-based requests.
+    Vector variables return a three-component array (one vector per cell/node).
+    """
+
+    _c = VariableCatalog
+
+    _mapping = {
+        _c.VELOCITY: "Velocity",
+        _c.MESH_VELOCITY: "MeshVelocity",
+        _c.VORTICITY: "Vorticity",
+        _c.WALL_SHEAR_STRESS: "WallShearStressVector",
+        _c.fluent.DVELOCITY_DX: "dVelocitydx",
+        _c.fluent.DVELOCITY_DY: "dVelocitydy",
+        _c.fluent.DVELOCITY_DZ: "dVelocitydz",
+    }
+
+
+class FluentExprNamingStrategy(MappingConversionStrategy):
+    """Combined scalar + vector strategy for Fluent expression variable names.
+
+    Merges :class:`FluentExprScalarNamingStrategy` and
+    :class:`FluentExprVectorNamingStrategy` into a single lookup.
+    Retained for backwards compatibility; prefer the specific sub-strategies
+    when the field kind (scalar vs. vector) is known at the call site.
+    """
+
+    _mapping = {
+        **FluentExprScalarNamingStrategy._mapping,
+        **FluentExprVectorNamingStrategy._mapping,
     }

@@ -53,7 +53,7 @@ except ModuleNotFoundError as exc:
     ) from exc
 
 from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataNamingStrategy as vector_naming,
+    FluentFieldDataVectorNamingStrategy as vector_naming,
 )
 from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as scalar_naming,

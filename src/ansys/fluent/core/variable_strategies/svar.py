@@ -21,7 +21,8 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping VariableDescriptor to Fluent's SVAR names.
+Provides ConversionStrategy classes for mapping VariableDescriptor to Fluent's SVAR names,
+separated by field kind (scalar vs. vector).
 """
 
 
@@ -31,9 +32,11 @@ from ansys.units.variable_descriptor import (
 )
 
 
-class FluentSVarNamingStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected VariableCatalog into Fluent's
-    server-side field variable naming conventions (e.g., "SV_P" for pressure).
+class FluentSVarScalarNamingStrategy(MappingConversionStrategy):
+    """Maps scalar VariableDescriptor entries to Fluent SVAR scalar variable names.
+
+    Use this strategy when requesting scalar solution variable data.
+    Scalar SVARs return a single float per cell (e.g., ``SV_P`` for pressure).
     """
 
     _c = VariableCatalog
@@ -51,4 +54,31 @@ class FluentSVarNamingStrategy(MappingConversionStrategy):
         # temperature
         _c.SPECIFIC_ENTHALPY: "SV_H",
         _c.TEMPERATURE: "SV_T",
+    }
+
+
+class FluentSVarVectorNamingStrategy(MappingConversionStrategy):
+    """Maps vector VariableDescriptor entries to Fluent SVAR vector variable names.
+
+    Use this strategy when requesting vector solution variable data.
+    Vector SVARs return a three-component array (one vector per cell).
+    """
+
+    _c = VariableCatalog
+
+    _mapping = {}
+
+
+class FluentSVarNamingStrategy(MappingConversionStrategy):
+    """Combined scalar + vector strategy for Fluent SVAR variable names.
+
+    Merges :class:`FluentSVarScalarNamingStrategy` and
+    :class:`FluentSVarVectorNamingStrategy` into a single lookup.
+    Retained for backwards compatibility; prefer the specific sub-strategies
+    when the field kind (scalar vs. vector) is known at the call site.
+    """
+
+    _mapping = {
+        **FluentSVarScalarNamingStrategy._mapping,
+        **FluentSVarVectorNamingStrategy._mapping,
     }

@@ -25,5 +25,11 @@ Provides ConversionStrategy classes for mapping VariableDescriptor to variable n
 """
 
 from .expr import FluentExprNamingStrategy  # noqa: F401
+from .expr import FluentExprScalarNamingStrategy  # noqa: F401
+from .expr import FluentExprVectorNamingStrategy  # noqa: F401
 from .field import FluentFieldDataNamingStrategy  # noqa: F401
+from .field import FluentFieldDataScalarNamingStrategy  # noqa: F401
+from .field import FluentFieldDataVectorNamingStrategy  # noqa: F401
 from .svar import FluentSVarNamingStrategy  # noqa: F401
+from .svar import FluentSVarScalarNamingStrategy  # noqa: F401
+from .svar import FluentSVarVectorNamingStrategy  # noqa: F401

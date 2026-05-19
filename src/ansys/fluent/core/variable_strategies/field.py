@@ -21,7 +21,8 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping VariableDescriptor to names used in Fluent's field data API.
+Provides ConversionStrategy classes for mapping VariableDescriptor to names used in
+Fluent's field data API, separated by field kind (scalar vs. vector).
 """
 
 from ansys.units.variable_descriptor import (
@@ -30,9 +31,11 @@ from ansys.units.variable_descriptor import (
 )
 
 
-class FluentFieldDataNamingStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected
-    VariableCatalog into Fluent's server-side field variable naming conventions.
+class FluentFieldDataScalarNamingStrategy(MappingConversionStrategy):
+    """Maps scalar VariableDescriptor entries to Fluent field data scalar variable names.
+
+    Use this strategy when constructing a ``ScalarFieldDataRequest``.
+    Scalar variables return a single float per cell or node.
     """
 
     _c = VariableCatalog
@@ -51,7 +54,6 @@ class FluentFieldDataNamingStrategy(MappingConversionStrategy):
         _c.CELL_REYNOLDS_NUMBER: "cell-reynolds-number",
         _c.fluent.HELICITY: "helicity",
         _c.fluent.LAMBDA_2_CRITERION: "raw-q-criterion",  # ???
-        _c.MESH_VELOCITY: "mesh-velocity",  # ?
         _c.MESH_VELOCITY_X: "mesh-x-velocity",  # TODO
         _c.MESH_VELOCITY_Y: "mesh-y-velocity",  # TODO
         _c.MESH_VELOCITY_Z: "mesh-z-velocity",  # TODO
@@ -60,13 +62,11 @@ class FluentFieldDataNamingStrategy(MappingConversionStrategy):
         _c.Q_CRITERION: "raw-q-criterion",
         _c.RADIAL_VELOCITY: "radial-velocity",
         _c.TANGENTIAL_VELOCITY: "tangential-velocity",
-        _c.VELOCITY: "velocity",
         _c.VELOCITY_X: "x-velocity",
         _c.VELOCITY_Y: "y-velocity",
         _c.VELOCITY_Z: "z-velocity",
         _c.VELOCITY_MAGNITUDE: "velocity-magnitude",
         _c.fluent.VELOCITY_ANGLE: "xxx",  # eliminate altogether
-        _c.VORTICITY: "vorticity",
         _c.VORTICITY_X: "x-vorticity",
         _c.VORTICITY_Y: "y-vorticity",
         _c.VORTICITY_Z: "z-vorticity",
@@ -101,7 +101,6 @@ class FluentFieldDataNamingStrategy(MappingConversionStrategy):
         _c.SURFACE_NUSSELT_NUMBER: "nusselt-number",
         _c.SURFACE_STANTON_NUMBER: "stanton-number",
         _c.WALL_ADJACENT_HEAT_TRANSFER_COEFFICIENT: "heat-transfer-coef-wall-adj",
-        _c.WALL_SHEAR_STRESS: "wall-shear",
         _c.WALL_SHEAR_STRESS_X: "x-wall-shear",
         _c.WALL_SHEAR_STRESS_Y: "y-wall-shear",
         _c.WALL_SHEAR_STRESS_Z: "z-wall-shear",
@@ -175,4 +174,36 @@ class FluentFieldDataNamingStrategy(MappingConversionStrategy):
         _c.mesh.CELL_ZONE_TYPE: "cell-type",
         _c.mesh.PARTITION_NEIGHBOURS: "partition-neighbors",
         _c.mesh.STORED_CELL_PARTITION: "cell-partition-stored",
+    }
+
+
+class FluentFieldDataVectorNamingStrategy(MappingConversionStrategy):
+    """Maps vector VariableDescriptor entries to Fluent field data vector variable names.
+
+    Use this strategy when constructing a ``VectorFieldDataRequest``.
+    Vector variables return a three-component array (one vector per cell/node).
+    """
+
+    _c = VariableCatalog
+
+    _mapping = {
+        _c.VELOCITY: "velocity",
+        _c.MESH_VELOCITY: "mesh-velocity",
+        _c.VORTICITY: "vorticity",
+        _c.WALL_SHEAR_STRESS: "wall-shear",
+    }
+
+
+class FluentFieldDataNamingStrategy(MappingConversionStrategy):
+    """Combined scalar + vector strategy for Fluent field data variable names.
+
+    Merges :class:`FluentFieldDataScalarNamingStrategy` and
+    :class:`FluentFieldDataVectorNamingStrategy` into a single lookup.
+    Retained for backwards compatibility; prefer the specific sub-strategies
+    when the field kind (scalar vs. vector) is known at the call site.
+    """
+
+    _mapping = {
+        **FluentFieldDataScalarNamingStrategy._mapping,
+        **FluentFieldDataVectorNamingStrategy._mapping,
     }
