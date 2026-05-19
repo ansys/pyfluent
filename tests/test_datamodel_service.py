@@ -32,6 +32,9 @@ from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
 from ansys.fluent.core.services.datamodel_se import (
     PyArguments,
     PyArgumentsSingletonSubItem,
@@ -74,6 +77,58 @@ def test_convert_value_to_variant_to_value(value, expected):
     variant = Variant()
     _convert_value_to_variant(value, variant)
     assert expected == _convert_variant_to_value(variant)
+
+
+def test_pyarguments_registers_and_releases_command_arguments():
+    class DummyService:
+        def __init__(self):
+            self.registered = []
+            self.released = []
+
+        def register_command_arguments(self, rules, path, command, commandid):
+            self.registered.append((rules, path, command, commandid))
+
+        def release_command_arguments(self, rules, path, command, commandid):
+            self.released.append((rules, path, command, commandid))
+
+    service = DummyService()
+    arguments = PyArguments(service, "workflow", "ImportGeometry", [], "cmd-id")
+
+    assert service.registered == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+    del arguments
+    gc.collect()
+
+    assert service.released == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+
+def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
+    class DummyService(CommandArgumentsCleanupMixin):
+        def __init__(self):
+            super().__init__()
+            self.deleted = []
+
+        def _delete_command_arguments_rpc(self, rules, path, command, commandid):
+            self.deleted.append((rules, path, command, commandid))
+
+    service = DummyService()
+    key = ("workflow", "", "ImportGeometry", "cmd-id")
+
+    service.register_command_arguments(*key)
+    service.delete_command_arguments(*key)
+
+    assert service.deleted == [key]
+    assert service._command_arguments == set()
+
+    service.register_command_arguments(*key)
+    service.delete_all_command_arguments()
+    service.release_command_arguments(*key)
+
+    assert service.deleted == [key, key]
 
 
 @pytest.mark.fluent_version(">=23.2")
