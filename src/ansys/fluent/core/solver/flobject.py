@@ -1885,17 +1885,15 @@ class Action(Base):
                 ) from None
 
     def __setattr__(self, name: str, value):
-        if name in self.argument_names or name in self._child_aliases:
-            attr = getattr(self, name)
-            try:
-                return attr.set_state(value)
-            except Exception as ex:
-                if hasattr(attr, "allowed_values"):
-                    allowed = attr.allowed_values()
-                    if allowed and value not in allowed:
-                        raise allowed_values_error(name, value, allowed) from ex
-                raise
-        raise AttributeError(name)
+        attr = getattr(self, name)
+        try:
+            return attr.set_state(value)
+        except Exception as ex:
+            if hasattr(attr, "allowed_values"):
+                allowed = attr.allowed_values()
+                if allowed and value not in allowed:
+                    raise allowed_values_error(name, value, allowed) from ex
+            raise
 
 
 class BaseCommand(Action):
