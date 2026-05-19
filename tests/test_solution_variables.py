@@ -25,7 +25,62 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
+from ansys.fluent.core.services.solution_variables import (
+    DomainError,
+    _AllowedDomainNames,
+)
 from ansys.units.variable_descriptor import VariableCatalog
+
+
+class _DummyZonesInfo:
+    """Mock ZonesInfo for unit testing _AllowedDomainNames."""
+
+    def __init__(self, domains, domain_id_map):
+        self._domains = domains
+        self._domain_id_map = domain_id_map
+
+    @property
+    def domains(self):
+        return self._domains
+
+    def domain_id(self, name):
+        return self._domain_id_map.get(name, None)
+
+
+class _DummySVInfo:
+    """Mock SolutionVariableInfo for unit testing _AllowedDomainNames."""
+
+    def __init__(self, zones_info):
+        self._zones_info = zones_info
+
+    def get_zones_info(self):
+        return self._zones_info
+
+
+def test_allowed_domain_names_valid_name_returns_domain_id():
+    zones_info = _DummyZonesInfo(domains=["mixture"], domain_id_map={"mixture": 1})
+    allowed = _AllowedDomainNames(_DummySVInfo(zones_info))
+    assert allowed.valid_name("mixture") == 1
+
+
+def test_allowed_domain_names_valid_name_domain_id_zero():
+    zones_info = _DummyZonesInfo(domains=["mixture"], domain_id_map={"mixture": 0})
+    allowed = _AllowedDomainNames(_DummySVInfo(zones_info))
+    assert allowed.valid_name("mixture") == 0
+
+
+def test_allowed_domain_names_valid_name_raises_on_missing_domain_id():
+    zones_info = _DummyZonesInfo(domains=["mixture"], domain_id_map={})
+    allowed = _AllowedDomainNames(_DummySVInfo(zones_info))
+    with pytest.raises(DomainError):
+        allowed.valid_name("mixture")
+
+
+def test_allowed_domain_names_valid_name_raises_on_invalid_domain():
+    zones_info = _DummyZonesInfo(domains=["mixture"], domain_id_map={"mixture": 1})
+    allowed = _AllowedDomainNames(_DummySVInfo(zones_info))
+    with pytest.raises(DomainError):
+        allowed.valid_name("nonexistent")
 
 
 @pytest.mark.fluent_version(">=23.2")
