@@ -903,3 +903,19 @@ def test_read_only_command_execution(mixing_elbow_case_session):
     assert contour.display.is_read_only() is True
     with pytest.raises(ReadOnlyActionError):
         contour.display()
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_action_behavior(mixing_elbow_case_session):
+    solver = mixing_elbow_case_session
+    with pytest.raises(AttributeError, match="command/query object"):
+        solver.settings.solution.run_calculation.iterate.get_state()
+    assert isinstance(
+        solver.settings.solution.run_calculation.iterate.iter_count(), int
+    )
+    solver.settings.solution.run_calculation.iterate.iter_count = 55
+    assert solver.settings.solution.run_calculation.iterate.iter_count() == 55
+    with pytest.warns(PyFluentUserWarning, match="command/query object"):
+        solver.settings.solution.run_calculation.iterate.get_attrs(
+            ["active?"], recursive=True
+        )
