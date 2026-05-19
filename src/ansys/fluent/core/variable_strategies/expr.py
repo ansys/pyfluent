@@ -94,7 +94,6 @@ class FluentExprScalarNamingStrategy(MappingConversionStrategy):
         _c.WALL_Y_PLUS: "WallYplus",
         _c.WALL_Y_STAR: "WallYstar",
         # wall fluxes
-        _c.SURFACE_HEAT_TRANSFER_COEFFICIENT: "HeatTransferCoefficient",
         _c.SKIN_FRICTION_COEFFICIENT: "SkinFrictionCoefficient",
         _c.SURFACE_HEAT_FLUX: "SurfaceHeatFlux",
         _c.SURFACE_HEAT_TRANSFER_COEFFICIENT: "SurfaceHeatTransferCoefficient",

@@ -94,7 +94,6 @@ class FluentFieldDataScalarNamingStrategy(MappingConversionStrategy):
         _c.WALL_Y_PLUS: "y-plus",
         _c.WALL_Y_STAR: "y-star",
         # wall fluxes
-        _c.SURFACE_HEAT_TRANSFER_COEFFICIENT: "heat-transfer-coef",
         _c.SKIN_FRICTION_COEFFICIENT: "skin-friction-coef",
         _c.SURFACE_HEAT_FLUX: "heat-flux",
         _c.SURFACE_HEAT_TRANSFER_COEFFICIENT: "heat-transfer-coef-wall",

@@ -474,13 +474,17 @@ class TestFluentSVarScalarNamingStrategy:
 
 
 # ---------------------------------------------------------------------------
-# SVAR — vector strategy (intentionally empty)
+# SVAR — vector strategy (empty by design: SVAR API has no named vector types)
 # ---------------------------------------------------------------------------
 
 
 class TestFluentSVarVectorNamingStrategy:
     def test_mapping_is_empty(self):
-        """SVARs are inherently scalar in Fluent's API; no vector entries exist yet."""
+        """Fluent's SVAR service has no named vector quantities; vectors are
+        accessed via component scalars (SV_U/SV_V/SV_W) through
+        FluentSVarScalarNamingStrategy.  The vector strategy is therefore
+        permanently empty.
+        """
         assert FluentSVarVectorNamingStrategy._mapping == {}
 
     def test_no_descriptors_supported(self, svar_vector):

@@ -58,10 +58,18 @@ class FluentSVarScalarNamingStrategy(MappingConversionStrategy):
 
 
 class FluentSVarVectorNamingStrategy(MappingConversionStrategy):
-    """Maps vector VariableDescriptor entries to Fluent SVAR vector variable names.
+    """Placeholder strategy for Fluent SVAR vector variable names.
 
-    Use this strategy when requesting vector solution variable data.
-    Vector SVARs return a three-component array (one vector per cell).
+    Fluent's SVAR service does **not** expose named vector quantities.
+    Multi-component fields such as velocity are stored as individual scalar
+    SVARs (``SV_U``, ``SV_V``, ``SV_W``) and must be requested one component
+    at a time via :class:`FluentSVarScalarNamingStrategy`.
+
+    Consequently ``_mapping`` is intentionally empty and :meth:`supports`
+    returns ``False`` for every descriptor.  This class exists solely for
+    structural parity with the field-data and expression strategy modules;
+    callers should use :class:`FluentSVarScalarNamingStrategy` for all SVAR
+    lookups, including velocity components.
     """
 
     _c = VariableCatalog
