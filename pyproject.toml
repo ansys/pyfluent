@@ -98,7 +98,6 @@ addopts = """
 markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",
     "nightly: Tests that run under nightly CI",
-    "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
     "standalone: Tests that cannot be run within container"
 ]

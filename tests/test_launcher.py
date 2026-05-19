@@ -221,7 +221,6 @@ def test_case_load():
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
     case_name = download_file(
@@ -634,7 +633,6 @@ def test_report():
     assert str(rep).count("pandas") == 1
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_docker_compose(monkeypatch):
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples

@@ -24,7 +24,6 @@ import pytest
 
 
 @pytest.mark.settings_only
-@pytest.mark.fluent_version(">=24.1")
 def test_expression(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
     # Case file already has energy model turned on

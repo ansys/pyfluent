@@ -48,7 +48,6 @@ def round_off_list_elements(input_list):
     return input_list
 
 
-@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.developer_only
 def test_use_variable_catalog(new_solver_session) -> None:
     """
