@@ -772,8 +772,6 @@ def test_field_data_does_not_modify_case(new_solver_session):
     assert not solver.scheme.eval("(case-modified?)")
 
 
-@pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/5051
 @pytest.mark.fluent_version(">=24.1")
 def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     meshing = new_meshing_session
