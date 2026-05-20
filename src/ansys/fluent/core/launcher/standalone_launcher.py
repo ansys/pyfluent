@@ -200,11 +200,9 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(ui_mode)
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 180
-        # FLUENT_MAX_IDLE_TIMEOUT is in minutes; start_timeout is in seconds.
-        # Just as a safe precaution we are adding an extra minute to the Fluent idle timeout.
+        # FLUENT_MAX_IDLE_TIMEOUT is in minutes; +1 ensures the minute-granularity
+        # timer never fires before start_timeout elapses, leaving no stale process.
         _idle_timeout_minutes = math.ceil(self.argvals["start_timeout"] / 60) + 1
-        # Fluent to self-terminate after start_timeout seconds of idleness so
-        # that a failed-connection launch does not leave a stale process behind.
         _set_timeout_arg = (
             f"-command=(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"
         )
