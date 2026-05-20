@@ -109,7 +109,7 @@ class MeshingWorkflow(Workflow):
         )
         self._meshing = meshing_root
         self._base_meshing = base
-        self._name = name
+        self._name = "Create New"
         if initialize:
             self._new_workflow(name=self._name)
         self._initialized = True
@@ -395,7 +395,7 @@ TopologyBasedMeshing = TopologyBasedMeshingWorkflow
 
 
 def _get_current_workflow(current_workflow, name: str):
-    if current_workflow and current_workflow._name == name:
+    if current_workflow and getattr(current_workflow, "_name", None) == name:
         return current_workflow
 
 
