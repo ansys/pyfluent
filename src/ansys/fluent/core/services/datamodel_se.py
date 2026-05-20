@@ -465,12 +465,15 @@ class SubscriptionList:
             unsubscribed after the datamodel object is deleted.
         """
         with self._lock:
+            rules_prefix = f"/{rules}/"
             delete_tag = f"/{rules}/deleted"
             after = deletion_stage == "after"
             keys_to_unsubscribe = []
             for k, v in self._subscriptions.items():
-                if v.path.startswith(path) and not (
-                    after ^ v.tag.startswith(delete_tag)
+                if (
+                    v.tag.startswith(rules_prefix)
+                    and v.path.startswith(path)
+                    and not (after ^ v.tag.startswith(delete_tag))
                 ):
                     keys_to_unsubscribe.append(k)
             for k in reversed(keys_to_unsubscribe):
@@ -501,20 +504,34 @@ class SubscriptionList:
             "load_state",
         }
     )
-    _WORKFLOW_RULES: tuple[str, ...] = ("workflow", "meshing_workflow")
 
-    def unsubscribe_for_command(self, command: str) -> None:
+    _WORKFLOW_TASK_PATH_PREFIXES: dict[str, str] = {
+        "workflow": "/TaskObject:",  # legacy CamelCase rules
+        "meshing_workflow": "/task_object:",  # v1 snake_case rules
+    }
+
+    def unsubscribe_for_command(self, command: str, stage: str) -> None:
         """Flush client subscriptions affected by a workflow-mutating command.
 
-        If ``command`` is one of the known workflow-resetting commands, all
-        subscription objects on workflow rules are unsubscribed so that
-        stale on-changed/on-deleted observers do not fire against freed paths.
+        If ``command`` is one of the known workflow-resetting commands,
+        subscriptions on the TaskObject subtree of both workflow rules
+        namespaces are unsubscribed so that stale on-changed/on-deleted
+        observers do not fire against freed paths.
+
+        Parameters
+        ----------
+        command : str
+            Command name.
+        stage : {"before", "after"}
+            Pass ``"before"`` prior to dispatch so non-deleted observers are
+            dropped before the server mutates state.  Pass ``"after"`` (in a
+            ``finally`` block) to clean up on-deleted observers once the
+            server-side deletion is complete.
         """
         if command not in self._WORKFLOW_RESET_COMMANDS:
             return
-        for rules in self._WORKFLOW_RULES:
-            for stage in ("before", "after"):
-                self.unsubscribe_while_deleting(rules, "", stage)
+        for rules, path_prefix in self._WORKFLOW_TASK_PATH_PREFIXES.items():
+            self.unsubscribe_while_deleting(rules, path_prefix, stage)
 
 
 class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
@@ -690,20 +707,23 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
         self, rules: str, path: str, command: str, args: dict[str, ValueT]
     ) -> ValueT:
         """Execute the command."""
-        self.subscriptions.unsubscribe_for_command(command)
+        self.subscriptions.unsubscribe_for_command(command, "before")
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
         )
         _convert_value_to_variant(args, request.args)
-        response = self._impl.execute_command(request)
-        if self.cache is not None:
-            self.cache.update_cache(
-                rules,
-                response.state,
-                response.deletedpaths,
-                version=self.version,
-            )
-        return _convert_variant_to_value(response.result)
+        try:
+            response = self._impl.execute_command(request)
+            if self.cache is not None:
+                self.cache.update_cache(
+                    rules,
+                    response.state,
+                    response.deletedpaths,
+                    version=self.version,
+                )
+            return _convert_variant_to_value(response.result)
+        finally:
+            self.subscriptions.unsubscribe_for_command(command, "after")
 
     def execute_query(
         self, rules: str, path: str, query: str, args: dict[str, ValueT]

@@ -531,20 +531,23 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
         self, rules: str, path: str, command: str, args: dict[str, ValueT]
     ) -> ValueT:
         """Execute the command."""
-        self.subscriptions.unsubscribe_for_command(command)
+        self.subscriptions.unsubscribe_for_command(command, "before")
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
         )
         _convert_value_to_variant(args, request.args)
-        response = self._impl.execute_command(request)
-        if self.cache is not None:
-            self.cache.update_cache(
-                rules,
-                response.state,
-                response.deleted_paths,
-                version=self.version,
-            )
-        return _convert_variant_to_value(response.result)
+        try:
+            response = self._impl.execute_command(request)
+            if self.cache is not None:
+                self.cache.update_cache(
+                    rules,
+                    response.state,
+                    response.deleted_paths,
+                    version=self.version,
+                )
+            return _convert_variant_to_value(response.result)
+        finally:
+            self.subscriptions.unsubscribe_for_command(command, "after")
 
     def execute_query(
         self, rules: str, path: str, query: str, args: dict[str, ValueT]
