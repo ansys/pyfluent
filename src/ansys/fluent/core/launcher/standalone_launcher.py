@@ -201,14 +201,17 @@ class StandaloneLauncher:
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 180
         # FLUENT_MAX_IDLE_TIMEOUT is in minutes; start_timeout is in seconds.
-        _idle_timeout_minutes = math.ceil(self.argvals["start_timeout"] / 60)
+        # Just as a safe precaution we are adding an extra minute to the Fluent idle timeout.
+        _idle_timeout_minutes = math.ceil(self.argvals["start_timeout"] / 60) + 1
         # Fluent to self-terminate after start_timeout seconds of idleness so
         # that a failed-connection launch does not leave a stale process behind.
-        _setenv_arg = f"-setenv=FLUENT_MAX_IDLE_TIMEOUT={_idle_timeout_minutes}"
+        _set_timeout_arg = (
+            f"-command=(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"
+        )
         if self.argvals["additional_arguments"]:
-            self.argvals["additional_arguments"] += f" {_setenv_arg}"
+            self.argvals["additional_arguments"] += f" {_set_timeout_arg}"
         else:
-            self.argvals["additional_arguments"] = _setenv_arg
+            self.argvals["additional_arguments"] = _set_timeout_arg
         if self.argvals["lightweight_mode"] is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
@@ -306,13 +309,8 @@ class StandaloneLauncher:
                     watchdog.launch(os.getpid(), port, password, ip)
             # PyFluent is now connected: disable the idle-timeout guard.
             try:
-                from ansys.fluent.core.services.datamodel_se import (
-                    convert_path_to_se_path,
-                )
-
-                pref = session.preferences.General.IdleTimeout
-                pref.service.set_state(
-                    pref.rules, convert_path_to_se_path(pref.path), 0
+                session.scheme_eval.eval(
+                    f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
                 )
             except Exception as ex:
                 logger.debug(f"Could not reset IdleTimeout preference: {ex}")
