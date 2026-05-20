@@ -174,10 +174,10 @@ class AppUtilities(_AppUtilitiesV0):
         Parameters
         ----------
         timeout : int
-            Idle timeout duration in minutes. Pass 0 to disable the idle timeout.
+            Idle timeout duration in seconds. Pass 0 to disable the idle timeout.
         """
         request = AppUtilitiesProtoModule.SetIdleTimeoutRequest()
-        request.timeout = timeout
+        request.timeout.seconds = timeout
         self.service.set_idle_timeout(request)
 
 

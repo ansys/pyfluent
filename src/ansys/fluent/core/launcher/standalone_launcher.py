@@ -309,7 +309,7 @@ class StandaloneLauncher:
             try:
                 if session.get_fluent_version() >= FluentVersion.v271:
                     session._app_utilities.set_idle_timeout(
-                        session.preferences.General.IdleTimeout()
+                        session.preferences.General.IdleTimeout() * 60
                     )
                 else:
                     session.scheme_eval.eval(
