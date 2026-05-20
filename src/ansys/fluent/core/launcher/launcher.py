@@ -237,7 +237,7 @@ def launch_fluent(
         journal(s). The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
-        server. The default is ``60`` if Fluent is launched outside a Slurm environment,
+        server. The default is ``180`` if Fluent is launched outside a Slurm environment,
         no timeout if Fluent is launched within a Slurm environment.
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same

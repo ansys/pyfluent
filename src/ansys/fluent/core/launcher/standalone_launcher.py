@@ -37,6 +37,7 @@ Examples
 
 import inspect
 import logging
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -89,7 +90,7 @@ class StandaloneLauncher:
         precision: Precision | str | None = None,
         processor_count: int | None = None,
         journal_file_names: None | str | list[str] = None,
-        start_timeout: int = 60,
+        start_timeout: int = 180,
         additional_arguments: str = "",
         env: Dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
@@ -137,7 +138,7 @@ class StandaloneLauncher:
         journal_file_names : str or list of str, optional
             Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``.
         start_timeout : int, optional
-            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 60 seconds.
+            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 180 seconds.
         additional_arguments : str, optional
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         env : dict[str, str], optional
@@ -198,7 +199,16 @@ class StandaloneLauncher:
             ui_mode = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(ui_mode)
         if self.argvals["start_timeout"] is None:
-            self.argvals["start_timeout"] = 60
+            self.argvals["start_timeout"] = 180
+        # FLUENT_MAX_IDLE_TIMEOUT is in minutes; start_timeout is in seconds.
+        _idle_timeout_minutes = math.ceil(self.argvals["start_timeout"] / 60)
+        # Fluent to self-terminate after start_timeout seconds of idleness so
+        # that a failed-connection launch does not leave a stale process behind.
+        _setenv_arg = f"-setenv=FLUENT_MAX_IDLE_TIMEOUT={_idle_timeout_minutes}"
+        if self.argvals["additional_arguments"]:
+            self.argvals["additional_arguments"] += f" {_setenv_arg}"
+        else:
+            self.argvals["additional_arguments"] = _setenv_arg
         if self.argvals["lightweight_mode"] is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
@@ -294,6 +304,18 @@ class StandaloneLauncher:
                 if len(values) == 3:
                     ip, port, password = values
                     watchdog.launch(os.getpid(), port, password, ip)
+            # PyFluent is now connected: disable the idle-timeout guard.
+            try:
+                from ansys.fluent.core.services.datamodel_se import (
+                    convert_path_to_se_path,
+                )
+
+                pref = session.preferences.General.IdleTimeout
+                pref.service.set_state(
+                    pref.rules, convert_path_to_se_path(pref.path), 0
+                )
+            except Exception as ex:
+                logger.debug(f"Could not reset IdleTimeout preference: {ex}")
             if self.argvals["case_file_name"]:
                 if FluentMode.is_meshing(self.argvals["mode"]):
                     session.tui.file.read_case(self.argvals["case_file_name"])
