@@ -307,11 +307,16 @@ class StandaloneLauncher:
                     watchdog.launch(os.getpid(), port, password, ip)
             # PyFluent is now connected: disable the idle-timeout guard.
             try:
-                session.scheme_eval.eval(
-                    f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
-                )
+                if session.get_fluent_version() >= FluentVersion.v271:
+                    session._app_utilities.set_idle_timeout(
+                        session.preferences.General.IdleTimeout()
+                    )
+                else:
+                    session.scheme_eval.eval(
+                        f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
+                    )
             except Exception as ex:
-                logger.debug(f"Could not reset IdleTimeout preference: {ex}")
+                logger.debug(f"Could not reset Idle Timeout: {ex}")
             if self.argvals["case_file_name"]:
                 if FluentMode.is_meshing(self.argvals["mode"]):
                     session.tui.file.read_case(self.argvals["case_file_name"])
