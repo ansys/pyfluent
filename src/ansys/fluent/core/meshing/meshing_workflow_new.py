@@ -27,17 +27,14 @@ from __future__ import annotations
 
 from enum import Enum
 import os
-from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.session_base_meshing import BaseMeshing
+from ansys.fluent.core.session_meshing import Meshing
+from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_shared import _make_datamodel_module
 from ansys.fluent.core.workflow_new import Workflow
-
-if TYPE_CHECKING:
-    from ansys.fluent.core.session_base_meshing import BaseMeshing
-    from ansys.fluent.core.session_meshing import Meshing
-    from ansys.fluent.core.session_pure_meshing import PureMeshing
 
 
 def _get_base_meshing(session) -> "BaseMeshing":
