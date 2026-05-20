@@ -476,7 +476,20 @@ class Base:
         return ppath + "." + self.python_name
 
     def get_attrs(self, attrs, recursive=False) -> Any:
-        """Get the requested attributes for the object."""
+        """Get the requested attributes for the object.
+
+        Parameters
+        ----------
+        attrs : list
+            List of attribute names to retrieve.
+        recursive : bool, optional
+            Whether to retrieve attributes recursively, by default False.
+
+        Returns
+        -------
+        Any
+            Requested attributes.
+        """
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
@@ -1918,7 +1931,49 @@ class Action(Base):
                 )
             return alias_obj
         else:
-            return getattr(super(), name)
+            try:
+                return getattr(super(), name)
+            except AttributeError:
+                raise AttributeError(
+                    f"'{self.python_path}' is a command/query object and has no attribute '{name}'"
+                ) from None
+
+    def __setattr__(self, name: str, value):
+        attr = getattr(self, name)
+        try:
+            return attr.set_state(value)
+        except Exception as ex:
+            if hasattr(attr, "allowed_values"):
+                allowed = attr.allowed_values()
+                if allowed and value not in allowed:
+                    raise allowed_values_error(name, value, allowed) from ex
+            raise
+
+    def get_attrs(self, attrs, recursive=False) -> Any:
+        """Get the requested attributes for the object.
+
+        Parameters
+        ----------
+        attrs : list
+            List of attribute names to retrieve.
+        recursive : bool, optional
+            Whether to retrieve attributes recursively. Recursive queries are
+            not supported for command/query objects; if ``True`` is passed it
+            is ignored and a warning is issued, by default False.
+
+        Returns
+        -------
+        Any
+            Requested attributes.
+        """
+        if recursive:
+            warnings.warn(
+                f"Recursive attribute queries are not supported for command/query "
+                f"objects. Ignoring recursive=True for '{self.python_path}'.",
+                PyFluentUserWarning,
+            )
+            recursive = False
+        return self.flproxy.get_attrs(self.path, attrs, recursive)
 
 
 class BaseCommand(Action):
