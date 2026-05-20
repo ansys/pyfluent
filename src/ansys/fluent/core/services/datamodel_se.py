@@ -483,6 +483,39 @@ class SubscriptionList:
                 v = next(reversed(self._subscriptions.values()))
                 v.unsubscribe()
 
+    _WORKFLOW_RESET_COMMANDS: frozenset[str] = frozenset(
+        {
+            # legacy "workflow" rules (CamelCase)
+            "InitializeWorkflow",
+            "LoadWorkflow",
+            "CreateNewWorkflow",
+            "ResetWorkflow",
+            "DeleteTasks",
+            "LoadState",
+            # v1 "meshing_workflow" rules (snake_case)
+            "initialize_workflow",
+            "load_workflow",
+            "create_new_workflow",
+            "reset_workflow",
+            "delete_tasks",
+            "load_state",
+        }
+    )
+    _WORKFLOW_RULES: tuple[str, ...] = ("workflow", "meshing_workflow")
+
+    def unsubscribe_for_command(self, command: str) -> None:
+        """Flush client subscriptions affected by a workflow-mutating command.
+
+        If ``command`` is one of the known workflow-resetting commands, all
+        subscription objects on workflow rules are unsubscribed so that
+        stale on-changed/on-deleted observers do not fire against freed paths.
+        """
+        if command not in self._WORKFLOW_RESET_COMMANDS:
+            return
+        for rules in self._WORKFLOW_RULES:
+            for stage in ("before", "after"):
+                self.unsubscribe_while_deleting(rules, "", stage)
+
 
 class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl."""
@@ -657,6 +690,7 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
         self, rules: str, path: str, command: str, args: dict[str, ValueT]
     ) -> ValueT:
         """Execute the command."""
+        self.subscriptions.unsubscribe_for_command(command)
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
         )

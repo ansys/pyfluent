@@ -531,6 +531,7 @@ class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
         self, rules: str, path: str, command: str, args: dict[str, ValueT]
     ) -> ValueT:
         """Execute the command."""
+        self.subscriptions.unsubscribe_for_command(command)
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
         )
