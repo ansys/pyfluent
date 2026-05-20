@@ -102,7 +102,7 @@ class DockerLauncher:
         dimension: Dimension | int | None = None,
         precision: Precision | str | None = None,
         processor_count: int | None = None,
-        start_timeout: int = 60,
+        start_timeout: int = 180,
         additional_arguments: str = "",
         container_dict: dict | None = None,
         dry_run: bool = False,
@@ -146,7 +146,7 @@ class DockerLauncher:
             Specifies the number of processors to use. Defaults to ``None``, which uses 1 processor.
             In job scheduler environments, this value limits the total number of allocated cores.
         start_timeout : int, optional
-            Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 60 seconds.
+            Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 180 seconds.
         additional_arguments : str, optional
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         container_dict : dict, optional
@@ -212,7 +212,7 @@ class DockerLauncher:
         }
         self.argvals, self.new_session = _get_argvals_and_session(argvals)
         if self.argvals["start_timeout"] is None:
-            self.argvals["start_timeout"] = 60
+            self.argvals["start_timeout"] = 180
         self.file_transfer_service = file_transfer_service
         if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
