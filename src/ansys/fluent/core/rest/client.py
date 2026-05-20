@@ -73,6 +73,7 @@ HTTP 4xx / 5xx responses raise :class:`FluentRestError`.
 import hashlib
 import json
 import logging
+import ssl
 import time
 from typing import Any
 import urllib.error
@@ -155,13 +156,14 @@ class FluentRestClient:
         timeout: float = 30.0,
         max_retries: int = 0,
         retry_delay: float = 1.0,
+        ssl_context: ssl.SSLContext | None = None,
     ) -> None:
         parsed = urllib.parse.urlparse(base_url)
         if parsed.scheme not in {"http", "https"}:
             raise ValueError("base_url scheme must be http or https")
         if not parsed.netloc:
             raise ValueError("base_url must include host")
-        if auth_token and parsed.scheme == "http":
+        if auth_token and parsed.scheme == "http" and ssl_context is None:
             warnings.warn(
                 "auth_token is being sent over plain HTTP. "
                 "Use https:// to protect credentials in transit.",
@@ -173,6 +175,7 @@ class FluentRestClient:
         self._timeout = timeout
         self._max_retries = max_retries
         self._retry_delay = retry_delay
+        self._ssl_context = ssl_context
         # All DataModel endpoints live under this prefix, e.g. "api/fluent_1"
         self._api_base = f"api/{component}"
 
@@ -244,7 +247,7 @@ class FluentRestClient:
         for attempt in range(self._max_retries + 1):
             try:
                 with urllib.request.urlopen(
-                    req, timeout=self._timeout
+                    req, timeout=self._timeout, context=self._ssl_context
                 ) as resp:  # nosec B310
                     raw = resp.read()
                     return json.loads(raw) if raw.strip() else {}

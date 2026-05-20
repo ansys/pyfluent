@@ -64,13 +64,16 @@ import hashlib
 import logging
 import os
 import secrets
+import shutil
 import socket
+import ssl
 import subprocess
 import time
 import urllib.error
 import urllib.request
 
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
+from ansys.fluent.core.rest._tls import build_ssl_context, generate_tls_cert_dir
 from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
 from ansys.fluent.core.solver.flobject import Group, get_root
 
@@ -138,6 +141,7 @@ def _probe_server(
     auth_token: str,
     component: str = "fluent_1",
     timeout: float = 5.0,
+    ssl_context: ssl.SSLContext | None = None,
 ) -> bool:
     """Return ``True`` if the Fluent web server responds to an authenticated probe.
 
@@ -156,6 +160,8 @@ def _probe_server(
         Use ``"fluent_meshing_1"`` for a meshing session.
     timeout : float, optional
         Socket timeout in seconds.  Defaults to ``5.0``.
+    ssl_context : ssl.SSLContext, optional
+        TLS context for HTTPS connections.
 
     Returns
     -------
@@ -168,13 +174,19 @@ def _probe_server(
         "Authorization", f"Bearer {hashlib.sha256(auth_token.encode()).hexdigest()}"
     )
     try:
-        with urllib.request.urlopen(req, timeout=timeout):  # nosec B310
+        with urllib.request.urlopen(
+            req, timeout=timeout, context=ssl_context
+        ):  # nosec B310
             return True
     except Exception:
         return False
 
 
-def _wait_for_server(port: int, timeout: int = 120, scheme: str = "http") -> None:
+def _wait_for_server(
+    port: int,
+    timeout: int = 120,
+    ssl_context: ssl.SSLContext | None = None,
+) -> None:
     """Block until the Fluent web server is fully ready.
 
     Two-phase check:
@@ -189,21 +201,25 @@ def _wait_for_server(port: int, timeout: int = 120, scheme: str = "http") -> Non
     Both phases share the same *timeout* deadline so the total wait never
     exceeds *timeout* seconds.
 
+    The URL scheme is auto-detected: ``"https"`` when *ssl_context* is
+    provided, ``"http"`` otherwise.
+
     Parameters
     ----------
     port : int
         TCP port to probe.
     timeout : int
         Maximum total seconds to wait.  Defaults to ``120``.
-    scheme : str, optional
-        URL scheme (``"http"`` or ``"https"``).  Defaults to ``"http"``.
-        Must match the scheme used by :func:`launch_webserver`.
+    ssl_context : ssl.SSLContext, optional
+        TLS context for HTTPS connections.  When provided the probe
+        URL uses ``https://``; otherwise ``http://``.
 
     Raises
     ------
     TimeoutError
         If the server is not ready within *timeout* seconds.
     """
+    scheme = "https" if ssl_context else "http"
     deadline = time.monotonic() + timeout
 
     # ── Phase 1: wait for TCP port to open ──────────────────────────────
@@ -226,7 +242,9 @@ def _wait_for_server(port: int, timeout: int = 120, scheme: str = "http") -> Non
     while time.monotonic() < deadline:
         try:
             req = urllib.request.Request(probe_url, method="GET")
-            with urllib.request.urlopen(req, timeout=3):  # nosec B310
+            with urllib.request.urlopen(
+                req, timeout=3, context=ssl_context
+            ):  # nosec B310
                 logger.info("[wait] Solver is ready on port %d.", port)
                 return
         except urllib.error.HTTPError as exc:
@@ -348,10 +366,11 @@ class RestSolverSession:
         *,
         auth_token: str | None = None,
         component: str = "fluent_1",
-        version: str = "",
+        version: str = "261",
         timeout: float = 30.0,
         max_retries: int = 0,
         retry_delay: float = 1.0,
+        ssl_context: ssl.SSLContext | None = None,
     ) -> None:
         self._client = FluentRestClient(
             base_url,
@@ -360,12 +379,14 @@ class RestSolverSession:
             timeout=timeout,
             max_retries=max_retries,
             retry_delay=retry_delay,
+            ssl_context=ssl_context,
         )
         self._settings = self._build_settings_with_retry(version=version)
         self.ip: str | None = None
         self.port: int | None = None
         self.auth_token: str | None = auth_token
         self._process: subprocess.Popen | None = None
+        self._tls_dir: str | None = None
 
     def _build_settings_with_retry(
         self, version: str, retries: int = 5, delay: float = 2.0
@@ -404,8 +425,8 @@ class RestSolverSession:
                 raise
 
     @property
-    def client(self) -> FluentRestClient:
-        """The underlying REST transport proxy."""
+    def client(self) -> "FluentRestClient":
+        """Return the underlying REST client for low-level access."""
         return self._client
 
     @property
@@ -449,15 +470,19 @@ class RestSolverSession:
     def exit(self) -> None:
         """Terminate the attached Fluent process (if any) and clean up."""
         proc = self._process
-        if proc is None:
-            return
-        proc.terminate()
-        try:
-            proc.wait(timeout=10)
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            proc.wait()
-        self._process = None
+        if proc is not None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
+            self._process = None
+        # Clean up ephemeral TLS certificate directory
+        if self._tls_dir is not None:
+            shutil.rmtree(self._tls_dir, ignore_errors=True)
+            logger.debug("Cleaned up TLS cert directory: %s", self._tls_dir)
+            self._tls_dir = None
 
     def __enter__(self) -> "RestSolverSession":
         """Enter context manager."""
@@ -479,97 +504,73 @@ def launch_webserver(
     fluent_path: str | None = None,
     dimension: str = "3ddp",
     start_timeout: int = 60,
-    scheme: str = "http",
     component: str = "fluent_1",
-    version: str = "",
+    version: str = "261",
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
 ) -> RestSolverSession:
-    """Launch a local Fluent process with the embedded web server enabled.
+    """Launch a local Fluent process with the embedded web server over HTTPS.
 
     This is the **primary entry point** for using the REST transport layer.
     It mirrors :func:`ansys.fluent.core.launcher.launcher.launch_fluent` for
     the HTTP transport.
 
+    TLS certificates are **auto-generated** for every launch — no manual
+    certificate setup is required.  The generated CA, server cert, server
+    key, and DH params are written to a temporary directory, passed to
+    Fluent via ``FLUENT_WEBSERVER_CERTIFICATE_ROOT``, and cleaned up
+    when :meth:`RestSolverSession.exit` is called.
+
     The function performs the following steps automatically:
 
     1. Generates a random 4-digit numeric auth token for this launch.
-    2. Discovers a free local TCP port using the Python ``socket`` stdlib.
-    3. Resolves the Fluent executable (via *fluent_path*, *product_version*,
-       or the ``AWP_ROOT*`` / ``PYFLUENT_FLUENT_ROOT`` env vars).
-    4. Spawns Fluent with ``-ws -ws-port={port}`` and injects the
-       auth token into the subprocess environment.
-    5. Polls ``http://localhost:{port}/`` until the server responds or
-       *start_timeout* expires (raises :class:`TimeoutError`).
-    6. Calls :func:`connect_to_webserver` to build a
-       :class:`RestSolverSession`.
-    7. Attaches the subprocess handle so :meth:`RestSolverSession.exit`
-       terminates Fluent.
+    2. Generates ephemeral TLS certificates (CA + server cert).
+    3. Discovers a free local TCP port.
+    4. Resolves the Fluent executable.
+    5. Spawns Fluent with ``-ws -ws-port={port}`` and injects the auth
+       token and certificate directory into the subprocess environment.
+    6. Waits until the HTTPS server is reachable.
+    7. Returns a fully connected :class:`RestSolverSession`.
 
     Parameters
     ----------
     product_version : str, optional
-        Fluent version string, e.g. ``"261"`` or ``"26.1.0"``.  Used to
-        locate the Fluent executable via ``AWP_ROOTnnn``.  If omitted, the
-        latest installed version is used automatically.
+        Fluent version string, e.g. ``"261"`` or ``"26.1.0"``.
     fluent_path : str, optional
-        Explicit path to the Fluent executable.  Takes precedence over
-        *product_version* and all environment variables.
+        Explicit path to the Fluent executable.
     dimension : str, optional
-        Fluent solver dimension argument.  Defaults to ``"3ddp"``
-        (3-D double precision).
+        Fluent solver dimension argument.  Defaults to ``"3ddp"``.
     start_timeout : int, optional
-        Maximum seconds to wait for the web server to become reachable.
-        Defaults to ``60``.
-    scheme : str, optional
-        URL scheme.  Only ``"http"`` is supported for launching; passing
-        ``"https"`` raises :class:`ValueError` because the Fluent CLI flags
-        ``-ws``/``-ws-port`` do not configure TLS.  Defaults to ``"http"``.
+        Maximum seconds to wait for the web server.  Defaults to ``60``.
     component : str, optional
         DataModel component name.  Defaults to ``"fluent_1"`` (solver).
     version : str, optional
-        Fluent version string passed to
-        :func:`~ansys.fluent.core.solver.flobject.get_root` for code-
-        generated settings.  Defaults to ``""`` (empty), which causes
-        ``get_root`` to introspect the running solver's static-info at
-        runtime — safe for any Fluent version.
+        Fluent version string for code-generated settings.  Defaults to
+        ``""`` (runtime introspection).
     timeout : float, optional
-        HTTP socket timeout in seconds for every REST request.  Defaults
-        to ``30.0``.
+        HTTP socket timeout in seconds.  Defaults to ``30.0``.
     max_retries : int, optional
         Maximum automatic retries on transient HTTP errors.  Defaults to
         ``0``.
     retry_delay : float, optional
-        Base delay in seconds between retries (exponential back-off).
-        Defaults to ``1.0``.
+        Base delay in seconds between retries.  Defaults to ``1.0``.
 
     Returns
     -------
     RestSolverSession
-        A fully initialised solver session whose settings tree communicates
-        over HTTP.  The session exposes:
-
-        * ``session.ip`` — ``"127.0.0.1"``
-        * ``session.port`` — the auto-discovered port
-        * ``session.auth_token`` — the auto-generated token
-        * ``session.exit()`` — terminates the Fluent process
+        A fully initialised solver session communicating over HTTPS.
 
     Raises
     ------
-    Exception
-        If any unexpected error occurs during the launch process.
     RuntimeError
         If no free TCP port can be found.
     FileNotFoundError
         If the Fluent executable cannot be located.
-    ValueError
-        If *scheme* is not ``"http"`` or ``"https"``.
     TimeoutError
         If the web server does not start within *start_timeout* seconds.
-    ConnectionError
-        If the reachability probe in :func:`connect_to_webserver` fails
-        after the server appeared ready.
+    Exception
+        Any exception during server connection is re-raised after cleanup.
 
     Examples
     --------
@@ -579,31 +580,34 @@ def launch_webserver(
     True
     >>> session.exit()
     """
-    if scheme not in ("http", "https"):
-        raise ValueError(f"scheme must be 'http' or 'https', got {scheme!r}")
-
-    # 1 — generate a fresh per-launch 4-digit auth token (fix #7/#10)
+    # 1 — generate a fresh per-launch auth token
     auth_token = _generate_auth_token()
 
-    # 2 — discover a free local TCP port (pure stdlib)
+    # 2 — generate ephemeral TLS certificates
+    cert_dir, ca_cert_path = generate_tls_cert_dir()
+    ssl_ctx = build_ssl_context(ca_cert_path)
+
+    # 3 — discover a free local TCP port (pure stdlib)
     port = _get_free_port()
     logger.info("Discovered free port %d for Fluent web server.", port)
 
-    # 3 — resolve the Fluent executable
+    # 4 — resolve the Fluent executable
     fluent_exe = _get_fluent_exe(
         product_version=product_version,
         fluent_path=fluent_path,
     )
 
-    # 4 — build the launch command and spawn Fluent
+    # 5 — build the launch command and spawn Fluent
     launch_cmd = [fluent_exe, dimension, "-ws", f"-ws-port={port}"]
     logger.info("Launching Fluent: %s", launch_cmd)
 
     env = os.environ.copy()
     env["FLUENT_WEBSERVER_TOKEN"] = auth_token
+    env["FLUENT_WEBSERVER_CERTIFICATE_ROOT"] = cert_dir
     process = subprocess.Popen(launch_cmd, env=env)  # nosec B603 B607
 
     if process.poll() is not None:
+        shutil.rmtree(cert_dir, ignore_errors=True)
         raise RuntimeError(
             f"Fluent process exited immediately with return code "
             f"{process.returncode}. Command: {launch_cmd}"
@@ -611,7 +615,7 @@ def launch_webserver(
 
     # register atexit so Fluent is terminated even if session.exit()
     # is never called (e.g. abrupt interpreter shutdown).
-    def _atexit_cleanup(proc: subprocess.Popen) -> None:
+    def _atexit_cleanup(proc: subprocess.Popen, tls_dir: str | None = None) -> None:
         if proc.poll() is None:
             logger.debug("atexit: terminating Fluent process (pid=%d).", proc.pid)
             proc.terminate()
@@ -620,14 +624,17 @@ def launch_webserver(
             except subprocess.TimeoutExpired:
                 proc.kill()
                 proc.wait()
+        if tls_dir:
+            shutil.rmtree(tls_dir, ignore_errors=True)
 
-    atexit.register(_atexit_cleanup, process)
+    atexit.register(_atexit_cleanup, process, cert_dir)
 
     # wrap post-Popen work in try/except so a failure (timeout,
     # auth error, etc.) terminates the spawned process before re-raising.
     try:
-        _wait_for_server(port, timeout=start_timeout, scheme=scheme)
+        _wait_for_server(port, timeout=start_timeout, ssl_context=ssl_ctx)
 
+        scheme = "https" if ssl_ctx else "http"
         base_url = f"{scheme}://{_LOCALHOST}:{port}"
         session = RestSolverSession(
             base_url,
@@ -637,6 +644,7 @@ def launch_webserver(
             timeout=timeout,
             max_retries=max_retries,
             retry_delay=retry_delay,
+            ssl_context=ssl_ctx,
         )
     except Exception:
         logger.exception(
@@ -649,11 +657,13 @@ def launch_webserver(
         except subprocess.TimeoutExpired:
             process.kill()
             process.wait()
+        shutil.rmtree(cert_dir, ignore_errors=True)
         raise
 
     session.ip = _LOCALHOST
     session.port = port
     session.auth_token = auth_token
+    session._tls_dir = cert_dir
 
     # Attach subprocess so session.exit() terminates Fluent
     session._process = process
@@ -666,18 +676,23 @@ def connect_to_webserver(
     port: int,
     auth_token: str,
     *,
-    scheme: str = "http",
     component: str = "fluent_1",
-    version: str = "",
+    version: str = "261",
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
+    ca_cert: str | None = None,
 ) -> RestSolverSession:
     """Connect to an already-running Fluent REST server.
 
     Use this function when the Fluent web server is already running and you know
     its ``ip``, ``port``, and ``auth_token``.  For a fully automated local
     launch use :func:`launch_webserver` instead.
+
+    The URL scheme is **auto-detected** from the *ca_cert* parameter:
+
+    * ``ca_cert`` provided → ``https://``
+    * ``ca_cert`` omitted   → ``http://``
 
     Parameters
     ----------
@@ -687,15 +702,10 @@ def connect_to_webserver(
         TCP port the Fluent web server is listening on.
     auth_token : str
         Bearer token (password) for authentication.
-    scheme : str, optional
-        URL scheme.  Must be ``"http"`` or ``"https"``.  Defaults to
-        ``"http"``.
     component : str, optional
         DataModel component name.  Defaults to ``"fluent_1"`` (solver).
     version : str, optional
-        Fluent version string (e.g. ``"261"``).  Defaults to ``""`` (empty),
-        which causes ``get_root`` to introspect the running solver's
-        static-info at runtime — safe for any Fluent version.
+        Fluent version string (e.g. ``"261"``).  Defaults to ``"261"``.
     timeout : float, optional
         HTTP socket timeout in seconds.  Defaults to ``30.0``.
     max_retries : int, optional
@@ -704,6 +714,10 @@ def connect_to_webserver(
     retry_delay : float, optional
         Base delay in seconds between retries (exponential back-off).
         Defaults to ``1.0``.
+    ca_cert : str, optional
+        Path to a PEM-encoded CA certificate file for verifying the
+        server's TLS certificate.  When provided the connection uses
+        HTTPS; otherwise plain HTTP is used.
 
     Returns
     -------
@@ -713,33 +727,33 @@ def connect_to_webserver(
 
     Raises
     ------
-    ValueError
-        If *scheme* is not ``"http"`` or ``"https"``.
     ConnectionError
         If the server does not respond to the reachability probe.
 
     Examples
     --------
-    >>> from ansys.fluent.core.rest import connect_to_webserver
-    >>> session = connect_to_webserver(
-    ...     ip="127.0.0.1",
-    ...     port=5000,
-    ...     auth_token="my-secret-token",
-    ... )
-    >>> session.settings.setup.models.energy.enabled()
-    True
-    """
-    if scheme not in ("http", "https"):
-        raise ValueError(f"scheme must be 'http' or 'https', got {scheme!r}")
+    Connect over plain HTTP (no ``ca_cert``):
 
+    >>> session = connect_to_webserver("127.0.0.1", 5000, auth_token="tok")
+
+    Connect over HTTPS (provide CA certificate):
+
+    >>> session = connect_to_webserver(
+    ...     "127.0.0.1", 5000, auth_token="tok",
+    ...     ca_cert="/path/to/CA.crt",
+    ... )
+    """
+    ssl_ctx = build_ssl_context(ca_cert) if ca_cert else None
+    scheme = "https" if ca_cert else "http"
     base_url = f"{scheme}://{ip}:{port}"
 
     # Reachability probe — fail-fast before building the settings tree.
-    # pass component so meshing/custom components are probed at
-    # the correct endpoint (/api/{component}/static-info) rather than always
-    # falling back to the hard-coded fluent_1 default.
     if not _probe_server(
-        base_url, auth_token, component=component, timeout=min(timeout, 5.0)
+        base_url,
+        auth_token,
+        component=component,
+        timeout=min(timeout, 5.0),
+        ssl_context=ssl_ctx,
     ):
         raise ConnectionError(
             f"Fluent web server at {base_url} did not respond to the reachability "
@@ -756,6 +770,7 @@ def connect_to_webserver(
         timeout=timeout,
         max_retries=max_retries,
         retry_delay=retry_delay,
+        ssl_context=ssl_ctx,
     )
     session.ip = ip
     session.port = port
