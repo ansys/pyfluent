@@ -58,7 +58,6 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import (
     AppUtilitiesService,
-    AppUtilitiesV0,
     HealthCheckService,
     HealthCheckServiceV0,
     SchemeEval,
@@ -68,14 +67,18 @@ from ansys.fluent.core.services import (
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
-    AppUtilities,
+    AppUtilities as AppUtilitiesV0Impl,
     AppUtilitiesOld,
 )
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesService as AppUtilitiesServiceV0,
 )
 from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesV252,
+    AppUtilitiesV252 as AppUtilitiesV252V0,
+)
+from ansys.fluent.core.services.app_utilities_v1 import (
+    AppUtilities as AppUtilitiesV1Impl,
+    AppUtilitiesV252 as AppUtilitiesV252V1,
 )
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
@@ -399,14 +402,14 @@ class _ConnectionInterface:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
 
             case FluentVersion.v252:
-                self._app_utilities = AppUtilitiesV252(
-                    self._app_utilities_service, self.scheme_eval
-                )
+                self._app_utilities = (
+                    AppUtilitiesV252V1 if supports_v1 else AppUtilitiesV252V0
+                )(self._app_utilities_service, self.scheme_eval)
 
             case _:
-                self._app_utilities = (AppUtilities if supports_v1 else AppUtilitiesV0)(
-                    self._app_utilities_service
-                )
+                self._app_utilities = (
+                    AppUtilitiesV1Impl if supports_v1 else AppUtilitiesV0Impl
+                )(self._app_utilities_service)
 
     @property
     def product_build_info(self) -> str:
