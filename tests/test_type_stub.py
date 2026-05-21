@@ -27,7 +27,6 @@ import pytest
 from ansys.fluent.core import config
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("==25.2")
 def test_settings_stub():
     # The type-stub files, which are generated for settings API, are parsed by the

@@ -31,7 +31,6 @@ def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_meshing_utilities(new_meshing_session):
     meshing_session = new_meshing_session

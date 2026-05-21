@@ -25,7 +25,6 @@ import time
 import pytest
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.parametrize(
     "error_code,raises",
     [

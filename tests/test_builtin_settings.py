@@ -32,7 +32,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 # flake8: noqa: F405
 
 
-@pytest.mark.codegen_required
 def test_builtin_settings(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     fluent_version = solver.get_fluent_version()
@@ -372,8 +371,6 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_singleton_setting_assign_session(
     new_meshing_session, new_solver_session
 ):
@@ -407,8 +404,6 @@ def test_builtin_singleton_setting_assign_session(
     assert models.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_non_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
 ):
@@ -432,8 +427,6 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     assert inlet.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
 ):
@@ -470,7 +463,6 @@ def test_builtin_creatable_named_object_setting_assign_session(
         assert report_file.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
 def test_context_manager_1(mixing_elbow_case_data_session):
     import threading
 
@@ -503,7 +495,6 @@ def test_context_manager_1(mixing_elbow_case_data_session):
         t.join()
 
 
-@pytest.mark.codegen_required
 def test_context_manager_2(new_solver_session):
     solver = new_solver_session
 
@@ -517,7 +508,6 @@ def test_context_manager_2(new_solver_session):
         assert Viscous().model() == "k-omega"
 
 
-@pytest.mark.codegen_required
 def test_inactive_objects(new_solver_session):
     solver = new_solver_session
 

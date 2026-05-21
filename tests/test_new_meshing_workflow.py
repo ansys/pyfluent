@@ -31,8 +31,6 @@ from ansys.fluent.core.workflow import camel_to_snake_case
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_watertight_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file(
@@ -103,8 +101,6 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit
 
@@ -362,8 +358,6 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
@@ -470,8 +464,6 @@ def _assert_snake_case_attrs(attrs: Iterable):
         assert str(attr).islower()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_snake_case_attrs_in_new_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -492,8 +484,6 @@ def test_snake_case_attrs_in_new_meshing_workflow(new_meshing_session):
     watertight.import_geometry()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_session):
     # Import geometry
     meshing = new_meshing_session
@@ -537,8 +527,6 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_sessio
     assert len(watertight.tasks()) == 13
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry_filename, new_meshing_session):
     watertight = new_meshing_session.watertight(legacy=True)
     watertight.import_geometry.file_name = mixing_elbow_geometry_filename
@@ -555,8 +543,6 @@ def test_watertight_workflow(mixing_elbow_geometry_filename, new_meshing_session
     assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_watertight_workflow_children(
     mixing_elbow_geometry_filename, new_meshing_session
 ):
@@ -590,8 +576,6 @@ def test_watertight_workflow_children(
     ]
 
 
-@pytest.mark.fluent_version(">=24.1")
-@pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(
     mixing_elbow_geometry_filename, new_meshing_session
 ):
@@ -656,31 +640,6 @@ def test_watertight_workflow_dynamic_interface(
         assert "create_volume_mesh_wtm" not in watertight.task_names()
 
 
-@pytest.mark.fluent_version("==23.2")
-@pytest.mark.codegen_required
-def test_fault_tolerant_workflow(exhaust_system_geometry_filename, new_meshing_session):
-    fault_tolerant = new_meshing_session.fault_tolerant(legacy=True)
-    part_management = fault_tolerant.part_management
-    file_name = exhaust_system_geometry_filename
-    part_management.LoadFmdFile(FilePath=file_name)
-    part_management.MoveCADComponentsToNewObject(
-        Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
-    )
-    part_management.Node["Object"].Rename(NewName=r"Engine")
-    import_cad = fault_tolerant.import_cad_and_part_management
-    import_cad.Arguments.setState(
-        {
-            r"CreateObjectPer": r"Custom",
-            r"FMDFileName": file_name,
-            r"FileLoaded": r"yes",
-            r"ObjectSetting": r"DefaultObjectSetting",
-        }
-    )
-    import_cad()
-
-
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     watertight = new_meshing_session.watertight(legacy=True)
     import_geometry = watertight.import_geometry
@@ -726,7 +685,6 @@ def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     assert len(import_geometry_state) > 2
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.skip
 def test_meshing_workflow_structure(new_meshing_session):
     """
@@ -943,8 +901,6 @@ def test_meshing_workflow_structure(new_meshing_session):
     ]
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_new_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight(legacy=True)
@@ -953,8 +909,6 @@ def test_new_workflow_structure(new_meshing_session):
         watertight.TaskObject["Import Geometry"]
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -978,8 +932,6 @@ def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
     assert not watertight.import_geometry.file_name()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_ordered_children_in_enhanced_meshing_workflow(new_meshing_session):
     watertight = new_meshing_session.watertight(legacy=True)
     assert set([repr(x) for x in watertight.tasks()]) == {
@@ -997,8 +949,6 @@ def test_ordered_children_in_enhanced_meshing_workflow(new_meshing_session):
     }
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     # Import CAD
     import_file_name = examples.download_file(
@@ -1023,8 +973,6 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_switch_between_workflows(new_meshing_session):
     meshing = new_meshing_session
 
@@ -1077,8 +1025,6 @@ def test_switch_between_workflows(new_meshing_session):
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_meshing_workflow_without_dm_caching(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -1128,8 +1074,6 @@ def test_new_meshing_workflow_without_dm_caching(
     assert "add_local_sizing" in watertight.task_names()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_meshing_workflow_switching_without_dm_caching(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -1146,8 +1090,6 @@ def test_new_meshing_workflow_switching_without_dm_caching(
     assert watertight.import_geometry.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_meshing_workflow_validate_arguments(new_meshing_session):
     watertight = new_meshing_session.watertight(legacy=True)
     watertight.create_regions.number_of_flow_volumes = 1
@@ -1208,8 +1150,6 @@ def test_camel_to_snake_case_convertor():
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_duplicate_tasks_in_workflow(new_meshing_session):
     # Import geometry
     meshing = new_meshing_session
@@ -1261,8 +1201,6 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
     assert watertight.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_object_oriented_task_inserting_in_workflows(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight(legacy=True)
@@ -1299,8 +1237,6 @@ def test_object_oriented_task_inserting_in_workflows(new_meshing_session):
     assert watertight.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_loaded_workflow(new_meshing_session):
     meshing = new_meshing_session
     saved_workflow_path = examples.download_file(
@@ -1313,8 +1249,6 @@ def test_loaded_workflow(new_meshing_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_created_workflow(new_meshing_session):
     meshing = new_meshing_session
     created_workflow = meshing.create_workflow(legacy=True)
@@ -1358,8 +1292,6 @@ def new_meshing_session2(new_meshing_session):
     return new_meshing_session
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2):
     meshing_1 = new_meshing_session
     meshing_2 = new_meshing_session2
@@ -1377,8 +1309,6 @@ def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2)
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions_without_dm_caching(
     disable_datamodel_cache, new_meshing_session, new_meshing_session2
 ):
@@ -1392,8 +1322,6 @@ def test_independent_meshing_sessions_without_dm_caching(
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_switching_workflow_interface(new_meshing_session):
     wt1 = new_meshing_session.watertight(legacy=True)
     ft = new_meshing_session.fault_tolerant(legacy=True)
@@ -1407,8 +1335,6 @@ def test_switching_workflow_interface(new_meshing_session):
     del wt1, ft, tw, cw, lw, wt2
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_duplicate_children_of_compound_task(
     new_meshing_session, mixing_elbow_geometry_filename
 ):
@@ -1459,8 +1385,6 @@ def test_duplicate_children_of_compound_task(
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_legacy_current_workflow(new_meshing_session):
     meshing = new_meshing_session
 
@@ -1482,8 +1406,6 @@ def test_legacy_current_workflow(new_meshing_session):
         meshing.legacy_current_workflow.import_geometry
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_mark_as_updated(new_meshing_session):
     meshing = new_meshing_session
 
@@ -1506,8 +1428,6 @@ def test_mark_as_updated(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.1")
-@pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight(legacy=True)
@@ -1587,7 +1507,6 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
         assert import_geom.arguments.length_unit.min()
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
     meshing = new_meshing_session
@@ -1616,7 +1535,6 @@ def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
 
 @pytest.mark.skip(reason=SKIP_UNKNOWN)
 # Failing in GitHub
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_return_state_changes(new_meshing_session):
     meshing = new_meshing_session
@@ -1635,7 +1553,6 @@ def test_return_state_changes(new_meshing_session):
     assert wt.add_multizone_controls
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_recursive_update_dict(new_meshing_session):
     meshing = new_meshing_session

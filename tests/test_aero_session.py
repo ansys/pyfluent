@@ -32,7 +32,6 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_aero_session():
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     aero_session = pyfluent.launch_fluent(
@@ -43,7 +42,6 @@ def test_aero_session():
 
 @pytest.mark.skip(reason=SKIP_BLOCKED)
 # Run this locally only as of now.
-@pytest.mark.fluent_version(">=24.2")
 def test_sample_setup():
     mesh_filepath = examples.download_file(
         "wing.msh.h5",
