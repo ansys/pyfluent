@@ -46,7 +46,6 @@ def test_runtime_tui_menus(static_mixer_case_session) -> None:
     assert rmf.__class__ == TUIMenu
 
 
-@pytest.mark.codegen_required
 def test_python_keyword_menu_name(new_meshing_session):
     meshing = new_meshing_session
     assert "cad_options" in dir(meshing.tui.file.import_)

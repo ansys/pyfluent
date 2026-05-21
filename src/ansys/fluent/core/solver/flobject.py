@@ -265,15 +265,63 @@ def _get_python_path_comps(obj):
     return comps[1:]
 
 
-def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str]):
-    """Get the class for the given alias path."""
-    parent_count = 0
-    while other_path[0] == "..":
-        parent_count += 1
-        other_path.pop(0)
-    for _ in range(parent_count):
-        some_path.pop()
-    full_path = some_path + other_path
+def get_full_path(base_path: list[str], relative_path: list[str]) -> list[str]:
+    """
+    Get full path by applying relative path to base path.
+
+    Parameters
+    ----------
+    base_path: list[str]
+        The base path.
+
+    relative_path: list[str]
+        The relative path, which can contain ".." to indicate going up one level in the hierarchy.
+
+    Returns
+    -------
+    list[str]
+        The full path obtained by applying the relative path to the base path.
+
+    Raises
+    ------
+    ValueError
+        If the relative path tries to go beyond the root of the hierarchy.
+    """
+    base_path = base_path.copy()
+    relative_path = relative_path.copy()
+    while relative_path and relative_path[0] == "..":
+        if not base_path:
+            raise ValueError("Relative path goes beyond root.")
+        base_path.pop()
+        relative_path.pop(0)
+    return base_path + relative_path
+
+
+def _get_class_from_paths(
+    root_cls, base_path: list[str], relative_path: list[str]
+) -> tuple[type, list[str]]:
+    """
+    Get the settings class from a base path and a relative path.
+
+    Parameters
+    ----------
+    root_cls: type
+        The root class to start from.
+
+    base_path: list[str]
+        The base path from the root class to the base of the relative path.
+
+    relative_path: list[str]
+        The relative path from the base to the target class. This can contain ".." to
+        indicate going up one level in the hierarchy.
+
+    Returns
+    -------
+    tuple[type, list[str]]
+        The target class and the full path from the root class to the target class.
+    """
+
+    full_path = get_full_path(base_path, relative_path)
     cls = root_cls
     for comp in full_path:
         cls = cls._child_classes[comp]
@@ -428,7 +476,20 @@ class Base:
         return ppath + "." + self.python_name
 
     def get_attrs(self, attrs, recursive=False) -> Any:
-        """Get the requested attributes for the object."""
+        """Get the requested attributes for the object.
+
+        Parameters
+        ----------
+        attrs : list
+            List of attribute names to retrieve.
+        recursive : bool, optional
+            Whether to retrieve attributes recursively, by default False.
+
+        Returns
+        -------
+        Any
+            Requested attributes.
+        """
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
@@ -1121,7 +1182,7 @@ class Group(SettingsBase[DictStateType]):
 
         Raises
         ------
-        RuntimeError
+        ValueError
             If key is invalid.
         """
         if isinstance(value, collections.abc.Mapping):
@@ -1139,7 +1200,7 @@ class Group(SettingsBase[DictStateType]):
                         v, root_cls, alias_path
                     )
                 else:
-                    raise RuntimeError("Key '" + str(k) + "' is invalid")
+                    raise ValueError("Key '" + str(k) + "' is invalid")
             return ret
         else:
             return value
@@ -1870,7 +1931,49 @@ class Action(Base):
                 )
             return alias_obj
         else:
-            return getattr(super(), name)
+            try:
+                return getattr(super(), name)
+            except AttributeError:
+                raise AttributeError(
+                    f"'{self.python_path}' is a command/query object and has no attribute '{name}'"
+                ) from None
+
+    def __setattr__(self, name: str, value):
+        attr = getattr(self, name)
+        try:
+            return attr.set_state(value)
+        except Exception as ex:
+            if hasattr(attr, "allowed_values"):
+                allowed = attr.allowed_values()
+                if allowed and value not in allowed:
+                    raise allowed_values_error(name, value, allowed) from ex
+            raise
+
+    def get_attrs(self, attrs, recursive=False) -> Any:
+        """Get the requested attributes for the object.
+
+        Parameters
+        ----------
+        attrs : list
+            List of attribute names to retrieve.
+        recursive : bool, optional
+            Whether to retrieve attributes recursively. Recursive queries are
+            not supported for command/query objects; if ``True`` is passed it
+            is ignored and a warning is issued, by default False.
+
+        Returns
+        -------
+        Any
+            Requested attributes.
+        """
+        if recursive:
+            warnings.warn(
+                f"Recursive attribute queries are not supported for command/query "
+                f"objects. Ignoring recursive=True for '{self.python_path}'.",
+                PyFluentUserWarning,
+            )
+            recursive = False
+        return self.flproxy.get_attrs(self.path, attrs, recursive)
 
 
 class BaseCommand(Action):

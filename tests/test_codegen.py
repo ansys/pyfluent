@@ -37,7 +37,6 @@ from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
-@pytest.mark.codegen_required
 def test_allapigen_files(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
     importlib.import_module(f"ansys.fluent.core.generated.fluent_version_{version}")
@@ -58,7 +57,6 @@ def test_allapigen_files(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=26.1")
-@pytest.mark.codegen_required
 def test_settings_allowed_values(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
     module = importlib.import_module(
