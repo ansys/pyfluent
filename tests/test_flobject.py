@@ -821,28 +821,6 @@ def test_accessor_methods_on_settings_object_types(static_mixer_settings_session
     assert max_refinements.get_attr("max") == 1000000
 
 
-@pytest.mark.fluent_version("==24.1")
-@pytest.mark.codegen_required
-def test_find_children_from_settings_root(static_mixer_settings_session):
-    setup_cls = static_mixer_settings_session.setup.__class__
-    assert len(find_children(setup_cls())) >= 10000
-    assert len(find_children(setup_cls(), "gen*")) >= 9
-    assert set(find_children(setup_cls(), "general*")) >= {
-        "general",
-        "models/discrete_phase/general_settings",
-        "models/virtual_blade_model/rotor/general",
-    }
-    assert set(find_children(setup_cls(), "general")) >= {
-        "general",
-        "models/virtual_blade_model/rotor/general",
-    }
-    assert any(
-        path
-        for path in find_children(setup_cls(), "*gen")
-        if path.endswith("p_backflow_spec_gen")
-    )
-
-
 @pytest.mark.fluent_version("latest")
 def test_find_children_from_fluent_solver_session(static_mixer_settings_session):
     setup_children = find_children(static_mixer_settings_session.setup)
@@ -869,7 +847,6 @@ def test_find_children_from_fluent_solver_session(static_mixer_settings_session)
     }
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_settings_wild_card_access(new_solver_session) -> None:
     solver = new_solver_session
 
@@ -938,8 +915,6 @@ def test_settings_matching_names(new_solver_session) -> None:
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_settings_api_names_exception(new_solver_session):
     solver = new_solver_session
 
@@ -950,7 +925,6 @@ def test_settings_api_names_exception(new_solver_session):
         solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(new_solver_session):
     solver = new_solver_session
     root = solver.settings
@@ -1029,7 +1003,6 @@ def get_child_nodes(node, nodes, type_list):
                     return
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_parent_class_attributes(static_mixer_settings_session):
     solver = static_mixer_settings_session
     assert solver.setup.models.energy.enabled
@@ -1115,7 +1088,6 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
@@ -1150,7 +1122,6 @@ def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
     }
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
     speed = ansys.units.Quantity(100, "m s^-1")
     solver = mixing_elbow_settings_session
@@ -1225,14 +1196,12 @@ def test_static_info_hash_identity(new_solver_session):
     assert hash1 == hash2
 
 
-@pytest.mark.codegen_required
 def test_no_hash_mismatch(new_solver_session, caplog):
     caplog.clear()
     new_solver_session.setup
     assert all(["Mismatch" not in record.message for record in caplog.records])
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
@@ -1263,9 +1232,11 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
 
     assert set(solver.results.graphics.contour.rename.argument_names) == {"new", "old"}
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
+    # The following is the default behavior when no arguments are associated with the command.
     if solver.get_fluent_version() < FluentVersion.v261:
-        # The following is the default behavior when no arguments are associated with the command.
         assert solver.results.graphics.contour.list_1.argument_names == []
+    else:
+        assert solver.results.graphics.contour.list.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -1403,3 +1374,15 @@ def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
         list(solver.settings.setup.boundary_conditions.pressure_outlet.items())[0]
         in chained_named_objects.items()
     )
+
+
+def test_list_and_list_properties(new_solver_session):
+    solver = new_solver_session
+    if solver.get_fluent_version() < FluentVersion.v261:
+        assert {"list_1", "list_properties_1"}.issubset(
+            solver.settings.setup.materials.mixture.command_names
+        )
+    else:
+        assert {"list", "list_properties"}.issubset(
+            solver.settings.setup.materials.mixture.command_names
+        )

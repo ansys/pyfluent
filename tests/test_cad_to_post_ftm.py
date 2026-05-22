@@ -45,7 +45,6 @@ from util.solver import check_report_definition_result
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 def test_exhaust_system(
     fault_tolerant_workflow_session_wo_exit, exhaust_system_geometry_filename
 ):

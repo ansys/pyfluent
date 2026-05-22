@@ -52,6 +52,7 @@ import re
 from typing import ValuesView
 
 from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -635,7 +636,16 @@ class Workflow:
             return make_task_wrapper(
                 self._task_dict[item], item, self._workflow, self, self._command_source
             )
-        return getattr(self._workflow, item)
+        try:
+            return getattr(self._workflow, item)
+        except AttributeError as ex:
+            raise AttributeError(
+                allowed_name_error_message(
+                    allowed_values=list(self._task_dict.keys()),
+                    context=type(self).__name__,
+                    trial_name=item,
+                )
+            ) from ex
 
     def __call__(self):
         """Get workflow state when called as a function."""
