@@ -32,6 +32,9 @@ from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
 from ansys.fluent.core.services.datamodel_se import (
     PyArguments,
     PyArgumentsSingletonSubItem,
@@ -74,6 +77,58 @@ def test_convert_value_to_variant_to_value(value, expected):
     variant = Variant()
     _convert_value_to_variant(value, variant)
     assert expected == _convert_variant_to_value(variant)
+
+
+def test_pyarguments_registers_and_releases_command_arguments():
+    class DummyService:
+        def __init__(self):
+            self.registered = []
+            self.released = []
+
+        def register_command_arguments(self, rules, path, command, commandid):
+            self.registered.append((rules, path, command, commandid))
+
+        def release_command_arguments(self, rules, path, command, commandid):
+            self.released.append((rules, path, command, commandid))
+
+    service = DummyService()
+    arguments = PyArguments(service, "workflow", "ImportGeometry", [], "cmd-id")
+
+    assert service.registered == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+    del arguments
+    gc.collect()
+
+    assert service.released == [
+        ("workflow", "", "ImportGeometry", "cmd-id"),
+    ]
+
+
+def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
+    class DummyService(CommandArgumentsCleanupMixin):
+        def __init__(self):
+            super().__init__()
+            self.deleted = []
+
+        def _delete_command_arguments_rpc(self, rules, path, command, commandid):
+            self.deleted.append((rules, path, command, commandid))
+
+    service = DummyService()
+    key = ("workflow", "", "ImportGeometry", "cmd-id")
+
+    service.register_command_arguments(*key)
+    service.delete_command_arguments(*key)
+
+    assert service.deleted == [key]
+    assert service._command_arguments == set()
+
+    service.register_command_arguments(*key)
+    service.delete_all_command_arguments()
+    service.release_command_arguments(*key)
+
+    assert service.deleted == [key, key]
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -135,8 +190,6 @@ def test_event_subscription(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_child_created(new_meshing_session):
     meshing = new_meshing_session
     child_paths = []
@@ -154,8 +207,6 @@ def test_add_on_child_created(new_meshing_session):
     assert child_paths == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_deleted(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -169,8 +220,6 @@ def test_add_on_deleted(new_meshing_session):
     assert len(data) > 0
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_changed(new_meshing_session):
     meshing = new_meshing_session
     task_list = meshing.workflow.Workflow.TaskList
@@ -190,8 +239,6 @@ def test_add_on_changed(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_affected(new_meshing_session):
     meshing = new_meshing_session
     data = []
@@ -244,8 +291,6 @@ def test_add_on_affected(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_affected_at_type_path(new_meshing_session):
     meshing = new_meshing_session
     data = []
@@ -264,8 +309,6 @@ def test_add_on_affected_at_type_path(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_add_on_command_executed(new_meshing_session):
     meshing = new_meshing_session
     data = []
@@ -296,8 +339,6 @@ def test_add_on_command_executed(new_meshing_session):
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
 # https://github.com/ansys/pyfluent/issues/2999
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -329,8 +370,6 @@ def test_datamodel_streaming_full_diff_state(
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
     disable_datamodel_cache, new_meshing_session
 ):
@@ -362,8 +401,6 @@ def test_datamodel_streaming_no_commands_diff_state(
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=24.2")
-@pytest.mark.codegen_required
 def test_get_object_names_wtm(new_meshing_session):
     meshing = new_meshing_session
 
@@ -388,8 +425,6 @@ def test_get_object_names_wtm(new_meshing_session):
     assert meshing.workflow.TaskObject.get_object_names() == child_object_names
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
     meshing = new_meshing_session
 
@@ -420,7 +455,6 @@ def _is_internal_name(name: str, prefix: str) -> bool:
     return name.startswith(prefix) and name.removeprefix(prefix).isdigit()
 
 
-@pytest.mark.codegen_required
 def test_task_object_keys_are_display_names(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -429,7 +463,6 @@ def test_task_object_keys_are_display_names(new_meshing_session):
     assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_named_object_specific_methods(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -463,15 +496,12 @@ def test_named_object_specific_methods(new_meshing_session):
     assert TaskObject.get_state() == TaskObject.getState() == TaskObject()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_command_creation_inside_singleton(new_meshing_session):
     meshing = new_meshing_session
     read_mesh = meshing.meshing.File.ReadMesh.create_instance()
     assert read_mesh.FileName is not None
 
 
-@pytest.mark.codegen_required
 def test_read_only_set_state(new_meshing_session):
     meshing = new_meshing_session
     meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
@@ -508,7 +538,6 @@ test_rules = (
 )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_child_created_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -528,7 +557,6 @@ def test_on_child_created_lifetime(new_solver_session):
     assert "/test/created/A:A1/B-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_deleted_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -551,7 +579,6 @@ def test_on_deleted_lifetime(new_solver_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_changed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -571,7 +598,6 @@ def test_on_changed_lifetime(new_solver_session):
     assert "/test/modified/A:A1/X-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -591,7 +617,6 @@ def test_on_affected_lifetime(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_at_type_path_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -611,7 +636,6 @@ def test_on_affected_at_type_path_lifetime(new_solver_session):
     assert "/test/affected/A:A1/B-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_command_executed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -638,7 +662,6 @@ def test_on_command_executed_lifetime(new_solver_session):
         assert tag not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_attribute_changed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -660,7 +683,6 @@ def test_on_attribute_changed_lifetime(new_solver_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_command_attribute_changed_lifetime(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -696,7 +718,6 @@ def test_on_command_attribute_changed_lifetime(new_solver_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -717,7 +738,6 @@ def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -738,7 +758,6 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_set_command_args_and_sub_args(new_meshing_session):
     meshing = new_meshing_session
     ig = meshing.meshing.ImportGeometry.create_instance()
@@ -818,7 +837,6 @@ def test_field_level_help(new_meshing_session):
         )
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_py_query(new_meshing_session):
     meshing_session = new_meshing_session

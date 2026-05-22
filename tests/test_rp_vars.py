@@ -95,7 +95,6 @@ def test_get_all_rp_vars(new_solver_session) -> None:
     assert len(case_vars) == pytest.approx(9000, 450)
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
     rp_vars = solver.rp_vars
@@ -108,7 +107,6 @@ def test_rp_vars_allowed_values(new_solver_session) -> None:
     assert "number-of-iterations" in rp_vars.allowed_values()
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_boolean(new_solver_session) -> None:
     solver = new_solver_session
 

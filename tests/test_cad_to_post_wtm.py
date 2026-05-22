@@ -47,7 +47,6 @@ from util.solver import check_report_definition_result
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 def test_mixing_elbow(
     watertight_workflow_session_wo_exit, mixing_elbow_geometry_filename
 ):
