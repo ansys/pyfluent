@@ -106,11 +106,9 @@ class FluentRestError(RuntimeError):
 class FluentRestClient:
     """Pure-Python HTTP client for the Fluent DataModel REST API.
 
-    The public method signatures are intentionally identical to the duck-typed
-    *flproxy* interface consumed by
-    :func:`~ansys.fluent.core.solver.flobject.get_root`, so this client can be
-    passed directly as *flproxy* to build the full settings tree over HTTP
-    instead of gRPC.
+    Standalone REST client for reading and writing Fluent solver settings
+    via the embedded web server.  Each public method maps to exactly one
+    HTTP endpoint as documented in ``SettingsServiceClientGuide.md``.
 
     Parameters
     ----------
@@ -158,6 +156,33 @@ class FluentRestClient:
         retry_delay: float = 1.0,
         ssl_context: ssl.SSLContext | None = None,
     ) -> None:
+        self._validate_base_url(base_url, auth_token, ssl_context)
+        self._base_url = base_url.rstrip("/")
+        self._auth_token = auth_token
+        self._component = component
+        self._timeout = timeout
+        self._max_retries = max_retries
+        self._retry_delay = retry_delay
+        self._ssl_context = ssl_context
+        self._api_base = f"api/{component}"
+
+    # ------------------------------------------------------------------
+    # Validation (SRP: input validation is a single, isolated concern)
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _validate_base_url(
+        base_url: str,
+        auth_token: str | None,
+        ssl_context: ssl.SSLContext | None,
+    ) -> None:
+        """Validate *base_url* and warn on insecure auth transport.
+
+        Raises
+        ------
+        ValueError
+            If *base_url* has an unsupported scheme or no host.
+        """
         parsed = urllib.parse.urlparse(base_url)
         if parsed.scheme not in {"http", "https"}:
             raise ValueError("base_url scheme must be http or https")
@@ -167,36 +192,70 @@ class FluentRestClient:
             warnings.warn(
                 "auth_token is being sent over plain HTTP. "
                 "Use https:// to protect credentials in transit.",
-                stacklevel=2,
+                stacklevel=3,
             )
-        self._base_url = base_url.rstrip("/")
-        self._auth_token = auth_token
-        self._component = component
-        self._timeout = timeout
-        self._max_retries = max_retries
-        self._retry_delay = retry_delay
-        self._ssl_context = ssl_context
-        # All DataModel endpoints live under this prefix, e.g. "api/fluent_1"
-        self._api_base = f"api/{component}"
 
     # ------------------------------------------------------------------
-    # Internal helpers
+    # HTTP transport internals
     # ------------------------------------------------------------------
 
     def _url(self, endpoint: str) -> str:
-        """Build a full URL by joining *base_url* with *endpoint*.
-
-        Parameters
-        ----------
-        endpoint : str
-            Relative path, e.g. ``"api/fluent_1/static-info"``.
-
-        Returns
-        -------
-        str
-            Absolute URL.
-        """
+        """Build a full URL from *base_url* + *endpoint*."""
         return f"{self._base_url}/{endpoint}"
+
+    def _build_auth_header(self) -> str | None:
+        """Return the ``Authorization`` header value, or ``None``."""
+        if not self._auth_token:
+            return None
+        return f"Bearer {hashlib.sha256(self._auth_token.encode()).hexdigest()}"
+
+    def _build_request(
+        self,
+        method: str,
+        url: str,
+        body: Any = None,
+    ) -> urllib.request.Request:
+        """Assemble an :class:`urllib.request.Request`.
+
+        Serialises *body* to JSON if provided and attaches auth headers.
+        """
+        data: bytes | None = None
+        headers: dict[str, str] = {}
+        if body is not None:
+            data = json.dumps(body).encode("utf-8")
+            headers["Content-Type"] = "application/json"
+        auth = self._build_auth_header()
+        if auth:
+            headers["Authorization"] = auth
+        return urllib.request.Request(
+            url, data=data, headers=headers, method=method.upper()
+        )
+
+    @staticmethod
+    def _parse_error_detail(exc: urllib.error.HTTPError) -> str:
+        """Extract a human-readable detail string from an HTTP error."""
+        try:
+            return json.loads(exc.read()).get("detail", exc.reason)
+        except Exception:
+            return exc.reason
+
+    def _send_once(self, req: urllib.request.Request) -> Any:
+        """Execute a single HTTP round-trip and return decoded JSON.
+
+        Returns ``{}`` for empty 2xx bodies.
+
+        Raises
+        ------
+        urllib.error.HTTPError
+            On any non-2xx response.
+        urllib.error.URLError
+            On connection-level failures.
+        """
+        with urllib.request.urlopen(
+            req, timeout=self._timeout, context=self._ssl_context
+        ) as resp:  # nosec B310
+            raw = resp.read()
+            return json.loads(raw) if raw.strip() else {}
 
     def _request(
         self,
@@ -205,57 +264,36 @@ class FluentRestClient:
         *,
         body: Any = None,
     ) -> Any:
-        """Send an HTTP request and return the decoded JSON response body.
+        """Send an HTTP request with automatic retry and return the JSON body.
 
         Parameters
         ----------
         method : str
             HTTP verb (``"GET"``, ``"PUT"``, ``"POST"``, ``"DELETE"``).
         endpoint : str
-            Path relative to *base_url*, e.g. ``"api/fluent_1/static-info"``.
+            Path relative to *base_url*.
         body : any JSON-serialisable object, optional
-            Request body; encoded as UTF-8 JSON.
+            Request body.
 
         Returns
         -------
-        dict
+        Any
             Decoded JSON response, or ``{}`` for empty 2xx bodies.
 
         Raises
         ------
         FluentRestError
-            For any HTTP 4xx or 5xx response.
+            For any HTTP 4xx / 5xx response after retries are exhausted.
         """
         url = self._url(endpoint)
-        data: bytes | None = None
-        headers: dict[str, str] = {}
-
-        if body is not None:
-            data = json.dumps(body).encode("utf-8")
-            headers["Content-Type"] = "application/json"
-
-        if self._auth_token:
-            headers["Authorization"] = (
-                f"Bearer {hashlib.sha256(self._auth_token.encode()).hexdigest()}"
-            )
-
-        req = urllib.request.Request(
-            url, data=data, headers=headers, method=method.upper()
-        )
+        req = self._build_request(method, url, body)
 
         last_exc: Exception | None = None
         for attempt in range(self._max_retries + 1):
             try:
-                with urllib.request.urlopen(
-                    req, timeout=self._timeout, context=self._ssl_context
-                ) as resp:  # nosec B310
-                    raw = resp.read()
-                    return json.loads(raw) if raw.strip() else {}
+                return self._send_once(req)
             except urllib.error.HTTPError as exc:
-                try:
-                    detail = json.loads(exc.read()).get("detail", exc.reason)
-                except Exception:
-                    detail = exc.reason
+                detail = self._parse_error_detail(exc)
                 if exc.code in _RETRYABLE_STATUS_CODES and attempt < self._max_retries:
                     wait = self._retry_delay * (2**attempt)
                     logger.warning(
@@ -288,11 +326,10 @@ class FluentRestClient:
                     continue
                 raise FluentRestError(0, str(exc.reason)) from exc
 
-        # Should not be reached, but guard against it.
         raise last_exc  # type: ignore[misc]
 
     # ------------------------------------------------------------------
-    # flobject proxy interface
+    # Settings API — read / write
     # ------------------------------------------------------------------
 
     def get_static_info(self) -> dict[str, Any]:
@@ -654,9 +691,6 @@ class FluentRestClient:
         """Execute *command* at *path* with keyword arguments.
 
         Calls ``POST /api/{component}/{path}/{command}`` with body ``kwds``.
-        Identical to :meth:`execute_query` at the transport level; both are
-        required by the ``flobject`` proxy interface (``BaseCommand`` calls
-        ``execute_cmd``, ``BaseQuery`` calls ``execute_query``).
 
         Parameters
         ----------
@@ -684,9 +718,6 @@ class FluentRestClient:
         """Execute *query* at *path* with keyword arguments.
 
         Calls ``POST /api/{component}/{path}/{query}`` with body ``kwds``.
-        Identical to :meth:`execute_cmd` at the transport level; both are
-        required by the ``flobject`` proxy interface (``BaseCommand`` calls
-        ``execute_cmd``, ``BaseQuery`` calls ``execute_query``).
 
         Parameters
         ----------
@@ -711,7 +742,7 @@ class FluentRestClient:
         return self._execute(path, query, **kwds)
 
     # ------------------------------------------------------------------
-    # Additional proxy interface helpers (no server round-trip required)
+    # Local helpers (no server round-trip)
     # ------------------------------------------------------------------
 
     def has_wildcard(self, name: str) -> bool:
@@ -736,9 +767,8 @@ class FluentRestClient:
         """Return ``False`` always.
 
         The REST transport does not support interactive command prompts.
-        Returning ``False`` prevents ``flobject.BaseCommand`` from calling
-        :meth:`get_command_confirmation_prompt`, which is not meaningful
-        over HTTP.
+        Returning ``False`` signals that no interactive confirmation
+        flow is available over HTTP.
 
         Returns
         -------
@@ -750,9 +780,8 @@ class FluentRestClient:
     def get_command_confirmation_prompt(self, path: str, **kwargs) -> str:
         """Return an empty string — interactive prompts are not supported over REST.
 
-        This method satisfies the *flproxy* interface contract required by
-        ``flobject.BaseCommand``.  Since :meth:`is_interactive_mode` always
-        returns ``False``, this method will never be called in practice.
+        Since :meth:`is_interactive_mode` always returns ``False``, callers
+        that check that flag first will never reach this method.
 
         Returns
         -------

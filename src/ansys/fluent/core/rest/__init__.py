@@ -21,26 +21,37 @@
 
 """REST-based PyFluent settings client and session.
 
-HTTP transport layer for PyFluent, connecting to Fluent's embedded web
-server via REST instead of gRPC.  It contains:
+Standalone HTTP transport layer for PyFluent, connecting to Fluent's
+embedded web server via REST.  Pure HTTP/JSON — no gRPC, no protobuf,
+no code-generated modules, no local settings tree.
 
 * :class:`~ansys.fluent.core.rest.client.FluentRestClient` – pure-Python
-  HTTP client implementing the 14-method proxy interface expected by
-  :mod:`~ansys.fluent.core.solver.flobject`.  Uses stdlib ``urllib`` only.
+  HTTP client using stdlib ``urllib`` only.  Each method makes one HTTP
+  call and returns the server's JSON directly.
 
 * :class:`~ansys.fluent.core.rest.rest_launcher.RestSolverSession` – a
-  lightweight solver session that wires ``FluentRestClient`` into
-  ``flobject.get_root`` so the full settings tree works over HTTP.
+  lightweight solver session holding a ``FluentRestClient`` and exposing
+  thin pass-through convenience methods (``get_var``, ``set_var``,
+  ``execute_command``, etc.).
 
 * :func:`~ansys.fluent.core.rest.rest_launcher.launch_webserver` – **primary
   entry point**. Spawns a local Fluent process with ``-ws -ws-port={port}``,
   generates and configures the web server authentication token internally
-  for the subprocess, and returns a connected session. Callers do not need
-  to set ``FLUENT_WEBSERVER_TOKEN`` when using this launcher.
+  for the subprocess, and returns a connected session.
 
 * :func:`~ansys.fluent.core.rest.rest_launcher.connect_to_webserver` –
   connects to an already-running web server using explicit ``ip``, ``port``,
   and ``auth_token``.
+
+Example::
+
+    from ansys.fluent.core.rest import launch_webserver
+
+    session = launch_webserver()
+    print(session.get_var("setup/models/energy/enabled"))
+    session.set_var("setup/models/energy/enabled", False)
+    session.execute_command("file/read-case", file_name="elbow.cas.h5")
+    session.exit()
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient
