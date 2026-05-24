@@ -21,40 +21,24 @@
 
 """Launch, connect, and session management for the Fluent REST transport.
 
-Standalone, direct-to-server REST client — no ``flobject`` settings tree,
-no gRPC, no protobuf, no code-generated modules.  The Fluent web server
-is the single source of truth; every method makes one HTTP call and
-returns the server's JSON response directly.
+Public API
+----------
+* :class:`RestSolverSession` — thin wrapper around :class:`FluentRestClient`.
+* :func:`launch_webserver` — spawn Fluent with ``-ws``, return a session.
+* :func:`connect_to_webserver` — connect to a running web server.
 
-* :class:`RestSolverSession` – lightweight solver session holding a
-  :class:`~ansys.fluent.core.rest.client.FluentRestClient` and exposing
-  thin pass-through convenience methods.
+Examples
+--------
+Launch a local Fluent web server and connect with a REST session::
 
-* :func:`launch_webserver` – **primary entry point**.  Discovers a free
-  local port, generates a secure random auth token, spawns the Fluent
-  process with ``-ws -ws-port={port}``, waits until the embedded web
-  server is reachable, and returns a connected :class:`RestSolverSession`.
-
-* :func:`connect_to_webserver` – connects to an **already-running** web
-  server.  Requires ``ip``, ``port``, and ``auth_token``.
-
-Usage — launch (starts Fluent web server locally)
--------------------------------------------------
-::
-
-    from ansys.fluent.core.rest import launch_webserver
-
+    from ansys.fluent.core.rest import launch_webserver, connect_to_webserver
     session = launch_webserver()
-    print(session.get_var("setup/models/energy/enabled"))
-    session.exit()     # terminates the Fluent process
+    session.get_var("setup/models/energy/enabled")
+    session.exit()
 
-Usage — connect (web server already running)
---------------------------------------------
-::
+Connect to an already-running web server with known IP, port, and auth token::
 
-    from ansys.fluent.core.rest import connect_to_webserver
-
-    session = connect_to_webserver("127.0.0.1", 5000, auth_token="my-token")
+    session = connect_to_webserver("127.0.0.1", <port>, auth_token=<auth_token>)
     session.set_var("setup/models/energy/enabled", False)
 """
 
@@ -112,18 +96,7 @@ Yoebw+OpAHYdDclt8WJhNnnf1Ukwd/IYVwIBAg==
 
 
 class _TlsCertificateManager:
-    """Manages ephemeral TLS certificates for a single Fluent session.
-
-    Encapsulates the full cert lifecycle: generation → usage → cleanup.
-    Each instance generates *one* CA + server certificate pair into a
-    temporary directory and builds an :class:`ssl.SSLContext` for the
-    client.  Call :meth:`cleanup` (or use the instance as a context
-    manager) to delete the temporary files.
-
-    This class exists so that cert generation, the SSL context, and the
-    temp-directory cleanup are all co-located in a single object rather
-    than spread across free functions and external state (SRP).
-    """
+    """Ephemeral TLS certificate lifecycle: generate → use → cleanup."""
 
     def __init__(self) -> None:
         self.cert_dir: str | None = None
@@ -133,19 +106,7 @@ class _TlsCertificateManager:
     # -- generation ------------------------------------------------------
 
     def generate(self) -> None:
-        """Create a temp directory with auto-generated TLS certificate files.
-
-        Generates a fresh CA and server certificate pair using the
-        ``cryptography`` library.  The following files are written:
-
-        * ``CA.crt``        — self-signed CA certificate (1-day validity)
-        * ``webserver.crt`` — server certificate signed by the CA
-        * ``webserver.key`` — unencrypted server private key
-        * ``dh.pem``        — pre-generated Diffie-Hellman parameters
-
-        After calling this method, :pyattr:`cert_dir`, :pyattr:`ca_cert_path`,
-        and :pyattr:`ssl_context` are all populated.
-        """
+        """Generate CA + server cert pair in a temporary directory."""
         cert_dir = tempfile.mkdtemp(prefix="pyfluent_tls_")
         logger.debug("TLS cert directory: %s", cert_dir)
 
@@ -238,21 +199,7 @@ class _TlsCertificateManager:
 
     @staticmethod
     def build_ssl_context(ca_cert: str) -> ssl.SSLContext:
-        """Build an :class:`ssl.SSLContext` that trusts a specific CA certificate.
-
-        This is a **static method** so that :func:`connect_to_webserver`
-        can build an SSL context from a user-supplied CA path without
-        instantiating a full manager.
-
-        Parameters
-        ----------
-        ca_cert : str
-            Absolute path to a PEM-encoded CA certificate file.
-
-        Returns
-        -------
-        ssl.SSLContext
-        """
+        """Return an :class:`ssl.SSLContext` trusting *ca_cert*."""
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ctx.load_verify_locations(ca_cert)
         return ctx
@@ -281,45 +228,24 @@ class _TlsCertificateManager:
 
 
 def _get_free_port() -> int:
-    """Return an available local TCP port using the OS ephemeral-port mechanism.
-
-    Uses only the Python ``socket`` stdlib — no ANSYS-internal dependencies.
-
-    Returns
-    -------
-    int
-        A free TCP port number.
-
-    Raises
-    ------
-    RuntimeError
-        If the OS cannot bind to any port (extremely unlikely).
-    """
+    """Return an available local TCP port."""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind((_LOCALHOST, 0))
             return sock.getsockname()[1]
     except OSError as exc:
-        raise RuntimeError(
-            "Could not find a free local TCP port. " f"OS error: {exc}"
-        ) from exc
+        raise RuntimeError(f"No free TCP port: {exc}") from exc
 
 
-def _generate_auth_token() -> str:
-    """Generate a fresh 4-digit random numeric auth token (1000–9999).
-
-    A new token is generated for **every call** so each launched Fluent
-    process gets its own independent credential.  The raw 4-digit number is
-    never sent over the wire — it is transmitted as
-    ``Authorization: Bearer <SHA-256(token)>``.
+def _generate_auth_token(nbytes: int = 32) -> str:
+    """Generate a cryptographically secure URL-safe auth token.
 
     Returns
     -------
     str
-        A 4-digit decimal string in the range ``"1000"``–``"9999"``.
+        A URL-safe base-64 token (43 chars for the default 32 bytes).
     """
-    # randbelow(9000) → 0–8999; +1000 → 1000–9999 (guaranteed 4 digits).
-    token = str(secrets.randbelow(9000) + 1000)
+    token = secrets.token_urlsafe(nbytes)
     logger.debug("Generated per-launch auth token.")
     return token
 
@@ -331,31 +257,7 @@ def _probe_server(
     timeout: float = 5.0,
     ssl_context: ssl.SSLContext | None = None,
 ) -> bool:
-    """Return ``True`` if the Fluent web server responds to an authenticated probe.
-
-    Sends ``HEAD /api/{component}/static-info`` with the auth token.
-    This matches the first authenticated settings call used by
-    :class:`~ansys.fluent.core.rest.rest_launcher.RestSolverSession`.
-
-    Parameters
-    ----------
-    base_url : str
-        Root URL, e.g. ``"http://127.0.0.1:54321"``.
-    auth_token : str
-        Bearer token.
-    component : str, optional
-        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
-        Use ``"fluent_meshing_1"`` for a meshing session.
-    timeout : float, optional
-        Socket timeout in seconds.  Defaults to ``5.0``.
-    ssl_context : ssl.SSLContext, optional
-        TLS context for HTTPS connections.
-
-    Returns
-    -------
-    bool
-        ``True`` if the server returns any 2xx response.
-    """
+    """Return ``True`` if the server responds to an auth probe."""
     url = f"{base_url}/api/{component}/static-info"
     req = urllib.request.Request(url, method="HEAD")
     req.add_header(
@@ -377,35 +279,8 @@ def _wait_for_server(
 ) -> None:
     """Block until the Fluent web server is fully ready.
 
-    Two-phase check:
-
-    * **Phase 1** — TCP connect: waits until the port is open (server process
-      is listening).  Polls every 2 s.
-    * **Phase 2** — Solver-ready probe: ``GET /api/connection/run_mode``.
-      Returns as soon as the solver responds (any HTTP reply, including 401).
-      A ``400 Fluent not running`` means the web-server is up but the solver
-      is still initialising — keep waiting.  Polls every 3 s.
-
-    Both phases share the same *timeout* deadline so the total wait never
-    exceeds *timeout* seconds.
-
-    The URL scheme is auto-detected: ``"https"`` when *ssl_context* is
-    provided, ``"http"`` otherwise.
-
-    Parameters
-    ----------
-    port : int
-        TCP port to probe.
-    timeout : int
-        Maximum total seconds to wait.  Defaults to ``120``.
-    ssl_context : ssl.SSLContext, optional
-        TLS context for HTTPS connections.  When provided the probe
-        URL uses ``https://``; otherwise ``http://``.
-
-    Raises
-    ------
-    TimeoutError
-        If the server is not ready within *timeout* seconds.
+    Phase 1: TCP connect (port open).  Phase 2: HTTP probe (solver ready).
+    Raises :class:`TimeoutError` if not ready within *timeout* seconds.
     """
     scheme = "https" if ssl_context else "http"
     deadline = time.monotonic() + timeout
@@ -420,9 +295,7 @@ def _wait_for_server(
         except OSError:
             time.sleep(2)
     else:
-        raise TimeoutError(
-            f"Fluent web server on port {port} did not open within {timeout}s."
-        )
+        raise TimeoutError(f"Port {port} not open within {timeout}s.")
 
     # ── Phase 2: wait for solver to be ready (no 400) ───────────────────
     logger.info("[wait] Phase 2 — waiting for solver to be ready on port %d...", port)
@@ -454,41 +327,14 @@ def _wait_for_server(
             # Low-level socket error (e.g. connection reset)
             time.sleep(3)
 
-    raise TimeoutError(f"Fluent solver on port {port} not ready within {timeout}s.")
+    raise TimeoutError(f"Solver on port {port} not ready within {timeout}s.")
 
 
 def _get_fluent_exe(
     product_version: str | None = None,
     fluent_path: str | None = None,
 ) -> str:
-    """Resolve the Fluent executable path.
-
-    Delegates to the existing PyFluent utility
-    :func:`~ansys.fluent.core.launcher.process_launch_string.get_fluent_exe_path`
-    which searches in order:
-
-    1. *fluent_path* (user-supplied custom path)
-    2. *product_version* → ``AWP_ROOTnnn`` env var
-    3. ``PYFLUENT_FLUENT_ROOT`` env var
-    4. Latest installed Fluent via ``AWP_ROOT*`` env vars
-
-    Parameters
-    ----------
-    product_version : str, optional
-        Fluent version string, e.g. ``"261"`` or ``"26.1.0"``.
-    fluent_path : str, optional
-        Explicit path to the Fluent executable.
-
-    Returns
-    -------
-    str
-        Absolute path to the Fluent executable.
-
-    Raises
-    ------
-    FileNotFoundError
-        If no Fluent installation can be found.
-    """
+    """Resolve the Fluent executable path via :func:`get_fluent_exe_path`."""
     return str(
         get_fluent_exe_path(
             product_version=product_version,
@@ -503,48 +349,9 @@ def _get_fluent_exe(
 
 
 class RestSolverSession:
-    """Solver session that communicates over REST.
+    """Solver session communicating over REST.
 
-    Holds a :class:`FluentRestClient` and exposes thin pass-through
-    convenience methods.  Every method makes **one** HTTP call and returns
-    the server's JSON directly — no local settings tree is built.
-
-    Parameters
-    ----------
-    base_url : str
-        Root URL of the Fluent REST server, e.g. ``"http://127.0.0.1:54321"``.
-    auth_token : str, optional
-        Bearer token for authentication.
-    component : str, optional
-        DataModel component name.  Defaults to ``"fluent_1"``.
-    timeout : float, optional
-        HTTP socket timeout in seconds.  Defaults to ``30.0``.
-    max_retries : int, optional
-        Maximum automatic retries on transient errors.  Defaults to ``0``.
-    retry_delay : float, optional
-        Base delay in seconds between retries.  Defaults to ``1.0``.
-
-    Attributes
-    ----------
-    client : FluentRestClient
-        The underlying REST transport.
-    ip : str | None
-        IP address of the connected server.
-    port : int | None
-        Port of the connected server.
-    auth_token : str | None
-        Auth token used for the connection.
-
-    Examples
-    --------
-    >>> from ansys.fluent.core.rest import RestSolverSession
-    >>> session = RestSolverSession(
-    ...     "http://127.0.0.1:54321",
-    ...     auth_token="<token>",
-    ... )
-    >>> session.get_var("setup/models/energy/enabled")
-    True
-    >>> session.set_var("setup/models/energy/enabled", False)
+    Thin wrapper around :class:`FluentRestClient` with lifecycle management.
     """
 
     def __init__(
@@ -588,94 +395,23 @@ class RestSolverSession:
         return self._client
 
     def get_static_info(self) -> dict:
-        """Return the full settings schema.
-
-        Calls ``GET /api/{component}/static-info``.
-
-        Returns
-        -------
-        dict
-            Nested dict describing the settings tree structure.
-        """
+        """Return the full settings schema."""
         return self._client.get_static_info()
 
     def get_var(self, path: str) -> object:
-        """Return the current value of the setting at *path*.
-
-        Calls ``POST /api/{component}/get_var``.
-
-        Parameters
-        ----------
-        path : str
-            Slash-delimited settings path, e.g.
-            ``"setup/models/energy/enabled"``.
-
-        Returns
-        -------
-        object
-            The value — bool, int, float, str, list, or dict.
-        """
+        """Return the current value at *path*."""
         return self._client.get_var(path)
 
     def set_var(self, path: str, value: object) -> None:
-        """Set the value of the setting at *path*.
-
-        Calls ``PUT /api/{component}/{path}`` with the raw JSON value.
-
-        Parameters
-        ----------
-        path : str
-            Slash-delimited settings path.
-        value : object
-            New value (bool, int, float, str, list, or dict).
-        """
+        """Set the value at *path*."""
         self._client.set_var(path, value)
 
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> dict:
-        """Return requested attributes for the setting at *path*.
-
-        Calls ``GET /api/{component}/{path}?attrs=...``.
-
-        Parameters
-        ----------
-        path : str
-            Slash-delimited settings path.
-        attrs : list[str]
-            Attribute names, e.g. ``["allowed-values"]``.
-        recursive : bool, optional
-            Include child attributes.  Defaults to ``False``.
-
-        Returns
-        -------
-        dict
-            Server response with an ``"attrs"`` key.
-        """
+        """Return requested attributes for the setting at *path*."""
         return self._client.get_attrs(path, attrs, recursive=recursive)
 
     def execute_command(self, path: str, **kwargs) -> object:
-        """Execute a command at *path*.
-
-        The *path* must be the full settings path to the command, e.g.
-        ``"solution/initialization/initialize"`` or
-        ``"file/read-case"``.  The trailing component is the command
-        name; everything before it is the parent path.
-
-        Calls ``POST /api/{component}/{path}`` with *kwargs* as the
-        JSON body.  Handles HTTP 409 confirmation prompts per the
-        SettingsServiceClientGuide.
-
-        Parameters
-        ----------
-        path : str
-            Full slash-delimited path to the command.
-        **kwargs
-            Command arguments forwarded as the JSON request body.
-
-        Returns
-        -------
-        object
-            Command result from the server.
-        """
+        """Execute a command at *path* (last segment is the command name)."""
         parts = path.rsplit("/", 1)
         if len(parts) == 2:
             parent, command = parts
@@ -684,22 +420,7 @@ class RestSolverSession:
         return self._client.execute_cmd(parent, command, **kwargs)
 
     def execute_query(self, path: str, **kwargs) -> object:
-        """Execute a query at *path*.
-
-        Same path convention as :meth:`execute_command`.
-
-        Parameters
-        ----------
-        path : str
-            Full slash-delimited path to the query.
-        **kwargs
-            Query arguments forwarded as the JSON request body.
-
-        Returns
-        -------
-        object
-            Query result from the server.
-        """
+        """Execute a query at *path* (last segment is the query name)."""
         parts = path.rsplit("/", 1)
         if len(parts) == 2:
             parent, query = parts
@@ -708,61 +429,19 @@ class RestSolverSession:
         return self._client.execute_query(parent, query, **kwargs)
 
     def get_object_names(self, path: str) -> list[str]:
-        """Return child named-object names at *path*.
-
-        Parameters
-        ----------
-        path : str
-            Path to a named-object container.
-
-        Returns
-        -------
-        list[str]
-            Child object names.
-        """
+        """Return child named-object names at *path*."""
         return self._client.get_object_names(path)
 
     def create_object(self, path: str, name: str) -> None:
-        """Create a named child object *name* at *path*.
-
-        Calls ``POST /api/{component}/{path}`` with body
-        ``{"name": name}``.
-
-        Parameters
-        ----------
-        path : str
-            Path to the named-object container.
-        name : str
-            Name of the new child object.
-        """
+        """Create a named child object *name* at *path*."""
         self._client.create(path, name)
 
     def delete_object(self, path: str, name: str) -> None:
-        """Delete the named child object *name* at *path*.
-
-        Calls ``DELETE /api/{component}/{path}/{name}``.
-
-        Parameters
-        ----------
-        path : str
-            Path to the named-object container.
-        name : str
-            Name of the child object to delete.
-        """
+        """Delete the named child object *name* at *path*."""
         self._client.delete(path, name)
 
     def rename_object(self, path: str, new: str, old: str) -> None:
-        """Rename a child object at *path* from *old* to *new*.
-
-        Parameters
-        ----------
-        path : str
-            Path to the named-object container.
-        new : str
-            New name.
-        old : str
-            Current name.
-        """
+        """Rename a child object at *path* from *old* to *new*."""
         self._client.rename(path, new, old)
 
     # ------------------------------------------------------------------
@@ -810,70 +489,45 @@ def launch_webserver(
     max_retries: int = 0,
     retry_delay: float = 1.0,
 ) -> RestSolverSession:
-    """Launch a local Fluent process with the embedded web server over HTTPS.
+    """Launch a local Fluent process with the embedded HTTPS web server.
 
-    This is the **primary entry point** for using the REST transport layer.
-
-    TLS certificates are **auto-generated** for every launch — no manual
-    certificate setup is required.  The generated CA, server cert, server
-    key, and DH params are written to a temporary directory, passed to
-    Fluent via ``FLUENT_WEBSERVER_CERTIFICATE_ROOT``, and cleaned up
-    when :meth:`RestSolverSession.exit` is called.
-
-    The function performs the following steps automatically:
-
-    1. Generates a random 4-digit numeric auth token for this launch.
-    2. Generates ephemeral TLS certificates (CA + server cert).
-    3. Discovers a free local TCP port.
-    4. Resolves the Fluent executable.
-    5. Spawns Fluent with ``-ws -ws-port={port}`` and injects the auth
-       token and certificate directory into the subprocess environment.
-    6. Waits until the HTTPS server is reachable.
-    7. Returns a fully connected :class:`RestSolverSession`.
+    Auto-generates TLS certs and auth token, discovers a free port,
+    spawns Fluent with ``-ws``, and returns a connected session.
 
     Parameters
     ----------
     product_version : str, optional
-        Fluent version string, e.g. ``"261"`` or ``"26.1.0"``.
+        Fluent version, e.g. ``"261"``.
     fluent_path : str, optional
         Explicit path to the Fluent executable.
     dimension : str, optional
-        Fluent solver dimension argument.  Defaults to ``"3ddp"``.
+        Solver dimension.  Defaults to ``"3ddp"``.
     start_timeout : int, optional
-        Maximum seconds to wait for the web server.  Defaults to ``60``.
+        Max seconds to wait for the server.  Defaults to ``60``.
     component : str, optional
-        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
+        DataModel component.  Defaults to ``"fluent_1"``.
     timeout : float, optional
-        HTTP socket timeout in seconds.  Defaults to ``30.0``.
+        HTTP timeout in seconds.  Defaults to ``30.0``.
     max_retries : int, optional
-        Maximum automatic retries on transient HTTP errors.  Defaults to
-        ``0``.
+        Retries on transient errors.  Defaults to ``0``.
     retry_delay : float, optional
-        Base delay in seconds between retries.  Defaults to ``1.0``.
+        Base retry delay in seconds.  Defaults to ``1.0``.
 
     Returns
     -------
     RestSolverSession
-        A fully initialised solver session communicating over HTTPS.
 
     Raises
     ------
     RuntimeError
-        If no free TCP port can be found.
+        If the Fluent process exits immediately after spawning.
     FileNotFoundError
         If the Fluent executable cannot be located.
     TimeoutError
         If the web server does not start within *start_timeout* seconds.
     Exception
-        Any exception during server connection is re-raised after cleanup.
-
-    Examples
-    --------
-    >>> from ansys.fluent.core.rest import launch_webserver
-    >>> session = launch_webserver()
-    >>> session.get_var("setup/models/energy/enabled")
-    True
-    >>> session.exit()
+        Any exception during server connection is re-raised after
+        terminating the spawned process and cleaning up TLS files.
     """
     # 1 — generate a fresh per-launch auth token
     auth_token = _generate_auth_token()
@@ -904,10 +558,7 @@ def launch_webserver(
 
     if process.poll() is not None:
         tls.cleanup()
-        raise RuntimeError(
-            f"Fluent process exited immediately with return code "
-            f"{process.returncode}. Command: {launch_cmd}"
-        )
+        raise RuntimeError(f"Fluent exited immediately (rc={process.returncode}).")
 
     # 6 — wait for the web server and construct the session
     # Wrap post-Popen work in try/except so a failure (timeout,
@@ -960,61 +611,35 @@ def connect_to_webserver(
 ) -> RestSolverSession:
     """Connect to an already-running Fluent REST server.
 
-    Use this function when the Fluent web server is already running and you
-    know its ``ip``, ``port``, and ``auth_token``.  For a fully automated
-    local launch use :func:`launch_webserver` instead.
-
-    The URL scheme is **auto-detected** from the *ca_cert* parameter:
-
-    * ``ca_cert`` provided → ``https://``
-    * ``ca_cert`` omitted   → ``http://``
+    Scheme is auto-detected: HTTPS if *ca_cert* is provided, else HTTP.
 
     Parameters
     ----------
     ip : str
-        IP address or hostname of the Fluent web server, e.g. ``"127.0.0.1"``.
+        Server IP or hostname.
     port : int
-        TCP port the Fluent web server is listening on.
+        Server TCP port.
     auth_token : str
-        Bearer token (password) for authentication.
+        Bearer token.
     component : str, optional
-        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
+        DataModel component.  Defaults to ``"fluent_1"``.
     timeout : float, optional
-        HTTP socket timeout in seconds.  Defaults to ``30.0``.
+        HTTP timeout in seconds.  Defaults to ``30.0``.
     max_retries : int, optional
-        Maximum automatic retries on transient HTTP errors.  Defaults to
-        ``0``.
+        Retries on transient errors.  Defaults to ``0``.
     retry_delay : float, optional
-        Base delay in seconds between retries (exponential back-off).
-        Defaults to ``1.0``.
+        Base retry delay in seconds.  Defaults to ``1.0``.
     ca_cert : str, optional
-        Path to a PEM-encoded CA certificate file for verifying the
-        server's TLS certificate.  When provided the connection uses
-        HTTPS; otherwise plain HTTP is used.
+        PEM CA certificate path for HTTPS.
 
     Returns
     -------
     RestSolverSession
-        A fully initialised solver session with ``ip``, ``port``, and
-        ``auth_token`` attributes set.
 
     Raises
     ------
     ConnectionError
-        If the server does not respond to the reachability probe.
-
-    Examples
-    --------
-    Connect over plain HTTP (no ``ca_cert``):
-
-    >>> session = connect_to_webserver("127.0.0.1", 5000, auth_token="tok")
-
-    Connect over HTTPS (provide CA certificate):
-
-    >>> session = connect_to_webserver(
-    ...     "127.0.0.1", 5000, auth_token="tok",
-    ...     ca_cert="/path/to/CA.crt",
-    ... )
+        If the server does not respond.
     """
     ssl_ctx = _TlsCertificateManager.build_ssl_context(ca_cert) if ca_cert else None
     scheme = "https" if ca_cert else "http"
@@ -1029,10 +654,7 @@ def connect_to_webserver(
         ssl_context=ssl_ctx,
     ):
         raise ConnectionError(
-            f"Fluent web server at {base_url} did not respond to the reachability "
-            f"probe (GET /api/{component}/static-info). "
-            "Verify that the server is running on the given ip and port, "
-            "and that the auth_token is correct."
+            f"Server at {base_url} unreachable. " "Check ip, port, and auth_token."
         )
 
     session = RestSolverSession(

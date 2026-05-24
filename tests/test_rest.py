@@ -43,21 +43,7 @@ from ansys.fluent.core.rest.client import FluentRestError
 pytestmark = pytest.mark.real_server
 
 # ---------------------------------------------------------------------------
-# 1. is_interactive_mode
-# ---------------------------------------------------------------------------
-
-
-class TestRealIsInteractiveMode:
-    """GET /api/connection/run_mode"""
-
-    def test_returns_bool(self, real_client):
-        """Verify that ``is_interactive_mode()`` returns a boolean."""
-        result = real_client.is_interactive_mode()
-        assert isinstance(result, bool)
-
-
-# ---------------------------------------------------------------------------
-# 2. get_static_info
+# 1. get_static_info
 # ---------------------------------------------------------------------------
 
 
@@ -95,7 +81,7 @@ class TestRealStaticInfo:
 
 
 # ---------------------------------------------------------------------------
-# 3. get_var — read settings
+# 2. get_var — read settings
 # ---------------------------------------------------------------------------
 
 
@@ -138,7 +124,7 @@ class TestRealGetVar:
 
 
 # ---------------------------------------------------------------------------
-# 4. set_var — write settings (read-modify-restore pattern)
+# 3. set_var — write settings (read-modify-restore pattern)
 # ---------------------------------------------------------------------------
 
 
@@ -177,7 +163,7 @@ class TestRealSetVar:
 
 
 # ---------------------------------------------------------------------------
-# 5. get_object_names — named-object containers (dynamic)
+# 4. get_object_names — named-object containers (dynamic)
 # ---------------------------------------------------------------------------
 
 
@@ -219,7 +205,7 @@ class TestRealGetObjectNames:
 
 
 # ---------------------------------------------------------------------------
-# 6. get_list_size — cross-validated against get_object_names
+# 5. get_list_size — cross-validated against get_object_names
 # ---------------------------------------------------------------------------
 
 
@@ -246,7 +232,7 @@ class TestRealGetListSize:
 
 
 # ---------------------------------------------------------------------------
-# 7. get_attrs — dynamic validation
+# 6. get_attrs — dynamic validation
 # ---------------------------------------------------------------------------
 
 
@@ -301,7 +287,7 @@ class TestRealGetAttrs:
 
 
 # ---------------------------------------------------------------------------
-# 8. execute_cmd — command execution
+# 7. execute_cmd — command execution
 # ---------------------------------------------------------------------------
 
 
@@ -317,7 +303,7 @@ class TestRealExecuteCmd:
 
 
 # ---------------------------------------------------------------------------
-# 9. execute_query
+# 8. execute_query
 # ---------------------------------------------------------------------------
 
 

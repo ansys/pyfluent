@@ -185,7 +185,7 @@ class FluentRestClient:
         """
         parsed = urllib.parse.urlparse(base_url)
         if parsed.scheme not in {"http", "https"}:
-            raise ValueError("base_url scheme must be http or https")
+            raise ValueError("scheme must be http or https")
         if not parsed.netloc:
             raise ValueError("base_url must include host")
         if auth_token and parsed.scheme == "http" and ssl_context is None:
