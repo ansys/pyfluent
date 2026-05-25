@@ -291,14 +291,14 @@ def test_parameters_list_function(static_mixer_settings_session):
     unitless_quantity.output_parameter = True
     fluent_version = solver.get_fluent_version()
     input_parameters_list = (
-        solver.parameter_workspace.parameters.input_parameters.list()
+        solver.settings.parameter_workspace.parameters.input_parameters.list()
         if fluent_version >= FluentVersion.v271
-        else solver.parameters.input_parameters.list()
+        else solver.settings.parameters.input_parameters.list()
     )
     output_parameters_list = (
-        solver.parameter_workspace.parameters.output_parameters.list()
+        solver.settings.parameter_workspace.parameters.output_parameters.list()
         if fluent_version >= FluentVersion.v271
-        else solver.parameters.output_parameters.list()
+        else solver.settings.parameters.output_parameters.list()
     )
     if fluent_version >= FluentVersion.v261:
         assert input_parameters_list == {
