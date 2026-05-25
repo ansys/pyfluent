@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -24,7 +24,6 @@ import pytest
 
 
 @pytest.mark.settings_only
-@pytest.mark.fluent_version(">=24.1")
 def test_change_create_mixture(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
 

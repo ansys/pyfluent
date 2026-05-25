@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -48,7 +48,6 @@ def round_off_list_elements(input_list):
     return input_list
 
 
-@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.developer_only
 def test_use_variable_catalog(new_solver_session) -> None:
     """
@@ -138,10 +137,10 @@ def test_use_variable_catalog_offline():
         data_types=[SurfaceDataType.Vertices], surfaces=[3]
     )
     surface_data_wall = surface_data(surface_data_wall_request)
-    assert surface_data_wall[3].shape == (3810, 3)
-    assert round(surface_data_wall[3][1500][0], 5) == 0.12406
-    assert round(surface_data_wall[3][1500][1], 5) == 0.09525
-    assert round(surface_data_wall[3][1500][2], 5) == 0.04216
+    assert surface_data_wall[3].vertices.shape == (3810, 3)
+    assert round(surface_data_wall[3].vertices[1500][0], 5) == 0.12406
+    assert round(surface_data_wall[3].vertices[1500][1], 5) == 0.09525
+    assert round(surface_data_wall[3].vertices[1500][2], 5) == 0.04216
 
     surface_data_symmetry_request = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity],
@@ -149,7 +148,7 @@ def test_use_variable_catalog_offline():
         flatten_connectivity=True,
     )
     surface_data_symmetry = surface_data(surface_data_symmetry_request)
-    assert len(surface_data_symmetry["symmetry"]) == 10090
+    assert len(surface_data_symmetry["symmetry"].connectivity) == 10090
     surface_data_symmetry_request_deprecated = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity],
         surfaces=["symmetry"],
@@ -157,7 +156,7 @@ def test_use_variable_catalog_offline():
     surface_data_symmetry_deprecated = surface_data(
         surface_data_symmetry_request_deprecated
     )
-    assert list(surface_data_symmetry_deprecated["symmetry"][1000]) == [
+    assert list(surface_data_symmetry_deprecated["symmetry"].connectivity[1000]) == [
         1259,
         1260,
         1227,

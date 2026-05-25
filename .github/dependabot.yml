@@ -2,12 +2,31 @@ version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
-    insecure-external-code-execution: allow
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 7 # Wait 7 days before raising a PR for a newly published version.
     labels:
       - "Maintenance"
       - "Dependencies"
+    ignore:
+      # Exclude main project dependencies and optional dependencies (like reader)
+      - dependency-name: "ansys-api-fluent"
+      - dependency-name: "ansys-platform-instancemanagement"
+      - dependency-name: "ansys-tools-filetransfer"
+      - dependency-name: "ansys-units"
+      - dependency-name: "defusedxml"
+      - dependency-name: "deprecated"
+      - dependency-name: "docker"
+      - dependency-name: "grpcio"
+      - dependency-name: "grpcio-health-checking"
+      - dependency-name: "grpcio-status"
+      - dependency-name: "nltk"
+      - dependency-name: "numpy"
+      - dependency-name: "pandas"
+      - dependency-name: "pyansys-tools-report"
+      - dependency-name: "pyyaml"
+      - dependency-name: "h5py"
     groups:
       dependencies:
         patterns:
@@ -20,6 +39,8 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 7 # Wait 7 days before raising a PR for a newly published action version.
     labels:
       - "Maintenance"
     groups:

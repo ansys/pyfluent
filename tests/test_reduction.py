@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -426,7 +426,6 @@ def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_reductions(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ) -> None:
@@ -459,7 +458,6 @@ def test_reductions(
     _test_centroid_2_sources(solver1, solver2)
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
@@ -473,7 +471,6 @@ def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     assert not solver.scheme.eval("(case-modified?)")
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()

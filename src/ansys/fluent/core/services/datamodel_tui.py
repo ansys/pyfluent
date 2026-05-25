@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,7 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over TUI-based datamodel gRPC service of Fluent."""
+"""Wrappers over TUI-based datamodel gRPC service of Fluent.
+
+This module contains the shared TUI runtime/menu logic reused by the v1
+adapter module, which overrides only v1 proto/stub/request differences.
+"""
 
 import keyword
 import logging

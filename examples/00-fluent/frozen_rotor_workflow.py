@@ -1,4 +1,10 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+# ]
+# ///
+
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -50,9 +56,9 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 ################################################################################################################
 # Outline
 # ==============================================================================================================
-
+#
 # The example demonstrates the following:
-
+#
 # *Overview & Problem description
 # *Launching Fluent in solver mode.
 # *Downloading a mesh files from the examples repository.
@@ -69,7 +75,6 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 # *Visualizing the results
 # *Saving the case file
 # *Closing the solver
-
 
 ################################################################################################################
 # Import required libraries/modules

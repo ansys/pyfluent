@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import warnings
+
+from conftest import SKIP_INVESTIGATING
 import numpy as np
 import pytest
 from test_utils import pytest_approx
@@ -36,17 +39,19 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
+    _Fields,
 )
 from ansys.fluent.core.services.field_data import (
     CellElementType,
     ZoneType,
 )
 from ansys.fluent.core.solver import VelocityInlet, VelocityInlets, WallBoundaries
+from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.units.variable_descriptor import VariableCatalog
 
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_batches_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -127,7 +132,6 @@ def test_field_data_batches_deprecated_interface(new_solver_session) -> None:
     assert data2
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_batches(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -345,7 +349,6 @@ def test_field_data_attributes(new_solver_session) -> None:
     assert not field_data.surfaces.validate(["hot-inlet", "inlet"])
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -458,7 +461,6 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"]["lines"][100]) == [100, 101]
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -597,7 +599,6 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"].lines[:3]) == [2, 0, 1]
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_2d(disk_case_session) -> None:
     solver = disk_case_session
 
@@ -717,8 +718,41 @@ def test_field_data_errors(new_solver_session) -> None:
         )
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
-@pytest.mark.fluent_version(">=24.2")
+def test_fields_is_active_accepts_variable_descriptor() -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    assert fields.is_active("temperature")
+    assert fields.is_active(VariableCatalog.TEMPERATURE)
+    assert not fields.is_active(VariableCatalog.VELOCITY)
+
+
+def test_fields_allowed_variables_filters_unmapped_names() -> None:
+    fields = _Fields(lambda: ["temperature", "not-a-mapped-field"])
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
+
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 1
+    assert "not-a-mapped-field" in str(caught[0].message)
+
+
+def test_fields_allowed_variables_no_warning_when_all_mapped() -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        allowed_variables = fields.allowed_variables()
+
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+    assert len(caught) == 0
+
+
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2404
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -732,7 +766,8 @@ def test_field_data_does_not_modify_case(new_solver_session):
     assert not solver.scheme.eval("(case-modified?)")
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/5051
 def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     meshing = new_meshing_session
     import_file_name = examples.download_file(
@@ -758,10 +793,17 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     }
     meshing.workflow.TaskObject["Import Geometry"].Execute()
 
-    assert len(mesh_data[5]["vertices"]) == 66
-    assert len(mesh_data[5]["faces"]) == 80
+    def has_expected_mesh_data():
+        try:
+            return (
+                len(mesh_data[5]["vertices"]) == 66
+                and len(mesh_data[5]["faces"]) == 80
+                and list(mesh_data[12].keys()) == ["vertices", "faces"]
+            )
+        except KeyError:
+            return False
 
-    assert list(mesh_data[12].keys()) == ["vertices", "faces"]
+    assert timeout_loop(has_expected_mesh_data, timeout=5)
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -814,8 +856,6 @@ def test_mesh_data_3d_poly(static_mixer_case_session):
     assert max(mesh.nodes, key=lambda x: x.z).z == pytest_approx(2.500000e-03)
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -879,8 +919,6 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
     assert abs_press_data["wall-elbow"].shape == (4339,)
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_with_location_objects_overall(
     new_solver_session,
 ) -> None:

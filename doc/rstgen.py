@@ -6,6 +6,8 @@ import pathlib
 from pathlib import Path
 import re
 
+from doc_utils import get_display_name as _format_display_name
+
 _THIS_DIRNAME = os.path.dirname(__file__)
 
 
@@ -113,7 +115,7 @@ def _process_datamodel_path(full_name: str):
     """
     path_string = re.findall("core.*", full_name)
     path = path_string[0].replace("core.generated.", "")
-    path = re.sub("[0-9]", "", path)
+    path = re.sub(r"\d+(?![A-Za-z])", "", path)
     path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")
     path = path.rstrip(".")
@@ -166,7 +168,9 @@ def _get_menu_name_path(menu: type, is_datamodel: bool):
     return full_name, full_path
 
 
-def _get_docdir(mode: str, path: str | None = None, is_datamodel: bool | None = None):
+def _get_docdir(
+    mode: str, path: str | None = None, is_datamodel: bool | None = None
+) -> Path:
     """Get tui doc directory to generate all RST files.
 
     Parameters
@@ -331,17 +335,11 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
         Whether the menu is of datamodel.
     """
     if is_datamodel:
-        title = (
-            f"{mode}.datamodel.{menu_path}"
-            if menu["name"].__name__ == "Root"
-            else menu["name"].__name__
-        )
+        title = menu_path if menu["name"].__name__ == "Root" else menu["name"].__name__
     else:
-        title = (
-            f"{mode}.tui"
-            if menu["name"].__name__ == "main_menu"
-            else menu["name"].__name__
-        )
+        title = "tui" if menu["name"].__name__ == "main_menu" else menu["name"].__name__
+    if title and menu["name"].__name__ != "Root":
+        title = _format_display_name(title)
     return title
 
 

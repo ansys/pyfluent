@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -24,6 +24,7 @@ import os.path
 from pathlib import Path
 import shutil
 
+from conftest import SKIP_BLOCKED
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -31,8 +32,7 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
-@pytest.mark.fluent_version(">=24.2")
-def test_icing_session():
+def test_aero_session():
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     aero_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.SOLVER_AERO, **grpc_kwds
@@ -40,8 +40,8 @@ def test_icing_session():
     assert "aero" in dir(aero_session)
 
 
-@pytest.mark.skip("Run this locally only as of now.")
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Run this locally only as of now.
 def test_sample_setup():
     mesh_filepath = examples.download_file(
         "wing.msh.h5",

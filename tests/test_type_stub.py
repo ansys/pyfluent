@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,7 +27,6 @@ import pytest
 from ansys.fluent.core import config
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("==25.2")
 def test_settings_stub():
     # The type-stub files, which are generated for settings API, are parsed by the

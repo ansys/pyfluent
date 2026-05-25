@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -259,9 +259,9 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
     )
 
-    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_TIMEOUT_FORCE_EXIT`` environment variable or 60 seconds.
+    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 60 seconds.
     launch_fluent_timeout = _ConfigDescriptor["Config"](
-        lambda instance: int(instance._env.get("PYFLUENT_TIMEOUT_FORCE_EXIT", 60))
+        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 60))
     )
 
     #: Whether to show the Fluent GUI when launching the server, defaults to the value of ``PYFLUENT_SHOW_SERVER_GUI`` environment variable.
@@ -337,12 +337,12 @@ class Config:
     @property
     def fluent_release_version(self) -> str:
         """The latest released version of Fluent."""
-        return "25.2.0"
+        return "26.1.0"
 
     @property
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
-        return "26.1.0"
+        return "27.1.0"
 
     def print(self):
         """Print all configuration variables."""

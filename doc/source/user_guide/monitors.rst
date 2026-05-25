@@ -6,7 +6,7 @@ Using monitors
 Monitors in PyFluent allow you to dynamically observe the convergence of
 your solution by tracking the values of solution variables and residuals.
 They enable you to visualize the progress of the solver, helping ensure that
-the solution is progressing as expected and allowing you to diagnose issues 
+the solution is progressing as expected and allowing you to diagnose issues
 early on.
 
 You can integrate PyFluent's monitor callback mechanism with visualization
@@ -49,7 +49,7 @@ callback mechanism to perform a simple tabulation of monitored values per iterat
   >>>    "point-vel-rplot",
   >>>    "residual"
   >>> ]
-  >>> # create and register a callback function that will 
+  >>> # create and register a callback function that will
   >>> def display_monitor_table(monitor_set_name="mass-bal-rplot"):
   >>>     def display_table():
   >>>         data = solver_session.monitors.get_monitor_set_data(monitor_set_name=monitor_set_name)
@@ -73,4 +73,4 @@ callback mechanism to perform a simple tabulation of monitored values per iterat
   >>>
   >>> register_id = solver_session.monitors.register_callback(display_monitor_table())
   >>> # run the solver and see the full tabulated monitor data on each iteration
-  >>> solver_session.solution.run_calculation.iterate(iter_count=10)
+  >>> solver_session.settings.solution.run_calculation.iterate(iter_count=10)

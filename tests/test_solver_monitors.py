@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,13 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import pytest
-
 from ansys.fluent.core import examples
 from ansys.fluent.core.utils.execution import timeout_loop
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_solver_monitors(new_solver_session):
 
     solver = new_solver_session

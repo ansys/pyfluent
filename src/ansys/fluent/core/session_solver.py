@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -28,19 +28,32 @@ from typing import Any, Dict
 import warnings
 import weakref
 
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
+from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
-from ansys.fluent.core.services.reduction import ReductionService
+from ansys.fluent.core.services.reduction import Reduction as ReductionV0
+from ansys.fluent.core.services.reduction import ReductionService as ReductionServiceV0
+from ansys.fluent.core.services.reduction_v1 import Reduction, ReductionService
 from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData as SolutionVariableDataV0,
+)
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableInfo as SolutionVariableInfoV0,
+)
+from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
+from ansys.fluent.core.session_shared import (
+    _make_datamodel_module,
+    _make_tui_module,
+)
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -50,8 +63,14 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
-from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
+from ansys.fluent.core.streaming_services.events_streaming import (
+    SolverEvent as SolverEventV0,
+)
+from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
+from ansys.fluent.core.streaming_services.monitor_streaming import (
+    MonitorsManager as MonitorsManagerV0,
+)
+from ansys.fluent.core.streaming_services.monitor_streaming_v1 import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
@@ -107,13 +126,16 @@ class Solver(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
+        _solver_event = (
+            SolverEvent if fluent_connection._server_supports_v1 else SolverEventV0
+        )
         super(Solver, self).__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
-            event_type=SolverEvent,
+            event_type=_solver_event,
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._settings = None
@@ -136,30 +158,53 @@ class Solver(BaseSession):
         self._fluent_version = None
         self._bg_session_threads = []
         self._launcher_args = launcher_args
-        self._solution_variable_service = service_creator("svar").create(
-            fluent_connection._channel, fluent_connection._metadata
+        self._solution_variable_service = service_creator(
+            "svar", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
+        if fluent_connection._server_supports_v1:
+            self._reduction_service = self._fluent_connection.create_grpc_service(
+                ReductionService, self._error_state
+            )
+            self.fields.reduction = Reduction(self._reduction_service, self)
+            self.fields.solution_variable_info = SolutionVariableInfo(
+                self._solution_variable_service
+            )
+        else:
+            self._reduction_service = self._fluent_connection.create_grpc_service(
+                ReductionServiceV0, self._error_state
+            )
+            self.fields.reduction = ReductionV0(self._reduction_service, self)
+            self.fields.solution_variable_info = SolutionVariableInfoV0(
+                self._solution_variable_service
+            )
+        self.fields.solution_variable_data = self._solution_variable_data(
+            fluent_connection._server_supports_v1
         )
-        self.fields.solution_variable_info = SolutionVariableInfo(
-            self._solution_variable_service
-        )
-        self._reduction_service = self._fluent_connection.create_grpc_service(
-            ReductionService, self._error_state
-        )
-        self.fields.reduction = service_creator("reduction").create(
-            self._reduction_service, self
-        )
-        self.fields.solution_variable_data = self._solution_variable_data()
 
-        monitors_service = service_creator("monitors").create(
+        monitors_service = service_creator(
+            "monitors", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
         #: Manage Fluent's solution monitors.
-        self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
-        if not pyfluent.config.disable_monitor_refresh_on_init:
-            self.events.register_callback(
-                (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
-                self.monitors.refresh,
-            )
+        _MonitorsManager = (
+            MonitorsManager
+            if fluent_connection._server_supports_v1
+            else MonitorsManagerV0
+        )
+        self.monitors = _MonitorsManager(fluent_connection._id, monitors_service)
+        if fluent_connection._server_supports_v1:
+            if not config.disable_monitor_refresh_on_init:
+                self.events.register_callback(
+                    (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
+                    self.monitors.refresh,
+                )
+        else:
+            if not config.disable_monitor_refresh_on_init:
+                self.events.register_callback(
+                    (SolverEventV0.SOLUTION_INITIALIZED, SolverEventV0.DATA_LOADED),
+                    self.monitors.refresh,
+                )
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
 
@@ -169,9 +214,11 @@ class Solver(BaseSession):
             weakref.WeakMethod(self._stop_bg_sessions), at_start=True
         )
 
-    def _solution_variable_data(self) -> SolutionVariableData:
+    def _solution_variable_data(
+        self, supports_v1: bool
+    ) -> SolutionVariableDataV0 | SolutionVariableData:
         """Return the SolutionVariableData handle."""
-        return service_creator("svar_data").create(
+        return service_creator("svar_data", supports_v1=supports_v1).create(
             self._solution_variable_service, self.fields.solution_variable_info
         )
 
@@ -209,14 +256,21 @@ class Solver(BaseSession):
 
     def _get_zones_info(self) -> list[ZoneInfo]:
         zones_info = []
+        # v0 ThreadType: CELL_THREAD=0, FACE_THREAD=1
+        # v1 ThreadType: THREAD_TYPE_CELL=1, THREAD_TYPE_FACE=2
+        # WARNING: v0 FACE_THREAD and v1 THREAD_TYPE_CELL share the numeric value 1.
+        # Never compare thread_type values from both proto versions in the same
+        # expression — pick one constant based on the active API version.
+        cell_thread_type = (
+            SvarProtoModule.ThreadType.THREAD_TYPE_CELL
+            if self._fluent_connection._server_supports_v1
+            else SvarProtoModuleV0.ThreadType.CELL_THREAD
+        )
         for (
             zone_info
         ) in self.fields.solution_variable_info.get_zones_info()._zones_info.values():
-            zone_type = (
-                ZoneType.CELL
-                if zone_info.thread_type == SvarProtoModule.ThreadType.CELL_THREAD
-                else ZoneType.FACE
-            )
+            is_cell_thread = zone_info.thread_type == cell_thread_type
+            zone_type = ZoneType.CELL if is_cell_thread else ZoneType.FACE
             zones_info.append(
                 ZoneInfo(
                     _id=zone_info.zone_id, name=zone_info.name, zone_type=zone_type
@@ -267,7 +321,7 @@ class Solver(BaseSession):
             "solution/run-calculation/calculate",
             "solution/run-calculation/dual-time-iterate",
         ]
-        if pyfluent.config.support_solver_interrupt:
+        if config.support_solver_interrupt:
             if command.path in interruptible_commands:
                 command._root.solution.run_calculation.interrupt()
 
@@ -295,7 +349,11 @@ class Solver(BaseSession):
         super(Solver, self)._build_from_fluent_connection(
             bg_session._fluent_connection,
             bg_session._fluent_connection._connection_interface.scheme_eval,
-            event_type=SolverEvent,
+            event_type=(
+                SolverEvent
+                if bg_session._fluent_connection._server_supports_v1
+                else SolverEventV0
+            ),
             launcher_args=launcher_args,
         )
         self._build_from_fluent_connection(
@@ -321,7 +379,9 @@ class Solver(BaseSession):
             Case file name
         """
 
-        self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
+        self.settings.file.read(
+            file_type="case", file_name=file_name, lightweight_setup=True
+        )
         launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
@@ -343,18 +403,15 @@ class Solver(BaseSession):
         return self.get_state()
 
     def __getattribute__(self, item: str):
+        if item.startswith("__") and item.endswith("__"):
+            return super().__getattribute__(item)
         try:
             _connection = super(Solver, self).__getattribute__("_fluent_connection")
         except AttributeError:
             _connection = False
-        if _connection is None and item not in [
-            "is_active",
-            "_fluent_connection",
-            "_fluent_connection_backup",
-            "wait_process_finished",
-        ]:
+        if _connection is None and item not in BaseSession._inactive_session_allow_list:
             raise AttributeError(
-                f"'{__class__.__name__}' object has no attribute '{item}'"
+                f"'{type(self).__name__}' object has no attribute '{item}'"
             )
         try:
             return super(Solver, self).__getattribute__(item)

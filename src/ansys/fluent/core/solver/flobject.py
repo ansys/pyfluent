@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -41,8 +41,10 @@ Example
 from __future__ import annotations
 
 import collections
-from contextlib import contextmanager, nullcontext
+from contextlib import contextmanager, nullcontext, suppress
+from enum import Enum
 import fnmatch
+from functools import total_ordering
 import hashlib
 import inspect
 import keyword
@@ -93,6 +95,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 _static_class_attributes = [
     "_version",
+    "exposure_level",
     "_deprecated_version",
     "_python_name",
     "fluent_name",
@@ -113,6 +116,26 @@ class ReadOnlyActionError(RuntimeError):
     def __init__(self, python_path):
         """Initialize ReadOnlyActionError."""
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
+
+
+@total_ordering
+class ExposureLevel(Enum):
+    """API exposure level of a settings object."""
+
+    ALPHA = "alpha"
+    BETA = "beta"
+    STABLE = "stable"
+
+    def __lt__(self, other):
+        """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
+        if isinstance(other, ExposureLevel):
+            order = {
+                ExposureLevel.ALPHA: 0,
+                ExposureLevel.BETA: 1,
+                ExposureLevel.STABLE: 2,
+            }
+            return order[self] < order[other]
+        return NotImplemented
 
 
 class _InlineConstants:
@@ -242,15 +265,63 @@ def _get_python_path_comps(obj):
     return comps[1:]
 
 
-def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str]):
-    """Get the class for the given alias path."""
-    parent_count = 0
-    while other_path[0] == "..":
-        parent_count += 1
-        other_path.pop(0)
-    for _ in range(parent_count):
-        some_path.pop()
-    full_path = some_path + other_path
+def get_full_path(base_path: list[str], relative_path: list[str]) -> list[str]:
+    """
+    Get full path by applying relative path to base path.
+
+    Parameters
+    ----------
+    base_path: list[str]
+        The base path.
+
+    relative_path: list[str]
+        The relative path, which can contain ".." to indicate going up one level in the hierarchy.
+
+    Returns
+    -------
+    list[str]
+        The full path obtained by applying the relative path to the base path.
+
+    Raises
+    ------
+    ValueError
+        If the relative path tries to go beyond the root of the hierarchy.
+    """
+    base_path = base_path.copy()
+    relative_path = relative_path.copy()
+    while relative_path and relative_path[0] == "..":
+        if not base_path:
+            raise ValueError("Relative path goes beyond root.")
+        base_path.pop()
+        relative_path.pop(0)
+    return base_path + relative_path
+
+
+def _get_class_from_paths(
+    root_cls, base_path: list[str], relative_path: list[str]
+) -> tuple[type, list[str]]:
+    """
+    Get the settings class from a base path and a relative path.
+
+    Parameters
+    ----------
+    root_cls: type
+        The root class to start from.
+
+    base_path: list[str]
+        The base path from the root class to the base of the relative path.
+
+    relative_path: list[str]
+        The relative path from the base to the target class. This can contain ".." to
+        indicate going up one level in the hierarchy.
+
+    Returns
+    -------
+    tuple[type, list[str]]
+        The target class and the full path from the root class to the target class.
+    """
+
+    full_path = get_full_path(base_path, relative_path)
     cls = root_cls
     for comp in full_path:
         cls = cls._child_classes[comp]
@@ -405,7 +476,20 @@ class Base:
         return ppath + "." + self.python_name
 
     def get_attrs(self, attrs, recursive=False) -> Any:
-        """Get the requested attributes for the object."""
+        """Get the requested attributes for the object.
+
+        Parameters
+        ----------
+        attrs : list
+            List of attribute names to retrieve.
+        recursive : bool, optional
+            Whether to retrieve attributes recursively, by default False.
+
+        Returns
+        -------
+        Any
+            Requested attributes.
+        """
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
@@ -1098,7 +1182,7 @@ class Group(SettingsBase[DictStateType]):
 
         Raises
         ------
-        RuntimeError
+        ValueError
             If key is invalid.
         """
         if isinstance(value, collections.abc.Mapping):
@@ -1116,7 +1200,7 @@ class Group(SettingsBase[DictStateType]):
                         v, root_cls, alias_path
                     )
                 else:
-                    raise RuntimeError("Key '" + str(k) + "' is invalid")
+                    raise ValueError("Key '" + str(k) + "' is invalid")
             return ret
         else:
             return value
@@ -1536,8 +1620,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             Name of the object whose properties are to be listed.
         """
         if FluentVersion(self._version) >= FluentVersion.v261:
-            # The generated parameter name is path_1 as the name path clashes with existing property.
-            return self._root.list_properties(path_1=self.path, name=object_name)
+            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
         else:
             return self.list_properties_1(object_name=object_name)
 
@@ -1696,6 +1779,77 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         else:
             return getattr(super(), name)
 
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the list object.
+
+        For Quantity-like inputs containing sequence values, convert once to the
+        child target units (when available) and apply in a single bulk update.
+
+        Raises
+        ------
+        UnhandledQuantity
+            If a Quantity-like input cannot be interpreted or converted to
+            target units.
+        """
+        if kwargs or state is None:
+            return super().set_state(state=state, **kwargs)
+
+        quantity = None
+        try:
+            # Accept either a concrete Quantity or tuple shorthand
+            # (sequence, units) for list-style unit-aware updates.
+            if isinstance(state, ansys.units.Quantity):
+                quantity = state
+            elif (
+                isinstance(state, tuple)
+                and len(state) == 2
+                and isinstance(state[0], collections.abc.Sequence)
+                and not isinstance(state[0], (str, bytes, bytearray))
+            ):
+                quantity = ansys.units.Quantity(*state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        if quantity is None:
+            return super().set_state(state=state, **kwargs)
+
+        try:
+            # Materialize values once so we can determine target size before
+            # any conversion or server update.
+            values = list(quantity.value)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        # Keep list-object cardinality in sync before the final bulk set.
+        size = len(values)
+        if self.get_size() != size:
+            with self._while_resizing():
+                self.flproxy.resize_list_object(self.path, size)
+        if len(self._objects) != size:
+            self._update_objects()
+
+        target_units = None
+        if size > 0:
+            child = self[0]
+            # First support direct numerical list children.
+            if isinstance(child, RealNumerical):
+                target_units = child.units()
+            else:
+                # Then support wrapped schemas where units live under .value.
+                child_value = getattr(child, "value", None)
+                if isinstance(child_value, RealNumerical):
+                    target_units = child_value.units()
+
+        if target_units is not None:
+            try:
+                # Convert once using the resolved target units and send plain
+                # floats in a single bulk update.
+                values = [float(v) for v in quantity.to(target_units).value]
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
+
+        return super().set_state(state=values, **kwargs)
+
 
 class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
@@ -1777,7 +1931,49 @@ class Action(Base):
                 )
             return alias_obj
         else:
-            return getattr(super(), name)
+            try:
+                return getattr(super(), name)
+            except AttributeError:
+                raise AttributeError(
+                    f"'{self.python_path}' is a command/query object and has no attribute '{name}'"
+                ) from None
+
+    def __setattr__(self, name: str, value):
+        attr = getattr(self, name)
+        try:
+            return attr.set_state(value)
+        except Exception as ex:
+            if hasattr(attr, "allowed_values"):
+                allowed = attr.allowed_values()
+                if allowed and value not in allowed:
+                    raise allowed_values_error(name, value, allowed) from ex
+            raise
+
+    def get_attrs(self, attrs, recursive=False) -> Any:
+        """Get the requested attributes for the object.
+
+        Parameters
+        ----------
+        attrs : list
+            List of attribute names to retrieve.
+        recursive : bool, optional
+            Whether to retrieve attributes recursively. Recursive queries are
+            not supported for command/query objects; if ``True`` is passed it
+            is ignored and a warning is issued, by default False.
+
+        Returns
+        -------
+        Any
+            Requested attributes.
+        """
+        if recursive:
+            warnings.warn(
+                f"Recursive attribute queries are not supported for command/query "
+                f"objects. Ignoring recursive=True for '{self.python_path}'.",
+                PyFluentUserWarning,
+            )
+            recursive = False
+        return self.flproxy.get_attrs(self.path, attrs, recursive)
 
 
 class BaseCommand(Action):
@@ -1785,7 +1981,7 @@ class BaseCommand(Action):
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1995,10 +2191,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object lookup without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 return cobj[name]
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __setitem__(self, name, value):
@@ -2009,21 +2205,21 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
-            try:
+            # Use suppress to ignore exceptions during child object deletion without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 del cobj[name]
                 return
-            except Exception:
-                pass
         raise KeyError(name)
 
     def __iter__(self):
         """Iterator for child named objects."""
         for cname in self.child_names:
-            try:
+            # Use suppress to ignore exceptions during child object iteration without triggering B110
+            # TODO: Investigate why this exception handling is required?
+            with suppress(Exception):
                 for item in getattr(self, cname):
                     yield item
-            except Exception:
-                continue
 
     def __len__(self):
         """Number of child named objects."""
@@ -2231,6 +2427,18 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
+        # If root, set it explicitly to stable
+        if parent is None:
+            cls.exposure_level = ExposureLevel.STABLE
+        else:
+            exposure_level_str = info.get("api_exposure_level")
+            if exposure_level_str is None:
+                cls.exposure_level = parent.exposure_level
+            else:
+                cls.exposure_level = min(
+                    ExposureLevel(exposure_level_str), parent.exposure_level
+                )
+
         deprecated_version = info.get("deprecated_version", None)
         if deprecated_version and float(deprecated_version) >= 22.2:
             cls._deprecated_version = deprecated_version
@@ -2238,6 +2446,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls._deprecated_version = ""
 
         taboo = set(dir(cls))
+        if version and version >= "261":
+            taboo -= {"list", "list_properties"}
         taboo |= set(
             [
                 "child_names",
@@ -2395,14 +2605,15 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import config, utils
+    from ansys.fluent.core.module_config import config
+    from ansys.fluent.core.utils import load_module as _load_module
 
     if config.use_runtime_python_classes:
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
-            settings = utils.load_module(
+            settings = _load_module(
                 f"settings_{version}",
                 config.codegen_outdir / "solver" / f"settings_{version}.py",
             )

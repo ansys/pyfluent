@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -94,7 +94,6 @@ def test_initialization_settings(new_solver_session):
     }
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(new_solver_session):
     solver = new_solver_session
     case_name = download_file("vki_turbine.cas.gz", "pyfluent/vki_turbine")

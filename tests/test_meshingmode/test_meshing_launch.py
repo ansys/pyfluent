@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -30,10 +30,9 @@ from ansys.fluent.core.examples.downloads import download_file
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
-    assert pure_meshing_session.is_server_healthy()
+    assert pure_meshing_session.is_active()
     file_name = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_name)
     session_dir = dir(pure_meshing_session)
@@ -101,10 +100,9 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
 
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     meshing = new_meshing_session_wo_exit
-    assert meshing.is_server_healthy()
+    assert meshing._is_server_healthy()
     assert meshing.is_active() is True
     capsys.readouterr()
     help(meshing)
@@ -126,7 +124,6 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
 
 
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
 
     def on_case_loaded(session, event_info):
@@ -161,7 +158,6 @@ def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
 
 
 @pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
 def test_meshing_no_foreign_objects(new_meshing_session):
     meshing = new_meshing_session
     with pytest.raises(AttributeError):

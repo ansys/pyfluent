@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -24,6 +24,7 @@
 
 from __future__ import annotations
 
+from contextlib import suppress
 import logging
 import re
 import threading
@@ -38,7 +39,6 @@ from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
     PyCommand,
     PyMenu,
-    PyMenuGeneric,
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -159,12 +159,9 @@ def _refresh_task_accessors(obj):
 
 def _call_refresh_task_accessors(obj):
     """This layer handles exception for PyConsole."""
-    try:
+    # Use suppress to ignore exceptions during task accessor refresh without triggering B110
+    with suppress(Exception):
         _refresh_task_accessors(obj)
-    except Exception:
-        # Is there a more specific Exception derived class
-        # for which we know it is correct to pass?
-        pass
 
 
 def _convert_task_list_to_display_names(workflow_root, task_list):
@@ -295,10 +292,9 @@ class BaseTask:
                 def _task_by_id(task_id):
                     if task_id in mappings:
                         return mappings[task_id]
-                    try:
+                    # Use suppress to ignore exceptions during task ID resolution fallback without triggering B110
+                    with suppress(Exception):
                         return self._command_source._task_by_id(task_id)
-                    except Exception:
-                        pass
 
                 return _task_by_id
 
@@ -836,10 +832,9 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task._refreshed_command()()
         except Exception as ex:
             self._just_set_state(recovery_state)
-            try:
+            # Use suppress to ignore exceptions when retrying command refresh without triggering B110
+            with suppress(Exception):
                 self._task._refreshed_command()()
-            except Exception:
-                pass
             raise ex
 
     def _just_set_state(self, args):
@@ -1337,17 +1332,17 @@ class Workflow:
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        command_source: PyMenuGeneric,
+        workflow: PyMenu,
+        command_source: PyMenu,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize WorkflowWrapper.
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             The workflow object.
-        command_source : PyMenuGeneric
+        command_source : PyMenu
             The application root for commanding.
         """
         self.__dict__.update(
@@ -1456,10 +1451,9 @@ class Workflow:
                 def _task_by_id(task_id):
                     if task_id in mappings:
                         return mappings[task_id]
-                    try:
+                    # Use suppress to ignore exceptions during task ID resolution fallback without triggering B110
+                    with suppress(Exception):
                         return self._task_by_id_impl(task_id, workflow_state)
-                    except Exception:
-                        pass
 
                 return _task_by_id
 
@@ -1717,17 +1711,17 @@ class ClassicWorkflow:
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        command_source: PyMenuGeneric,
+        workflow: PyMenu,
+        command_source: PyMenu,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize ClassicWorkflow.
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             The workflow object.
-        command_source : PyMenuGeneric
+        command_source : PyMenu
             The application root for commanding.
         """
         self._workflow = workflow

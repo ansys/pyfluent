@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -45,7 +45,6 @@ from util.solver import check_report_definition_result
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 def test_exhaust_system(
     fault_tolerant_workflow_session_wo_exit, exhaust_system_geometry_filename
 ):

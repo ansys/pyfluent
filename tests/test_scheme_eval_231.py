@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -254,7 +254,6 @@ def test_two_way_conversion_for_pairs() -> None:
     assert val[1] == 5.0
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_long_list(new_solver_session) -> None:
     length = 10**6
     assert new_solver_session.scheme._eval([Symbol("+")] + list(range(length))) == sum(

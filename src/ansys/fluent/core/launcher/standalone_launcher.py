@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -254,6 +254,7 @@ class StandaloneLauncher:
                     self._server_info_file_name,
                     self.argvals["start_timeout"],
                     self._sifile_last_mtime,
+                    process.pid,
                 )
             except TimeoutError as ex:
                 if is_windows():
@@ -268,6 +269,7 @@ class StandaloneLauncher:
                         self._server_info_file_name,
                         self.argvals["start_timeout"],
                         self._sifile_last_mtime,
+                        process.pid,
                     )
                 else:
                     raise ex
@@ -298,13 +300,13 @@ class StandaloneLauncher:
                 elif self.argvals["lightweight_mode"]:
                     session.read_case_lightweight(self.argvals["case_file_name"])
                 else:
-                    session.file.read(
+                    session.settings.file.read(
                         file_type="case",
                         file_name=self.argvals["case_file_name"],
                     )
             if self.argvals["case_data_file_name"]:
                 if not FluentMode.is_meshing(self.argvals["mode"]):
-                    session.file.read(
+                    session.settings.file.read(
                         file_type="case-data",
                         file_name=self.argvals["case_data_file_name"],
                     )

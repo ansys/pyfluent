@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,6 +22,7 @@
 
 import warnings
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from pytest import WarningsRecorder
 
@@ -44,7 +45,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.1")
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -62,7 +62,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 
 
 # Failing for 24.1 but passes for 24.2 and 25.1
-@pytest.mark.fluent_version(">=24.2")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -171,7 +170,6 @@ def test_wildcard(new_solver_session):
         boundary_conditions.velocity_inlet["inl*"].moment
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -200,7 +198,6 @@ def test_wildcard_fnmatch(new_solver_session):
     assert sorted(mesh["mesh-[!2-5]"]()) == sorted(["mesh-1", "mesh-a"])
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -230,7 +227,6 @@ def test_wildcard_path_is_iterable(new_solver_session):
     assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
@@ -439,7 +435,6 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
     }
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -460,7 +455,6 @@ def warning_record():
         yield wrec
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
     icing_cls = solver.setup.boundary_conditions._child_classes[
@@ -556,8 +550,8 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     )
 
 
-@pytest.mark.fluent_version(">=25.2")
-def test_nested_alias(mixing_elbow_settings_session):
+@pytest.mark.fluent_version(">=25.2,<=26.1")
+def test_nested_alias_till_26r1(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.settings.setup.models.viscous.model = "k-omega"
     solver.settings.setup.models.viscous.k_omega_model = "standard"
@@ -591,6 +585,49 @@ def test_nested_alias(mixing_elbow_settings_session):
         ),
     ):
         solver.settings.setup.models.viscous.k_omega.kw_low_re_correction = False
+
+
+@pytest.mark.fluent_version(">=27.1")
+def test_nested_alias(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.setup.models.viscous.model = "k-omega"
+    solver.settings.setup.models.viscous.k_omega_model = "standard"
+    # k_omega_options is alias of k_omega
+    # kw_low_re_correction is alias of k_omega_low_re_correction
+    # Testing all 4 combinations
+    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = (
+        True
+    )
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = False"
+        ),
+    ):
+        solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction.enabled = (
+            False
+        )
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = True"
+        ),
+    ):
+        solver.settings.setup.models.viscous.k_omega_options.kw_low_re_correction.enabled = (
+            True
+        )
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = False"
+        ),
+    ):
+        solver.settings.setup.models.viscous.k_omega.kw_low_re_correction.enabled = (
+            False
+        )
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -633,7 +670,8 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     }
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4298
 @pytest.mark.fluent_version(">=25.2")
 def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
@@ -750,7 +788,6 @@ def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(config, "use_runtime_python_classes", True)
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_runtime_python_classes(
     use_runtime_python_classes, mixing_elbow_settings_session
 ):
@@ -792,7 +829,6 @@ def test_setting_string_constants(mixing_elbow_settings_session):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_named_object_commands(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     inlets = VelocityInlets(solver)
@@ -858,3 +894,19 @@ def test_read_only_command_execution(mixing_elbow_case_session):
     assert contour.display.is_read_only() is True
     with pytest.raises(ReadOnlyActionError):
         contour.display()
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_action_behavior(mixing_elbow_case_session):
+    solver = mixing_elbow_case_session
+    with pytest.raises(AttributeError, match="command/query object"):
+        solver.settings.solution.run_calculation.iterate.get_state()
+    assert isinstance(
+        solver.settings.solution.run_calculation.iterate.iter_count(), int
+    )
+    solver.settings.solution.run_calculation.iterate.iter_count = 55
+    assert solver.settings.solution.run_calculation.iterate.iter_count() == 55
+    with pytest.warns(PyFluentUserWarning, match="command/query object"):
+        solver.settings.solution.run_calculation.iterate.get_attrs(
+            ["active?"], recursive=True
+        )

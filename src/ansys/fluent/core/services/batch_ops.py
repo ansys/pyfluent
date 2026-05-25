@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -24,6 +24,7 @@
 
 import inspect
 import logging
+import sys
 from types import ModuleType
 from typing import TypeVar
 import weakref
@@ -51,8 +52,12 @@ class BatchOpsService:
             channel,
             GrpcErrorInterceptor(),
         )
-        self._stub = batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
+        self._stub = self._create_stub(intercept_channel)
         self._metadata = metadata
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
 
     def execute(
         self, request: batch_ops_pb2.ExecuteRequest
@@ -68,7 +73,7 @@ class BatchOps:
     --------
     >>> with pyfluent.BatchOps(solver):
     >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
-    >>>     solver.results.graphics.mesh["mesh-1"] = {}
+    >>>     solver.settings.results.graphics.mesh["mesh-1"] = {}
 
     Above code will execute both operations through a single gRPC call upon exiting the
     ``with`` block.
@@ -83,14 +88,16 @@ class BatchOps:
 
     >>> with pyfluent.BatchOps(solver):
     >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
-    >>>     solver.results.graphics.mesh["mesh-1"] = {}
-    >>>     solver.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
+    >>>     solver.settings.results.graphics.mesh["mesh-1"] = {}
+    >>>     solver.settings.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
 
-    will throw a ``KeyError`` as ``solver.results.graphics.mesh["mesh-1"]`` attempts to
+    will throw a ``KeyError`` as ``solver.settings.results.graphics.mesh["mesh-1"]`` attempts to
     access the ``mesh-1`` mesh object which has not been created yet.
     """
 
     _proto_files: list[ModuleType] | None = None
+    _api_module = api
+    _proto_module = batch_ops_pb2
 
     def _instance():
         return None
@@ -110,24 +117,39 @@ class BatchOps:
         """Class to create a single batch operation."""
 
         def __init__(
-            self, package: str, service: str, method: str, request_body: bytes
+            self,
+            owner_cls: type["BatchOps"],
+            package: str,
+            service: str,
+            method: str,
+            request_body: bytes,
         ) -> None:
             """__init__ method of Op class."""
-            self._request = batch_ops_pb2.ExecuteRequest(
+            self._request = owner_cls._proto_module.ExecuteRequest(
                 package=package,
                 service=service,
                 method=method,
                 request_body=request_body,
             )
-            if not BatchOps._proto_files:
-                BatchOps._proto_files = [
+            if not owner_cls._proto_files:
+                owner_proto_files = [
                     x[1]
-                    for x in inspect.getmembers(api, inspect.ismodule)
+                    for x in inspect.getmembers(owner_cls._api_module, inspect.ismodule)
                     if hasattr(x[1], "DESCRIPTOR")
+                ]
+                loaded_proto_files = [
+                    module
+                    for name, module in sys.modules.items()
+                    if name.endswith("_pb2") and hasattr(module, "DESCRIPTOR")
+                ]
+                owner_cls._proto_files = owner_proto_files + [
+                    module
+                    for module in loaded_proto_files
+                    if module not in owner_proto_files
                 ]
             self._supported = False
             self.response_cls = None
-            for file in BatchOps._proto_files:
+            for file in owner_cls._proto_files:
                 file_desc = file.DESCRIPTOR
                 if file_desc.package == package:
                     service_desc = file_desc.services_by_name.get(service)
@@ -151,7 +173,7 @@ class BatchOps:
                                 except AttributeError:
                                     pass
             if self._supported:
-                self._request = batch_ops_pb2.ExecuteRequest(
+                self._request = owner_cls._proto_module.ExecuteRequest(
                     package=package,
                     service=service,
                     method=method,
@@ -166,16 +188,17 @@ class BatchOps:
             obj = self.response_cls()
             try:
                 obj.ParseFromString(data)
-            except Exception:
-                pass
+            except Exception as ex:
+                # It will log any exception coming from grpc layer during parsing of data.
+                network_logger.warning(ex)
             self._status = status
             self._result = obj
 
     def __new__(cls, session) -> _TBatchOps:
         if cls.instance() is None:
-            instance = super(BatchOps, cls).__new__(cls)
-            instance._service: BatchOpsService = session._batch_ops_service
-            instance._ops: list[BatchOps.Op] = []
+            instance = super().__new__(cls)
+            instance._service = session._batch_ops_service
+            instance._ops = []
             instance.batching = False
             cls._instance = weakref.ref(instance)
         return cls.instance()
@@ -217,7 +240,13 @@ class BatchOps:
             BatchOps.Op object with a queued attribute which is true if the operation
             has been queued.
         """
-        op = BatchOps.Op(package, service, method, request.SerializeToString())
+        op = self.__class__.Op(
+            self.__class__,
+            package,
+            service,
+            method,
+            request.SerializeToString(),
+        )
         if op._supported:
             network_logger.debug(
                 f"Adding batch operation with package {package}, service {service} and method {method}"

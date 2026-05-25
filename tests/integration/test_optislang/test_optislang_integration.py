@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -37,7 +37,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_simple_solve(mixing_elbow_param_case_data_session):
     """Use case 1: This optiSLang integration test performs these steps.
@@ -55,7 +54,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     """
     # Step 1: Launch fluent session and read case file with and without data file
     solver_session = mixing_elbow_param_case_data_session
-    assert solver_session.is_server_healthy()
+    assert solver_session.is_active()
     if not solver_session.connection_properties.inside_container:
         solver_session.chdir(pyfluent.config.examples_path)
     case_name = "elbow_param.cas.h5"
@@ -143,7 +142,6 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_simple_solve_unitless(static_mixer_params_unitless_session):
     solver_session = static_mixer_params_unitless_session
@@ -207,7 +205,6 @@ def test_simple_solve_unitless(static_mixer_params_unitless_session):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_generate_read_mesh(mixing_elbow_geometry_filename):
     """Use case 2: This optiSLang integration test performs these steps.
@@ -225,7 +222,7 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     meshing_session = pyfluent.launch_fluent(
         mode="meshing", precision="double", processor_count=2, **grpc_kwds
     )
-    assert meshing_session.is_server_healthy()
+    assert meshing_session.is_active()
     if not meshing_session.connection_properties.inside_container:
         meshing_session.chdir(pyfluent.config.examples_path)
     temporary_resource_path = (
@@ -271,7 +268,6 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_case_file():
     case_path = examples.download_file(
@@ -310,7 +306,6 @@ def test_case_file():
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_parameters(mixing_elbow_param_case_data_session):
     solver_session = mixing_elbow_param_case_data_session
@@ -338,7 +333,6 @@ def test_parameters(mixing_elbow_param_case_data_session):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_session):
     Path(pyfluent.config.examples_path).mkdir(parents=True, exist_ok=True)

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -28,12 +28,12 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import *  # noqa: F401, F403
+from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 # flake8: noqa: F405
 
 
-@pytest.mark.codegen_required
 def test_builtin_settings(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     fluent_version = solver.get_fluent_version()
@@ -348,12 +348,18 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         )
         == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
     )
+    read_case_and_data = globals()["ReadCaseAndData"]
+    write_case_and_data = globals()["WriteCaseAndData"]
     assert ReadCase(settings_source=solver) == solver.file.read_case
     assert ReadData(settings_source=solver) == solver.file.read_data
-    assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
+    assert read_case_and_data(settings_source=solver) == solver.file.read_case_data
+    with pytest.warns(pyfluent.PyFluentDeprecationWarning, match="ReadCaseData"):
+        assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
     assert WriteCase(settings_source=solver) == solver.file.write_case
     assert WriteData(settings_source=solver) == solver.file.write_data
-    assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
+    assert write_case_and_data(settings_source=solver) == solver.file.write_case_data
+    with pytest.warns(pyfluent.PyFluentDeprecationWarning, match="WriteCaseData"):
+        assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
     assert (
         Initialize(settings_source=solver) == solver.solution.initialization.initialize
     )
@@ -367,8 +373,6 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_singleton_setting_assign_session(
     new_meshing_session, new_solver_session
 ):
@@ -402,8 +406,6 @@ def test_builtin_singleton_setting_assign_session(
     assert models.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_non_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
 ):
@@ -427,8 +429,6 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     assert inlet.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
 ):
@@ -465,7 +465,6 @@ def test_builtin_creatable_named_object_setting_assign_session(
         assert report_file.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
 def test_context_manager_1(mixing_elbow_case_data_session):
     import threading
 
@@ -498,7 +497,6 @@ def test_context_manager_1(mixing_elbow_case_data_session):
         t.join()
 
 
-@pytest.mark.codegen_required
 def test_context_manager_2(new_solver_session):
     solver = new_solver_session
 
@@ -510,3 +508,10 @@ def test_context_manager_2(new_solver_session):
     with using(solver):
         read_case(file_name=import_filename)
         assert Viscous().model() == "k-omega"
+
+
+def test_inactive_objects(new_solver_session):
+    solver = new_solver_session
+
+    with pytest.raises(InactiveObjectError):
+        pyfluent.solver.Viscous(solver)

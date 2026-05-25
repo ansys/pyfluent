@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -35,7 +35,7 @@ def _is_grpc_patched(image_tag: str):
     if image_tag.startswith("sha256:"):
         return True
 
-    if image_tag == "v26.1.latest":
+    if image_tag > "v26.1":
         return True
 
     min_patched_versions = {

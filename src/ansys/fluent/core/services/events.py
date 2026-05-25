@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -36,6 +36,10 @@ class EventsService(StreamingService):
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         """__init__ method of EventsService class."""
         super().__init__(
-            stub=EventsGrpcModule.EventsStub(channel),
+            stub=self._create_stub(channel),
             metadata=metadata,
         )
+
+    def _create_stub(self, channel: grpc.Channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return EventsGrpcModule.EventsStub(channel)

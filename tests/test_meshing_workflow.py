@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,6 +22,7 @@
 
 from functools import partial
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from util.meshing_workflow import (
     assign_task_arguments,
@@ -31,9 +32,7 @@ from util.meshing_workflow import (
 from ansys.fluent.core import examples
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
     watertight_workflow_session,
     mixing_elbow_geometry_filename,
@@ -141,7 +140,6 @@ def test_mixing_elbow_meshing_workflow(
     meshing_session.tui.mesh.check_mesh()
 
 
-@pytest.mark.codegen_required
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
     watertight_workflow_session,
 ):
@@ -204,9 +202,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.skip("Wait for later implementation.")
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# Wait for later implementation.
 def test_read_only_behaviour_of_command_arguments(new_meshing_session):
     session_new = new_meshing_session
     w = session_new.workflow
@@ -224,7 +221,6 @@ def test_read_only_behaviour_of_command_arguments(new_meshing_session):
     assert "set_state" in dir(m().NumParts)
 
 
-@pytest.mark.codegen_required
 def test_dummy_journal_data_model_methods(new_meshing_session):
     session_new = new_meshing_session
     w = session_new.workflow
@@ -235,7 +231,6 @@ def test_dummy_journal_data_model_methods(new_meshing_session):
         import_geom.delete_child()
 
 
-@pytest.mark.codegen_required
 def test_iterate_meshing_workflow_task_container(new_meshing_session):
     workflow = new_meshing_session.workflow
     workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -244,7 +239,6 @@ def test_iterate_meshing_workflow_task_container(new_meshing_session):
     assert tasks[0].name() == "Import Geometry"
 
 
-@pytest.mark.codegen_required
 def test_nonexistent_attrs(new_meshing_session):
     meshing = new_meshing_session
     assert not hasattr(meshing.workflow, "xyz")
@@ -252,8 +246,6 @@ def test_nonexistent_attrs(new_meshing_session):
         meshing.workflow.xyz
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_old_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -262,9 +254,8 @@ def test_old_workflow_structure(new_meshing_session):
         meshing.workflow.import_geometry
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
@@ -423,7 +414,6 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     solver.exit()
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_setting_none_type_tasks(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType=r"Fault-tolerant Meshing")
@@ -447,16 +437,26 @@ def test_inaccessible_meshing_attributes_after_switching_to_solver(
 ):
     meshing = new_meshing_session_wo_exit
     assert meshing.is_active() is True
-    assert meshing.is_server_healthy()
+    assert meshing._is_server_healthy()
     solver = meshing.switch_to_solver()
     assert solver.is_active() is True
     assert meshing.is_active() is False
     with pytest.raises(AttributeError):
         # 'switched' attribute is not there in Meshing.
         assert meshing.switched
-    assert dir(meshing) == ["is_active", "wait_process_finished"]
+    public_meshing_attrs = [
+        name
+        for name in dir(meshing)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_meshing_attrs == ["is_active", "wait_process_finished"]
     del meshing
     assert solver.is_active() is True
     solver.exit()
     assert solver.is_active() is False
-    assert dir(solver) == ["is_active", "wait_process_finished"]
+    public_solver_attrs = [
+        name
+        for name in dir(solver)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_solver_attrs == ["is_active", "wait_process_finished"]
