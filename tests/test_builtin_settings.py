@@ -315,7 +315,7 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         SimulationReports(settings_source=solver)
         == solver.results.report.simulation_reports
     )
-    if solver.get_fluent_version() >= FluentVersion.v271:
+    if fluent_version >= FluentVersion.v271:
         assert (
             InputParameters(settings_source=solver)
             == solver.parameter_workspace.parameters.input_parameters
