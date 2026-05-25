@@ -134,18 +134,8 @@ class FluentRestClient:
     retry_delay : float, optional
         Base delay in seconds between retries.  Uses exponential back-off:
         ``retry_delay * 2 ** attempt``.  Defaults to ``1.0``.
-
-    Examples
-    --------
-    >>> from ansys.fluent.core.rest import FluentRestClient
-    >>> client = FluentRestClient(
-    ...     "http://127.0.0.1:<port>",
-    ...     auth_token="<token>",
-    ...     component="fluent_1",
-    ... )
-    >>> client.get_var("setup/models/energy/enabled")
-    True
-    >>> client.set_var("setup/models/energy/enabled", False)
+    ssl_context : ssl.SSLContext, optional
+        Custom SSL context for HTTPS connections. Defaults to ``None``.
     """
 
     def __init__(
@@ -195,7 +185,7 @@ class FluentRestClient:
             warnings.warn(
                 "auth_token is being sent over plain HTTP. "
                 "Use https:// to protect credentials in transit.",
-                stacklevel=3,
+                stacklevel=2,
             )
 
     # ------------------------------------------------------------------
@@ -316,9 +306,7 @@ class FluentRestClient:
                     continue
                 if not is_safe and exc.code in _RETRYABLE_STATUS_CODES:
                     logger.warning(
-                        "Transient HTTP %d on non-idempotent %s %s — "
-                        "the server may have already processed the request. "
-                        "Verify the change took effect before retrying.",
+                        "HTTP %d on %s %s — non-idempotent, verify server state.",
                         exc.code,
                         method,
                         url,
@@ -341,9 +329,7 @@ class FluentRestClient:
                     continue
                 if not is_safe:
                     logger.warning(
-                        "Connection error on non-idempotent %s %s — "
-                        "the server may have already processed the request. "
-                        "Verify the change took effect before retrying.",
+                        "Connection error on %s %s — non-idempotent, verify server state.",
                         method,
                         url,
                     )
@@ -518,7 +504,7 @@ class FluentRestClient:
             Name of the child object to delete.
         ignore_not_found : bool, optional
             If ``True``, silently ignore HTTP 404 (object already absent).
-            Defaults to ``False`` for consistency with the gRPC proxy, but
+            Defaults to ``False``, but
             callers performing idempotent cleanup should pass ``True``.
 
         Raises
@@ -537,8 +523,8 @@ class FluentRestClient:
     def rename(self, path: str, new: str, old: str) -> None:
         """Rename a child object at *path* from *old* to *new*.
 
-        Calls ``PUT /api/{component}/{path}`` with body
-        ``{"rename": {"new": new, "old": old}}``.
+        Calls ``PUT /api/{component}/{path}/{old}`` with body
+        ``{"name": new}``.
 
         Parameters
         ----------
@@ -556,8 +542,8 @@ class FluentRestClient:
         """
         self._request(
             "PUT",
-            f"{self._api_base}/{path}",
-            body={"rename": {"new": new, "old": old}},
+            f"{self._api_base}/{path}/{old}",
+            body={"name": new},
         )
 
     def delete_child_objects(
@@ -569,8 +555,8 @@ class FluentRestClient:
         """Delete specific named children of *obj_type* under *path*.
 
         Calls ``DELETE /api/{component}/{path}/{obj_type}/{name}`` once for
-        each entry in *child_names*.  This is the REST equivalent of the gRPC
-        ``DeleteChildObjectsRequest`` with an explicit name list.
+        each entry in *child_names*.  Equivalent to deleting a specific
+        list of named child objects.
 
         Parameters
         ----------
@@ -593,9 +579,8 @@ class FluentRestClient:
         """Delete all named children of *obj_type* under *path*.
 
         Discovers children via :meth:`get_object_names` and then calls
-        :meth:`delete_child_objects` for all of them.  This is the REST
-        equivalent of the gRPC ``DeleteChildObjectsRequest`` with
-        ``delete_all = True``.
+        :meth:`delete_child_objects` for all of them.  Equivalent to
+        deleting every child at once.
 
         Parameters
         ----------
@@ -788,28 +773,21 @@ class FluentRestClient:
         return any(c in name for c in ("*", "?", "["))
 
     def is_interactive_mode(self) -> bool:
-        """Return ``False`` always.
+        """Query the server's run mode to determine interactivity.
 
-        The REST transport does not support interactive command prompts.
-        Returning ``False`` signals that no interactive confirmation
-        flow is available over HTTP.
+        Calls ``GET /api/connection/run_mode`` and returns ``True`` if
+        the server reports an interactive mode.  Falls back to ``False``
+        on any connection or parse error.
 
         Returns
         -------
         bool
-            Always ``False``.
+            ``True`` if the server is in interactive mode.
         """
-        return False
-
-    def get_command_confirmation_prompt(self, path: str, **kwargs) -> str:
-        """Return an empty string — interactive prompts are not supported over REST.
-
-        Since :meth:`is_interactive_mode` always returns ``False``, callers
-        that check that flag first will never reach this method.
-
-        Returns
-        -------
-        str
-            Always an empty string.
-        """
-        return ""
+        try:
+            result = self._request("GET", "api/connection/run_mode")
+            if isinstance(result, dict):
+                return bool(result.get("interactive", False))
+            return False
+        except Exception:
+            return False

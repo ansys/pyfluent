@@ -56,180 +56,26 @@ Connect to an already-running web server with known IP, port, and auth token::
 
 from __future__ import annotations
 
-import datetime
 import hashlib
 import logging
 import os
 import secrets
-import shutil
 import socket
 import ssl
 import subprocess
-import tempfile
 import time
 import urllib.error
 import urllib.request
 
-from cryptography import x509
-from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.x509.oid import NameOID
-
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 from ansys.fluent.core.rest.client import FluentRestClient
+from ansys.fluent.core.rest.tls import _TlsCertificateManager
 
-__all__ = ["RestSolverSession", "connect_to_webserver", "launch_webserver"]
+__all__ = ["launch_webserver"]
 
 logger = logging.getLogger(__name__)
 
 _LOCALHOST = "127.0.0.1"
-
-# ---------------------------------------------------------------------------
-# TLS certificate management (merged from _tls.py — SRP: owns cert lifecycle)
-# ---------------------------------------------------------------------------
-
-# Pre-generated 2048-bit DH parameters (not secret — safe to embed).
-# Avoids the 5-30 s runtime cost of generating them on every launch.
-_DH_PARAMS_PEM = """\
------BEGIN DH PARAMETERS-----
-MIIBCAKCAQEAmKGBEpRnNBAB8pyS2YWtRogTGITvroAso7vL1WWxMGeyHayuJKVC
-8HzD1aiPTITaT+99ECUPj7RST6KH+P299qXWDkseInVn92FnAXIOVPn48mgmOl7A
-idzQhoJd+HWEkziZWQqZAKRXvTF/boBlusYrkMsqkKEJ5DLvipIoQ+h+H+1Fr0EG
-KPnR0KRDUAJRo9t339TdvSCbGudCEAQdAa/EYU6GA4W/Yi5oZQC5Jwcg5Fyqs9Zq
-iPZh7mUFzfWNz84LbWOrB16RXHiD7r476/klbVgkVwhiPmh4MHHLtFLVERi+bxGz
-Yoebw+OpAHYdDclt8WJhNnnf1Ukwd/IYVwIBAg==
------END DH PARAMETERS-----
-"""
-
-
-class _TlsCertificateManager:
-    """Ephemeral TLS certificate lifecycle: generate → use → cleanup."""
-
-    def __init__(self) -> None:
-        self.cert_dir: str | None = None
-        self.ca_cert_path: str | None = None
-        self.ssl_context: ssl.SSLContext | None = None
-
-    # -- generation ------------------------------------------------------
-
-    def generate(self) -> None:
-        """Generate CA + server cert pair in a temporary directory."""
-        cert_dir = tempfile.mkdtemp(prefix="pyfluent_tls_")
-        logger.debug("TLS cert directory: %s", cert_dir)
-
-        now = datetime.datetime.now(datetime.timezone.utc)
-        # Backdate by 2 min so machines with slight clock skew don't
-        # reject the cert as "not yet valid".
-        skew = datetime.timedelta(minutes=2)
-        one_day = datetime.timedelta(days=1)
-
-        # ── CA key + certificate ────────────────────────────────────────
-        ca_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-        ca_name = x509.Name(
-            [x509.NameAttribute(NameOID.COMMON_NAME, "PyFluent Auto CA")]
-        )
-        ca_cert = (
-            x509.CertificateBuilder()
-            .subject_name(ca_name)
-            .issuer_name(ca_name)
-            .public_key(ca_key.public_key())
-            .serial_number(x509.random_serial_number())
-            .not_valid_before(now - skew)
-            .not_valid_after(now + one_day)
-            .add_extension(x509.BasicConstraints(ca=True, path_length=0), critical=True)
-            .sign(ca_key, hashes.SHA256())
-        )
-
-        # ── Server key + certificate ────────────────────────────────────
-        server_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-        server_name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "localhost")])
-        server_cert = (
-            x509.CertificateBuilder()
-            .subject_name(server_name)
-            .issuer_name(ca_name)
-            .public_key(server_key.public_key())
-            .serial_number(x509.random_serial_number())
-            .not_valid_before(now - skew)
-            .not_valid_after(now + one_day)
-            .add_extension(
-                x509.SubjectAlternativeName(
-                    [
-                        x509.DNSName("localhost"),
-                        x509.IPAddress(
-                            __import__("ipaddress").IPv4Address("127.0.0.1")
-                        ),
-                    ]
-                ),
-                critical=False,
-            )
-            .add_extension(
-                x509.KeyUsage(
-                    digital_signature=True,
-                    key_encipherment=True,
-                    content_commitment=False,
-                    data_encipherment=True,
-                    key_agreement=False,
-                    key_cert_sign=False,
-                    crl_sign=False,
-                    encipher_only=False,
-                    decipher_only=False,
-                ),
-                critical=True,
-            )
-            .sign(ca_key, hashes.SHA256())
-        )
-
-        # ── Write files ─────────────────────────────────────────────────
-        ca_cert_path = os.path.join(cert_dir, "CA.crt")
-        with open(ca_cert_path, "wb") as f:
-            f.write(ca_cert.public_bytes(serialization.Encoding.PEM))
-
-        with open(os.path.join(cert_dir, "webserver.crt"), "wb") as f:
-            f.write(server_cert.public_bytes(serialization.Encoding.PEM))
-
-        with open(os.path.join(cert_dir, "webserver.key"), "wb") as f:
-            f.write(
-                server_key.private_bytes(
-                    serialization.Encoding.PEM,
-                    serialization.PrivateFormat.TraditionalOpenSSL,
-                    serialization.NoEncryption(),
-                )
-            )
-
-        with open(os.path.join(cert_dir, "dh.pem"), "w") as f:
-            f.write(_DH_PARAMS_PEM)
-
-        logger.info("Generated ephemeral TLS certificates in %s", cert_dir)
-
-        self.cert_dir = cert_dir
-        self.ca_cert_path = ca_cert_path
-        self.ssl_context = self.build_ssl_context(ca_cert_path)
-
-    # -- SSL context (also usable standalone for connect_to_webserver) ---
-
-    @staticmethod
-    def build_ssl_context(ca_cert: str) -> ssl.SSLContext:
-        """Return an :class:`ssl.SSLContext` trusting *ca_cert*."""
-        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        ctx.load_verify_locations(ca_cert)
-        return ctx
-
-    # -- cleanup ---------------------------------------------------------
-
-    def cleanup(self) -> None:
-        """Remove the temporary certificate directory, if one exists."""
-        if self.cert_dir is not None:
-            shutil.rmtree(self.cert_dir, ignore_errors=True)
-            logger.debug("Cleaned up TLS cert directory: %s", self.cert_dir)
-            self.cert_dir = None
-            self.ca_cert_path = None
-            self.ssl_context = None
-
-    def __enter__(self) -> "_TlsCertificateManager":
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
-        self.cleanup()
 
 
 # ---------------------------------------------------------------------------
@@ -354,132 +200,6 @@ def _get_fluent_exe(
 
 
 # ---------------------------------------------------------------------------
-# RestSolverSession
-# ---------------------------------------------------------------------------
-
-
-class RestSolverSession:
-    """Solver session communicating over REST.
-
-    Thin wrapper around :class:`FluentRestClient` with lifecycle management.
-    """
-
-    def __init__(
-        self,
-        base_url: str,
-        *,
-        auth_token: str | None = None,
-        component: str = "fluent_1",
-        timeout: float = 30.0,
-        max_retries: int = 0,
-        retry_delay: float = 1.0,
-        ssl_context: ssl.SSLContext | None = None,
-        # Lifecycle objects — set by launch_webserver, not by end users.
-        _ip: str | None = None,
-        _port: int | None = None,
-        _process: subprocess.Popen | None = None,
-        _tls_manager: _TlsCertificateManager | None = None,
-    ) -> None:
-        self._client = FluentRestClient(
-            base_url,
-            auth_token=auth_token,
-            component=component,
-            timeout=timeout,
-            max_retries=max_retries,
-            retry_delay=retry_delay,
-            ssl_context=ssl_context,
-        )
-        self.ip: str | None = _ip
-        self.port: int | None = _port
-        self.auth_token: str | None = auth_token
-        self._process: subprocess.Popen | None = _process
-        self._tls_manager: _TlsCertificateManager | None = _tls_manager
-
-    # ------------------------------------------------------------------
-    # Direct-to-server pass-through methods
-    # ------------------------------------------------------------------
-
-    @property
-    def client(self) -> "FluentRestClient":
-        """Return the underlying REST client for low-level access."""
-        return self._client
-
-    def get_static_info(self) -> dict:
-        """Return the full settings schema."""
-        return self._client.get_static_info()
-
-    def get_var(self, path: str) -> object:
-        """Return the current value at *path*."""
-        return self._client.get_var(path)
-
-    def set_var(self, path: str, value: object) -> None:
-        """Set the value at *path*."""
-        self._client.set_var(path, value)
-
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> dict:
-        """Return requested attributes for the setting at *path*."""
-        return self._client.get_attrs(path, attrs, recursive=recursive)
-
-    def execute_command(self, path: str, **kwargs) -> object:
-        """Execute a command at *path* (last segment is the command name)."""
-        parts = path.rsplit("/", 1)
-        if len(parts) == 2:
-            parent, command = parts
-        else:
-            parent, command = "", parts[0]
-        return self._client.execute_cmd(parent, command, **kwargs)
-
-    def execute_query(self, path: str, **kwargs) -> object:
-        """Execute a query at *path* (last segment is the query name)."""
-        parts = path.rsplit("/", 1)
-        if len(parts) == 2:
-            parent, query = parts
-        else:
-            parent, query = "", parts[0]
-        return self._client.execute_query(parent, query, **kwargs)
-
-    def get_object_names(self, path: str) -> list[str]:
-        """Return child named-object names at *path*."""
-        return self._client.get_object_names(path)
-
-    def create_object(self, path: str, name: str) -> None:
-        """Create a named child object *name* at *path*."""
-        self._client.create(path, name)
-
-    def delete_object(self, path: str, name: str) -> None:
-        """Delete the named child object *name* at *path*."""
-        self._client.delete(path, name)
-
-    def rename_object(self, path: str, new: str, old: str) -> None:
-        """Rename a child object at *path* from *old* to *new*."""
-        self._client.rename(path, new, old)
-
-    def exit(self) -> None:
-        """Terminate the attached Fluent process (if any) and clean up."""
-        proc = self._process
-        if proc is not None:
-            proc.terminate()
-            try:
-                proc.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                proc.wait()
-            self._process = None
-        # Delegate TLS cleanup to the manager (SRP)
-        if self._tls_manager is not None:
-            self._tls_manager.cleanup()
-            self._tls_manager = None
-
-    def __enter__(self) -> "RestSolverSession":
-        """Enter context manager."""
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
-        """Exit context manager."""
-        self.exit()
-
-
-# ---------------------------------------------------------------------------
 # Public API — launchers
 # ---------------------------------------------------------------------------
 
@@ -494,7 +214,7 @@ def launch_webserver(
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
-) -> RestSolverSession:
+) -> FluentRestClient:
     """Launch a local Fluent process with the embedded HTTPS web server.
 
     Auto-generates TLS certs and auth token, discovers a free port,
@@ -521,7 +241,7 @@ def launch_webserver(
 
     Returns
     -------
-    RestSolverSession
+    FluentRestClient
 
     Raises
     ------
@@ -574,7 +294,7 @@ def launch_webserver(
 
         scheme = "https" if ssl_ctx else "http"
         base_url = f"{scheme}://{_LOCALHOST}:{port}"
-        session = RestSolverSession(
+        session = FluentRestClient(
             base_url,
             auth_token=auth_token,
             component=component,
@@ -582,10 +302,6 @@ def launch_webserver(
             max_retries=max_retries,
             retry_delay=retry_delay,
             ssl_context=ssl_ctx,
-            _ip=_LOCALHOST,
-            _port=port,
-            _process=process,
-            _tls_manager=tls,
         )
     except Exception:
         logger.exception(
@@ -601,77 +317,4 @@ def launch_webserver(
         tls.cleanup()
         raise
 
-    return session
-
-
-def connect_to_webserver(
-    ip: str,
-    port: int,
-    auth_token: str,
-    *,
-    component: str = "fluent_1",
-    timeout: float = 30.0,
-    max_retries: int = 0,
-    retry_delay: float = 1.0,
-    ca_cert: str | None = None,
-) -> RestSolverSession:
-    """Connect to an already-running Fluent REST server.
-
-    Scheme is auto-detected: HTTPS if *ca_cert* is provided, else HTTP.
-
-    Parameters
-    ----------
-    ip : str
-        Server IP or hostname.
-    port : int
-        Server TCP port.
-    auth_token : str
-        Bearer token.
-    component : str, optional
-        DataModel component.  Defaults to ``"fluent_1"``.
-    timeout : float, optional
-        HTTP timeout in seconds.  Defaults to ``30.0``.
-    max_retries : int, optional
-        Retries on transient errors.  Defaults to ``0``.
-    retry_delay : float, optional
-        Base retry delay in seconds.  Defaults to ``1.0``.
-    ca_cert : str, optional
-        PEM CA certificate path for HTTPS.
-
-    Returns
-    -------
-    RestSolverSession
-
-    Raises
-    ------
-    ConnectionError
-        If the server does not respond.
-    """
-    ssl_ctx = _TlsCertificateManager.build_ssl_context(ca_cert) if ca_cert else None
-    scheme = "https" if ca_cert else "http"
-    base_url = f"{scheme}://{ip}:{port}"
-
-    # Reachability probe — fail-fast before building the settings tree.
-    if not _probe_server(
-        base_url,
-        auth_token,
-        component=component,
-        timeout=min(timeout, 5.0),
-        ssl_context=ssl_ctx,
-    ):
-        raise ConnectionError(
-            f"Server at {base_url} unreachable. " "Check ip, port, and auth_token."
-        )
-
-    session = RestSolverSession(
-        base_url,
-        auth_token=auth_token,
-        component=component,
-        timeout=timeout,
-        max_retries=max_retries,
-        retry_delay=retry_delay,
-        ssl_context=ssl_ctx,
-        _ip=ip,
-        _port=port,
-    )
     return session
