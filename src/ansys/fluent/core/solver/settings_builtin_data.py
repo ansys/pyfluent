@@ -529,7 +529,12 @@ DATA = {
             until(FluentVersion.v271): "parametric_studies.design_points",
         },
     ),
-    "ParameterWorkspace": ("Singleton", "parameter_workspace"),
+    "ParameterWorkspace": (
+        "Singleton",
+        {
+            since(FluentVersion.v271): "parameter_workspace",
+        },
+    ),
     "ReadCase": ("Command", "file.read_case"),
     "ReadData": ("Command", "file.read_data"),
     "ReadCaseData": ("Command", "file.read_case_data"),
