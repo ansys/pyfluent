@@ -86,6 +86,9 @@ logger = logging.getLogger(__name__)
 # HTTP status codes eligible for automatic retry.
 _RETRYABLE_STATUS_CODES = frozenset({502, 503, 504})
 
+# HTTP methods safe to retry automatically (idempotent).
+_RETRYABLE_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
+
 
 class FluentRestError(RuntimeError):
     """Raised when the Fluent REST server returns an error response.
@@ -288,13 +291,16 @@ class FluentRestClient:
         url = self._url(endpoint)
         req = self._build_request(method, url, body)
 
+        is_safe = method.upper() in _RETRYABLE_METHODS
+        max_retries = self._max_retries if is_safe else 0
+
         last_exc: Exception | None = None
-        for attempt in range(self._max_retries + 1):
+        for attempt in range(max_retries + 1):
             try:
                 return self._send_once(req)
             except urllib.error.HTTPError as exc:
                 detail = self._parse_error_detail(exc)
-                if exc.code in _RETRYABLE_STATUS_CODES and attempt < self._max_retries:
+                if exc.code in _RETRYABLE_STATUS_CODES and attempt < max_retries:
                     wait = self._retry_delay * (2**attempt)
                     logger.warning(
                         "HTTP %d on %s %s — retry %d/%d in %.1fs",
@@ -302,15 +308,24 @@ class FluentRestClient:
                         method,
                         url,
                         attempt + 1,
-                        self._max_retries,
+                        max_retries,
                         wait,
                     )
                     time.sleep(wait)
                     last_exc = FluentRestError(exc.code, detail)
                     continue
+                if not is_safe and exc.code in _RETRYABLE_STATUS_CODES:
+                    logger.warning(
+                        "Transient HTTP %d on non-idempotent %s %s — "
+                        "the server may have already processed the request. "
+                        "Verify the change took effect before retrying.",
+                        exc.code,
+                        method,
+                        url,
+                    )
                 raise FluentRestError(exc.code, detail) from exc
             except urllib.error.URLError as exc:
-                if attempt < self._max_retries:
+                if attempt < max_retries:
                     wait = self._retry_delay * (2**attempt)
                     logger.warning(
                         "Connection error on %s %s: %s — retry %d/%d in %.1fs",
@@ -318,12 +333,20 @@ class FluentRestClient:
                         url,
                         exc.reason,
                         attempt + 1,
-                        self._max_retries,
+                        max_retries,
                         wait,
                     )
                     time.sleep(wait)
                     last_exc = exc
                     continue
+                if not is_safe:
+                    logger.warning(
+                        "Connection error on non-idempotent %s %s — "
+                        "the server may have already processed the request. "
+                        "Verify the change took effect before retrying.",
+                        method,
+                        url,
+                    )
                 raise FluentRestError(0, str(exc.reason)) from exc
 
         raise last_exc  # type: ignore[misc]
@@ -636,7 +659,8 @@ class FluentRestClient:
     def resize_list_object(self, path: str, size: int) -> None:
         """Resize the list-object at *path* to *size* elements.
 
-        Calls ``PUT /api/{component}/{path}`` with body ``{"size": size}``.
+        Calls ``POST /api/{component}/{path}`` with body
+        ``{"new-size": size}``.
 
         Parameters
         ----------
@@ -650,7 +674,7 @@ class FluentRestClient:
         FluentRestError
             If the server rejects the resize.
         """
-        self._request("PUT", f"{self._api_base}/{path}", body={"size": size})
+        self._request("POST", f"{self._api_base}/{path}", body={"new-size": size})
 
     def _execute(self, path: str, name: str, **kwds) -> Any:
         """Post a command or query and return the ``"reply"`` payload.
@@ -662,7 +686,7 @@ class FluentRestClient:
         """
         _SOLVER_READY_TIMEOUT = 120  # seconds
         _SOLVER_RETRY_DELAY = 5  # seconds between retries
-        start = time.time()
+        start = time.monotonic()
         while True:
             try:
                 result = self._request(
@@ -670,7 +694,7 @@ class FluentRestClient:
                 )
                 return result.get("reply") if isinstance(result, dict) else result
             except FluentRestError as exc:
-                elapsed = time.time() - start
+                elapsed = time.monotonic() - start
                 if (
                     exc.status == 400
                     and "Fluent not running" in str(exc)

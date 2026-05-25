@@ -21,6 +21,18 @@
 
 """Launch, connect, and session management for the Fluent REST transport.
 
+This module provides a **standalone, low-level** REST transport layer.
+It does **not** build a settings tree (no ``session.settings``), expose
+convenience helpers like ``read_case()``, or depend on ``flobject``.
+All interaction is via explicit path-based calls (``get_var``, ``set_var``,
+``execute_command``, etc.).
+
+Transport security
+~~~~~~~~~~~~~~~~~~
+``launch_webserver()`` always uses **HTTPS** with auto-generated ephemeral
+TLS certificates.  ``connect_to_webserver()`` uses HTTPS when a ``ca_cert``
+is provided, otherwise plain HTTP.
+
 Public API
 ----------
 * :class:`RestSolverSession` — thin wrapper around :class:`FluentRestClient`.
@@ -64,16 +76,11 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
 
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
-from ansys.fluent.core.rest.client import FluentRestClient  # noqa: F401
-from ansys.fluent.core.rest.client import FluentRestError  # noqa: F401
+from ansys.fluent.core.rest.client import FluentRestClient
 
 __all__ = ["RestSolverSession", "connect_to_webserver", "launch_webserver"]
 
 logger = logging.getLogger(__name__)
-
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
 
 _LOCALHOST = "127.0.0.1"
 
@@ -111,6 +118,9 @@ class _TlsCertificateManager:
         logger.debug("TLS cert directory: %s", cert_dir)
 
         now = datetime.datetime.now(datetime.timezone.utc)
+        # Backdate by 2 min so machines with slight clock skew don't
+        # reject the cert as "not yet valid".
+        skew = datetime.timedelta(minutes=2)
         one_day = datetime.timedelta(days=1)
 
         # ── CA key + certificate ────────────────────────────────────────
@@ -124,7 +134,7 @@ class _TlsCertificateManager:
             .issuer_name(ca_name)
             .public_key(ca_key.public_key())
             .serial_number(x509.random_serial_number())
-            .not_valid_before(now)
+            .not_valid_before(now - skew)
             .not_valid_after(now + one_day)
             .add_extension(x509.BasicConstraints(ca=True, path_length=0), critical=True)
             .sign(ca_key, hashes.SHA256())
@@ -139,7 +149,7 @@ class _TlsCertificateManager:
             .issuer_name(ca_name)
             .public_key(server_key.public_key())
             .serial_number(x509.random_serial_number())
-            .not_valid_before(now)
+            .not_valid_before(now - skew)
             .not_valid_after(now + one_day)
             .add_extension(
                 x509.SubjectAlternativeName(
@@ -443,10 +453,6 @@ class RestSolverSession:
     def rename_object(self, path: str, new: str, old: str) -> None:
         """Rename a child object at *path* from *old* to *new*."""
         self._client.rename(path, new, old)
-
-    # ------------------------------------------------------------------
-    # Lifecycle
-    # ------------------------------------------------------------------
 
     def exit(self) -> None:
         """Terminate the attached Fluent process (if any) and clean up."""
