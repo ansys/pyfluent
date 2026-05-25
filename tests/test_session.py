@@ -638,8 +638,7 @@ def test_solver_methods(new_solver_session):
         "setup",
         "solution",
         "results",
-        "parametric_studies",
-        "current_parametric_study",
+        "parameter_workspace",
         "parallel",
     }
     assert api_keys.issubset(set(dir(solver.settings)))

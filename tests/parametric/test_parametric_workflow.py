@@ -290,8 +290,12 @@ def test_parameters_list_function(static_mixer_settings_session):
     unitless_quantity.surface_names = ["outlet"]
     unitless_quantity.output_parameter = True
 
-    input_parameters_list = solver.parameters.input_parameters.list()
-    output_parameters_list = solver.parameters.output_parameters.list()
+    input_parameters_list = (
+        solver.parameter_workspace.parameters.input_parameters.list()
+    )
+    output_parameters_list = (
+        solver.parameter_workspace.parameters.output_parameters.list()
+    )
     fluent_version = solver.get_fluent_version()
     if fluent_version >= FluentVersion.v261:
         assert input_parameters_list == {
