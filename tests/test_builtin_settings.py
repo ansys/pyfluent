@@ -315,14 +315,24 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         SimulationReports(settings_source=solver)
         == solver.results.report.simulation_reports
     )
-    assert (
-        InputParameters(settings_source=solver)
-        == solver.parameter_workspace.parameters.input_parameters
-    )
-    assert (
-        OutputParameters(settings_source=solver)
-        == solver.parameter_workspace.parameters.output_parameters
-    )
+    if solver.get_fluent_version() >= FluentVersion.v271:
+        assert (
+            InputParameters(settings_source=solver)
+            == solver.parameter_workspace.parameters.input_parameters
+        )
+        assert (
+            OutputParameters(settings_source=solver)
+            == solver.parameter_workspace.parameters.output_parameters
+        )
+    else:
+        assert (
+            InputParameters(settings_source=solver)
+            == solver.parameters.input_parameters
+        )
+        assert (
+            OutputParameters(settings_source=solver)
+            == solver.parameters.output_parameters
+        )
     if fluent_version >= FluentVersion.v251:
         assert (
             CustomFieldFunctions(settings_source=solver)
