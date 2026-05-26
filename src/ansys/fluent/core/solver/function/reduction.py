@@ -97,7 +97,8 @@ class Weight(Enum):
 
     Examples
     --------
-    >>> solver.fields.reduction.sum(expr, locations, weight=solver.fields.reduction.weight.AREA)
+    >>> from ansys.fluent.core.solver.function import reduction
+    >>> reduction.sum(expr, locations, weight=reduction.weight.AREA)
     """
 
     AREA = "Area"
