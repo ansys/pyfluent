@@ -29,7 +29,7 @@ Follow this checklist to decide where to open a report.
      or translate the Python calls into a Scheme journal.
    - Run the recorded Scheme journal (or equivalent TUI commands) directly in Fluent.
    - If the problem reproduces in Fluent with the Scheme/TUI journal, it is almost certainly a Fluent-side issue.
-2. If the issue is only visible when using Python (e.g., wrong parameter mapping, malformed request sent to Fluent, missing API convenience),
+2. If the issue is only visible when using Python (for example, wrong parameter mapping, malformed request sent to Fluent, missing API convenience),
    it is likely a PyFluent issue.
 
 ### When to contact which channel
