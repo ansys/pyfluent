@@ -93,7 +93,12 @@ from ansys.fluent.core.variable_strategies import (
 
 
 class Weight(Enum):
-    """Weight for sum."""
+    """Enum of available weighting options for `sum` and `sum_if`.
+
+    Examples
+    --------
+    >>> solver.fields.reduction.sum(expr, locations, weight=solver.fields.reduction.weight.AREA)
+    """
 
     AREA = "Area"
     VOLUME = "Volume"
