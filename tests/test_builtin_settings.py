@@ -315,10 +315,28 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         SimulationReports(settings_source=solver)
         == solver.results.report.simulation_reports
     )
-    assert InputParameters(settings_source=solver) == solver.parameters.input_parameters
-    assert (
-        OutputParameters(settings_source=solver) == solver.parameters.output_parameters
-    )
+    if fluent_version >= FluentVersion.v271:
+        assert (
+            ParameterWorkspace(settings_source=solver)
+            == solver.settings.parameter_workspace
+        )
+        assert (
+            InputParameters(settings_source=solver)
+            == solver.settings.parameter_workspace.parameters.input_parameters
+        )
+        assert (
+            OutputParameters(settings_source=solver)
+            == solver.settings.parameter_workspace.parameters.output_parameters
+        )
+    else:
+        assert (
+            InputParameters(settings_source=solver)
+            == solver.parameters.input_parameters
+        )
+        assert (
+            OutputParameters(settings_source=solver)
+            == solver.parameters.output_parameters
+        )
     if fluent_version >= FluentVersion.v251:
         assert (
             CustomFieldFunctions(settings_source=solver)
@@ -331,23 +349,57 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     solver.settings.parametric_studies.initialize(
         project_filename="mixing_elbow_param.flprj"
     )
-    assert ParametricStudies(settings_source=solver) == solver.parametric_studies
-    assert (
-        ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
-        == solver.parametric_studies["mixing_elbow-Solve"]
-    )
-    assert (
-        DesignPoints(settings_source=solver, parametric_studies="mixing_elbow-Solve")
-        == solver.parametric_studies["mixing_elbow-Solve"].design_points
-    )
-    assert (
-        DesignPoint(
-            settings_source=solver,
-            parametric_studies="mixing_elbow-Solve",
-            name="Base DP",
+    if fluent_version >= FluentVersion.v271:
+        assert (
+            ParametricStudies(settings_source=solver)
+            == solver.settings.parameter_workspace.parametric_studies
         )
-        == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
-    )
+        assert (
+            ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
+            == solver.settings.parameter_workspace.parametric_studies[
+                "mixing_elbow-Solve"
+            ]
+        )
+    else:
+        assert ParametricStudies(settings_source=solver) == solver.parametric_studies
+        assert (
+            ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
+            == solver.parametric_studies["mixing_elbow-Solve"]
+        )
+    if fluent_version >= FluentVersion.v271:
+        assert (
+            DesignPoints(
+                settings_source=solver, parametric_studies="mixing_elbow-Solve"
+            )
+            == solver.settings.parameter_workspace.parametric_studies[
+                "mixing_elbow-Solve"
+            ].design_points
+        )
+        assert (
+            DesignPoint(
+                settings_source=solver,
+                parametric_studies="mixing_elbow-Solve",
+                name="Base DP",
+            )
+            == solver.settings.parameter_workspace.parametric_studies[
+                "mixing_elbow-Solve"
+            ].design_points["Base DP"]
+        )
+    else:
+        assert (
+            DesignPoints(
+                settings_source=solver, parametric_studies="mixing_elbow-Solve"
+            )
+            == solver.parametric_studies["mixing_elbow-Solve"].design_points
+        )
+        assert (
+            DesignPoint(
+                settings_source=solver,
+                parametric_studies="mixing_elbow-Solve",
+                name="Base DP",
+            )
+            == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
+        )
     read_case_and_data = globals()["ReadCaseAndData"]
     write_case_and_data = globals()["WriteCaseAndData"]
     assert ReadCase(settings_source=solver) == solver.file.read_case
