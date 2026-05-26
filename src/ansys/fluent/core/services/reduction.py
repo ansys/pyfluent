@@ -280,8 +280,6 @@ class Reduction:
 
     _proto_module = ReductionProtoModule
 
-    weight = Weight
-
     def __init__(self, service: ReductionService, ctxt=None):
         """__init__ method of Reduction class."""
         self.service = service
