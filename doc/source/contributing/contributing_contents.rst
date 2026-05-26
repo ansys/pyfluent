@@ -128,7 +128,7 @@ Quick checklist
 ^^^^^^^^^^^^^^^
 - If the behavior concerns Python packaging, installation, import errors,
   or issues specific to Python → open a PyFluent GitHub issue.
-- If the issue relates to a particular Fluent physics model, solver behaviour,
+- If the issue relates to a particular Fluent physics model, solver behavior,
   meshing or solver results, or can be reproduced inside Fluent without Python → raise
   it with Ansys (`Support <https://support.ansys.com>`_ or `Developer Forum <https://discuss.ansys.com>`_).
 
