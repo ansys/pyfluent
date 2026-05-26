@@ -330,11 +330,6 @@ class Reduction:
         request.locations.extend(self._get_location_string(locations, ctxt))
         return request
 
-    @property
-    def weight(self):
-        """Weight for calculating sum."""
-        return Weight
-
     def area(self, locations, ctxt=None) -> Any:
         """Get area."""
         request = self._make_request("AreaRequest", locations, ctxt)

@@ -27,7 +27,7 @@ import pytest
 from ansys.fluent.core import FluentVersion
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.services.reduction import _locn_names_and_objs
+from ansys.fluent.core.services.reduction import Weight, _locn_names_and_objs
 from ansys.fluent.core.solver.function import reduction
 from ansys.units import VariableCatalog
 
@@ -397,7 +397,7 @@ def _test_sum_if(solver):
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight=solver.fields.reduction.weight.AREA,
+        weight=Weight.AREA,
     )
 
     assert val == expr_val
@@ -568,7 +568,7 @@ def test_named_expression_as_input(static_mixer_case_session):
         expression=absolute_pressure_expression,
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight=solver.fields.reduction.weight.AREA,
+        weight=Weight.AREA,
     )
     assert val == expr_val
 
