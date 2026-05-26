@@ -127,16 +127,16 @@ Follow this checklist to decide where to open a report.
 Quick checklist
 ^^^^^^^^^^^^^^^
 - If the behavior concerns Python packaging, installation, import errors,
-or issues specific to Python → open a PyFluent GitHub issue.
+  or issues specific to Python → open a PyFluent GitHub issue.
 - If the issue relates to a particular Fluent physics model, solver behaviour,
-meshing or solver results, or can be reproduced inside Fluent without Python → raise
-it with Ansys (`Support <https://support.ansys.com>`_ or `Developer Forum <https://discuss.ansys.com>`_).
+  meshing or solver results, or can be reproduced inside Fluent without Python → raise
+  it with Ansys (`Support <https://support.ansys.com>`_ or `Developer Forum <https://discuss.ansys.com>`_).
 
 How to check
 ^^^^^^^^^^^^
 1. Try to reproduce inside Fluent without PyFluent:
    - Use Fluent's journaling/recording capability to record your actions as a Scheme (.jou) or TUI script,
-   or translate the Python calls into a Scheme journal.
+     or translate the Python calls into a Scheme journal.
    - Run the recorded Scheme journal (or equivalent TUI commands) directly in Fluent.
    - If the problem reproduces in Fluent with the Scheme/TUI journal, it is almost certainly a Fluent-side issue.
 2. If the issue is only visible when using Python (e.g., wrong parameter mapping, malformed request sent to Fluent, missing API convenience) it is likely a PyFluent issue.
