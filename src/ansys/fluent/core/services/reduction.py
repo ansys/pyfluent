@@ -280,6 +280,21 @@ class Reduction:
 
     _proto_module = ReductionProtoModule
 
+    weight = Weight
+    """Enum of available weighting options for :meth:`sum` and :meth:`sum_if`.
+
+    Provides access to the :class:`~ansys.fluent.core.solver.function.reduction.Weight`
+    enum without requiring a separate import. Use a member of this enum as the
+    ``weight`` argument to :meth:`sum` or :meth:`sum_if`.
+
+    Available members: ``AREA``, ``VOLUME``, ``MASS``, ``MASS_FLOW_RATE``,
+    ``ABS_MASS_FLOW_RATE``.
+
+    Examples
+    --------
+    >>> solver.fields.reduction.sum(expr, locations, weight=solver.fields.reduction.weight.AREA)
+    """
+
     def __init__(self, service: ReductionService, ctxt=None):
         """__init__ method of Reduction class."""
         self.service = service
@@ -329,11 +344,6 @@ class Reduction:
             request.condition = condition
         request.locations.extend(self._get_location_string(locations, ctxt))
         return request
-
-    @property
-    def weight(self):
-        """Weight for calculating sum."""
-        return Weight
 
     def area(self, locations, ctxt=None) -> Any:
         """Get area."""
