@@ -19,7 +19,7 @@ body:
           required: true
         - label: I am using a Python virtual environment.
           required: true
-        - label: I have confirmed this is a PyFluent issue, not a problem with Ansys Fluent itself. ([Contributing Guidelines](https://github.com/ansys/pyfluent/blob/main/CONTRIBUTING.md))
+        - label: I have confirmed this is a PyFluent issue, not a problem with Ansys Fluent. ([Contributing Guidelines](https://github.com/ansys/pyfluent/blob/main/CONTRIBUTING.md))
           required: true
 
   - type: textarea
