@@ -120,39 +120,11 @@ Post issues
 Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
 submit bug reports and feature requests directly pertaining to PyFluent.
 
-Triage guidance: Is the problem in PyFluent or in Fluent?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Follow this checklist to decide where to open a report.
-
-Quick checklist
-^^^^^^^^^^^^^^^
-- If the behavior concerns Python packaging, installation, import errors,
-  or issues specific to Python → open a PyFluent GitHub issue.
+Triage guidance
+~~~~~~~~~~~~~~~
+Follow this checklist to decide whether the issue belongs to PyFluent or Fluent:
 - If the issue relates to a particular Fluent physics model, solver behavior,
   meshing or solver results, or can be reproduced inside Fluent without Python → raise
-  it with Ansys (`Support <https://support.ansys.com>`_ or `Developer Forum <https://discuss.ansys.com>`_).
-
-How to check
-^^^^^^^^^^^^
-1. Try to reproduce inside Fluent without PyFluent:
-   - Use Fluent's journaling/recording capability to record your actions as a Scheme (.jou) or TUI script,
-     or translate the Python calls into a Scheme journal.
-   - Run the recorded Scheme journal (or equivalent TUI commands) directly in Fluent.
-   - If the problem reproduces in Fluent with the Scheme/TUI journal, it is almost certainly a Fluent-side issue.
-2. If the issue is only visible when using Python (for example, wrong
-   parameter mapping, malformed request sent to Fluent, missing API
-   convenience) it is likely a PyFluent issue.
-
-When to contact which channel
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Ansys `Support <https://support.ansys.com>`_: product defects affecting simulation correctness, licensing, installation, or if you need formal tracking.
-- Ansys `Developer Forum <https://discuss.ansys.com>`_: general Fluent usage questions, workflow discussion, or community help.
-- PyFluent `GitHub <https://github.com/ansys/pyfluent/issues>`_: PyFluent installation, packaging, Python API mapping, client-side bugs, examples, or where there is genuine uncertainty.
-
-If you open a PyFluent issue (recommended when unsure), please include:
-- PyFluent version, Python version, OS.
-- Fluent product/version, and whether running Fluent GUI, batch, or headless.
-- Short description of expected vs actual behavior.
-- Minimal reproduction steps (Python snippet) and, if available, the equivalent Scheme/TUI journal produced by Fluent.
-- Attach logs, error output, screenshots, and a small case/mesh if possible and allowed by your policies.
-- Mark clearly if you have already reproduced the issue by running the Scheme/TUI journal in Fluent.
+  it with (`Ansys customer support <https://support.ansys.com>`_ or `Ansys Developer forum <https://discuss.ansys.com>`_).
+- If the behavior concerns Python packaging, installation, import errors,
+  or issues specific to PyFluent → open a PyFluent GitHub issue.

@@ -7,18 +7,9 @@ PyFluent.
 
 The following contribution information is specific to PyFluent.
 
-Use the [PyFluent Issues](https://github.com/ansys/pyfluent/issues) page to
-submit questions, bug reports, and feature requests directly pertaining to PyFluent.
-
-## Triage and issue reporting
-
-For guidance on whether to open a PyFluent issue or use Fluent support
-channels, follow the canonical instructions in the [Contributing] topic in
-the *PyAnsys developer's guide*.
-
-Use the [PyFluent Issues](https://github.com/ansys/pyfluent/issues) page to
-open issues that are specific to PyFluent, or when the appropriate reporting
-channel is unclear.
+Additional information can be found in the
+[PyFluent Contributing](https://fluent.docs.pyansys.com/version/stable/contributing/contributing_contents.html)
+documentation.
 
 [Contributing]: https://dev.docs.pyansys.com/how-to/contributing.html
 
