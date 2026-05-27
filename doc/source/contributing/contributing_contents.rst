@@ -126,6 +126,6 @@ Follow this checklist to decide whether the issue belongs to PyFluent or Fluent:
 
 - If the issue relates to a particular Fluent physics model, solver behavior,
   meshing or solver results, or can be reproduced inside Fluent without Python → raise
-  it with (`Ansys customer support <https://support.ansys.com>`_ or `Ansys Developer forum <https://discuss.ansys.com>`_).
+  it with (`Ansys customer support <https://support.ansys.com>`_ or `Ansys developer forum <https://discuss.ansys.com>`_).
 - If the behavior concerns Python packaging, installation, import errors,
   or issues specific to PyFluent → open a PyFluent GitHub issue.
