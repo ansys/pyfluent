@@ -118,7 +118,7 @@ sections.
 Post issues
 -----------
 Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
-submit questions, bug reports, and feature requests directly pertaining to PyFluent.
+submit bug reports, and feature requests directly pertaining to PyFluent.
 
 Triage guidance: Is the problem in PyFluent or in Fluent?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
