@@ -6,4 +6,4 @@ blank_issues_enabled: true
 contact_links:
   - name: Fluent issue
     url: https://discuss.ansys.com/
-    about: "Experiencing a problem in Fluent or its API? Please report it on the Ansys Developer Forum or through the usual support channel. ([Contributing Guidelines](https://github.com/ansys/pyfluent/blob/main/CONTRIBUTING.md))"
+    about: "Experiencing a problem in Fluent or its API? Please report it on the Ansys Developer Forum or through the Ansys support channel. ([Contributing Guidelines](https://github.com/ansys/pyfluent/blob/main/CONTRIBUTING.md))"
