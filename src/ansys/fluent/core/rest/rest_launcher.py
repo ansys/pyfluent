@@ -29,9 +29,11 @@ All interaction is via explicit path-based calls (``get_var``, ``set_var``,
 
 Transport security
 ~~~~~~~~~~~~~~~~~~
-``launch_webserver()`` always uses **HTTPS** with auto-generated ephemeral
-TLS certificates.  ``connect_to_webserver()`` uses HTTPS when a ``ca_cert``
-is provided, otherwise plain HTTP.
+``launch_webserver()`` uses **HTTPS** when user-provided TLS certificates
+are found (via the ``cert_dir`` parameter, the
+``FLUENT_WEBSERVER_CERTIFICATE_ROOT`` environment variable, or the default
+Fluent install path).  Falls back to plain HTTP if no certificates are
+available.
 
 Public API
 ----------
@@ -69,7 +71,7 @@ import urllib.request
 
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 from ansys.fluent.core.rest.client import FluentRestClient
-from ansys.fluent.core.rest.tls import _TlsCertificateManager
+from ansys.fluent.core.rest.tls import _build_ssl_context, _find_cert_dir
 
 __all__ = ["launch_webserver"]
 
@@ -208,6 +210,7 @@ def launch_webserver(
     *,
     product_version: str | None = None,
     fluent_path: str | None = None,
+    cert_dir: str | None = None,
     dimension: str = "3ddp",
     start_timeout: int = 60,
     component: str = "fluent_1",
@@ -215,10 +218,10 @@ def launch_webserver(
     max_retries: int = 0,
     retry_delay: float = 1.0,
 ) -> FluentRestClient:
-    """Launch a local Fluent process with the embedded HTTPS web server.
+    """Launch a local Fluent process with the embedded web server.
 
-    Auto-generates TLS certs and auth token, discovers a free port,
-    spawns Fluent with ``-ws``, and returns a connected session.
+    Discovers user-provided TLS certificates and launches Fluent with
+    HTTPS when found, otherwise falls back to plain HTTP.
 
     Parameters
     ----------
@@ -226,6 +229,12 @@ def launch_webserver(
         Fluent version, e.g. ``"261"``.
     fluent_path : str, optional
         Explicit path to the Fluent executable.
+    cert_dir : str, optional
+        Path to a directory containing ``webserver.crt``,
+        ``webserver.key``, and ``dh.pem``.  Takes precedence over the
+        ``FLUENT_WEBSERVER_CERTIFICATE_ROOT`` environment variable and
+        the default Fluent install path.  If no certificates are found
+        from any source, Fluent starts in HTTP mode.
     dimension : str, optional
         Solver dimension.  Defaults to ``"3ddp"``.
     start_timeout : int, optional
@@ -253,15 +262,22 @@ def launch_webserver(
         If the web server does not start within *start_timeout* seconds.
     Exception
         Any exception during server connection is re-raised after
-        terminating the spawned process and cleaning up TLS files.
+        terminating the spawned process.
     """
     # 1 — generate a fresh per-launch auth token
     auth_token = _generate_auth_token()
 
-    # 2 — generate ephemeral TLS certificates (lifecycle managed by _TlsCertificateManager)
-    tls = _TlsCertificateManager()
-    tls.generate()
-    ssl_ctx = tls.ssl_context
+    # 2 — discover user-provided TLS certificates
+    resolved_cert_dir = _find_cert_dir(cert_dir)
+    ssl_ctx = None
+    if resolved_cert_dir:
+        ssl_ctx = _build_ssl_context(resolved_cert_dir)
+        logger.info("HTTPS enabled — certificates from %s", resolved_cert_dir)
+    else:
+        logger.warning(
+            "No TLS certificates found. Launching Fluent in HTTP mode. "
+            "For HTTPS, provide webserver.crt, webserver.key, and dh.pem "
+        )
 
     # 3 — discover a free local TCP port (pure stdlib)
     port = _get_free_port()
@@ -279,16 +295,14 @@ def launch_webserver(
 
     env = os.environ.copy()
     env["FLUENT_WEBSERVER_TOKEN"] = auth_token
-    env["FLUENT_WEBSERVER_CERTIFICATE_ROOT"] = tls.cert_dir
+    if resolved_cert_dir:
+        env["FLUENT_WEBSERVER_CERTIFICATE_ROOT"] = resolved_cert_dir
     process = subprocess.Popen(launch_cmd, env=env)  # nosec B603 B607
 
     if process.poll() is not None:
-        tls.cleanup()
         raise RuntimeError(f"Fluent exited immediately (rc={process.returncode}).")
 
     # 6 — wait for the web server and construct the session
-    # Wrap post-Popen work in try/except so a failure (timeout,
-    # auth error, etc.) terminates the spawned process before re-raising.
     try:
         _wait_for_server(port, timeout=start_timeout, ssl_context=ssl_ctx)
 
@@ -305,7 +319,7 @@ def launch_webserver(
         )
     except Exception:
         logger.exception(
-            "Failed after launching Fluent (pid=%d) — terminating process.",
+            "Failed after launching Fluent (pid=%d) — terminating.",
             process.pid,
         )
         process.terminate()
@@ -314,7 +328,6 @@ def launch_webserver(
         except subprocess.TimeoutExpired:
             process.kill()
             process.wait()
-        tls.cleanup()
         raise
 
     return session

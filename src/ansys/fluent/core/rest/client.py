@@ -159,6 +159,11 @@ class FluentRestClient:
         self._ssl_context = ssl_context
         self._api_base = f"api/{component}"
 
+    @property
+    def _is_secure(self) -> bool:
+        """Return True if the connection is HTTPS, False otherwise."""
+        return self._base_url.startswith("https://")
+
     # ------------------------------------------------------------------
     # Validation (SRP: input validation is a single, isolated concern)
     # ------------------------------------------------------------------
