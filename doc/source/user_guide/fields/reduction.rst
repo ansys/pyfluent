@@ -311,10 +311,11 @@ Object-Oriented:
 
 .. code-block:: python
 
+  >>> from ansys.fluent.core.services.reduction import Weight
   >>> reduction.sum(
   >>>   expression=VariableCatalog.ABSOLUTE_PRESSURE,
   >>>   locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
-  >>>   weight=reduction.weight.AREA
+  >>>   weight=Weight.AREA
   >>> )
   80349034.56621933
 
@@ -326,7 +327,7 @@ Object-Oriented:
   >>>   expression=VariableCatalog.ABSOLUTE_PRESSURE,
   >>>   condition="AbsolutePressure > 0[Pa]",
   >>>   locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
-  >>>   weight=reduction.weight.AREA
+  >>>   weight=Weight.AREA
   >>> )
   80349034.56621933
 

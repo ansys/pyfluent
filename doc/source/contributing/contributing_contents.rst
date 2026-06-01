@@ -85,18 +85,6 @@ You can clear all HTML files from the ``_build/html`` directory with:
 
     make clean
 
-Post issues
------------
-Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
-submit questions, bug reports, and feature requests directly pertaining to PyFluent.
-
-.. note::
-
-    For questions and issues concerning Fluent or its API, please use the
-   `Ansys Developer Forum <https://discuss.ansys.com>`_ or
-   `Ansys Support <https://support.ansys.com>`_.
-
-
 Adhere to code style
 --------------------
 PyFluent is compliant with the `PyAnsys code style
@@ -126,3 +114,18 @@ the branch and commit names conventions as described in the *PyAnsys Developer's
 `branch <https://dev.docs.pyansys.com/how-to/contributing.html#branch-naming-conventions>`_ and 
 `commit <https://dev.docs.pyansys.com/how-to/contributing.html#commit-naming-conventions>`_ naming
 sections.
+
+Post issues
+-----------
+Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
+submit bug reports and feature requests directly pertaining to PyFluent.
+
+Triage guidance
+~~~~~~~~~~~~~~~
+Follow this checklist to decide whether the issue belongs to PyFluent or Fluent:
+
+- If the issue relates to a particular Fluent physics model, solver behavior,
+  meshing or solver results, or can be reproduced inside Fluent without Python → raise
+  it with (`Ansys customer support <https://support.ansys.com>`_ or `Ansys developer forum <https://discuss.ansys.com>`_).
+- If the behavior concerns Python packaging, installation, import errors,
+  or issues specific to PyFluent → open a PyFluent GitHub issue.
