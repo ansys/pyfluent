@@ -73,6 +73,7 @@ HTTP 4xx / 5xx responses raise :class:`FluentRestError`.
 import hashlib
 import json
 import logging
+import socket
 import ssl
 import time
 from typing import Any
@@ -104,6 +105,10 @@ class FluentRestError(RuntimeError):
     def __init__(self, status: int, message: str) -> None:
         self.status = status
         super().__init__(f"HTTP {status}: {message}")
+
+
+class FluentServerShutdown(Exception):
+    """Raised when trying to use a Fluent session after it has been shut down."""
 
 
 class FluentRestClient:
@@ -164,6 +169,7 @@ class FluentRestClient:
         self._retry_delay = retry_delay
         self._ssl_context = ssl_context
         self._api_base = f"api/{component}"
+        self._is_closed = False
 
     @property
     def _is_secure(self) -> bool:
@@ -256,7 +262,7 @@ class FluentRestClient:
     def _send_once(self, req: urllib.request.Request) -> Any:
         """Execute a single HTTP round-trip and return decoded JSON.
 
-        Returns ``{}`` for empty 2xx bodies.
+        Returns ``{}`` for empty 2xx bodies or non-JSON responses.
 
         Raises
         ------
@@ -269,7 +275,12 @@ class FluentRestClient:
             req, timeout=self._timeout, context=self._ssl_context
         ) as resp:  # nosec B310
             raw = resp.read()
-            return json.loads(raw) if raw.strip() else {}
+            if not raw.strip():
+                return {}
+            try:
+                return json.loads(raw)
+            except (json.JSONDecodeError, ValueError):
+                return {}
 
     def _request(
         self,
@@ -298,7 +309,14 @@ class FluentRestClient:
         ------
         FluentRestError
             For any HTTP 4xx / 5xx response after retries are exhausted.
+        FluentServerShutdown
+            If the session has been closed via :meth:`exit`.
         """
+        if self._is_closed:
+            raise FluentServerShutdown(
+                "Cannot execute request: session is closed. "
+                "The Fluent server has been shut down via exit()."
+            )
         url = self._url(endpoint)
         req = self._build_request(method, url, body)
 
@@ -832,25 +850,34 @@ class FluentRestClient:
     # Session lifecycle
     # ------------------------------------------------------------------
 
-    def exit(self, force: bool = True) -> None:
+    def exit(self, force: bool = True, timeout: float = 30.0) -> None:
         """Gracefully shut down the Fluent session.
 
-        Sends ``POST /api/connection/exit`` to ask the server to
-        terminate.  The server handles its own process cleanup.
+        Sends ``POST /api/connection/exit`` to ask the server to terminate.
+        Immediately marks this session as closed — subsequent operations
+        will raise :class:`FluentServerShutdown`.
 
         Parameters
         ----------
         force : bool, optional
-            If ``True`` (default), appends ``?force=true`` to skip any
-            confirmation prompt the server might require.
+            If ``True`` (default), appends ``?force=true`` to skip
+            confirmation prompts.
+        timeout : float, optional
+            Maximum seconds to wait for the server to become unreachable.
+            Defaults to ``30.0``.
 
         Raises
         ------
         FluentRestError
             HTTP 403 if exit is blocked (e.g. calculation running),
-            or HTTP 409 if a confirmation prompt is needed and
-            *force* is ``False``.
+            HTTP 409 if a confirmation prompt is needed and *force*
+            is ``False``.
+        FluentServerShutdown
+            If called on an already-closed session.
         """
+        if self._is_closed:
+            raise FluentServerShutdown("Session is already closed.")
+
         endpoint = "api/connection/exit"
         if force:
             endpoint += "?force=true"
@@ -859,10 +886,36 @@ class FluentRestClient:
             logger.info("Sent /exit to Fluent server.")
         except FluentRestError as exc:
             if exc.status in (403, 409):
+                # Exit blocked or needs confirmation — do NOT close.
                 raise
             logger.debug("Server /exit request failed (HTTP %d).", exc.status)
-        except Exception:
-            logger.debug("Server /exit request failed (may already be down).")
+        except Exception as exc:
+            logger.debug("Server /exit request failed: %s", exc)
+
+        # Mark closed IMMEDIATELY so subsequent operations fail fast.
+        self._is_closed = True
+        logger.info("Session marked as closed.")
+
+        self._poll_until_server_down(timeout)
+
+    def _poll_until_server_down(self, timeout: float = 30.0) -> None:
+        """Poll the server's TCP port until it is unreachable."""
+        parsed = urllib.parse.urlparse(self._base_url)
+        host = parsed.hostname or "127.0.0.1"
+        port = parsed.port or (443 if self._is_secure else 80)
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            try:
+                with socket.create_connection((host, port), timeout=2):
+                    pass  # port still open — server alive
+                time.sleep(0.5)
+            except OSError:
+                logger.info("Fluent server is unreachable.")
+                return
+        logger.warning(
+            "Timed out waiting for server to shut down "
+            "(but session is already marked closed)."
+        )
 
     def __enter__(self) -> "FluentRestClient":
         """Enter the context manager."""
