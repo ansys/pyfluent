@@ -36,11 +36,46 @@ object counts are hardcoded.
 Path format: Real Fluent uses **kebab-case** (e.g. ``boundary-conditions``).
 """
 
+import io
+import json
+from unittest.mock import MagicMock, patch
+import urllib.error
+
 import pytest
 
-from ansys.fluent.core.rest.client import FluentRestError
+from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
 
 pytestmark = pytest.mark.real_server
+
+_BASE_URL = "http://10.18.44.175:5000"
+
+
+def _make_response(body: object, status: int = 200) -> MagicMock:
+    """Return a mock suitable for ``urllib.request.urlopen`` context manager."""
+    raw = json.dumps(body).encode("utf-8")
+    resp = MagicMock()
+    resp.read.return_value = raw
+    resp.status = status
+    resp.__enter__ = lambda s: s
+    resp.__exit__ = MagicMock(return_value=False)
+    return resp
+
+
+def _make_http_error(
+    status: int, body: object | None = None, reason: str = "Error"
+) -> urllib.error.HTTPError:
+    """Construct an ``HTTPError`` with a readable body."""
+    data = json.dumps(body).encode("utf-8") if body else b""
+    return urllib.error.HTTPError(
+        url=_BASE_URL, code=status, msg=reason, hdrs={}, fp=io.BytesIO(data)
+    )
+
+
+def _client(**kwargs) -> FluentRestClient:
+    """Convenience constructor with sensible defaults."""
+    kwargs.setdefault("auth_token", "tok123")
+    return FluentRestClient(_BASE_URL, **kwargs)
+
 
 # ---------------------------------------------------------------------------
 # 1. get_static_info
@@ -139,15 +174,16 @@ class TestRealSetVar:
 
         toggled = not original
         real_client.set_var(path, toggled)
-        readback = real_client.get_var(path)
-        assert (
-            readback == toggled
-        ), f"set_var did not take effect: expected {toggled}, got {readback}"
-
-        # Restore
-        real_client.set_var(path, original)
-        restored = real_client.get_var(path)
-        assert restored == original
+        try:
+            readback = real_client.get_var(path)
+            assert (
+                readback == toggled
+            ), f"set_var did not take effect: expected {toggled}, got {readback}"
+        finally:
+            # Restore
+            real_client.set_var(path, original)
+            restored = real_client.get_var(path)
+            assert restored == original
 
     def test_write_same_value_round_trips(self, real_client):
         """Writing the current value back should succeed or raise a
@@ -274,8 +310,16 @@ class TestRealGetAttrs:
             real_client.set_var(path, new_value)
             readback = real_client.get_var(path)
             assert readback == new_value
-        except FluentRestError:
-            pass  # Solver may reject the switch due to other constraints
+        except FluentRestError as exc:
+            if getattr(exc, "status", None) in (400, 409):
+                pytest.skip(
+                    f"Solver rejected allowed value '{new_value}' for '{path}' "
+                    f"due to runtime constraints: {exc}"
+                )
+            pytest.fail(
+                f"Unexpected REST failure while setting allowed value '{new_value}' "
+                f"for '{path}': {exc}"
+            )
         finally:
             try:
                 real_client.set_var(path, original)
@@ -319,3 +363,156 @@ class TestRealExecuteQuery:
             assert reply is None or isinstance(reply, (list, str))
         except FluentRestError as exc:
             assert exc.status in (404, 405, 500)
+
+
+# ===================================================================
+# 9. exit / context manager
+# ===================================================================
+
+
+class TestExit:
+    """Verify exit() sends POST to /api/connection/exit."""
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_sends_post_to_connection_exit(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        c.exit()
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "POST"
+        assert "api/connection/exit" in req.full_url
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_force_true_appends_query_param(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        c.exit(force=True)
+        req = mock_urlopen.call_args[0][0]
+        assert "force=true" in req.full_url
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_force_false_no_query_param(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        c.exit(force=False)
+        req = mock_urlopen.call_args[0][0]
+        assert "force=true" not in req.full_url
+        assert req.full_url.endswith("api/connection/exit")
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_raises_on_403(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(
+            403, body={"detail": "Exit is not allowed."}
+        )
+        c = _client()
+        with pytest.raises(FluentRestError, match="403"):
+            c.exit()
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_raises_on_409(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(
+            409, body={"show-prompt": "Save changes?"}
+        )
+        c = _client()
+        with pytest.raises(FluentRestError, match="409"):
+            c.exit(force=False)
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_swallows_connection_error(self, mock_urlopen):
+        mock_urlopen.side_effect = Exception("Connection refused")
+        c = _client()
+        c.exit()  # should not raise
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_swallows_other_http_errors(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(500)
+        c = _client()
+        c.exit()  # should not raise (server may be down)
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_context_manager_calls_exit(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        with c:
+            pass
+        req = mock_urlopen.call_args[0][0]
+        assert "api/connection/exit" in req.full_url
+
+    def test_context_manager_enter_returns_self(self):
+        c = _client()
+        assert c.__enter__() is c
+
+
+# ===================================================================
+# API endpoint wiring — create / delete / rename
+# ===================================================================
+
+
+class TestNamedObjectMutation:
+    """Verify create/delete/rename build the correct HTTP requests."""
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_create_sends_post_with_name(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        c.create("setup/bc/wall", "new-wall")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "POST"
+        assert json.loads(req.data) == {"name": "new-wall"}
+        assert "setup/bc/wall" in req.full_url
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_sends_delete(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        c.delete("setup/bc/wall", "wall-1")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "DELETE"
+        assert "setup/bc/wall/wall-1" in req.full_url
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_ignore_not_found(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(404, {"detail": "gone"})
+        c = _client()
+        # Must not raise
+        c.delete("setup/bc/wall", "wall-1", ignore_not_found=True)
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_raises_on_404_by_default(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(404, {"detail": "gone"})
+        c = _client()
+        with pytest.raises(FluentRestError) as exc_info:
+            c.delete("setup/bc/wall", "wall-1")
+        assert exc_info.value.status == 404
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_rename_sends_put_with_new_name(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        c.rename("setup/bc/wall", "new-name", "old-name")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "PUT"
+        assert json.loads(req.data) == {"name": "new-name"}
+        assert "setup/bc/wall/old-name" in req.full_url
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_child_objects_calls_delete_for_each(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        c.delete_child_objects("setup/bc", "wall", ["w1", "w2"])
+        assert mock_urlopen.call_count == 2
+        urls = [call[0][0].full_url for call in mock_urlopen.call_args_list]
+        assert any("wall/w1" in u for u in urls)
+        assert any("wall/w2" in u for u in urls)
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_all_child_objects(self, mock_urlopen):
+        """delete_all discovers names via GET, then deletes each."""
+        # First call: GET returns object names
+        get_resp = _make_response({"w1": {}, "w2": {}})
+        delete_resp = _make_response({})
+        mock_urlopen.side_effect = [get_resp, delete_resp, delete_resp]
+        c = _client()
+        c.delete_all_child_objects("setup/bc", "wall")
+        # 1 GET + 2 DELETEs
+        assert mock_urlopen.call_count == 3

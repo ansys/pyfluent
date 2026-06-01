@@ -37,28 +37,20 @@ available.
 
 Public API
 ----------
-* :class:`RestSolverSession` — thin wrapper around :class:`FluentRestClient`.
-* :func:`launch_webserver` — spawn Fluent with ``-ws``, return a session.
-* :func:`connect_to_webserver` — connect to a running web server.
+* :func:`launch_webserver` — spawn Fluent with ``-ws``, returning a connected
+   :class:`~ansys.fluent.core.rest.client.FluentRestClient`.
 
 Examples
 --------
-Launch a local Fluent web server and connect with a REST session::
+Launch a local Fluent web server and connect with a REST client::
 
-    from ansys.fluent.core.rest import launch_webserver, connect_to_webserver
-    session = launch_webserver()
-    session.get_var("setup/models/energy/enabled")
-    session.exit()
-
-Connect to an already-running web server with known IP, port, and auth token::
-
-    session = connect_to_webserver("127.0.0.1", <port>, auth_token=<auth_token>)
-    session.set_var("setup/models/energy/enabled", False)
+     from ansys.fluent.core.rest import launch_webserver
+     client = launch_webserver()
+     client.get_var("setup/models/energy/enabled")
 """
 
 from __future__ import annotations
 
-import hashlib
 import logging
 import os
 import secrets
@@ -106,28 +98,6 @@ def _generate_auth_token(nbytes: int = 32) -> str:
     token = secrets.token_urlsafe(nbytes)
     logger.debug("Generated per-launch auth token.")
     return token
-
-
-def _probe_server(
-    base_url: str,
-    auth_token: str,
-    component: str = "fluent_1",
-    timeout: float = 5.0,
-    ssl_context: ssl.SSLContext | None = None,
-) -> bool:
-    """Return ``True`` if the server responds to an auth probe."""
-    url = f"{base_url}/api/{component}/static-info"
-    req = urllib.request.Request(url, method="HEAD")
-    req.add_header(
-        "Authorization", f"Bearer {hashlib.sha256(auth_token.encode()).hexdigest()}"
-    )
-    try:
-        with urllib.request.urlopen(
-            req, timeout=timeout, context=ssl_context
-        ):  # nosec B310
-            return True
-    except Exception:
-        return False
 
 
 def _wait_for_server(

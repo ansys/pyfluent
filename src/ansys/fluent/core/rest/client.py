@@ -150,6 +150,12 @@ class FluentRestClient:
         ssl_context: ssl.SSLContext | None = None,
     ) -> None:
         self._validate_base_url(base_url, auth_token, ssl_context)
+        if timeout <= 0:
+            raise ValueError("timeout must be > 0")
+        if max_retries < 0:
+            raise ValueError("max_retries must be >= 0")
+        if retry_delay < 0:
+            raise ValueError("retry_delay must be >= 0")
         self._base_url = base_url.rstrip("/")
         self._auth_token = auth_token
         self._component = component
@@ -196,6 +202,16 @@ class FluentRestClient:
     # ------------------------------------------------------------------
     # HTTP transport internals
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _encode_path(path: str) -> str:
+        """Percent-encode each segment of a slash-delimited path.
+
+        Fluent object names may contain URL-sensitive characters such as
+        spaces, ``#``, ``?``, or ``%``.  Each segment is individually
+        quoted so the resulting URL is always valid.
+        """
+        return "/".join(urllib.parse.quote(seg, safe="") for seg in path.split("/"))
 
     def _url(self, endpoint: str) -> str:
         """Build a full URL from *base_url* + *endpoint*."""
@@ -402,7 +418,7 @@ class FluentRestClient:
         FluentRestError
             If the server rejects the value (e.g. validation failure).
         """
-        self._request("PUT", f"{self._api_base}/{path}", body=value)
+        self._request("PUT", f"{self._api_base}/{self._encode_path(path)}", body=value)
 
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
         """Return the requested attributes for the setting at *path*.
@@ -438,7 +454,9 @@ class FluentRestClient:
         if recursive:
             params["recursive"] = "true"
         query = urllib.parse.urlencode(params)
-        return self._request("GET", f"{self._api_base}/{path}?{query}")
+        return self._request(
+            "GET", f"{self._api_base}/{self._encode_path(path)}?{query}"
+        )
 
     def get_object_names(self, path: str) -> list[str]:
         """Return the child named-object names at *path*.
@@ -464,7 +482,7 @@ class FluentRestClient:
             If the server returns an unexpected error.
         """
         try:
-            result = self._request("GET", f"{self._api_base}/{path}")
+            result = self._request("GET", f"{self._api_base}/{self._encode_path(path)}")
         except FluentRestError as exc:
             if exc.status == 404:
                 return []
@@ -494,7 +512,9 @@ class FluentRestClient:
         FluentRestError
             If the server rejects the creation.
         """
-        self._request("POST", f"{self._api_base}/{path}", body={"name": name})
+        self._request(
+            "POST", f"{self._api_base}/{self._encode_path(path)}", body={"name": name}
+        )
 
     def delete(self, path: str, name: str, *, ignore_not_found: bool = False) -> None:
         """Delete the named child object *name* at *path*.
@@ -518,8 +538,11 @@ class FluentRestClient:
             If *ignore_not_found* is ``False`` and the object does not exist
             (HTTP 404), or on any other server error.
         """
+        encoded_name = urllib.parse.quote(name, safe="")
         try:
-            self._request("DELETE", f"{self._api_base}/{path}/{name}")
+            self._request(
+                "DELETE", f"{self._api_base}/{self._encode_path(path)}/{encoded_name}"
+            )
         except FluentRestError as exc:
             if ignore_not_found and exc.status == 404:
                 return
@@ -545,9 +568,10 @@ class FluentRestClient:
         FluentRestError
             If the object *old* does not exist.
         """
+        encoded_old = urllib.parse.quote(old, safe="")
         self._request(
             "PUT",
-            f"{self._api_base}/{path}/{old}",
+            f"{self._api_base}/{self._encode_path(path)}/{encoded_old}",
             body={"name": new},
         )
 
@@ -631,7 +655,7 @@ class FluentRestClient:
             If the server returns an unexpected error.
         """
         try:
-            result = self._request("GET", f"{self._api_base}/{path}")
+            result = self._request("GET", f"{self._api_base}/{self._encode_path(path)}")
         except FluentRestError as exc:
             if exc.status == 404:
                 return 0
@@ -664,7 +688,11 @@ class FluentRestClient:
         FluentRestError
             If the server rejects the resize.
         """
-        self._request("POST", f"{self._api_base}/{path}", body={"new-size": size})
+        self._request(
+            "POST",
+            f"{self._api_base}/{self._encode_path(path)}",
+            body={"new-size": size},
+        )
 
     def _execute(self, path: str, name: str, **kwds) -> Any:
         """Post a command or query and return the ``"reply"`` payload.
@@ -679,8 +707,11 @@ class FluentRestClient:
         start = time.monotonic()
         while True:
             try:
+                encoded_name = urllib.parse.quote(name, safe="")
                 result = self._request(
-                    "POST", f"{self._api_base}/{path}/{name}", body=kwds
+                    "POST",
+                    f"{self._api_base}/{self._encode_path(path)}/{encoded_name}",
+                    body=kwds,
                 )
                 return result.get("reply") if isinstance(result, dict) else result
             except FluentRestError as exc:
@@ -796,3 +827,47 @@ class FluentRestClient:
             return False
         except Exception:
             return False
+
+    # ------------------------------------------------------------------
+    # Session lifecycle
+    # ------------------------------------------------------------------
+
+    def exit(self, force: bool = True) -> None:
+        """Gracefully shut down the Fluent session.
+
+        Sends ``POST /api/connection/exit`` to ask the server to
+        terminate.  The server handles its own process cleanup.
+
+        Parameters
+        ----------
+        force : bool, optional
+            If ``True`` (default), appends ``?force=true`` to skip any
+            confirmation prompt the server might require.
+
+        Raises
+        ------
+        FluentRestError
+            HTTP 403 if exit is blocked (e.g. calculation running),
+            or HTTP 409 if a confirmation prompt is needed and
+            *force* is ``False``.
+        """
+        endpoint = "api/connection/exit"
+        if force:
+            endpoint += "?force=true"
+        try:
+            self._request("POST", endpoint)
+            logger.info("Sent /exit to Fluent server.")
+        except FluentRestError as exc:
+            if exc.status in (403, 409):
+                raise
+            logger.debug("Server /exit request failed (HTTP %d).", exc.status)
+        except Exception:
+            logger.debug("Server /exit request failed (may already be down).")
+
+    def __enter__(self) -> "FluentRestClient":
+        """Enter the context manager."""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """Exit the context manager — calls :meth:`exit`."""
+        self.exit()
