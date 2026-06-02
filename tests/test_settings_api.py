@@ -906,7 +906,7 @@ def test_action_behavior(mixing_elbow_case_session):
     )
     solver.settings.solution.run_calculation.iterate.iter_count = 55
     assert solver.settings.solution.run_calculation.iterate.iter_count() == 55
-    with pytest.warns(PyFluentUserWarning, match="command/query object"):
-        solver.settings.solution.run_calculation.iterate.get_attrs(
-            ["active?"], recursive=True
-        )
+    result = solver.settings.solution.run_calculation.iterate.get_attrs(
+        ["active?"], recursive=True
+    )
+    assert "iter-count" in result["group_children"]

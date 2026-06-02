@@ -93,7 +93,7 @@ from ansys.fluent.core.variable_strategies import (
 
 
 class Weight(Enum):
-    """Weight for sum."""
+    """Enum of available weighting options for `sum` and `sum_if`."""
 
     AREA = "Area"
     VOLUME = "Volume"
