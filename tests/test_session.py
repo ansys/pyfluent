@@ -642,6 +642,9 @@ def test_solver_methods(new_solver_session):
         "current_parametric_study",
         "parallel",
     }
+    if solver.get_fluent_version() >= FluentVersion.v271:
+        api_keys = api_keys - {"parametric_studies", "current_parametric_study"}
+        api_keys.add("parameter_workspace")
     assert api_keys.issubset(set(dir(solver.settings)))
 
 
