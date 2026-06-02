@@ -77,7 +77,7 @@ def _find_cert_dir(cert_dir: str | None = None) -> str | None:
     # 1. Explicit parameter
     if cert_dir and _verify_cert_dir(cert_dir):
         logger.info("Using certificates from explicit cert_dir: %s", cert_dir)
-        return cert_dir
+        return str(Path(cert_dir).resolve())
 
     if cert_dir:
         logger.warning(
@@ -93,7 +93,7 @@ def _find_cert_dir(cert_dir: str | None = None) -> str | None:
             "Using certificates from FLUENT_WEBSERVER_CERTIFICATE_ROOT: %s",
             env_dir,
         )
-        return env_dir
+        return str(Path(env_dir).resolve())
 
     if env_dir:
         logger.warning(
@@ -107,7 +107,7 @@ def _find_cert_dir(cert_dir: str | None = None) -> str | None:
     default_dir = _get_default_cert_dir()
     if default_dir and _verify_cert_dir(default_dir):
         logger.info("Using certificates from default Fluent path: %s", default_dir)
-        return default_dir
+        return str(Path(default_dir).resolve())
 
     return None
 
