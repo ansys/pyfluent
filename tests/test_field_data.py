@@ -39,7 +39,9 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
+    _AllowedSurfaceIDs,
     _Fields,
+    _SurfaceIds,
 )
 from ansys.fluent.core.services.field_data import (
     CellElementType,
@@ -1006,3 +1008,40 @@ def test_field_data_objects_3d_with_location_objects_overall(
     assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
 
     assert list(path_lines_data["cold-inlet"].lines[100]) == [100, 101]
+
+
+def test_allowed_surface_ids_raises_on_missing_surface_id_key() -> None:
+    """_AllowedSurfaceIDs.__call__ should raise LookupError when surface_id key is missing."""
+
+    class _FakeFieldInfo:
+        def _get_surfaces_info(self):
+            return {"bad-surface": {"no_surface_id_key": []}}
+
+    allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
+    with pytest.raises(LookupError, match="surface_id key"):
+        allowed()
+
+
+def test_allowed_surface_ids_raises_on_empty_surface_id_list() -> None:
+    """_AllowedSurfaceIDs.__call__ should raise LookupError when surface_id list is empty."""
+
+    class _FakeFieldInfo:
+        def _get_surfaces_info(self):
+            return {"bad-surface": {"surface_id": []}}
+
+    allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
+    with pytest.raises(LookupError, match="surface_id index"):
+        allowed()
+
+
+def test_surface_ids_validate_raises_on_bad_surface_info() -> None:
+    """_SurfaceIds.validate should propagate LookupError when surface info is malformed."""
+
+    class _FakeFieldInfo:
+        def _get_surfaces_info(self):
+            return {"bad-surface": {"surface_id": []}}
+
+    allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
+    validator = _SurfaceIds(allowed)
+    with pytest.raises(LookupError, match="surface_id index"):
+        validator.validate([1])

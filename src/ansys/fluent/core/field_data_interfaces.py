@@ -568,13 +568,20 @@ class _AllowedSurfaceNames(_AllowedNames):
 
 class _AllowedSurfaceIDs(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[int]:
-        try:
-            return [
-                info["surface_id"][0]
-                for _, info in self._field_info._get_surfaces_info().items()
-            ]
-        except (KeyError, IndexError):
-            pass
+        surface_info = self._field_info._get_surfaces_info()
+        surface_ids = []
+        for surface_name, info in surface_info.items():
+            try:
+                surface_ids.append(info["surface_id"][0])
+            except KeyError:
+                raise LookupError(
+                    f"Failed to retrieve valid surface_id key for surface '{surface_name}'."
+                )
+            except IndexError:
+                raise LookupError(
+                    f"Failed to retrieve valid surface_id index for surface '{surface_name}'."
+                )
+        return surface_ids
 
 
 class FieldUnavailable(RuntimeError):
