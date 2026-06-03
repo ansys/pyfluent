@@ -47,7 +47,7 @@ from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
 
 pytestmark = pytest.mark.real_server
 
-_BASE_URL = "http://10.18.44.175:5000"
+_BASE_URL = "http://127.0.0.1:5000"
 
 
 def _make_response(body: object, status: int = 200) -> MagicMock:
