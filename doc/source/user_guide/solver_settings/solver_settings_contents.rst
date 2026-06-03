@@ -82,13 +82,13 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
   children can be accessed via ``<NamedObject>.get_object_names()``.
 
 - The :obj:`~ansys.fluent.core.solver.flobject.ListObject` type is a container holding dynamically
-  created unnamed objects of
+  created, unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
-  list. Children of a ``ListObject`` object can be accessed using the index operator.
+  :term:`sequence`\. ``ListObject`` behaves much like a tuple though it supports :meth:`object.__setitem__`.
+  Children of a ``ListObject`` object can be accessed using the index operator.
   For example, ``solver_session.settings.setup.cell_zone_conditions.fluid['fluid-1'].sources.terms['mass'][2]``
   refers to the third (starting from index 0) mass source entry for the fluid zone
-  named ``fluid-1``. The current number of child objects can be accessed with the
-  ``get_size()`` method.
+  named ``fluid-1``.
 
 .. vale Google.Spacing = YES
 
