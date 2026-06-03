@@ -39,9 +39,9 @@ Example::
 
     from ansys.fluent.core.rest import launch_webserver
 
-     client = launch_webserver()
-     print(client.get_var("setup/models/energy/enabled"))
-     client.set_var("setup/models/energy/enabled", False)
+    client = launch_webserver()
+    print(client.get_var("setup/models/energy/enabled"))
+    client.set_var("setup/models/energy/enabled", False)
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient
