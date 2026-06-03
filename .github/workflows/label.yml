@@ -40,7 +40,7 @@ jobs:
     steps:
       # Label based on modified files
       - name: Label based on changed files
-        uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
+        uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6.1.0
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: false
@@ -131,7 +131,7 @@ jobs:
       pull-requests: write # Required when the changelog action updates pull request metadata.
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/doc-changelog@7d55ff0b9f67c77dae50a286d711ee1ae27b0a25 # v10.2.12
+      - uses: ansys/actions/doc-changelog@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
