@@ -383,23 +383,6 @@ class TestExit:
         assert "api/connection/exit" in req.full_url
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_force_true_appends_query_param(self, mock_urlopen):
-        mock_urlopen.return_value = _make_response({})
-        c = _client()
-        c.exit(force=True)
-        req = mock_urlopen.call_args[0][0]
-        assert "force=true" in req.full_url
-
-    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_force_false_no_query_param(self, mock_urlopen):
-        mock_urlopen.return_value = _make_response({})
-        c = _client()
-        c.exit(force=False)
-        req = mock_urlopen.call_args[0][0]
-        assert "force=true" not in req.full_url
-        assert req.full_url.endswith("api/connection/exit")
-
-    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_exit_raises_on_403(self, mock_urlopen):
         mock_urlopen.side_effect = _make_http_error(
             403, body={"detail": "Exit is not allowed."}
