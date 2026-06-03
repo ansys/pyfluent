@@ -106,10 +106,6 @@ class FluentRestError(RuntimeError):
         super().__init__(f"HTTP {status}: {message}")
 
 
-class FluentServerShutdown(Exception):
-    """Raised when trying to use a Fluent session after it has been shut down."""
-
-
 class FluentRestClient:
     """Pure-Python HTTP client for the Fluent DataModel REST API.
 
@@ -168,7 +164,6 @@ class FluentRestClient:
         self._retry_delay = retry_delay
         self._ssl_context = ssl_context
         self._api_base = f"api/{component}"
-        self._is_closed = False
 
     @property
     def _is_secure(self) -> bool:
@@ -210,12 +205,7 @@ class FluentRestClient:
 
     @staticmethod
     def _encode_path(path: str) -> str:
-        """Percent-encode each segment of a slash-delimited path.
-
-        Fluent object names may contain URL-sensitive characters such as
-        spaces, ``#``, ``?``, or ``%``.  Each segment is individually
-        quoted so the resulting URL is always valid.
-        """
+        """Percent-encode each segment of a slash-delimited path."""
         return "/".join(urllib.parse.quote(seg, safe="") for seg in path.split("/"))
 
     def _url(self, endpoint: str) -> str:
@@ -308,14 +298,7 @@ class FluentRestClient:
         ------
         FluentRestError
             For any HTTP 4xx / 5xx response after retries are exhausted.
-        FluentServerShutdown
-            If the session has been closed via :meth:`exit`.
         """
-        if self._is_closed:
-            raise FluentServerShutdown(
-                "Cannot execute request: session is closed. "
-                "The Fluent server has been shut down via exit()."
-            )
         url = self._url(endpoint)
         req = self._build_request(method, url, body)
 
@@ -393,48 +376,11 @@ class FluentRestClient:
         return self._request("GET", f"{self._api_base}/static-info")
 
     def get_var(self, path: str) -> Any:
-        """Return the current value of the setting at *path*.
-
-        Calls ``POST /api/{component}/get_var`` with body ``{"path": path}``.
-
-        Parameters
-        ----------
-        path : str
-            Slash-delimited settings path, e.g.
-            ``"setup/models/energy/enabled"``.
-
-        Returns
-        -------
-        Any
-            The value at *path* — may be a bool, int, float, str, list, or
-            dict (for group-level reads).
-
-        Raises
-        ------
-        FluentRestError
-            If the path does not exist (HTTP 404) or the server returns an
-            error.
-        """
+        """Return the current value at *path* (POST get_var)."""
         return self._request("POST", f"{self._api_base}/get_var", body={"path": path})
 
     def set_var(self, path: str, value: Any) -> None:
-        """Set the value of the setting at *path*.
-
-        Calls ``PUT /api/{component}/{path}`` with the value as the JSON body.
-        The server expects the raw value directly, not wrapped in ``{"value": ...}``.
-
-        Parameters
-        ----------
-        path : str
-            Slash-delimited settings path.
-        value : Any
-            New value (bool, int, float, str, list, or dict).
-
-        Raises
-        ------
-        FluentRestError
-            If the server rejects the value (e.g. validation failure).
-        """
+        """Set the value at *path* (PUT {path})."""
         self._request("PUT", f"{self._api_base}/{self._encode_path(path)}", body=value)
 
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
@@ -513,22 +459,7 @@ class FluentRestClient:
         return []
 
     def create(self, path: str, name: str) -> None:
-        """Create a named child object *name* at *path*.
-
-        Calls ``POST /api/{component}/{path}`` with body ``{"name": name}``.
-
-        Parameters
-        ----------
-        path : str
-            Path to the named-object container.
-        name : str
-            Name of the new child object.
-
-        Raises
-        ------
-        FluentRestError
-            If the server rejects the creation.
-        """
+        """Create a named child object *name* at *path* (POST {path})."""
         self._request(
             "POST", f"{self._api_base}/{self._encode_path(path)}", body={"name": name}
         )
@@ -598,48 +529,12 @@ class FluentRestClient:
         obj_type: str,
         child_names: list[str],
     ) -> None:
-        """Delete specific named children of *obj_type* under *path*.
-
-        Calls ``DELETE /api/{component}/{path}/{obj_type}/{name}`` once for
-        each entry in *child_names*.  Equivalent to deleting a specific
-        list of named child objects.
-
-        Parameters
-        ----------
-        path : str
-            Path to the parent container, e.g. ``"setup/boundary-conditions"``.
-        obj_type : str
-            Child object type (sub-container name), e.g. ``"velocity-inlet"``.
-        child_names : list[str]
-            Names of the child objects to delete.
-
-        Raises
-        ------
-        FluentRestError
-            If any individual delete fails (e.g. HTTP 404 — object not found).
-        """
+        """Delete specific named children of *obj_type* under *path*."""
         for name in child_names:
             self.delete(f"{path}/{obj_type}", name)
 
     def delete_all_child_objects(self, path: str, obj_type: str) -> None:
-        """Delete all named children of *obj_type* under *path*.
-
-        Discovers children via :meth:`get_object_names` and then calls
-        :meth:`delete_child_objects` for all of them.  Equivalent to
-        deleting every child at once.
-
-        Parameters
-        ----------
-        path : str
-            Path to the parent container, e.g. ``"setup/boundary-conditions"``.
-        obj_type : str
-            Child object type (sub-container name), e.g. ``"velocity-inlet"``.
-
-        Raises
-        ------
-        FluentRestError
-            If any individual delete fails.
-        """
+        """Delete all named children of *obj_type* under *path*."""
         names = self.get_object_names(f"{path}/{obj_type}")
         self.delete_child_objects(path, obj_type, names)
 
@@ -688,23 +583,7 @@ class FluentRestClient:
         return 0
 
     def resize_list_object(self, path: str, size: int) -> None:
-        """Resize the list-object at *path* to *size* elements.
-
-        Calls ``POST /api/{component}/{path}`` with body
-        ``{"new-size": size}``.
-
-        Parameters
-        ----------
-        path : str
-            Path to the list-object.
-        size : int
-            Desired number of elements.
-
-        Raises
-        ------
-        FluentRestError
-            If the server rejects the resize.
-        """
+        """Resize the list-object at *path* to *size* elements (POST {path})."""
         self._request(
             "POST",
             f"{self._api_base}/{self._encode_path(path)}",
@@ -712,158 +591,33 @@ class FluentRestClient:
         )
 
     def _execute(self, path: str, name: str, **kwds) -> Any:
-        """Post a command or query and return the ``"reply"`` payload.
-
-        Retries automatically when the server returns
-        ``400 Fluent not running`` — the solver may still be initialising
-        after the web server port opened.  Gives up after *_SOLVER_READY_TIMEOUT*
-        seconds and re-raises the original error.
-        """
-        _SOLVER_READY_TIMEOUT = 120  # seconds
-        _SOLVER_RETRY_DELAY = 5  # seconds between retries
-        start = time.monotonic()
-        while True:
-            try:
-                encoded_name = urllib.parse.quote(name, safe="")
-                result = self._request(
-                    "POST",
-                    f"{self._api_base}/{self._encode_path(path)}/{encoded_name}",
-                    body=kwds,
-                )
-                return result.get("reply") if isinstance(result, dict) else result
-            except FluentRestError as exc:
-                elapsed = time.monotonic() - start
-                if (
-                    exc.status == 400
-                    and "Fluent not running" in str(exc)
-                    and elapsed < _SOLVER_READY_TIMEOUT
-                ):
-                    logger.debug(
-                        "Solver not ready yet (400 Fluent not running) — "
-                        "retrying in %ds (elapsed=%.0fs / %ds)...",
-                        _SOLVER_RETRY_DELAY,
-                        elapsed,
-                        _SOLVER_READY_TIMEOUT,
-                    )
-                    time.sleep(_SOLVER_RETRY_DELAY)
-                    continue
-                raise
+        """POST a command or query and return the ``"reply"`` value."""
+        encoded_name = urllib.parse.quote(name, safe="")
+        result = self._request(
+            "POST",
+            f"{self._api_base}/{self._encode_path(path)}/{encoded_name}",
+            body=kwds,
+        )
+        return result.get("reply") if isinstance(result, dict) else result
 
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute *command* at *path* with keyword arguments.
-
-        Calls ``POST /api/{component}/{path}/{command}`` with body ``kwds``.
-
-        Parameters
-        ----------
-        path : str
-            Path to the parent object containing the command.
-        command : str
-            Command name, e.g. ``"initialize"``.
-        **kwds
-            Arbitrary keyword arguments forwarded as the JSON request body.
-
-        Returns
-        -------
-        Any
-            The ``"reply"`` field from the response, or the raw response
-            if no ``"reply"`` key is present.
-
-        Raises
-        ------
-        FluentRestError
-            If the server rejects the command (e.g. HTTP 409 conflict).
-        """
+        """Execute *command* at *path* (POST {path}/{command})."""
         return self._execute(path, command, **kwds)
 
     def execute_query(self, path: str, query: str, **kwds) -> Any:
-        """Execute *query* at *path* with keyword arguments.
-
-        Calls ``POST /api/{component}/{path}/{query}`` with body ``kwds``.
-
-        Parameters
-        ----------
-        path : str
-            Path to the parent object containing the query.
-        query : str
-            Query name, e.g. ``"get-zone-names"``.
-        **kwds
-            Arbitrary keyword arguments forwarded as the JSON request body.
-
-        Returns
-        -------
-        Any
-            The ``"reply"`` field from the response, or the raw response
-            if no ``"reply"`` key is present.
-
-        Raises
-        ------
-        FluentRestError
-            If the server rejects the query.
-        """
+        """Execute *query* at *path* (POST {path}/{query})."""
         return self._execute(path, query, **kwds)
-
-    # ------------------------------------------------------------------
-    # Local helpers (no server round-trip)
-    # ------------------------------------------------------------------
-
-    def has_wildcard(self, name: str) -> bool:
-        """Return ``True`` if *name* contains an ``fnmatch``-style wildcard.
-
-        Recognised wildcard characters: ``*``, ``?``, ``[``.
-        Performs the check locally — no server round-trip required.
-
-        Parameters
-        ----------
-        name : str
-            The name to check.
-
-        Returns
-        -------
-        bool
-            ``True`` if *name* contains a wildcard character.
-        """
-        return any(c in name for c in ("*", "?", "["))
-
-    def is_interactive_mode(self) -> bool:
-        """Query the server's run mode to determine interactivity.
-
-        Calls ``GET /api/connection/run_mode`` and returns ``True`` if
-        the server reports an interactive mode.  Falls back to ``False``
-        on any connection or parse error.
-
-        Returns
-        -------
-        bool
-            ``True`` if the server is in interactive mode.
-        """
-        try:
-            result = self._request("GET", "api/connection/run_mode")
-            if isinstance(result, dict):
-                return bool(result.get("interactive", False))
-            return False
-        except Exception:
-            return False
 
     # ------------------------------------------------------------------
     # Session lifecycle
     # ------------------------------------------------------------------
 
     def exit(self) -> None:
-        """Gracefully shut down the Fluent session.
-
-        Raises
-        ------
-            FluentServerShutdown
-                If the session has already been closed.
-        """
-        if self._is_closed:
-            raise FluentServerShutdown("Session is already closed.")
+        """Shut down the Fluent session."""
         try:
             self._execute("/", "exit")
         except Exception:
-            pass  # nosec B110 - server drops the connection on exit — expected
-        self._is_closed = True
+            pass  # nosec B110 — server drops the connection on exit
         logger.info("Fluent server exited.")
 
     def __enter__(self) -> "FluentRestClient":
