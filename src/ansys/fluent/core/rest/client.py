@@ -311,7 +311,7 @@ class FluentRestClient:
         FluentRestError
             If the request fails.
         """
-        body = properties or {}
+        body = dict(properties) if properties else {}
         if name:
             body["name"] = name
         return self._request(

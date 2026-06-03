@@ -380,7 +380,7 @@ class TestExit:
         c.exit()
         req = mock_urlopen.call_args[0][0]
         assert req.get_method() == "POST"
-        assert "api/connection/exit" in req.full_url
+        assert "api/app/exit" in req.full_url
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_exit_raises_on_403(self, mock_urlopen):
@@ -398,11 +398,11 @@ class TestExit:
         )
         c = _client()
         with pytest.raises(FluentRestError, match="409"):
-            c.exit(force=False)
+            c.exit()
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_exit_swallows_connection_error(self, mock_urlopen):
-        mock_urlopen.side_effect = Exception("Connection refused")
+        mock_urlopen.side_effect = OSError("Connection refused")
         c = _client()
         c.exit()  # should not raise
 
@@ -419,11 +419,48 @@ class TestExit:
         with c:
             pass
         req = mock_urlopen.call_args[0][0]
-        assert "api/connection/exit" in req.full_url
+        assert "api/app/exit" in req.full_url
 
     def test_context_manager_enter_returns_self(self):
         c = _client()
         assert c.__enter__() is c
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_sets_is_closed(self, mock_urlopen):
+        """After exit(), _is_closed must be True."""
+        mock_urlopen.return_value = _make_response({"message": "Shutting down"})
+        c = _client()
+        assert not c._is_closed
+        c.exit()
+        assert c._is_closed
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_is_idempotent(self, mock_urlopen):
+        """Calling exit() twice must not raise or send a second request."""
+        mock_urlopen.return_value = _make_response({"message": "Shutting down"})
+        c = _client()
+        c.exit()
+        c.exit()  # should not raise
+        assert mock_urlopen.call_count == 1  # only one POST sent
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_closed_session_blocks_requests(self, mock_urlopen):
+        """After exit(), any API call must raise FluentRestError."""
+        mock_urlopen.return_value = _make_response({"message": "Shutting down"})
+        c = _client()
+        c.exit()
+        with pytest.raises(FluentRestError, match="Session is closed"):
+            c.get_static_info()
+        # urlopen should NOT be called again (only the exit call)
+        assert mock_urlopen.call_count == 1
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_swallows_url_error(self, mock_urlopen):
+        """URLError (connection refused) should be swallowed by exit()."""
+        mock_urlopen.side_effect = urllib.error.URLError("Connection refused")
+        c = _client()
+        c.exit()  # should not raise
+        assert c._is_closed
 
 
 # ===================================================================
@@ -499,3 +536,12 @@ class TestNamedObjectMutation:
         c.delete_all_child_objects("setup/bc", "wall")
         # 1 GET + 2 DELETEs
         assert mock_urlopen.call_count == 3
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_create_does_not_mutate_caller_dict(self, mock_urlopen):
+        """create() must not inject 'name' into the caller's properties dict."""
+        mock_urlopen.return_value = _make_response({})
+        c = _client()
+        props = {"momentum": 0.5}
+        c.create("setup/bc/wall", "new-wall", properties=props)
+        assert "name" not in props
