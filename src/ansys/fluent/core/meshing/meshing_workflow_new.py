@@ -109,7 +109,7 @@ class MeshingWorkflow(Workflow):
         )
         self._meshing = meshing_root
         self._base_meshing = base
-        self._name = "Create New"
+        self._name = name
         if initialize:
             self._new_workflow(name=self._name)
         self._initialized = True
@@ -335,6 +335,7 @@ class LoadWorkflow(Workflow):
         )
         self._meshing = meshing_root
         self._base_meshing = base
+        self._name = "Load Workflow"
         if initialize:
             self._load_workflow(file_path=os.fspath(file_path))
         base._current_workflow = self
@@ -373,6 +374,7 @@ class CreateWorkflow(Workflow):
         )
         self._meshing = meshing_root
         self._base_meshing = base
+        self._name = "Create New"
         if initialize:
             self._create_workflow()
         base._current_workflow = self
