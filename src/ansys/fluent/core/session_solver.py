@@ -34,7 +34,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services import MonitorsServiceV0, SchemeEval
+from ansys.fluent.core.services import MonitorsServiceV0, SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.monitor_v1 import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction as ReductionV0
@@ -172,14 +172,14 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self._fluent_version = None
         self._bg_session_threads = []
         self._launcher_args = launcher_args
+        self._solution_variable_service = service_creator(
+            "svar", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
         if fluent_connection._server_supports_v1:
             self._reduction_service = fluent_connection.create_grpc_service(
                 ReductionService, self._error_state
             )
             self.fields.reduction = Reduction(self._reduction_service, self)
-            self._solution_variable_service = SolutionVariableService(
-                fluent_connection._channel, fluent_connection._metadata
-            )
             self.fields.solution_variable_info = SolutionVariableInfo(
                 self._solution_variable_service
             )
@@ -188,9 +188,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 ReductionServiceV0, self._error_state
             )
             self.fields.reduction = ReductionV0(self._reduction_service, self)
-            self._solution_variable_service = SolutionVariableServiceV0(
-                fluent_connection._channel, fluent_connection._metadata
-            )
             self.fields.solution_variable_info = SolutionVariableInfoV0(
                 self._solution_variable_service
             )
@@ -199,11 +196,11 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             fluent_connection._server_supports_v1
         )
 
-        monitors_service = (
-            MonitorsService
-            if fluent_connection._server_supports_v1
-            else MonitorsServiceV0
-        )(fluent_connection._channel, fluent_connection._metadata, self._error_state)
+        monitors_service = service_creator(
+            "monitors", supports_v1=fluent_connection._server_supports_v1
+        ).create(
+            fluent_connection._channel, fluent_connection._metadata, self._error_state
+        )
         #: Manage Fluent's solution monitors.
         _MonitorsManager = (
             MonitorsManager
@@ -236,7 +233,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self, supports_v1: bool
     ) -> SolutionVariableDataV0 | SolutionVariableData:
         """Return the SolutionVariableData handle."""
-        return (SolutionVariableData if supports_v1 else SolutionVariableDataV0)(
+        return service_creator("svar_data", supports_v1=supports_v1).create(
             self._solution_variable_service, self.fields.solution_variable_info
         )
 
