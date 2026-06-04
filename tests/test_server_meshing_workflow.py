@@ -23,7 +23,20 @@
 from conftest import SKIP_UNKNOWN
 import pytest
 
-from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
+from ansys.fluent.core import (
+    CreateWorkflow,
+    FaultTolerantMeshing,
+    FluentVersion,
+    PyFluentUserWarning,
+    TwoDimensionalMeshing,
+    WatertightMeshing,
+    examples,
+)
+from ansys.fluent.core.meshing.meshing_workflow_new import (
+    FaultTolerantMeshingWorkflow,
+    TwoDimensionalMeshingWorkflow,
+    WatertightMeshingWorkflow,
+)
 from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
@@ -2036,7 +2049,7 @@ def test_rename(new_meshing_session):
 
 
 # ---------------------------------------------------------------------------
-# Direct-construction tests  (issue #5112)
+# Direct-construction tests
 # ---------------------------------------------------------------------------
 
 
@@ -2045,10 +2058,6 @@ def test_rename(new_meshing_session):
 def test_direct_construction_watertight(new_meshing_session):
     """WatertightMeshing(session=meshing) should work identically to
     meshing.watertight()."""
-    from ansys.fluent.core import WatertightMeshing
-    from ansys.fluent.core.meshing.meshing_workflow_new import (
-        WatertightMeshingWorkflow,
-    )
 
     meshing = new_meshing_session
     watertight = WatertightMeshing(session=meshing)
@@ -2065,11 +2074,6 @@ def test_direct_construction_watertight(new_meshing_session):
 @pytest.mark.fluent_version(">=26.1")
 def test_direct_construction_fault_tolerant(new_meshing_session):
     """FaultTolerantMeshing(session=meshing) should set up part management."""
-    from ansys.fluent.core import FaultTolerantMeshing
-    from ansys.fluent.core.meshing.meshing_workflow_new import (
-        FaultTolerantMeshingWorkflow,
-    )
-
     meshing = new_meshing_session
     fault_tolerant = FaultTolerantMeshing(session=meshing)
 
@@ -2082,11 +2086,6 @@ def test_direct_construction_fault_tolerant(new_meshing_session):
 @pytest.mark.fluent_version(">=26.1")
 def test_direct_construction_2d_meshing(new_meshing_session):
     """TwoDimensionalMeshing(session=meshing) should produce a 2D workflow."""
-    from ansys.fluent.core import TwoDimensionalMeshing
-    from ansys.fluent.core.meshing.meshing_workflow_new import (
-        TwoDimensionalMeshingWorkflow,
-    )
-
     meshing = new_meshing_session
     two_d = TwoDimensionalMeshing(session=meshing)
 
@@ -2098,8 +2097,6 @@ def test_direct_construction_2d_meshing(new_meshing_session):
 @pytest.mark.fluent_version(">=26.1")
 def test_direct_construction_create_workflow(new_meshing_session):
     """CreateWorkflow(session=meshing) should create a blank workflow."""
-    from ansys.fluent.core import CreateWorkflow
-
     meshing = new_meshing_session
     blank = CreateWorkflow(session=meshing)
 
@@ -2110,10 +2107,11 @@ def test_direct_construction_create_workflow(new_meshing_session):
 @pytest.mark.fluent_version(">=26.1")
 def test_direct_construction_invalid_session():
     """Passing a non-session object should raise TypeError."""
-    from ansys.fluent.core import WatertightMeshing
 
     with pytest.raises(TypeError):
         WatertightMeshing(session="not_a_session")
+
+
 @pytest.mark.fluent_version(">=27.1")
 def test_workflow_getattr_suggests_close_match(new_meshing_session):
     """AttributeError for a near-miss name should list the closest task name."""
