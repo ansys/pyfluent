@@ -4,7 +4,7 @@ Shared implementation for both datamodel and settings objects.
 """
 
 import inspect
-from typing import Callable, Iterable, List
+from typing import Callable, Iterable
 
 
 def get_completer_info(
@@ -14,12 +14,12 @@ def get_completer_info(
     excluded: Iterable = None,
     predicate: Callable = None,
     get_type_for_completer_info: Callable = None,
-) -> List[List[str]]:
+) -> list[list[str]]:
     """Get completer information of all children.
 
     Returns
     -------
-    List[List[str]]
+    list[list[str]]
         Name, type and docstring of all children.
     """
     excluded = excluded or []
