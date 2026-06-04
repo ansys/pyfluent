@@ -42,9 +42,7 @@ from ansys.fluent.core import (
     ScalarFieldDataRequest,
     VectorFieldDataRequest,
     SurfaceFieldDataRequest,
-    PathlinesFieldDataRequest,
-    SurfaceDataType,
-    )
+    SurfaceDataType)
 from ansys.fluent.core.solver import *
 ```
 
@@ -80,7 +78,6 @@ WriteCaseData(settings_source=solver)(
 
 ```{python}
 watertight = meshing.watertight()
-
 import_geom = watertight.import_geometry
 import_geom.file_name = "<geometry_file>"
 import_geom.length_unit = "mm"
@@ -95,9 +92,8 @@ watertight.describe_geometry()
 
 volume_mesh = watertight.create_volume_mesh_wtm
 volume_mesh.volume_fill = "poly-hexcore"
-volume_mesh()
 
-solver = meshing.switch_to_solver()
+volume_mesh()
 ```
 
 ## Physics Setup
@@ -107,11 +103,14 @@ solver = meshing.switch_to_solver()
 ```{python}
 inlet = VelocityInlet(solver, name="cold-inlet")
 inlet.momentum.velocity_magnitude = 0.4
+
 turbulence = inlet.turbulence
 turbulence = (turbulence.turbulence_specification.
   INTENSITY_AND_HYDRAULIC_DIAMETER)
+
 turbulence.turbulent_intensity = 0.05
 turbulence.hydraulic_diameter = "4 [in]"
+
 inlet.thermal.temperature = 293.15
 ```
 
@@ -156,8 +155,10 @@ species = species.SPECIES_TRANSPORT
 ## Solution
 ```{python}
 soln = Solution(solver)
+
 methods = soln.methods
 methods.p_v_coupling.flow_scheme = "Coupled"
+
 grad_scheme = methods.spatial_discretization.gradient_scheme
 grad_scheme = grad_scheme.GREEN_GAUSS_NODE_BASED
 
@@ -168,8 +169,10 @@ grad_scheme = grad_scheme.GREEN_GAUSS_NODE_BASED
 ```{python}
 rep_defs = ReportDefinitions(solver)
 surf_rep = rep_defs.surface["outlet-temp-avg"] = {}
+
 soln_report_type = rep_defs.surface["outlet-temp-avg"].report_type
 soln_report_type = soln_report_type.SURFACE_AREA
+
 rep_defs.surface["outlet-temp-avg"].field = VC.TEMPERATURE
 ```
 
@@ -179,13 +182,14 @@ rep_defs.surface["outlet-temp-avg"].field = VC.TEMPERATURE
 initialization = Initialization(solver)
 init_type = initialization.initialization_type
 init_type = init_type.HYBRID
+
 Initialize(solver)()
 
 run_calc = RunCalculation(solver)
 run_calc.parameters.iter_count = 100
+
 Iterate(solver)()
 
-# Check convergence
 Monitor(solver).residual.plot()
 ```
 
@@ -193,31 +197,22 @@ Monitor(solver).residual.plot()
 
 ### Field data access
 
-```{python .imports}
-# Ensure the session is initialized before 
-# requesting field data
-```
 ```{python}
+# Initialize session before requesting field data
 field_data = solver.fields.field_data
-
 abs_press_req = ScalarFieldDataRequest(
-    field_name=VC.ABSOLUTE_PRESSURE,
-    surfaces=["cold-inlet"],)
-    
+  field_name=VC.ABSOLUTE_PRESSURE,surfaces=["cold-inlet"])  
 abs_pressure = field_data.get_field_data(abs_press_req)
 
-vel_req = VectorFieldDataRequest(
-    field_name=VC.VELOCITY,
-    surfaces=["cold-inlet"],
-    )
+vel_req = VectorFieldDataRequest(field_name=
+  VC.VELOCITY,surfaces=["cold-inlet"])
 velocity = field_data.get_field_data(vel_req)
 
-surf_req = SurfaceFieldDataRequest(                                      
-    data_types=[SurfaceDataType.Vertices, 
-                SurfaceDataType.FacesCentroid],
-                surfaces=["hot-inlet", "cold-inlet"])
-surfaces = field_data.get_field_data(surf_req)
+surf_req = SurfaceFieldDataRequest(data_types=[
+  SurfaceDataType.Vertices, SurfaceDataType
+  .FacesCentroid], surfaces=["hot-inlet", "cold-inlet"])
 
+surfaces = field_data.get_field_data(surf_req)
 vertices = surfaces["cold-inlet"].vertices
 centroids = surfaces["hot-inlet"].face_centroids
 ```
@@ -226,20 +221,16 @@ centroids = surfaces["hot-inlet"].face_centroids
 
 ```{python}
 
-# Access field data categories
 scalar_fields = field_data.scalar_fields
 vector_fields = field_data.vector_fields
 surface_fields = field_data.surfaces
-
 # Discover available field names 
 scalar_names = scalar_fields.allowed_values()
 vector_names = vector_fields.allowed_values()
 surface_names = surface_fields.allowed_values()
-
 # Check variable availabilities
 temp_active = scalar_fields.is_active(VC.TEMPERATURE)
 vel_active = vector_fields.is_active(VC.VELOCITY)
-
 # Query numeric ranges using VariableCatalog entries
 temp_range = scalar_fields.range(VC.TEMPERATURE)
 vmag_range = scalar_fields.range(VC.VELOCITY_MAGNITUDE)
@@ -249,19 +240,17 @@ vmag_range = scalar_fields.range(VC.VELOCITY_MAGNITUDE)
 
 ```{python}
 reduction = solver.fields.reduction
-
 velocity_inlet = VelocityInlet(solver, name="cold-inlet")
-
 pressure_outlet = PressureOutlet(solver, name="outlet")
 
 wall = WallBoundary(solver, name="wall-elbow")
-
 area = reduction.area(locations=[velocity_inlet])
-
 volume = reduction.volume(locations=[velocity_inlet])
 
-avg_pressure = reduction.area_average(VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
-total_mass = reduction.mass_integral(VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
+avg_pressure = reduction.area_average(
+  VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
+total_mass = reduction.mass_integral(
+  VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
 
 force = reduction.force(locations=[wall])
 max_vel = reduction.maximum(VC.VELOCITY_MAGNITUDE, locations=[wall])
@@ -274,18 +263,10 @@ sv_info = solver.fields.solution_variable_info
 sv_data = solver.fields.solution_variable_data
 
 zones_info = sv_info.get_zones_info()
-
-temp_data = sv_data.get_data(
-    variable_name=VC.TEMPERATURE,
-    zone_names=["elbow-fluid"], 
-    domain_name="mixture")
+temp_data = sv_data.get_data(variable_name=VC.TEMPERATURE, zone_names=["elbow-fluid"], domain_name="mixture")
 
 temp_array = sv_data.create_empty_array(VC.TEMPERATURE, "elbow-fluid", "mixture")
-
 temp_array[:] = 500
 
-sv_data.set_data(
-    variable_name=VC.TEMPERATURE,
-    zone_names_to_data={'elbow-fluid': temp_array},
-    domain_name="mixture")
+sv_data.set_data(variable_name=VC.TEMPERATURE, zone_names_to_data={'elbow-fluid': temp_array}, domain_name="mixture")
 ```
