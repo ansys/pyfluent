@@ -624,27 +624,34 @@ class Base:
         """
         excluded = excluded or []
         ret = []
-        for k, v in inspect.getmembers(self):
-            if not k.startswith("_") and k not in excluded and k.startswith(prefix):
-                if isinstance(v, Base):
-                    if not _is_deprecated(v):
-                        ret.append(
-                            [
-                                k,
-                                _get_type_for_completer_info(v.__class__),
-                                v.__doc__,
-                            ]
-                        )
-                elif inspect.ismethod(v):
+        public_members = (
+            (k, v) for k, v in inspect.getmembers(self) if not k.startswith("_")
+        )
+        filtered_members = (
+            (k, v)
+            for k, v in public_members
+            if (k not in excluded and k.startswith(prefix))
+        )
+        for k, v in filtered_members:
+            if isinstance(v, Base):
+                if not _is_deprecated(v):
                     ret.append(
                         [
                             k,
-                            "Method",
-                            v.__doc__ or "",
+                            _get_type_for_completer_info(v.__class__),
+                            v.__doc__,
                         ]
                     )
-                else:
-                    ret.append([k, "Data", ""])
+            elif inspect.ismethod(v):
+                ret.append(
+                    [
+                        k,
+                        "Method",
+                        v.__doc__ or "",
+                    ]
+                )
+            else:
+                ret.append([k, "Data", ""])
         return ret
 
 

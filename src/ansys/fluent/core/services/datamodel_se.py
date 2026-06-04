@@ -23,10 +23,11 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import functools
+import inspect
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
+from typing import Any, Callable, Iterator, List, NoReturn, Sequence, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -963,6 +964,63 @@ class PyCallableStateObject:
         return self.get_state()
 
 
+def _get_type_for_completer_info(cls) -> str:
+    if issubclass(cls, _InputFile):
+        return "InputFilename"
+    elif issubclass(cls, _OutputFile):
+        return "OutputFilename"
+    elif issubclass(cls, _InOutFile):
+        return "InOutFilename"
+    elif issubclass(cls, _InputFile):
+        return "InputFilenameList"
+    elif issubclass(cls, _OutputFile):
+        return "OutputFilenameList"
+    elif issubclass(cls, _InOutFile):
+        return "InOutFilenameList"
+    else:
+        return cls.__bases__[0].__name__
+
+
+def _get_completer_info(obj, base_class: type, prefix, excluded) -> List[List[str]]:
+    """Get completer information of all children.
+
+    Returns
+    -------
+    List[List[str]]
+        Name, type and docstring of all children.
+    """
+    excluded = excluded or []
+    ret = []
+    public_members = (
+        (k, v) for k, v in inspect.getmembers(obj) if not k.startswith("_")
+    )
+    filtered_members = (
+        (k, v)
+        for k, v in public_members
+        if (k not in excluded and k.startswith(prefix))
+    )
+    for k, v in filtered_members:
+        if isinstance(v, base_class):
+            ret.append(
+                [
+                    k,
+                    _get_type_for_completer_info(v.__class__),
+                    v.__doc__,
+                ]
+            )
+        elif inspect.ismethod(v):
+            ret.append(
+                [
+                    k,
+                    "Method",
+                    v.__doc__ or "",
+                ]
+            )
+        else:
+            ret.append([k, "Data", ""])
+    return ret
+
+
 class PyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use this class
     instead of directly calling DatamodelService's method.
@@ -1045,6 +1103,18 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     setState = set_state
+
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyStateContainer, prefix=prefix, excluded=excluded
+        )
 
     def _get_remote_attr(self, attrib: str) -> Any:
         return self.service.get_attribute_value(
@@ -1606,6 +1676,21 @@ class PyNamedObjectContainer:
 
     getChildObjectDisplayNames = get_object_names
 
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self,
+            base_class=PyNamedObjectContainer,
+            prefix=prefix,
+            excluded=excluded,
+        )
+
     def __len__(self) -> int:
         """Return a count of child objects.
 
@@ -1805,6 +1890,18 @@ class PyAction:
         args = self._get_create_instance_args()
         if args is not None:
             return PyArguments(*args)
+
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyAction, prefix=prefix, excluded=excluded
+        )
 
 
 class PyQuery(PyAction):
