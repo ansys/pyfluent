@@ -84,11 +84,11 @@ from ansys.fluent.core.workflow import ClassicWorkflow
 
 if TYPE_CHECKING:
     from ansys.fluent.core.fluent_connection import FluentConnection
-    from ansys.fluent.core.generated.datamodel_252.preferences import (
+    from ansys.fluent.core.generated.datamodel_261.preferences import (
         Root as preferences_root,
     )
-    import ansys.fluent.core.generated.solver.settings_252 as settings_root
-    from ansys.fluent.core.generated.solver.tui_252 import main_menu
+    import ansys.fluent.core.generated.solver.settings_261 as settings_root
+    from ansys.fluent.core.generated.solver.tui_261 import main_menu
 
 
 tui_logger = logging.getLogger("pyfluent.tui")
