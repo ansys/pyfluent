@@ -76,20 +76,6 @@ Install the latest release from `PyPI
 
    pip install ansys-fluent-core
 
-For developers
---------------
-If you plan on doing local *development* of PyFluent with Git, install
-the latest release with:
-
-.. code:: console
-
-   git clone https://github.com/ansys/pyfluent.git
-   cd pyfluent
-   pip install pip -U
-   pip install -e .
-   python codegen/allapigen.py     # Generates the API files or
-   python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
-
 Dependencies
 ------------
 You must have a licensed copy of Ansys Fluent installed locally. PyFluent supports
@@ -113,6 +99,30 @@ export command can instead be added to the user's ``~/.profile`` file.
 .. note::
    Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
    These versions are no longer supported in the current PyFluent releases.
+
+For developers
+--------------
+If you plan on doing local *development* of PyFluent with Git, install
+the latest release with:
+
+.. code:: console
+
+   git clone https://github.com/ansys/pyfluent.git
+   cd pyfluent
+   pip install pip -U
+   pip install -e .
+
+To generate API files, run **one** of the following commands:
+
+.. code:: console
+
+   python codegen/allapigen.py    
+
+.. code:: console
+
+   python codegen/allapigen.py -v  
+
+The ``-v`` option displays the paths of the generated API files.
 
 Getting started
 ---------------
