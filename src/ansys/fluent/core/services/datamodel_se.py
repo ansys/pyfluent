@@ -971,23 +971,6 @@ class PyCallableStateObject:
         return self.get_state()
 
 
-def _get_type_for_completer_info(cls) -> str:
-    if issubclass(cls, _InputFile):
-        return "InputFilename"
-    elif issubclass(cls, _OutputFile):
-        return "OutputFilename"
-    elif issubclass(cls, _InOutFile):
-        return "InOutFilename"
-    elif issubclass(cls, _InputFile):
-        return "InputFilenameList"
-    elif issubclass(cls, _OutputFile):
-        return "OutputFilenameList"
-    elif issubclass(cls, _InOutFile):
-        return "InOutFilenameList"
-    else:
-        return cls.__bases__[0].__name__
-
-
 def _get_completer_info(
     obj, base_class: type, prefix: str, excluded: Iterable
 ) -> list[list[str]]:
@@ -996,7 +979,7 @@ def _get_completer_info(
         base_class=base_class,
         prefix=prefix,
         excluded=excluded,
-        get_type_for_completer_info=_get_type_for_completer_info,
+        type_name_map=_type_name_map,
     )
 
 
@@ -2240,3 +2223,10 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
             return super().__getattr__(name)
         else:
             return self._get_child(name)
+
+
+_type_name_map = {
+    _InputFile: "InputFilename",
+    _OutputFile: "OutputFilename",
+    _InOutFile: "InOutFilename",
+}

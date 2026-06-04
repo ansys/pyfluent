@@ -640,8 +640,8 @@ class Base:
             base_class=Base,
             prefix=prefix,
             excluded=excluded,
-            predicate=filter_deprecated,
-            get_type_for_completer_info=_get_type_for_completer_info,
+            filter_function=filter_deprecated,
+            type_name_map=_type_name_map,
         )
 
 
@@ -1119,21 +1119,14 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _get_type_for_completer_info(cls) -> str:
-    if issubclass(cls, (FileName, _InputFile)):
-        return "InputFilename"
-    elif issubclass(cls, (FileName, _OutputFile)):
-        return "OutputFilename"
-    elif issubclass(cls, (FileName, _InOutFile)):
-        return "InOutFilename"
-    elif issubclass(cls, (FilenameList, _InputFile)):
-        return "InputFilenameList"
-    elif issubclass(cls, (FilenameList, _OutputFile)):
-        return "OutputFilenameList"
-    elif issubclass(cls, (FilenameList, _InOutFile)):
-        return "InOutFilenameList"
-    else:
-        return cls.__bases__[0].__name__
+_type_name_map = {
+    (FileName, _InputFile): "InputFilename",
+    (FileName, _OutputFile): "OutputFilename",
+    (FileName, _InOutFile): "InOutFilename",
+    (FilenameList, _InputFile): "InputFilenameList",
+    (FilenameList, _OutputFile): "OutputFilenameList",
+    (FilenameList, _InOutFile): "InOutFilenameList",
+}
 
 
 class Group(SettingsBase[DictStateType]):
