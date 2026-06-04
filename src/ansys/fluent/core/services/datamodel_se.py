@@ -23,11 +23,10 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import functools
-import inspect
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, List, NoReturn, Sequence, TypeVar
+from typing import Any, Callable, Iterable, Iterator, List, NoReturn, Sequence, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -49,6 +48,9 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _completer_info_method,
+)
 
 Path = list[tuple[str, str]]
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
@@ -981,44 +983,16 @@ def _get_type_for_completer_info(cls) -> str:
         return cls.__bases__[0].__name__
 
 
-def _get_completer_info(obj, base_class: type, prefix, excluded) -> List[List[str]]:
-    """Get completer information of all children.
-
-    Returns
-    -------
-    List[List[str]]
-        Name, type and docstring of all children.
-    """
-    excluded = excluded or []
-    ret = []
-    public_members = (
-        (k, v) for k, v in inspect.getmembers(obj) if not k.startswith("_")
+def _get_completer_info(
+    obj, base_class: type, prefix: str, excluded: Iterable
+) -> List[List[str]]:
+    return _completer_info_method(
+        obj=obj,
+        base_class=base_class,
+        prefix=prefix,
+        excluded=excluded,
+        get_type_for_completer_info=_get_type_for_completer_info,
     )
-    filtered_members = (
-        (k, v)
-        for k, v in public_members
-        if (k not in excluded and k.startswith(prefix))
-    )
-    for k, v in filtered_members:
-        if isinstance(v, base_class):
-            ret.append(
-                [
-                    k,
-                    _get_type_for_completer_info(v.__class__),
-                    v.__doc__,
-                ]
-            )
-        elif inspect.ismethod(v):
-            ret.append(
-                [
-                    k,
-                    "Method",
-                    v.__doc__ or "",
-                ]
-            )
-        else:
-            ret.append([k, "Data", ""])
-    return ret
 
 
 class PyStateContainer(PyCallableStateObject):
@@ -1104,7 +1078,9 @@ class PyStateContainer(PyCallableStateObject):
 
     setState = set_state
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> List[List[str]]:
         """Get completer information of all children.
 
         Returns
@@ -1676,7 +1652,9 @@ class PyNamedObjectContainer:
 
     getChildObjectDisplayNames = get_object_names
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> List[List[str]]:
         """Get completer information of all children.
 
         Returns
@@ -1891,7 +1869,9 @@ class PyAction:
         if args is not None:
             return PyArguments(*args)
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> List[List[str]]:
         """Get completer information of all children.
 
         Returns

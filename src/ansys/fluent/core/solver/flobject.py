@@ -46,7 +46,6 @@ from enum import Enum
 import fnmatch
 from functools import total_ordering
 import hashlib
-import inspect
 import keyword
 import logging
 import os
@@ -61,6 +60,7 @@ from typing import (
     Dict,
     ForwardRef,
     Generic,
+    Iterable,
     List,
     NewType,
     Tuple,
@@ -78,6 +78,9 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _get_completer_info,
+)
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -614,45 +617,30 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all children.
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> List[List[str]]:
+        """Get completer information of all children.
 
         Returns
         -------
         List[List[str]]
             Name, type and docstring of all children.
         """
-        excluded = excluded or []
-        ret = []
-        public_members = (
-            (k, v) for k, v in inspect.getmembers(self) if not k.startswith("_")
-        )
-        filtered_members = (
-            (k, v)
-            for k, v in public_members
-            if (k not in excluded and k.startswith(prefix))
-        )
-        for k, v in filtered_members:
+
+        def filter_deprecated(v) -> bool:
             if isinstance(v, Base):
-                if not _is_deprecated(v):
-                    ret.append(
-                        [
-                            k,
-                            _get_type_for_completer_info(v.__class__),
-                            v.__doc__,
-                        ]
-                    )
-            elif inspect.ismethod(v):
-                ret.append(
-                    [
-                        k,
-                        "Method",
-                        v.__doc__ or "",
-                    ]
-                )
-            else:
-                ret.append([k, "Data", ""])
-        return ret
+                return not _is_deprecated(v)
+            return True
+
+        return _get_completer_info(
+            obj=self,
+            base_class=Base,
+            prefix=prefix,
+            excluded=excluded,
+            predicate=filter_deprecated,
+            get_type_for_completer_info=_get_type_for_completer_info,
+        )
 
 
 StateT = TypeVar("StateT")
