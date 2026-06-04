@@ -28,7 +28,7 @@ import functools
 import logging
 import os
 from threading import RLock
-from typing import Any, Iterable, List, NoReturn, TypeVar
+from typing import Any, Iterable, NoReturn, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -990,7 +990,7 @@ def _get_type_for_completer_info(cls) -> str:
 
 def _get_completer_info(
     obj, base_class: type, prefix: str, excluded: Iterable
-) -> List[List[str]]:
+) -> list[list[str]]:
     return _completer_info_method(
         obj=obj,
         base_class=base_class,
@@ -1085,12 +1085,12 @@ class PyStateContainer(PyCallableStateObject):
 
     def get_completer_info(
         self, prefix: str = "", excluded: Iterable = None
-    ) -> List[List[str]]:
+    ) -> list[list[str]]:
         """Get completer information of all children.
 
         Returns
         -------
-        List[List[str]]
+        list[list[str]]
             Name, type and docstring of all children.
         """
         return _get_completer_info(
@@ -1284,7 +1284,7 @@ class PyMenu(PyStateContainer):
         ----------
         obj_type: str
             Type of the named object container.
-        child_names : List[str]
+        child_names : list[str]
             List of named objects.
         """
         for child_name in child_names:
@@ -1658,12 +1658,12 @@ class PyNamedObjectContainer:
 
     def get_completer_info(
         self, prefix: str = "", excluded: Iterable = None
-    ) -> List[List[str]]:
+    ) -> list[list[str]]:
         """Get completer information of all children.
 
         Returns
         -------
-        List[List[str]]
+        list[list[str]]
             Name, type and docstring of all children.
         """
         return _get_completer_info(
@@ -1875,12 +1875,12 @@ class PyAction:
 
     def get_completer_info(
         self, prefix: str = "", excluded: Iterable = None
-    ) -> List[List[str]]:
+    ) -> list[list[str]]:
         """Get completer information of all children.
 
         Returns
         -------
-        List[List[str]]
+        list[list[str]]
             Name, type and docstring of all children.
         """
         return _get_completer_info(

@@ -60,7 +60,6 @@ from typing import (
     ForwardRef,
     Generic,
     Iterable,
-    List,
     NewType,
     TypeVar,
     Union,
@@ -622,12 +621,12 @@ class Base:
 
     def get_completer_info(
         self, prefix: str = "", excluded: Iterable = None
-    ) -> List[List[str]]:
+    ) -> list[list[str]]:
         """Get completer information of all children.
 
         Returns
         -------
-        List[List[str]]
+        list[list[str]]
             Name, type and docstring of all children.
         """
 
@@ -2616,7 +2615,7 @@ def find_children(obj, identifier="*"):
 
     Returns
     -------
-    List
+    list
     """
     list_of_children = []
     _list_children(obj.__class__, identifier, [], list_of_children)
