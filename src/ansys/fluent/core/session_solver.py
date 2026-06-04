@@ -36,7 +36,7 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import MonitorsServiceV0, SchemeEval
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
-from ansys.fluent.core.services.monitor import MonitorsService
+from ansys.fluent.core.services.monitor_v1 import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction as ReductionV0
 from ansys.fluent.core.services.reduction import ReductionService as ReductionServiceV0
 from ansys.fluent.core.services.reduction_v1 import Reduction, ReductionService
