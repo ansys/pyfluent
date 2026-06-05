@@ -66,6 +66,7 @@ from ansys.fluent.core.services import (
     SchemeEvalService,
     SchemeEvalServiceV0,
     SchemeEvalV0,
+    service_creator,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
@@ -394,9 +395,9 @@ class _ConnectionInterface:
             self._app_utilities_service = create_grpc_service(
                 AppUtilitiesServiceV0, error_state
             )
-        self.scheme_eval = (SchemeEval if supports_v1 else SchemeEvalV0)(
-            self._scheme_eval_service
-        )
+        self.scheme_eval = service_creator(
+            "scheme_eval", supports_v1=supports_v1
+        ).create(self._scheme_eval_service)
         match FluentVersion(self.scheme_eval.version):
             case v if v < FluentVersion.v252:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
@@ -407,9 +408,9 @@ class _ConnectionInterface:
                 )(self._app_utilities_service, self.scheme_eval)
 
             case _:
-                self._app_utilities = (AppUtilities if supports_v1 else AppUtilitiesV0)(
-                    self._app_utilities_service
-                )
+                self._app_utilities = service_creator(
+                    "app_utilities", supports_v1=supports_v1
+                ).create(self._app_utilities_service)
 
     @property
     def product_build_info(self) -> str:
@@ -611,9 +612,9 @@ class FluentConnection:
 
         self._server_supports_v1 = _server_supports_v1(channel=self._channel)
 
-        self._health_check = (
-            HealthCheckService if self._server_supports_v1 else HealthCheckServiceV0
-        )(self._channel, self._metadata, self._error_state)
+        self._health_check = service_creator(
+            "health_check", supports_v1=self._server_supports_v1
+        ).create(self._channel, self._metadata, self._error_state)
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.

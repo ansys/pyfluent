@@ -138,4 +138,62 @@ __all__ = (
     "_FieldInfo",
     "_FieldInfoV0",
     "ZoneInfo",
+    "service_creator",
 )
+
+
+_service_cls_by_name_v0 = {
+    "app_utilities": AppUtilitiesV0,
+    "health_check": HealthCheckServiceV0,
+    "datamodel": DatamodelService_SE_V0,
+    "tui": DatamodelService_TUI_V0,
+    "settings": SettingsServiceV0,
+    "scheme_eval": SchemeEvalV0,
+    "events": EventsServiceV0,
+    "field_data": LiveFieldDataV0,
+    "field_data_old": DeprecatedFieldData,
+    "field_info": _FieldInfoV0,
+    "monitors": MonitorsServiceV0,
+    "reduction": ReductionV0,
+    "svar": SolutionVariableServiceV0,
+    "svar_data": SolutionVariableDataV0,
+    "transcript": TranscriptServiceV0,
+    "batch_ops": BatchOpsService,
+    "field_data_streaming": FieldDataStreamingV0,
+}
+
+_service_cls_by_name = {
+    "app_utilities": AppUtilities,
+    "health_check": HealthCheckService,
+    "datamodel": DatamodelService_SE,
+    "tui": DatamodelService_TUI,
+    "settings": SettingsService,
+    "scheme_eval": SchemeEval,
+    "events": EventsService,
+    "field_data": LiveFieldData,
+    "field_data_old": DeprecatedFieldData,
+    "field_info": _FieldInfo,
+    "monitors": MonitorsService,
+    "reduction": Reduction,
+    "svar": SolutionVariableService,
+    "svar_data": SolutionVariableData,
+    "transcript": TranscriptService,
+    "batch_ops": BatchOpsService,
+    "field_data_streaming": FieldDataStreaming,
+}
+
+
+# This class is swapped in Fluent Python Console
+class service_creator:
+    """A gRPC service creator."""
+
+    def __init__(self, service_name: str, supports_v1: bool | None = None):
+        """Initialize service_creator."""
+        if supports_v1:
+            self._service_cls = _service_cls_by_name[service_name]
+        else:
+            self._service_cls = _service_cls_by_name_v0[service_name]
+
+    def create(self, *args, **kwargs):
+        """Create a gRPC service."""
+        return self._service_cls(*args, **kwargs)
