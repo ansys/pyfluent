@@ -41,12 +41,12 @@ Example
 from __future__ import annotations
 
 import collections
+from collections.abc import Callable
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
 from functools import total_ordering
 import hashlib
-import inspect
 import keyword
 import logging
 import os
@@ -57,13 +57,10 @@ import sys
 import types
 from typing import (
     Any,
-    Callable,
-    Dict,
     ForwardRef,
     Generic,
-    List,
+    Iterable,
     NewType,
-    Tuple,
     TypeVar,
     Union,
     _eval_type,
@@ -78,6 +75,9 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _get_completer_info,
+)
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -150,12 +150,12 @@ class _InlineConstants:
 
 
 # Type hints
-RealType = NewType("real", Union[float, str])  # constant or expression
-RealListType = List[RealType]
-RealVectorType = Tuple[RealType, RealType, RealType]
-IntListType = List[int]
-StringListType = List[str]
-BoolListType = List[bool]
+RealType = NewType("real", float | str)  # constant or expression
+RealListType = list[RealType]
+RealVectorType = tuple[RealType, RealType, RealType]
+IntListType = list[int]
+StringListType = list[str]
+BoolListType = list[bool]
 PrimitiveStateType = Union[
     str,
     RealType,
@@ -166,8 +166,8 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = Dict[str, "StateType"]
-ListStateType = List["StateType"]
+DictStateType = dict[str, "StateType"]
+ListStateType = list["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
@@ -175,6 +175,11 @@ def check_type(val, tp):
     """Check type of object."""
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
+    if isinstance(tp, str):
+        try:
+            return check_type(val, _eval_type(ForwardRef(tp), globals(), locals()))
+        except Exception:
+            return False
     if isinstance(tp, ForwardRef):
         return check_type(val, _eval_type(tp, globals(), locals()))
     origin = get_origin(tp)
@@ -186,7 +191,7 @@ def check_type(val, tp):
         return isinstance(val, tuple) and all(
             check_type(x, t) for x, t in zip(val, get_args(tp))
         )
-    elif origin == Union:
+    elif origin in (Union, types.UnionType):
         return any(check_type(val, t) for t in get_args(tp))
     elif origin == dict:
         k_t, k_v = get_args(tp)
@@ -495,7 +500,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: type | Tuple[type] | None = None,
+        attr_type_or_types: type | tuple[type] | None = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -614,38 +619,30 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all children.
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
 
         Returns
         -------
-        List[List[str]]
+        list[list[str]]
             Name, type and docstring of all children.
         """
-        excluded = excluded or []
-        ret = []
-        for k, v in inspect.getmembers(self):
-            if not k.startswith("_") and k not in excluded and k.startswith(prefix):
-                if isinstance(v, Base):
-                    if not _is_deprecated(v):
-                        ret.append(
-                            [
-                                k,
-                                _get_type_for_completer_info(v.__class__),
-                                v.__doc__,
-                            ]
-                        )
-                elif inspect.ismethod(v):
-                    ret.append(
-                        [
-                            k,
-                            "Method",
-                            v.__doc__ or "",
-                        ]
-                    )
-                else:
-                    ret.append([k, "Data", ""])
-        return ret
+
+        def filter_deprecated(v) -> bool:
+            if isinstance(v, Base):
+                return not _is_deprecated(v)
+            return True
+
+        return _get_completer_info(
+            obj=self,
+            base_class=Base,
+            prefix=prefix,
+            excluded=excluded,
+            filter_function=filter_deprecated,
+            type_name_map=_type_name_map,
+        )
 
 
 StateT = TypeVar("StateT")
@@ -1122,21 +1119,14 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _get_type_for_completer_info(cls) -> str:
-    if issubclass(cls, (FileName, _InputFile)):
-        return "InputFilename"
-    elif issubclass(cls, (FileName, _OutputFile)):
-        return "OutputFilename"
-    elif issubclass(cls, (FileName, _InOutFile)):
-        return "InOutFilename"
-    elif issubclass(cls, (FilenameList, _InputFile)):
-        return "InputFilenameList"
-    elif issubclass(cls, (FilenameList, _OutputFile)):
-        return "OutputFilenameList"
-    elif issubclass(cls, (FilenameList, _InOutFile)):
-        return "InOutFilenameList"
-    else:
-        return cls.__bases__[0].__name__
+_type_name_map = {
+    (FileName, _InputFile): "InputFilename",
+    (FileName, _OutputFile): "OutputFilename",
+    (FileName, _InOutFile): "InOutFilename",
+    (FilenameList, _InputFile): "InputFilenameList",
+    (FilenameList, _OutputFile): "OutputFilenameList",
+    (FilenameList, _InOutFile): "InOutFilenameList",
+}
 
 
 class Group(SettingsBase[DictStateType]):
@@ -2618,7 +2608,7 @@ def find_children(obj, identifier="*"):
 
     Returns
     -------
-    List
+    list
     """
     list_of_children = []
     _list_children(obj.__class__, identifier, [], list_of_children)

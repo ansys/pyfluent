@@ -878,3 +878,64 @@ def test_py_query(new_meshing_session):
             "face_zone_id_list": [],
             "face_zone_name_pattern": "",
         }
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_get_completer_info(new_meshing_session):
+    meshing = new_meshing_session
+
+    # singleton
+    assert {
+        "ImportGeometry",
+        "getAttribValue",
+        "getState",
+    } < set([x[0] for x in meshing.meshing.get_completer_info()])
+    assert {"application", "general", "task_object", "parts", "parts_files"} < set(
+        [x[0] for x in meshing.meshing_workflow.get_completer_info()]
+    )
+    assert {
+        "import_geometry",
+        "add_2d_boundary_layers",
+        "add_boundary_layers",
+    } < set([x[0] for x in meshing.meshing_workflow.application.get_completer_info()])
+
+    # command
+    assert {
+        "before_execute",
+        "command",
+        "create_instance",
+    } < set(
+        [
+            x[0]
+            for x in meshing.meshing_workflow.application.import_geometry.get_completer_info()
+        ]
+    )
+
+    meshing.meshing_workflow.general.initialize_workflow(
+        workflow_type="Watertight Geometry"
+    )
+
+    # named-object
+    assert {
+        "get_object_names",
+        "getState",
+    } < set(
+        [
+            x[0]
+            for x in meshing.meshing_workflow.task_object.import_geometry.get_completer_info()
+        ]
+    )
+
+    # parameter
+    assert {
+        "is_active",
+        "is_read_only",
+        "allowed_values",
+    } < set(
+        [
+            x[0]
+            for x in meshing.meshing_workflow.task_object.import_geometry[
+                "Import Geometry"
+            ].arguments.file_name.get_completer_info()
+        ]
+    )
