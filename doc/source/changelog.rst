@@ -9,10 +9,20 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
-`0.39.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.39.dev0>`_ - March 06, 2026
-=========================================================================================
+`0.38.1 <https://github.com/ansys/pyfluent/releases/tag/v0.38.1>`_ - March 23, 2026
+`0.38.dev5 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev5>`_ - January 27, 2026
 
 .. tab-set::
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Dimensional check for pim not supporting ints
+          - `#4790 <https://github.com/ansys/pyfluent/pull/4790>`_
 
 
   .. tab-item:: Dependencies
@@ -21,8 +31,24 @@ This document contains the release notes for the project.
         :header-rows: 0
         :widths: auto
 
-        * - Bump version to v0.39.dev0
-          - `#4976 <https://github.com/ansys/pyfluent/pull/4976>`_
+        * - Bump version to v0.38.dev5
+          - `#4858 <https://github.com/ansys/pyfluent/pull/4858>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Upgrade cheat sheet. [skip tests]
+          - `#4640 <https://github.com/ansys/pyfluent/pull/4640>`_
+
+        * - Update Meshing workflow's api docs.
+          - `#4835 <https://github.com/ansys/pyfluent/pull/4835>`_
+
+        * - Update radiation headlamp example due to no backwards compatibility of reference_direction [skip tests]
+          - `#4843 <https://github.com/ansys/pyfluent/pull/4843>`_
 
 
   .. tab-item:: Maintenance
@@ -31,8 +57,41 @@ This document contains the release notes for the project.
         :header-rows: 0
         :widths: auto
 
-        * - Update CHANGELOG for v0.38.0
-          - `#4975 <https://github.com/ansys/pyfluent/pull/4975>`_
+        * - Update CHANGELOG for v0.38.dev3
+          - `#4821 <https://github.com/ansys/pyfluent/pull/4821>`_
+
+        * - Update CHANGELOG for v0.38.dev4
+          - `#4847 <https://github.com/ansys/pyfluent/pull/4847>`_
+
+        * - Change ansys-units range
+          - `#4853 <https://github.com/ansys/pyfluent/pull/4853>`_
+
+
+`0.38.dev4 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev4>`_ - January 22, 2026
+`0.38.dev3 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev3>`_ - January 19, 2026
+`0.39.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.39.dev0>`_ - March 06, 2026
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Document supported patch versions of Fluent for gRPC connection.
+          - `#4995 <https://github.com/ansys/pyfluent/pull/4995>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version 0.38.1
+          - `#5003 <https://github.com/ansys/pyfluent/pull/5003>`_
 
 
 `0.38.0 <https://github.com/ansys/pyfluent/releases/tag/v0.38.0>`_ - March 06, 2026
