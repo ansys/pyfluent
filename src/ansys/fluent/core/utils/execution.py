@@ -22,12 +22,13 @@
 
 """Module providing additional execution methods."""
 
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 import functools
 from multiprocessing.context import TimeoutError
 import multiprocessing.pool
 import time
-from typing import Any, Callable
+from typing import Any
 
 from ansys.fluent.core.exceptions import InvalidArgument
 
