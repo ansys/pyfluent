@@ -484,7 +484,7 @@ def _server_supports_v1(channel) -> bool:
             method_desc.full_name
             == "ansys.api.fluent.v1.application_runtime.ApplicationRuntime.GetProductVersion"
         )
-    except KeyError:
+    except (KeyError, AttributeError):
         return False
 
 
