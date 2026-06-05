@@ -47,7 +47,6 @@ from enum import Enum
 import fnmatch
 from functools import total_ordering
 import hashlib
-import inspect
 import keyword
 import logging
 import os
@@ -60,6 +59,7 @@ from typing import (
     Any,
     ForwardRef,
     Generic,
+    Iterable,
     NewType,
     TypeVar,
     Union,
@@ -75,6 +75,9 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _get_completer_info,
+)
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -616,38 +619,30 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def get_completer_info(self, prefix="", excluded=None) -> list[list[str]]:
-        """Get completer info of all children.
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
 
         Returns
         -------
-        List[List[str]]
+        list[list[str]]
             Name, type and docstring of all children.
         """
-        excluded = excluded or []
-        ret = []
-        for k, v in inspect.getmembers(self):
-            if not k.startswith("_") and k not in excluded and k.startswith(prefix):
-                if isinstance(v, Base):
-                    if not _is_deprecated(v):
-                        ret.append(
-                            [
-                                k,
-                                _get_type_for_completer_info(v.__class__),
-                                v.__doc__,
-                            ]
-                        )
-                elif inspect.ismethod(v):
-                    ret.append(
-                        [
-                            k,
-                            "Method",
-                            v.__doc__ or "",
-                        ]
-                    )
-                else:
-                    ret.append([k, "Data", ""])
-        return ret
+
+        def filter_deprecated(v) -> bool:
+            if isinstance(v, Base):
+                return not _is_deprecated(v)
+            return True
+
+        return _get_completer_info(
+            obj=self,
+            base_class=Base,
+            prefix=prefix,
+            excluded=excluded,
+            filter_function=filter_deprecated,
+            type_name_map=_type_name_map,
+        )
 
 
 StateT = TypeVar("StateT")
@@ -1124,21 +1119,14 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _get_type_for_completer_info(cls) -> str:
-    if issubclass(cls, (FileName, _InputFile)):
-        return "InputFilename"
-    elif issubclass(cls, (FileName, _OutputFile)):
-        return "OutputFilename"
-    elif issubclass(cls, (FileName, _InOutFile)):
-        return "InOutFilename"
-    elif issubclass(cls, (FilenameList, _InputFile)):
-        return "InputFilenameList"
-    elif issubclass(cls, (FilenameList, _OutputFile)):
-        return "OutputFilenameList"
-    elif issubclass(cls, (FilenameList, _InOutFile)):
-        return "InOutFilenameList"
-    else:
-        return cls.__bases__[0].__name__
+_type_name_map = {
+    (FileName, _InputFile): "InputFilename",
+    (FileName, _OutputFile): "OutputFilename",
+    (FileName, _InOutFile): "InOutFilename",
+    (FilenameList, _InputFile): "InputFilenameList",
+    (FilenameList, _OutputFile): "OutputFilenameList",
+    (FilenameList, _InOutFile): "InOutFilenameList",
+}
 
 
 class Group(SettingsBase[DictStateType]):
@@ -2620,7 +2608,7 @@ def find_children(obj, identifier="*"):
 
     Returns
     -------
-    List
+    list
     """
     list_of_children = []
     _list_children(obj.__class__, identifier, [], list_of_children)
