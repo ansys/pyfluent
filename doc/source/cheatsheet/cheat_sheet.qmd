@@ -159,7 +159,8 @@ soln = Solution(solver)
 methods = soln.methods
 methods.p_v_coupling.flow_scheme = "Coupled"
 
-grad_scheme = methods.spatial_discretization.gradient_scheme
+grad_scheme = methods.spatial_discretization
+  .gradient_scheme
 grad_scheme = grad_scheme.GREEN_GAUSS_NODE_BASED
 
 ```
@@ -224,14 +225,14 @@ centroids = surfaces["hot-inlet"].face_centroids
 scalar_fields = field_data.scalar_fields
 vector_fields = field_data.vector_fields
 surface_fields = field_data.surfaces
-# Discover available field names 
+
 scalar_names = scalar_fields.allowed_values()
 vector_names = vector_fields.allowed_values()
 surface_names = surface_fields.allowed_values()
-# Check variable availabilities
+
 temp_active = scalar_fields.is_active(VC.TEMPERATURE)
 vel_active = vector_fields.is_active(VC.VELOCITY)
-# Query numeric ranges using VariableCatalog entries
+
 temp_range = scalar_fields.range(VC.TEMPERATURE)
 vmag_range = scalar_fields.range(VC.VELOCITY_MAGNITUDE)
 ```
