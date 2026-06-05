@@ -41,6 +41,7 @@ Example
 from __future__ import annotations
 
 import collections
+from collections.abc import Callable
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
@@ -57,13 +58,9 @@ import sys
 import types
 from typing import (
     Any,
-    Callable,
-    Dict,
     ForwardRef,
     Generic,
-    List,
     NewType,
-    Tuple,
     TypeVar,
     Union,
     _eval_type,
@@ -150,12 +147,12 @@ class _InlineConstants:
 
 
 # Type hints
-RealType = NewType("real", Union[float, str])  # constant or expression
-RealListType = List[RealType]
-RealVectorType = Tuple[RealType, RealType, RealType]
-IntListType = List[int]
-StringListType = List[str]
-BoolListType = List[bool]
+RealType = NewType("real", float | str)  # constant or expression
+RealListType = list[RealType]
+RealVectorType = tuple[RealType, RealType, RealType]
+IntListType = list[int]
+StringListType = list[str]
+BoolListType = list[bool]
 PrimitiveStateType = Union[
     str,
     RealType,
@@ -166,8 +163,8 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = Dict[str, "StateType"]
-ListStateType = List["StateType"]
+DictStateType = dict[str, "StateType"]
+ListStateType = list["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
@@ -175,6 +172,11 @@ def check_type(val, tp):
     """Check type of object."""
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
+    if isinstance(tp, str):
+        try:
+            return check_type(val, _eval_type(ForwardRef(tp), globals(), locals()))
+        except Exception:
+            return False
     if isinstance(tp, ForwardRef):
         return check_type(val, _eval_type(tp, globals(), locals()))
     origin = get_origin(tp)
@@ -186,7 +188,7 @@ def check_type(val, tp):
         return isinstance(val, tuple) and all(
             check_type(x, t) for x, t in zip(val, get_args(tp))
         )
-    elif origin == Union:
+    elif origin in (Union, types.UnionType):
         return any(check_type(val, t) for t in get_args(tp))
     elif origin == dict:
         k_t, k_v = get_args(tp)
@@ -495,7 +497,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: type | Tuple[type] | None = None,
+        attr_type_or_types: type | tuple[type] | None = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -614,7 +616,7 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+    def get_completer_info(self, prefix="", excluded=None) -> list[list[str]]:
         """Get completer info of all children.
 
         Returns

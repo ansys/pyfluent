@@ -22,9 +22,9 @@
 
 """Provides a module for datamodel event streaming."""
 
+from collections.abc import Callable
 import logging
 import threading
-from typing import Callable
 
 from google.protobuf.json_format import MessageToDict
 

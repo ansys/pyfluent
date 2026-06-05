@@ -22,11 +22,12 @@
 
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
+from collections.abc import Callable
 from enum import Enum
 import json
 import logging
 import os
-from typing import Any, Callable, Dict
+from typing import Any
 import warnings
 import weakref
 
@@ -39,14 +40,33 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core.services import (
+    BatchOpsService,
+    DatamodelService_SE,
+    DatamodelService_SE_V0,
+    DatamodelService_TUI,
+    DatamodelService_TUI_V0,
+    DeprecatedFieldData,
+    DeprecatedFieldDataV0,
+    EventsService,
+    EventsServiceV0,
+    FieldDataService,
+    FieldDataServiceV0,
+    FieldDataStreamingV0,
+    LiveFieldData,
+    LiveFieldDataV0,
+    SchemeEval,
+    SettingsService,
+    SettingsServiceV0,
+    SolutionVariableData,
+    SolutionVariableService,
+    TranscriptService,
+    TranscriptServiceV0,
     ZoneInfo,
+    _FieldInfo,
+    _FieldInfoV0,
 )
-from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
-from ansys.fluent.core.services.field_data_v1 import FieldDataService
-from ansys.fluent.core.services.scheme_eval import SchemeEval
+from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -57,6 +77,9 @@ from ansys.fluent.core.streaming_services.events_streaming import (
     EventsManager as EventsManagerV0,
 )
 from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
+from ansys.fluent.core.streaming_services.field_data_streaming import (
+    FieldDataStreaming,
+)
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptV0,
 )
@@ -72,6 +95,9 @@ except Exception:
     root = Any
 
 logger = logging.getLogger("pyfluent.general")
+
+
+__all__ = ("BaseSession",)
 
 
 def _parse_server_info_file(file_name: str):
@@ -140,7 +166,7 @@ class BaseSession:
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         event_type: Enum | None = None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
@@ -192,7 +218,7 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
@@ -205,13 +231,14 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = service_creator(
-            "transcript", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
-        if fluent_connection._server_supports_v1:
-            self.transcript = Transcript(self._transcript_service)
-        else:
-            self.transcript = TranscriptV0(self._transcript_service)
+        self._transcript_service = (
+            TranscriptService
+            if fluent_connection._server_supports_v1
+            else TranscriptServiceV0
+        )(fluent_connection._channel, fluent_connection._metadata)
+        self.transcript = (
+            Transcript if fluent_connection._server_supports_v1 else TranscriptV0
+        )(self._transcript_service)
         if self._start_transcript:
             self.transcript.start()
 
@@ -221,9 +248,11 @@ class BaseSession:
 
         self.journal = Journal(self._app_utilities)
 
-        self._datamodel_service_tui = service_creator(
-            "tui", supports_v1=fluent_connection._server_supports_v1
-        ).create(
+        self._datamodel_service_tui = (
+            DatamodelService_TUI
+            if fluent_connection._server_supports_v1
+            else DatamodelService_TUI_V0
+        )(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
@@ -231,9 +260,11 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = service_creator(
-            "datamodel", supports_v1=fluent_connection._server_supports_v1
-        ).create(
+        self._datamodel_service_se = (
+            DatamodelService_SE
+            if fluent_connection._server_supports_v1
+            else DatamodelService_SE_V0
+        )(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.get_fluent_version(),
@@ -248,14 +279,16 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = service_creator(
-            "batch_ops", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
+        self._batch_ops_service = BatchOpsService(
+            fluent_connection._channel, fluent_connection._metadata
+        )
 
         if event_type:
-            events_service = service_creator(
-                "events", supports_v1=fluent_connection._server_supports_v1
-            ).create(fluent_connection._channel, fluent_connection._metadata)
+            events_service = (
+                EventsService
+                if fluent_connection._server_supports_v1
+                else EventsServiceV0
+            )(fluent_connection._channel, fluent_connection._metadata)
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
                     event_type,
@@ -289,9 +322,11 @@ class BaseSession:
             self, get_zones_info, fluent_connection._server_supports_v1
         )
 
-        self._settings_service = service_creator(
-            "settings", supports_v1=fluent_connection._server_supports_v1
-        ).create(
+        self._settings_service = (
+            SettingsService
+            if fluent_connection._server_supports_v1
+            else SettingsServiceV0
+        )(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,
@@ -377,7 +412,7 @@ class BaseSession:
         server_info_file_name: str,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -601,25 +636,23 @@ class Fields:
         self._is_solution_data_valid = (
             _session._app_utilities.is_solution_data_available
         )
-        self._field_info = service_creator(
-            "field_info", supports_v1=server_supports_v1
-        ).create(
+        self._field_info = (_FieldInfo if server_supports_v1 else _FieldInfoV0)(
             _session._field_data_service,
             self._is_solution_data_valid,
         )
-        self.field_data = service_creator(
-            "field_data", supports_v1=server_supports_v1
-        ).create(
+        self.field_data = (LiveFieldData if server_supports_v1 else LiveFieldDataV0)(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,
             _session.scheme,
             get_zones_info,
         )
-        self.field_data_streaming = service_creator(
-            "field_data_streaming", supports_v1=server_supports_v1
-        ).create(_session._fluent_connection._id, _session._field_data_service)
-        self.field_data_old = service_creator("field_data_old").create(
+        self.field_data_streaming = (
+            FieldDataStreaming if server_supports_v1 else FieldDataStreamingV0
+        )(_session._fluent_connection._id, _session._field_data_service)
+        self.field_data_old = (
+            DeprecatedFieldData if server_supports_v1 else DeprecatedFieldDataV0
+        )(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,

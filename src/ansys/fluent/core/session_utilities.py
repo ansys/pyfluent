@@ -1,3 +1,5 @@
+# pyright: reportNoOverloadImplementation=false
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -22,22 +24,43 @@
 
 """Session utilities."""
 
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, Literal, overload
 
-import ansys.fluent.core as pyfluent
-from ansys.fluent.core._types import PathType
-from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.launch_options import (
-    Dimension,
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
-    UIMode,
+from typing_extensions import Unpack, override
+
+from ansys.fluent.core import (
+    session_meshing,
+    session_pure_meshing,
+    session_solver,
+    session_solver_aero,
+    session_solver_icing,
 )
-from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
-from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
-from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.launcher.container_launcher import (
+    ContainerArgsWithoutDryRunMode,
+    DockerLauncher,
+)
+from ansys.fluent.core.launcher.launch_options import (
+    FluentMode,
+)
+from ansys.fluent.core.launcher.launcher import connect_to_fluent
+from ansys.fluent.core.launcher.pim_launcher import (
+    PIMArgsWithoutMode,
+    PIMLauncher,
+)
+from ansys.fluent.core.launcher.standalone_launcher import (
+    StandaloneArgsWithoutDryRunMode,
+    StandaloneLauncher,
+)
+from ansys.fluent.core.session import BaseSession
+
+__all__ = (
+    "Meshing",
+    "PureMeshing",
+    "PrePost",
+    "Solver",
+    "SolverAero",
+    "SolverIcing",
+)
 
 
 class SessionBase:
@@ -48,7 +71,7 @@ class SessionBase:
     or `from_pim` functions to create a session.
     """
 
-    _session_mode = {
+    _session_mode: dict[str, FluentMode] = {
         "Meshing": FluentMode.MESHING,
         "PureMeshing": FluentMode.PURE_MESHING,
         "PrePost": FluentMode.PRE_POST,
@@ -57,35 +80,31 @@ class SessionBase:
         "SolverIcing": FluentMode.SOLVER_ICING,
     }
 
+    @overload
     @classmethod
     def from_install(
         cls,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        journal_file_names: None | str | list[str] = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        env: Dict[str, Any] = {},  # noqa: B006
-        cleanup_on_exit: bool = True,
+        *,
+        dry_run: Literal[False] = False,
+        **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+    ) -> BaseSession: ...
+
+    @overload
+    @classmethod
+    def from_install(
+        cls,
+        *,
+        dry_run: Literal[True],
+        **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+    ) -> tuple[str, str]: ...
+
+    @classmethod
+    def from_install(  # pylint: disable=missing-param-doc
+        cls,
+        *,
         dry_run: bool = False,
-        start_transcript: bool = True,
-        case_file_name: "PathType | None" = None,
-        case_data_file_name: "PathType | None" = None,
-        lightweight_mode: bool | None = None,
-        py: bool | None = None,
-        gpu: bool | None = None,
-        cwd: "PathType | None" = None,
-        fluent_path: "PathType | None" = None,
-        topy: str | list | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
-    ):
+        **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+    ) -> BaseSession | tuple[str, str]:
         """
         Launch a Fluent session in standalone mode.
 
@@ -163,38 +182,36 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        mode = cls._session_mode[cls.__name__]
-        argvals = locals().copy()
-        argvals.pop("cls", None)  # Remove the class reference from the arguments
-        launcher = StandaloneLauncher(**argvals)
+        launcher = StandaloneLauncher(
+            **kwargs, dry_run=dry_run, mode=cls._session_mode[cls.__name__]
+        )
         return launcher()
 
+    @overload
     @classmethod
     def from_container(
         cls,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        container_dict: dict | None = None,
+        *,
+        dry_run: Literal[False] = False,
+        **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+    ) -> BaseSession: ...
+
+    @overload
+    @classmethod
+    def from_container(
+        cls,
+        *,
+        dry_run: Literal[True],
+        **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+    ) -> dict[str, Any]: ...
+
+    @classmethod
+    def from_container(  # pylint: disable=missing-param-doc
+        cls,
+        *,
         dry_run: bool = False,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        py: bool | None = None,
-        gpu: bool | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
-        use_docker_compose: bool | None = None,
-        use_podman_compose: bool | None = None,
-        certificates_folder: str | None = None,
-        insecure_mode: bool = False,
-    ):
+        **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+    ) -> BaseSession | dict[str, Any]:
         """
         Launch a Fluent session in container mode.
 
@@ -272,32 +289,16 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        mode = cls._session_mode[cls.__name__]
-        argvals = locals().copy()
-        argvals.pop("cls", None)
-        launcher = DockerLauncher(**argvals)
+        launcher = DockerLauncher(
+            **kwargs, dry_run=dry_run, mode=cls._session_mode[cls.__name__]
+        )
         return launcher()
 
     @classmethod
-    def from_pim(
+    def from_pim(  # pylint: disable=missing-param-doc
         cls,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        cleanup_on_exit: bool = True,
-        dry_run: bool | None = None,
-        start_transcript: bool = True,
-        gpu: bool | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
-    ):
+        **kwargs: Unpack[PIMArgsWithoutMode],
+    ) -> BaseSession:
         """
         Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
@@ -360,10 +361,7 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        mode = cls._session_mode[cls.__name__]
-        argvals = locals().copy()
-        argvals.pop("cls", None)
-        launcher = PIMLauncher(**argvals)
+        launcher = PIMLauncher(**kwargs, mode=cls._session_mode[cls.__name__])
         return launcher()
 
     @classmethod
@@ -411,10 +409,14 @@ class SessionBase:
         TypeError
             If the session type does not match the expected session type.
         """
-        argvals = locals().copy()
-        argvals.pop("cls", None)
-        session = pyfluent.connect_to_fluent(
-            **argvals,
+        session = connect_to_fluent(
+            ip=ip,
+            port=port,
+            server_info_file_name=server_info_file_name,
+            password=password,
+            allow_remote_host=allow_remote_host,
+            certificates_folder=certificates_folder,
+            insecure_mode=insecure_mode,
         )
 
         expected = "Solver" if cls.__name__ == "PrePost" else cls.__name__
@@ -431,34 +433,282 @@ class SessionBase:
 class Meshing(SessionBase):
     """Encapsulates a Fluent server for meshing session connection."""
 
-    pass
+    if TYPE_CHECKING:
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> session_meshing.Meshing: ...
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> tuple[str, str]: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> session_meshing.Meshing: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> dict[str, Any]: ...
+
+        @override
+        @classmethod
+        def from_pim(
+            cls,
+            **kwargs: Unpack[PIMArgsWithoutMode],
+        ) -> session_meshing.Meshing: ...
 
 
 class PureMeshing(SessionBase):
     """Encapsulates a Fluent server for pure meshing session connection."""
 
-    pass
+    if TYPE_CHECKING:
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> session_pure_meshing.PureMeshing: ...
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> tuple[str, str]: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> session_pure_meshing.PureMeshing: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> dict[str, Any]: ...
+
+        @override
+        @classmethod
+        def from_pim(
+            cls,
+            **kwargs: Unpack[PIMArgsWithoutMode],
+        ) -> session_pure_meshing.PureMeshing: ...
 
 
 class PrePost(SessionBase):
     """Encapsulates a Fluent server for pre-post session connection."""
 
-    pass
+    if TYPE_CHECKING:
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> session_solver.Solver: ...
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> tuple[str, str]: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> session_solver.Solver: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> dict[str, Any]: ...
+
+        @overload
+        @classmethod
+        def from_pim(
+            cls,
+            **kwargs: Unpack[PIMArgsWithoutMode],
+        ) -> session_solver.Solver: ...
 
 
 class Solver(SessionBase):
     """Encapsulates a Fluent server for solver session connection."""
 
-    pass
+    if TYPE_CHECKING:
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> session_solver.Solver: ...
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> tuple[str, str]: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> session_solver.Solver: ...
+
+        @classmethod
+        def from_pim(
+            cls,
+            **kwargs: Unpack[PIMArgsWithoutMode],
+        ) -> session_solver.Solver: ...
 
 
 class SolverAero(SessionBase):
     """Encapsulates a Fluent server for solver aero session connection."""
 
-    pass
+    if TYPE_CHECKING:
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> session_solver_aero.SolverAero: ...
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> tuple[str, str]: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> session_solver_aero.SolverAero: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> dict[str, Any]: ...
+
+        @overload
+        @classmethod
+        def from_pim(
+            cls,
+            **kwargs: Unpack[PIMArgsWithoutMode],
+        ) -> session_solver_aero.SolverAero: ...
 
 
 class SolverIcing(SessionBase):
     """Encapsulates a Fluent server for solver icing session connection."""
 
-    pass
+    if TYPE_CHECKING:
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> session_solver_icing.SolverIcing: ...
+
+        @overload
+        @classmethod
+        def from_install(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
+        ) -> tuple[str, str]: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[False] = False,
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> session_solver_icing.SolverIcing: ...
+
+        @overload
+        @classmethod
+        def from_container(
+            cls,
+            *,
+            dry_run: Literal[True],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
+        ) -> dict[str, Any]: ...
+
+        @overload
+        @classmethod
+        def from_pim(
+            cls,
+            **kwargs: Unpack[PIMArgsWithoutMode],
+        ) -> session_solver_icing.SolverIcing: ...

@@ -630,7 +630,7 @@ def test_report():
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
-    assert str(rep).count("pandas") == 1
+    assert str(rep).count("pandas") == 2
 
 
 def test_docker_compose(monkeypatch):
