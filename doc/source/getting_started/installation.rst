@@ -18,7 +18,7 @@ PyFluent can be installed, along with all its optional dependencies, using:
 
 
 Using a virtual environment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is recommended to use a virtual environment when installing PyFluent to avoid conflicts with other Python packages.
 A virtual environment can be created and activated with the following commands:
