@@ -26,6 +26,7 @@ import sys
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 def _in_venv():
@@ -38,8 +39,8 @@ def _get_grpc_version_in_pyfluent_env():
     return grpc.__version__
 
 
-def _get_grpc_version_in_fluent_env():
-    session = pyfluent.launch_fluent()
+def _get_grpc_version_in_fluent_env(launch_kwargs=None):
+    session = pyfluent.launch_fluent(**(launch_kwargs or {}))
     session.scheme.eval('(%py-exec "import grpc")')
     return session.scheme.eval('(%py-eval "grpc.__version__")')
 
@@ -55,8 +56,9 @@ def test_pyconsole_launch():
     if not _in_venv():
         pytest.skip("This test must be run in a virtual environment.")
 
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     grpc_version_pyfluent = _get_grpc_version_in_pyfluent_env()
-    grpc_version_fluent = _get_grpc_version_in_fluent_env()
+    grpc_version_fluent = _get_grpc_version_in_fluent_env(launch_kwargs=grpc_kwds)
     if grpc_version_pyfluent > grpc_version_fluent:
         pytest.skip(
             "gRPC version in PyFluent environment is higher than in Fluent environment. gRPC and related dependencies must be updated in Fluent environment."
@@ -70,17 +72,25 @@ def test_pyconsole_launch():
     version_for_file_name = pyfluent.FluentVersion.current_dev().number
     dst_pyfluent_dir = f"/ansys_inc/v{version_for_file_name}/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore"
     solver_container_dict = pyfluent.launch_fluent(
-        start_container=True, dry_run=True, py=True
+        start_container=True, dry_run=True, py=True, **grpc_kwds
     )
     solver_container_dict["volumes"].append(f"{src_pyfluent_dir}:{dst_pyfluent_dir}")
-    solver_session = pyfluent.launch_fluent(container_dict=solver_container_dict)
+    solver_session = pyfluent.launch_fluent(
+        container_dict=solver_container_dict, **grpc_kwds
+    )
     assert solver_session is not None
     assert _is_pyconsole_activated(solver_session) is True
 
     meshing_container_dict = pyfluent.launch_fluent(
-        start_container=True, dry_run=True, py=True, mode=pyfluent.FluentMode.MESHER
+        start_container=True,
+        dry_run=True,
+        py=True,
+        mode=pyfluent.FluentMode.MESHER,
+        **grpc_kwds,
     )
     meshing_container_dict["volumes"].append(f"{src_pyfluent_dir}:{dst_pyfluent_dir}")
-    meshing_session = pyfluent.launch_fluent(container_dict=meshing_container_dict)
+    meshing_session = pyfluent.launch_fluent(
+        container_dict=meshing_container_dict, **grpc_kwds
+    )
     assert meshing_session is not None
     assert _is_pyconsole_activated(meshing_session) is True
