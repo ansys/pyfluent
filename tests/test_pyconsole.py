@@ -40,8 +40,8 @@ def _get_grpc_version_in_pyfluent_env():
 
 def _get_grpc_version_in_fluent_env():
     session = pyfluent.launch_fluent()
-    session.scheme_eval.scheme_eval('(%py-exec "import grpc")')
-    return session.scheme_eval.scheme_eval('(%py-eval "grpc.__version__")')
+    session.scheme.eval('(%py-exec "import grpc")')
+    return session.scheme.eval('(%py-eval "grpc.__version__")')
 
 
 def _is_pyconsole_activated(session):

@@ -631,7 +631,8 @@ jobs:
         id: grpc-pyfluent-version
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
-          echo "GRPC_PYFLUENT_VERSION=$(python -c "import grpc; print(grpc.__version__)")" >> $GITHUB_OUTPUT
+          GRPC_PYFLUENT_VERSION=$(python -c "import grpc; print(grpc.__version__)")
+          echo "GRPC_PYFLUENT_VERSION=$GRPC_PYFLUENT_VERSION" >> $GITHUB_OUTPUT
           echo "Local gRPC version is: $GRPC_PYFLUENT_VERSION"
 
       - name: Generate certificates for gRPC
@@ -642,7 +643,8 @@ jobs:
         id: grpc-fluent-version
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
-          echo "GRPC_FLUENT_VERSION=$(python .ci/print_fluent_grpc_version.py)" >> $GITHUB_OUTPUT
+          GRPC_FLUENT_VERSION=$(python .ci/print_fluent_grpc_version.py)
+          echo "GRPC_FLUENT_VERSION=$GRPC_FLUENT_VERSION" >> $GITHUB_OUTPUT
           echo "gRPC version in Fluent image is: $GRPC_FLUENT_VERSION"
 
       - name: Install gRPC dependencies with the same version as Fluent image
