@@ -65,11 +65,14 @@ Use the following commands to create and activate a virtual environment:
 
 
 On Windows:
+
 .. code:: console
+
    .venv\Scripts\activate
 
 
 On Linux and Mac OS:
+
 .. code:: console
 
    source .venv/bin/activate
@@ -78,6 +81,7 @@ On Linux and Mac OS:
 Then, install PyFluent within the virtual environment in editable mode with:
 
 .. code:: console
+
    pip install pip -U
    pip install -e .
    python codegen/allapigen.py     # Generates the API files or
