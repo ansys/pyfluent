@@ -646,6 +646,8 @@ jobs:
           GRPC_FLUENT_VERSION=$(python .ci/print_fluent_grpc_version.py)
           echo "GRPC_FLUENT_VERSION=$GRPC_FLUENT_VERSION" >> $GITHUB_OUTPUT
           echo "gRPC version in Fluent image is: $GRPC_FLUENT_VERSION"
+        env:
+          PYFLUENT_LOGGING: 0
 
       - name: Install gRPC dependencies with the same version as Fluent image
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') && steps.grpc-pyfluent-version.outputs.GRPC_PYFLUENT_VERSION != steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}
