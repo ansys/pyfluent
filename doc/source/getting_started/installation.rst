@@ -29,12 +29,14 @@ A virtual environment can be created and activated with the following commands:
 
 
 On Windows:
+
 .. code:: console
 
    .venv\Scripts\activate
 
 
 On Linux and Mac OS:
+
 .. code:: console
 
    source .venv/bin/activate
