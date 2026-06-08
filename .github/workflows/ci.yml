@@ -634,6 +634,10 @@ jobs:
           echo "GRPC_PYFLUENT_VERSION=$(python -c "import grpc; print(grpc.__version__)")" >> $GITHUB_OUTPUT
           echo "Local gRPC version is: $GRPC_PYFLUENT_VERSION"
 
+      - name: Generate certificates for gRPC
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        run: bash .ci/generate_certs.sh
+
       - name: Get gRPC version from Fluent image
         id: grpc-fluent-version
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
@@ -644,10 +648,14 @@ jobs:
       - name: Install gRPC dependencies with the same version as Fluent image
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') && steps.grpc-pyfluent-version.outputs.GRPC_PYFLUENT_VERSION != steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}
         run: |
-          pip install "grpcio==${{ steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}"
-          pip install "grpcio-health-checking==${{ steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}"
-          pip install "grpcio-status==${{ steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}"
-          pip install "grpcio-reflection==${{ steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}"
+          echo "gRPC version mismatch: local Python environment has $GRPC_PYFLUENT_VERSION, Fluent image has $GRPC_FLUENT_VERSION. Installing gRPC packages with version $GRPC_FLUENT_VERSION to match Fluent image for testing."
+          pip install "grpcio==${GRPC_FLUENT_VERSION}"
+          pip install "grpcio-health-checking==${GRPC_FLUENT_VERSION}"
+          pip install "grpcio-status==${GRPC_FLUENT_VERSION}"
+          pip install "grpcio-reflection==${GRPC_FLUENT_VERSION}"
+        env:
+          GRPC_PYFLUENT_VERSION: ${{ steps.grpc-pyfluent-version.outputs.GRPC_PYFLUENT_VERSION }}
+          GRPC_FLUENT_VERSION: ${{ steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}
 
       - name: Run PyConsole Tests
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
