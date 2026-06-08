@@ -629,7 +629,9 @@ jobs:
 
       - name: Pull Fluent docker image
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: make docker-pull
+        run: |
+          source .venv/bin/activate
+          make docker-pull
 
       - name: Get gRPC version from local Python environment
         id: grpc-pyfluent-version
