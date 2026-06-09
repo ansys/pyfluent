@@ -74,7 +74,7 @@ solver_session.settings.file.read_case(file_name=import_filename)
 # ~~~~~~~~~~~~~~
 # Set the number of iterations to 100.
 
-solver_session.settings.solution.run_calculation.iter_count = 100
+solver_session.settings.solution.run_calculation.parameters.iter_count = 100
 
 ############################################################################
 # Create input parameters
@@ -310,7 +310,7 @@ solver_session.settings.parametric_studies.duplicate(copy_design_points=True)
 # Rename the newly created parametric study.
 
 solver_session.settings.parametric_studies.rename(
-    new="New Study", old="Static_Mixer_main-1-Solve"
+    new="New Study", old="Static_Mixer_main-Solve"
 )
 
 #########################################################################
