@@ -674,7 +674,7 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
           source .venv/bin/activate
-          make install-test
+          python -m pip install ansys-fluent-core[reader,tests]
           python -m pytest --fluent-version=27.1 tests/test_pyconsole.py
 
   nightly-dev-test:
