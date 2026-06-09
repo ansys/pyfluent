@@ -578,6 +578,7 @@ jobs:
     if: ${{ always() }}
     needs: build
     runs-on: [public-ubuntu-latest-16-cores]
+    timeout-minutes: 30
     env:
       FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
