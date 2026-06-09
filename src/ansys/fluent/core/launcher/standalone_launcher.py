@@ -224,6 +224,15 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 180
+        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
+        _idle_timeout_minutes = math.ceil(self.argvals["start_timeout"] / 60) + 1
+        _set_timeout_arg = (
+            f"-command=(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"
+        )
+        if self.argvals["additional_arguments"]:
+            self.argvals["additional_arguments"] += f" {_set_timeout_arg}"
+        else:
+            self.argvals["additional_arguments"] = _set_timeout_arg
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
@@ -279,7 +288,7 @@ class StandaloneLauncher:
             try:
                 _await_fluent_launch(
                     self._server_info_file_name,
-                    self.argvals.get("start_timeout", 60),
+                    self.argvals.get("start_timeout", 180),
                     self._sifile_last_mtime,
                     process.pid,
                 )
@@ -294,7 +303,7 @@ class StandaloneLauncher:
                     process = subprocess.Popen(launch_cmd, **self._kwargs)
                     _await_fluent_launch(
                         self._server_info_file_name,
-                        self.argvals.get("start_timeout", 60),
+                        self.argvals.get("start_timeout", 180),
                         self._sifile_last_mtime,
                         process.pid,
                     )
@@ -327,6 +336,18 @@ class StandaloneLauncher:
                         ip,
                         inside_container=False,
                     )
+            # PyFluent is now connected: disable the idle-timeout guard.
+            try:
+                if session.get_fluent_version() >= FluentVersion.v271:
+                    session._app_utilities.set_idle_timeout(
+                        session.preferences.General.IdleTimeout() * 60
+                    )
+                else:
+                    session.scheme_eval.eval(
+                        f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
+                    )
+            except Exception as ex:
+                logger.debug(f"Could not reset Idle Timeout: {ex}")
             if self.argvals.get("case_file_name"):
                 if FluentMode.is_meshing(self.argvals.get("mode")):
                     session.tui.file.read_case(self.argvals.get("case_file_name"))
