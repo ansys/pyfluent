@@ -32,8 +32,8 @@ from typing import Dict, List
 import numpy as np
 
 from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
-from ansys.api.fluent.v1 import svar_pb2_grpc as SvarGrpcModule
+from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
+from ansys.api.fluent.v1 import solution_variable_pb2_grpc as SvarGrpcModule
 from ansys.fluent.core.services import solution_variables as _v0
 from ansys.fluent.core.services.field_data_v1 import _FieldDataConstants
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
