@@ -227,7 +227,7 @@ class StandaloneLauncher:
         # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
         _idle_timeout_minutes = math.ceil(self.argvals["start_timeout"] / 60) + 1
         _set_timeout_arg = (
-            f"-command=(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"
+            f'-command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
         )
         if self.argvals["additional_arguments"]:
             self.argvals["additional_arguments"] += f" {_set_timeout_arg}"
