@@ -2056,3 +2056,31 @@ def test_workflow_getattr_suggests_close_match(new_meshing_session):
         )  # typo — correct name is create_volume_mesh_wtm
 
     assert "create_volume_mesh_wtm" in str(exc_info.value)
+
+
+@pytest.mark.fluent_version(">=27.1")
+def test_new_meshing_workflow_switching(new_meshing_session):
+    watertight = new_meshing_session.watertight()
+    fault_tolerant = new_meshing_session.fault_tolerant()
+    with pytest.raises(AttributeError):
+        watertight.import_geometry.arguments()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
+
+    watertight = new_meshing_session.watertight()
+    with pytest.raises(AttributeError):
+        fault_tolerant.import_cad_and_part_management.arguments()
+    assert watertight.import_geometry.arguments()
+
+
+@pytest.mark.fluent_version(">=27.1")
+def test_switching_workflow_interface(new_meshing_session):
+    wt1 = new_meshing_session.watertight()
+    ft = new_meshing_session.fault_tolerant()
+    tw = new_meshing_session.two_dimensional_meshing()
+    cw = new_meshing_session.create_workflow()
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
+    )
+    lw = new_meshing_session.load_workflow(file_path=saved_workflow_path)
+    wt2 = new_meshing_session.watertight()
+    del wt1, ft, tw, cw, lw, wt2
