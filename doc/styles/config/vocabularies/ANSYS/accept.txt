@@ -11,6 +11,7 @@
 [Ss]treaming
 API
 batch_ops
+boolean
 CAD
 caf
 CaseFile
