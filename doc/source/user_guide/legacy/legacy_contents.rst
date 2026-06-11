@@ -8,6 +8,7 @@ Legacy interfaces
    :hidden:
 
    meshing_workflow
+   meshing_workflows
    rpvars
    scheme
    tui
