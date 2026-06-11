@@ -674,9 +674,6 @@ Deleting tasks from workflow
 You can delete tasks individually or in groups. To delete multiple tasks at once,
 pass task objects to the ``list_of_tasks`` argument of ``delete_tasks()``:
 
-.. Note::
-   ``delete_tasks()`` accepts a list of task objects instead of a list of task names.
-
     .. code:: python
 
        watertight.delete_tasks(
