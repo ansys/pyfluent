@@ -1814,8 +1814,7 @@ def test_duplicate_children_of_compound_task(
 def test_current_workflow(new_meshing_session):
     meshing = new_meshing_session
 
-    with pytest.raises(RuntimeError):
-        meshing.current_workflow
+    assert meshing.current_workflow is None
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 

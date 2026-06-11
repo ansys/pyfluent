@@ -1,6 +1,7 @@
 (?i)Ansys
 (?i)gRPC
 (?i)PyAnsys
+[Bb]oolean
 [Ff]luent
 [Jj]ournaling
 [Mm]atplotlib
@@ -11,8 +12,6 @@
 [Ss]treaming
 API
 batch_ops
-Boolean
-boolean
 CAD
 caf
 CaseFile
