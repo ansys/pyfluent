@@ -7,15 +7,17 @@ PyFluent provides access to Fluent’s meshing workflows.
 
 Overview
 --------
-- Enhanced Meshing Workflows: A PyFluent API available only when using PyFluent with Ansys Fluent 2026 R1 and later.
-  It provides clearer task organization, easier navigation, and strongly typed, well-documented arguments.
-- Legacy Meshing Workflows: The PyFluent meshing API used prior to Ansys Fluent 2026 R1 remains available.
-  For information on how to enable and use it, see :ref:`ref_legacy_meshing_workflow`.
+Meshing workflow API: A PyFluent API available only when using PyFluent with Ansys Fluent 2026 R1 and later.
+It provides clearer task organization, easier navigation, and strongly typed, well-documented arguments.
 
-Creating new meshing workflow
------------------------------
-Use ``create_workflow()`` to build a custom workflow.
-The example below demonstrates how to create and populate a workflow.
+Notes
+-----
+    The PyFluent meshing API used prior to Ansys Fluent 2026 R1 remains available.
+    For information on how to enable and use it, see :ref:`ref_legacy_meshing_workflow`.
+
+Creating a new meshing workflow
+-------------------------------
+The following example shows you how to use ``create_workflow()`` to build a custom workflow.
 
 Create workflow
 ~~~~~~~~~~~~~~~
@@ -29,30 +31,36 @@ Create workflow
     meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    created_workflow = meshing_session.create_workflow()
+    custom_workflow = meshing_session.create_workflow()
 
 Insert first task
 ~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    created_workflow.insertable_tasks.import_geometry.insert()
-    created_workflow.import_geometry.file_name = import_file_name
-    created_workflow.import_geometry.length_unit = 'in'
-    created_workflow.import_geometry()
+    custom_workflow.insertable_tasks.import_geometry.insert()
+    custom_workflow.import_geometry.file_name = import_file_name
+    custom_workflow.import_geometry.length_unit = 'in'
+    custom_workflow.import_geometry()
 
-Insert next task
-~~~~~~~~~~~~~~~~
+Saving a meshing workflow
+-------------------------
+
+The following example shows you how to use ``save_workflow()`` to persist the
+current workflow definition to a ``.wft`` file for later reuse.
+
+Save workflow
+~~~~~~~~~~~~~
 
 .. code:: python
 
-    created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
-    created_workflow.add_local_sizing_wtm()
+    custom_workflow.save_workflow(file_path="full_path_to_the_file.wft")
+
 
 
 Loading a saved meshing workflow
 --------------------------------
-Use ``load_workflow()`` to load and execute a previously saved workflow.
+The following example shows you how to use ``load_workflow()`` to load a previously saved workflow.
 
 Load workflow
 ~~~~~~~~~~~~~
@@ -73,7 +81,7 @@ Load workflow
 
 Insert new task
 ---------------
-Tasks can be inserted into a workflow using an object-oriented approach.
+You can insert tasks into a workflow using the workflow object.
 
 .. code:: python
 
@@ -89,6 +97,8 @@ Tasks can be inserted into a workflow using an object-oriented approach.
 Duplicate tasks
 ~~~~~~~~~~~~~~~
 
+When you insert the same task multiple times, duplicates are accessible by attribute names with numeric suffixes.
+
 .. code:: python
 
     ig = watertight.import_geometry
@@ -100,7 +110,7 @@ Duplicate tasks
     assert watertight.import_boi_geometry_2.arguments()
 
 .. Note::
-   **Enhanced Meshing Workflows** also supports indexed access to duplicate tasks:
+    You can also access duplicate tasks by index:
 
    .. code:: python
 
@@ -113,9 +123,9 @@ Duplicate tasks
        >>> watertight.import_boi_geometry[2]
        task < import_boi_geometry: 2 >
 
-   Index 0 returns the first instance; calling the task or indexing with 0 are equivalent.
+   Index 0 returns the first instance; accessing the task without an index is equivalent to indexing with 0.
 
-   After inserting the tasks above, the workflow contains:
+   After inserting the tasks above, you can call ``children()`` to confirm the task list:
 
    .. code:: python
 
@@ -134,7 +144,7 @@ Duplicate tasks
 
 Current meshing workflow
 ------------------------
-Use the ``current_workflow`` property to access the active workflow.
+You can use the ``current_workflow`` to access the active workflow.
 
 Current workflow
 ~~~~~~~~~~~~~~~~
@@ -144,7 +154,7 @@ Current workflow
     meshing_session.current_workflow
 
 .. Note::
-   ``current_workflow`` raises an attribute error if no workflow has been initialized.
+   ``current_workflow`` returns ``None`` if no workflow has been initialized.
 
 
 Mark as updated
@@ -158,33 +168,30 @@ Use the ``mark_as_updated()`` to explicitly mark a task as updated.
 
 Renaming tasks in workflow
 --------------------------
-In **Enhanced Meshing Workflow** the display name update is decoupled from the Python attribute access:
+You can rename a task to any display name, including names that are not valid Python identifiers.
+The task remains accessible by its original name or by the new display name as a string key.
+
+.. code:: python
+
+   >>> watertight.import_geometry.rename(new_name="I-G")
+   >>> watertight.import_geometry["I-G"]
+   task < import_geometry: 0 >
+   >>> watertight.import_geometry
+   task < import_geometry: 0 >
 
 .. Note::
-   Behavior change. Display name changes do not affect attribute access.
-   For legacy rename behavior, see :ref:`ref_legacy_meshing_workflow`.
-
-    .. code:: python
-
-       >>> watertight.import_geometry.rename(new_name="IG")
-       >>> watertight.import_geometry["IG"]
-       task < import_geometry: 0 >
-       >>> watertight.import_geometry
-       task < import_geometry: 0 >
-       >>> watertight.import_geometry[0]
-       task < import_geometry: 0 >
-
-    This allows non-Pythonic display names (for example, "I-G") without affecting attribute access.
+   The legacy meshing API does not support non-Pythonic display names.
+   See :ref:`ref_legacy_meshing_workflow`.
 
 
 Deleting tasks from workflow
 ----------------------------
-Tasks can be deleted individually or in groups. In **Enhanced Meshing Workflow**,
-pass task objects to ``list_of_tasks``:
+You can delete tasks individually or in groups. To delete multiple tasks at once,
+pass task objects to the ``list_of_tasks`` argument of ``delete_tasks()``:
 
 .. Note::
-   Behavior change. Delete-by-name (strings) is replaced by passing task objects.
-   Calling ``task.delete()`` still works. See :ref:`ref_legacy_meshing_workflow` for earlier usage.
+   ``delete_tasks()`` now accepts a list of task objects instead of a list of task names.
+   See :ref:`ref_legacy_meshing_workflow` for earlier usage.
 
     .. code:: python
 
@@ -212,10 +219,9 @@ Duplicate tasks can also be deleted via indexing:
 Workflow navigation enhancements
 --------------------------------
 
-The refined API enables straightforward traversal of tasks within a workflow:
-
-.. Note::
-   New in **Enhanced Meshing Workflow**. This capability is not available in the legacy interface.
+You can traverse tasks within a workflow using navigation methods such as
+``first_child()``, ``last_child()``, ``next()``, ``previous()``, ``parent()``,
+and their corresponding ``has_*()`` predicates:
 
 .. code:: python
 
