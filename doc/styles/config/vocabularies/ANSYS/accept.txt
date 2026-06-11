@@ -12,7 +12,7 @@
 API
 batch_ops
 Boolean
-boolean
+boolea
 CAD
 caf
 CaseFile
