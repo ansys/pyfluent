@@ -15,253 +15,6 @@ Notes
     The PyFluent meshing API used prior to Ansys Fluent 2026 R1 remains available.
     For information on how to enable and use it, see :ref:`ref_legacy_meshing_workflow`.
 
-Creating a new meshing workflow
--------------------------------
-The following example shows you how to use ``create_workflow()`` to build a custom workflow.
-
-Create workflow
-~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples
-
-    import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
-    )
-    custom_workflow = meshing_session.create_workflow()
-
-Insert first task
-~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    custom_workflow.insertable_tasks.import_geometry.insert()
-    custom_workflow.import_geometry.file_name = import_file_name
-    custom_workflow.import_geometry.length_unit = 'in'
-    custom_workflow.import_geometry()
-
-Saving a meshing workflow
--------------------------
-
-The following example shows you how to use ``save_workflow()`` to persist the
-current workflow definition to a ``.wft`` file for later reuse.
-
-Save workflow
-~~~~~~~~~~~~~
-
-.. code:: python
-
-    custom_workflow.save_workflow(file_path="full_path_to_the_file.wft")
-
-
-
-Loading a saved meshing workflow
---------------------------------
-The following example shows you how to use ``load_workflow()`` to load a previously saved workflow.
-
-Load workflow
-~~~~~~~~~~~~~
-
-.. code:: python
-
-    import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples
-
-    saved_workflow_path = examples.download_file(
-        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
-    )
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
-    )
-    loaded_workflow = meshing_session.load_workflow(file_path=saved_workflow_path)
-
-
-Insert new task
----------------
-You can insert tasks into a workflow using the workflow object.
-
-.. code:: python
-
-    import ansys.fluent.core as pyfluent
-
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
-    )
-    watertight = meshing_session.watertight()
-    watertight.import_geometry.insertable_tasks()
-    watertight.import_geometry.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
-
-Duplicate tasks
-~~~~~~~~~~~~~~~
-
-When you insert the same task multiple times, duplicates are accessible by attribute names with numeric suffixes.
-
-.. code:: python
-
-    ig = watertight.import_geometry
-    ig.insertable_tasks.import_boi_geometry.insert()
-    ig.insertable_tasks.import_boi_geometry.insert()
-    ig.insertable_tasks.import_boi_geometry.insert()
-    assert watertight.import_boi_geometry.arguments()
-    assert watertight.import_boi_geometry_1.arguments()
-    assert watertight.import_boi_geometry_2.arguments()
-
-.. Note::
-    You can also access duplicate tasks by index:
-
-   .. code:: python
-
-       >>> watertight.import_boi_geometry
-       task < import_boi_geometry: 0 >
-       >>> watertight.import_boi_geometry[0]
-       task < import_boi_geometry: 0 >
-       >>> watertight.import_boi_geometry[1]
-       task < import_boi_geometry: 1 >
-       >>> watertight.import_boi_geometry[2]
-       task < import_boi_geometry: 2 >
-
-   Index 0 returns the first instance; accessing the task without an index is equivalent to indexing with 0.
-
-   After inserting the tasks above, you can call ``children()`` to confirm the task list:
-
-   .. code:: python
-
-       >>> watertight.children()
-       [task < import_geometry: 0 >,
-        task < import_boi_geometry: 2 >,
-        task < import_boi_geometry: 1 >,
-        task < import_boi_geometry: 0 >,
-        task < add_local_sizing_wtm: 0 >,
-        task < create_surface_mesh: 0 >,
-        task < describe_geometry: 0 >,
-        task < update_regions: 0 >,
-        task < add_boundary_layers: 0 >,
-        task < create_volume_mesh_wtm: 0 >]
-
-
-Current meshing workflow
-------------------------
-You can use the ``current_workflow`` to access the active workflow.
-
-Current workflow
-~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    meshing_session.current_workflow
-
-.. Note::
-   ``current_workflow`` returns ``None`` if no workflow has been initialized.
-
-
-Mark as updated
----------------
-Use the ``mark_as_updated()`` to explicitly mark a task as updated.
-
-.. code:: python
-
-    watertight.import_geometry.mark_as_updated()
-
-
-Renaming tasks in workflow
---------------------------
-You can rename a task to any display name, including names that are not valid Python identifiers.
-The task remains accessible by its original name or by the new display name as a string key.
-
-.. code:: python
-
-   >>> watertight.import_geometry.rename(new_name="I-G")
-   >>> watertight.import_geometry["I-G"]
-   task < import_geometry: 0 >
-   >>> watertight.import_geometry
-   task < import_geometry: 0 >
-
-.. Note::
-   The legacy meshing API does not support non-Pythonic display names.
-   See :ref:`ref_legacy_meshing_workflow`.
-
-
-Deleting tasks from workflow
-----------------------------
-You can delete tasks individually or in groups. To delete multiple tasks at once,
-pass task objects to the ``list_of_tasks`` argument of ``delete_tasks()``:
-
-.. Note::
-   ``delete_tasks()`` now accepts a list of task objects instead of a list of task names.
-   See :ref:`ref_legacy_meshing_workflow` for earlier usage.
-
-    .. code:: python
-
-       watertight.delete_tasks(
-            list_of_tasks=[
-                watertight.create_volume_mesh_wtm,
-                watertight.add_boundary_layers,
-             ]
-        )
-       watertight.update_regions.delete()
-
-Duplicate tasks can also be deleted via indexing:
-
-    .. code:: python
-
-       ig = watertight.import_geometry
-       ig.insertable_tasks.import_boi_geometry.insert()
-       ig.insertable_tasks.import_boi_geometry.insert()
-
-       del watertight.import_boi_geometry[1]
-       watertight.import_boi_geometry.delete()
-       del watertight.create_regions
-
-
-Workflow navigation enhancements
---------------------------------
-
-You can traverse tasks within a workflow using navigation methods such as
-``first_child()``, ``last_child()``, ``next()``, ``previous()``, ``parent()``,
-and their corresponding ``has_*()`` predicates:
-
-.. code:: python
-
-    >>> watertight = meshing.watertight()
-
-    >>> task_1 = watertight.first_child()
-    >>> task_1.has_parent()
-    True
-    >>> task_1.parent()
-    <ansys.fluent.core.meshing.meshing_workflow_new.WatertightMeshingWorkflow at 0x22931166000>
-    >>> task_1.has_previous()
-    False  # As this is the first task in the workflow
-    >>> task_1.has_next()
-    True
-    >>> assert task_1.first_child() is None  # It is a simple task with no children
-    >>> assert task_1.last_child() is None
-
-    >>> task_2 = task_1.next()
-    >>> task_2
-    task < add_local_sizing_wtm: 0 >
-
-    >>> task_4 = task_2.next().next()
-    >>> task_4
-    task < describe_geometry: 0 >
-    >>> task_4_1 = task_4.first_child()  # It is a compound task with children
-    >>> task_4_1
-    task < capping: 0 >
-
-    >>> task_7 = watertight.last_child()
-    >>> task_7
-    task < create_volume_mesh_wtm: 0 >
-
-    >>> task_7.has_previous()
-    True
-    >>> task_6 = task_7.previous()
-    >>> task_6
-    task < add_boundary_layers: 0 >
-
-This enables navigation without relying on Python attribute names.
-
 Watertight geometry meshing workflow
 ------------------------------------
 Use the **Watertight Geometry** workflow for watertight CAD geometries that
@@ -621,7 +374,6 @@ Switch to solution mode
 
     solver_session = meshing_session.switch_to_solver()
 
-
 2-dimensional meshing workflow
 ------------------------------
 Use the **2D** meshing workflow to mesh specific two-dimensional geometries.
@@ -760,3 +512,250 @@ Switch to solution mode
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Switching to solver is not allowed in 2D Meshing mode.
+
+Creating a new meshing workflow
+-------------------------------
+The following example shows you how to use ``create_workflow()`` to build a custom workflow.
+
+Create workflow
+~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
+    meshing_session = pyfluent.launch_fluent(
+        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    )
+    custom_workflow = meshing_session.create_workflow()
+
+Insert first task
+~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    custom_workflow.insertable_tasks.import_geometry.insert()
+    custom_workflow.import_geometry.file_name = import_file_name
+    custom_workflow.import_geometry.length_unit = 'in'
+    custom_workflow.import_geometry()
+
+Saving a meshing workflow
+-------------------------
+
+The following example shows you how to use ``save_workflow()`` to persist the
+current workflow definition to a ``.wft`` file for later reuse.
+
+Save workflow
+~~~~~~~~~~~~~
+
+.. code:: python
+
+    custom_workflow.save_workflow(file_path="full_path_to_the_file.wft")
+
+
+
+Loading a saved meshing workflow
+--------------------------------
+The following example shows you how to use ``load_workflow()`` to load a previously saved workflow.
+
+Load workflow
+~~~~~~~~~~~~~
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
+    )
+    meshing_session = pyfluent.launch_fluent(
+        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    )
+    loaded_workflow = meshing_session.load_workflow(file_path=saved_workflow_path)
+
+
+Insert new task
+---------------
+You can insert tasks into a workflow using the workflow object.
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+
+    meshing_session = pyfluent.launch_fluent(
+        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    )
+    watertight = meshing_session.watertight()
+    watertight.import_geometry.insertable_tasks()
+    watertight.import_geometry.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
+
+Duplicate tasks
+~~~~~~~~~~~~~~~
+
+When you insert the same task multiple times, duplicates are accessible by attribute names with numeric suffixes.
+
+.. code:: python
+
+    ig = watertight.import_geometry
+    ig.insertable_tasks.import_boi_geometry.insert()
+    ig.insertable_tasks.import_boi_geometry.insert()
+    ig.insertable_tasks.import_boi_geometry.insert()
+    assert watertight.import_boi_geometry.arguments()
+    assert watertight.import_boi_geometry_1.arguments()
+    assert watertight.import_boi_geometry_2.arguments()
+
+.. Note::
+    You can also access duplicate tasks by index:
+
+   .. code:: python
+
+       >>> watertight.import_boi_geometry
+       task < import_boi_geometry: 0 >
+       >>> watertight.import_boi_geometry[0]
+       task < import_boi_geometry: 0 >
+       >>> watertight.import_boi_geometry[1]
+       task < import_boi_geometry: 1 >
+       >>> watertight.import_boi_geometry[2]
+       task < import_boi_geometry: 2 >
+
+   Index 0 returns the first instance; accessing the task without an index is equivalent to indexing with 0.
+
+   After inserting the tasks above, you can call ``children()`` to confirm the task list:
+
+   .. code:: python
+
+       >>> watertight.children()
+       [task < import_geometry: 0 >,
+        task < import_boi_geometry: 2 >,
+        task < import_boi_geometry: 1 >,
+        task < import_boi_geometry: 0 >,
+        task < add_local_sizing_wtm: 0 >,
+        task < create_surface_mesh: 0 >,
+        task < describe_geometry: 0 >,
+        task < update_regions: 0 >,
+        task < add_boundary_layers: 0 >,
+        task < create_volume_mesh_wtm: 0 >]
+
+
+Current meshing workflow
+------------------------
+You can use the ``current_workflow`` to access the active workflow.
+
+Current workflow
+~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing_session.current_workflow
+
+.. Note::
+   ``current_workflow`` returns ``None`` if no workflow has been initialized.
+
+
+Mark as updated
+---------------
+Use the ``mark_as_updated()`` to explicitly mark a task as updated.
+
+.. code:: python
+
+    watertight.import_geometry.mark_as_updated()
+
+
+Renaming tasks in workflow
+--------------------------
+You can rename a task to any display name, including names that are not valid Python identifiers.
+The task remains accessible by its original name or by the new display name as a string key.
+
+.. code:: python
+
+   >>> watertight.import_geometry.rename(new_name="I-G")
+   >>> watertight.import_geometry["I-G"]
+   task < import_geometry: 0 >
+   >>> watertight.import_geometry
+   task < import_geometry: 0 >
+
+.. Note::
+   The legacy meshing API does not support non-Pythonic display names.
+   See :ref:`ref_legacy_meshing_workflow`.
+
+
+Deleting tasks from workflow
+----------------------------
+You can delete tasks individually or in groups. To delete multiple tasks at once,
+pass task objects to the ``list_of_tasks`` argument of ``delete_tasks()``:
+
+.. Note::
+   ``delete_tasks()`` now accepts a list of task objects instead of a list of task names.
+   See :ref:`ref_legacy_meshing_workflow` for earlier usage.
+
+    .. code:: python
+
+       watertight.delete_tasks(
+            list_of_tasks=[
+                watertight.create_volume_mesh_wtm,
+                watertight.add_boundary_layers,
+             ]
+        )
+       watertight.update_regions.delete()
+
+Duplicate tasks can also be deleted via indexing:
+
+    .. code:: python
+
+       ig = watertight.import_geometry
+       ig.insertable_tasks.import_boi_geometry.insert()
+       ig.insertable_tasks.import_boi_geometry.insert()
+
+       del watertight.import_boi_geometry[1]
+       watertight.import_boi_geometry.delete()
+       del watertight.create_regions
+
+
+Workflow navigation enhancements
+--------------------------------
+
+You can traverse tasks within a workflow using navigation methods such as
+``first_child()``, ``last_child()``, ``next()``, ``previous()``, ``parent()``,
+and their corresponding ``has_*()`` predicates:
+
+.. code:: python
+
+    >>> watertight = meshing.watertight()
+
+    >>> task_1 = watertight.first_child()
+    >>> task_1.has_parent()
+    True
+    >>> task_1.parent()
+    <ansys.fluent.core.meshing.meshing_workflow_new.WatertightMeshingWorkflow at 0x22931166000>
+    >>> task_1.has_previous()
+    False  # As this is the first task in the workflow
+    >>> task_1.has_next()
+    True
+    >>> assert task_1.first_child() is None  # It is a simple task with no children
+    >>> assert task_1.last_child() is None
+
+    >>> task_2 = task_1.next()
+    >>> task_2
+    task < add_local_sizing_wtm: 0 >
+
+    >>> task_4 = task_2.next().next()
+    >>> task_4
+    task < describe_geometry: 0 >
+    >>> task_4_1 = task_4.first_child()  # It is a compound task with children
+    >>> task_4_1
+    task < capping: 0 >
+
+    >>> task_7 = watertight.last_child()
+    >>> task_7
+    task < create_volume_mesh_wtm: 0 >
+
+    >>> task_7.has_previous()
+    True
+    >>> task_6 = task_7.previous()
+    >>> task_6
+    task < add_boundary_layers: 0 >
+
+This enables navigation without relying on attribute names.
