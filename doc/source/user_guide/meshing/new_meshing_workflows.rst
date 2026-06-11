@@ -15,8 +15,8 @@ Notes
     The PyFluent meshing API used prior to Ansys Fluent 2026 R1 remains available.
     For information on how to enable and use it, see :ref:`ref_legacy_meshing_workflow`.
 
-Watertight geometry meshing workflow
-------------------------------------
+Watertight geometry workflow
+----------------------------
 Use the **Watertight Geometry** workflow for watertight CAD geometries that
 require little cleanup. This is useful for clean geometries prepared in CAD tools
 such as Ansys SpaceClaim.
@@ -115,9 +115,9 @@ Switch to solution mode
 
     solver_session = meshing_session.switch_to_solver()
 
-Fault-tolerant meshing workflow
--------------------------------
-Use the **Fault-tolerant** meshing workflow for complex CAD geometries that need
+Fault-tolerant workflow
+-----------------------
+Use the **Fault-tolerant** workflow for complex CAD geometries that need
 cleanup or modification, such as addressing overlaps, intersections, holes, and duplicates.
 The following example shows how to use the fault-tolerant workflow.
 
@@ -374,9 +374,9 @@ Switch to solution mode
 
     solver_session = meshing_session.switch_to_solver()
 
-2-dimensional meshing workflow
-------------------------------
-Use the **2D** meshing workflow to mesh specific two-dimensional geometries.
+2D workflow
+-----------
+Use the **2D** workflow to mesh specific two-dimensional geometries.
 The example below demonstrates the workflow.
 
 Import geometry
@@ -513,8 +513,8 @@ Switch to solution mode
 
 Switching to solver is not allowed in 2D Meshing mode.
 
-Creating a new meshing workflow
--------------------------------
+Creating a new workflow
+-----------------------
 The following example shows you how to use ``create_workflow()`` to build a custom workflow.
 
 Create workflow
@@ -541,8 +541,8 @@ Insert first task
     custom_workflow.import_geometry.length_unit = 'in'
     custom_workflow.import_geometry()
 
-Saving a meshing workflow
--------------------------
+Saving a workflow
+-----------------
 
 The following example shows you how to use ``save_workflow()`` to persist the
 current workflow definition to a ``.wft`` file for later reuse.
@@ -556,8 +556,8 @@ Save workflow
 
 
 
-Loading a saved meshing workflow
---------------------------------
+Loading a saved workflow
+------------------------
 The following example shows you how to use ``load_workflow()`` to load a previously saved workflow.
 
 Load workflow
@@ -640,12 +640,9 @@ When you insert the same task multiple times, duplicates are accessible by attri
         task < create_volume_mesh_wtm: 0 >]
 
 
-Current meshing workflow
-------------------------
-You can use the ``current_workflow`` to access the active workflow.
-
 Current workflow
-~~~~~~~~~~~~~~~~
+----------------
+You can use the ``current_workflow`` to access the active workflow.
 
 .. code:: python
 
