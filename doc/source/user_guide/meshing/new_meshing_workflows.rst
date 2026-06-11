@@ -7,13 +7,10 @@ PyFluent provides access to Fluent’s meshing workflows.
 
 Overview
 --------
-Meshing workflow API: A PyFluent API available only when using PyFluent with Ansys Fluent 2026 R1 and later.
-It provides clearer task organization, easier navigation, and strongly typed, well-documented arguments.
-
-Notes
------
-    The PyFluent meshing API used prior to Ansys Fluent 2026 R1 remains available.
-    For information on how to enable and use it, see :ref:`ref_legacy_meshing_workflow`.
+A meshing workflow is a structured collection of meshing tasks that you organize, execute, and reuse.
+PyFluent provides pre-built workflows (Watertight Geometry, Fault-tolerant, and 2D meshing) for common use cases,
+as well as the ability to create custom workflows. You can insert and duplicate tasks, save your workflow to file,
+and load previously saved workflows for reuse.
 
 Watertight geometry workflow
 ----------------------------
@@ -123,10 +120,6 @@ The following example shows how to use the fault-tolerant workflow.
 
 Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. Note::
-   API change. For earlier API and compatibility details,
-   see :ref:`ref_legacy_meshing_workflow`.
 
 .. code:: python
 
@@ -376,8 +369,7 @@ Switch to solution mode
 
 2D workflow
 -----------
-Use the **2D** workflow to mesh specific two-dimensional geometries.
-The example below demonstrates the workflow.
+Use the **2D*** workflow to perform common meshing operations on two-dimensional geometries.
 
 Import geometry
 ~~~~~~~~~~~~~~~
@@ -674,9 +666,7 @@ The task remains accessible by its original name or by the new display name as a
    >>> watertight.import_geometry
    task < import_geometry: 0 >
 
-.. Note::
-   The legacy meshing API does not support non-Pythonic display names.
-   See :ref:`ref_legacy_meshing_workflow`.
+
 
 
 Deleting tasks from workflow
@@ -685,8 +675,7 @@ You can delete tasks individually or in groups. To delete multiple tasks at once
 pass task objects to the ``list_of_tasks`` argument of ``delete_tasks()``:
 
 .. Note::
-   ``delete_tasks()`` now accepts a list of task objects instead of a list of task names.
-   See :ref:`ref_legacy_meshing_workflow` for earlier usage.
+   ``delete_tasks()`` accepts a list of task objects instead of a list of task names.
 
     .. code:: python
 
@@ -716,7 +705,7 @@ Workflow navigation enhancements
 
 You can traverse tasks within a workflow using navigation methods such as
 ``first_child()``, ``last_child()``, ``next()``, ``previous()``, ``parent()``,
-and their corresponding ``has_*()`` predicates:
+and corresponding boolean checks (``has_parent()``, ``has_next()``, etc.):
 
 .. code:: python
 

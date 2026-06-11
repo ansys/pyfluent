@@ -7,7 +7,6 @@ Legacy interfaces
    :maxdepth: 1
    :hidden:
 
-   meshing_workflow
    meshing_workflows
    rpvars
    scheme
