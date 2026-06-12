@@ -432,7 +432,7 @@ def get_current_workflow(
 
     # Check if no workflow is initialized
     if workflow_type in ["Select Workflow Type", None]:
-        raise RuntimeError("No workflow initialized.")
+        return
 
     # Handle loaded workflows (not in the factory map)
     if workflow_type not in workflow_factories:
