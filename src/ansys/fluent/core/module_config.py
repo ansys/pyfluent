@@ -263,9 +263,9 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
     )
 
-    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 60 seconds.
+    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 180 seconds.
     launch_fluent_timeout = _ConfigDescriptor["Config"](
-        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 60))
+        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 180))
     )
 
     #: Whether to show the Fluent GUI when launching the server, defaults to the value of ``PYFLUENT_SHOW_SERVER_GUI`` environment variable.

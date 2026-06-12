@@ -96,6 +96,12 @@ class AppUtilitiesService(_AppUtilitiesServiceV0):
         """CancelPauseSolve RPC of Events service (v1)."""
         return self._events_stub.CancelPauseSolve(request, metadata=self._metadata)
 
+    def set_idle_timeout(
+        self, request: AppUtilitiesProtoModule.SetIdleTimeoutRequest
+    ) -> AppUtilitiesProtoModule.SetIdleTimeoutResponse:
+        """SetIdleTimeout RPC of ApplicationRuntime service (v1)."""
+        return self._stub.SetIdleTimeout(request, metadata=self._metadata)
+
 
 class AppUtilities(_AppUtilitiesV0):
     """AppUtilities (v1 proto API)."""
@@ -161,6 +167,18 @@ class AppUtilities(_AppUtilitiesV0):
         request = FieldDataProtoModule.IsDataAvailableRequest()
         response = self.service.is_data_available(request)
         return response.is_data_available
+
+    def set_idle_timeout(self, timeout: int) -> None:
+        """Set the Fluent session idle timeout.
+
+        Parameters
+        ----------
+        timeout : int
+            Idle timeout duration in seconds. Pass 0 to disable the idle timeout.
+        """
+        request = AppUtilitiesProtoModule.SetIdleTimeoutRequest()
+        request.timeout.seconds = timeout
+        self.service.set_idle_timeout(request)
 
 
 class AppUtilitiesV252(AppUtilities):
