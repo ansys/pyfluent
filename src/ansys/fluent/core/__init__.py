@@ -32,6 +32,60 @@ from ansys.fluent.core.logger import *
 
 # isort: on
 
+from ansys.fluent.core.field_data_interfaces import (  # noqa: F401
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
+)
+from ansys.fluent.core.get_build_details import (  # noqa: F401
+    get_build_version,
+    get_build_version_string,
+)
+from ansys.fluent.core.launcher.launch_options import (  # noqa: F401
+    Dimension,
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    Precision,
+    UIMode,
+)
+from ansys.fluent.core.launcher.launcher import (  # noqa: F401
+    connect_to_fluent,
+    launch_fluent,
+)
+from ansys.fluent.core.meshing.meshing_workflow_new import (  # noqa: F401
+    CreateWorkflow,
+    FaultTolerantMeshing,
+    LoadWorkflow,
+    TopologyBasedMeshing,
+    TwoDimensionalMeshing,
+    WatertightMeshing,
+)
+from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
+from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
+    PyFluentDeprecationWarning,
+    PyFluentUserWarning,
+    warning,
+)
+from ansys.fluent.core.search import search  # noqa: F401
+from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
+from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
+from ansys.fluent.core.session_utilities import (  # noqa: F401
+    Meshing,
+    PrePost,
+    PureMeshing,
+    Solver,
+    SolverAero,
+    SolverIcing,
+)
+from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
+from ansys.fluent.core.streaming_services.events_streaming_v1 import *  # noqa: F401, F403
+from ansys.fluent.core.utils import fldoc
+from ansys.fluent.core.utils.context_managers import using  # noqa: F401
+from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
+from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 from ansys.fluent.core.field_data_interfaces import *
 from ansys.fluent.core.get_build_details import *
 from ansys.fluent.core.launcher.launch_options import *
