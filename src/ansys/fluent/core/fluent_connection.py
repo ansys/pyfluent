@@ -36,7 +36,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple, TypeVar
+from typing import Any, Callable, TypeVar
 import warnings
 import weakref
 
@@ -56,7 +56,19 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
-from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services import (
+    AppUtilities,
+    AppUtilitiesService,
+    AppUtilitiesV0,
+    HealthCheckService,
+    HealthCheckServiceV0,
+    SchemeEval,
+    SchemeEvalService,
+    SchemeEvalServiceV0,
+    SchemeEvalV0,
+    service_creator,
+)
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
 )
@@ -64,13 +76,11 @@ from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesService as AppUtilitiesServiceV0,
 )
 from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesV252,
+    AppUtilitiesV252 as AppUtilitiesV252V0,
 )
-from ansys.fluent.core.services.app_utilities_v1 import AppUtilitiesService
-from ansys.fluent.core.services.scheme_eval import (
-    SchemeEvalService as SchemeEvalServiceV0,
+from ansys.fluent.core.services.app_utilities_v1 import (
+    AppUtilitiesV252 as AppUtilitiesV252V1,
 )
-from ansys.fluent.core.services.scheme_eval_v1 import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -139,7 +149,7 @@ class MonitorThread(threading.Thread):
     def __init__(self):
         """Initialize MonitorThread."""
         super().__init__(daemon=True)
-        self.cbs: List[Callable] = []
+        self.cbs: list[Callable] = []
 
     def run(self) -> None:
         """Run monitor thread."""
@@ -360,8 +370,17 @@ def _get_channel(
                 )
 
 
+T = TypeVar("T", bound=type)
+E = TypeVar("E")
+
+
 class _ConnectionInterface:
-    def __init__(self, create_grpc_service, error_state, supports_v1):
+    def __init__(
+        self,
+        create_grpc_service: Callable[[T, E], T],
+        error_state: E,
+        supports_v1: bool,
+    ):
         if supports_v1:
             self._scheme_eval_service = create_grpc_service(
                 SchemeEvalService, error_state
@@ -384,9 +403,9 @@ class _ConnectionInterface:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
 
             case FluentVersion.v252:
-                self._app_utilities = AppUtilitiesV252(
-                    self._app_utilities_service, self.scheme_eval
-                )
+                self._app_utilities = (
+                    AppUtilitiesV252V1 if supports_v1 else AppUtilitiesV252V0
+                )(self._app_utilities_service, self.scheme_eval)
 
             case _:
                 self._app_utilities = service_creator(
@@ -458,15 +477,18 @@ def _server_supports_v1(channel) -> bool:
         reflection_db = ProtoReflectionDescriptorDatabase(channel)
         desc_pool = DescriptorPool(reflection_db)
         service_desc = desc_pool.FindServiceByName(
-            "ansys.api.fluent.v1.app_utilities.AppUtilities"
+            "ansys.api.fluent.v1.app_utilities.ApplicationRuntime"
         )
-        method_desc = service_desc.FindMethodByName("RegisterSolutionEventsPause")
+        method_desc = service_desc.FindMethodByName("GetProductVersion")
         return (
             method_desc.full_name
-            == "ansys.api.fluent.v1.app_utilities.AppUtilities.RegisterSolutionEventsPause"
+            == "ansys.api.fluent.v1.app_utilities.ApplicationRuntime.GetProductVersion"
         )
     except KeyError:
         return False
+
+
+S = TypeVar("S", bound=ServiceProtocol)
 
 
 class FluentConnection:
@@ -478,7 +500,7 @@ class FluentConnection:
         Close the Fluent connection and exit Fluent.
     """
 
-    _on_exit_cbs: List[Callable] = []
+    _on_exit_cbs: list[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: MonitorThread | None = None
 
@@ -584,7 +606,7 @@ class FluentConnection:
                 insecure_mode=insecure_mode,
                 inside_container=inside_container,
             )
-        self._metadata: List[Tuple[str, str]] = (
+        self._metadata: list[tuple[str, str]] = (
             [("password", password)] if password else []
         )
 
@@ -793,7 +815,7 @@ class FluentConnection:
         else:
             self.finalizer_cbs.append(cb)
 
-    def create_grpc_service(self, service, *args):
+    def create_grpc_service(self, service: type[S], *args) -> S:
         """Create a gRPC service.
 
         Parameters
@@ -854,8 +876,10 @@ class FluentConnection:
             )
         else:
             _response = timeout_loop(
-                lambda connection: _pid_exists(connection.fluent_host_pid)
-                or _pid_exists(connection.cortex_pid),
+                lambda connection: (
+                    _pid_exists(connection.fluent_host_pid)
+                    or _pid_exists(connection.cortex_pid)
+                ),
                 wait,
                 args=(self.connection_properties,),
                 idle_period=0.5,

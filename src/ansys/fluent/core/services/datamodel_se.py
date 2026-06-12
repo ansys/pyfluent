@@ -21,12 +21,14 @@
 # SOFTWARE.
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
+
+from collections.abc import Callable, Iterator, Sequence
 from enum import Enum
 import functools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
+from typing import Any, Iterable, NoReturn, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -36,6 +38,10 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.module_config import config
+from ansys.fluent.core.services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -45,16 +51,14 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _completer_info_method,
+)
 
 Path = list[tuple[str, str]]
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
 ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
-
-member_specs_oneof_fields = [
-    x.name
-    for x in DataModelProtoModule.MemberSpecs.DESCRIPTOR.oneofs_by_name["as"].fields
-]
 
 
 def _get_value_from_message_dict(d: dict[str, Any], key: list[str | Sequence[str]]):
@@ -174,7 +178,7 @@ class _FilterDatamodelNames:
         return [name for name in names if validate_name(name)]
 
 
-class DatamodelServiceImpl:
+class DatamodelServiceImpl(ServiceProtocol):
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
     def __init__(
@@ -486,7 +490,9 @@ class SubscriptionList:
                 v.unsubscribe()
 
 
-class DatamodelService(StreamingService):
+class DatamodelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    CommandArgumentsCleanupMixin, StreamingService, ServiceProtocol
+):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(
@@ -508,6 +514,15 @@ class DatamodelService(StreamingService):
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
+
+    def _delete_command_arguments_rpc(
+        self, rules: str, path: str, command: str, commandid: str
+    ) -> None:
+        """Issue RPC to delete command arguments."""
+        request = DataModelProtoModule.DeleteCommandArgumentsRequest(
+            rules=rules, path=path, command=command, commandid=commandid
+        )
+        self._impl.delete_command_arguments(request)
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
@@ -687,10 +702,7 @@ class DatamodelService(StreamingService):
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
         """Delete command arguments."""
-        request = DataModelProtoModule.DeleteCommandArgumentsRequest(
-            rules=rules, path=path, command=command, commandid=commandid
-        )
-        self._impl.delete_command_arguments(request)
+        return super().delete_command_arguments(rules, path, command, commandid)
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
@@ -959,6 +971,18 @@ class PyCallableStateObject:
         return self.get_state()
 
 
+def _get_completer_info(
+    obj, base_class: type, prefix: str, excluded: Iterable
+) -> list[list[str]]:
+    return _completer_info_method(
+        obj=obj,
+        base_class=base_class,
+        prefix=prefix,
+        excluded=excluded,
+        type_name_map=_type_name_map,
+    )
+
+
 class PyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use this class
     instead of directly calling DatamodelService's method.
@@ -1041,6 +1065,20 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     setState = set_state
+
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyStateContainer, prefix=prefix, excluded=excluded
+        )
 
     def _get_remote_attr(self, attrib: str) -> Any:
         return self.service.get_attribute_value(
@@ -1142,7 +1180,6 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-
         all_children = list(self.__dict__) + dir(type(self))
 
         filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
@@ -1230,7 +1267,7 @@ class PyMenu(PyStateContainer):
         ----------
         obj_type: str
             Type of the named object container.
-        child_names : List[str]
+        child_names : list[str]
             List of named objects.
         """
         for child_name in child_names:
@@ -1602,6 +1639,23 @@ class PyNamedObjectContainer:
 
     getChildObjectDisplayNames = get_object_names
 
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self,
+            base_class=PyNamedObjectContainer,
+            prefix=prefix,
+            excluded=excluded,
+        )
+
     def __len__(self) -> int:
         """Return a count of child objects.
 
@@ -1636,7 +1690,7 @@ class PyNamedObjectContainer:
             )
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def _del_item(self, key: str) -> None:
@@ -1659,7 +1713,7 @@ class PyNamedObjectContainer:
             self.service.delete_object(self.rules, se_path)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def __getitem__(self, key: str) -> PyMenu:
@@ -1801,6 +1855,20 @@ class PyAction:
         args = self._get_create_instance_args()
         if args is not None:
             return PyArguments(*args)
+
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyAction, prefix=prefix, excluded=excluded
+        )
 
 
 class PyQuery(PyAction):
@@ -1992,17 +2060,23 @@ class PyArguments(PyStateContainer):
             )
         )
         self.path.append((command, id))
+        self.service.register_command_arguments(
+            self.rules,
+            convert_path_to_se_path(self.path[:-1]),
+            self.path[-1][0],
+            self.path[-1][1],
+        )
 
     def __del__(self) -> None:
         try:
-            self.service.delete_command_arguments(
+            self.service.release_command_arguments(
                 self.rules,
                 convert_path_to_se_path(self.path[:-1]),
                 self.path[-1][0],
                 self.path[-1][1],
             )
         except Exception as exc:
-            logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
+            logger.info(f"__del__ {type(exc).__name__}: {exc}")
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -2149,3 +2223,10 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
             return super().__getattr__(name)
         else:
             return self._get_child(name)
+
+
+_type_name_map = {
+    _InputFile: "InputFilename",
+    _OutputFile: "OutputFilename",
+    _InOutFile: "InOutFilename",
+}
