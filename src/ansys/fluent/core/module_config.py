@@ -73,9 +73,9 @@ class _ConfigDescriptor(Generic[TConfig]):
 
 def _get_default_examples_path(instance: "Config") -> str:
     """Get the default examples path."""
-    parent_path = Path.home() / "Downloads"
-    parent_path.mkdir(exist_ok=True)
-    return str(parent_path / "ansys_fluent_core_examples")
+    default_path = Path.home() / "Downloads" / "ansys_fluent_core_examples"
+    default_path.mkdir(parents=True, exist_ok=True)
+    return str(default_path)
 
 
 class Config:
