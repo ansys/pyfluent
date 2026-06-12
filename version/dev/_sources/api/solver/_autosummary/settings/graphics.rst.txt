@@ -1,0 +1,67 @@
+:orphan:
+
+.. _graphics:
+
+graphics
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.graphics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   =============================================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                                                                  Summary
+
+==================================================================================   =============================================================================================================================================================================================================================================
+:ref:`exists <exists>`                                                                                                                                                                                                                                              Whether post-processing spectral content is currently defined.
+
+:ref:`copy_from_pl <copy_from_pl>`                                                                                                                                                                                                               Copy spectral content from the phaselag spectral description as a starting point.
+
+:ref:`blade_flutter <blade_flutter>`                                                 Enable blade flutter mode for the graphics spectral content. When enabled, a blade-flutter disturbance is automatically added for every turbo row that has valid periodic displacement data; disabling removes those auto-added disturbances.
+
+:ref:`include_modal_influence_coefficients <include_modal_influence_coefficients>`                                                                                                                                                                       Include modal influence coefficients in the spectral content computation.
+
+:ref:`init_a0_from_solution <init_a0_from_solution>`                                                                                                                                                                                                          Initialize the zeroth Fourier coefficient from the current solution.
+
+:ref:`relaxation <relaxation>`                                                                                                                                                                                                                                                             Fourier coefficients relaxation factor.
+
+:ref:`initialization_cycles <initialization_cycles>`                                                                                                                                                                                                          Number of initialization cycles for Fourier coefficient computation.
+
+:ref:`number_of_harmonics <number_of_harmonics>`                                                                                                                                                                                                                Default number of Fourier harmonics of each fundamental frequency.
+
+:ref:`frequency_selection_algorithm <frequency_selection_algorithm>`                                                                                                                                                       Multi-row frequency selection algorithm (1=nearest neighbours, 2=extended neighbours, 3=user-selected).
+
+:ref:`frequency_setup <frequency_setup>`                                                                                                                                             Row-based frequency configuration for graphics spectral content. Select a row to view and configure its inter-row disturbances and harmonics.
+
+==================================================================================   =============================================================================================================================================================================================================================================
+
+.. rubric:: Methods
+
+======================================   ==================================================================================================================================================================================================================================
+
+Method                                                                                                                                                                                                                                                              Summary
+
+======================================   ==================================================================================================================================================================================================================================
+:ref:`create <create_16>`                                                                                           Create graphics (post-processing) spectral content. Automatically sets up frequency data from the turbomachine description without interactive prompts.
+
+:ref:`delete <delete_5>`                                                                                                                                                                                    Delete the current graphics (post-processing) spectral content.
+
+:ref:`list_details <list_details_1>`                                                                                                                                                               Display the current graphics (post-processing) spectral content details.
+
+:ref:`extra_settings <extra_settings>`   Apply extra settings for graphics spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+======================================   ==================================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                      Summary
+
+==========================================   ======================================================================================================================================================================================================
+:ref:`spectral_content <spectral_content>`   Spectral content management for turbomachinery. Provides creation, configuration, and deletion of graphics (post-processing) and phaselag spectral descriptions for Fourier coefficient-based methods.
+
+==========================================   ======================================================================================================================================================================================================
+

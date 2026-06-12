@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_type_2:
+
+file_type
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_type_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ================================================================================
+
+Parent                                                                                          Summary
+
+====================   ================================================================================
+:ref:`write <write>`       Write files of various types. The file type can be case, data, or case-data.
+
+====================   ================================================================================
+

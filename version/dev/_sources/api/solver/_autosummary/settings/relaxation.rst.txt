@@ -1,0 +1,27 @@
+:orphan:
+
+.. _relaxation:
+
+relaxation
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.relaxation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                                  Summary
+
+==========================================   ==================================================================================================================================================================================================================================
+:ref:`graphics <graphics>`                                                                                                 Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+:ref:`extra_settings <extra_settings>`       Apply extra settings for graphics spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+:ref:`phaselag <phaselag>`                                                                                                                   Phase lag spectral content. Defines the Fourier coefficient data used for phase-lag method in unsteady turbomachinery simulations.
+
+:ref:`extra_settings_1 <extra_settings_1>`   Apply extra settings for phaselag spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+==========================================   ==================================================================================================================================================================================================================================
+

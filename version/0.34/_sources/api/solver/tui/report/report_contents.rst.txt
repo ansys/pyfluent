@@ -1,0 +1,30 @@
+.. _ref_solver_tui_report:
+
+report
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.report
+   :members: aero_optical_distortions, calc_exchange_data_on_zone_types, dpm_calc_erosion_accretion_rates, dpm_extended_summary, dpm_sample, dpm_sample_output_udf, dpm_sample_sort_file, dpm_summary, dpm_zone_summaries_per_injection, element_mass_flow, enable_exch_details_in_dpm_summ_rep, mphase_summary, particle_summary, path_line_summary, phasic_integrals_enabled, print_histogram, projected_surface_area, species_mass_flow, summary, uds_flow, virtual_blade_model, write_histogram
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   dpm_histogram/dpm_histogram_contents
+   efficiency/efficiency_contents
+   fluxes/fluxes_contents
+   forces/forces_contents
+   heat_exchanger/heat_exchanger_contents
+   icing/icing_contents
+   modified_setting/modified_setting_contents
+   population_balance/population_balance_contents
+   reference_values/reference_values_contents
+   simulation_reports/simulation_reports_contents
+   surface_integrals/surface_integrals_contents
+   system/system_contents
+   volume_integrals/volume_integrals_contents

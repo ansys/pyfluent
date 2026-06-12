@@ -1,0 +1,23 @@
+:orphan:
+
+.. _color:
+
+color
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.color
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================
+
+Parent                                                                  Summary
+
+========================================   ====================================
+:ref:`major_gridlines <major_gridlines>`       Properties of gridlines on axis.
+
+:ref:`minor_gridlines <minor_gridlines>`       Properties of gridlines on axis.
+
+========================================   ====================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _list_details_2:
+
+list_details
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.list_details_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+==========================   ==================================================================================================================================
+:ref:`phaselag <phaselag>`   Phase lag spectral content. Defines the Fourier coefficient data used for phase-lag method in unsteady turbomachinery simulations.
+
+==========================   ==================================================================================================================================
+

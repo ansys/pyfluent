@@ -1,0 +1,42 @@
+:orphan:
+
+.. _volume_displacement:
+
+volume_displacement
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.volume_displacement
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================================================   ==================================================================================================
+
+Attribute                                                                                                                                                                                                 Summary
+
+============================================================================================================   ==================================================================================================
+:ref:`enabled <enabled_10>`                                                                                                                                     Accounts for fluid volume displaced by particles.
+
+:ref:`max_particle_phase_volume_fraction <max_particle_phase_volume_fraction>`                                             Sets the maximum particle volume fraction used in the continuous phase (default 0.95).
+
+:ref:`drag_scaling_enabled <drag_scaling_enabled>`                                                                                                     Scales drag coefficient based on particle volume fraction.
+
+:ref:`momentum_source_scaling_enabled <momentum_source_scaling_enabled>`                                                                          Scales momentum source terms based on particle volume fraction.
+
+:ref:`other_source_scaling_enabled <other_source_scaling_enabled>`                                                                                   Scales other source terms based on particle volume fraction.
+
+:ref:`source_scaling_min_particle_phase_volume_fraction <source_scaling_min_particle_phase_volume_fraction>`   Sets the minimum particle volume fraction threshold below which DPM source scaling is not applied.
+
+============================================================================================================   ==================================================================================================
+
+.. rubric:: Included in:
+
+========================================   =================================================================
+
+Parent                                                                                               Summary
+
+========================================   =================================================================
+:ref:`physical_models <physical_models>`   Enables and configures physical submodels for the discrete phase.
+
+========================================   =================================================================
+

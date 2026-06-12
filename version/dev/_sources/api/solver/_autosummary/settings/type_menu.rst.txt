@@ -1,0 +1,34 @@
+:orphan:
+
+.. _type_menu:
+
+type_menu
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.type_menu
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   =======================================================================
+
+Attribute                                                                                  Summary
+
+========================   =======================================================================
+:ref:`type <type_19>`                                   Inspection type: 0=manual, 1=grid, 2=case.
+
+:ref:`expert <expert_9>`   Specifies whether to perform full inspection analysis (vs. light mode).
+
+========================   =======================================================================
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`inspector <inspector>`   Inspect mesh and case data.
+
+============================   ===========================
+

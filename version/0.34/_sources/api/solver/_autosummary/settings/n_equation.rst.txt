@@ -1,0 +1,45 @@
+:orphan:
+
+.. _n_equation:
+
+n_equation
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.n_equation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ========================================================================
+
+Attribute                                                                                                       Summary
+
+============================================   ========================================================================
+:ref:`abuse_rate_matrix <abuse_rate_matrix>`       Data class to hold abuse reaction kinetics in the N-eqn abuse model.
+
+============================================   ========================================================================
+
+.. rubric:: Methods
+
+====================================================   =====================================================================
+
+Method                                                                                                               Summary
+
+====================================================   =====================================================================
+:ref:`read_abuse_rate_file <read_abuse_rate_file>`               Command object to read abuse rate in the N-eqn abuse model.
+
+:ref:`write_abuse_rate_file <write_abuse_rate_file>`       Command object to write abuse rate file in the N-eqn abuse model.
+
+====================================================   =====================================================================
+
+.. rubric:: Included in:
+
+================================================   ===========================================
+
+Parent                                                                                 Summary
+
+================================================   ===========================================
+:ref:`thermal_abuse_model <thermal_abuse_model>`       Thermal abuse model related parameters.
+
+================================================   ===========================================
+

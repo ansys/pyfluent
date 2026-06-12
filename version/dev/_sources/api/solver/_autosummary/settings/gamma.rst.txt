@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gamma:
+
+gamma
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gamma
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ===================================
+
+Parent                                                                                               Summary
+
+======================================================================   ===================================
+:ref:`newmark_integration_parameters <newmark_integration_parameters>`   Set Newmark Integration Parameters.
+
+======================================================================   ===================================
+

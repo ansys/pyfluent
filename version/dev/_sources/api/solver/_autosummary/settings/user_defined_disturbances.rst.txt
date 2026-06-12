@@ -1,0 +1,49 @@
+:orphan:
+
+.. _user_defined_disturbances:
+
+user_defined_disturbances
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.user_defined_disturbances
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`user_defined_disturbances_child <user_defined_disturbances_child>`
+
+
+.. rubric:: Included in:
+
+========================================================   =======================================
+
+Parent                                                                                     Summary
+
+========================================================   =======================================
+:ref:`frequency_setup_child <frequency_setup_child>`       'child_object_type' of frequency_setup.
+
+:ref:`frequency_setup_1_child <frequency_setup_1_child>`   'child_object_type' of frequency_setup.
+
+========================================================   =======================================
+

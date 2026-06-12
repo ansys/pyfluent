@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_39:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_39
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================================================
+
+Parent                                                                                                               Summary
+
+================================================   =========================================================================
+:ref:`stabilization_tools <stabilization_tools>`   Solver stabilization tools for robust convergence on poor quality meshes.
+
+================================================   =========================================================================
+

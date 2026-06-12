@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_ping_test:
+
+set_ping_test
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_ping_test
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=========================   ============================
+
+Argument                                         Summary
+
+=========================   ============================
+:ref:`enable <enable_24>`   Enable or disable ping test.
+
+=========================   ============================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

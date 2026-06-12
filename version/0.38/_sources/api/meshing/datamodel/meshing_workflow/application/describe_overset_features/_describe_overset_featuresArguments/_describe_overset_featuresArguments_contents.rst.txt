@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_describe_overset_features__describe_overset_featuresArguments:
+
+_describe_overset_featuresArguments
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.describe_overset_features._describe_overset_featuresArguments
+   :members: _advanced_options, _background_mesh, _collar_grid, _component_grid, _overset_interfaces
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

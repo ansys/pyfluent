@@ -1,0 +1,38 @@
+:orphan:
+
+.. _accuracy_control_1:
+
+accuracy_control
+================
+
+.. deprecated:: Ansys 2025R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.accuracy_control_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =============================================================================================================
+
+Attribute                                                                                                                              Summary
+
+==============================   =============================================================================================================
+:ref:`option <option_61>`                                                                                                Control the accuracy.
+
+:ref:`step_size <step_size>`                                      The Step Size sets the length interval used for computing the next position.
+
+:ref:`tolerance <tolerance_4>`       The tolerance value will be taken in to consideration while calculating the pathlines for each time step.
+
+==============================   =============================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`pathline_child <pathline_child>`       'child_object_type' of pathline.
+
+======================================   ====================================
+

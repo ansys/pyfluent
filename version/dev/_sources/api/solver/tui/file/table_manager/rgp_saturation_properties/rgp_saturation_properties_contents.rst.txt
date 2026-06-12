@@ -1,0 +1,14 @@
+.. _ref_solver_tui_file_table_manager_rgp_saturation_properties:
+
+Rgp saturation properties
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.file.table_manager.rgp_saturation_properties
+   :members: activate_property_table, deactivate_property_table, list_active_property_tables
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

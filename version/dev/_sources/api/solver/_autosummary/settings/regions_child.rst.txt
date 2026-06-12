@@ -1,0 +1,47 @@
+:orphan:
+
+.. _regions_child:
+
+regions_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.regions_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================================
+
+Attribute                                                                Summary
+
+============================   =================================================
+:ref:`bodies <bodies>`         List of body names referred by this solid region.
+
+:ref:`material <material_7>`          This material is assigned to solid region.
+
+============================   =================================================
+
+.. rubric:: Methods
+
+========================================   =======================================================================================
+
+Method                                                                                                                     Summary
+
+========================================   =======================================================================================
+:ref:`create_surface <create_surface_2>`                                Create wrapped solid region surface for this solid region.
+
+:ref:`display <display_4>`                 Display wrapped solid region surface for this solid region. Creates it first if needed.
+
+========================================   =======================================================================================
+
+.. rubric:: Included in:
+
+========================   ========================
+
+Parent                                      Summary
+
+========================   ========================
+:ref:`regions <regions>`   Solid region collection.
+
+========================   ========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _target_number_of_particle_per_subcell:
+
+target_number_of_particle_per_subcell
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.target_number_of_particle_per_subcell
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ==============================
+
+Parent                                      Summary
+
+==================   ==============================
+:ref:`dsmc <dsmc>`       Enable/disable dsmc model.
+
+==================   ==============================
+

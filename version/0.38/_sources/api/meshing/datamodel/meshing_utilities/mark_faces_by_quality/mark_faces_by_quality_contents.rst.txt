@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_faces_by_quality:
+
+mark_faces_by_quality
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.mark_faces_by_quality
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _mark_faces_by_qualityArguments/_mark_faces_by_qualityArguments_contents

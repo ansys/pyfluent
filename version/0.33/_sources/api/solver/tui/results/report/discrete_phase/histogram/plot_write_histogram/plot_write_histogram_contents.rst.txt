@@ -1,0 +1,14 @@
+.. _ref_solver_tui_results_report_discrete_phase_histogram_plot_write_histogram:
+
+plot_write_histogram
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.results.report.discrete_phase.histogram.plot_write_histogram
+   :members: plot_hist_with_args, plot_histogram, write_hist_with_args, write_histogram
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

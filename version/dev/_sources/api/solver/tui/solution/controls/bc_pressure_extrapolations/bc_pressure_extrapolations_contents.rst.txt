@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_controls_bc_pressure_extrapolations:
+
+Bc pressure extrapolations
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.controls.bc_pressure_extrapolations
+   :members: extrapolate_pressure_on_all_boundaries, extrapolate_pressure_on_flow_inlets, extrapolate_pressure_on_pressure_inlet, extrapolate_velocity_on_outflow, pressure_outlet_advection_splitting
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

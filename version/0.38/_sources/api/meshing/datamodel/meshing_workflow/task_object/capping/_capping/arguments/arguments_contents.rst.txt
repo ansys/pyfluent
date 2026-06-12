@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_capping__capping_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.capping._capping.arguments
+   :members: cap_labels, complete_label_selection_list, complete_topology_list, complete_zone_selection_list, label_selection_list, new_object_name, object_association, patch_name, patch_object_name, patch_type, selection_type, topology_list, zone_location, zone_selection_list, zone_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   create_patch_preferences/create_patch_preferences_contents

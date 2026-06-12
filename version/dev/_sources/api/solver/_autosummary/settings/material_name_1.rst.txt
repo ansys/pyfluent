@@ -1,0 +1,21 @@
+:orphan:
+
+.. _material_name_1:
+
+material_name
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.material_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ====================================================================
+
+Parent                                                                                                                      Summary
+
+============================================================   ====================================================================
+:ref:`deactivate_property_table <deactivate_property_table>`   Deactivate saturation property table for the specified RGP material.
+
+============================================================   ====================================================================
+

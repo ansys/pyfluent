@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_component_mesh:
+
+create_component_mesh
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.create_component_mesh
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _create_component_meshArguments/_create_component_meshArguments_contents

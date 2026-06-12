@@ -1,0 +1,23 @@
+:orphan:
+
+.. _recreate_2:
+
+recreate
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.recreate_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                                  Summary
+
+==========================================   ==================================================================================================================================================================================================================================
+:ref:`extra_settings <extra_settings>`       Apply extra settings for graphics spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+:ref:`extra_settings_1 <extra_settings_1>`   Apply extra settings for phaselag spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+==========================================   ==================================================================================================================================================================================================================================
+

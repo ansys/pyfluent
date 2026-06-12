@@ -1,0 +1,57 @@
+:orphan:
+
+.. _settings_9:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.settings_9
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ==============================================
+
+Attribute                                                                                           Summary
+
+==========================================================   ==============================================
+:ref:`optimizer_type <optimizer_type>`                                                      Optimizer type.
+
+:ref:`method <method_29>`                                                   Optimizer search length method.
+
+:ref:`current_design_iteration <current_design_iteration>`                        Current design iteration.
+
+:ref:`design_iterations <design_iterations>`                                   Number of design iterations.
+
+:ref:`convergence_criteria <convergence_criteria>`           Convergence criteria for optimization problem.
+
+:ref:`flow_iterations <flow_iterations>`                                         Number of flow iterations.
+
+:ref:`adjoint_iterations <adjoint_iterations_1>`                              Number of adjoint iterations.
+
+:ref:`mesh_quality <mesh_quality>`                                                   Mesh quality settings.
+
+==========================================================   ==============================================
+
+.. rubric:: Methods
+
+==========================   ================================================
+
+Method                                                                Summary
+
+==========================   ================================================
+:ref:`default <default_7>`   Summarize results from gradient-based optimizer.
+
+==========================   ================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`optimizer <optimizer>`   Gradient-based optimizer object.
+
+============================   ================================
+

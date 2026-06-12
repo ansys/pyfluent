@@ -1,0 +1,79 @@
+.whatsnew-sidebar {
+  /* border: 1px solid var(--ast-color-table-inner-border); */
+  background-color: var(--pst-color-background);
+  /* border-radius: 10px; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  */
+  margin-bottom: 20px;
+}
+
+.whatsnew-sidebar h2 {
+  font-size: 1rem;
+  font-family: var(--ast-font-family-base);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 4px;
+}
+
+.whatsnew-sidebar h3 {
+  font-size: 0.75rem;
+  font-family: var(--ast-font-family-base);
+  margin: 8px 4px;
+  padding: 4px 8px;
+}
+
+.whatsnew-sidebar a.current {
+  color: var(--ast-color-text);
+  background: var(--ast-sidebar-active-background);
+  text-decoration: none;
+  box-shadow: 1px 1px 2px 0px var(--ast-sidebar-active-background);
+  border-radius: var(--ast-sphinx-design-border-radius);
+  font-weight: bold;
+  padding: 4px 24px 4px 32px;
+}
+
+.whatsnew-sidebar h3:hover {
+  color: var(--ast-color-text);
+  background: var(--ast-sidebar-active-background);
+  text-decoration: none;
+  box-shadow: 1px 1px 2px 0px var(--ast-sidebar-active-background);
+  border-radius: var(--ast-sphinx-design-border-radius);
+  font-weight: bold;
+}
+
+.whatsnew-sidebar ul {
+  list-style: none;
+  line-height: 30px;
+  padding-inline-start: 0rem;
+}
+
+.whatsnew-sidebar li {
+  padding: 4px 8px 4px 12px;
+}
+
+.whatsnew-sidebar li:hover {
+  color: var(--ast-color-text);
+  background: var(--ast-sidebar-active-background);
+  text-decoration: none;
+  box-shadow: 1px 1px 2px 0px var(--ast-sidebar-active-background);
+  border-radius: var(--ast-sphinx-design-border-radius);
+  font-weight: bold;
+}
+
+.whatsnew-sidebar li ul {
+  margin-left: 15px; /* Indent sub-items */
+}
+
+.whatsnew-sidebar li ul li {
+  list-style-type: disc; /* Bullet points */
+  margin-left: 20px; /* Spacing for bullet points */
+}
+
+.whatsnew-sidebar a {
+  text-decoration: none; /* Remove underline */
+  color: var(--ast-color-text); /* Blue link color */
+}
+
+.whatsnew-sidebar a:hover {
+  text-decoration: underline; /* Underline on hover */
+  color: var(--ast-color-text); /* Blue link color on hover */
+}

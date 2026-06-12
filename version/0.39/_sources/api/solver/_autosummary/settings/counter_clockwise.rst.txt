@@ -1,0 +1,21 @@
+:orphan:
+
+.. _counter_clockwise:
+
+counter_clockwise
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.counter_clockwise
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ================================================
+
+Parent                                                        Summary
+
+==================   ================================================
+:ref:`roll <roll>`       Settings for adjusting the camera up-vector.
+
+==================   ================================================
+

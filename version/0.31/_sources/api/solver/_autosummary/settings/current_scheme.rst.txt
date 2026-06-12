@@ -1,0 +1,36 @@
+:orphan:
+
+.. _current_scheme:
+
+current_scheme
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.current_scheme
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =========================================================
+
+Attribute                                                                                                Summary
+
+====================================================   =========================================================
+:ref:`method <method_12>`                                  None: Solves adjoint equations with no stabilization.
+
+:ref:`dissipation <dissipation>`                           The dissipation method stabilization controls object.
+
+:ref:`residual_minimization <residual_minimization>`                  The residual minimization controls object.
+
+====================================================   =========================================================
+
+.. rubric:: Included in:
+
+========================================   ==============================================
+
+Parent                                                                            Summary
+
+========================================   ==============================================
+:ref:`stabilization_1 <stabilization_1>`       The adjoint stabilization controls object.
+
+========================================   ==============================================
+

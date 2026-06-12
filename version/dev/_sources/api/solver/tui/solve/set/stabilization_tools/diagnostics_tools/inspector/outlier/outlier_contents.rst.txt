@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_set_stabilization_tools_diagnostics_tools_inspector_outlier:
+
+Outlier
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.set.stabilization_tools.diagnostics_tools.inspector.outlier
+   :members: controlled_limits, iqr_constant, mad_constant, outlier_method, std_constant
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

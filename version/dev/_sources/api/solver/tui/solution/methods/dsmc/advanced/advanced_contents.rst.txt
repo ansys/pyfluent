@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_methods_dsmc_advanced:
+
+Advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.methods.dsmc.advanced
+   :members: use_cell_pressure_for_symmetry_boundary
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

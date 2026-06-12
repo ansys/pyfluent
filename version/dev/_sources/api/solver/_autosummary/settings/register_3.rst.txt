@@ -1,0 +1,21 @@
+:orphan:
+
+.. _register_3:
+
+register
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.register_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   ======================================================================
+
+Parent                                                                                                                                    Summary
+
+========================================================================   ======================================================================
+:ref:`mark_cell_neighbors_by_register <mark_cell_neighbors_by_register>`   Mark neighboring cells based on the provided id or name of a register.
+
+========================================================================   ======================================================================
+

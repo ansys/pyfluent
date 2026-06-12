@@ -1,0 +1,21 @@
+:orphan:
+
+.. _high_order_pressure:
+
+high_order_pressure
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.high_order_pressure
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================================
+
+Parent                                                    Summary
+
+============================   ==================================
+:ref:`overset_3 <overset_3>`       Overset solver options object.
+
+============================   ==================================
+

@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_multizone_controls__add_multizone_controls_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.add_multizone_controls._add_multizone_controls.arguments
+   :members: assign_size_using, bias_factor, bias_method, complete_edge_scope, complete_region_scope, control_type, edge_label_list, edge_label_selection, fill_with, growth_method, growth_rate, intervals, label_source_list, max_sweep_size, mesh_method, multi_z_name, parallel_selection, region_scope, show_edge_biasing, size, smallest_height, source_method, topo_source_list, use_sweep_size, zone_location, zone_source_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   cfd_surface_mesh_controls/cfd_surface_mesh_controls_contents

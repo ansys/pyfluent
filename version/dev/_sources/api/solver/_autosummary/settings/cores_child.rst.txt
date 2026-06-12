@@ -1,0 +1,38 @@
+:orphan:
+
+.. _cores_child:
+
+cores_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cores_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ===============================================
+
+Attribute                                                                Summary
+
+==============================   ===============================================
+:ref:`name <name_5>`                                         Name of the object.
+
+:ref:`zone <zone_1>`             Fluid zone that forms this heat exchanger core.
+
+:ref:`model_data <model_data>`             Model data for a heat exchanger core.
+
+:ref:`geometry <geometry_4>`                 Geometry for a heat exchanger core.
+
+==============================   ===============================================
+
+.. rubric:: Included in:
+
+====================   ==============================================================
+
+Parent                                                                        Summary
+
+====================   ==============================================================
+:ref:`cores <cores>`   Heat exchanger cores. Each core corresponds to one fluid zone.
+
+====================   ==============================================================
+

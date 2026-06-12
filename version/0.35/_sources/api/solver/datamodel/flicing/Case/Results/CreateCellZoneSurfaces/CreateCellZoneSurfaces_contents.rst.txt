@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_Results_CreateCellZoneSurfaces:
+
+CreateCellZoneSurfaces
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.flicing.Root.Case.Results.CreateCellZoneSurfaces
+   :members: _CreateCellZoneSurfacesCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

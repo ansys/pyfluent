@@ -1,0 +1,19 @@
+.. _ref_solver_tui_solution_methods_second_order_time_options:
+
+Second order time options
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.methods.second_order_time_options
+   :members: variable_time_step_formulation
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   bounded_formulation/bounded_formulation_contents
+   flexible_bso/flexible_bso_contents

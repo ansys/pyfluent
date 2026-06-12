@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_25:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_25
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`create_9 <create_9>`       Create mesh interfaces.
+
+==========================   ===========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_40:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_40
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =============================================================================
+
+Parent                                                                                                                           Summary
+
+========================================================   =============================================================================
+:ref:`distorted_mesh_handling <distorted_mesh_handling>`   Enable/disable distorted mesh handling for highly skewed or degenerate cells.
+
+========================================================   =============================================================================
+

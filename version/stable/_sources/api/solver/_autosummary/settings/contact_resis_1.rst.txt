@@ -1,0 +1,45 @@
+:orphan:
+
+.. _contact_resis_1:
+
+contact_resis
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.contact_resis_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+:ref:`add_zone <add_zone_1>`                               Add thread-real-pair object.
+
+:ref:`list_zone <list_zone>`                              List thread-real-pair object.
+
+:ref:`delete_zone <delete_zone>`                        Delete thread-real-pair object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`contact_resis_1_child <contact_resis_1_child>`
+
+
+.. rubric:: Included in:
+
+==============================   ======================
+
+Parent                                          Summary
+
+==============================   ======================
+:ref:`advanced_2 <advanced_2>`       Advanced settings.
+
+==============================   ======================
+

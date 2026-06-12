@@ -1,0 +1,34 @@
+:orphan:
+
+.. _remove_user_defined_disturbance:
+
+remove_user_defined_disturbance
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.remove_user_defined_disturbance
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   ===============================================
+
+Argument                                                                               Summary
+
+============================================   ===============================================
+:ref:`disturbance_name <disturbance_name_1>`   Name of the user-defined disturbance to remove.
+
+============================================   ===============================================
+
+.. rubric:: Included in:
+
+========================================================   =======================================
+
+Parent                                                                                     Summary
+
+========================================================   =======================================
+:ref:`frequency_setup_child <frequency_setup_child>`       'child_object_type' of frequency_setup.
+
+:ref:`frequency_setup_1_child <frequency_setup_1_child>`   'child_object_type' of frequency_setup.
+
+========================================================   =======================================
+

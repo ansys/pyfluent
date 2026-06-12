@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Add child to task &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/styles/ansys-sphinx-theme.css?v=a23b20f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/styles/ansys-sphinx-theme.css?v=a23b20f3" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../../../../../../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../../../../../../../_static/documentation_options.js?v=69ad043b"></script>
+    <script src="../../../../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../../_static/thebelab-helper.js"></script>
+    <script src="../../../../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../../../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../../../../../../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="../../../../../../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../../../../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/meshing/datamodel/meshing_workflow/task_object/part_replacement_settings/_part_replacement_settings/add_child_to_task/add_child_to_task_contents';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.39';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../../../../../../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../../search.html" />
+    <link rel="next" title="Arguments" href="../arguments/arguments_contents.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../add_child_and_update/_add_child_and_updateArguments/_add_child_and_updateArguments_contents.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.39.0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Fluids" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/api/meshing/datamodel/meshing_workflow/task_object/part_replacement_settings/_part_replacement_settings/add_child_to_task/add_child_to_task_contents.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../../../../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../../../../../../../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../../../../../api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../../../../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../../../../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../../../../../../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    
+<!--
+  Announcement Version Loader
+  Dynamically loads the announcement.html content into the announcement_msg div.
+-->
+<div id="announcement_msg" aria-live="polite"></div>
+<script>
+  // Fetch and inject the announcement HTML content
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status} Announcement.html file not found, Please ignore this, if you are in dev/stable documentation`);
+      }
+      return response.text();
+    })
+    .then((text) => {
+      var msgDiv = document.getElementById("announcement_msg");
+      if (msgDiv) {
+        msgDiv.innerHTML = text;
+      }
+    })
+    .catch((error) => {
+      // Log only unexpected fetch errors
+      if (!(error.message && error.message.startsWith("HTTP error: 404"))) {
+        console.error(`Fetch problem: ${error.message} Announcement.html could not be loaded.`);
+      }
+    });
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../../../../../api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../../../../../../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">ansys.fluent.core</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../docker/docker_contents.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../filereader/filereader_contents.html">Filereader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../launcher/launcher_contents.html">Launcher</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../../../../meshing_workflow_new.html">Meshing workflow</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../application/application_contents.html">Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../general/general_contents.html">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../parts/parts_contents.html">Parts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../parts_files/parts_files_contents.html">Parts files</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../../../task_object_contents.html">Task object</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../add_2d_boundary_layers/add_2d_boundary_layers_contents.html">Add 2d boundary layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_boundary_layers/add_boundary_layers_contents.html">Add boundary layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_boundary_layers_for_part_replacement/add_boundary_layers_for_part_replacement_contents.html">Add boundary layers for part replacement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_boundary_type/add_boundary_type_contents.html">Add boundary type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_linear_mesh_pattern/add_linear_mesh_pattern_contents.html">Add linear mesh pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_local_sizing_wtm/add_local_sizing_wtm_contents.html">Add local sizing wtm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_multizone_controls/add_multizone_controls_contents.html">Add multizone controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_shell_boundary_layers/add_shell_boundary_layers_contents.html">Add shell boundary layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_thin_volume_meshing_controls/add_thin_volume_meshing_controls_contents.html">Add thin volume meshing controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../add_virtual_topology/add_virtual_topology_contents.html">Add virtual topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apply_share_topology/apply_share_topology_contents.html">Apply share topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../axisymmetric_sweep/axisymmetric_sweep_contents.html">Axisymmetric sweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../capping/capping_contents.html">Capping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../check_mesh/check_mesh_contents.html">Check mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../check_surface_quality/check_surface_quality_contents.html">Check surface quality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../check_volume_quality/check_volume_quality_contents.html">Check volume quality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../choose_mesh_control_options/choose_mesh_control_options_contents.html">Choose mesh control options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../close_leakage/close_leakage_contents.html">Close leakage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../compute_regions/compute_regions_contents.html">Compute regions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../compute_size_fields/compute_size_fields_contents.html">Compute size fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_collar_mesh/create_collar_mesh_contents.html">Create collar mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_component_mesh/create_component_mesh_contents.html">Create component mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_contact_patch/create_contact_patch_contents.html">Create contact patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_external_flow_boundaries/create_external_flow_boundaries_contents.html">Create external flow boundaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_gap_cover/create_gap_cover_contents.html">Create gap cover</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_group/create_group_contents.html">Create group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_leak_shield/create_leak_shield_contents.html">Create leak shield</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_local_refinement_regions/create_local_refinement_regions_contents.html">Create local refinement regions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_mesh_objects/create_mesh_objects_contents.html">Create mesh objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_multizone_mesh/create_multizone_mesh_contents.html">Create multizone mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_overset_mesh/create_overset_mesh_contents.html">Create overset mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_porous_regions/create_porous_regions_contents.html">Create porous regions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_regions/create_regions_contents.html">Create regions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_surface_mesh/create_surface_mesh_contents.html">Create surface mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_volume_mesh_ftm/create_volume_mesh_ftm_contents.html">Create volume mesh ftm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_volume_mesh_wtm/create_volume_mesh_wtm_contents.html">Create volume mesh wtm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../create_zero_thickness_geometry/create_zero_thickness_geometry_contents.html">Create zero thickness geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../custom_journal_task/custom_journal_task_contents.html">Custom journal task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../define_boundary_layer_controls/define_boundary_layer_controls_contents.html">Define boundary layer controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../define_global_sizing/define_global_sizing_contents.html">Define global sizing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../define_leakage_threshold/define_leakage_threshold_contents.html">Define leakage threshold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../describe_geometry/describe_geometry_contents.html">Describe geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../describe_geometry_and_flow/describe_geometry_and_flow_contents.html">Describe geometry and flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../describe_overset_features/describe_overset_features_contents.html">Describe overset features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../extract_edge_features/extract_edge_features_contents.html">Extract edge features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../extrude_volume_mesh/extrude_volume_mesh_contents.html">Extrude volume mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generate_initial_surface_mesh/generate_initial_surface_mesh_contents.html">Generate initial surface mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generate_map_mesh/generate_map_mesh_contents.html">Generate map mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generate_prism_layers/generate_prism_layers_contents.html">Generate prism layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generate_surface_mesh/generate_surface_mesh_contents.html">Generate surface mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generate_volume_mesh/generate_volume_mesh_contents.html">Generate volume mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../identify_construction_surfaces/identify_construction_surfaces_contents.html">Identify construction surfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../identify_deviated_faces/identify_deviated_faces_contents.html">Identify deviated faces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../identify_orphans/identify_orphans_contents.html">Identify orphans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../identify_regions/identify_regions_contents.html">Identify regions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../import_boi_geometry/import_boi_geometry_contents.html">Import boi geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../import_cad_and_part_management/import_cad_and_part_management_contents.html">Import cad and part management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../import_geometry/import_geometry_contents.html">Import geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../improve_surface_mesh/improve_surface_mesh_contents.html">Improve surface mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../improve_volume_mesh/improve_volume_mesh_contents.html">Improve volume mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../load_cad_geometry/load_cad_geometry_contents.html">Load cad geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../manage_zones_ftm/manage_zones_ftm_contents.html">Manage zones ftm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../mesh_controls_table/mesh_controls_table_contents.html">Mesh controls table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modify_mesh_refinement/modify_mesh_refinement_contents.html">Modify mesh refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../part_replacement_options/part_replacement_options_contents.html">Part replacement options</a></li>
+<li class="toctree-l3 current active has-children"><a class="reference internal" href="../../part_replacement_settings_contents.html">Part replacement settings</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../_part_replacement_settings_contents.html"><code class="docutils literal notranslate"><span class="pre">_part_replacement_settings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../add_child_and_update/add_child_and_update_contents.html">Add child and update</a></li>
+<li class="toctree-l4 current active"><a class="current reference internal" href="#">Add child to task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../arguments/arguments_contents.html">Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../display_model/display_model_contents.html">Display model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../execute/execute_contents.html">Execute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../execute_upstream_non_executed_and_this_task/execute_upstream_non_executed_and_this_task_contents.html">Execute upstream non executed and this task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../force_upto_date/force_upto_date_contents.html">Force upto date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../get_next_possible_tasks/get_next_possible_tasks_contents.html">Get next possible tasks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../insert_composite_child_task/insert_composite_child_task_contents.html">Insert composite child task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../insert_compound_child_task/insert_compound_child_task_contents.html">Insert compound child task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../insert_next_task/insert_next_task_contents.html">Insert next task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rename/rename_contents.html">Rename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../revert/revert_contents.html">Revert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../set_as_current/set_as_current_contents.html">Set as current</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../update_child_tasks/update_child_tasks_contents.html">Update child tasks</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../prepare_for_volume_meshing/prepare_for_volume_meshing_contents.html">Prepare for volume meshing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../remesh_surface/remesh_surface_contents.html">Remesh surface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../separate_contacts/separate_contacts_contents.html">Separate contacts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../set_up_rotational_periodic_boundaries/set_up_rotational_periodic_boundaries_contents.html">Set up rotational periodic boundaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../setup_size_controls/setup_size_controls_contents.html">Setup size controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../switch_to_solution/switch_to_solution_contents.html">Switch to solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../transform_volume_mesh/transform_volume_mesh_contents.html">Transform volume mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../update_boundaries/update_boundaries_contents.html">Update boundaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../update_region_settings/update_region_settings_contents.html">Update region settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../update_regions/update_regions_contents.html">Update regions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../update_volume_mesh/update_volume_mesh_contents.html">Update volume mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../wrap_main/wrap_main_contents.html">Wrap main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../write_2d_mesh/write_2d_mesh_contents.html">Write 2d mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../write_skin/write_skin_contents.html">Write skin</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../meshing_utilities.html">Meshing utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../scheduler/scheduler_contents.html">Scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../services/services_contents.html">Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../solver/error_message.html">Error message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../solver/settings_root.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../solver/flicing.html">Flicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../solver/preferences.html">Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../solver_workflows/solver_workflows_contents.html">Solver workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../streaming_services/streaming_services_contents.html">Streaming services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../utils/utils_contents.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../legacy/legacy_contents.html">Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../file_session.html">File session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../field_data_interfaces.html">Field data interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../fluent_connection.html">Fluent connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../journaling.html">Journaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../logger.html">Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../module_config.html">Module config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../parametric.html">Parametric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../rpvars.html">Rpvars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../search.html">Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session_base_meshing.html">Session base meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session_meshing.html">Session meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session_pure_meshing.html">Session pure meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session_solver_icing.html">Session solver icing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session_solver_lite.html">Session solver lite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session_solver.html">Session solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session.html">Session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../session_utilities.html">Session utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../system_coupling.html">System coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../pyfluent_warnings.html">Pyfluent warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../workflow_new.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../deprecated_apis.html">Deprecated APIs</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../../../../../../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../../../../../../api_contents.html" class="nav-link">API reference</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../../../../../meshing_workflow_new.html" class="nav-link">Meshing workflow</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../../task_object_contents.html" class="nav-link">Task object</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../part_replacement_settings_contents.html" class="nav-link">Part replacement settings</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../_part_replacement_settings_contents.html" class="nav-link">&lt;no title&gt;</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Add child to task</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="add-child-to-task">
+<span id="ref-meshing-datamodel-meshing-workflow-task-object-part-replacement-settings-part-replacement-settings-add-child-to-task"></span><h1>Add child to task<a class="headerlink" href="#add-child-to-task" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.</span></span><span class="sig-name descname"><span class="pre">add_child_to_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../../../services/datamodel_se.html#ansys.fluent.core.services.datamodel_se.PyCommand" title="ansys.fluent.core.services.datamodel_se.PyCommand"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></a></p>
+<p>Command add_child_to_task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.create_instance" title="ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.create_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_instance</span></code></a>()</p></td>
+<td><p>Create an operation instance.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of PyCommand class.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_add_child_to_taskArguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../../../services/datamodel_se.html#ansys.fluent.core.services.datamodel_se.PyArguments" title="ansys.fluent.core.services.datamodel_se.PyArguments"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyArguments</span></code></a></p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments.__init__" title="ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules, command, path, id)</p></td>
+<td><p>__init__ method of PyArguments class.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of PyArguments class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.create_instance">
+<span class="sig-name descname"><span class="pre">create_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.create_instance" title="Link to this definition">#</a></dt>
+<dd><p>Create an operation instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task"><code class="docutils literal notranslate"><span class="pre">add_child_to_task</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.__init__"><code class="docutils literal notranslate"><span class="pre">add_child_to_task.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments"><code class="docutils literal notranslate"><span class="pre">add_child_to_task._add_child_to_taskArguments</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task._add_child_to_taskArguments.__init__"><code class="docutils literal notranslate"><span class="pre">add_child_to_task._add_child_to_taskArguments.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.part_replacement_settings._part_replacement_settings.add_child_to_task.create_instance"><code class="docutils literal notranslate"><span class="pre">add_child_to_task.create_instance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../../../../../../../_sources/api/meshing/datamodel/meshing_workflow/task_object/part_replacement_settings/_part_replacement_settings/add_child_to_task/add_child_to_task_contents.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../../../../../../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../../../../../../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../../../../../../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<!--
+  Theme Version Footer
+  Displays the Sphinx theme version and the last updated date.
+  Accessibility and semantic improvements included.
+-->
+<footer class="theme-version" aria-label="Theme version and last update">
+  <span>
+    
+      Built with the
+      <a href="https://sphinxdocs.ansys.com/version/stable/index.html" target="_blank" rel="noopener noreferrer">
+        Ansys Sphinx Theme
+      </a>
+      1.7.2.
+    
+  </span>
+  <br />
+  <span>Last updated on <time id="ast_build_date"></time></span>
+</footer>
+<script>
+  // Set the last updated date in a readable format
+  (function() {
+    var options = { day: "numeric", month: "long", year: "numeric" };
+    var ast_lastModifiedDate = new Date(document.lastModified);
+    var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+    var dateElem = document.getElementById("ast_build_date");
+    if (dateElem) {
+      dateElem.textContent = ast_build_date;
+    }
+  })();
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

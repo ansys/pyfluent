@@ -1,0 +1,47 @@
+:orphan:
+
+.. _spectral_content:
+
+spectral_content
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.spectral_content
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ====================================================================================================================================================
+
+Attribute                                                                                                                                                                 Summary
+
+==========================   ====================================================================================================================================================
+:ref:`graphics <graphics>`   Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+:ref:`phaselag <phaselag>`                     Phase lag spectral content. Defines the Fourier coefficient data used for phase-lag method in unsteady turbomachinery simulations.
+
+==========================   ====================================================================================================================================================
+
+.. rubric:: Methods
+
+================================================   =============================================================================================================================================
+
+Method                                                                                                                                                                                   Summary
+
+================================================   =============================================================================================================================================
+:ref:`delete_all <delete_all_2>`                                                                                                             Delete both graphics and phaselag spectral content.
+
+:ref:`list_phaselag_state <list_phaselag_state>`   Display a comprehensive summary of phaselag state: interfaces, turbomachine description, and spectral content for both phaselag and graphics.
+
+================================================   =============================================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`turbomachinery <turbomachinery>`   The turbomachinery models.
+
+======================================   ==========================
+

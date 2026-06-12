@@ -1,0 +1,44 @@
+:orphan:
+
+.. _add_user_defined_disturbance:
+
+add_user_defined_disturbance
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.add_user_defined_disturbance
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   ================================================================================================================================================================
+
+Argument                                                                                                                                                                                                Summary
+
+============================================   ================================================================================================================================================================
+:ref:`disturbance_name <disturbance_name>`                                                                                                                  Unique name for the user-defined disturbance entry.
+
+:ref:`disturbance_type <disturbance_type_1>`   Type of disturbance: blade-passing, real-frequency, or blade-flutter. Blade flutter is only available when periodic displacement data exists for the target row.
+
+:ref:`reference_frame <reference_frame_9>`                                                                                 Reference frame for the disturbance source (blade-passing and real-frequency types).
+
+:ref:`n360_ext <n360_ext_1>`                                                                                                         Number of passages in 360 degrees for the source row (blade-passing type).
+
+:ref:`base_frequency <base_frequency_2>`                                                       Base frequency in Hz. Editable for real-frequency type; shows computed flutter frequency for blade-flutter type.
+
+:ref:`harmonics <harmonics_2>`                                                                                             Space-separated harmonic indices (e.g., "1 2 3 ... N"). Leave empty to use defaults.
+
+============================================   ================================================================================================================================================================
+
+.. rubric:: Included in:
+
+========================================================   =======================================
+
+Parent                                                                                     Summary
+
+========================================================   =======================================
+:ref:`frequency_setup_child <frequency_setup_child>`       'child_object_type' of frequency_setup.
+
+:ref:`frequency_setup_1_child <frequency_setup_1_child>`   'child_object_type' of frequency_setup.
+
+========================================================   =======================================
+

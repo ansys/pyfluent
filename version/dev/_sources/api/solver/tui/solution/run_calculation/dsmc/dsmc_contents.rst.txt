@@ -1,0 +1,18 @@
+.. _ref_solver_tui_solution_run_calculation_dsmc:
+
+Dsmc
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.run_calculation.dsmc
+   :members: collision_pair_selection, collision_scheme, enabled, real_to_simulated_particle_ratio, reset_macroscopic_solution, sampling_begin_iteration, target_number_of_particle_per_subcell, time_step
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   advanced/advanced_contents

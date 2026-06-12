@@ -1,0 +1,38 @@
+:orphan:
+
+.. _add_local_tolerance:
+
+add_local_tolerance
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.add_local_tolerance
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================================   ==================================================
+
+Argument                                                                                              Summary
+
+========================================================   ==================================================
+:ref:`use_length_factor <use_length_factor_1>`             Enable relative or absolute local tolerance input.
+
+:ref:`relative_length_factor <relative_length_factor_1>`       The valid number for relative local tolerance.
+
+:ref:`absolute_tolerance <absolute_tolerance_2>`               The valid number for absolute local tolerance.
+
+:ref:`zones <zones_3>`                                                  Zones for local one-to-one tolerance.
+
+========================================================   ==================================================
+
+.. rubric:: Included in:
+
+==================================   ====================
+
+Parent                                            Summary
+
+==================================   ====================
+:ref:`auto_options <auto_options>`   Auto-options object.
+
+==================================   ====================
+

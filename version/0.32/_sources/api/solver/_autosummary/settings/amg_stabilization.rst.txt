@@ -1,0 +1,21 @@
+:orphan:
+
+.. _amg_stabilization:
+
+amg_stabilization
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.amg_stabilization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================================
+
+Parent                                                  Summary
+
+==========================   ==================================
+:ref:`controls <controls>`       The structure controls object.
+
+==========================   ==================================
+

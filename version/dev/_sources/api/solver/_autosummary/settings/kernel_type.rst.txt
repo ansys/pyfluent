@@ -1,0 +1,21 @@
+:orphan:
+
+.. _kernel_type:
+
+kernel_type
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.kernel_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================================
+
+Parent                                                                                                  Summary
+
+==================================================   ==========================================================
+:ref:`node_based_averaging <node_based_averaging>`   Configures node-based averaging and source-term averaging.
+
+==================================================   ==========================================================
+

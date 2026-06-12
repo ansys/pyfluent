@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_identify_construction_surfaces__identify_construction_surfacesArguments__bounding_box_object:
+
+_bounding_box_object
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.identify_construction_surfaces._identify_construction_surfacesArguments._bounding_box_object
+   :members: _size_relative_length, _xmax, _xmax_ratio, _xmin, _xmin_ratio, _ymax, _ymax_ratio, _ymin, _ymin_ratio, _zmax, _zmax_ratio, _zmin, _zmin_ratio
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

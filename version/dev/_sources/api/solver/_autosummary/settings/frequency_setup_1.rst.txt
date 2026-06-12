@@ -1,0 +1,47 @@
+:orphan:
+
+.. _frequency_setup_1:
+
+frequency_setup
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.frequency_setup_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`frequency_setup_1_child <frequency_setup_1_child>`
+
+
+.. rubric:: Included in:
+
+==========================   ==================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+==========================   ==================================================================================================================================
+:ref:`phaselag <phaselag>`   Phase lag spectral content. Defines the Fourier coefficient data used for phase-lag method in unsteady turbomachinery simulations.
+
+==========================   ==================================================================================================================================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _read_grid_from_file:
+
+read_grid_from_file
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.read_grid_from_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   =======================================
+
+Argument                                                       Summary
+
+============================   =======================================
+:ref:`grid_file <grid_file>`   XY file containing f-grid distribution.
+
+============================   =======================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`edit_f_grid_settings <edit_f_grid_settings>`   Editor group for flamelet f-grid settings.
+
+==================================================   ==========================================
+

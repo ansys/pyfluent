@@ -1,0 +1,21 @@
+:orphan:
+
+.. _all_bnd:
+
+all_bnd
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.all_bnd
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============================
+
+Parent                                            Summary
+
+==========================   ============================
+:ref:`create_7 <create_7>`       Create a mesh interface.
+
+==========================   ============================
+

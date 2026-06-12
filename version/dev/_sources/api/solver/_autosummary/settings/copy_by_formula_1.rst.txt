@@ -1,0 +1,21 @@
+:orphan:
+
+.. _copy_by_formula_1:
+
+copy_by_formula
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.copy_by_formula_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =============================
+
+Parent                                                         Summary
+
+======================================   =============================
+:ref:`copy_materials <copy_materials>`   Copy materials from database.
+
+======================================   =============================
+

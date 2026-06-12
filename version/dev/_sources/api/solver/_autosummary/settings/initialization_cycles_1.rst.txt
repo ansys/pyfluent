@@ -1,0 +1,23 @@
+:orphan:
+
+.. _initialization_cycles_1:
+
+initialization_cycles
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.initialization_cycles_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                                  Summary
+
+==========================================   ==================================================================================================================================================================================================================================
+:ref:`phaselag <phaselag>`                                                                                                                   Phase lag spectral content. Defines the Fourier coefficient data used for phase-lag method in unsteady turbomachinery simulations.
+
+:ref:`extra_settings_1 <extra_settings_1>`   Apply extra settings for phaselag spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+==========================================   ==================================================================================================================================================================================================================================
+

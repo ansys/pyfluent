@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_point_contacts__mark_point_contactsArguments:
+
+_mark_point_contactsArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.mark_point_contacts._mark_point_contactsArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

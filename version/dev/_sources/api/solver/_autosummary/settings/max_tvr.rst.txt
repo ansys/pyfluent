@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_tvr:
+
+max_tvr
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.max_tvr
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ================================================================================
+
+Parent                                                                                                                              Summary
+
+========================================================   ================================================================================
+:ref:`divergence_prevention_1 <divergence_prevention_1>`   Adjust numerical settings automatically when a divergence pattern is identified.
+
+========================================================   ================================================================================
+

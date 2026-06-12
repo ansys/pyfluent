@@ -1,0 +1,21 @@
+:orphan:
+
+.. _outlets:
+
+outlets
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.outlets
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`efficiency <efficiency>`       The object.
+
+==============================   ===============
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _use_default_journal:
+
+use_default_journal
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.use_default_journal
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`job_settings <job_settings>`       Remote Job Settings.
+
+:ref:`job_settings_1 <job_settings_1>`   Remote Job Settings.
+
+======================================   ====================
+

@@ -1,0 +1,42 @@
+:orphan:
+
+.. _thermal_4:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.thermal_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================   =======================================
+
+Attribute                                                                                                        Summary
+
+==============================================================================   =======================================
+:ref:`temperature <temperature_3>`                                                                          Temperature.
+
+:ref:`vibrational_electronic_temperature <vibrational_electronic_temperature>`       Vibrational-Electronic Temperature.
+
+==============================================================================   =======================================
+
+.. rubric:: Included in:
+
+==============================================================   ==============================================
+
+Parent                                                                                                  Summary
+
+==============================================================   ==============================================
+:ref:`settings_16 <settings_16>`                                             Domain name to define settings on.
+
+:ref:`phase_18_child <phase_18_child>`                                            'child_object_type' of phase.
+
+:ref:`pressure_far_field_1_child <pressure_far_field_1_child>`       'child_object_type' of pressure_far_field.
+
+:ref:`pressure_far_field_2_child <pressure_far_field_2_child>`       'child_object_type' of pressure_far_field.
+
+:ref:`phase_43_child <phase_43_child>`                                            'child_object_type' of phase.
+
+==============================================================   ==============================================
+

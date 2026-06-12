@@ -1,0 +1,32 @@
+:orphan:
+
+.. _recreate:
+
+recreate
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.recreate
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   ===========================================================================
+
+Argument                                                                                                         Summary
+
+==========================================   ===========================================================================
+:ref:`creation_method <creation_method_1>`   Specifies whether solid regions are recreated one-per-part or one-per-body.
+
+==========================================   ===========================================================================
+
+.. rubric:: Included in:
+
+========================   ========================
+
+Parent                                      Summary
+
+========================   ========================
+:ref:`regions <regions>`   Solid region collection.
+
+========================   ========================
+

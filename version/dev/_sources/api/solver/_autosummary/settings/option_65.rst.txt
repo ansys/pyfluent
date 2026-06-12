@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_65:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_65
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================
+
+Parent                                              Summary
+
+========================   ================================
+:ref:`type_20 <type_20>`   The type for this cell register.
+
+========================   ================================
+

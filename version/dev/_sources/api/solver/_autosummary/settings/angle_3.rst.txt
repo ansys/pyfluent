@@ -1,0 +1,23 @@
+:orphan:
+
+.. _angle_3:
+
+angle
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.angle_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`create_7 <create_7>`             Create mesh interfaces.
+
+:ref:`periodicity_1 <periodicity_1>`       Periodic settings .
+
+====================================   =======================
+

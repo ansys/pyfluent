@@ -1,0 +1,25 @@
+:orphan:
+
+.. _name_47:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_47
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================
+
+Parent                                                                               Summary
+
+====================================================   =====================================
+:ref:`create_20 <create_20>`                                     Create a group of surfaces.
+
+:ref:`group_surface_child <group_surface_child>`       'child_object_type' of group_surface.
+
+:ref:`create_group_surfaces <create_group_surfaces>`             Create a group of surfaces.
+
+====================================================   =====================================
+

@@ -1,0 +1,48 @@
+:orphan:
+
+.. _phases_child:
+
+phases_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.phases_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ==========================================================================================
+
+Attribute                                                                                                                   Summary
+
+======================================   ==========================================================================================
+:ref:`name <name_4>`                                                                                                Name for phase.
+
+:ref:`material <material>`                                                                                      Material for phase.
+
+:ref:`diameter <diameter>`                                                                                          Phase Diameter.
+
+:ref:`constant_dia <constant_dia>`                                                                                    Constant dia.
+
+:ref:`udf_dia <udf_dia>`                                                                                                   Udf dia.
+
+:ref:`granular <granular>`                                                                             Designate phase as granular.
+
+:ref:`granular_props <granular_props>`                                                                   Granular phase properties.
+
+:ref:`iac <iac>`                             Activate interfacial area-based population balance (IAC) modeling for dispersed phase.
+
+:ref:`iac_props <iac_props>`                                                                                  IAC properties group.
+
+======================================   ==========================================================================================
+
+.. rubric:: Included in:
+
+======================   ====================
+
+Parent                                Summary
+
+======================   ====================
+:ref:`phases <phases>`       Group of phases.
+
+======================   ====================
+

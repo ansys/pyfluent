@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_ChoosePartReplacementOptions__ChoosePartReplacementOptionsCommandArguments:
+
+_ChoosePartReplacementOptionsCommandArguments
+=============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.ChoosePartReplacementOptions._ChoosePartReplacementOptionsCommandArguments
+   :members: _AddBoundaryLayer, _AddLocalSizing, _AddPartManagement, _AddPartReplacement, _AddUpdateTheVolumeMesh
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

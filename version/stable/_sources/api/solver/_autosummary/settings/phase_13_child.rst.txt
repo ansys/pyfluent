@@ -1,0 +1,21 @@
+:orphan:
+
+.. _phase_13_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.phase_13_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================================
+
+Parent                                                      Summary
+
+==========================   ======================================
+:ref:`phase_13 <phase_13>`       Domain name to define settings on.
+
+==========================   ======================================
+

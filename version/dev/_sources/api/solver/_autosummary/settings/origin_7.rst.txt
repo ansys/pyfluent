@@ -1,0 +1,23 @@
+:orphan:
+
+.. _origin_7:
+
+origin
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.origin_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`create_7 <create_7>`             Create mesh interfaces.
+
+:ref:`periodicity_1 <periodicity_1>`       Periodic settings .
+
+====================================   =======================
+

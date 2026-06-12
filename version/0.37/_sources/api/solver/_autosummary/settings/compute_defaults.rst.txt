@@ -1,0 +1,36 @@
+:orphan:
+
+.. _compute_defaults:
+
+compute_defaults
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.compute_defaults
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =======================
+
+Argument                                                   Summary
+
+========================================   =======================
+:ref:`from_zone_type <from_zone_type_1>`       Boundary/zone type.
+
+:ref:`from_zone_name <from_zone_name_1>`        Selecte zone name.
+
+:ref:`phase <phase_54>`                                Phase name.
+
+========================================   =======================
+
+.. rubric:: Included in:
+
+==========================================   ===================================
+
+Parent                                                                   Summary
+
+==========================================   ===================================
+:ref:`initialization_1 <initialization_1>`       Solution initialization object.
+
+==========================================   ===================================
+

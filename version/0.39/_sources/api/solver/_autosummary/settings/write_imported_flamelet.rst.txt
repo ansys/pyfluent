@@ -1,0 +1,34 @@
+:orphan:
+
+.. _write_imported_flamelet:
+
+write_imported_flamelet
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_imported_flamelet
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================================   ========================
+
+Argument                                                                Summary
+
+====================================================   ========================
+:ref:`write_import_flamelet <write_import_flamelet>`       Write Flamelet File.
+
+:ref:`write_flamelet_file <write_flamelet_file>`            Name Flamelet File.
+
+====================================================   ========================
+
+.. rubric:: Included in:
+
+============================   ==========================
+
+Parent                                            Summary
+
+============================   ==========================
+:ref:`chemistry <chemistry>`       PDF Chemistry Options.
+
+============================   ==========================
+

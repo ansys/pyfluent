@@ -1,0 +1,70 @@
+:orphan:
+
+.. _job_settings_1:
+
+job_settings
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.job_settings_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   =============================================================================================================================
+
+Attribute                                                                                                                                                                                  Summary
+
+==================================================================   =============================================================================================================================
+:ref:`capability <capability>`                                                                                                                                                         Capability.
+
+:ref:`number_of_processes <number_of_processes>`                                                                                                                              Number of Processes.
+
+:ref:`use_gpu_solver <use_gpu_solver>`                                                                                                                                             Use GPU Solver.
+
+:ref:`number_of_gpus_per_node <number_of_gpus_per_node>`                                                                                                                  Number of GPUs Per Node.
+
+:ref:`web_server_token <web_server_token>`                                                                                                                                       Web Server Token.
+
+:ref:`maximum_execution_time <maximum_execution_time>`                                                                                                                     Maximum Execution Time.
+
+:ref:`exclusive <exclusive>`                                                                                                                                                            Exclusive.
+
+:ref:`number_of_processes_per_node <number_of_processes_per_node>`                                                                                                   Number of Processes per Node.
+
+:ref:`mpi_type <mpi_type>`                                                                                                                                                               MPI Type.
+
+:ref:`interconnect_type <interconnect_type>`                                                                                                                                    Interconnect Type.
+
+:ref:`current_queue <current_queue>`                                                                                                                                                Current Queue.
+
+:ref:`keep_all_output_files <keep_all_output_files>`                                                                                                      Keep all output files of completed jobs.
+
+:ref:`keep_specific_output_files <keep_specific_output_files>`                                                                                       Keep specific output files of completed jobs.
+
+:ref:`list_of_output_files <list_of_output_files>`                                                                                                List of output files to keep for completed jobs.
+
+:ref:`file_types_to_monitor <file_types_to_monitor>`                                                                                                 List of output files to monitor job progress.
+
+:ref:`use_default_journal <use_default_journal>`                                                                                                    Use default journal for remote job submission.
+
+:ref:`use_custom_journal <use_custom_journal>`                                                                                                       Use custom journal for remote job submission.
+
+:ref:`custom_journal_path <custom_journal_path>`                                                                                                 Path of custom journal for remote job submission.
+
+:ref:`idle_timeout <idle_timeout>`                                   Idle timeout in minutes for remote jobs. If a job is idle for more than the specified time, it will be automatically aborted.
+
+:ref:`email_id <email_id_1>`                                                                                                                                Email ID to receive job notifications.
+
+==================================================================   =============================================================================================================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`remote_post_processing <remote_post_processing>`   Remote Post-Processing Actions.
+
+======================================================   ===============================
+

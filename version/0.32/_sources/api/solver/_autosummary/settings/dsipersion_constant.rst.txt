@@ -1,0 +1,21 @@
+:orphan:
+
+.. _dsipersion_constant:
+
+dsipersion_constant
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.dsipersion_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

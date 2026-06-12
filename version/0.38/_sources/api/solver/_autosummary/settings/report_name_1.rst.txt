@@ -1,0 +1,21 @@
+:orphan:
+
+.. _report_name_1:
+
+report_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.report_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================================================================================
+
+Parent                                                                                                                                                       Summary
+
+======================================================   ===========================================================================================================
+:ref:`view_simulation_report <view_simulation_report>`       View a simulation report that has already been generated. In batch mode this will print the report URL.
+
+======================================================   ===========================================================================================================
+

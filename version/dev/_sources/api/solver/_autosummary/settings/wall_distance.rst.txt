@@ -1,0 +1,23 @@
+:orphan:
+
+.. _wall_distance:
+
+wall_distance
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.wall_distance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================================================
+
+Parent                                                                                Summary
+
+==================================   ========================================================
+:ref:`turbulence_2 <turbulence_2>`   Allows to change turbulence model variables or settings.
+
+:ref:`turbulence_6 <turbulence_6>`   Allows to change turbulence model variables or settings.
+
+==================================   ========================================================
+

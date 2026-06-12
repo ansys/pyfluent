@@ -1,0 +1,14 @@
+.. _ref_meshing_tui_mesh_rapid_octree_mesh_sizing_curvature_refinement_options:
+
+curvature_refinement_options
+============================
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_261.main_menu.mesh.rapid_octree.mesh_sizing.curvature_refinement_options
+   :members: criterion, maximum_angle_threshold, minimum_angle_threshold, switched_criterion_threshold
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _font_size_2:
+
+font_size
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.font_size_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`annotation_child <annotation_child>`       'child_object_type' of annotation.
+
+==========================================   ======================================
+

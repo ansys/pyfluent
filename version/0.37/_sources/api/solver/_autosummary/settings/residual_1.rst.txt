@@ -1,0 +1,34 @@
+:orphan:
+
+.. _residual_1:
+
+residual
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.residual_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =====================================================================
+
+Attribute                                                                                                            Summary
+
+====================================================   =====================================================================
+:ref:`equation_for_residual <equation_for_residual>`                   The equation for register marking based on residuals.
+
+:ref:`threshold <threshold_1>`                             The percentage threshold for register marking based on residuals.
+
+====================================================   =====================================================================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_14 <type_14>`       The type for this cell register.
+
+========================   ====================================
+

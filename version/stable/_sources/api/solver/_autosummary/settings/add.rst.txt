@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================================================
+
+Parent                                                                       Summary
+
+==============================   ===================================================
+:ref:`no_species <no_species>`       Enable/disable additional no species equations.
+
+==============================   ===================================================
+

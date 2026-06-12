@@ -1,0 +1,40 @@
+:orphan:
+
+.. _submit_job_1:
+
+submit_job
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.submit_job_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   ==========================================
+
+Argument                                                                          Summary
+
+============================================   ==========================================
+:ref:`project_id <project_id>`                                                Project ID.
+
+:ref:`job_id <job_id>`                                                            Job ID.
+
+:ref:`input_case_file <input_case_file>`       Name of input case file (.cas or .cas.h5).
+
+:ref:`input_data_file <input_data_file>`       Name of input data file (.dat or .dat.h5).
+
+:ref:`other_input_files <other_input_files>`                  Names of other input files.
+
+============================================   ==========================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`remote_post_processing <remote_post_processing>`   Remote Post-Processing Actions.
+
+======================================================   ===============================
+

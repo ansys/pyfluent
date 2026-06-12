@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_set_stabilization_tools_diagnostics_tools_global_extrema_tracker:
+
+Global extrema tracker
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.set.stabilization_tools.diagnostics_tools.global_extrema_tracker
+   :members: cfl, density, enable, pressure, temperature, velocity
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

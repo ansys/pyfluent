@@ -1,0 +1,36 @@
+:orphan:
+
+.. _coupled_heat_mass_solution:
+
+coupled_heat_mass_solution
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.coupled_heat_mass_solution
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ===========================================================================================
+
+Attribute                                                                                                                                        Summary
+
+==========================================================   ===========================================================================================
+:ref:`droplet_particles <droplet_particles>`                            Enable/disable coupled heat and mass exchange calculation for droplet particles.
+
+:ref:`combusting_particles <combusting_particles>`                   Enable/disable coupled heat and mass exchange calculation for combusting particles.
+
+:ref:`multicomponent_particles <multicomponent_particles>`       Enable/disable coupled heat and mass exchange calculation for multicomponent particles.
+
+==========================================================   ===========================================================================================
+
+.. rubric:: Included in:
+
+==============================================   =======================================================================================================================================
+
+Parent                                                                                                                                                                           Summary
+
+==============================================   =======================================================================================================================================
+:ref:`heat_mass_exchange <heat_mass_exchange>`       Settings controlling the modelling and numerical solution of heat and mass exchange between the particles and the continuous phase.
+
+==============================================   =======================================================================================================================================
+

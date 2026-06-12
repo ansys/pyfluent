@@ -1,0 +1,21 @@
+:orphan:
+
+.. _delete_invalid_cells:
+
+delete_invalid_cells
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_invalid_cells
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ======================================================
+
+Parent                                                                                        Summary
+
+============================================   ======================================================
+:ref:`contingency_tools <contingency_tools>`   Contingency tools for reactive robustness adjustments.
+
+============================================   ======================================================
+

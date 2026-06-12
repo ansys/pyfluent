@@ -1,0 +1,22 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_surface_mesh__create_surface_meshArguments:
+
+_create_surface_meshArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.create_surface_mesh._create_surface_meshArguments
+   :members: _append_mesh, _cad_faceting_file_name, _directory, _execute_share_topology, _import_type, _length_unit, _original_zones, _pattern, _preview_size_toggle, _remesh_label_list, _remesh_selection_type, _remesh_zone_list, _separation_angle, _separation_required, _tesselation_method
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _cad_faceting_controls/_cad_faceting_controls_contents
+   _cad_import_options/_cad_import_options_contents
+   _cfd_surface_mesh_controls/_cfd_surface_mesh_controls_contents
+   _share_topology_preferences/_share_topology_preferences_contents
+   _surface_mesh_preferences/_surface_mesh_preferences_contents

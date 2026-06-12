@@ -1,0 +1,65 @@
+:orphan:
+
+.. _phaselag:
+
+phaselag
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.phaselag
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================   =============================================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                                                                    Summary
+
+====================================================================================   =============================================================================================================================================================================================================================================
+:ref:`exists <exists_1>`                                                                                                                                                                                                                                                     Whether phaselag spectral content is currently defined.
+
+:ref:`blade_flutter <blade_flutter_1>`                                                 Enable blade flutter mode for the phaselag spectral content. When enabled, a blade-flutter disturbance is automatically added for every turbo row that has valid periodic displacement data; disabling removes those auto-added disturbances.
+
+:ref:`include_modal_influence_coefficients <include_modal_influence_coefficients_1>`                                                                                                                                                              Include modal influence coefficients in the phaselag spectral content computation.
+
+:ref:`init_a0_from_solution <init_a0_from_solution>`                                                                                                                                                                                                            Initialize the zeroth Fourier coefficient from the current solution.
+
+:ref:`relaxation <relaxation>`                                                                                                                                                                                                                                                               Fourier coefficients relaxation factor.
+
+:ref:`initialization_cycles <initialization_cycles_1>`                                                                                                                                                                Number of initialization cycles. Setting to 0 marks spectral content as complete for the initialization phase.
+
+:ref:`number_of_harmonics <number_of_harmonics>`                                                                                                                                                                                                                  Default number of Fourier harmonics of each fundamental frequency.
+
+:ref:`frequency_selection_algorithm <frequency_selection_algorithm>`                                                                                                                                                         Multi-row frequency selection algorithm (1=nearest neighbours, 2=extended neighbours, 3=user-selected).
+
+:ref:`frequency_setup <frequency_setup_1>`                                                                                                                                             Row-based frequency configuration for phaselag spectral content. Select a row to view and configure its inter-row disturbances and harmonics.
+
+====================================================================================   =============================================================================================================================================================================================================================================
+
+.. rubric:: Methods
+
+========================================   ==================================================================================================================================================================================================================================
+
+Method                                                                                                                                                                                                                                                                Summary
+
+========================================   ==================================================================================================================================================================================================================================
+:ref:`create <create_17>`                                                                                                               Create phaselag spectral content. Automatically sets up frequency data from the turbomachine description without interactive prompts.
+
+:ref:`delete <delete_6>`                                                                                                                                                                                                        Delete the current phaselag spectral content.
+
+:ref:`list_details <list_details_2>`                                                                                                                                                                                   Display the current phaselag spectral content details.
+
+:ref:`extra_settings <extra_settings_1>`   Apply extra settings for phaselag spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+========================================   ==================================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                      Summary
+
+==========================================   ======================================================================================================================================================================================================
+:ref:`spectral_content <spectral_content>`   Spectral content management for turbomachinery. Provides creation, configuration, and deletion of graphics (post-processing) and phaselag spectral descriptions for Fourier coefficient-based methods.
+
+==========================================   ======================================================================================================================================================================================================
+

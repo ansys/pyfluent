@@ -1,0 +1,51 @@
+:orphan:
+
+.. _effectiveness_curve:
+
+effectiveness_curve
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.effectiveness_curve
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===================================================================
+
+Attribute                                                                                          Summary
+
+====================================   ===================================================================
+:ref:`point_count <point_count>`                          Number of (velocity, effectiveness) data points.
+
+:ref:`velocity <velocity>`                                            Primary fluid velocity values (m/s).
+
+:ref:`effectiveness <effectiveness>`   Heat exchanger effectiveness values corresponding to each velocity.
+
+====================================   ===================================================================
+
+.. rubric:: Methods
+
+==================================   ===========================================================
+
+Method                                                                                   Summary
+
+==================================   ===========================================================
+:ref:`read_table <read_table_1>`     Read velocity-effectiveness table from a .tab or .txt file.
+
+:ref:`write_table <write_table_1>`    Write velocity-effectiveness table to a .tab or .txt file.
+
+:ref:`print_table <print_table_1>`            Print velocity-effectiveness table to the console.
+
+==================================   ===========================================================
+
+.. rubric:: Included in:
+
+==============================   =====================================
+
+Parent                                                         Summary
+
+==============================   =====================================
+:ref:`model_data <model_data>`   Model data for a heat exchanger core.
+
+==============================   =====================================
+

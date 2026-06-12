@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_48:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_48
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`delete_7 <delete_7>`       Delete animation sequence.
+
+==========================   ==============================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _create_manually:
+
+create_manually
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.create_manually
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================================   ==========================================================
+
+Argument                                                                                                    Summary
+
+======================================================   ==========================================================
+:ref:`name <name_9>`                                                           The prefix for mesh interface names.
+
+:ref:`zone_list_1 <zone_list_1>`                                   The boundary zones belonging to the first group.
+
+:ref:`zone_list_2 <zone_list_2>`                                  The boundary zones belonging to the second group.
+
+:ref:`matching <matching>`                                            Specifies whether mesh-interface is matching.
+
+:ref:`ignore_area_difference <ignore_area_difference>`       Check if user want to create poorly matched interface.
+
+======================================================   ==========================================================
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`mesh_interfaces <mesh_interfaces>`       The mesh interfaces object.
+
+========================================   ===============================
+

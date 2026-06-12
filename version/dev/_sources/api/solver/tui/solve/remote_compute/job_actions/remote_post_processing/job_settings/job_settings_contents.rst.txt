@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_remote_compute_job_actions_remote_post_processing_job_settings:
+
+Job settings
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.remote_compute.job_actions.remote_post_processing.job_settings
+   :members: capability, current_queue, custom_journal_path, email_id, exclusive, file_types_to_monitor, idle_timeout, interconnect_type, keep_all_output_files, keep_specific_output_files, list_of_output_files, maximum_execution_time, mpi_type, number_of_gpus_per_node, number_of_processes, number_of_processes_per_node, use_custom_journal, use_default_journal, use_gpu_solver, web_server_token
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,42 @@
+:orphan:
+
+.. _global_extrema_tracker:
+
+global_extrema_tracker
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.global_extrema_tracker
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ===================================================================================
+
+Attribute                                                                                                        Summary
+
+==================================   ===================================================================================
+:ref:`enable <enable_42>`                     Enable global extrema tracker to monitor min/max values during simulation.
+
+:ref:`velocity <velocity_3>`                                    Track global maximum/minimum velocity during simulation.
+
+:ref:`temperature <temperature_6>`   Track global maximum/minimum temperature during simulation (requires energy model).
+
+:ref:`density <density_10>`                                      Track global maximum/minimum density during simulation.
+
+:ref:`pressure <pressure_1>`                                    Track global maximum/minimum pressure during simulation.
+
+:ref:`cfl <cfl>`                                    Track global maximum/minimum CFL number during transient simulation.
+
+==================================   ===================================================================================
+
+.. rubric:: Included in:
+
+============================================   ============================================================================
+
+Parent                                                                                                              Summary
+
+============================================   ============================================================================
+:ref:`diagnostics_tools <diagnostics_tools>`   Configure diagnostics tools for monitoring and inspecting simulation health.
+
+============================================   ============================================================================
+

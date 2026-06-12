@@ -1,0 +1,34 @@
+:orphan:
+
+.. _diagnostics_visualization:
+
+diagnostics_visualization
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.diagnostics_visualization
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   =====================================================================
+
+Attribute                                                                                 Summary
+
+=========================   =====================================================================
+:ref:`enable <enable_44>`           Enable visualization of stabilization tool diagnostic fields.
+
+:ref:`expert <expert_10>`   Enable auxiliary grid metric qualities for diagnostics visualization.
+
+=========================   =====================================================================
+
+.. rubric:: Included in:
+
+============================================   ============================================================================
+
+Parent                                                                                                              Summary
+
+============================================   ============================================================================
+:ref:`diagnostics_tools <diagnostics_tools>`   Configure diagnostics tools for monitoring and inspecting simulation health.
+
+============================================   ============================================================================
+

@@ -1,0 +1,51 @@
+:orphan:
+
+.. _inspector:
+
+inspector
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inspector
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =======================================================
+
+Attribute                                                                      Summary
+
+============================   =======================================================
+:ref:`enable <enable_41>`                                Enable inspector diagnostics.
+
+:ref:`type_menu <type_menu>`                                          Inspection type.
+
+:ref:`write <write_1>`         Write inspection diagnostics analysis output to a file.
+
+:ref:`outlier <outlier>`         Configure outlier detection method and its constants.
+
+:ref:`retain <retain>`           Retain outlier field and update it during simulation.
+
+============================   =======================================================
+
+.. rubric:: Methods
+
+==============================   ===========================================================================================================
+
+Method                                                                                                                               Summary
+
+==============================   ===========================================================================================================
+:ref:`inspection <inspection>`   Run inspection based on the selected type: grid quality, case settings, velocity, or temperature anomalies.
+
+==============================   ===========================================================================================================
+
+.. rubric:: Included in:
+
+============================================   ============================================================================
+
+Parent                                                                                                              Summary
+
+============================================   ============================================================================
+:ref:`diagnostics_tools <diagnostics_tools>`   Configure diagnostics tools for monitoring and inspecting simulation health.
+
+============================================   ============================================================================
+

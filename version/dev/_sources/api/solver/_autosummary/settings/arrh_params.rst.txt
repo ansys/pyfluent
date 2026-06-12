@@ -1,0 +1,46 @@
+:orphan:
+
+.. _arrh_params:
+
+arrh_params
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.arrh_params
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ==================================================
+
+Attribute                                                                                         Summary
+
+====================================================   ==================================================
+:ref:`arrh_a <arrh_a>`                                                Arrhenius pre-exponential factor A.
+
+:ref:`arrh_e <arrh_e>`                                                     Arrhenius activation energy E.
+
+:ref:`arrh_b <arrh_b>`                                                  Arrhenius temperature exponent B.
+
+:ref:`arrh_t_ref <arrh_t_ref>`                                 Arrhenius normalization temperature T-ref.
+
+:ref:`arrh_phase <arrh_phase>`                         Phase whose temperature is used in Arrhenius rate.
+
+:ref:`arrh_t_k0 <arrh_t_k0>`                                              Arrhenius kick-off temperature.
+
+:ref:`arrh_priority_phase <arrh_priority_phase>`                  Phase of the priority reactant species.
+
+:ref:`arrh_priority_species <arrh_priority_species>`        Priority reactant species for Arrhenius rate.
+
+====================================================   ==================================================
+
+.. rubric:: Included in:
+
+==================================================   ======================================
+
+Parent                                                                              Summary
+
+==================================================   ======================================
+:ref:`reactions_list_child <reactions_list_child>`   'child_object_type' of reactions_list.
+
+==================================================   ======================================
+

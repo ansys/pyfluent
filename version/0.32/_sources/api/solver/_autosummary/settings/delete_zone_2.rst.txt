@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_zone_2:
+
+delete_zone
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.delete_zone_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================   =========
+
+Argument               Summary
+
+==================   =========
+:ref:`zone <zone>`       Zone.
+
+==================   =========
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`flow_control <flow_control>`       'flow_control' child.
+
+==================================   =========================
+

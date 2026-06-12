@@ -1,0 +1,36 @@
+:orphan:
+
+.. _boundary_location:
+
+boundary_location
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.boundary_location
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ===========================================================
+
+Attribute                                                                          Summary
+
+============================   ===========================================================
+:ref:`physics <physics_2>`         The boundary(s) that will be used to define the object.
+
+:ref:`geometry <geometry_5>`       The geometry(s) that will be used to define the object.
+
+:ref:`surfaces <surfaces_5>`   The user-surface(s) that will be used to define the object.
+
+============================   ===========================================================
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`iso_surface_child <iso_surface_child>`   'child_object_type' of iso_surface.
+
+============================================   ===================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _prefix_1:
+
+prefix
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.prefix_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ==============================
+
+Parent                                                                                    Summary
+
+================================================================   ==============================
+:ref:`create_surfaces_from_bodies <create_surfaces_from_bodies>`   Create surfaces for each body.
+
+:ref:`create_surfaces_from_parts <create_surfaces_from_parts>`     Create surfaces for each part.
+
+================================================================   ==============================
+

@@ -1,0 +1,2014 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Services &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=5ffe81b6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=5ffe81b6" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=ba6763b2"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/services/services_contents';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Api upgrade" href="api_upgrade.html" />
+    <link rel="prev" title="Machine list" href="../scheduler/machine_list.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.40.dev0" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Fluids" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/api/services/services_contents.html" />
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    
+<!--
+  Announcement Version Loader
+  Dynamically loads the announcement.html content into the announcement_msg div.
+-->
+<div id="announcement_msg" aria-live="polite"></div>
+<script>
+  // Fetch and inject the announcement HTML content
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status} Announcement.html file not found, Please ignore this, if you are in dev/stable documentation`);
+      }
+      return response.text();
+    })
+    .then((text) => {
+      var msgDiv = document.getElementById("announcement_msg");
+      if (msgDiv) {
+        msgDiv.innerHTML = text;
+      }
+    })
+    .catch((error) => {
+      // Log only unexpected fetch errors
+      if (!(error.message && error.message.startsWith("HTTP error: 404"))) {
+        console.error(`Fetch problem: ${error.message} Announcement.html could not be loaded.`);
+      }
+    });
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">ansys.fluent.core</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../docker/docker_contents.html">Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filereader/filereader_contents.html">Filereader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../launcher/launcher_contents.html">Launcher</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/meshing_workflow_new.html">Meshing workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/meshing_utilities.html">Meshing utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scheduler/scheduler_contents.html">Scheduler</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Services</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_upgrade.html">Api upgrade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch_ops.html">Batch ops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel_se.html">Datamodel se</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel_tui.html">Datamodel tui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field_data.html">Field data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health_check.html">Health check</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interceptors.html">Interceptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reduction.html">Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheme_eval.html">Scheme eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solution_variables.html">Solution variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html">Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transcript.html">Transcript</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../solver/error_message.html">Error message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../solver/settings_root.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../solver/flicing.html">Flicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../solver/preferences.html">Preferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../solver_workflows/solver_workflows_contents.html">Solver workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../streaming_services/streaming_services_contents.html">Streaming services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/utils_contents.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy/legacy_contents.html">Legacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../file_session.html">File session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../field_data_interfaces.html">Field data interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fluent_connection.html">Fluent connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../journaling.html">Journaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logger.html">Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_config.html">Module config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parametric.html">Parametric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rpvars.html">Rpvars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../search.html">Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session_base_meshing.html">Session base meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session_meshing.html">Session meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session_pure_meshing.html">Session pure meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session_solver_icing.html">Session solver icing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session_solver_lite.html">Session solver lite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session_solver.html">Session solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session.html">Session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../session_utilities.html">Session utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system_coupling.html">System coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyfluent_warnings.html">Pyfluent warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflow_new.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deprecated_apis.html">Deprecated APIs</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../api_contents.html" class="nav-link">API reference</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Services</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-ansys.fluent.core.services">
+<span id="services"></span><span id="ref-services"></span><h1>Services<a class="headerlink" href="#module-ansys.fluent.core.services" title="Link to this heading">#</a></h1>
+<p>Provides a module to create gRPC services.</p>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilities" title="ansys.fluent.core.services.AppUtilities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AppUtilities</span></code></a>(service)</p></td>
+<td><p>AppUtilities (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesService" title="ansys.fluent.core.services.AppUtilitiesService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AppUtilitiesService</span></code></a>(channel, metadata, ...)</p></td>
+<td><p>AppUtilities Service (v1 proto API).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesServiceV0" title="ansys.fluent.core.services.AppUtilitiesServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AppUtilitiesServiceV0</span></code></a></p></td>
+<td><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AppUtilitiesService</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesV0" title="ansys.fluent.core.services.AppUtilitiesV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AppUtilitiesV0</span></code></a></p></td>
+<td><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AppUtilities</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOps" title="ansys.fluent.core.services.BatchOps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BatchOps</span></code></a>(session)</p></td>
+<td><p>Class to execute operations in batch in Fluent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOpsService" title="ansys.fluent.core.services.BatchOpsService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BatchOpsService</span></code></a>(channel, metadata)</p></td>
+<td><p>Class wrapping methods in batch RPC service.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DatamodelService_SE" title="ansys.fluent.core.services.DatamodelService_SE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatamodelService_SE</span></code></a></p></td>
+<td><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DatamodelService_SE_V0" title="ansys.fluent.core.services.DatamodelService_SE_V0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatamodelService_SE_V0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="datamodel_se.html#ansys.fluent.core.services.datamodel_se.DatamodelService" title="ansys.fluent.core.services.datamodel_se.DatamodelService"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DatamodelService_TUI" title="ansys.fluent.core.services.DatamodelService_TUI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatamodelService_TUI</span></code></a></p></td>
+<td><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DatamodelService_TUI_V0" title="ansys.fluent.core.services.DatamodelService_TUI_V0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatamodelService_TUI_V0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="datamodel_tui.html#ansys.fluent.core.services.datamodel_tui.DatamodelService" title="ansys.fluent.core.services.datamodel_tui.DatamodelService"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData" title="ansys.fluent.core.services.DeprecatedFieldData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeprecatedFieldData</span></code></a>(service, field_info, ...)</p></td>
+<td><p>Provides access to Fluent field data on surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldDataV0" title="ansys.fluent.core.services.DeprecatedFieldDataV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeprecatedFieldDataV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData" title="ansys.fluent.core.services.deprecated_field_data.DeprecatedFieldData"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedFieldData</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.EventsService" title="ansys.fluent.core.services.EventsService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventsService</span></code></a>(channel, metadata)</p></td>
+<td><p>Class wrapping the events gRPC service of Fluent (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.EventsServiceV0" title="ansys.fluent.core.services.EventsServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventsServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="events.html#ansys.fluent.core.services.events.EventsService" title="ansys.fluent.core.services.events.EventsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventsService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.FieldDataService" title="ansys.fluent.core.services.FieldDataService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldDataService</span></code></a>(channel, metadata, ...)</p></td>
+<td><p>FieldData service of Fluent (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.FieldDataServiceV0" title="ansys.fluent.core.services.FieldDataServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldDataServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="field_data.html#ansys.fluent.core.services.field_data.FieldDataService" title="ansys.fluent.core.services.field_data.FieldDataService"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldDataService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.FieldDataStreaming" title="ansys.fluent.core.services.FieldDataStreaming"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldDataStreaming</span></code></a>(session_id, service)</p></td>
+<td><p>Class wrapping the Field gRPC streaming service of Fluent (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.FieldDataStreamingV0" title="ansys.fluent.core.services.FieldDataStreamingV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FieldDataStreamingV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="../streaming_services/field_data_streaming.html#ansys.fluent.core.streaming_services.field_data_streaming.FieldDataStreaming" title="ansys.fluent.core.streaming_services.field_data_streaming.FieldDataStreaming"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldDataStreaming</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.HealthCheckService" title="ansys.fluent.core.services.HealthCheckService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HealthCheckService</span></code></a>(channel, metadata, ...)</p></td>
+<td><p>Class wrapping the health check gRPC service of Fluent (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.HealthCheckServiceV0" title="ansys.fluent.core.services.HealthCheckServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HealthCheckServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="health_check.html#ansys.fluent.core.services.health_check.HealthCheckService" title="ansys.fluent.core.services.health_check.HealthCheckService"><code class="xref py py-class docutils literal notranslate"><span class="pre">HealthCheckService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.LiveFieldData" title="ansys.fluent.core.services.LiveFieldData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LiveFieldData</span></code></a>(service, field_info, is_data_valid)</p></td>
+<td><p>Provides access to Fluent field data on surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.LiveFieldDataV0" title="ansys.fluent.core.services.LiveFieldDataV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LiveFieldDataV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="field_data.html#ansys.fluent.core.services.field_data.LiveFieldData" title="ansys.fluent.core.services.field_data.LiveFieldData"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiveFieldData</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.MonitorsService" title="ansys.fluent.core.services.MonitorsService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MonitorsService</span></code></a>(channel, metadata, ...)</p></td>
+<td><p>Monitors gRPC service wrapper (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.MonitorsServiceV0" title="ansys.fluent.core.services.MonitorsServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MonitorsServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="monitor.html#ansys.fluent.core.services.monitor.MonitorsService" title="ansys.fluent.core.services.monitor.MonitorsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorsService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.Reduction" title="ansys.fluent.core.services.Reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Reduction</span></code></a>(service[, ctxt])</p></td>
+<td><p>Reduction (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.ReductionV0" title="ansys.fluent.core.services.ReductionV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReductionV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="reduction.html#ansys.fluent.core.services.reduction.Reduction" title="ansys.fluent.core.services.reduction.Reduction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reduction</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SchemeEval" title="ansys.fluent.core.services.SchemeEval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemeEval</span></code></a>(service)</p></td>
+<td><p>Class on which Fluent's scheme code can be executed (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SchemeEvalService" title="ansys.fluent.core.services.SchemeEvalService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemeEvalService</span></code></a>(channel, metadata, ...)</p></td>
+<td><p>Class wrapping the SchemeEval gRPC service of Fluent (v1 proto API).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SchemeEvalServiceV0" title="ansys.fluent.core.services.SchemeEvalServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemeEvalServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="scheme_eval.html#ansys.fluent.core.services.scheme_eval.SchemeEvalService" title="ansys.fluent.core.services.scheme_eval.SchemeEvalService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemeEvalService</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SchemeEvalV0" title="ansys.fluent.core.services.SchemeEvalV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemeEvalV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="scheme_eval.html#ansys.fluent.core.services.scheme_eval.SchemeEval" title="ansys.fluent.core.services.scheme_eval.SchemeEval"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemeEval</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SettingsService" title="ansys.fluent.core.services.SettingsService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SettingsService</span></code></a>(channel, metadata, ...)</p></td>
+<td><p>Service for accessing and modifying Fluent settings (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SettingsServiceV0" title="ansys.fluent.core.services.SettingsServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SettingsServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="settings.html#ansys.fluent.core.services.settings.SettingsService" title="ansys.fluent.core.services.settings.SettingsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableData" title="ansys.fluent.core.services.SolutionVariableData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SolutionVariableData</span></code></a>(service, ...)</p></td>
+<td><p>Provides access to Fluent SVAR data on zones (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableDataV0" title="ansys.fluent.core.services.SolutionVariableDataV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SolutionVariableDataV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="solution_variables.html#ansys.fluent.core.services.solution_variables.SolutionVariableData" title="ansys.fluent.core.services.solution_variables.SolutionVariableData"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolutionVariableData</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableService" title="ansys.fluent.core.services.SolutionVariableService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SolutionVariableService</span></code></a>(channel, metadata)</p></td>
+<td><p>SVAR service of Fluent (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableServiceV0" title="ansys.fluent.core.services.SolutionVariableServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SolutionVariableServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="solution_variables.html#ansys.fluent.core.services.solution_variables.SolutionVariableService" title="ansys.fluent.core.services.solution_variables.SolutionVariableService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolutionVariableService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.TranscriptService" title="ansys.fluent.core.services.TranscriptService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TranscriptService</span></code></a>(channel, metadata)</p></td>
+<td><p>Class wrapping the transcript gRPC service of Fluent (v1 proto API).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.TranscriptServiceV0" title="ansys.fluent.core.services.TranscriptServiceV0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TranscriptServiceV0</span></code></a></p></td>
+<td><p>alias of <a class="reference internal" href="transcript.html#ansys.fluent.core.services.transcript.TranscriptService" title="ansys.fluent.core.services.transcript.TranscriptService"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranscriptService</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.ZoneInfo" title="ansys.fluent.core.services.ZoneInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZoneInfo</span></code></a>(_id, name, zone_type)</p></td>
+<td><p>Zone information for mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.service_creator" title="ansys.fluent.core.services.service_creator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_creator</span></code></a>(service_name[, supports_v1])</p></td>
+<td><p>A gRPC service creator.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilities">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">AppUtilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilities" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppUtilities</span></code></p>
+<p>AppUtilities (v1 proto API).</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilities.get_app_mode" title="ansys.fluent.core.services.AppUtilities.get_app_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_app_mode</span></code></a>()</p></td>
+<td><p>Get app mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilities.is_solution_data_available" title="ansys.fluent.core.services.AppUtilities.is_solution_data_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_solution_data_available</span></code></a>()</p></td>
+<td><p>Is solution data available (v1: FieldData.IsDataAvailable).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilities.is_wildcard" title="ansys.fluent.core.services.AppUtilities.is_wildcard"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wildcard</span></code></a>([input])</p></td>
+<td><p>Is wildcard (v1: Settings.IsWildcard).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilities.register_pause_on_solution_events" title="ansys.fluent.core.services.AppUtilities.register_pause_on_solution_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_pause_on_solution_events</span></code></a>(solution_event)</p></td>
+<td><p>Register pause on solution events.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilities.resume_on_solution_event" title="ansys.fluent.core.services.AppUtilities.resume_on_solution_event"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resume_on_solution_event</span></code></a>(registration_id)</p></td>
+<td><p>Resume on solution event.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilities.unregister_pause_on_solution_events" title="ansys.fluent.core.services.AppUtilities.unregister_pause_on_solution_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unregister_pause_on_solution_events</span></code></a>(...)</p></td>
+<td><p>Unregister pause on solution events.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilities.get_app_mode">
+<span class="sig-name descname"><span class="pre">get_app_mode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilities.get_app_mode" title="Link to this definition">#</a></dt>
+<dd><p>Get app mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ValueError</span></code></a></dt><dd><p>If app mode is unknown.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilities.is_solution_data_available">
+<span class="sig-name descname"><span class="pre">is_solution_data_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilities.is_solution_data_available" title="Link to this definition">#</a></dt>
+<dd><p>Is solution data available (v1: FieldData.IsDataAvailable).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilities.is_wildcard">
+<span class="sig-name descname"><span class="pre">is_wildcard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilities.is_wildcard" title="Link to this definition">#</a></dt>
+<dd><p>Is wildcard (v1: Settings.IsWildcard).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilities.register_pause_on_solution_events">
+<span class="sig-name descname"><span class="pre">register_pause_on_solution_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solution_event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilities.register_pause_on_solution_events" title="Link to this definition">#</a></dt>
+<dd><p>Register pause on solution events.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilities.resume_on_solution_event">
+<span class="sig-name descname"><span class="pre">resume_on_solution_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilities.resume_on_solution_event" title="Link to this definition">#</a></dt>
+<dd><p>Resume on solution event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilities.unregister_pause_on_solution_events">
+<span class="sig-name descname"><span class="pre">unregister_pause_on_solution_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registration_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilities.unregister_pause_on_solution_events" title="Link to this definition">#</a></dt>
+<dd><p>Unregister pause on solution events.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">AppUtilitiesService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_error_state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppUtilitiesService</span></code></p>
+<p>AppUtilities Service (v1 proto API).</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesService.cancel_pause_solve" title="ansys.fluent.core.services.AppUtilitiesService.cancel_pause_solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancel_pause_solve</span></code></a>(request)</p></td>
+<td><p>CancelPauseSolve RPC of Events service (v1).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesService.is_data_available" title="ansys.fluent.core.services.AppUtilitiesService.is_data_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_data_available</span></code></a>(request)</p></td>
+<td><p>IsDataAvailable RPC of FieldData service (v1).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesService.is_wildcard" title="ansys.fluent.core.services.AppUtilitiesService.is_wildcard"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wildcard</span></code></a>(request)</p></td>
+<td><p>IsWildcard RPC of Settings service (v1).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesService.pause_solve_for" title="ansys.fluent.core.services.AppUtilitiesService.pause_solve_for"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pause_solve_for</span></code></a>(request)</p></td>
+<td><p>PauseSolveFor RPC of Events service (v1).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.AppUtilitiesService.resume_solve" title="ansys.fluent.core.services.AppUtilitiesService.resume_solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resume_solve</span></code></a>(request)</p></td>
+<td><p>ResumeSolve RPC of Events service (v1).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesService.cancel_pause_solve">
+<span class="sig-name descname"><span class="pre">cancel_pause_solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesService.cancel_pause_solve" title="Link to this definition">#</a></dt>
+<dd><p>CancelPauseSolve RPC of Events service (v1).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesService.is_data_available">
+<span class="sig-name descname"><span class="pre">is_data_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesService.is_data_available" title="Link to this definition">#</a></dt>
+<dd><p>IsDataAvailable RPC of FieldData service (v1).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesService.is_wildcard">
+<span class="sig-name descname"><span class="pre">is_wildcard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesService.is_wildcard" title="Link to this definition">#</a></dt>
+<dd><p>IsWildcard RPC of Settings service (v1).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesService.pause_solve_for">
+<span class="sig-name descname"><span class="pre">pause_solve_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesService.pause_solve_for" title="Link to this definition">#</a></dt>
+<dd><p>PauseSolveFor RPC of Events service (v1).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesService.resume_solve">
+<span class="sig-name descname"><span class="pre">resume_solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesService.resume_solve" title="Link to this definition">#</a></dt>
+<dd><p>ResumeSolve RPC of Events service (v1).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">AppUtilitiesServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AppUtilitiesService</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.AppUtilitiesV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">AppUtilitiesV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.AppUtilitiesV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AppUtilities</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOps">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">BatchOps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOps" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to execute operations in batch in Fluent.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">BatchOps</span><span class="p">(</span><span class="n">solver</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">solver</span><span class="o">.</span><span class="n">tui</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read_case</span><span class="p">(</span><span class="s2">&quot;mixing_elbow.cas.h5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;mesh-1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>Above code will execute both operations through a single gRPC call upon exiting the
+<code class="docutils literal notranslate"><span class="pre">with</span></code> block.</p>
+<p>Operations that perform queries in Fluent are executed immediately, while others are
+queued for batch execution. Some queries are executed behind the scenes while
+queueing an operation for batch execution, and we must ensure that they do not
+depend on previously queued operations.</p>
+<p>For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">BatchOps</span><span class="p">(</span><span class="n">solver</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">solver</span><span class="o">.</span><span class="n">tui</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read_case</span><span class="p">(</span><span class="s2">&quot;mixing_elbow.cas.h5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;mesh-1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;mesh-1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;wall-elbow&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>will throw a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> as <code class="docutils literal notranslate"><span class="pre">solver.settings.results.graphics.mesh[&quot;mesh-1&quot;]</span></code> attempts to
+access the <code class="docutils literal notranslate"><span class="pre">mesh-1</span></code> mesh object which has not been created yet.</p>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOps.Op" title="ansys.fluent.core.services.BatchOps.Op"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Op</span></code></a>(owner_cls, package, service, method, ...)</p></td>
+<td><p>Class to create a single batch operation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOps.add_op" title="ansys.fluent.core.services.BatchOps.add_op"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_op</span></code></a>(package, service, method, request)</p></td>
+<td><p>Queue a single batch operation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOps.clear_ops" title="ansys.fluent.core.services.BatchOps.clear_ops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_ops</span></code></a>()</p></td>
+<td><p>Clear all queued batch operations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOps.instance" title="ansys.fluent.core.services.BatchOps.instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instance</span></code></a>()</p></td>
+<td><p>Get the BatchOps instance.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOps.Op">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">owner_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOps.Op" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to create a single batch operation.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOps.Op.__init__" title="ansys.fluent.core.services.BatchOps.Op.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(owner_cls, package, service, ...)</p></td>
+<td><p>__init__ method of Op class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOps.Op.update_result" title="ansys.fluent.core.services.BatchOps.Op.update_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_result</span></code></a>(status, data)</p></td>
+<td><p>Update results after the batch operation is executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOps.Op.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">owner_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOps.Op.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of Op class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOps.Op.update_result">
+<span class="sig-name descname"><span class="pre">update_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOps.Op.update_result" title="Link to this definition">#</a></dt>
+<dd><p>Update results after the batch operation is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOps.add_op">
+<span class="sig-name descname"><span class="pre">add_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOps.add_op" title="Link to this definition">#</a></dt>
+<dd><p>Queue a single batch operation. Only the non-getter operations will be
+queued.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>package</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>gRPC package name</p>
+</dd>
+<dt><strong>service</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>gRPC service name</p>
+</dd>
+<dt><strong>method</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>gRPC method name</p>
+</dd>
+<dt><strong>request</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></span></dt><dd><p>gRPC request message</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#ansys.fluent.core.services.BatchOps.Op" title="ansys.fluent.core.services.BatchOps.Op"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BatchOps.Op</span></code></a></dt><dd><p>BatchOps.Op object with a queued attribute which is true if the operation
+has been queued.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOps.clear_ops">
+<span class="sig-name descname"><span class="pre">clear_ops</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOps.clear_ops" title="Link to this definition">#</a></dt>
+<dd><p>Clear all queued batch operations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOps.instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOps.instance" title="Link to this definition">#</a></dt>
+<dd><p>Get the BatchOps instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#ansys.fluent.core.services.BatchOps" title="ansys.fluent.core.services.BatchOps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BatchOps</span></code></a></dt><dd><p>BatchOps instance</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOpsService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">BatchOpsService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOpsService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceProtocol</span></code></p>
+<p>Class wrapping methods in batch RPC service.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOpsService.__init__" title="ansys.fluent.core.services.BatchOpsService.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(channel, metadata)</p></td>
+<td><p>__init__ method of BatchOpsService class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.BatchOpsService.execute" title="ansys.fluent.core.services.BatchOpsService.execute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">execute</span></code></a>(request)</p></td>
+<td><p>Execute RPC of BatchOps service.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOpsService.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOpsService.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of BatchOpsService class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.BatchOpsService.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.BatchOpsService.execute" title="Link to this definition">#</a></dt>
+<dd><p>Execute RPC of BatchOps service.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DatamodelService_SE">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">DatamodelService_SE</span></span><a class="headerlink" href="#ansys.fluent.core.services.DatamodelService_SE" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DatamodelService_SE_V0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">DatamodelService_SE_V0</span></span><a class="headerlink" href="#ansys.fluent.core.services.DatamodelService_SE_V0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="datamodel_se.html#ansys.fluent.core.services.datamodel_se.DatamodelService" title="ansys.fluent.core.services.datamodel_se.DatamodelService"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DatamodelService_TUI">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">DatamodelService_TUI</span></span><a class="headerlink" href="#ansys.fluent.core.services.DatamodelService_TUI" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DatamodelService_TUI_V0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">DatamodelService_TUI_V0</span></span><a class="headerlink" href="#ansys.fluent.core.services.DatamodelService_TUI_V0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="datamodel_tui.html#ansys.fluent.core.services.datamodel_tui.DatamodelService" title="ansys.fluent.core.services.datamodel_tui.DatamodelService"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatamodelService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">DeprecatedFieldData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_data_valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Provides access to Fluent field data on surfaces.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData.__init__" title="ansys.fluent.core.services.DeprecatedFieldData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, field_info, is_data_valid)</p></td>
+<td><p>__init__ method of FieldData class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData.get_pathlines_field_data" title="ansys.fluent.core.services.DeprecatedFieldData.get_pathlines_field_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_pathlines_field_data</span></code></a>(field_name, surfaces)</p></td>
+<td><p>Get the pathlines field data on a surface.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData.get_scalar_field_data" title="ansys.fluent.core.services.DeprecatedFieldData.get_scalar_field_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_scalar_field_data</span></code></a>(field_name, surfaces)</p></td>
+<td><p>Get scalar field data on a surface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData.get_surface_data" title="ansys.fluent.core.services.DeprecatedFieldData.get_surface_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_surface_data</span></code></a>(data_types, surfaces[, ...])</p></td>
+<td><p>Get surface data (vertices, faces connectivity, centroids, and normals).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData.get_vector_field_data" title="ansys.fluent.core.services.DeprecatedFieldData.get_vector_field_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vector_field_data</span></code></a>(field_name, surfaces)</p></td>
+<td><p>Get vector field data on a surface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData.new_transaction" title="ansys.fluent.core.services.DeprecatedFieldData.new_transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_transaction</span></code></a>()</p></td>
+<td><p>Create a new field transaction.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_data_valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldData.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of FieldData class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldData.get_pathlines_field_data">
+<span class="sig-name descname"><span class="pre">get_pathlines_field_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surfaces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_field_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provide_particle_time_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accuracy_control_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all-phases'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zones</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldData.get_pathlines_field_data" title="Link to this definition">#</a></dt>
+<dd><p>Get the pathlines field data on a surface.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>field_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the scalar field to color pathlines.</p>
+</dd>
+<dt><strong>surfaces</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>List of surface IDS or surface names for the surface data.</p>
+</dd>
+<dt><strong>additional_field_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Additional field if required.</p>
+</dd>
+<dt><strong>provide_particle_time_field: bool, optional</strong></dt><dd><p>Whether to provide the particle time. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt><strong>node_value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to provide the nodal values. The default is <code class="docutils literal notranslate"><span class="pre">True</span></code>. If
+<code class="docutils literal notranslate"><span class="pre">False</span></code>, element values are provided.</p>
+</dd>
+<dt><strong>steps: int, optional</strong></dt><dd><p>Pathlines steps. The default is <code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+<dt><strong>step_size: float, optional</strong></dt><dd><p>Pathlines step size. The default is <code class="docutils literal notranslate"><span class="pre">0.01</span></code>.</p>
+</dd>
+<dt><strong>skip: int, optional</strong></dt><dd><p>Pathlines to skip. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt><strong>reverse: bool, optional</strong></dt><dd><p>Whether to draw pathlines in reverse direction. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt><strong>accuracy_control_on: bool, optional</strong></dt><dd><p>Whether to control accuracy. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt><strong>tolerance: float, optional</strong></dt><dd><p>Pathlines tolerance. The default is <code class="docutils literal notranslate"><span class="pre">0.001</span></code>.</p>
+</dd>
+<dt><strong>coarsen: int, optional</strong></dt><dd><p>Pathlines coarsen. The default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+</dd>
+<dt><strong>velocity_domain: str, optional</strong></dt><dd><p>Domain for pathlines. The default is <code class="docutils literal notranslate"><span class="pre">&quot;all-phases&quot;</span></code>.</p>
+</dd>
+<dt><strong>zones: list, optional</strong></dt><dd><p>Zones for pathlines. The default is <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code></dt><dd><p>Dictionary containing a map of surface IDs to the pathline data.
+For example, pathlines connectivity, vertices, and field.</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_ids’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_names’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldData.get_scalar_field_data">
+<span class="sig-name descname"><span class="pre">get_scalar_field_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surfaces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldData.get_scalar_field_data" title="Link to this definition">#</a></dt>
+<dd><p>Get scalar field data on a surface.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>field_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the scalar field.</p>
+</dd>
+<dt><strong>surfaces</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>List of surface IDS or surface names for the surface data.</p>
+</dd>
+<dt><strong>node_value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to provide data for the nodal location. The default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+When <code class="docutils literal notranslate"><span class="pre">False</span></code>, data is provided for the element location.</p>
+</dd>
+<dt><strong>boundary_value</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to provide slip velocity at the wall boundaries. The default is
+<code class="docutils literal notranslate"><span class="pre">True</span></code>. When <code class="docutils literal notranslate"><span class="pre">True</span></code>, no slip velocity is provided.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScalarFieldData</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">ScalarFieldData</span></code>]</dt><dd><p>If a surface name is provided as input, scalar field data is returned. If surface
+IDs are provided as input, a dictionary containing a map of surface IDs to scalar
+field data.</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_ids’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_names’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldData.get_surface_data">
+<span class="sig-name descname"><span class="pre">get_surface_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surfaces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overset_mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldData.get_surface_data" title="Link to this definition">#</a></dt>
+<dd><p>Get surface data (vertices, faces connectivity, centroids, and normals).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>data_types</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceDataType</span></code>] | <code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>],</span></dt><dd><p>SurfaceDataType Enum members.</p>
+</dd>
+<dt><strong>surfaces</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>List of surface IDS or surface names for the surface data.</p>
+</dd>
+<dt><strong>overset_mesh</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to provide the overset method. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Vertices</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">FacesConnectivity</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">FacesNormal</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">FacesCentroid</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">Vertices</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">FacesConnectivity</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">FacesNormal</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">FacesCentroid</span></code>]</dt><dd><p>If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
+If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
+vertices, connectivity data, and normal or centroid data is returned.</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘data_type’ is deprecated; use ‘data_types’ instead.</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_ids’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_names’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldData.get_vector_field_data">
+<span class="sig-name descname"><span class="pre">get_vector_field_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surfaces</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldData.get_vector_field_data" title="Link to this definition">#</a></dt>
+<dd><p>Get vector field data on a surface.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>field_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the vector field.</p>
+</dd>
+<dt><strong>surfaces</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>List of surface IDS or surface names for the surface data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorFieldData</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorFieldData</span></code>]</dt><dd><p>If a surface name is provided as input, vector field data is returned.
+If surface IDs are provided as input, a dictionary containing a map of
+surface IDs to vector field data is returned.</p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_ids’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.27.0: </span>Argument ‘surface_names’ is deprecated; use ‘surfaces’ instead.</p>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldData.new_transaction">
+<span class="sig-name descname"><span class="pre">new_transaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldData.new_transaction" title="Link to this definition">#</a></dt>
+<dd><p>Create a new field transaction.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.DeprecatedFieldDataV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">DeprecatedFieldDataV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.DeprecatedFieldDataV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="#ansys.fluent.core.services.DeprecatedFieldData" title="ansys.fluent.core.services.deprecated_field_data.DeprecatedFieldData"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeprecatedFieldData</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.EventsService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">EventsService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.EventsService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="events.html#ansys.fluent.core.services.events.EventsService" title="ansys.fluent.core.services.events.EventsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventsService</span></code></a></p>
+<p>Class wrapping the events gRPC service of Fluent (v1 proto API).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.EventsServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">EventsServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.EventsServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="events.html#ansys.fluent.core.services.events.EventsService" title="ansys.fluent.core.services.events.EventsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventsService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.FieldDataService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">FieldDataService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_error_state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.FieldDataService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="field_data.html#ansys.fluent.core.services.field_data.FieldDataService" title="ansys.fluent.core.services.field_data.FieldDataService"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldDataService</span></code></a></p>
+<p>FieldData service of Fluent (v1 proto API).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.FieldDataServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">FieldDataServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.FieldDataServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="field_data.html#ansys.fluent.core.services.field_data.FieldDataService" title="ansys.fluent.core.services.field_data.FieldDataService"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldDataService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.FieldDataStreaming">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">FieldDataStreaming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.FieldDataStreaming" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../streaming_services/field_data_streaming.html#ansys.fluent.core.streaming_services.field_data_streaming.FieldDataStreaming" title="ansys.fluent.core.streaming_services.field_data_streaming.FieldDataStreaming"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldDataStreaming</span></code></a></p>
+<p>Class wrapping the Field gRPC streaming service of Fluent (v1 proto API).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.FieldDataStreamingV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">FieldDataStreamingV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.FieldDataStreamingV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="../streaming_services/field_data_streaming.html#ansys.fluent.core.streaming_services.field_data_streaming.FieldDataStreaming" title="ansys.fluent.core.streaming_services.field_data_streaming.FieldDataStreaming"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldDataStreaming</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.HealthCheckService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">HealthCheckService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_error_state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.HealthCheckService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="health_check.html#ansys.fluent.core.services.health_check.HealthCheckService" title="ansys.fluent.core.services.health_check.HealthCheckService"><code class="xref py py-class docutils literal notranslate"><span class="pre">HealthCheckService</span></code></a></p>
+<p>Class wrapping the health check gRPC service of Fluent (v1 proto API).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.HealthCheckServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">HealthCheckServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.HealthCheckServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="health_check.html#ansys.fluent.core.services.health_check.HealthCheckService" title="ansys.fluent.core.services.health_check.HealthCheckService"><code class="xref py py-class docutils literal notranslate"><span class="pre">HealthCheckService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.LiveFieldData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">LiveFieldData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_data_valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_zones_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.LiveFieldData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="field_data.html#ansys.fluent.core.services.field_data.LiveFieldData" title="ansys.fluent.core.services.field_data.LiveFieldData"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiveFieldData</span></code></a></p>
+<p>Provides access to Fluent field data on surfaces.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.LiveFieldData.__init__" title="ansys.fluent.core.services.LiveFieldData.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, field_info, is_data_valid)</p></td>
+<td><p>__init__ method of FieldData class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.LiveFieldData.new_batch" title="ansys.fluent.core.services.LiveFieldData.new_batch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_batch</span></code></a>()</p></td>
+<td><p>Create a new field batch.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.LiveFieldData.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_data_valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_zones_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.LiveFieldData.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of FieldData class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.LiveFieldData.new_batch">
+<span class="sig-name descname"><span class="pre">new_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.LiveFieldData.new_batch" title="Link to this definition">#</a></dt>
+<dd><p>Create a new field batch.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.LiveFieldDataV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">LiveFieldDataV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.LiveFieldDataV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="field_data.html#ansys.fluent.core.services.field_data.LiveFieldData" title="ansys.fluent.core.services.field_data.LiveFieldData"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiveFieldData</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.MonitorsService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">MonitorsService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_error_state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.MonitorsService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="monitor.html#ansys.fluent.core.services.monitor.MonitorsService" title="ansys.fluent.core.services.monitor.MonitorsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorsService</span></code></a></p>
+<p>Monitors gRPC service wrapper (v1 proto API).</p>
+<p>Inherits the interceptor setup and <code class="docutils literal notranslate"><span class="pre">_create_stub</span></code> hook from the v0
+base class.  Only the stub factory and the response-field access in
+<code class="docutils literal notranslate"><span class="pre">get_monitors_info</span></code> differ between protocol versions.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.MonitorsService.get_monitors_info" title="ansys.fluent.core.services.MonitorsService.get_monitors_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_monitors_info</span></code></a>()</p></td>
+<td><p>Get monitors information (v1 proto).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.MonitorsService.get_monitors_info">
+<span class="sig-name descname"><span class="pre">get_monitors_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.MonitorsService.get_monitors_info" title="Link to this definition">#</a></dt>
+<dd><p>Get monitors information (v1 proto).</p>
+<p>Overrides v0 to use the renamed <code class="docutils literal notranslate"><span class="pre">monitor_sets</span></code> response field
+(v0: <code class="docutils literal notranslate"><span class="pre">monitorset</span></code>) and normalises the camelCase dict keys produced
+by <code class="docutils literal notranslate"><span class="pre">MessageToDict</span></code> back to the v0 legacy spellings so that all
+consumers remain version-agnostic.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.MonitorsServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">MonitorsServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.MonitorsServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="monitor.html#ansys.fluent.core.services.monitor.MonitorsService" title="ansys.fluent.core.services.monitor.MonitorsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorsService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.Reduction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">Reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctxt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.Reduction" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="reduction.html#ansys.fluent.core.services.reduction.Reduction" title="ansys.fluent.core.services.reduction.Reduction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reduction</span></code></a></p>
+<p>Reduction (v1 proto API).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.ReductionV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">ReductionV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.ReductionV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="reduction.html#ansys.fluent.core.services.reduction.Reduction" title="ansys.fluent.core.services.reduction.Reduction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reduction</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SchemeEval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SchemeEval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SchemeEval" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="scheme_eval.html#ansys.fluent.core.services.scheme_eval.SchemeEval" title="ansys.fluent.core.services.scheme_eval.SchemeEval"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemeEval</span></code></a></p>
+<p>Class on which Fluent’s scheme code can be executed (v1 proto API).</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SchemeEval.exec" title="ansys.fluent.core.services.SchemeEval.exec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exec</span></code></a>(commands[, wait, silent])</p></td>
+<td><p>Executes a sequence of scheme commands.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SchemeEval.string_eval" title="ansys.fluent.core.services.SchemeEval.string_eval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string_eval</span></code></a>(input)</p></td>
+<td><p>Evaluates a scheme expression in string format.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SchemeEval.exec">
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">commands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SchemeEval.exec" title="Link to this definition">#</a></dt>
+<dd><p>Executes a sequence of scheme commands.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SchemeEval.string_eval">
+<span class="sig-name descname"><span class="pre">string_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SchemeEval.string_eval" title="Link to this definition">#</a></dt>
+<dd><p>Evaluates a scheme expression in string format.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SchemeEvalService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SchemeEvalService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_error_state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SchemeEvalService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="scheme_eval.html#ansys.fluent.core.services.scheme_eval.SchemeEvalService" title="ansys.fluent.core.services.scheme_eval.SchemeEvalService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemeEvalService</span></code></a></p>
+<p>Class wrapping the SchemeEval gRPC service of Fluent (v1 proto API).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SchemeEvalServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SchemeEvalServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.SchemeEvalServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="scheme_eval.html#ansys.fluent.core.services.scheme_eval.SchemeEvalService" title="ansys.fluent.core.services.scheme_eval.SchemeEvalService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemeEvalService</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SchemeEvalV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SchemeEvalV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.SchemeEvalV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="scheme_eval.html#ansys.fluent.core.services.scheme_eval.SchemeEval" title="ansys.fluent.core.services.scheme_eval.SchemeEval"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemeEval</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SettingsService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SettingsService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_utilities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_eval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_error_state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SettingsService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="settings.html#ansys.fluent.core.services.settings.SettingsService" title="ansys.fluent.core.services.settings.SettingsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsService</span></code></a></p>
+<p>Service for accessing and modifying Fluent settings (v1 proto API).</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SettingsService.create" title="ansys.fluent.core.services.SettingsService.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(path, name)</p></td>
+<td><p>Create a named object child for the given path (v1: CreateObject).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SettingsService.delete" title="ansys.fluent.core.services.SettingsService.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(path, name)</p></td>
+<td><p>Delete the object with the given name at the given path (v1: DeleteObject).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SettingsService.get_static_info" title="ansys.fluent.core.services.SettingsService.get_static_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_static_info</span></code></a>()</p></td>
+<td><p>Get static-info for settings (v1: GetSchema).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SettingsService.get_var" title="ansys.fluent.core.services.SettingsService.get_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_var</span></code></a>(path)</p></td>
+<td><p>Get the value for the given path (v1: GetState).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SettingsService.set_var" title="ansys.fluent.core.services.SettingsService.set_var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_var</span></code></a>(path, value)</p></td>
+<td><p>Set the value for the given path (v1: SetState).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SettingsService.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SettingsService.create" title="Link to this definition">#</a></dt>
+<dd><p>Create a named object child for the given path (v1: CreateObject).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SettingsService.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SettingsService.delete" title="Link to this definition">#</a></dt>
+<dd><p>Delete the object with the given name at the given path (v1: DeleteObject).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SettingsService.get_static_info">
+<span class="sig-name descname"><span class="pre">get_static_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SettingsService.get_static_info" title="Link to this definition">#</a></dt>
+<dd><p>Get static-info for settings (v1: GetSchema).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></dt><dd><p>If type is empty.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SettingsService.get_var">
+<span class="sig-name descname"><span class="pre">get_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SettingsService.get_var" title="Link to this definition">#</a></dt>
+<dd><p>Get the value for the given path (v1: GetState).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SettingsService.set_var">
+<span class="sig-name descname"><span class="pre">set_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SettingsService.set_var" title="Link to this definition">#</a></dt>
+<dd><p>Set the value for the given path (v1: SetState).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SettingsServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SettingsServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.SettingsServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="settings.html#ansys.fluent.core.services.settings.SettingsService" title="ansys.fluent.core.services.settings.SettingsService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SettingsService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SolutionVariableData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_variable_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="solution_variables.html#ansys.fluent.core.services.solution_variables.SolutionVariableData" title="ansys.fluent.core.services.solution_variables.SolutionVariableData"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolutionVariableData</span></code></a></p>
+<p>Provides access to Fluent SVAR data on zones (v1 proto API).</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableData.get_data" title="ansys.fluent.core.services.SolutionVariableData.get_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_data</span></code></a>(variable_name, zone_names[, ...])</p></td>
+<td><p>Get SVAR data on zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableData.set_data" title="ansys.fluent.core.services.SolutionVariableData.set_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_data</span></code></a>(variable_name, zone_names_to_data)</p></td>
+<td><p>Set SVAR data on zones.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableData.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mixture'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableData.get_data" title="Link to this definition">#</a></dt>
+<dd><p>Get SVAR data on zones.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.35.1: </span>Argument ‘solution_variable_name’ is deprecated; use
+‘variable_name’ instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableData.set_data">
+<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_names_to_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mixture'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableData.set_data" title="Link to this definition">#</a></dt>
+<dd><p>Set SVAR data on zones.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.35.1: </span>Argument ‘solution_variable_name’ is deprecated; use
+‘variable_name’ instead.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableDataV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SolutionVariableDataV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableDataV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="solution_variables.html#ansys.fluent.core.services.solution_variables.SolutionVariableData" title="ansys.fluent.core.services.solution_variables.SolutionVariableData"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolutionVariableData</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SolutionVariableService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="solution_variables.html#ansys.fluent.core.services.solution_variables.SolutionVariableService" title="ansys.fluent.core.services.solution_variables.SolutionVariableService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolutionVariableService</span></code></a></p>
+<p>SVAR service of Fluent (v1 proto API).</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableService.get_data" title="ansys.fluent.core.services.SolutionVariableService.get_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_data</span></code></a>(request)</p></td>
+<td><p>GetSolutionVariableData RPC of SolutionVariable service (v1).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableService.get_variables_info" title="ansys.fluent.core.services.SolutionVariableService.get_variables_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variables_info</span></code></a>(request)</p></td>
+<td><p>GetSolutionVariableInfo RPC of SolutionVariable service (v1).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.SolutionVariableService.set_data" title="ansys.fluent.core.services.SolutionVariableService.set_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_data</span></code></a>(request)</p></td>
+<td><p>SetSolutionVariableData RPC of SolutionVariable service (v1).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableService.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableService.get_data" title="Link to this definition">#</a></dt>
+<dd><p>GetSolutionVariableData RPC of SolutionVariable service (v1).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableService.get_variables_info">
+<span class="sig-name descname"><span class="pre">get_variables_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableService.get_variables_info" title="Link to this definition">#</a></dt>
+<dd><p>GetSolutionVariableInfo RPC of SolutionVariable service (v1).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableService.set_data">
+<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableService.set_data" title="Link to this definition">#</a></dt>
+<dd><p>SetSolutionVariableData RPC of SolutionVariable service (v1).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.SolutionVariableServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">SolutionVariableServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.SolutionVariableServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="solution_variables.html#ansys.fluent.core.services.solution_variables.SolutionVariableService" title="ansys.fluent.core.services.solution_variables.SolutionVariableService"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolutionVariableService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.TranscriptService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">TranscriptService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.TranscriptService" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="transcript.html#ansys.fluent.core.services.transcript.TranscriptService" title="ansys.fluent.core.services.transcript.TranscriptService"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranscriptService</span></code></a></p>
+<p>Class wrapping the transcript gRPC service of Fluent (v1 proto API).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.TranscriptServiceV0">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">TranscriptServiceV0</span></span><a class="headerlink" href="#ansys.fluent.core.services.TranscriptServiceV0" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="transcript.html#ansys.fluent.core.services.transcript.TranscriptService" title="ansys.fluent.core.services.transcript.TranscriptService"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranscriptService</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.ZoneInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">ZoneInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.ZoneInfo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Zone information for mesh.</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>_id</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Zone ID.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the zone.</p>
+</dd>
+<dt><strong>zone_type</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZoneType</span></code></span></dt><dd><p>Type of the zone for mesh.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.ZoneInfo.name" title="ansys.fluent.core.services.ZoneInfo.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.ZoneInfo.zone_type" title="ansys.fluent.core.services.ZoneInfo.zone_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_type</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.ZoneInfo.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></em><a class="headerlink" href="#ansys.fluent.core.services.ZoneInfo.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.ZoneInfo.zone_type">
+<span class="sig-name descname"><span class="pre">zone_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="field_data.html#ansys.fluent.core.services.field_data.ZoneType" title="ansys.fluent.core.services.field_data.ZoneType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZoneType</span></code></a></em><a class="headerlink" href="#ansys.fluent.core.services.ZoneInfo.zone_type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.service_creator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.services.</span></span><span class="sig-name descname"><span class="pre">service_creator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supports_v1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.service_creator" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A gRPC service creator.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.services.service_creator.__init__" title="ansys.fluent.core.services.service_creator.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service_name[, supports_v1])</p></td>
+<td><p>Initialize service_creator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.services.service_creator.create" title="ansys.fluent.core.services.service_creator.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Create a gRPC service.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.service_creator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supports_v1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.service_creator.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize service_creator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.service_creator.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.service_creator.create" title="Link to this definition">#</a></dt>
+<dd><p>Create a gRPC service.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilities"><code class="docutils literal notranslate"><span class="pre">AppUtilities</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilities.get_app_mode"><code class="docutils literal notranslate"><span class="pre">AppUtilities.get_app_mode()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilities.is_solution_data_available"><code class="docutils literal notranslate"><span class="pre">AppUtilities.is_solution_data_available()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilities.is_wildcard"><code class="docutils literal notranslate"><span class="pre">AppUtilities.is_wildcard()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilities.register_pause_on_solution_events"><code class="docutils literal notranslate"><span class="pre">AppUtilities.register_pause_on_solution_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilities.resume_on_solution_event"><code class="docutils literal notranslate"><span class="pre">AppUtilities.resume_on_solution_event()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilities.unregister_pause_on_solution_events"><code class="docutils literal notranslate"><span class="pre">AppUtilities.unregister_pause_on_solution_events()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesService"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesService</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesService.cancel_pause_solve"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesService.cancel_pause_solve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesService.is_data_available"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesService.is_data_available()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesService.is_wildcard"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesService.is_wildcard()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesService.pause_solve_for"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesService.pause_solve_for()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesService.resume_solve"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesService.resume_solve()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesServiceV0"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.AppUtilitiesV0"><code class="docutils literal notranslate"><span class="pre">AppUtilitiesV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOps"><code class="docutils literal notranslate"><span class="pre">BatchOps</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOps.Op"><code class="docutils literal notranslate"><span class="pre">BatchOps.Op</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOps.Op.__init__"><code class="docutils literal notranslate"><span class="pre">BatchOps.Op.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOps.Op.update_result"><code class="docutils literal notranslate"><span class="pre">BatchOps.Op.update_result()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOps.add_op"><code class="docutils literal notranslate"><span class="pre">BatchOps.add_op()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOps.clear_ops"><code class="docutils literal notranslate"><span class="pre">BatchOps.clear_ops()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOps.instance"><code class="docutils literal notranslate"><span class="pre">BatchOps.instance()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOpsService"><code class="docutils literal notranslate"><span class="pre">BatchOpsService</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOpsService.__init__"><code class="docutils literal notranslate"><span class="pre">BatchOpsService.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.BatchOpsService.execute"><code class="docutils literal notranslate"><span class="pre">BatchOpsService.execute()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DatamodelService_SE"><code class="docutils literal notranslate"><span class="pre">DatamodelService_SE</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DatamodelService_SE_V0"><code class="docutils literal notranslate"><span class="pre">DatamodelService_SE_V0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DatamodelService_TUI"><code class="docutils literal notranslate"><span class="pre">DatamodelService_TUI</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DatamodelService_TUI_V0"><code class="docutils literal notranslate"><span class="pre">DatamodelService_TUI_V0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldData"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldData.__init__"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldData.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldData.get_pathlines_field_data"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldData.get_pathlines_field_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldData.get_scalar_field_data"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldData.get_scalar_field_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldData.get_surface_data"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldData.get_surface_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldData.get_vector_field_data"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldData.get_vector_field_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldData.new_transaction"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldData.new_transaction()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.DeprecatedFieldDataV0"><code class="docutils literal notranslate"><span class="pre">DeprecatedFieldDataV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.EventsService"><code class="docutils literal notranslate"><span class="pre">EventsService</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.EventsServiceV0"><code class="docutils literal notranslate"><span class="pre">EventsServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.FieldDataService"><code class="docutils literal notranslate"><span class="pre">FieldDataService</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.FieldDataServiceV0"><code class="docutils literal notranslate"><span class="pre">FieldDataServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.FieldDataStreaming"><code class="docutils literal notranslate"><span class="pre">FieldDataStreaming</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.FieldDataStreamingV0"><code class="docutils literal notranslate"><span class="pre">FieldDataStreamingV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.HealthCheckService"><code class="docutils literal notranslate"><span class="pre">HealthCheckService</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.HealthCheckServiceV0"><code class="docutils literal notranslate"><span class="pre">HealthCheckServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.LiveFieldData"><code class="docutils literal notranslate"><span class="pre">LiveFieldData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.LiveFieldData.__init__"><code class="docutils literal notranslate"><span class="pre">LiveFieldData.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.LiveFieldData.new_batch"><code class="docutils literal notranslate"><span class="pre">LiveFieldData.new_batch()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.LiveFieldDataV0"><code class="docutils literal notranslate"><span class="pre">LiveFieldDataV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.MonitorsService"><code class="docutils literal notranslate"><span class="pre">MonitorsService</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.MonitorsService.get_monitors_info"><code class="docutils literal notranslate"><span class="pre">MonitorsService.get_monitors_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.MonitorsServiceV0"><code class="docutils literal notranslate"><span class="pre">MonitorsServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.Reduction"><code class="docutils literal notranslate"><span class="pre">Reduction</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.ReductionV0"><code class="docutils literal notranslate"><span class="pre">ReductionV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SchemeEval"><code class="docutils literal notranslate"><span class="pre">SchemeEval</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SchemeEval.exec"><code class="docutils literal notranslate"><span class="pre">SchemeEval.exec()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SchemeEval.string_eval"><code class="docutils literal notranslate"><span class="pre">SchemeEval.string_eval()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SchemeEvalService"><code class="docutils literal notranslate"><span class="pre">SchemeEvalService</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SchemeEvalServiceV0"><code class="docutils literal notranslate"><span class="pre">SchemeEvalServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SchemeEvalV0"><code class="docutils literal notranslate"><span class="pre">SchemeEvalV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SettingsService"><code class="docutils literal notranslate"><span class="pre">SettingsService</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SettingsService.create"><code class="docutils literal notranslate"><span class="pre">SettingsService.create()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SettingsService.delete"><code class="docutils literal notranslate"><span class="pre">SettingsService.delete()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SettingsService.get_static_info"><code class="docutils literal notranslate"><span class="pre">SettingsService.get_static_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SettingsService.get_var"><code class="docutils literal notranslate"><span class="pre">SettingsService.get_var()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SettingsService.set_var"><code class="docutils literal notranslate"><span class="pre">SettingsService.set_var()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SettingsServiceV0"><code class="docutils literal notranslate"><span class="pre">SettingsServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableData"><code class="docutils literal notranslate"><span class="pre">SolutionVariableData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableData.get_data"><code class="docutils literal notranslate"><span class="pre">SolutionVariableData.get_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableData.set_data"><code class="docutils literal notranslate"><span class="pre">SolutionVariableData.set_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableDataV0"><code class="docutils literal notranslate"><span class="pre">SolutionVariableDataV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableService"><code class="docutils literal notranslate"><span class="pre">SolutionVariableService</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableService.get_data"><code class="docutils literal notranslate"><span class="pre">SolutionVariableService.get_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableService.get_variables_info"><code class="docutils literal notranslate"><span class="pre">SolutionVariableService.get_variables_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableService.set_data"><code class="docutils literal notranslate"><span class="pre">SolutionVariableService.set_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.SolutionVariableServiceV0"><code class="docutils literal notranslate"><span class="pre">SolutionVariableServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.TranscriptService"><code class="docutils literal notranslate"><span class="pre">TranscriptService</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.TranscriptServiceV0"><code class="docutils literal notranslate"><span class="pre">TranscriptServiceV0</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.ZoneInfo"><code class="docutils literal notranslate"><span class="pre">ZoneInfo</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.ZoneInfo.name"><code class="docutils literal notranslate"><span class="pre">ZoneInfo.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.ZoneInfo.zone_type"><code class="docutils literal notranslate"><span class="pre">ZoneInfo.zone_type</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.service_creator"><code class="docutils literal notranslate"><span class="pre">service_creator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.service_creator.__init__"><code class="docutils literal notranslate"><span class="pre">service_creator.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.services.service_creator.create"><code class="docutils literal notranslate"><span class="pre">service_creator.create()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/services/services_contents.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<!--
+  Theme Version Footer
+  Displays the Sphinx theme version and the last updated date.
+  Accessibility and semantic improvements included.
+-->
+<footer class="theme-version" aria-label="Theme version and last update">
+  <span>
+    
+      Built with the
+      <a href="https://sphinxdocs.ansys.com/version/stable/index.html" target="_blank" rel="noopener noreferrer">
+        Ansys Sphinx Theme
+      </a>
+      1.8.2.
+    
+  </span>
+  <br />
+  <span>Last updated on <time id="ast_build_date"></time></span>
+</footer>
+<script>
+  // Set the last updated date in a readable format
+  (function() {
+    var options = { day: "numeric", month: "long", year: "numeric" };
+    var ast_lastModifiedDate = new Date(document.lastModified);
+    var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+    var dateElem = document.getElementById("ast_build_date");
+    if (dateElem) {
+      dateElem.textContent = ast_build_date;
+    }
+  })();
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

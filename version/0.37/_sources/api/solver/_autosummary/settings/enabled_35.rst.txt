@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_35:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_35
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==============================================
+
+Parent                                                                              Summary
+
+==========================================   ==============================================
+:ref:`swelling_model_1 <swelling_model_1>`       Battery swelling model related parameters.
+
+==========================================   ==============================================
+

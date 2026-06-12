@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zones_4:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zones_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =====================================================
+
+Parent                                                                                                 Summary
+
+======================================================   =====================================================
+:ref:`delete_local_tolerance <delete_local_tolerance>`   Delete one-to-one local tolerance for selected zones.
+
+======================================================   =====================================================
+
