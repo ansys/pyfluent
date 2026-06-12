@@ -404,7 +404,7 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     two_dim_mesh.add_local_sizing_2d.boi_execution = "Curvature"
     two_dim_mesh.add_local_sizing_2d.boi_max_size = 2
     two_dim_mesh.add_local_sizing_2d.boi_min_size = 1.5
-    two_dim_mesh.add_local_sizing_2d.boi_scope_to = "edges"
+    two_dim_mesh.add_local_sizing_2d.boi_scope_to = "edge labels"
     two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
     two_dim_mesh.add_local_sizing_2d.draw_size_control = True
     two_dim_mesh.add_local_sizing_2d.edge_label_list = ["airfoil"]
