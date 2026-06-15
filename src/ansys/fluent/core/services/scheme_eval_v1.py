@@ -28,8 +28,8 @@ what differs for the v1 protobuf schema.
 
 from typing import Any, Sequence
 
-from ansys.api.fluent.v1 import scheme_eval_pb2 as SchemeEvalProtoModule
-from ansys.api.fluent.v1 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
+from ansys.api.fluent.v1 import scheme_interpreter_pb2 as SchemeEvalProtoModule
+from ansys.api.fluent.v1 import scheme_interpreter_pb2_grpc as SchemeEvalGrpcModule
 from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.scheme_eval import (
     SchemeEvalService as _SchemeEvalServiceV0,
