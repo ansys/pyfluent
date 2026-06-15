@@ -65,6 +65,7 @@ from ansys.fluent.core.services import (
     ZoneInfo,
     _FieldInfo,
     _FieldInfoV0,
+    service_creator,
 )
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -231,11 +232,9 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = (
-            TranscriptService
-            if fluent_connection._server_supports_v1
-            else TranscriptServiceV0
-        )(fluent_connection._channel, fluent_connection._metadata)
+        self._transcript_service = service_creator(
+            "transcript", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
         self.transcript = (
             Transcript if fluent_connection._server_supports_v1 else TranscriptV0
         )(self._transcript_service)
@@ -248,11 +247,9 @@ class BaseSession:
 
         self.journal = Journal(self._app_utilities)
 
-        self._datamodel_service_tui = (
-            DatamodelService_TUI
-            if fluent_connection._server_supports_v1
-            else DatamodelService_TUI_V0
-        )(
+        self._datamodel_service_tui = service_creator(
+            "tui", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
@@ -260,11 +257,9 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = (
-            DatamodelService_SE
-            if fluent_connection._server_supports_v1
-            else DatamodelService_SE_V0
-        )(
+        self._datamodel_service_se = service_creator(
+            "datamodel", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.get_fluent_version(),
@@ -279,16 +274,14 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = BatchOpsService(
-            fluent_connection._channel, fluent_connection._metadata
-        )
+        self._batch_ops_service = service_creator(
+            "batch_ops", supports_v1=fluent_connection._server_supports_v1
+        ).create(fluent_connection._channel, fluent_connection._metadata)
 
         if event_type:
-            events_service = (
-                EventsService
-                if fluent_connection._server_supports_v1
-                else EventsServiceV0
-            )(fluent_connection._channel, fluent_connection._metadata)
+            events_service = service_creator(
+                "events", supports_v1=fluent_connection._server_supports_v1
+            ).create(fluent_connection._channel, fluent_connection._metadata)
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
                     event_type,
@@ -322,11 +315,9 @@ class BaseSession:
             self, get_zones_info, fluent_connection._server_supports_v1
         )
 
-        self._settings_service = (
-            SettingsService
-            if fluent_connection._server_supports_v1
-            else SettingsServiceV0
-        )(
+        self._settings_service = service_creator(
+            "settings", supports_v1=fluent_connection._server_supports_v1
+        ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,
@@ -636,23 +627,25 @@ class Fields:
         self._is_solution_data_valid = (
             _session._app_utilities.is_solution_data_available
         )
-        self._field_info = (_FieldInfo if server_supports_v1 else _FieldInfoV0)(
+        self._field_info = service_creator(
+            "field_info", supports_v1=server_supports_v1
+        ).create(
             _session._field_data_service,
             self._is_solution_data_valid,
         )
-        self.field_data = (LiveFieldData if server_supports_v1 else LiveFieldDataV0)(
+        self.field_data = service_creator(
+            "field_data", supports_v1=server_supports_v1
+        ).create(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,
             _session.scheme,
             get_zones_info,
         )
-        self.field_data_streaming = (
-            FieldDataStreaming if server_supports_v1 else FieldDataStreamingV0
-        )(_session._fluent_connection._id, _session._field_data_service)
-        self.field_data_old = (
-            DeprecatedFieldData if server_supports_v1 else DeprecatedFieldDataV0
-        )(
+        self.field_data_streaming = service_creator(
+            "field_data_streaming", supports_v1=server_supports_v1
+        ).create(_session._fluent_connection._id, _session._field_data_service)
+        self.field_data_old = service_creator("field_data_old").create(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,
