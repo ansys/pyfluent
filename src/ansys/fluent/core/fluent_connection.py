@@ -477,12 +477,12 @@ def _server_supports_v1(channel) -> bool:
         reflection_db = ProtoReflectionDescriptorDatabase(channel)
         desc_pool = DescriptorPool(reflection_db)
         service_desc = desc_pool.FindServiceByName(
-            "ansys.api.fluent.v1.app_utilities.ApplicationRuntime"
+            "ansys.api.fluent.v1.application_runtime.ApplicationRuntime"
         )
         method_desc = service_desc.FindMethodByName("GetProductVersion")
         return (
             method_desc.full_name
-            == "ansys.api.fluent.v1.app_utilities.ApplicationRuntime.GetProductVersion"
+            == "ansys.api.fluent.v1.application_runtime.ApplicationRuntime.GetProductVersion"
         )
     except KeyError:
         return False
