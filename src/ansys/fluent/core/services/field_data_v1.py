@@ -57,6 +57,12 @@ class FieldDataService(_v0.FieldDataService):
         """Create the v1 gRPC stub."""
         return FieldGrpcModule.FieldDataStub(intercept_channel)
 
+    def is_data_available(
+        self, request: FieldDataProtoModule.IsDataAvailableRequest
+    ) -> FieldDataProtoModule.IsDataAvailableResponse:
+        """IsDataAvailable RPC of FieldData service (v1)."""
+        return self._stub.IsDataAvailable(request, metadata=self._metadata)
+
 
 class _FieldInfo(_v0._FieldInfo):
     """Provides internal access to Fluent field information."""
@@ -608,6 +614,12 @@ class LiveFieldData(_v0.LiveFieldData):
             self._allowed_scalar_field_names,
             self._allowed_vector_field_names,
         )
+
+    def is_solution_data_available(self) -> bool:
+        """Is solution data available (v1: FieldData.IsDataAvailable)."""
+        request = FieldDataProtoModule.IsDataAvailableRequest()
+        response = self.service.is_data_available(request)
+        return response.is_data_available
 
     def _get_scalar_field_data(self, **kwargs):
         """Get scalar field data on a surface."""
