@@ -30,7 +30,7 @@ env:
 jobs:
   test:
     name: Fluent Testing
-    runs-on: [self-hosted, pyfluent]
+    runs-on: [self-hosted, pyfluent, poc]
     timeout-minutes: 120
 
     steps:
