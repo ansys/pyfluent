@@ -401,7 +401,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     )
     fault_tolerant.task_object.update_region_settings[
         "Update Region Settings"
-    ].arguments.all_region_overset_componen_list.set_state(["no"] * 7)
+    ].arguments.all_region_overset_component_list.set_state(["no"] * 7)
     fault_tolerant.task_object.update_region_settings[
         "Update Region Settings"
     ].arguments.all_region_source_list.set_state(["object"] * 5 + ["mpt"] * 2)
@@ -425,7 +425,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     ].arguments.all_region_name_list.set_state(["fluid-region-1"])
     fault_tolerant.task_object.update_region_settings[
         "Update Region Settings"
-    ].arguments.all_region_overset_componen_list.set_state(["no"])
+    ].arguments.all_region_overset_component_list.set_state(["no"])
     fault_tolerant.task_object.update_region_settings[
         "Update Region Settings"
     ].arguments.all_region_type_list.set_state(["fluid"])
@@ -443,7 +443,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     ].arguments.all_region_name_list.set_state(["fluid-region-1"])
     fault_tolerant.task_object.update_region_settings[
         "Update Region Settings"
-    ].arguments.all_region_overset_componen_list.set_state(["no"])
+    ].arguments.all_region_overset_component_list.set_state(["no"])
     fault_tolerant.task_object.update_region_settings[
         "Update Region Settings"
     ].arguments.all_region_type_list.set_state(["fluid"])
@@ -1130,7 +1130,7 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
             "fluid-region-1",
         ]
     )
-    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_component_list.set_state(
         ["no"] * 7
     )
     fault_tolerant.update_region_settings.all_region_source_list.set_state(
@@ -1152,7 +1152,7 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
     fault_tolerant.update_region_settings.all_region_name_list.set_state(
         ["fluid-region-1"]
     )
-    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_component_list.set_state(
         ["no"]
     )
     fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
@@ -1166,7 +1166,7 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exi
     fault_tolerant.update_region_settings.all_region_name_list.set_state(
         ["fluid-region-1"]
     )
-    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_component_list.set_state(
         ["no"]
     )
     fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
