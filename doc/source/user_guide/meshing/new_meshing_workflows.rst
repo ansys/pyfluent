@@ -274,7 +274,7 @@ Update regions settings
                 "void-region-1",
                 "fluid-region-1",
             ]
-    update_region.all_region_overset_componen_list = ["no"] * 7
+    update_region.all_region_overset_component_list = ["no"] * 7
     update_region.all_region_source_list = ["object"] * 5 + ["mpt"] * 2
     update_region.all_region_type_list = ["void"] * 6 + ["fluid"]
     update_region.all_region_volume_fill_list = ["none"] * 6 + ["tet"]
@@ -282,13 +282,13 @@ Update regions settings
     update_region.all_region_leakage_size_list = [""]
     update_region.all_region_mesh_method_list = ["wrap"]
     update_region.all_region_name_list = ["fluid-region-1"]
-    update_region.all_region_overset_componen_list = ["no"]
+    update_region.all_region_overset_component_list = ["no"]
     update_region.all_region_type_list = ["fluid"]
     update_region.all_region_volume_fill_list = ["hexcore"]
     update_region.all_region_leakage_size_list = [""]
     update_region.all_region_mesh_method_list = ["wrap"]
     update_region.all_region_name_list = ["fluid-region-1"]
-    update_region.all_region_overset_componen_list = ["no"]
+    update_region.all_region_overset_component_list = ["no"]
     update_region.all_region_type_list = ["fluid"]
     update_region.all_region_volume_fill_list = ["tet"]
     update_region()
