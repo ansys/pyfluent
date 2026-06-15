@@ -29,7 +29,7 @@ import warnings
 import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
-from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.module_config import config
