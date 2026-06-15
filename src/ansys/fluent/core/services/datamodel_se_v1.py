@@ -190,12 +190,6 @@ class DatamodelServiceImpl:
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
 
-    def initialize_datamodel(
-        self, request: DataModelProtoModule.InitDatamodelRequest
-    ) -> DataModelProtoModule.InitDatamodelResponse:
-        """RPC InitDatamodel of DataModel service."""
-        return self._stub.InitDatamodel(request, metadata=self._metadata)
-
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
