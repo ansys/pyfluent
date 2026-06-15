@@ -28,7 +28,7 @@ import functools
 import logging
 import os
 from threading import RLock
-from typing import Any, NoReturn, TypeVar
+from typing import Any, Iterable, NoReturn, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -51,6 +51,9 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _completer_info_method,
+)
 
 Path = list[tuple[str, str]]
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
@@ -968,6 +971,18 @@ class PyCallableStateObject:
         return self.get_state()
 
 
+def _get_completer_info(
+    obj, base_class: type, prefix: str, excluded: Iterable
+) -> list[list[str]]:
+    return _completer_info_method(
+        obj=obj,
+        base_class=base_class,
+        prefix=prefix,
+        excluded=excluded,
+        type_name_map=_type_name_map,
+    )
+
+
 class PyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use this class
     instead of directly calling DatamodelService's method.
@@ -1050,6 +1065,20 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     setState = set_state
+
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyStateContainer, prefix=prefix, excluded=excluded
+        )
 
     def _get_remote_attr(self, attrib: str) -> Any:
         return self.service.get_attribute_value(
@@ -1238,7 +1267,7 @@ class PyMenu(PyStateContainer):
         ----------
         obj_type: str
             Type of the named object container.
-        child_names : List[str]
+        child_names : list[str]
             List of named objects.
         """
         for child_name in child_names:
@@ -1610,6 +1639,23 @@ class PyNamedObjectContainer:
 
     getChildObjectDisplayNames = get_object_names
 
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self,
+            base_class=PyNamedObjectContainer,
+            prefix=prefix,
+            excluded=excluded,
+        )
+
     def __len__(self) -> int:
         """Return a count of child objects.
 
@@ -1809,6 +1855,20 @@ class PyAction:
         args = self._get_create_instance_args()
         if args is not None:
             return PyArguments(*args)
+
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyAction, prefix=prefix, excluded=excluded
+        )
 
 
 class PyQuery(PyAction):
@@ -2163,3 +2223,10 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
             return super().__getattr__(name)
         else:
             return self._get_child(name)
+
+
+_type_name_map = {
+    _InputFile: "InputFilename",
+    _OutputFile: "OutputFilename",
+    _InOutFile: "InOutFilename",
+}
