@@ -173,7 +173,7 @@ class DockerLauncher:
             Specifies the number of processors to use. Defaults to ``None``, which uses 1 processor.
             In job scheduler environments, this value limits the total number of allocated cores.
         start_timeout : int, optional
-            Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 180 seconds.
+            Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 100 seconds.
         additional_arguments : str, optional
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         container_dict : dict, optional
