@@ -74,6 +74,10 @@ class BaseDataRequest:
         """Serialize dataclass fields dynamically."""
         return {field: getattr(self, field) for field in self.__dataclass_fields__}
 
+    def _replace(self, **changes) -> "BaseDataRequest":
+        """Replicate NamedTuple._replace behavior for frozen dataclasses."""
+        return dataclasses.replace(self, **changes)
+
     def __post_init__(self):
         """Validate shared attributes."""
         if not isinstance(self.surfaces, Iterable):
