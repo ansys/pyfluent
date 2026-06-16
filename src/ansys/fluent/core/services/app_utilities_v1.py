@@ -31,8 +31,8 @@ AppUtilitiesService creates an internal Events stub so that callers do not need
 to be aware of this split.
 """
 
-from ansys.api.fluent.v1 import app_utilities_pb2 as AppUtilitiesProtoModule
-from ansys.api.fluent.v1 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
+from ansys.api.fluent.v1 import application_runtime_pb2 as AppUtilitiesProtoModule
+from ansys.api.fluent.v1 import application_runtime_pb2_grpc as AppUtilitiesGrpcModule
 from ansys.api.fluent.v1 import events_pb2 as EventsProtoModule
 from ansys.api.fluent.v1 import events_pb2_grpc as EventsGrpcModule
 from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule

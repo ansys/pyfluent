@@ -42,24 +42,24 @@ from ansys.fluent.core.utils.fluent_version import (
 if TYPE_CHECKING:
     from ansys.fluent.core import workflow as _workflow
     from ansys.fluent.core import workflow_new
-    from ansys.fluent.core.generated.datamodel_252.meshing import Root as meshing_root
-    from ansys.fluent.core.generated.datamodel_252.meshing_utilities import (
+    from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
+    from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
         Root as meshing_utilities_root,
     )
-    from ansys.fluent.core.generated.datamodel_252.meshing_workflow import (
+    from ansys.fluent.core.generated.datamodel_261.meshing_workflow import (
         Root as meshing_workflow_root,
     )
-    from ansys.fluent.core.generated.datamodel_252.part_management import (
+    from ansys.fluent.core.generated.datamodel_261.part_management import (
         Root as partmanagement_root,
     )
-    from ansys.fluent.core.generated.datamodel_252.pm_file_management import (
+    from ansys.fluent.core.generated.datamodel_261.pm_file_management import (
         Root as pmfilemanagement_root,
     )
-    from ansys.fluent.core.generated.datamodel_252.preferences import (
+    from ansys.fluent.core.generated.datamodel_261.preferences import (
         Root as preferences_root,
     )
-    from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
-    from ansys.fluent.core.generated.meshing.tui_252 import main_menu
+    from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
+    from ansys.fluent.core.generated.meshing.tui_261 import main_menu
     from ansys.fluent.core.meshing import (
         meshing_workflow_new,
     )
