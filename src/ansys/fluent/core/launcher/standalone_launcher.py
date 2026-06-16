@@ -232,11 +232,11 @@ class StandaloneLauncher:
             self.argvals["journal_file_names"]
             and (self.argvals["case_file_name"] or self.argvals["case_data_file_name"])
         )
-        self._launch_string += _build_journal_argument(
-            self.argvals["topy"],
-            self.argvals["journal_file_names"],
-            include_journal_file_names=not self._defer_journal_file_read,
-        )
+        topy = self.argvals.get("topy", [])
+        if topy:
+            self._launch_string += _build_journal_argument(
+                topy, self.argvals.get("journal_file_names")
+            )
 
         if is_windows():
             self._launch_cmd = self._launch_string
@@ -351,6 +351,15 @@ class StandaloneLauncher:
                 )
             else:
                 raise RuntimeError("Case and data file cannot be read in meshing mode.")
+
+        if not self.argvals.get("topy"):
+            journal_file_names = self.argvals.get("journal_file_names")
+            if journal_file_names and not self._defer_journal_file_read:
+                if isinstance(journal_file_names, str):
+                    journal_file_names = [journal_file_names]
+                for journal_file_name in journal_file_names:
+                    session.tui.file.read_journal(journal_file_name)
+
         if self._defer_journal_file_read:
             self._read_journals(session)
         if lightweight_sync_deferred:
