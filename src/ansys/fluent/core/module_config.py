@@ -175,9 +175,9 @@ class Config:
         "WATCHDOG_EXCEPTION_ON_ERROR",
     )
 
-    #: Health check timeout in seconds, defaults to 60 seconds.
+    #: Health check timeout in seconds, defaults to 100 seconds.
     check_health_timeout = _ConfigDescriptor["Config"](
-        lambda instance: 60, "CHECK_HEALTH_TIMEOUT"
+        lambda instance: 100, "CHECK_HEALTH_TIMEOUT"
     )
 
     #: Whether to skip health check, defaults to True.
@@ -263,9 +263,9 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
     )
 
-    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 180 seconds.
+    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 100 seconds.
     launch_fluent_timeout = _ConfigDescriptor["Config"](
-        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 180))
+        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 100))
     )
 
     #: Whether to show the Fluent GUI when launching the server, defaults to the value of ``PYFLUENT_SHOW_SERVER_GUI`` environment variable.

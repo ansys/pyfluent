@@ -238,7 +238,7 @@ class DockerLauncher:
         if "start_watchdog" not in self.argvals:
             self.argvals["start_watchdog"] = None
         if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 180
+            self.argvals["start_timeout"] = 100
         self.file_transfer_service = kwargs.get("file_transfer_service")
         if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True

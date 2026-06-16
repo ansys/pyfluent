@@ -767,7 +767,7 @@ def test_create_launcher():
 @pytest.mark.standalone
 def test_idle_timeout():
     fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
-    assert "timeoutPLF+4" in fluent_launch_string
+    assert "timeoutPLF+3" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(start_timeout=200, dry_run=True)
     assert "timeoutPLF+5" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(start_timeout=60, dry_run=True)

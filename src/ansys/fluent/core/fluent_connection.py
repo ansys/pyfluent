@@ -832,15 +832,15 @@ class FluentConnection:
         """
         return service(self._channel, self._metadata, *args)
 
-    def wait_process_finished(self, wait: float | int | bool = 60):
+    def wait_process_finished(self, wait: float | int | bool = 100):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
-        are still running when wait limit (default 60 seconds) is reached. Immediately
+        are still running when wait limit (default 100 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------
         wait : float, int or bool, optional
-            How long to wait for processes to finish before returning, by default 60 seconds.
+            How long to wait for processes to finish before returning, by default 100 seconds.
             Can also be set to ``True``, which will result in waiting indefinitely.
 
         Raises
@@ -854,7 +854,7 @@ class FluentConnection:
             raise UnsupportedRemoteFluentInstance()
         if isinstance(wait, bool):
             if wait:
-                wait = 60
+                wait = 100
             else:
                 logger.debug("Wait limit set to 'False', cancelling process wait.")
                 return
@@ -910,7 +910,7 @@ class FluentConnection:
             Specifies whether to wait for local Fluent processes to finish completely before proceeding.
             If omitted or specified as ``False``, will proceed as usual without
             waiting for the Fluent processes to finish.
-            Can be set to ``True`` which will wait for up to 60 seconds,
+            Can be set to ``True`` which will wait for up to 100 seconds,
             or set to a float or int value to specify the wait limit.
             If wait limit is reached, will forcefully terminate the Fluent process.
             If set to wait, will return as soon as processes completely finish.

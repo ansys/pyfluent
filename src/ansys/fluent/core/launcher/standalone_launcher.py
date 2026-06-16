@@ -167,7 +167,7 @@ class StandaloneLauncher:
         journal_file_names : str or list of str, optional
             Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``.
         start_timeout : int, optional
-            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 180 seconds.
+            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 100 seconds.
         additional_arguments : str, optional
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         env : dict[str, str], optional
@@ -274,7 +274,7 @@ class StandaloneLauncher:
     def _set_idle_timeout(self):
         """Set's idle timeout for the Fluent session."""
         if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 180
+            self.argvals["start_timeout"] = 100
         # Negative start_timeout values are treated as "no timeout".
         if self.argvals.get("start_timeout") >= 0:
             if self.argvals.get("additional_arguments"):
@@ -313,7 +313,7 @@ class StandaloneLauncher:
             try:
                 _await_fluent_launch(
                     self._server_info_file_name,
-                    self.argvals.get("start_timeout", 180),
+                    self.argvals.get("start_timeout", 100),
                     self._sifile_last_mtime,
                     process.pid,
                 )
@@ -328,7 +328,7 @@ class StandaloneLauncher:
                     process = subprocess.Popen(launch_cmd, **self._kwargs)
                     _await_fluent_launch(
                         self._server_info_file_name,
-                        self.argvals.get("start_timeout", 180),
+                        self.argvals.get("start_timeout", 100),
                         self._sifile_last_mtime,
                         process.pid,
                     )
