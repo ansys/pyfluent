@@ -65,72 +65,70 @@ class SurfaceDataType(Enum):
 
 
 @dataclasses.dataclass(frozen=True)
-class SurfaceFieldDataRequest:
-    """Container storing parameters for surface data request."""
+class BaseDataRequest:
+    """Abstract base container for data requests sharing common fields and methods."""
 
-    data_types: list[SurfaceDataType] | list[str]
     surfaces: list[int | str | object]
-    overset_mesh: bool | None = False
-    flatten_connectivity: bool = False
 
     def _asdict(self) -> dict:
+        """Serialize dataclass fields dynamically."""
         return {field: getattr(self, field) for field in self.__dataclass_fields__}
 
     def __post_init__(self):
-        if not isinstance(self.data_types, Iterable):
-            raise TypeError(
-                "field_name must be a string or `ScalarVariableDescriptor`."
-            )
+        """Validate shared attributes."""
         if not isinstance(self.surfaces, Iterable):
             raise TypeError("surfaces must be iterable.")
 
 
 @dataclasses.dataclass(frozen=True)
-class ScalarFieldDataRequest:
+class SurfaceFieldDataRequest(BaseDataRequest):
+    """Container storing parameters for surface data request."""
+
+    data_types: list[SurfaceDataType] | list[str]
+    overset_mesh: bool | None = False
+    flatten_connectivity: bool = False
+
+    def __post_init__(self):
+        super().__post_init__()
+        if not isinstance(self.data_types, Iterable):
+            raise TypeError("`data_types` must be iterable.")
+
+
+@dataclasses.dataclass(frozen=True)
+class ScalarFieldDataRequest(BaseDataRequest):
     """Container storing parameters for scalar field data request."""
 
     field_name: str | ScalarVariableDescriptor
-    surfaces: list[int | str | object]
     node_value: bool | None = True
     boundary_value: bool | None = True
 
-    def _asdict(self) -> dict:
-        return {field: getattr(self, field) for field in self.__dataclass_fields__}
-
     def __post_init__(self):
+        super().__post_init__()
         if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
             raise TypeError(
                 "field_name must be a string or `ScalarVariableDescriptor`."
             )
-        if not isinstance(self.surfaces, Iterable):
-            raise TypeError("surfaces must be iterable.")
 
 
 @dataclasses.dataclass(frozen=True)
-class VectorFieldDataRequest:
+class VectorFieldDataRequest(BaseDataRequest):
     """Container storing parameters for vector field data request."""
 
     field_name: str | VectorVariableDescriptor
-    surfaces: list[int | str | object]
-
-    def _asdict(self) -> dict:
-        return {field: getattr(self, field) for field in self.__dataclass_fields__}
 
     def __post_init__(self):
+        super().__post_init__()
         if not isinstance(self.field_name, (str, VectorVariableDescriptor)):
             raise TypeError(
                 "field_name must be a string or `VectorVariableDescriptor`."
             )
-        if not isinstance(self.surfaces, Iterable):
-            raise TypeError("surfaces must be iterable.")
 
 
 @dataclasses.dataclass(frozen=True)
-class PathlinesFieldDataRequest:
+class PathlinesFieldDataRequest(BaseDataRequest):
     """Container storing parameters for path-lines field data request."""
 
     field_name: str | ScalarVariableDescriptor
-    surfaces: list[int | str | object]
     additional_field_name: str = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
@@ -145,16 +143,12 @@ class PathlinesFieldDataRequest:
     zones: list | None = None
     flatten_connectivity: bool = False
 
-    def _asdict(self) -> dict:
-        return {field: getattr(self, field) for field in self.__dataclass_fields__}
-
     def __post_init__(self):
+        super().__post_init__()
         if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
             raise TypeError(
                 "field_name must be a string or `ScalarVariableDescriptor`."
             )
-        if not isinstance(self.surfaces, Iterable):
-            raise TypeError("surfaces must be iterable.")
 
 
 def _set_dataclass_field_docs(cls: type, field_docs: dict[str, str]) -> None:
