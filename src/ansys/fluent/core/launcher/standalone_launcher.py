@@ -222,17 +222,7 @@ class StandaloneLauncher:
         if pyfluent.config.show_fluent_gui:
             kwargs["ui_mode"] = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 180
-        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
-        _idle_timeout_minutes = math.ceil(self.argvals["start_timeout"] / 60) + 1
-        _set_timeout_arg = (
-            f'-command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
-        )
-        if self.argvals["additional_arguments"]:
-            self.argvals["additional_arguments"] += f" {_set_timeout_arg}"
-        else:
-            self.argvals["additional_arguments"] = _set_timeout_arg
+        self._set_idle_timeout()
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
@@ -274,6 +264,41 @@ class StandaloneLauncher:
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
+
+    @staticmethod
+    def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
+        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
+        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
+        return f'-command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+
+    def _set_idle_timeout(self):
+        """Set's idle timeout for the Fluent session."""
+        if self.argvals.get("start_timeout") is None:
+            self.argvals["start_timeout"] = 180
+        # Negative start_timeout values are treated as "no timeout".
+        if self.argvals.get("start_timeout") >= 0:
+            if self.argvals.get("additional_arguments"):
+                self.argvals[
+                    "additional_arguments"
+                ] += f" {self._construct_timeout_arg(self.argvals["start_timeout"])}"
+            else:
+                self.argvals["additional_arguments"] = self._construct_timeout_arg(
+                    self.argvals["start_timeout"]
+                )
+
+    @staticmethod
+    def _disable_idle_timeout_guard(session):
+        try:
+            if session.get_fluent_version() >= FluentVersion.v271:
+                session._app_utilities.set_idle_timeout(
+                    session.preferences.General.IdleTimeout() * 60
+                )
+            else:
+                session.scheme_eval.eval(
+                    f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
+                )
+        except Exception as ex:
+            logger.debug(f"Could not reset Idle Timeout: {ex}")
 
     def __call__(
         self,
@@ -337,17 +362,7 @@ class StandaloneLauncher:
                         inside_container=False,
                     )
             # PyFluent is now connected: disable the idle-timeout guard.
-            try:
-                if session.get_fluent_version() >= FluentVersion.v271:
-                    session._app_utilities.set_idle_timeout(
-                        session.preferences.General.IdleTimeout() * 60
-                    )
-                else:
-                    session.scheme_eval.eval(
-                        f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
-                    )
-            except Exception as ex:
-                logger.debug(f"Could not reset Idle Timeout: {ex}")
+            self._disable_idle_timeout_guard(session)
             if self.argvals.get("case_file_name"):
                 if FluentMode.is_meshing(self.argvals.get("mode")):
                     session.tui.file.read_case(self.argvals.get("case_file_name"))

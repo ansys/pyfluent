@@ -762,3 +762,28 @@ def test_create_launcher():
 
     session = create_launcher(LaunchMode.STANDALONE)
     assert isinstance(session, StandaloneLauncher)
+
+
+@pytest.mark.standalone
+def test_idle_timeout():
+    fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
+    assert "timeoutPLF+4" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(start_timeout=200, dry_run=True)
+    assert "timeoutPLF+5" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(start_timeout=60, dry_run=True)
+    assert "timeoutPLF+2" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(start_timeout=0, dry_run=True)
+    assert "timeoutPLF+1" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(start_timeout=-5, dry_run=True)
+    assert "timeout" not in fluent_launch_string
+
+    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+    assert (
+        StandaloneLauncher()._construct_timeout_arg(60)
+        == '-command="(set-session-idle-timeoutPLF+2)"'
+    )
+    assert (
+        StandaloneLauncher()._construct_timeout_arg(200)
+        == '-command="(set-session-idle-timeoutPLF+5)"'
+    )
