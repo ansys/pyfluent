@@ -764,8 +764,8 @@ def test_create_launcher():
     assert isinstance(session, StandaloneLauncher)
 
 
-@pytest.mark.standalone
-def test_idle_timeout():
+def test_idle_timeout(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
     fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
     assert "timeoutPLF+3" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(start_timeout=200, dry_run=True)
@@ -781,9 +781,9 @@ def test_idle_timeout():
 
     assert (
         StandaloneLauncher()._construct_timeout_arg(60)
-        == '-command="(set-session-idle-timeoutPLF+2)"'
+        == ' -command="(set-session-idle-timeoutPLF+2)"'
     )
     assert (
         StandaloneLauncher()._construct_timeout_arg(200)
-        == '-command="(set-session-idle-timeoutPLF+5)"'
+        == ' -command="(set-session-idle-timeoutPLF+5)"'
     )
