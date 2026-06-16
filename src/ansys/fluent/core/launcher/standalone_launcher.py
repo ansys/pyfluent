@@ -352,7 +352,7 @@ class StandaloneLauncher:
                         inside_container=False,
                     )
             # PyFluent is now connected: disable the idle-timeout guard.
-            # self._disable_idle_timeout_guard(session)
+            self._disable_idle_timeout_guard(session)
             if self.argvals.get("case_file_name"):
                 if FluentMode.is_meshing(self.argvals.get("mode")):
                     session.tui.file.read_case(self.argvals.get("case_file_name"))
