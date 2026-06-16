@@ -57,6 +57,12 @@ class FieldDataService(_v0.FieldDataService):
         """Create the v1 gRPC stub."""
         return FieldGrpcModule.FieldDataStub(intercept_channel)
 
+    def is_data_available(
+        self, request: FieldDataProtoModule.IsDataAvailableRequest
+    ) -> FieldDataProtoModule.IsDataAvailableResponse:
+        """IsDataAvailable RPC of FieldData service (v1)."""
+        return self._stub.IsDataAvailable(request, metadata=self._metadata)
+
 
 class _FieldInfo(_v0._FieldInfo):
     """Provides internal access to Fluent field information."""
@@ -116,6 +122,12 @@ class _FieldInfo(_v0._FieldInfo):
             }
             for surface_info in response.surface_info
         }
+
+    def is_solution_data_available(self) -> bool:
+        """Is solution data available (v1: FieldData.IsDataAvailable)."""
+        request = FieldDataProtoModule.IsDataAvailableRequest()
+        response = self._service.is_data_available(request)
+        return response.is_data_available
 
 
 class FieldInfo(_FieldInfo):
@@ -364,6 +376,12 @@ class Batch(_v0.Batch):
             self._allowed_surface_names,
             self._allowed_scalar_field_names,
         )
+
+    def is_solution_data_available(self) -> bool:
+        """Is solution data available (v1: FieldData.IsDataAvailable)."""
+        request = FieldDataProtoModule.IsDataAvailableRequest()
+        response = self._service.is_data_available(request)
+        return response.is_data_available
 
 
 class Transaction(Batch):
@@ -753,3 +771,9 @@ class LiveFieldData(_v0.LiveFieldData):
             pathlines_data,
             flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
+
+    def is_solution_data_available(self) -> bool:
+        """Is solution data available (v1: FieldData.IsDataAvailable)."""
+        request = FieldDataProtoModule.IsDataAvailableRequest()
+        response = self._service.is_data_available(request)
+        return response.is_data_available

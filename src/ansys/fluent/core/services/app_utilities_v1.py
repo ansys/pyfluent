@@ -35,8 +35,6 @@ from ansys.api.fluent.v1 import application_runtime_pb2 as AppUtilitiesProtoModu
 from ansys.api.fluent.v1 import application_runtime_pb2_grpc as AppUtilitiesGrpcModule
 from ansys.api.fluent.v1 import events_pb2 as EventsProtoModule
 from ansys.api.fluent.v1 import events_pb2_grpc as EventsGrpcModule
-from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v1 import field_data_pb2_grpc as FieldDataGrpcModule
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesService as _AppUtilitiesServiceV0,
 )
@@ -62,14 +60,7 @@ class AppUtilitiesService(_AppUtilitiesServiceV0):
         those services respectively.
         """
         self._events_stub = EventsGrpcModule.EventsStub(intercept_channel)
-        self._field_data_stub = FieldDataGrpcModule.FieldDataStub(intercept_channel)
         return AppUtilitiesGrpcModule.ApplicationRuntimeStub(intercept_channel)
-
-    def is_data_available(
-        self, request: FieldDataProtoModule.IsDataAvailableRequest
-    ) -> FieldDataProtoModule.IsDataAvailableResponse:
-        """IsDataAvailable RPC of FieldData service (v1)."""
-        return self._field_data_stub.IsDataAvailable(request, metadata=self._metadata)
 
     def pause_solve_for(
         self, request: EventsProtoModule.PauseSolveForRequest
@@ -140,12 +131,6 @@ class AppUtilities(_AppUtilitiesV0):
         request = EventsProtoModule.CancelPauseSolveRequest()
         request.registration_id = registration_id
         self.service.cancel_pause_solve(request)
-
-    def is_solution_data_available(self) -> bool:
-        """Is solution data available (v1: FieldData.IsDataAvailable)."""
-        request = FieldDataProtoModule.IsDataAvailableRequest()
-        response = self.service.is_data_available(request)
-        return response.is_data_available
 
 
 class AppUtilitiesV252(AppUtilities):
