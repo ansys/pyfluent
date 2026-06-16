@@ -85,7 +85,7 @@ def test_pyconsole_launch():
         start_container=True,
         dry_run=True,
         py=True,
-        mode=pyfluent.FluentMode.MESHER,
+        mode=pyfluent.FluentMode.MESHING,
         **grpc_kwds,
     )
     meshing_container_dict["volumes"].append(f"{src_pyfluent_dir}:{dst_pyfluent_dir}")
