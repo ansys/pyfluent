@@ -766,15 +766,15 @@ def test_general_exception_behaviour_in_session(new_solver_session):
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
-    assert solver._app_utilities.get_app_mode() == pyfluent.FluentMode.SOLVER
+    assert solver._application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
 
-    assert not solver._app_utilities.is_beta_enabled()
+    assert not solver._application_runtime.is_beta_enabled()
 
-    assert not solver._app_utilities.is_wildcard("no")
+    assert not solver._application_runtime.is_wildcard("no")
 
-    assert solver._app_utilities.is_wildcard("yes*")
+    assert solver._application_runtime.is_wildcard("yes*")
 
-    assert not solver._app_utilities.is_solution_data_available()
+    assert not solver._application_runtime.is_solution_data_available()
 
     tmp_path = tempfile.mkdtemp(dir=pyfluent.config.examples_path)
 
@@ -784,8 +784,8 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     solver.chdir(tmp_folder)
 
-    cortex_info = solver._app_utilities.get_controller_process_info()
-    solver_info = solver._app_utilities.get_solver_process_info()
+    cortex_info = solver._application_runtime.get_controller_process_info()
+    solver_info = solver._application_runtime.get_solver_process_info()
 
     assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
 

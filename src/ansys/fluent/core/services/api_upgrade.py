@@ -24,7 +24,7 @@
 
 from typing import TypeVar
 
-from ansys.fluent.core.services.app_utilities import AppUtilities
+from ansys.fluent.core.application_runtime import ApplicationRuntime
 
 _TApiUpgradeAdvisor = TypeVar("_TApiUpgradeAdvisor", bound="ApiUpgradeAdvisor")
 
@@ -34,7 +34,7 @@ class ApiUpgradeAdvisor:
 
     def __init__(
         self,
-        app_utilities: AppUtilities,
+        app_utilities: ApplicationRuntime,
         version: str,
         mode: str,
     ) -> None:

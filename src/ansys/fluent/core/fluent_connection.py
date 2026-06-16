@@ -47,6 +47,11 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
     ProtoReflectionDescriptorDatabase,
 )
 
+from ansys.fluent.core.application_runtime import (
+    ApplicationRuntimeOld,
+    ApplicationRuntimeV252,
+    ApplicationRuntimeV252V1,
+)
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -57,9 +62,8 @@ from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import (
-    AppUtilities,
     AppUtilitiesService,
-    AppUtilitiesV0,
+    AppUtilitiesServiceV0,
     HealthCheckService,
     HealthCheckServiceV0,
     SchemeEval,
@@ -69,18 +73,6 @@ from ansys.fluent.core.services import (
     service_creator,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesOld,
-)
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesService as AppUtilitiesServiceV0,
-)
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesV252 as AppUtilitiesV252V0,
-)
-from ansys.fluent.core.services.app_utilities_v1 import (
-    AppUtilitiesV252 as AppUtilitiesV252V1,
-)
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -385,14 +377,14 @@ class _ConnectionInterface:
             self._scheme_eval_service = create_grpc_service(
                 SchemeEvalService, error_state
             )
-            self._app_utilities_service = create_grpc_service(
+            self._application_runtime_service = create_grpc_service(
                 AppUtilitiesService, error_state
             )
         else:
             self._scheme_eval_service = create_grpc_service(
                 SchemeEvalServiceV0, error_state
             )
-            self._app_utilities_service = create_grpc_service(
+            self._application_runtime_service = create_grpc_service(
                 AppUtilitiesServiceV0, error_state
             )
         self.scheme_eval = service_creator(
@@ -400,22 +392,22 @@ class _ConnectionInterface:
         ).create(self._scheme_eval_service)
         match FluentVersion(self.scheme_eval.version):
             case v if v < FluentVersion.v252:
-                self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+                self._application_runtime = ApplicationRuntimeOld(self.scheme_eval)
 
             case FluentVersion.v252:
-                self._app_utilities = (
-                    AppUtilitiesV252V1 if supports_v1 else AppUtilitiesV252V0
-                )(self._app_utilities_service, self.scheme_eval)
+                self._application_runtime = (
+                    ApplicationRuntimeV252V1 if supports_v1 else ApplicationRuntimeV252
+                )(self._application_runtime_service, self.scheme_eval)
 
             case _:
-                self._app_utilities = service_creator(
+                self._application_runtime = service_creator(
                     "app_utilities", supports_v1=supports_v1
-                ).create(self._app_utilities_service)
+                ).create(self._application_runtime_service)
 
     @property
     def product_build_info(self) -> str:
         """Get Fluent build information."""
-        build_info = self._app_utilities.get_build_info()
+        build_info = self._application_runtime.get_build_info()
         return f"Build Time: {build_info.build_time}  Build Id: {build_info.build_id}  Revision: {build_info.vcs_revision}  Branch: {build_info.vcs_branch}"
 
     def get_cortex_connection_properties(self):
@@ -424,8 +416,8 @@ class _ConnectionInterface:
         try:
             logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
-            cortex_info = self._app_utilities.get_controller_process_info()
-            solver_info = self._app_utilities.get_solver_process_info()
+            cortex_info = self._application_runtime.get_controller_process_info()
+            solver_info = self._application_runtime.get_solver_process_info()
             fluent_host_pid = solver_info.process_id
             cortex_host = cortex_info.hostname
             cortex_pid = cortex_info.process_id
@@ -445,11 +437,11 @@ class _ConnectionInterface:
 
     def get_mode(self):
         """Get the mode of a running fluent session."""
-        return self._app_utilities.get_app_mode()
+        return self._application_runtime.get_app_mode()
 
     def exit_server(self):
         """Exits the server."""
-        self._app_utilities.exit()
+        self._application_runtime.exit()
 
 
 def _pid_exists(pid):

@@ -57,6 +57,18 @@ class FieldDataService(_v0.FieldDataService):
         """Create the v1 gRPC stub."""
         return FieldGrpcModule.FieldDataStub(intercept_channel)
 
+    def is_data_available(
+        self, request: FieldDataProtoModule.IsDataAvailableRequest
+    ) -> FieldDataProtoModule.IsDataAvailableResponse:
+        """IsDataAvailable RPC of FieldData service (v1)."""
+        return self._stub.IsDataAvailable(request, metadata=self._metadata)
+
+    def is_solution_data_available(self) -> bool:
+        """Return whether solution data is currently available."""
+        request = FieldDataProtoModule.IsDataAvailableRequest()
+        response = self.is_data_available(request)
+        return response.is_data_available
+
 
 class _FieldInfo(_v0._FieldInfo):
     """Provides internal access to Fluent field information."""

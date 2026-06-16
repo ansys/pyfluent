@@ -34,6 +34,7 @@ import weakref
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.application_runtime import ApplicationRuntimeOld
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
@@ -67,7 +68,6 @@ from ansys.fluent.core.services import (
     _FieldInfoV0,
     service_creator,
 )
-from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -128,15 +128,15 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
-class _AppUtilitiesFactory:
-    """AppUtilities factory."""
+class _ApplicationRuntimeFactory:
+    """ApplicationRuntime factory."""
 
     @staticmethod
-    def _create_app_utilities(scheme_eval, fluent_connection):
+    def _create_application_runtime(scheme_eval, fluent_connection):
         if FluentVersion(scheme_eval.version) < FluentVersion.v252:
-            return AppUtilitiesOld(scheme_eval)
+            return ApplicationRuntimeOld(scheme_eval)
         else:
-            return fluent_connection._connection_interface._app_utilities
+            return fluent_connection._connection_interface._application_runtime
 
 
 class BaseSession:
@@ -241,11 +241,13 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
-        self._app_utilities = _AppUtilitiesFactory._create_app_utilities(
-            self.scheme, self._fluent_connection
+        self._application_runtime = (
+            _ApplicationRuntimeFactory._create_application_runtime(
+                self.scheme, self._fluent_connection
+            )
         )
 
-        self.journal = Journal(self._app_utilities)
+        self.journal = Journal(self._application_runtime)
 
         self._datamodel_service_tui = service_creator(
             "tui", supports_v1=fluent_connection._server_supports_v1
@@ -253,7 +255,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
-            self._app_utilities,
+            self._application_runtime,
             self.scheme,
         )
 
@@ -320,7 +322,7 @@ class BaseSession:
         ).create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self._app_utilities,
+            self._application_runtime,
             self.scheme,
             self._error_state,
         )
@@ -576,7 +578,7 @@ class BaseSession:
         path : os.PathLike[str | bytes] | str | bytes
             Path of the directory to change.
         """
-        self._app_utilities.set_working_directory(os.fspath(path))
+        self._application_runtime.set_working_directory(os.fspath(path))
 
     def __enter__(self):
         return self
@@ -607,11 +609,11 @@ class BaseSession:
 
     def enable_beta_features(self):
         """Enable access to Fluent beta-features"""
-        self._app_utilities.enable_beta()
+        self._application_runtime.enable_beta()
 
     @property
     def _is_beta_enabled(self):
-        return self._app_utilities.is_beta_enabled()
+        return self._application_runtime.is_beta_enabled()
 
 
 class Fields:
@@ -625,7 +627,7 @@ class Fields:
     ):
         """Initialize Fields."""
         self._is_solution_data_valid = (
-            _session._app_utilities.is_solution_data_available
+            _session._application_runtime.is_solution_data_available
         )
         self._field_info = service_creator(
             "field_info", supports_v1=server_supports_v1

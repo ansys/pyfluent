@@ -22,14 +22,27 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.app_utilities import (
+from ansys.fluent.core.application_runtime import (
+    ApplicationRuntime,
+    ApplicationRuntimeOld,
+    ApplicationRuntimeV1,
+    ApplicationRuntimeV252,
+    ApplicationRuntimeV252V1,
+    BuildInfo,
+    ProcessInfo,
+)
+from ansys.fluent.core.services.app_utilities_v0 import (
     AppUtilitiesService as AppUtilitiesServiceV0,
 )
-from ansys.fluent.core.services.app_utilities import AppUtilities as AppUtilitiesV0
 from ansys.fluent.core.services.app_utilities_v1 import (
-    AppUtilities,
     AppUtilitiesService,
 )
+
+# Backward-compat aliases: callers that import AppUtilities* from services
+# continue to work without changes.
+AppUtilities = ApplicationRuntime
+AppUtilitiesV0 = ApplicationRuntime
+AppUtilitiesOld = ApplicationRuntimeOld
 from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
@@ -97,7 +110,16 @@ from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
 )
 
 __all__ = (
+    "ApplicationRuntime",
+    "ApplicationRuntimeOld",
+    "ApplicationRuntimeV1",
+    "ApplicationRuntimeV252",
+    "ApplicationRuntimeV252V1",
+    "BuildInfo",
+    "ProcessInfo",
+    # Backward-compat aliases
     "AppUtilities",
+    "AppUtilitiesOld",
     "AppUtilitiesV0",
     "AppUtilitiesService",
     "AppUtilitiesServiceV0",
@@ -143,7 +165,7 @@ __all__ = (
 
 
 _service_cls_by_name_v0 = {
-    "app_utilities": AppUtilitiesV0,
+    "app_utilities": ApplicationRuntime,
     "health_check": HealthCheckServiceV0,
     "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI_V0,
@@ -163,7 +185,7 @@ _service_cls_by_name_v0 = {
 }
 
 _service_cls_by_name = {
-    "app_utilities": AppUtilities,
+    "app_utilities": ApplicationRuntimeV1,
     "health_check": HealthCheckService,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,

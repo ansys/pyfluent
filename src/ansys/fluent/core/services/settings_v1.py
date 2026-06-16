@@ -67,6 +67,10 @@ class _SettingsServiceImpl(_SettingsServiceImplV0):
         """Get static info (v1: GetSchema)."""
         return self._stub.GetSchema(request, metadata=self._metadata)
 
+    def is_wildcard(self, request):
+        """IsWildcard RPC of Settings service (v1)."""
+        return self._stub.IsWildcard(request, metadata=self._metadata)
+
 
 class SettingsService(_SettingsServiceV0):
     """Service for accessing and modifying Fluent settings (v1 proto API)."""
@@ -126,3 +130,19 @@ class SettingsService(_SettingsServiceV0):
         if not response.info.type:
             raise RuntimeError
         return self._extract_static_info(response.info)
+
+    @_trace
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """Check whether a name contains a wildcard pattern (v1: Settings.IsWildcard)."""
+        request = SettingsModule.IsWildcardRequest()
+        if input is not None:
+            request.input = input
+        response = self._service_impl.is_wildcard(request)
+        return response.is_wildcard
+
+    @_trace
+    def has_wildcard(self, name: str) -> bool:
+        """Check whether a name has a wildcard pattern (v1: uses Settings.IsWildcard directly)."""
+        return self._scheme_eval.is_defined(
+            "has-fnmatch-wild-card?"
+        ) and self.is_wildcard(name)
