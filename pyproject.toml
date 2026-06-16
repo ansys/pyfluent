@@ -18,7 +18,7 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "ansys-api-fluent>=0.3.40",
+    "ansys-api-fluent>=0.3.42",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
@@ -80,7 +80,7 @@ docs = [
     "seaborn>=0.13.2"
 ]
 ci_types = [
-    "basedpyright==1.38.0",
+    "basedpyright==1.39.6",
     "ansys-fluent-visualization",
     "h5py",
     "pytest",
