@@ -80,7 +80,7 @@ class BaseDataRequest:
 
     def __post_init__(self):
         """Validate shared attributes."""
-        if not isinstance(self.surfaces, Iterable)  or isinstance(self.surfaces, (str, bytes)):
+        if not isinstance(self.surfaces, Iterable) or isinstance(self.surfaces, (str, bytes)):
             raise TypeError("surfaces must be iterable.")
         self._validate_inputs()
 
