@@ -82,6 +82,11 @@ class BaseDataRequest:
         """Validate shared attributes."""
         if not isinstance(self.surfaces, Iterable):
             raise TypeError("surfaces must be iterable.")
+        self._validate_inputs()
+
+    def _validate_inputs(self) -> None:
+        """Hook method for subclasses to implement specific input validations."""
+        pass
 
 
 @dataclasses.dataclass(frozen=True)
@@ -92,8 +97,7 @@ class SurfaceFieldDataRequest(BaseDataRequest):
     overset_mesh: bool | None = False
     flatten_connectivity: bool = False
 
-    def __post_init__(self):
-        super().__post_init__()
+    def _validate_inputs(self) -> None:
         if not isinstance(self.data_types, Iterable):
             raise TypeError("`data_types` must be iterable.")
 
@@ -106,8 +110,7 @@ class ScalarFieldDataRequest(BaseDataRequest):
     node_value: bool | None = True
     boundary_value: bool | None = True
 
-    def __post_init__(self):
-        super().__post_init__()
+    def _validate_inputs(self) -> None:
         if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
             raise TypeError(
                 "field_name must be a string or `ScalarVariableDescriptor`."
@@ -120,8 +123,7 @@ class VectorFieldDataRequest(BaseDataRequest):
 
     field_name: str | VectorVariableDescriptor
 
-    def __post_init__(self):
-        super().__post_init__()
+    def _validate_inputs(self) -> None:
         if not isinstance(self.field_name, (str, VectorVariableDescriptor)):
             raise TypeError(
                 "field_name must be a string or `VectorVariableDescriptor`."
@@ -147,8 +149,7 @@ class PathlinesFieldDataRequest(BaseDataRequest):
     zones: list | None = None
     flatten_connectivity: bool = False
 
-    def __post_init__(self):
-        super().__post_init__()
+    def _validate_inputs(self) -> None:
         if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
             raise TypeError(
                 "field_name must be a string or `ScalarVariableDescriptor`."
