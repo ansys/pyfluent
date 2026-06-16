@@ -780,10 +780,10 @@ def test_idle_timeout(monkeypatch):
     from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 
     assert (
-        StandaloneLauncher()._construct_timeout_arg(60)
+        StandaloneLauncher._construct_timeout_arg(60)
         == ' -command="(set-session-idle-timeoutPLF+2)"'
     )
     assert (
-        StandaloneLauncher()._construct_timeout_arg(200)
+        StandaloneLauncher._construct_timeout_arg(200)
         == ' -command="(set-session-idle-timeoutPLF+5)"'
     )
