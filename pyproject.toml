@@ -18,11 +18,11 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "ansys-api-fluent>=0.3.37",
+    "ansys-api-fluent>=0.3.42",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
-    "ansys-units~=0.11.0",
+    "ansys-units~=0.12.0",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",
@@ -33,7 +33,9 @@ dependencies = [
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
-    "pyyaml>=6.0"
+    "pandas-stubs>=1.1.0,<3.0.0",
+    "pyyaml>=6.0",
+    "typing-extensions>=4.12",
 ]
 dynamic = ["version"]
 
@@ -56,7 +58,7 @@ docs = [
     "jupyter_sphinx==0.5.3",
     "numpydoc==1.10.0",
     "matplotlib==3.10.9",
-    "ansys-sphinx-theme==1.7.2",
+    "ansys-sphinx-theme==1.8.2",
     "pypandoc==1.17",
     "pytest-sphinx==0.7.1",
     "sphinx-autobuild==2024.10.3",
@@ -73,9 +75,27 @@ docs = [
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.9.37",
+    "quarto-cli==1.9.38",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2"
+]
+ci_types = [
+    "basedpyright==1.39.6",
+    "ansys-fluent-visualization",
+    "h5py",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pyfakefs",
+    "tensorflow",
+    "matplotlib",
+    "plotly",
+    "scikit-learn",
+    "seaborn",
+    "xgboost",
+    "imageio",
+    "tomli",
 ]
 
 [tool.flit.module]
@@ -98,15 +118,12 @@ addopts = """
 markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",
     "nightly: Tests that run under nightly CI",
-    "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
     "standalone: Tests that cannot be run within container"
 ]
 
-
 [tool.black]
 extend-exclude = "/(src/ansys/fluent/core/meshing/tui*|src/ansys/fluent/core/solver/tui*|src/ansys/fluent/core/solver/settings*|src/ansys/fluent/core/datamodel*)/"
-
 
 [tool.isort]
 profile = "black"
@@ -119,7 +136,6 @@ skip_glob = [
 filter_files = "true"
 known_first_party = ["ansys"]
 
-
 [tool.codespell]
 skip = """
     *.xml,
@@ -130,7 +146,6 @@ skip = """
     devel/field_level_help/field_level_help.csv
     """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
-
 
 [tool.docformatter]
 in-place = "true"
@@ -154,7 +169,6 @@ non-cap = [
     "unsubscribeEvents"
 ]
 
-
 [tool.coverage.run]
 source = ["ansys/fluent"]
 omit = [
@@ -174,13 +188,13 @@ title_format = "`{version} <https://github.com/ansys/pyfluent/releases/tag/v{ver
 issue_format = "`#{issue} <https://github.com/ansys/pyfluent/pull/{issue}>`_"
 
 [[tool.towncrier.type]]
-directory = "added"
-name = "Added"
+directory = "breaking"
+name = "Breaking"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "changed"
-name = "Changed"
+directory = "added"
+name = "Added"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -189,17 +203,13 @@ name = "Fixed"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "dependencies"
-name = "Dependencies"
+directory = "documentation"
+name = "Documentation"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "miscellaneous"
-name = "Miscellaneous"
-showcontent = true
-[[tool.towncrier.type]]
-directory = "documentation"
-name = "Documentation"
+directory = "dependencies"
+name = "Dependencies"
 showcontent = true
 
 [[tool.towncrier.type]]
@@ -208,8 +218,18 @@ name = "Maintenance"
 showcontent = true
 
 [[tool.towncrier.type]]
+directory = "miscellaneous"
+name = "Miscellaneous"
+showcontent = true
+
+[[tool.towncrier.type]]
 directory = "test"
 name = "Test"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
 showcontent = true
 
 [tool.bandit]
@@ -221,5 +241,15 @@ skips = [
     "B602",
     "B603",
     "B604",
-    "B607"
-]
+    "B607",
+    ]
+
+[tool.basedpyright]
+reportAny = false
+reportUnknownMemberType = false
+reportExplicitAny = false
+reportPrivateUsage = false
+reportUnusedCallResult = false
+reportUnannotatedClassAttribute = false
+ignore = ["doc", "src/ansys/fluent/core/generated"]
+baselineFile = ".ci/basedpyright.json"

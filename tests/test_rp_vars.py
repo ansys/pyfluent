@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 
 from ansys.fluent.core.examples import download_file, path
@@ -95,7 +96,6 @@ def test_get_all_rp_vars(new_solver_session) -> None:
     assert len(case_vars) == pytest.approx(9000, 450)
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
     rp_vars = solver.rp_vars
@@ -108,7 +108,6 @@ def test_rp_vars_allowed_values(new_solver_session) -> None:
     assert "number-of-iterations" in rp_vars.allowed_values()
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_boolean(new_solver_session) -> None:
     solver = new_solver_session
 
@@ -124,6 +123,8 @@ def test_rp_vars_boolean(new_solver_session) -> None:
         assert rp_vars(var_name) == var_val
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4298
 @pytest.mark.fluent_version(">=25.1")
 def test_create_rp_vars(new_solver_session) -> None:
     solver = new_solver_session

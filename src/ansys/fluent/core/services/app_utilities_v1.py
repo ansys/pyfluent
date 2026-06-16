@@ -24,10 +24,21 @@
 
 All shared logic lives in app_utilities.py (v0). This module subclasses only
 the parts that differ due to renamed protobuf messages and RPC methods in v1.
+
+In v1 the pause/resume-on-solution-event RPCs moved from the ApplicationRuntime
+service to the Events service (PauseSolveFor / ResumeSolve / CancelPauseSolve).
+AppUtilitiesService creates an internal Events stub so that callers do not need
+to be aware of this split.
 """
 
-from ansys.api.fluent.v1 import app_utilities_pb2 as AppUtilitiesProtoModule
-from ansys.api.fluent.v1 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
+from ansys.api.fluent.v1 import application_runtime_pb2 as AppUtilitiesProtoModule
+from ansys.api.fluent.v1 import application_runtime_pb2_grpc as AppUtilitiesGrpcModule
+from ansys.api.fluent.v1 import events_pb2 as EventsProtoModule
+from ansys.api.fluent.v1 import events_pb2_grpc as EventsGrpcModule
+from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v1 import field_data_pb2_grpc as FieldDataGrpcModule
+from ansys.api.fluent.v1 import settings_pb2 as SettingsModule
+from ansys.api.fluent.v1 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesService as _AppUtilitiesServiceV0,
 )
@@ -44,28 +55,46 @@ class AppUtilitiesService(_AppUtilitiesServiceV0):
     """AppUtilities Service (v1 proto API)."""
 
     def _create_stub(self, intercept_channel):
-        """Create the v1 gRPC stub."""
-        return AppUtilitiesGrpcModule.AppUtilitiesStub(intercept_channel)
+        """Create the v1 gRPC stubs.
 
-    def register_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.RegisterSolutionEventsPauseRequest
-    ) -> AppUtilitiesProtoModule.RegisterSolutionEventsPauseResponse:
-        """Register on pause solution events RPC of AppUtilities service."""
-        return self._stub.RegisterSolutionEventsPause(request, metadata=self._metadata)
+        In addition to the main ApplicationRuntime stub, an Events stub is
+        created here because the pause/resume RPCs migrated to the Events
+        service in the v1 proto API.  A FieldData stub and a Settings stub are
+        also created because IsSolutionDataAvailable and IsWildcard migrated to
+        those services respectively.
+        """
+        self._events_stub = EventsGrpcModule.EventsStub(intercept_channel)
+        self._field_data_stub = FieldDataGrpcModule.FieldDataStub(intercept_channel)
+        self._settings_stub = SettingsGrpcModule.SettingsStub(intercept_channel)
+        return AppUtilitiesGrpcModule.ApplicationRuntimeStub(intercept_channel)
 
-    def resume_on_solution_event(
-        self, request: AppUtilitiesProtoModule.ResumeSolutionEventRequest
-    ) -> AppUtilitiesProtoModule.ResumeSolutionEventResponse:
-        """Resume on solution event RPC of AppUtilities service."""
-        return self._stub.ResumeSolutionEvent(request, metadata=self._metadata)
+    def is_wildcard(self, request):
+        """IsWildcard RPC of Settings service (v1)."""
+        return self._settings_stub.IsWildcard(request, metadata=self._metadata)
 
-    def unregister_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.UnregisterSolutionEventsPauseRequest
-    ) -> AppUtilitiesProtoModule.UnregisterSolutionEventsPauseResponse:
-        """Unregister on pause solution events RPC of AppUtilities service."""
-        return self._stub.UnregisterSolutionEventsPause(
-            request, metadata=self._metadata
-        )
+    def is_data_available(
+        self, request: FieldDataProtoModule.IsDataAvailableRequest
+    ) -> FieldDataProtoModule.IsDataAvailableResponse:
+        """IsDataAvailable RPC of FieldData service (v1)."""
+        return self._field_data_stub.IsDataAvailable(request, metadata=self._metadata)
+
+    def pause_solve_for(
+        self, request: EventsProtoModule.PauseSolveForRequest
+    ) -> EventsProtoModule.PauseSolveForResponse:
+        """PauseSolveFor RPC of Events service (v1)."""
+        return self._events_stub.PauseSolveFor(request, metadata=self._metadata)
+
+    def resume_solve(
+        self, request: EventsProtoModule.ResumeSolveRequest
+    ) -> EventsProtoModule.ResumeSolveResponse:
+        """ResumeSolve RPC of Events service (v1)."""
+        return self._events_stub.ResumeSolve(request, metadata=self._metadata)
+
+    def cancel_pause_solve(
+        self, request: EventsProtoModule.CancelPauseSolveRequest
+    ) -> EventsProtoModule.CancelPauseSolveResponse:
+        """CancelPauseSolve RPC of Events service (v1)."""
+        return self._events_stub.CancelPauseSolve(request, metadata=self._metadata)
 
 
 class AppUtilities(_AppUtilitiesV0):
@@ -97,31 +126,41 @@ class AppUtilities(_AppUtilitiesV0):
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
-        request = AppUtilitiesProtoModule.RegisterSolutionEventsPauseRequest()
-        request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNSPECIFIED
+        request = EventsProtoModule.PauseSolveForRequest()
+        request.solution_event = EventsProtoModule.SOLUTION_EVENT_UNSPECIFIED
         match solution_event:
             case SolverEvent.ITERATION_ENDED:
-                request.solution_event = (
-                    AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION
-                )
+                request.solution_event = EventsProtoModule.SOLUTION_EVENT_ITERATION
             case SolverEvent.TIMESTEP_ENDED:
-                request.solution_event = (
-                    AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP
-                )
-        response = self.service.register_pause_on_solution_events(request)
+                request.solution_event = EventsProtoModule.SOLUTION_EVENT_TIME_STEP
+        response = self.service.pause_solve_for(request)
         return response.registration_id
 
     def resume_on_solution_event(self, registration_id: int) -> None:
         """Resume on solution event."""
-        request = AppUtilitiesProtoModule.ResumeSolutionEventRequest()
+        request = EventsProtoModule.ResumeSolveRequest()
         request.registration_id = registration_id
-        self.service.resume_on_solution_event(request)
+        self.service.resume_solve(request)
 
     def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
-        request = AppUtilitiesProtoModule.UnregisterSolutionEventsPauseRequest()
+        request = EventsProtoModule.CancelPauseSolveRequest()
         request.registration_id = registration_id
-        self.service.unregister_pause_on_solution_events(request)
+        self.service.cancel_pause_solve(request)
+
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """Is wildcard (v1: Settings.IsWildcard)."""
+        request = SettingsModule.IsWildcardRequest()
+        if input is not None:
+            request.input = input
+        response = self.service.is_wildcard(request)
+        return response.is_wildcard
+
+    def is_solution_data_available(self) -> bool:
+        """Is solution data available (v1: FieldData.IsDataAvailable)."""
+        request = FieldDataProtoModule.IsDataAvailableRequest()
+        response = self.service.is_data_available(request)
+        return response.is_data_available
 
 
 class AppUtilitiesV252(AppUtilities):

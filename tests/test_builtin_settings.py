@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from pathlib import Path
-import tempfile
 
 import pytest
 
@@ -34,7 +32,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 # flake8: noqa: F405
 
 
-@pytest.mark.codegen_required
 def test_builtin_settings(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     fluent_version = solver.get_fluent_version()
@@ -316,10 +313,28 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         SimulationReports(settings_source=solver)
         == solver.results.report.simulation_reports
     )
-    assert InputParameters(settings_source=solver) == solver.parameters.input_parameters
-    assert (
-        OutputParameters(settings_source=solver) == solver.parameters.output_parameters
-    )
+    if fluent_version >= FluentVersion.v271:
+        assert (
+            ParameterWorkspace(settings_source=solver)
+            == solver.settings.parameter_workspace
+        )
+        assert (
+            InputParameters(settings_source=solver)
+            == solver.settings.parameter_workspace.parameters.input_parameters
+        )
+        assert (
+            OutputParameters(settings_source=solver)
+            == solver.settings.parameter_workspace.parameters.output_parameters
+        )
+    else:
+        assert (
+            InputParameters(settings_source=solver)
+            == solver.parameters.input_parameters
+        )
+        assert (
+            OutputParameters(settings_source=solver)
+            == solver.parameters.output_parameters
+        )
     if fluent_version >= FluentVersion.v251:
         assert (
             CustomFieldFunctions(settings_source=solver)
@@ -332,23 +347,57 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     solver.settings.parametric_studies.initialize(
         project_filename="mixing_elbow_param.flprj"
     )
-    assert ParametricStudies(settings_source=solver) == solver.parametric_studies
-    assert (
-        ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
-        == solver.parametric_studies["mixing_elbow-Solve"]
-    )
-    assert (
-        DesignPoints(settings_source=solver, parametric_studies="mixing_elbow-Solve")
-        == solver.parametric_studies["mixing_elbow-Solve"].design_points
-    )
-    assert (
-        DesignPoint(
-            settings_source=solver,
-            parametric_studies="mixing_elbow-Solve",
-            name="Base DP",
+    if fluent_version >= FluentVersion.v271:
+        assert (
+            ParametricStudies(settings_source=solver)
+            == solver.settings.parameter_workspace.parametric_studies
         )
-        == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
-    )
+        assert (
+            ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
+            == solver.settings.parameter_workspace.parametric_studies[
+                "mixing_elbow-Solve"
+            ]
+        )
+    else:
+        assert ParametricStudies(settings_source=solver) == solver.parametric_studies
+        assert (
+            ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
+            == solver.parametric_studies["mixing_elbow-Solve"]
+        )
+    if fluent_version >= FluentVersion.v271:
+        assert (
+            DesignPoints(
+                settings_source=solver, parametric_studies="mixing_elbow-Solve"
+            )
+            == solver.settings.parameter_workspace.parametric_studies[
+                "mixing_elbow-Solve"
+            ].design_points
+        )
+        assert (
+            DesignPoint(
+                settings_source=solver,
+                parametric_studies="mixing_elbow-Solve",
+                name="Base DP",
+            )
+            == solver.settings.parameter_workspace.parametric_studies[
+                "mixing_elbow-Solve"
+            ].design_points["Base DP"]
+        )
+    else:
+        assert (
+            DesignPoints(
+                settings_source=solver, parametric_studies="mixing_elbow-Solve"
+            )
+            == solver.parametric_studies["mixing_elbow-Solve"].design_points
+        )
+        assert (
+            DesignPoint(
+                settings_source=solver,
+                parametric_studies="mixing_elbow-Solve",
+                name="Base DP",
+            )
+            == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
+        )
     read_case_and_data = globals()["ReadCaseAndData"]
     write_case_and_data = globals()["WriteCaseAndData"]
     assert ReadCase(settings_source=solver) == solver.file.read_case
@@ -374,8 +423,6 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_singleton_setting_assign_session(
     new_meshing_session, new_solver_session
 ):
@@ -409,8 +456,6 @@ def test_builtin_singleton_setting_assign_session(
     assert models.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_non_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
 ):
@@ -434,8 +479,6 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     assert inlet.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_builtin_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
 ):
@@ -472,7 +515,6 @@ def test_builtin_creatable_named_object_setting_assign_session(
         assert report_file.settings_source == solver.settings
 
 
-@pytest.mark.codegen_required
 def test_context_manager_1(mixing_elbow_case_data_session):
     import threading
 
@@ -505,7 +547,6 @@ def test_context_manager_1(mixing_elbow_case_data_session):
         t.join()
 
 
-@pytest.mark.codegen_required
 def test_context_manager_2(new_solver_session):
     solver = new_solver_session
 
@@ -519,7 +560,6 @@ def test_context_manager_2(new_solver_session):
         assert Viscous().model() == "k-omega"
 
 
-@pytest.mark.codegen_required
 def test_inactive_objects(new_solver_session):
     solver = new_solver_session
 

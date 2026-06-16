@@ -22,11 +22,12 @@
 
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
+from collections.abc import Callable
 from enum import Enum
 import json
 import logging
 import os
-from typing import Any, Callable, Dict
+from typing import Any
 import warnings
 import weakref
 
@@ -39,14 +40,34 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core.services import (
+    BatchOpsService,
+    DatamodelService_SE,
+    DatamodelService_SE_V0,
+    DatamodelService_TUI,
+    DatamodelService_TUI_V0,
+    DeprecatedFieldData,
+    DeprecatedFieldDataV0,
+    EventsService,
+    EventsServiceV0,
+    FieldDataService,
+    FieldDataServiceV0,
+    FieldDataStreamingV0,
+    LiveFieldData,
+    LiveFieldDataV0,
+    SchemeEval,
+    SettingsService,
+    SettingsServiceV0,
+    SolutionVariableData,
+    SolutionVariableService,
+    TranscriptService,
+    TranscriptServiceV0,
     ZoneInfo,
+    _FieldInfo,
+    _FieldInfoV0,
+    service_creator,
 )
-from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
-from ansys.fluent.core.services.field_data_v1 import FieldDataService
-from ansys.fluent.core.services.scheme_eval import SchemeEval
+from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -57,6 +78,9 @@ from ansys.fluent.core.streaming_services.events_streaming import (
     EventsManager as EventsManagerV0,
 )
 from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
+from ansys.fluent.core.streaming_services.field_data_streaming import (
+    FieldDataStreaming,
+)
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptV0,
 )
@@ -72,6 +96,9 @@ except Exception:
     root = Any
 
 logger = logging.getLogger("pyfluent.general")
+
+
+__all__ = ("BaseSession",)
 
 
 def _parse_server_info_file(file_name: str):
@@ -140,7 +167,7 @@ class BaseSession:
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         event_type: Enum | None = None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
@@ -192,7 +219,7 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
@@ -208,10 +235,9 @@ class BaseSession:
         self._transcript_service = service_creator(
             "transcript", supports_v1=fluent_connection._server_supports_v1
         ).create(fluent_connection._channel, fluent_connection._metadata)
-        if fluent_connection._server_supports_v1:
-            self.transcript = Transcript(self._transcript_service)
-        else:
-            self.transcript = TranscriptV0(self._transcript_service)
+        self.transcript = (
+            Transcript if fluent_connection._server_supports_v1 else TranscriptV0
+        )(self._transcript_service)
         if self._start_transcript:
             self.transcript.start()
 
@@ -305,6 +331,9 @@ class BaseSession:
         self._fluent_connection.register_finalizer_cb(
             self._datamodel_service_se.unsubscribe_all_events
         )
+        self._fluent_connection.register_finalizer_cb(
+            self._datamodel_service_se.delete_all_command_arguments
+        )
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
@@ -374,7 +403,7 @@ class BaseSession:
         server_info_file_name: str,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.

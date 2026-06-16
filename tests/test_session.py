@@ -450,7 +450,6 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
-@pytest.mark.fluent_version(">=23.2")
 def test_journal_creation(file_format, new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
@@ -480,7 +479,6 @@ def test_journal_creation(file_format, new_meshing_session_wo_exit):
     session.exit()
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_start_transcript_file_write(new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
@@ -507,19 +505,16 @@ def test_start_transcript_file_write(new_meshing_session_wo_exit):
     session.exit()
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_expected_interfaces_in_solver_session(new_solver_session):
     assert all(
         intf in dir(new_solver_session) for intf in ("preferences", "tui", "workflow")
     )
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_solverworkflow_not_in_solver_session(new_solver_session):
     assert "solverworkflow" not in dir(new_solver_session)
 
 
-@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.parametrize(
     "session_fixture_name",
     ["new_solver_session", "new_meshing_session"],
@@ -531,7 +526,6 @@ def test_server_supports_v1_by_version(session_fixture_name, request):
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -565,7 +559,6 @@ def test_read_case_using_lightweight_mode():
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode_exiting():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -649,10 +642,12 @@ def test_solver_methods(new_solver_session):
         "current_parametric_study",
         "parallel",
     }
+    if solver.get_fluent_version() >= FluentVersion.v271:
+        api_keys = api_keys - {"parametric_studies", "current_parametric_study"}
+        api_keys.add("parameter_workspace")
     assert api_keys.issubset(set(dir(solver.settings)))
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_get_set_state_on_solver(new_solver_session):
     solver = new_solver_session
     state = solver.get_state()
@@ -677,7 +672,6 @@ def test_solver_structure(new_solver_session):
     }.issubset(set(dir(solver.fields)))
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_general_exception_behaviour_in_session(new_solver_session):
     solver = new_solver_session
 
@@ -769,7 +763,6 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     #     assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
@@ -962,7 +955,6 @@ def test_beta_solver_session(new_solver_session_wo_exit):
     meshing.exit()
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_error_raised_for_beta_feature_access_for_older_versions(
     new_meshing_session, new_solver_session
 ):

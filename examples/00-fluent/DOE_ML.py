@@ -63,10 +63,11 @@ Design of Experiments and Machine Learning model building
 # flake8: noqa: E402
 
 import os
-from pathlib import Path
+from typing import TypeAlias, cast
 
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -234,8 +235,10 @@ x_ct = ColumnTransformer(
 
 train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
 
-X_train = x_ct.fit_transform(train_set)
-X_test = x_ct.fit_transform(test_set)
+# cast is a function that improves intellisense by saying we know the data returned by
+# fit_transform is an ndarray
+X_train = cast(npt.NDArray[np.float64], x_ct.fit_transform(train_set))
+X_test = cast(npt.NDArray[np.float64], x_ct.transform(test_set))
 
 y_train = train_set["Result"]
 y_test = test_set["Result"]
@@ -264,8 +267,8 @@ np.set_printoptions(precision=2)
 def display_scores(scores):
     """Display scores."""
     print("\nCross-Validation Scores:", scores)
-    print("Mean:%0.2f" % (scores.mean()))
-    print("Std. Dev.:%0.2f" % (scores.std()))
+    print(f"Mean: {scores.mean():0.2f}")
+    print(f"Std. Dev.: {scores.std():0.2f}")
 
 
 def fit_and_predict(model):
@@ -282,8 +285,8 @@ def fit_and_predict(model):
     test_predictions = model.predict(X_test)
     print(train_predictions.shape[0])
     print("\n\nCoefficient Of Determination")
-    print("Train Data R2 Score: %0.3f" % (r2_score(train_predictions, y_train)))
-    print("Test Data R2 Score: %0.3f" % (r2_score(test_predictions, y_test)))
+    print(f"Train Data R2 Score: {r2_score(train_predictions, y_train):0.3f}")
+    print(f"Test Data R2 Score: {r2_score(test_predictions, y_test):0.3f}")
     print(
         "\n\nPredictions - Ground Truth (Kelvin): ", (test_predictions - y_test), "\n"
     )
@@ -399,21 +402,31 @@ keras.backend.clear_session()
 np.random.seed(42)
 tf.random.set_seed(42)
 
-model = keras.models.Sequential(
-    [
-        keras.layers.Dense(
-            20,
-            activation="relu",
-            input_shape=X_train.shape[1:],
-            kernel_initializer="lecun_normal",
-        ),
-        keras.layers.BatchNormalization(),
-        keras.layers.Dense(20, activation="relu", kernel_initializer="lecun_normal"),
-        keras.layers.BatchNormalization(),
-        keras.layers.Dense(20, activation="relu", kernel_initializer="lecun_normal"),
-        keras.layers.BatchNormalization(),
-        keras.layers.Dense(1),
-    ]
+ModelType: TypeAlias = keras.models.Model[
+    npt.NDArray[np.float64], npt.NDArray[np.float64]
+]
+model = cast(
+    ModelType,
+    keras.models.Sequential(
+        [
+            keras.layers.Dense(
+                20,
+                activation="relu",
+                input_shape=X_train.shape[1:],
+                kernel_initializer="lecun_normal",
+            ),
+            keras.layers.BatchNormalization(),
+            keras.layers.Dense(
+                20, activation="relu", kernel_initializer="lecun_normal"
+            ),
+            keras.layers.BatchNormalization(),
+            keras.layers.Dense(
+                20, activation="relu", kernel_initializer="lecun_normal"
+            ),
+            keras.layers.BatchNormalization(),
+            keras.layers.Dense(1),
+        ]
+    ),
 )
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
@@ -437,7 +450,7 @@ history = model.fit(
     validation_split=0.2,
     callbacks=[checkpoint_cb, early_stopping_cb],
 )
-model = keras.models.load_model("my_keras_model.h5")
+model = cast(ModelType, keras.models.load_model("my_keras_model.h5"))
 
 print(history.params)
 
@@ -451,8 +464,8 @@ train_predictions = np.ravel(train_predictions.T)
 test_predictions = np.ravel(test_predictions.T)
 print(test_predictions.shape)
 
-print("\n\nTrain R2: %0.3f" % (r2_score(train_predictions, y_train)))
-print("Test R2: %0.3f" % (r2_score(test_predictions, y_test)))
+print(f"\n\nTrain R2: {r2_score(train_predictions, y_train):0.3f}")
+print(f"Test R2: {r2_score(test_predictions, y_test):0.3f}")
 print("Predictions - Ground Truth (Kelvin): ", (test_predictions - y_test))
 
 fig = plt.figure(figsize=(12, 5))

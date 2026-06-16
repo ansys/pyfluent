@@ -6,7 +6,6 @@ Usage: python search_undocumented_fields.py ../../src
 
 import os
 import sys
-from typing import Dict, Set
 
 import ast_comments as ast
 
@@ -121,7 +120,7 @@ class ClassFieldVisitor(ast.NodeVisitor):
                         self.classes[self.current_class].add(child.target.attr)
 
 
-def analyze_file(file_path: str) -> Dict[str, Set[str]]:
+def analyze_file(file_path: str) -> dict[str, set[str]]:
     """Analyze a Python file and return classes with their public fields."""
     with open(file_path, "r", encoding="utf-8") as file:
         try:
@@ -134,7 +133,7 @@ def analyze_file(file_path: str) -> Dict[str, Set[str]]:
             return {}
 
 
-def analyze_package(package_path: str) -> Dict[str, Dict[str, Set[str]]]:
+def analyze_package(package_path: str) -> dict[str, dict[str, set[str]]]:
     """Analyze all Python files in a package directory."""
     result = {}
 
@@ -160,7 +159,7 @@ def analyze_package(package_path: str) -> Dict[str, Dict[str, Set[str]]]:
     return result
 
 
-def write_results(results: Dict[str, Dict[str, Set[str]]], f) -> str:
+def write_results(results: dict[str, dict[str, set[str]]], f) -> None:
     """Format the analysis results."""
     for module_name, classes in sorted(results.items()):
 
