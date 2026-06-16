@@ -98,7 +98,7 @@ class SurfaceFieldDataRequest(BaseDataRequest):
     flatten_connectivity: bool = False
 
     def _validate_inputs(self) -> None:
-        if not isinstance(self.data_types, Iterable):
+        if not isinstance(self.data_types, Iterable) or isinstance(self.data_types, (str, bytes)):
             raise TypeError("`data_types` must be iterable.")
 
 
