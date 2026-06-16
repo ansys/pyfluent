@@ -46,7 +46,7 @@ def _get_grpc_version_in_fluent_env(launch_kwargs=None):
 
 
 def _is_pyconsole_activated(session):
-    return session.scheme_eval("(%cx-pyconsole-activated?)")
+    return session.scheme.eval("(%cx-pyconsole-activated?)")
 
 
 # Note: this test won't work with editable install of PyFluent because the PyFluent package files are not copied
