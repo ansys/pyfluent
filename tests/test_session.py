@@ -770,9 +770,14 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     assert not solver._app_utilities.is_beta_enabled()
 
-    assert not solver._app_utilities.is_wildcard("no")
+    if solver.get_fluent_version() <= FluentVersion.v261:
+        assert not solver._app_utilities.is_wildcard("no")
 
-    assert solver._app_utilities.is_wildcard("yes*")
+        assert solver._app_utilities.is_wildcard("yes*")
+    else:
+        assert not solver.settings.is_wildcard("no")
+
+        assert solver.settings.is_wildcard("yes*")
 
     assert not solver._app_utilities.is_solution_data_available()
 

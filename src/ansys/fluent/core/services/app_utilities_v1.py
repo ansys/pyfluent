@@ -37,8 +37,6 @@ from ansys.api.fluent.v1 import events_pb2 as EventsProtoModule
 from ansys.api.fluent.v1 import events_pb2_grpc as EventsGrpcModule
 from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v1 import field_data_pb2_grpc as FieldDataGrpcModule
-from ansys.api.fluent.v1 import settings_pb2 as SettingsModule
-from ansys.api.fluent.v1 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesService as _AppUtilitiesServiceV0,
 )
@@ -65,12 +63,7 @@ class AppUtilitiesService(_AppUtilitiesServiceV0):
         """
         self._events_stub = EventsGrpcModule.EventsStub(intercept_channel)
         self._field_data_stub = FieldDataGrpcModule.FieldDataStub(intercept_channel)
-        self._settings_stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         return AppUtilitiesGrpcModule.ApplicationRuntimeStub(intercept_channel)
-
-    def is_wildcard(self, request):
-        """IsWildcard RPC of Settings service (v1)."""
-        return self._settings_stub.IsWildcard(request, metadata=self._metadata)
 
     def is_data_available(
         self, request: FieldDataProtoModule.IsDataAvailableRequest
@@ -147,14 +140,6 @@ class AppUtilities(_AppUtilitiesV0):
         request = EventsProtoModule.CancelPauseSolveRequest()
         request.registration_id = registration_id
         self.service.cancel_pause_solve(request)
-
-    def is_wildcard(self, input: str | None = None) -> bool:
-        """Is wildcard (v1: Settings.IsWildcard)."""
-        request = SettingsModule.IsWildcardRequest()
-        if input is not None:
-            request.input = input
-        response = self.service.is_wildcard(request)
-        return response.is_wildcard
 
     def is_solution_data_available(self) -> bool:
         """Is solution data available (v1: FieldData.IsDataAvailable)."""
