@@ -470,15 +470,15 @@ class BaseSession:
         if compose_config and compose_config.is_compose:
             container.stop()
 
-    def wait_process_finished(self, wait: float | int | bool = 60):
+    def wait_process_finished(self, wait: float | int | bool = 100):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
-        are still running when wait limit (default 60 seconds) is reached. Immediately
+        are still running when wait limit (default 100 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------
         wait : float, int or bool, optional
-            How long to wait for processes to finish before returning, by default 60 seconds.
+            How long to wait for processes to finish before returning, by default 100 seconds.
             Can also be set to ``True``, which will result in waiting indefinitely.
 
         Raises
