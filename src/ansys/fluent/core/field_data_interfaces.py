@@ -573,14 +573,11 @@ class _AllowedSurfaceIDs(_AllowedNames):
         for surface_name, info in surface_info.items():
             try:
                 surface_ids.append(info["surface_id"][0])
-            except KeyError:
-                raise LookupError(
-                    f"Failed to retrieve valid surface_id key for surface '{surface_name}'."
+            except (IndexError, KeyError):
+                warnings.warn(
+                    "Case has an invalid surface id. This is a bug in fluent"
                 )
-            except IndexError:
-                raise LookupError(
-                    f"Failed to retrieve valid surface_id index for surface '{surface_name}'."
-                )
+                return []
         return surface_ids
 
 
