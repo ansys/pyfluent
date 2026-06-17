@@ -24,8 +24,9 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
+import dataclasses
 from enum import Enum
-from typing import TYPE_CHECKING, NamedTuple
+from typing import TYPE_CHECKING, Iterable
 import warnings
 
 import numpy as np
@@ -36,7 +37,11 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
-from ansys.units.variable_descriptor import VariableDescriptor
+from ansys.units.variable_descriptor import (
+    ScalarVariableDescriptor,
+    VariableDescriptor,
+    VectorVariableDescriptor,
+)
 
 __all__ = (
     "PathlinesFieldDataRequest",
@@ -59,36 +64,81 @@ class SurfaceDataType(Enum):
     FacesCentroid = "centroid"
 
 
-class SurfaceFieldDataRequest(NamedTuple):
+@dataclasses.dataclass(frozen=True)
+class BaseDataRequest:
+    """Abstract base container for data requests sharing common fields and methods."""
+
+    surfaces: list[int | str | object]
+
+    def _asdict(self) -> dict:
+        """Serialize dataclass fields dynamically."""
+        return {field: getattr(self, field) for field in self.__dataclass_fields__}
+
+    def _replace(self, **changes) -> "BaseDataRequest":
+        """Replicate NamedTuple._replace behavior for frozen dataclasses."""
+        return dataclasses.replace(self, **changes)
+
+    def __post_init__(self):
+        """Validate shared attributes."""
+        if not isinstance(self.surfaces, Iterable) or isinstance(
+            self.surfaces, (str, bytes)
+        ):
+            raise TypeError("surfaces must be iterable.")
+        self._validate_inputs()
+
+    def _validate_inputs(self) -> None:
+        """Hook method for subclasses to implement specific input validations."""
+        pass
+
+
+@dataclasses.dataclass(frozen=True)
+class SurfaceFieldDataRequest(BaseDataRequest):
     """Container storing parameters for surface data request."""
 
     data_types: list[SurfaceDataType] | list[str]
-    surfaces: list[int | str | object]
     overset_mesh: bool | None = False
     flatten_connectivity: bool = False
 
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.data_types, Iterable) or isinstance(
+            self.data_types, (str, bytes)
+        ):
+            raise TypeError("`data_types` must be iterable.")
 
-class ScalarFieldDataRequest(NamedTuple):
+
+@dataclasses.dataclass(frozen=True)
+class ScalarFieldDataRequest(BaseDataRequest):
     """Container storing parameters for scalar field data request."""
 
-    field_name: str
-    surfaces: list[int | str | object]
+    field_name: str | ScalarVariableDescriptor
     node_value: bool | None = True
     boundary_value: bool | None = True
 
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
+            raise TypeError(
+                "field_name must be a string or `ScalarVariableDescriptor`."
+            )
 
-class VectorFieldDataRequest(NamedTuple):
+
+@dataclasses.dataclass(frozen=True)
+class VectorFieldDataRequest(BaseDataRequest):
     """Container storing parameters for vector field data request."""
 
-    field_name: str
-    surfaces: list[int | str | object]
+    field_name: str | VectorVariableDescriptor
+
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.field_name, (str, VectorVariableDescriptor)):
+            raise TypeError(
+                "field_name must be a string or `VectorVariableDescriptor`."
+            )
 
 
-class PathlinesFieldDataRequest(NamedTuple):
+@dataclasses.dataclass(frozen=True)
+class PathlinesFieldDataRequest(BaseDataRequest):
     """Container storing parameters for path-lines field data request."""
 
-    field_name: str
-    surfaces: list[int | str | object]
+    field_name: str | ScalarVariableDescriptor
     additional_field_name: str = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
@@ -103,18 +153,31 @@ class PathlinesFieldDataRequest(NamedTuple):
     zones: list | None = None
     flatten_connectivity: bool = False
 
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
+            raise TypeError(
+                "field_name must be a string or `ScalarVariableDescriptor`."
+            )
 
-def _set_namedtuple_field_docs(cls: type, field_docs: dict[str, str]) -> None:
-    """Set docstrings for NamedTuple-generated field attributes.
 
-    Without this, Sphinx may render default ``NamedTuple`` field docs like
+def _set_dataclass_field_docs(cls: type, field_docs: dict[str, str]) -> None:
+    """Set docstrings for dataclass-generated field attributes.
+
+    Without this, Sphinx may render default ``dataclass`` field docs like
     "Alias for field number N" in attribute/member tables.
     """
-    for field_name, field_doc in field_docs.items():
-        getattr(cls, field_name).__doc__ = field_doc
+    if dataclasses.is_dataclass(cls):
+        # Update metadata dict inside dataclass fields for Sphinx/autodoc parsing
+        for field in dataclasses.fields(cls):
+            if field.name in field_docs:
+                # Add to metadata dict (or modify existing proxy wrapper)
+                current_metadata = dict(field.metadata)
+                current_metadata["doc"] = field_docs[field.name]
+                field.metadata = current_metadata
+        return
 
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     SurfaceFieldDataRequest,
     {
         "data_types": "Surface data entries to request: vertices, face connectivity, face normals, and face centroids.",
@@ -124,7 +187,7 @@ _set_namedtuple_field_docs(
     },
 )
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     ScalarFieldDataRequest,
     {
         "field_name": "Scalar field name to request.",
@@ -134,7 +197,7 @@ _set_namedtuple_field_docs(
     },
 )
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     VectorFieldDataRequest,
     {
         "field_name": "Vector field name to request.",
@@ -142,7 +205,7 @@ _set_namedtuple_field_docs(
     },
 )
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     PathlinesFieldDataRequest,
     {
         "field_name": "Scalar field name to sample along computed pathlines.",
@@ -183,7 +246,10 @@ class BaseFieldInfo(ABC):
 
     @abstractmethod
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
+        self,
+        field: str | ScalarVariableDescriptor,
+        node_value: bool = False,
+        surface_ids: list[int] | None = None,
     ) -> list[float]:
         """
         Retrieve the range (minimum and maximum values) of a scalar field.
@@ -197,8 +263,14 @@ class BaseFieldInfo(ABC):
         Returns
         -------
             List[float]: A list containing the minimum and maximum values of the requested scalar field.
+
+        Raises
+        ------
+        TypeError
+            If `field` is not a scalar.
         """
-        pass
+        if not isinstance(field, (str, ScalarVariableDescriptor)):
+            raise TypeError("field must be a string or `ScalarVariableDescriptor`.")
 
     @abstractmethod
     def get_scalar_fields_info(self) -> dict[str, dict]:

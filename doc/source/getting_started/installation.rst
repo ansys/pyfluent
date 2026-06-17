@@ -17,6 +17,38 @@ PyFluent can be installed, along with all its optional dependencies, using:
    pip install ansys-fluent-core
 
 
+Using a virtual environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is recommended to use a virtual environment when installing PyFluent to avoid conflicts with other Python packages.
+A virtual environment can be created and activated with the following commands:
+
+.. code:: console
+
+   python -m venv .venv
+
+
+On Windows:
+
+.. code:: console
+
+   .venv\Scripts\activate
+
+
+On Linux and Mac OS:
+
+.. code:: console
+
+   source .venv/bin/activate
+
+
+Then, install PyFluent in the virtual environment with:
+
+.. code:: console
+
+   python -m pip install ansys-fluent-core
+
+
 Development Installation
 ------------------------
 The PyFluent source repository is available on GitHub. You can clone the repository and set up for local
@@ -26,6 +58,32 @@ development with the following commands:
 
    git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
+
+Use the following commands to create and activate a virtual environment:
+
+.. code:: console
+
+   python -m venv .venv
+
+
+On Windows:
+
+.. code:: console
+
+   .venv\Scripts\activate
+
+
+On Linux and Mac OS:
+
+.. code:: console
+
+   source .venv/bin/activate
+
+
+Then, install PyFluent within the virtual environment in editable mode with:
+
+.. code:: console
+
    pip install pip -U
    pip install -e .
    python codegen/allapigen.py     # Generates the API files or
