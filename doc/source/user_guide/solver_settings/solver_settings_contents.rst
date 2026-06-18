@@ -77,6 +77,12 @@ The available levels are:
 - ``ExposureLevel.BETA``: Shows stable and beta objects.
 - ``ExposureLevel.ALPHA``: Shows stable, beta, and alpha objects.
 
+.. note::
+  Exposure level settings are strictly session-based: they are not retained or
+  carried over from one session to the next, and each new session defaults to
+  exposing only stable items unless a different exposure level is explicitly
+  configured for that session.
+
 Show beta objects
 ~~~~~~~~~~~~~~~~~
 
