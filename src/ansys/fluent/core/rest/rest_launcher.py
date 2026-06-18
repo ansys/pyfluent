@@ -100,75 +100,134 @@ def _generate_auth_token(nbytes: int = 32) -> str:
     return token
 
 
-def _wait_for_server(
-    port: int,
-    timeout: int = 120,
-    ssl_context: ssl.SSLContext | None = None,
-) -> None:
-    """Block until the Fluent web server is fully ready.
-
-    Phase 1: TCP connect (port open).  Phase 2: HTTP probe (solver ready).
-    Raises :class:`TimeoutError` if not ready within *timeout* seconds.
-    """
-    scheme = "https" if ssl_context else "http"
-    deadline = time.monotonic() + timeout
-
-    # ── Phase 1: wait for TCP port to open ──────────────────────────────
+def _wait_for_port(port: int, deadline: float) -> None:
+    """Block until *port* accepts TCP connections (Phase 1)."""
     logger.info("[wait] Phase 1 — waiting for TCP port %d to open...", port)
     while time.monotonic() < deadline:
         try:
             with socket.create_connection((_LOCALHOST, port), timeout=2.0):
                 logger.info("[wait] Port %d is open.", port)
-                break
+                return
         except OSError:
             time.sleep(2)
-    else:
-        raise TimeoutError(f"Port {port} not open within {timeout}s.")
+    raise TimeoutError(f"Port {port} not open in time.")
 
-    # ── Phase 2: wait for solver to be ready (no 400) ───────────────────
-    logger.info("[wait] Phase 2 — waiting for solver to be ready on port %d...", port)
-    probe_url = f"{scheme}://{_LOCALHOST}:{port}/api/connection/run_mode"
+
+def _wait_for_solver_ready(
+    probe_url: str,
+    ssl_context: ssl.SSLContext | None,
+    deadline: float,
+) -> None:
+    """Block until the solver answers the readiness probe (Phase 2)."""
+    logger.info("[wait] Phase 2 — waiting for solver to be ready...")
     while time.monotonic() < deadline:
         try:
             req = urllib.request.Request(probe_url, method="GET")
             with urllib.request.urlopen(
                 req, timeout=3, context=ssl_context
             ):  # nosec B310
-                logger.info("[wait] Solver is ready on port %d.", port)
+                logger.info("[wait] Solver is ready.")
                 return
         except urllib.error.HTTPError as exc:
-            if exc.code == 400:
-                # Web server is up but solver has not initialised yet
-                logger.debug("[wait] Solver not ready yet (HTTP 400) — retrying...")
-                time.sleep(3)
-            elif exc.code == 401:
-                # Auth required — server and solver are fully up
+            if exc.code == 401:
+                # Auth required — server and solver are fully up.
                 logger.info("[wait] Solver ready (HTTP 401 on probe) — proceeding.")
                 return
-            else:
-                logger.debug("[wait] Unexpected HTTP %d — retrying...", exc.code)
-                time.sleep(3)
-        except urllib.error.URLError:
-            # Connection refused / DNS failure — server not yet listening
+            # 400 = solver still initialising; anything else = transient.
+            logger.debug(
+                "[wait] Solver not ready yet (HTTP %d) — retrying...", exc.code
+            )
             time.sleep(3)
-        except OSError:
-            # Low-level socket error (e.g. connection reset)
+        except (urllib.error.URLError, OSError):
+            # Connection refused / reset / DNS failure — not listening yet.
             time.sleep(3)
+    raise TimeoutError("Solver not ready in time.")
 
-    raise TimeoutError(f"Solver on port {port} not ready within {timeout}s.")
+
+def _wait_for_server(
+    port: int,
+    timeout: int = 120,
+    ssl_context: ssl.SSLContext | None = None,
+) -> None:
+    """Block until the Fluent web server is ready (port open, then solver up)."""
+    deadline = time.monotonic() + timeout
+    scheme = "https" if ssl_context else "http"
+    probe_url = f"{scheme}://{_LOCALHOST}:{port}/api/connection/run_mode"
+
+    _wait_for_port(port, deadline)
+    _wait_for_solver_ready(probe_url, ssl_context, deadline)
 
 
-def _get_fluent_exe(
-    product_version: str | None = None,
-    fluent_path: str | None = None,
-) -> str:
-    """Resolve the Fluent executable path via :func:`get_fluent_exe_path`."""
-    return str(
-        get_fluent_exe_path(
-            product_version=product_version,
-            fluent_path=fluent_path,
-        )
+def _resolve_transport_security(
+    cert_dir: str | None,
+) -> tuple[str | None, ssl.SSLContext | None]:
+    """Return ``(cert_dir, ssl_context)`` for HTTPS, or ``(None, None)`` for HTTP."""
+    resolved_cert_dir = _find_cert_dir(cert_dir)
+    if resolved_cert_dir:
+        ssl_ctx = _build_ssl_context(resolved_cert_dir)
+        logger.info("HTTPS enabled — certificates from %s", resolved_cert_dir)
+        return resolved_cert_dir, ssl_ctx
+
+    logger.warning(
+        "No TLS certificates found. Launching Fluent in HTTP mode. "
+        "For HTTPS, provide webserver.crt, webserver.key, and dh.pem."
     )
+    return None, None
+
+
+def _spawn_fluent(
+    fluent_exe: str,
+    dimension: str,
+    port: int,
+    auth_token: str,
+    cert_dir: str | None,
+) -> subprocess.Popen:
+    """Spawn the Fluent web server process; raise if it exits immediately."""
+    launch_cmd = [fluent_exe, dimension, "-ws", f"-ws-port={port}"]
+    logger.info("Launching Fluent: %s", launch_cmd)
+
+    env = os.environ.copy()
+    env["FLUENT_WEBSERVER_TOKEN"] = auth_token
+    if cert_dir:
+        env["FLUENT_WEBSERVER_CERTIFICATE_ROOT"] = cert_dir
+
+    process = subprocess.Popen(launch_cmd, env=env)  # nosec B603 B607
+    if process.poll() is not None:
+        raise RuntimeError(f"Fluent exited immediately (rc={process.returncode}).")
+    return process
+
+
+def _connect_client(
+    port: int,
+    ssl_context: ssl.SSLContext | None,
+    auth_token: str,
+    component: str,
+    timeout: float,
+    max_retries: int,
+    retry_delay: float,
+) -> FluentRestClient:
+    """Build a :class:`FluentRestClient` bound to the running server."""
+    scheme = "https" if ssl_context else "http"
+    base_url = f"{scheme}://{_LOCALHOST}:{port}"
+    return FluentRestClient(
+        base_url,
+        auth_token=auth_token,
+        component=component,
+        timeout=timeout,
+        max_retries=max_retries,
+        retry_delay=retry_delay,
+        ssl_context=ssl_context,
+    )
+
+
+def _terminate_process(process: subprocess.Popen) -> None:
+    """Terminate a process, escalating to ``kill`` if it does not exit."""
+    process.terminate()
+    try:
+        process.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
 
 
 # ---------------------------------------------------------------------------
@@ -238,66 +297,35 @@ def launch_webserver(
     auth_token = _generate_auth_token()
 
     # 2 — discover user-provided TLS certificates
-    resolved_cert_dir = _find_cert_dir(cert_dir)
-    ssl_ctx = None
-    if resolved_cert_dir:
-        ssl_ctx = _build_ssl_context(resolved_cert_dir)
-        logger.info("HTTPS enabled — certificates from %s", resolved_cert_dir)
-    else:
-        logger.warning(
-            "No TLS certificates found. Launching Fluent in HTTP mode. "
-            "For HTTPS, provide webserver.crt, webserver.key, and dh.pem "
-        )
+    resolved_cert_dir, ssl_ctx = _resolve_transport_security(cert_dir)
 
     # 3 — discover a free local TCP port (pure stdlib)
     port = _get_free_port()
     logger.info("Discovered free port %d for Fluent web server.", port)
 
     # 4 — resolve the Fluent executable
-    fluent_exe = _get_fluent_exe(
-        product_version=product_version,
-        fluent_path=fluent_path,
+    fluent_exe = str(
+        get_fluent_exe_path(product_version=product_version, fluent_path=fluent_path)
     )
 
     # 5 — build the launch command and spawn Fluent
-    launch_cmd = [fluent_exe, dimension, "-ws", f"-ws-port={port}"]
-    logger.info("Launching Fluent: %s", launch_cmd)
-
-    env = os.environ.copy()
-    env["FLUENT_WEBSERVER_TOKEN"] = auth_token
-    if resolved_cert_dir:
-        env["FLUENT_WEBSERVER_CERTIFICATE_ROOT"] = resolved_cert_dir
-    process = subprocess.Popen(launch_cmd, env=env)  # nosec B603 B607
-
-    if process.poll() is not None:
-        raise RuntimeError(f"Fluent exited immediately (rc={process.returncode}).")
+    process = _spawn_fluent(fluent_exe, dimension, port, auth_token, resolved_cert_dir)
 
     # 6 — wait for the web server and construct the session
     try:
         _wait_for_server(port, timeout=start_timeout, ssl_context=ssl_ctx)
-
-        scheme = "https" if ssl_ctx else "http"
-        base_url = f"{scheme}://{_LOCALHOST}:{port}"
-        session = FluentRestClient(
-            base_url,
+        return _connect_client(
+            port=port,
+            ssl_context=ssl_ctx,
             auth_token=auth_token,
             component=component,
             timeout=timeout,
             max_retries=max_retries,
             retry_delay=retry_delay,
-            ssl_context=ssl_ctx,
         )
     except Exception:
         logger.exception(
-            "Failed after launching Fluent (pid=%d) — terminating.",
-            process.pid,
+            "Failed after launching Fluent (pid=%d) — terminating.", process.pid
         )
-        process.terminate()
-        try:
-            process.wait(timeout=10)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait()
+        _terminate_process(process)
         raise
-
-    return session
