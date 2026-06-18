@@ -31,8 +31,8 @@ from typing import Any, Callable
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
 
-from ansys.api.fluent.v1 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.api.fluent.v1 import datamodel_se_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v1 import datamodel_pb2 as DataModelProtoModule
+from ansys.api.fluent.v1 import datamodel_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.module_config import config

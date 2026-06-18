@@ -84,7 +84,7 @@ class LauncherArgsBase(TypedDict, total=False):
     """
     start_timeout: int
     """Maximum allowable time in seconds for connecting to the Fluent
-    server. The default is ``60`` if Fluent is launched outside a Slurm environment,
+    server. The default is ``100`` if Fluent is launched outside a Slurm environment,
     no timeout if Fluent is launched within a Slurm environment.
     """
     additional_arguments: str

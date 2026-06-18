@@ -248,11 +248,34 @@ class ErrorState:
         self._details = ""
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class FluentConnectionProperties:
-    """Stores Fluent connection properties, including connection IP, port and password;
+    """Stores Fluent connection properties, including connection IP/port or UDS path and password;
     Fluent Cortex working directory, process ID and hostname; and whether Fluent was
     launched in a docker container.
+
+    Attributes
+    ----------
+    ip : str | None
+        IP address used to connect to Fluent.
+    port : int | None
+        Port used to connect to Fluent.
+    uds_fullpath : str | Path | None
+        Full path to the Unix Domain Socket used for local connections on Linux.
+    password : str | None
+        Password used for authentication when calling Fluent services.
+    cortex_pwd : str | None
+        Fluent Cortex working directory.
+    cortex_pid : int | None
+        Process ID of the Cortex process.
+    cortex_host : str | None
+        Hostname of the Cortex process.
+    fluent_host_pid : int | None
+        Process ID of the Fluent solver host process.
+    inside_container : bool | ContainerT | None
+        Container context for Fluent.
+        Returns ``False`` when not running in a container,
+        and the container instance when running in one.
 
     Examples
     --------
@@ -268,6 +291,7 @@ class FluentConnectionProperties:
 
     ip: str | None = None
     port: int | None = None
+    uds_fullpath: str | Path | None = None
     password: str | None = None
     cortex_pwd: str | None = None
     cortex_pid: int | None = None
@@ -477,12 +501,12 @@ def _server_supports_v1(channel) -> bool:
         reflection_db = ProtoReflectionDescriptorDatabase(channel)
         desc_pool = DescriptorPool(reflection_db)
         service_desc = desc_pool.FindServiceByName(
-            "ansys.api.fluent.v1.app_utilities.ApplicationRuntime"
+            "ansys.api.fluent.v1.application_runtime.ApplicationRuntime"
         )
         method_desc = service_desc.FindMethodByName("GetProductVersion")
         return (
             method_desc.full_name
-            == "ansys.api.fluent.v1.app_utilities.ApplicationRuntime.GetProductVersion"
+            == "ansys.api.fluent.v1.application_runtime.ApplicationRuntime.GetProductVersion"
         )
     except KeyError:
         return False
@@ -584,14 +608,14 @@ class FluentConnection:
         self._channel_str = None
         self._slurm_job_id = None
         self.finalizer_cbs = []
+        self._uds_fullpath = None
         if channel is not None:
             self._channel = channel
         else:
-            uds_fullpath = None
             if address is not None:
                 self._channel_str = address
-                uds_fullpath = get_uds_path(address)
-                if uds_fullpath is None:
+                self._uds_fullpath = get_uds_path(address)
+                if self._uds_fullpath is None:
                     ip, port = address.rsplit(":", 1)
                     port = int(port)
             else:
@@ -600,7 +624,7 @@ class FluentConnection:
             self._channel = _get_channel(
                 ip=ip,
                 port=port,
-                uds_fullpath=uds_fullpath,
+                uds_fullpath=self._uds_fullpath,
                 allow_remote_host=allow_remote_host,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
@@ -665,14 +689,15 @@ class FluentConnection:
                 )
 
         self.connection_properties = FluentConnectionProperties(
-            ip,
-            port,
-            password,
-            cortex_pwd,
-            cortex_pid,
-            cortex_host,
-            fluent_host_pid,
-            inside_container,
+            ip=ip,
+            port=port,
+            uds_fullpath=self._uds_fullpath,
+            password=password,
+            cortex_pwd=cortex_pwd,
+            cortex_pid=cortex_pid,
+            cortex_host=cortex_host,
+            fluent_host_pid=fluent_host_pid,
+            inside_container=inside_container,
         )
 
         self._remote_instance = remote_instance
@@ -832,15 +857,15 @@ class FluentConnection:
         """
         return service(self._channel, self._metadata, *args)
 
-    def wait_process_finished(self, wait: float | int | bool = 60):
+    def wait_process_finished(self, wait: float | int | bool = 100):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
-        are still running when wait limit (default 60 seconds) is reached. Immediately
+        are still running when wait limit (default 100 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------
         wait : float, int or bool, optional
-            How long to wait for processes to finish before returning, by default 60 seconds.
+            How long to wait for processes to finish before returning, by default 100 seconds.
             Can also be set to ``True``, which will result in waiting indefinitely.
 
         Raises
@@ -854,7 +879,7 @@ class FluentConnection:
             raise UnsupportedRemoteFluentInstance()
         if isinstance(wait, bool):
             if wait:
-                wait = 60
+                wait = 100
             else:
                 logger.debug("Wait limit set to 'False', cancelling process wait.")
                 return
@@ -910,7 +935,7 @@ class FluentConnection:
             Specifies whether to wait for local Fluent processes to finish completely before proceeding.
             If omitted or specified as ``False``, will proceed as usual without
             waiting for the Fluent processes to finish.
-            Can be set to ``True`` which will wait for up to 60 seconds,
+            Can be set to ``True`` which will wait for up to 100 seconds,
             or set to a float or int value to specify the wait limit.
             If wait limit is reached, will forcefully terminate the Fluent process.
             If set to wait, will return as soon as processes completely finish.
