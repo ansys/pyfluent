@@ -138,7 +138,7 @@ class ExposureLevel(Enum):
         return NotImplemented
 
 
-def _is_exposure_level_hidden(child_cls, parent_obj) -> bool:
+def _is_hidden_by_exposure_level(child_cls, parent_obj) -> bool:
     """Whether a child settings class should be hidden based on exposure level.
 
     Parameters
@@ -153,7 +153,7 @@ def _is_exposure_level_hidden(child_cls, parent_obj) -> bool:
     bool
         True if the child should be hidden from dir and attribute access; False otherwise.
     """
-    return child_cls.exposure_level < parent_obj._root._min_exposure_level
+    return child_cls.exposure_level < parent_obj._root._global_exposure_level
 
 
 def _set_exposure_level(self, level: ExposureLevel) -> None:
@@ -167,7 +167,7 @@ def _set_exposure_level(self, level: ExposureLevel) -> None:
         ``ExposureLevel.BETA`` also exposes beta objects.
         ``ExposureLevel.ALPHA`` exposes all objects.
     """
-    self._setattr("_min_exposure_level", level)
+    self._setattr("_global_exposure_level", level)
 
 
 def _get_hidden_names(names, child_classes, obj) -> set:
@@ -175,7 +175,7 @@ def _get_hidden_names(names, child_classes, obj) -> set:
     hidden = set()
     for name in names:
         child_cls = child_classes.get(name)
-        if child_cls is not None and _is_exposure_level_hidden(child_cls, obj):
+        if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
             hidden.add(name)
         elif _is_deprecated(object.__getattribute__(obj, name)):
             hidden.add(name)
@@ -185,7 +185,7 @@ def _get_hidden_names(names, child_classes, obj) -> set:
 def _raise_if_exposure_hidden(name, child_classes, obj) -> None:
     """Raise AttributeError if name is hidden due to exposure level."""
     child_cls = child_classes.get(name)
-    if child_cls is not None and _is_exposure_level_hidden(child_cls, obj):
+    if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
         raise AttributeError(
             f"'{name}' is not available at the current exposure level. "
             f"Call 'set_exposure_level(ExposureLevel.BETA)' or "
@@ -1278,7 +1278,7 @@ class Group(SettingsBase[DictStateType]):
         child_classes = type(self)._child_classes
         for child_name in self.child_names:
             child_cls = child_classes.get(child_name)
-            if child_cls is not None and _is_exposure_level_hidden(child_cls, self):
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
                 continue
             child = getattr(self, child_name)
             if child.is_active() and not _is_deprecated(child):
@@ -1291,7 +1291,7 @@ class Group(SettingsBase[DictStateType]):
         child_classes = type(self)._child_classes
         for command_name in self.command_names:
             child_cls = child_classes.get(command_name)
-            if child_cls is not None and _is_exposure_level_hidden(child_cls, self):
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
                 continue
             command = getattr(self, command_name)
             if command.is_active() and not _is_deprecated(command):
@@ -1304,7 +1304,7 @@ class Group(SettingsBase[DictStateType]):
         child_classes = type(self)._child_classes
         for query_name in self.query_names:
             child_cls = child_classes.get(query_name)
-            if child_cls is not None and _is_exposure_level_hidden(child_cls, self):
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
                 continue
             query = getattr(self, query_name)
             if query.is_active() and not _is_deprecated(query):
@@ -2695,7 +2695,7 @@ def get_root(
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval
-    root._setattr("_min_exposure_level", ExposureLevel.STABLE)
+    root._setattr("_global_exposure_level", ExposureLevel.STABLE)
     root._setattr("set_exposure_level", types.MethodType(_set_exposure_level, root))
     root._setattr("_file_transfer_service", file_transfer_service)
     return root
