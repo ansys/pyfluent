@@ -153,7 +153,7 @@ def _is_exposure_level_hidden(child_cls, parent_obj) -> bool:
     bool
         True if the child should be hidden from dir and attribute access; False otherwise.
     """
-    return child_cls.exposure_level < parent_obj._root._root_exposure_level
+    return child_cls.exposure_level < parent_obj._root._min_exposure_level
 
 
 def _set_exposure_level(self, level: ExposureLevel) -> None:
@@ -167,7 +167,7 @@ def _set_exposure_level(self, level: ExposureLevel) -> None:
         ``ExposureLevel.BETA`` also exposes beta objects.
         ``ExposureLevel.ALPHA`` exposes all objects.
     """
-    self._setattr("_root_exposure_level", level)
+    self._setattr("_min_exposure_level", level)
 
 
 def _get_hidden_names(names, child_classes, obj) -> set:
@@ -2695,7 +2695,7 @@ def get_root(
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval
-    root._setattr("_root_exposure_level", ExposureLevel.STABLE)
+    root._setattr("_min_exposure_level", ExposureLevel.STABLE)
     root._setattr("set_exposure_level", types.MethodType(_set_exposure_level, root))
     root._setattr("_file_transfer_service", file_transfer_service)
     return root
