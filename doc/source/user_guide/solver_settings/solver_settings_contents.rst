@@ -54,9 +54,17 @@ Accessing solver settings
 Exposure levels
 ---------------
 
-Some solver settings objects are marked as stable, beta, or alpha. By default,
-only stable objects are visible. Use ``settings.set_exposure_level()`` on the
-settings root to expose beta or alpha objects.
+Every solver settings object, command, query, and command/query argument has an
+assigned exposure level: alpha, beta, or stable. You can query a exposed settings
+object's assigned exposure level with the ``exposure_level`` attribute.
+
+.. code-block:: python
+
+  >>> solver_session.settings.setup.exposure_level
+  <ExposureLevel.STABLE: 'stable'>
+
+By default, only stable objects are exposed. Use ``settings.set_exposure_level()`` on
+the settings root to expose beta or alpha objects.
 
 .. code-block:: python
 
