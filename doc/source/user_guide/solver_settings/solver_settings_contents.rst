@@ -55,7 +55,7 @@ Exposure levels
 ---------------
 
 Every solver settings object, command, query, and command/query argument has an
-assigned exposure level: alpha, beta, or stable. You can query a exposed settings
+assigned exposure level: alpha, beta, or stable. You can query an exposed settings
 object's assigned exposure level with the ``exposure_level`` attribute.
 
 .. code-block:: python
