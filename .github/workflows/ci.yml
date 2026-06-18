@@ -40,7 +40,7 @@ jobs:
 
   docs_build_01:
     name: Build Documentation 01
-    runs-on: [self-hosted, pyfluent, poc]
+    runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
@@ -167,7 +167,7 @@ jobs:
 
   docs_build_02:
     name: Build Documentation 02
-    runs-on: [self-hosted, pyfluent, poc]
+    runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
@@ -294,7 +294,7 @@ jobs:
 
   docs_build_03:
     name: Build Documentation 03
-    runs-on: [self-hosted, pyfluent, poc]
+    runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
@@ -422,7 +422,7 @@ jobs:
   build:
     name: Build
     if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-    runs-on: [self-hosted, pyfluent, poc]
+    runs-on: [self-hosted, pyfluent]
     env:
       PYTHONDONTWRITEBYTECODE: 1
 

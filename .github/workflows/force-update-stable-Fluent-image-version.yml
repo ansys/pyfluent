@@ -21,7 +21,7 @@ env:
 jobs:
   test:
     name: Update latest Fluent image
-    runs-on: [self-hosted, pyfluent, poc]
+    runs-on: [self-hosted, pyfluent]
     timeout-minutes: 30
 
     steps:

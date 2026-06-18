@@ -24,7 +24,7 @@ env:
 jobs:
   build_test:
     name: Build and Test
-    runs-on: [self-hosted, pyfluent, poc]
+    runs-on: [self-hosted, pyfluent]
     strategy:
       fail-fast: false
       matrix:
