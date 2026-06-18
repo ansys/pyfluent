@@ -1006,3 +1006,46 @@ def test_field_data_objects_3d_with_location_objects_overall(
     assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
 
     assert list(path_lines_data["cold-inlet"].lines[100]) == [100, 101]
+
+
+def test_field_data_exceptions_using_variable_catalog(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+
+    field_data = solver.fields.field_data
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.solution.initialization.hybrid_initialize()
+    assert field_data.is_data_valid()
+
+    with pytest.raises(TypeError):
+        scalar_data_request = ScalarFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY, surfaces=["cold-inlet"]
+        )
+    scalar_data_request = ScalarFieldDataRequest(
+        field_name=VariableCatalog.ABSOLUTE_PRESSURE, surfaces=["cold-inlet"]
+    )
+    assert scalar_data_request
+
+    with pytest.raises(TypeError):
+        vector_data_request = VectorFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY_MAGNITUDE, surfaces=["cold-inlet"]
+        )
+    vector_data_request = VectorFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY, surfaces=["cold-inlet"]
+    )
+    assert vector_data_request
+
+    with pytest.raises(TypeError):
+        path_lines_data_request = PathlinesFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY,
+            surfaces=["cold-inlet", "hot-inlet"],
+            flatten_connectivity=True,
+        )
+    path_lines_data_request = PathlinesFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY_MAGNITUDE,
+        surfaces=["cold-inlet", "hot-inlet"],
+        flatten_connectivity=True,
+    )
+    assert path_lines_data_request
