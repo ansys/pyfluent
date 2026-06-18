@@ -51,6 +51,61 @@ Accessing solver settings
   >>> results = solver_session.settings.results
 
 
+Exposure levels
+---------------
+
+Some solver settings objects are marked as stable, beta, or alpha. By default,
+only stable objects are visible. Use ``settings.set_exposure_level()`` on the
+settings root to expose beta or alpha objects.
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core import ExposureLevel
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.STABLE)
+
+The available levels are:
+
+- ``ExposureLevel.STABLE``: Shows only stable objects.
+- ``ExposureLevel.BETA``: Shows stable and beta objects.
+- ``ExposureLevel.ALPHA``: Shows stable, beta, and alpha objects.
+
+Show beta objects
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core import ExposureLevel
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
+
+After enabling beta exposure, beta settings objects, commands, queries, and
+command/query arguments become accessible.
+
+Show alpha objects
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.ALPHA)
+
+This also keeps beta objects visible.
+
+.. note::
+
+  - ``set_exposure_level()`` is available only on the settings root.
+
+  .. code-block:: python
+
+    >>> from ansys.fluent.core import ExposureLevel
+    >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
+    >>> solver_session.settings.setup.set_exposure_level(ExposureLevel.BETA)
+    Traceback (most recent call last):
+    ...
+    AttributeError: ...
+
+  - If you try to access a hidden object before enabling the required exposure
+    level, an ``AttributeError`` is raised.
+
+
 Types of settings objects
 -------------------------
 

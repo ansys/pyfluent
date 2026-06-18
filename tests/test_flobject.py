@@ -29,11 +29,11 @@ import weakref
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
+from ansys.fluent.core import ExposureLevel
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
-    ExposureLevel,
     InactiveObjectError,
     _gethash,
     find_children,
