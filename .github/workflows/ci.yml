@@ -37,156 +37,263 @@ env:
   PYFLUENT_LAUNCH_FLUENT_TIMEOUT: 180
 
 jobs:
-  add-license-headers:
-    name: "Add license headers"
-    runs-on: ubuntu-latest
+
+  docs_build_01:
+    name: Build Documentation 01
+    runs-on: [self-hosted, pyfluent, poc]
+    env:
+      DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
+      PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
+      PYTHONDONTWRITEBYTECODE: 1
+
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: "Install and run add-license-headers"
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Install OS packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
+
+      - name: Cache pip
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+          lookup-only: false # zizmor: ignore[cache-poisoning]
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
+
+      - name: Check Quarto Version
         shell: bash
         run: |
-          python -m pip install -U pip
-          pip install pre-commit
-          pre-commit install
-          pre-commit run add-license-headers --all-files --hook-stage manual
+          quarto --version
 
-  update-changelog:
-    name: "Update CHANGELOG (on release)"
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # Required to commit and push CHANGELOG updates.
-      pull-requests: write # Required to create or update changelog PRs.
-    steps:
-      - uses: ansys/actions/doc-deploy-changelog@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - name: Verify tinytex is installed
+        run: |
+          quarto install tinytex --no-prompt --update-path
+
+      - name: "Install Poppler for PDF to PNG conversion"
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
+      - name: Cache API Code
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        id: cache-api-code
         with:
-          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
-          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
-          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          path: |
+            src/ansys/fluent/core/generated
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
-  docs-style:
-    name: Documentation Style Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Running Vale
-        uses: ansys/actions/doc-style@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - name: Login to GitHub Container Registry
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-  code-style:
-    name: Code style
-    runs-on: ubuntu-latest
+      - name: Pull Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Run API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: Build Source Documentation
+        run: |
+          pip install -r requirements/requirements_build.txt
+          pip install ansys-fluent-core[docs,reader,tests]
+          make build-doc-source
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Zip HTML Documentation before upload
+        env:
+          DOC_DEPLOYMENT_IMG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+        run: |
+          sudo apt install zip -y
+          pushd doc/_build/html
+          zip -r ../../../HTML-Documentation-tag-${DOC_DEPLOYMENT_IMG}.zip .
+          popd
+
+      - name: Upload HTML Documentation
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
+          retention-days: 7
+
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+  docs_build_02:
+    name: Build Documentation 02
+    runs-on: [self-hosted, pyfluent, poc]
     env:
-      FLUENT_IMAGE_TAG: v26.1.latest
+      DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
+      PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
+      PYTHONDONTWRITEBYTECODE: 1
 
     steps:
-      - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          skip-install: false
+          persist-credentials: false
 
-      # - name: "Make venv"
-      #   run: uv venv --clear
-
-      # - name: "Install extras"
-      #   run: uv pip sync .ci/pylock.toml
-
-      # - name: Retrieve PyFluent version
-      #   run: |
-      #     echo "PYFLUENT_VERSION=$(uv run python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-      #     echo "PYFLUENT version is: $(uv run python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-      #   id: version
-
-      # - name: Login to GitHub Container Registry
-      #   uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
-      #   with:
-      #     registry: ghcr.io
-      #     username: ansys-bot
-      #     password: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Cache API Code
-      #   uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
-      #   id: cache-api-code
-      #   with:
-      #     path: |
-      #       src/ansys/fluent/core/generated
-      #     key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.FLUENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-      #     lookup-only: false # zizmor: ignore[cache-poisoning]
-
-      # - name:  "Generate the certificates"
-      #   run: bash .ci/generate_certs.sh
-
-      # - name: "Regenerate API codegen"
-      #   run: uv run codegen/allapigen.py
-
-      # - name: "Check type hints"
-      #   run: uv run basedpyright --baselinemode=auto
-
-  commit-style:
-    name: "Run commit style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/check-pr-title@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - name: Setup Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          python-version: ${{ env.PYTHON_VERSION }}
 
-  test-import:
-    name: Build and Smoke tests
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
-        should-release:
-          - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
-        exclude:
-          - should-release: false
-            os: macos-latest
-    steps:
-      - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Install OS packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
+
+      - name: Cache pip
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
-          library-name: ${{ env.PACKAGE_NAME }}
-          operating-system: ${{ matrix.os }}
-          python-version: ${{ matrix.python-version }}
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
-  check-vulnerabilities:
-    name: "Check library vulnerabilities"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/check-vulnerabilities@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
+
+      - name: Check Quarto Version
+        shell: bash
+        run: |
+          quarto --version
+
+      - name: Verify tinytex is installed
+        run: |
+          quarto install tinytex --no-prompt --update-path
+
+      - name: "Install Poppler for PDF to PNG conversion"
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
+      - name: Cache API Code
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        id: cache-api-code
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-          python-package-name: ${{ env.PACKAGE_NAME }}
-          dev-mode: ${{ github.ref != 'refs/heads/main' }}
-          upload-reports: True
-          hide-log: false
-          bandit-configfile: "pyproject.toml"
+          path: |
+            src/ansys/fluent/core/generated
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
-  actions-security:
-    name: "Actions Security"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/check-actions-security@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
+      - name: Login to GitHub Container Registry
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
-          generate-summary: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          auditing-level: "high"
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-  docs_build:
-    name: Build Documentation
-    needs: [docs-style]
+      - name: Pull Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Run API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: Build Source Documentation
+        run: |
+          pip install -r requirements/requirements_build.txt
+          pip install ansys-fluent-core[docs,reader,tests]
+          make build-doc-source
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Zip HTML Documentation before upload
+        env:
+          DOC_DEPLOYMENT_IMG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+        run: |
+          sudo apt install zip -y
+          pushd doc/_build/html
+          zip -r ../../../HTML-Documentation-tag-${DOC_DEPLOYMENT_IMG}.zip .
+          popd
+
+      - name: Upload HTML Documentation
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
+          retention-days: 7
+
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+  docs_build_03:
+    name: Build Documentation 03
     runs-on: [self-hosted, pyfluent, poc]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
@@ -483,309 +590,3 @@ jobs:
         run: make docker-clean-all-except-supported-images
         env:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-  test:
-    name: Unit Testing
-    if: ${{ always() }}
-    needs: build
-    runs-on: [public-ubuntu-latest-16-cores]
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image-tag: v24.2.5
-            version: 242
-          - image-tag: v25.1.4
-            version: 251
-          - image-tag: v25.2.3
-            version: 252
-          - image-tag: v26.1.latest
-            version: 261
-          - image-tag: v27.1.latest
-            version: 271
-    timeout-minutes: 60
-    env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
-
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - name: Setup Python
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: Clean Docker Data
-        run: make docker-clean-all-except-supported-images
-        env:
-          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Download package
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: PyFluent-packages
-          path: dist
-
-      - name: Install pyfluent
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: pip install -q --force-reinstall dist/*.whl > /dev/null
-
-      - name: Retrieve PyFluent version
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
-
-      - name: Login to GitHub Container Registry
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Fluent docker image
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: make docker-pull
-
-      - name: Unit Testing
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        env:
-          MATRIX_VERSION: ${{ matrix.version }}
-        run: |
-          make install-test
-          make unittest-dev-${MATRIX_VERSION}
-
-      - name: Upload 26.1 Coverage Artifacts
-        if: matrix.image-tag == 'v26.1.latest'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: coverage_report
-          path: ./htmlcov
-
-      - name: Clean Docker Data
-        run: make docker-clean-all-except-supported-images
-        env:
-          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-  test-pyconsole:
-    name: Test PyConsole
-    if: ${{ always() }}
-    needs: build
-    runs-on: [public-ubuntu-latest-16-cores]
-    timeout-minutes: 30
-    env:
-      FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - name: Setup Python
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: Clean Docker Data
-        run: make docker-clean-all-except-supported-images
-        env:
-          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Download package
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: PyFluent-packages
-          path: dist
-
-      - name: Install pyfluent
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          python -m pip install -q --force-reinstall dist/*.whl > /dev/null
-
-      - name: Retrieve PyFluent version
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          source .venv/bin/activate
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
-
-      - name: Login to GitHub Container Registry
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Fluent docker image
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          source .venv/bin/activate
-          make docker-pull
-
-      - name: Get gRPC version from local Python environment
-        id: grpc-pyfluent-version
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          source .venv/bin/activate
-          GRPC_PYFLUENT_VERSION=$(python -c "import grpc; print(grpc.__version__)")
-          echo "GRPC_PYFLUENT_VERSION=$GRPC_PYFLUENT_VERSION" >> $GITHUB_OUTPUT
-          echo "Local gRPC version is: $GRPC_PYFLUENT_VERSION"
-
-      - name: Generate certificates for gRPC
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: bash .ci/generate_certs.sh
-
-      - name: Get gRPC version from Fluent image
-        id: grpc-fluent-version
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          source .venv/bin/activate
-          GRPC_FLUENT_VERSION=$(python .ci/print_fluent_grpc_version.py)
-          echo "GRPC_FLUENT_VERSION=$GRPC_FLUENT_VERSION" >> $GITHUB_OUTPUT
-          echo "gRPC version in Fluent image is: $GRPC_FLUENT_VERSION"
-        env:
-          PYFLUENT_LOGGING: 0
-
-      - name: Install gRPC dependencies with the same version as Fluent image
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') && steps.grpc-pyfluent-version.outputs.GRPC_PYFLUENT_VERSION != steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}
-        run: |
-          echo "gRPC version mismatch: local Python environment has $GRPC_PYFLUENT_VERSION, Fluent image has $GRPC_FLUENT_VERSION. Installing gRPC packages with version $GRPC_FLUENT_VERSION to match Fluent image for testing."
-          source .venv/bin/activate
-          pip install "grpcio==${GRPC_FLUENT_VERSION}"
-          pip install "grpcio-health-checking==${GRPC_FLUENT_VERSION}"
-          pip install "grpcio-status==${GRPC_FLUENT_VERSION}"
-          pip install "grpcio-reflection==${GRPC_FLUENT_VERSION}"
-        env:
-          GRPC_PYFLUENT_VERSION: ${{ steps.grpc-pyfluent-version.outputs.GRPC_PYFLUENT_VERSION }}
-          GRPC_FLUENT_VERSION: ${{ steps.grpc-fluent-version.outputs.GRPC_FLUENT_VERSION }}
-
-      - name: Run PyConsole Tests
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          source .venv/bin/activate
-          python -m pip install ansys-fluent-core[reader,tests]
-          python -m pytest --fluent-version=27.1 tests/test_pyconsole.py
-
-  nightly-dev-test:
-    name: Release Testing
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
-    needs: build
-    runs-on: [self-hosted, pyfluent, poc]
-    env:
-      PYTEST_XDIST_AUTO_NUM_WORKERS: 1
-
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - name: Setup Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: Clean Docker Data
-        run: make docker-clean-all-except-supported-images
-        env:
-          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Download package
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: PyFluent-packages
-          path: dist
-
-      - name: Install pyfluent
-        run: pip install -q --force-reinstall dist/*.whl > /dev/null
-
-      - name: Retrieve PyFluent version
-        run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Unit Testing
-        run: |
-          make install-test
-          make unittest-all-271
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Clean Docker Data
-        run: make docker-clean-all-except-supported-images
-        env:
-          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-  release:
-    name: Release
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test]
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write       # required for trusted publishing
-      contents: write       # required for GitHub release upload
-
-    steps:
-      - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: "Download the library artifacts from build-library step"
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: PyFluent-packages
-          path: PyFluent-packages
-
-      - name: Display package file list
-        run: ls -R
-
-      - name: Upload to Private PyPi
-        run: |
-          pip install 'twine<6.2.0'
-          python -m twine upload --skip-existing ./**/*.whl
-          python -m twine upload --skip-existing ./**/*.tar.gz
-        env:
-          TWINE_USERNAME: PAT
-          TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
-          TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
-
-      - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
-        with:
-          repository-url: "https://upload.pypi.org/legacy/"
-          print-hash: true
-          packages-dir: PyFluent-packages
-          skip-existing: false
-
-      - name: Release
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
-        with:
-          files: |
-            ./**/*.whl
-            ./**/*.tar.gz
-            ./**/*-wheelhouse-*.zip
