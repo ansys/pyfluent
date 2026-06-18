@@ -153,7 +153,9 @@ def _is_hidden_by_exposure_level(child_cls, parent_obj) -> bool:
     bool
         True if the child should be hidden from dir and attribute access; False otherwise.
     """
-    return child_cls.exposure_level < parent_obj._root._global_exposure_level
+    return child_cls.exposure_level < getattr(
+        parent_obj._root, "_global_exposure_level", ExposureLevel.STABLE
+    )
 
 
 def _set_exposure_level(self, level: ExposureLevel) -> None:
