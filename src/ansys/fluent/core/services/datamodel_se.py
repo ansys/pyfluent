@@ -200,7 +200,6 @@ class DatamodelServiceImpl(ServiceProtocol):
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
 
-    # TODO: Remove it from the proto interface
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
