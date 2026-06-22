@@ -50,7 +50,6 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
 from ansys.fluent.core.application_runtime import (
     ApplicationRuntimeOld,
     ApplicationRuntimeV252,
-    ApplicationRuntimeV252V1,
 )
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
@@ -419,9 +418,9 @@ class _ConnectionInterface:
                 self._application_runtime = ApplicationRuntimeOld(self.scheme_eval)
 
             case FluentVersion.v252:
-                self._application_runtime = (
-                    ApplicationRuntimeV252V1 if supports_v1 else ApplicationRuntimeV252
-                )(self._application_runtime_service, self.scheme_eval)
+                self._application_runtime = (ApplicationRuntimeV252)(
+                    self._application_runtime_service, self.scheme_eval
+                )
 
             case _:
                 self._application_runtime = service_creator(

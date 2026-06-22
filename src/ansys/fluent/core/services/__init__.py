@@ -25,9 +25,8 @@
 from ansys.fluent.core.application_runtime import (
     ApplicationRuntime,
     ApplicationRuntimeOld,
-    ApplicationRuntimeV1,
+    ApplicationRuntimeV0,
     ApplicationRuntimeV252,
-    ApplicationRuntimeV252V1,
     BuildInfo,
     ProcessInfo,
 )
@@ -39,7 +38,7 @@ from ansys.fluent.core.services.application_runtime import (
 # Backward-compat aliases: callers that import AppUtilities* from services
 # continue to work without changes.
 AppUtilities = ApplicationRuntime
-AppUtilitiesV0 = ApplicationRuntime
+AppUtilitiesV0 = ApplicationRuntimeV0
 AppUtilitiesOld = ApplicationRuntimeOld
 from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
@@ -110,9 +109,8 @@ from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
 __all__ = (
     "ApplicationRuntime",
     "ApplicationRuntimeOld",
-    "ApplicationRuntimeV1",
+    "ApplicationRuntimeV0",
     "ApplicationRuntimeV252",
-    "ApplicationRuntimeV252V1",
     "BuildInfo",
     "ProcessInfo",
     # Backward-compat aliases
@@ -163,7 +161,7 @@ __all__ = (
 
 
 _service_cls_by_name_v0 = {
-    "app_utilities": ApplicationRuntime,
+    "app_utilities": ApplicationRuntimeV0,
     "health_check": HealthCheckServiceV0,
     "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI_V0,
@@ -183,7 +181,7 @@ _service_cls_by_name_v0 = {
 }
 
 _service_cls_by_name = {
-    "app_utilities": ApplicationRuntimeV1,
+    "app_utilities": ApplicationRuntime,
     "health_check": HealthCheckService,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,

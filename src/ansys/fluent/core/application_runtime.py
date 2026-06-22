@@ -22,11 +22,10 @@
 
 """High-level application runtime wrappers.
 
-This module owns the business-logic layer on top of the AppUtilities gRPC
+This module owns the business-logic layer on top of the ApplicationRuntime gRPC
 service.  The raw service stubs live in:
 
-* ``ansys.fluent.core.services.app_utilities_v0`` (v0 proto API)
-* ``ansys.fluent.core.services.app_utilities_v1`` (v1 proto API)
+* ``ansys.fluent.core.services.application_runtime`` (v0 and v1 proto API)
 
 Class hierarchy
 ---------------
@@ -34,54 +33,29 @@ Class hierarchy
     Scheme-based fallback used for Fluent versions before 25R2.
 
 ``ApplicationRuntime``
-    gRPC-based implementation (v0 proto API).
+    gRPC-based implementation (v1 proto API).
 
 ``ApplicationRuntimeV1(ApplicationRuntime)``
-    Thin v1 subclass – overrides only ``get_app_mode`` because the enum
-    constants differ between the two proto versions.
+    Thin v0 subclass – overrides and adds only required methods.
 
 ``ApplicationRuntimeV252(ApplicationRuntime)``
     Fallback for Fluent 25R2 servers where ``EnableBeta`` is not yet
     implemented; delegates to Scheme instead.
 """
 
-from dataclasses import dataclass
 from enum import Enum
 import os
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.abstract_application_runtime import (
+    AbstractApplicationRuntime,
+    BuildInfo,
+    ProcessInfo,
+)
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
-# ---------------------------------------------------------------------------
-# Data classes
-# ---------------------------------------------------------------------------
 
-
-@dataclass
-class ProcessInfo:
-    """Hold process information."""
-
-    process_id: int
-    hostname: str
-    working_directory: str
-
-
-@dataclass
-class BuildInfo:
-    """Hold build information."""
-
-    build_time: str
-    build_id: str
-    vcs_revision: str
-    vcs_branch: str
-
-
-# ---------------------------------------------------------------------------
-# Scheme-based fallback (pre-gRPC, Fluent < 25R2)
-# ---------------------------------------------------------------------------
-
-
-class ApplicationRuntimeOld:
+class ApplicationRuntimeOld(AbstractApplicationRuntime):
     """Application runtime backed by Scheme evaluation (Fluent < 25R2)."""
 
     def __init__(self, scheme_eval):
@@ -228,13 +202,8 @@ class ApplicationRuntimeOld:
         self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
 
 
-# ---------------------------------------------------------------------------
-# gRPC-based implementation (v0 proto API)
-# ---------------------------------------------------------------------------
-
-
-class ApplicationRuntime:
-    """Application runtime backed by the AppUtilities gRPC service (v0 proto API)."""
+class ApplicationRuntime(AbstractApplicationRuntime):
+    """Application runtime backed by the ApplicationRuntime gRPC service (v1 proto API)."""
 
     def __init__(self, service):
         """Initialize ApplicationRuntime."""
@@ -242,7 +211,7 @@ class ApplicationRuntime:
 
     def get_product_version(self) -> str:
         """Get product version."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
 
         request = _proto.GetProductVersionRequest()
         response = self.service.get_product_version(request)
@@ -250,7 +219,7 @@ class ApplicationRuntime:
 
     def get_build_info(self) -> BuildInfo:
         """Get build info."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
 
         request = _proto.GetBuildInfoRequest()
         response = self.service.get_build_info(request)
@@ -263,7 +232,7 @@ class ApplicationRuntime:
 
     def get_controller_process_info(self) -> ProcessInfo:
         """Get controller process info."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
 
         request = _proto.GetControllerProcessInfoRequest()
         response = self.service.get_controller_process_info(request)
@@ -275,7 +244,7 @@ class ApplicationRuntime:
 
     def get_solver_process_info(self) -> ProcessInfo:
         """Get solver process info."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
 
         request = _proto.GetSolverProcessInfoRequest()
         response = self.service.get_solver_process_info(request)
@@ -284,6 +253,85 @@ class ApplicationRuntime:
             hostname=response.hostname,
             working_directory=response.working_directory,
         )
+
+    def get_app_mode(self) -> Enum:
+        """Get app mode.
+
+        Raises
+        ------
+        ValueError
+            If app mode is unknown.
+        """
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
+        import ansys.fluent.core as pyfluent
+
+        request = _proto.GetAppModeRequest()
+        response = self.service.get_app_mode(request)
+        match response.app_mode:
+            case _proto.APP_MODE_UNSPECIFIED:
+                raise ValueError("Unknown app mode.")
+            case _proto.APP_MODE_MESHING:
+                return pyfluent.FluentMode.MESHING
+            case _proto.APP_MODE_SOLVER:
+                return pyfluent.FluentMode.SOLVER
+            case _proto.APP_MODE_SOLVER_ICING:
+                return pyfluent.FluentMode.SOLVER_ICING
+            case _proto.APP_MODE_SOLVER_AERO:
+                return pyfluent.FluentMode.SOLVER_AERO
+
+    def start_python_journal(self, journal_name: str | None = None) -> int:
+        """Start python journal."""
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
+
+        request = _proto.StartPythonJournalRequest()
+        if journal_name:
+            request.journal_name = journal_name
+        response = self.service.start_python_journal(request)
+        return response.journal_id
+
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
+        """Stop python journal."""
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
+
+        request = _proto.StopPythonJournalRequest()
+        if journal_id:
+            request.journal_id = journal_id
+        response = self.service.stop_python_journal(request)
+        return response.journal_str
+
+    def is_beta_enabled(self) -> bool:
+        """Return whether beta features are enabled."""
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
+
+        request = _proto.IsBetaEnabledRequest()
+        response = self.service.is_beta_enabled(request)
+        return response.is_beta_enabled
+
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
+
+        request = _proto.EnableBetaRequest()
+        self.service.enable_beta(request)
+
+    def exit(self) -> None:
+        """Exit the server."""
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
+
+        request = _proto.ExitRequest()
+        self.service.exit(request)
+
+    def set_working_directory(self, path: PathType) -> None:
+        """Change the client cortex working directory."""
+        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
+
+        request = _proto.SetWorkingDirectoryRequest()
+        request.path = os.fspath(path)
+        self.service.set_working_directory(request)
+
+
+class ApplicationRuntimeV0(ApplicationRuntime):
+    """Application runtime for the v0 proto API."""
 
     def get_app_mode(self) -> Enum:
         """Get app mode.
@@ -309,41 +357,6 @@ class ApplicationRuntime:
                 return pyfluent.FluentMode.SOLVER_ICING
             case _proto.APP_MODE_SOLVER_AERO:
                 return pyfluent.FluentMode.SOLVER_AERO
-
-    def start_python_journal(self, journal_name: str | None = None) -> int:
-        """Start python journal."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.StartPythonJournalRequest()
-        if journal_name:
-            request.journal_name = journal_name
-        response = self.service.start_python_journal(request)
-        return response.journal_id
-
-    def stop_python_journal(self, journal_id: str | None = None) -> str:
-        """Stop python journal."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.StopPythonJournalRequest()
-        if journal_id:
-            request.journal_id = journal_id
-        response = self.service.stop_python_journal(request)
-        return response.journal_str
-
-    def is_beta_enabled(self) -> bool:
-        """Return whether beta features are enabled."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.IsBetaEnabledRequest()
-        response = self.service.is_beta_enabled(request)
-        return response.is_beta_enabled
-
-    def enable_beta(self) -> None:
-        """Enable beta features."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.EnableBetaRequest()
-        self.service.enable_beta(request)
 
     def is_wildcard(self, input: str | None = None) -> bool:
         """Return whether *input* contains a wildcard pattern."""
@@ -392,67 +405,13 @@ class ApplicationRuntime:
         request.registration_id = registration_id
         self.service.unregister_pause_on_solution_events(request)
 
-    def exit(self) -> None:
-        """Exit the server."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.ExitRequest()
-        self.service.exit(request)
-
-    def set_working_directory(self, path: PathType) -> None:
-        """Change the client cortex working directory."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.SetWorkingDirectoryRequest()
-        request.path = os.fspath(path)
-        self.service.set_working_directory(request)
-
-
-# ---------------------------------------------------------------------------
-# v1 proto override – only get_app_mode differs (different enum constants)
-# ---------------------------------------------------------------------------
-
-
-class ApplicationRuntimeV1(ApplicationRuntime):
-    """Application runtime for the v1 proto API.
-
-    Identical to :class:`ApplicationRuntime` except for ``get_app_mode``,
-    which uses the v1 proto enum constants (``APP_MODE_UNSPECIFIED`` instead
-    of ``APP_MODE_UNKNOWN``).
-    """
-
-    def get_app_mode(self) -> Enum:
-        """Get app mode.
-
-        Raises
-        ------
-        ValueError
-            If app mode is unknown.
-        """
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-        import ansys.fluent.core as pyfluent
-
-        request = _proto.GetAppModeRequest()
-        response = self.service.get_app_mode(request)
-        match response.app_mode:
-            case _proto.APP_MODE_UNSPECIFIED:
-                raise ValueError("Unknown app mode.")
-            case _proto.APP_MODE_MESHING:
-                return pyfluent.FluentMode.MESHING
-            case _proto.APP_MODE_SOLVER:
-                return pyfluent.FluentMode.SOLVER
-            case _proto.APP_MODE_SOLVER_ICING:
-                return pyfluent.FluentMode.SOLVER_ICING
-            case _proto.APP_MODE_SOLVER_AERO:
-                return pyfluent.FluentMode.SOLVER_AERO
-
 
 # ---------------------------------------------------------------------------
 # Fluent 25R2 variant – EnableBeta not yet on the server
 # ---------------------------------------------------------------------------
 
 
-class ApplicationRuntimeV252(ApplicationRuntime):
+class ApplicationRuntimeV252(ApplicationRuntimeV0):
     """Application runtime for Fluent 25R2.
 
     ``enable_beta`` is not implemented on the 25R2 server so it falls
@@ -461,25 +420,6 @@ class ApplicationRuntimeV252(ApplicationRuntime):
 
     def __init__(self, service, scheme):
         """Initialize ApplicationRuntimeV252."""
-        super().__init__(service)
-        self.scheme = scheme
-
-    def enable_beta(self) -> None:
-        """Enable beta features via Scheme (25R2 fallback)."""
-        self.scheme.eval(
-            '(fl-execute-cmd "file" "beta-settings" (list (cons "enable?" #t)))'
-        )
-
-
-class ApplicationRuntimeV252V1(ApplicationRuntimeV1):
-    """Application runtime for Fluent 25R2 (v1 proto API).
-
-    Like :class:`ApplicationRuntimeV252` but inherits the v1
-    ``get_app_mode`` override from :class:`ApplicationRuntimeV1`.
-    """
-
-    def __init__(self, service, scheme):
-        """Initialize ApplicationRuntimeV252V1."""
         super().__init__(service)
         self.scheme = scheme
 
