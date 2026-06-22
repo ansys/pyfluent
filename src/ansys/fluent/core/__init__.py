@@ -43,6 +43,7 @@ from ansys.fluent.core.services.batch_ops import *
 from ansys.fluent.core.session import *
 from ansys.fluent.core.session import BaseSession as Fluent
 from ansys.fluent.core.session_utilities import *
+from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
 from ansys.fluent.core.streaming_services.events_streaming import *
 from ansys.fluent.core.streaming_services.events_streaming_v1 import *
 from ansys.fluent.core.utils import *

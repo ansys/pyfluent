@@ -70,6 +70,10 @@ class DatamodelServiceImpl(_v0.DatamodelServiceImpl):
         self._stub = DataModelGrpcModule.TextInterfaceStub(intercept_channel)
         self._metadata = metadata
 
+    def get_static_info(self, request):
+        """GetSchema RPC of DataModel service."""
+        return self._stub.GetSchema(request, metadata=self._metadata)
+
 
 class DatamodelService(_v0.DatamodelService):
     """Pure Python wrapper of DatamodelServiceImpl (v1)."""
