@@ -397,7 +397,6 @@ class EventsManager(Generic[TEvent]):
         session_events_service,
         fluent_error_state,
         session,
-        server_supports_v1: bool = False,
     ):
         """__init__ method of EventsManager class."""
         self._event_type = event_type
@@ -410,7 +409,6 @@ class EventsManager(Generic[TEvent]):
         # This has been updated from id to session, which
         # can also be done in other streaming services
         self._session = session
-        self._server_supports_v1 = server_supports_v1
         self._sync_event_ids = {}
 
     def _construct_event_info(
@@ -419,15 +417,8 @@ class EventsManager(Generic[TEvent]):
         event_info_msg = getattr(response, event.value.lower())
         # Note: MessageToDict's parameter names are different in different protobuf versions
         event_info_dict = MessageToDict(event_info_msg, True)
-        event_info_cls = EventInfoBase.derived_classes.get(event.name)
-        # Some event-info classes intentionally have no fields. Instantiate them without payload.
-        dataclass_fields = getattr(event_info_cls, "__dataclass_fields__", None)
-        if dataclass_fields is None or len(dataclass_fields) == 0:
-            return event_info_cls()
-        # v1 servers can emit empty payloads for some events; keep fallback v1-only
-        # to avoid changing backward-compatible v0 behavior.
-        if self._server_supports_v1 and not event_info_dict:
-            return event_info_cls()
+        solver_event = SolverEvent(event.value)
+        event_info_cls = EventInfoBase.derived_classes.get(solver_event)
         # Key names can be different, but their order is the same
         return event_info_cls(*event_info_dict.values())
 

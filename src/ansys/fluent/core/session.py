@@ -290,7 +290,6 @@ class BaseSession:
                     events_service,
                     self._error_state,
                     weakref.proxy(self),
-                    server_supports_v1=True,
                 )
             else:
                 self.events = EventsManagerV0[event_type](
@@ -298,7 +297,6 @@ class BaseSession:
                     events_service,
                     self._error_state,
                     weakref.proxy(self),
-                    server_supports_v1=False,
                 )
             self.events.start()
         else:
