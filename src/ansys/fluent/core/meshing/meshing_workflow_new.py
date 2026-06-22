@@ -37,13 +37,13 @@ from ansys.fluent.core.session_shared import _make_datamodel_module
 from ansys.fluent.core.workflow_new import Workflow
 
 
-def _get_base_meshing(session) -> "BaseMeshing":
+def _check_if_meshing_session(session) -> "BaseMeshing":
     """Extract a ``BaseMeshing`` instance from a session object.
 
     Parameters
     ----------
     session : PureMeshing | Meshing
-        A meshing session or its internal ``BaseMeshing`` helper.
+        A meshing session.
 
     Returns
     -------
@@ -61,13 +61,12 @@ def _get_base_meshing(session) -> "BaseMeshing":
         return session
 
     # PureMeshing / Meshing expose _base_meshing
-    base = getattr(session, "_base_meshing", None)
-    if base is not None and isinstance(base, BaseMeshing):
-        return base
+    session = getattr(session, "_base_meshing", None)
+    if session is not None and isinstance(session, BaseMeshing):
+        return session
 
     raise TypeError(
-        f"Expected a PureMeshing, Meshing, or BaseMeshing instance, "
-        f"got {type(session).__name__}."
+        f"Expected a PureMeshing or Meshing, " f"got {type(session).__name__}."
     )
 
 
@@ -97,10 +96,10 @@ class MeshingWorkflow(Workflow):
         name: str,
         initialize: bool = True,
     ) -> None:
-        base = _get_base_meshing(session)
-        workflow_root = _make_datamodel_module(base, "meshing_workflow")
-        meshing_root = base.meshing
-        fluent_version = base.get_fluent_version()
+        session = _check_if_meshing_session(session)
+        workflow_root = _make_datamodel_module(session, "meshing_workflow")
+        meshing_root = session.meshing
+        fluent_version = session.get_fluent_version()
 
         super().__init__(
             workflow=workflow_root,
@@ -108,12 +107,12 @@ class MeshingWorkflow(Workflow):
             fluent_version=fluent_version,
         )
         self._meshing = meshing_root
-        self._base_meshing = base
+        self._base_meshing = session
         self._name = name
         if initialize:
             self._new_workflow(name=self._name)
         self._initialized = True
-        base._current_workflow = self
+        session._current_workflow = self
 
 
 class WatertightMeshingWorkflow(MeshingWorkflow):
@@ -171,15 +170,14 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
-        base = _get_base_meshing(session)
         super().__init__(
-            session=base,
+            session=session,
             name="Fault-tolerant Meshing",
             initialize=initialize,
         )
         self._parent_workflow = self._workflow
-        self._part_management = base.PartManagement
-        self._pm_file_management = base.PMFileManagement
+        self._part_management = session.PartManagement
+        self._pm_file_management = session.PMFileManagement
 
     @property
     def parts(self) -> PyMenu | None:
@@ -323,10 +321,10 @@ class LoadWorkflow(Workflow):
         file_path: PathType = None,
         initialize: bool = True,
     ) -> None:
-        base = _get_base_meshing(session)
-        workflow_root = _make_datamodel_module(base, "meshing_workflow")
-        meshing_root = base.meshing
-        fluent_version = base.get_fluent_version()
+        session = _check_if_meshing_session(session)
+        workflow_root = _make_datamodel_module(session, "meshing_workflow")
+        meshing_root = session.meshing
+        fluent_version = session.get_fluent_version()
 
         super().__init__(
             workflow=workflow_root,
@@ -334,11 +332,11 @@ class LoadWorkflow(Workflow):
             fluent_version=fluent_version,
         )
         self._meshing = meshing_root
-        self._base_meshing = base
+        self._base_meshing = session
         self._name = "Load Workflow"
         if initialize:
             self._load_workflow(file_path=os.fspath(file_path))
-        base._current_workflow = self
+        session._current_workflow = self
 
 
 class CreateWorkflow(Workflow):
@@ -362,10 +360,10 @@ class CreateWorkflow(Workflow):
         session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
-        base = _get_base_meshing(session)
-        workflow_root = _make_datamodel_module(base, "meshing_workflow")
-        meshing_root = base.meshing
-        fluent_version = base.get_fluent_version()
+        session = _check_if_meshing_session(session)
+        workflow_root = _make_datamodel_module(session, "meshing_workflow")
+        meshing_root = session.meshing
+        fluent_version = session.get_fluent_version()
 
         super().__init__(
             workflow=workflow_root,
@@ -373,11 +371,11 @@ class CreateWorkflow(Workflow):
             fluent_version=fluent_version,
         )
         self._meshing = meshing_root
-        self._base_meshing = base
+        self._base_meshing = session
         self._name = "Create New"
         if initialize:
             self._create_workflow()
-        base._current_workflow = self
+        session._current_workflow = self
 
 
 # ---------------------------------------------------------------------------
