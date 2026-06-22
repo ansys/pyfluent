@@ -41,6 +41,7 @@ import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
+import warnings
 
 from typing_extensions import Unpack
 
@@ -67,6 +68,7 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -224,6 +226,15 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
+
+        if self.argvals["lightweight_mode"] and self.argvals.get("journal_file_names"):
+            warnings.warn(
+                "'lightweight_mode' is not supported together with "
+                "'journal_file_names' and will be ignored.",
+                PyFluentUserWarning,
+            )
+            self.argvals["lightweight_mode"] = False
+
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
@@ -257,10 +268,7 @@ class StandaloneLauncher:
         )
         if self.argvals["cwd"]:
             self._kwargs.update(cwd=self.argvals["cwd"])
-        self._defer_journal_file_read = bool(
-            self.argvals["journal_file_names"]
-            and (self.argvals["case_file_name"] or self.argvals["case_data_file_name"])
-        )
+
         topy = self.argvals.get("topy", [])
         if topy:
             self._launch_string += _build_journal_argument(
@@ -370,25 +378,15 @@ class StandaloneLauncher:
             return [journal_file_names]
         return journal_file_names or []
 
-    def _read_journals(self, session) -> None:
-        for journal_file_name in self._get_journal_file_names(
-            self.argvals["journal_file_names"]
-        ):
-            session.execute_tui(
-                f'/file/read-journal "{Path(journal_file_name).as_posix()}"'
-            )
-
     def _process_case_data_and_journals(self, session) -> None:
-        lightweight_sync_deferred = False
         if self.argvals["case_file_name"]:
             if FluentMode.is_meshing(self.argvals["mode"]):
                 session.tui.file.read_case(self.argvals["case_file_name"])
             elif self.argvals["lightweight_mode"]:
                 session.read_case_lightweight(
                     self.argvals["case_file_name"],
-                    start_sync=not self._defer_journal_file_read,
+                    start_sync=True,
                 )
-                lightweight_sync_deferred = self._defer_journal_file_read
             else:
                 session.settings.file.read(
                     file_type="case",
@@ -404,14 +402,7 @@ class StandaloneLauncher:
                 raise RuntimeError("Case and data file cannot be read in meshing mode.")
 
         if not self.argvals.get("topy"):
-            journal_file_names = self.argvals.get("journal_file_names")
-            if journal_file_names and not self._defer_journal_file_read:
-                if isinstance(journal_file_names, str):
-                    journal_file_names = [journal_file_names]
-                for journal_file_name in journal_file_names:
-                    session.tui.file.read_journal(journal_file_name)
-
-        if self._defer_journal_file_read:
-            self._read_journals(session)
-        if lightweight_sync_deferred:
-            session.start_case_lightweight_sync()
+            for journal_file_name in self._get_journal_file_names(
+                self.argvals.get("journal_file_names")
+            ):
+                session.tui.file.write_journal(f"{journal_file_name}.topy")
