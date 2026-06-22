@@ -62,8 +62,8 @@ from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import (
-    AppUtilitiesService,
-    AppUtilitiesServiceV0,
+    ApplicationRuntimeService,
+    ApplicationRuntimeServiceV0,
     HealthCheckService,
     HealthCheckServiceV0,
     SchemeEval,
@@ -402,14 +402,14 @@ class _ConnectionInterface:
                 SchemeEvalService, error_state
             )
             self._application_runtime_service = create_grpc_service(
-                AppUtilitiesService, error_state
+                ApplicationRuntimeService, error_state
             )
         else:
             self._scheme_eval_service = create_grpc_service(
                 SchemeEvalServiceV0, error_state
             )
             self._application_runtime_service = create_grpc_service(
-                AppUtilitiesServiceV0, error_state
+                ApplicationRuntimeServiceV0, error_state
             )
         self.scheme_eval = service_creator(
             "scheme_eval", supports_v1=supports_v1

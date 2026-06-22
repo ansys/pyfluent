@@ -27,8 +27,10 @@ Business logic lives in :mod:`ansys.fluent.core.application_runtime`.
 
 import grpc
 
-from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
-from ansys.api.fluent.v0 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
+from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModuleV0
+from ansys.api.fluent.v0 import app_utilities_pb2_grpc as AppUtilitiesGrpcModuleV0
+from ansys.api.fluent.v1 import application_runtime_pb2 as AppUtilitiesProtoModule
+from ansys.api.fluent.v1 import application_runtime_pb2_grpc as AppUtilitiesGrpcModule
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -37,16 +39,14 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 
-__all__ = ("AppUtilitiesService",)
 
-
-class AppUtilitiesService(ServiceProtocol):
-    """AppUtilities gRPC service wrapper (v0 proto API)."""
+class ApplicationRuntimeService(ServiceProtocol):
+    """AppUtilities gRPC service wrapper (v1 proto API)."""
 
     def __init__(  # pyright: ignore[reportMissingSuperCall]
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ):
-        """Initialize AppUtilitiesService."""
+        """Initialize ApplicationRuntimeService."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),
@@ -58,8 +58,8 @@ class AppUtilitiesService(ServiceProtocol):
         self._metadata = metadata
 
     def _create_stub(self, intercept_channel):
-        """Create the gRPC stub. Override in subclasses to use a different proto version."""
-        return AppUtilitiesGrpcModule.AppUtilitiesStub(intercept_channel)
+        """Create the v1 gRPC stub."""
+        return AppUtilitiesGrpcModule.ApplicationRuntimeStub(intercept_channel)
 
     def get_product_version(
         self, request: AppUtilitiesProtoModule.GetProductVersionRequest
@@ -115,40 +115,6 @@ class AppUtilitiesService(ServiceProtocol):
         """EnableBeta RPC."""
         return self._stub.EnableBeta(request, metadata=self._metadata)
 
-    def is_wildcard(
-        self, request: AppUtilitiesProtoModule.IsWildcardRequest
-    ) -> AppUtilitiesProtoModule.IsWildcardResponse:
-        """IsWildcard RPC."""
-        return self._stub.IsWildcard(request, metadata=self._metadata)
-
-    def is_solution_data_available(
-        self, request: AppUtilitiesProtoModule.IsSolutionDataAvailableRequest
-    ) -> AppUtilitiesProtoModule.IsSolutionDataAvailableResponse:
-        """IsSolutionDataAvailable RPC."""
-        return self._stub.IsSolutionDataAvailable(request, metadata=self._metadata)
-
-    def register_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsRequest
-    ) -> AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsResponse:
-        """RegisterPauseOnSolutionEvents RPC."""
-        return self._stub.RegisterPauseOnSolutionEvents(
-            request, metadata=self._metadata
-        )
-
-    def resume_on_solution_event(
-        self, request: AppUtilitiesProtoModule.ResumeOnSolutionEventRequest
-    ) -> AppUtilitiesProtoModule.ResumeOnSolutionEventResponse:
-        """ResumeOnSolutionEvent RPC."""
-        return self._stub.ResumeOnSolutionEvent(request, metadata=self._metadata)
-
-    def unregister_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsRequest
-    ) -> AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsResponse:
-        """UnregisterPauseOnSolutionEvents RPC."""
-        return self._stub.UnregisterPauseOnSolutionEvents(
-            request, metadata=self._metadata
-        )
-
     def exit(
         self, request: AppUtilitiesProtoModule.ExitRequest
     ) -> AppUtilitiesProtoModule.ExitResponse:
@@ -160,3 +126,45 @@ class AppUtilitiesService(ServiceProtocol):
     ) -> AppUtilitiesProtoModule.SetWorkingDirectoryResponse:
         """SetWorkingDirectory RPC."""
         return self._stub.SetWorkingDirectory(request, metadata=self._metadata)
+
+
+class ApplicationRuntimeServiceV0(ApplicationRuntimeService):
+    """AppUtilities gRPC service wrapper (v1 proto API)."""
+
+    def _create_stub(self, intercept_channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return AppUtilitiesGrpcModuleV0.AppUtilitiesStub(intercept_channel)
+
+    def is_wildcard(
+        self, request: AppUtilitiesProtoModuleV0.IsWildcardRequest
+    ) -> AppUtilitiesProtoModuleV0.IsWildcardResponse:
+        """IsWildcard RPC."""
+        return self._stub.IsWildcard(request, metadata=self._metadata)
+
+    def is_solution_data_available(
+        self, request: AppUtilitiesProtoModuleV0.IsSolutionDataAvailableRequest
+    ) -> AppUtilitiesProtoModuleV0.IsSolutionDataAvailableResponse:
+        """IsSolutionDataAvailable RPC."""
+        return self._stub.IsSolutionDataAvailable(request, metadata=self._metadata)
+
+    def register_pause_on_solution_events(
+        self, request: AppUtilitiesProtoModuleV0.RegisterPauseOnSolutionEventsRequest
+    ) -> AppUtilitiesProtoModuleV0.RegisterPauseOnSolutionEventsResponse:
+        """RegisterPauseOnSolutionEvents RPC."""
+        return self._stub.RegisterPauseOnSolutionEvents(
+            request, metadata=self._metadata
+        )
+
+    def resume_on_solution_event(
+        self, request: AppUtilitiesProtoModuleV0.ResumeOnSolutionEventRequest
+    ) -> AppUtilitiesProtoModuleV0.ResumeOnSolutionEventResponse:
+        """ResumeOnSolutionEvent RPC."""
+        return self._stub.ResumeOnSolutionEvent(request, metadata=self._metadata)
+
+    def unregister_pause_on_solution_events(
+        self, request: AppUtilitiesProtoModuleV0.UnregisterPauseOnSolutionEventsRequest
+    ) -> AppUtilitiesProtoModuleV0.UnregisterPauseOnSolutionEventsResponse:
+        """UnregisterPauseOnSolutionEvents RPC."""
+        return self._stub.UnregisterPauseOnSolutionEvents(
+            request, metadata=self._metadata
+        )

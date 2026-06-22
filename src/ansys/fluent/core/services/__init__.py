@@ -31,11 +31,9 @@ from ansys.fluent.core.application_runtime import (
     BuildInfo,
     ProcessInfo,
 )
-from ansys.fluent.core.services.app_utilities_v0 import (
-    AppUtilitiesService as AppUtilitiesServiceV0,
-)
-from ansys.fluent.core.services.app_utilities_v1 import (
-    AppUtilitiesService,
+from ansys.fluent.core.services.application_runtime import (
+    ApplicationRuntimeService,
+    ApplicationRuntimeServiceV0,
 )
 
 # Backward-compat aliases: callers that import AppUtilities* from services
@@ -121,8 +119,8 @@ __all__ = (
     "AppUtilities",
     "AppUtilitiesOld",
     "AppUtilitiesV0",
-    "AppUtilitiesService",
-    "AppUtilitiesServiceV0",
+    "ApplicationRuntimeService",
+    "ApplicationRuntimeServiceV0",
     "BatchOpsService",
     "BatchOps",
     "DatamodelService_SE",
