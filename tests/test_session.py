@@ -770,11 +770,18 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     assert not solver._application_runtime.is_beta_enabled()
 
-    assert not solver._application_runtime.is_wildcard("no")
+    if solver.get_fluent_version() >= FluentVersion.v271:
+        assert not solver._settings_service.is_wildcard("no")
 
-    assert solver._application_runtime.is_wildcard("yes*")
+        assert solver._settings_service.is_wildcard("yes*")
 
-    assert not solver._application_runtime.is_solution_data_available()
+        assert not solver._field_data_service.is_solution_data_available()
+    else:
+        assert not solver._application_runtime.is_wildcard("no")
+
+        assert solver._application_runtime.is_wildcard("yes*")
+
+        assert not solver._application_runtime.is_solution_data_available()
 
     tmp_path = tempfile.mkdtemp(dir=pyfluent.config.examples_path)
 

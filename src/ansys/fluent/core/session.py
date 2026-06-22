@@ -315,15 +315,27 @@ class BaseSession:
             self, get_zones_info, fluent_connection._server_supports_v1
         )
 
-        self._settings_service = service_creator(
-            "settings", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self._application_runtime,
-            self.scheme,
-            self._error_state,
-        )
+        if fluent_connection._server_supports_v1:
+            self._settings_service = service_creator(
+                "settings",
+                supports_v1=True,
+            ).create(
+                fluent_connection._channel,
+                fluent_connection._metadata,
+                self.scheme,
+                self._error_state,
+            )
+        else:
+            self._settings_service = service_creator(
+                "settings",
+                supports_v1=False,
+            ).create(
+                fluent_connection._channel,
+                fluent_connection._metadata,
+                self._application_runtime,
+                self.scheme,
+                self._error_state,
+            )
 
         self._health_check = fluent_connection._health_check
         self.connection_properties = fluent_connection.connection_properties

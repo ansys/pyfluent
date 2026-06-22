@@ -78,6 +78,10 @@ class SettingsService(_SettingsServiceV0):
     _list_field: str = "lsts"
     _settings_module = SettingsModule
 
+    def __init__(self, channel, metadata, scheme_eval, fluent_error_state) -> None:
+        """__init__ method of SettingsService class."""
+        super().__init__(channel, metadata, None, scheme_eval, fluent_error_state)
+
     def _create_service_impl(self, channel, metadata, fluent_error_state):
         """Create the v1 settings service implementation."""
         return _SettingsServiceImpl(channel, metadata, fluent_error_state)
