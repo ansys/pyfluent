@@ -626,31 +626,44 @@ class Fields:
         server_supports_v1: bool = False,
     ):
         """Initialize Fields."""
-        self._is_solution_data_valid = (
-            _session._application_runtime.is_solution_data_available
-        )
-        self._field_info = service_creator(
-            "field_info", supports_v1=server_supports_v1
-        ).create(
-            _session._field_data_service,
-            self._is_solution_data_valid,
-        )
-        self.field_data = service_creator(
-            "field_data", supports_v1=server_supports_v1
-        ).create(
-            _session._field_data_service,
-            self._field_info,
-            self._is_solution_data_valid,
-            _session.scheme,
-            get_zones_info,
-        )
+        if server_supports_v1:
+            self._field_info = service_creator(
+                "field_info", supports_v1=server_supports_v1
+            ).create(_session._field_data_service)
+            self.field_data = service_creator(
+                "field_data", supports_v1=server_supports_v1
+            ).create(
+                _session._field_data_service,
+                self._field_info,
+                _session.scheme,
+                get_zones_info,
+            )
+        else:
+            self._is_solution_data_valid = (
+                _session._application_runtime.is_solution_data_available
+            )
+            self._field_info = service_creator(
+                "field_info", supports_v1=server_supports_v1
+            ).create(
+                _session._field_data_service,
+                self._is_solution_data_valid,
+            )
+            self.field_data = service_creator(
+                "field_data", supports_v1=server_supports_v1
+            ).create(
+                _session._field_data_service,
+                self._field_info,
+                self._is_solution_data_valid,
+                _session.scheme,
+                get_zones_info,
+            )
         self.field_data_streaming = service_creator(
             "field_data_streaming", supports_v1=server_supports_v1
         ).create(_session._fluent_connection._id, _session._field_data_service)
         self.field_data_old = service_creator("field_data_old").create(
             _session._field_data_service,
             self._field_info,
-            self._is_solution_data_valid,
+            self.field_data.is_data_valid,
             _session.scheme,
         )
 
