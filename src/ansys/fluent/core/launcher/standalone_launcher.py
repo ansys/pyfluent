@@ -190,6 +190,8 @@ class StandaloneLauncher:
         lightweight_mode : bool, optional
             If True, runs in lightweight mode where mesh settings are read into a background solver session,
             replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
+            When combined with `journal_file_names`, a warning is issued and `lightweight_mode` is set to False, as
+            journal processing cannot be reliably ordered with mesh-only initialization.
         py : bool, optional
             If True, runs Fluent in Python mode. Defaults to None.
         gpu : bool, optional
@@ -216,6 +218,10 @@ class StandaloneLauncher:
         -----
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
+
+        File processing order: Case files are processed before case-data files, which are processed before
+        journal files. In lightweight mode, journal files are read before the background session is synchronized
+        with the foreground session.
         """
         import ansys.fluent.core as pyfluent
 
@@ -385,7 +391,7 @@ class StandaloneLauncher:
             elif self.argvals["lightweight_mode"]:
                 session.read_case_lightweight(
                     self.argvals["case_file_name"],
-                    start_sync=True,
+                    start_sync=False,
                 )
             else:
                 session.settings.file.read(
@@ -401,8 +407,16 @@ class StandaloneLauncher:
             else:
                 raise RuntimeError("Case and data file cannot be read in meshing mode.")
 
-        if not self.argvals.get("topy"):
+        if self.argvals.get("topy"):
             for journal_file_name in self._get_journal_file_names(
                 self.argvals.get("journal_file_names")
             ):
                 session.tui.file.write_journal(f"{journal_file_name}.topy")
+        else:
+            for journal_file_name in self._get_journal_file_names(
+                self.argvals.get("journal_file_names")
+            ):
+                session.execute_tui(f'/file/read-journal "{journal_file_name}"')
+
+        if self.argvals.get("lightweight_mode"):
+            session.start_case_lightweight_sync()
