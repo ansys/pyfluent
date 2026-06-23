@@ -106,6 +106,7 @@ jobs:
     name: "Deploy Release Documentation"
     runs-on: public-ubuntu-latest-8-cores
     needs: [build_release_docs]
+    if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: write # Required to push release documentation updates to the target repository/branch.
       pull-requests: write # Required when deployment action creates or updates pull requests.
