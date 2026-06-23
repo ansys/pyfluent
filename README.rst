@@ -80,7 +80,7 @@ Install the latest release from `PyPI
 Using a virtual environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is recommended to use a virtual environment when installing PyFluent to avoid conflicts with other Python packages.
+It is recommended to use a `virtual environment <https://docs.python.org/3/tutorial/venv.html>`_ when installing PyFluent to avoid conflicts with other Python packages.
 A virtual environment can be created and activated with the following commands:
 
 .. code:: console
