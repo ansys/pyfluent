@@ -488,7 +488,7 @@ jobs:
     name: Unit Testing
     if: ${{ always() }}
     needs: build
-    runs-on: [public-ubuntu-latest-16-cores]
+    runs-on: [ubuntu-latest]
     strategy:
       fail-fast: false
       matrix:
@@ -508,6 +508,9 @@ jobs:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
