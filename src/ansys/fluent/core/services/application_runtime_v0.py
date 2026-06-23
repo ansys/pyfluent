@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""gRPC service stub wrappers for the ApplicationRuntime service (v1 proto API).
+"""gRPC service stub wrappers for the AppUtilities service (v0 proto API).
 
 Business logic lives in :mod:`ansys.fluent.core.application_runtime`.
 """
@@ -30,7 +30,7 @@ import os
 
 import grpc
 
-from ansys.api.fluent.v1 import application_runtime_pb2, application_runtime_pb2_grpc
+from ansys.api.fluent.v0 import app_utilities_pb2, app_utilities_pb2_grpc
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.abstract_application_runtime import BuildInfo, ProcessInfo
 from ansys.fluent.core.services._protocols import ServiceProtocol
@@ -40,10 +40,11 @@ from ansys.fluent.core.services.interceptors import (
     GrpcErrorInterceptor,
     TracingInterceptor,
 )
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
 
 class ApplicationRuntimeService(ServiceProtocol):
-    """ApplicationRuntime gRPC service wrapper (v1 proto API)."""
+    """AppUtilities gRPC service wrapper (v0 proto API)."""
 
     def __init__(  # pyright: ignore[reportMissingSuperCall]
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
@@ -56,20 +57,18 @@ class ApplicationRuntimeService(ServiceProtocol):
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = application_runtime_pb2_grpc.ApplicationRuntimeStub(
-            intercept_channel
-        )
+        self._stub = app_utilities_pb2_grpc.AppUtilitiesStub(intercept_channel)
         self._metadata = metadata
 
     def get_product_version(self) -> str:
         """GetProductVersion RPC."""
-        request = application_runtime_pb2.GetProductVersionRequest()
+        request = app_utilities_pb2.GetProductVersionRequest()
         response = self._stub.GetProductVersion(request, metadata=self._metadata)
         return f"{response.major}.{response.minor}.{response.patch}"
 
     def get_build_info(self) -> BuildInfo:
         """GetBuildInfo RPC."""
-        request = application_runtime_pb2.GetBuildInfoRequest()
+        request = app_utilities_pb2.GetBuildInfoRequest()
         response = self._stub.GetBuildInfo(request, metadata=self._metadata)
         return BuildInfo(
             build_time=response.build_time,
@@ -80,7 +79,7 @@ class ApplicationRuntimeService(ServiceProtocol):
 
     def get_controller_process_info(self) -> ProcessInfo:
         """GetControllerProcessInfo RPC."""
-        request = application_runtime_pb2.GetControllerProcessInfoRequest()
+        request = app_utilities_pb2.GetControllerProcessInfoRequest()
         response = self._stub.GetControllerProcessInfo(request, metadata=self._metadata)
         return ProcessInfo(
             process_id=response.process_id,
@@ -90,7 +89,7 @@ class ApplicationRuntimeService(ServiceProtocol):
 
     def get_solver_process_info(self) -> ProcessInfo:
         """GetSolverProcessInfo RPC."""
-        request = application_runtime_pb2.GetSolverProcessInfoRequest()
+        request = app_utilities_pb2.GetSolverProcessInfoRequest()
         response = self._stub.GetSolverProcessInfo(request, metadata=self._metadata)
         return ProcessInfo(
             process_id=response.process_id,
@@ -108,23 +107,23 @@ class ApplicationRuntimeService(ServiceProtocol):
         """
         from ansys.fluent.core import FluentMode
 
-        request = application_runtime_pb2.GetAppModeRequest()
+        request = app_utilities_pb2.GetAppModeRequest()
         response = self._stub.GetAppMode(request, metadata=self._metadata)
         match response.app_mode:
-            case application_runtime_pb2.APP_MODE_UNSPECIFIED:
+            case app_utilities_pb2.APP_MODE_UNKNOWN:
                 raise ValueError("Unknown app mode.")
-            case application_runtime_pb2.APP_MODE_MESHING:
+            case app_utilities_pb2.APP_MODE_MESHING:
                 return FluentMode.MESHING
-            case application_runtime_pb2.APP_MODE_SOLVER:
+            case app_utilities_pb2.APP_MODE_SOLVER:
                 return FluentMode.SOLVER
-            case application_runtime_pb2.APP_MODE_SOLVER_ICING:
+            case app_utilities_pb2.APP_MODE_SOLVER_ICING:
                 return FluentMode.SOLVER_ICING
-            case application_runtime_pb2.APP_MODE_SOLVER_AERO:
+            case app_utilities_pb2.APP_MODE_SOLVER_AERO:
                 return FluentMode.SOLVER_AERO
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """StartPythonJournal RPC."""
-        request = application_runtime_pb2.StartPythonJournalRequest()
+        request = app_utilities_pb2.StartPythonJournalRequest()
         if journal_name:
             request.journal_name = journal_name
         response = self._stub.StartPythonJournal(request, metadata=self._metadata)
@@ -132,7 +131,7 @@ class ApplicationRuntimeService(ServiceProtocol):
 
     def stop_python_journal(self, journal_id: str | None = None) -> str:
         """StopPythonJournal RPC."""
-        request = application_runtime_pb2.StopPythonJournalRequest()
+        request = app_utilities_pb2.StopPythonJournalRequest()
         if journal_id:
             request.journal_id = journal_id
         response = self._stub.StopPythonJournal(request, metadata=self._metadata)
@@ -140,22 +139,61 @@ class ApplicationRuntimeService(ServiceProtocol):
 
     def is_beta_enabled(self) -> bool:
         """IsBetaEnabled RPC."""
-        request = application_runtime_pb2.IsBetaEnabledRequest()
+        request = app_utilities_pb2.IsBetaEnabledRequest()
         response = self._stub.IsBetaEnabled(request, metadata=self._metadata)
         return response.is_beta_enabled
 
     def enable_beta(self) -> None:
         """EnableBeta RPC."""
-        request = application_runtime_pb2.EnableBetaRequest()
+        request = app_utilities_pb2.EnableBetaRequest()
         self._stub.EnableBeta(request, metadata=self._metadata)
 
     def exit(self) -> None:
         """Exit RPC."""
-        request = application_runtime_pb2.ExitRequest()
+        request = app_utilities_pb2.ExitRequest()
         self._stub.Exit(request, metadata=self._metadata)
 
     def set_working_directory(self, path: PathType) -> None:
         """SetWorkingDirectory RPC."""
-        request = application_runtime_pb2.SetWorkingDirectoryRequest()
+        request = app_utilities_pb2.SetWorkingDirectoryRequest()
         request.path = os.fspath(path)
         self._stub.SetWorkingDirectory(request, metadata=self._metadata)
+
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """IsWildcard RPC."""
+        request = app_utilities_pb2.IsWildcardRequest()
+        request.input = input
+        response = self._stub.IsWildcard(request, metadata=self._metadata)
+        return response.is_wildcard
+
+    def is_solution_data_available(self) -> bool:
+        """IsSolutionDataAvailable RPC."""
+        request = app_utilities_pb2.IsSolutionDataAvailableRequest()
+        response = self._stub.IsSolutionDataAvailable(request, metadata=self._metadata)
+        return response.is_solution_data_available
+
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
+        """RegisterPauseOnSolutionEvents RPC."""
+        request = app_utilities_pb2.RegisterPauseOnSolutionEventsRequest()
+        request.solution_event = app_utilities_pb2.SOLUTION_EVENT_UNKNOWN
+        match solution_event:
+            case SolverEvent.ITERATION_ENDED:
+                request.solution_event = app_utilities_pb2.SOLUTION_EVENT_ITERATION
+            case SolverEvent.TIMESTEP_ENDED:
+                request.solution_event = app_utilities_pb2.SOLUTION_EVENT_TIME_STEP
+        response = self._stub.RegisterPauseOnSolutionEvents(
+            request, metadata=self._metadata
+        )
+        return response.registration_id
+
+    def resume_on_solution_event(self, registration_id: int) -> None:
+        """ResumeOnSolutionEvent RPC."""
+        request = app_utilities_pb2.ResumeOnSolutionEventRequest()
+        request.registration_id = registration_id
+        self._stub.ResumeOnSolutionEvent(request, metadata=self._metadata)
+
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
+        """UnregisterPauseOnSolutionEvents RPC."""
+        request = app_utilities_pb2.UnregisterPauseOnSolutionEventsRequest()
+        request.registration_id = registration_id
+        self._stub.UnregisterPauseOnSolutionEvents(request, metadata=self._metadata)

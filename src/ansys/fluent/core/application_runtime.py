@@ -203,7 +203,7 @@ class ApplicationRuntimeOld(AbstractApplicationRuntime):
 
 
 class ApplicationRuntime(AbstractApplicationRuntime):
-    """Application runtime backed by the ApplicationRuntime gRPC service (v1 proto API)."""
+    """Application runtime backed by the ApplicationRuntime gRPC service."""
 
     def __init__(self, service):
         """Initialize ApplicationRuntime."""
@@ -211,48 +211,19 @@ class ApplicationRuntime(AbstractApplicationRuntime):
 
     def get_product_version(self) -> str:
         """Get product version."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.GetProductVersionRequest()
-        response = self.service.get_product_version(request)
-        return f"{response.major}.{response.minor}.{response.patch}"
+        return self.service.get_product_version()
 
     def get_build_info(self) -> BuildInfo:
         """Get build info."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.GetBuildInfoRequest()
-        response = self.service.get_build_info(request)
-        return BuildInfo(
-            build_time=response.build_time,
-            build_id=response.build_id,
-            vcs_revision=response.vcs_revision,
-            vcs_branch=response.vcs_branch,
-        )
+        return self.service.get_build_info()
 
     def get_controller_process_info(self) -> ProcessInfo:
         """Get controller process info."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.GetControllerProcessInfoRequest()
-        response = self.service.get_controller_process_info(request)
-        return ProcessInfo(
-            process_id=response.process_id,
-            hostname=response.hostname,
-            working_directory=response.working_directory,
-        )
+        return self.service.get_controller_process_info()
 
     def get_solver_process_info(self) -> ProcessInfo:
         """Get solver process info."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.GetSolverProcessInfoRequest()
-        response = self.service.get_solver_process_info(request)
-        return ProcessInfo(
-            process_id=response.process_id,
-            hostname=response.hostname,
-            working_directory=response.working_directory,
-        )
+        return self.service.get_solver_process_info()
 
     def get_app_mode(self) -> Enum:
         """Get app mode.
@@ -262,76 +233,62 @@ class ApplicationRuntime(AbstractApplicationRuntime):
         ValueError
             If app mode is unknown.
         """
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-        import ansys.fluent.core as pyfluent
-
-        request = _proto.GetAppModeRequest()
-        response = self.service.get_app_mode(request)
-        match response.app_mode:
-            case _proto.APP_MODE_UNSPECIFIED:
-                raise ValueError("Unknown app mode.")
-            case _proto.APP_MODE_MESHING:
-                return pyfluent.FluentMode.MESHING
-            case _proto.APP_MODE_SOLVER:
-                return pyfluent.FluentMode.SOLVER
-            case _proto.APP_MODE_SOLVER_ICING:
-                return pyfluent.FluentMode.SOLVER_ICING
-            case _proto.APP_MODE_SOLVER_AERO:
-                return pyfluent.FluentMode.SOLVER_AERO
+        return self.service.get_app_mode()
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.StartPythonJournalRequest()
-        if journal_name:
-            request.journal_name = journal_name
-        response = self.service.start_python_journal(request)
-        return response.journal_id
+        return self.service.start_python_journal(journal_name=journal_name)
 
     def stop_python_journal(self, journal_id: str | None = None) -> str:
         """Stop python journal."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.StopPythonJournalRequest()
-        if journal_id:
-            request.journal_id = journal_id
-        response = self.service.stop_python_journal(request)
-        return response.journal_str
+        return self.service.stop_python_journal(journal_id=journal_id)
 
     def is_beta_enabled(self) -> bool:
         """Return whether beta features are enabled."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.IsBetaEnabledRequest()
-        response = self.service.is_beta_enabled(request)
-        return response.is_beta_enabled
+        return self.service.is_beta_enabled()
 
     def enable_beta(self) -> None:
         """Enable beta features."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.EnableBetaRequest()
-        self.service.enable_beta(request)
+        self.service.enable_beta()
 
     def exit(self) -> None:
         """Exit the server."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.ExitRequest()
-        self.service.exit(request)
+        self.service.exit()
 
     def set_working_directory(self, path: PathType) -> None:
         """Change the client cortex working directory."""
-        from ansys.api.fluent.v1 import application_runtime_pb2 as _proto
-
-        request = _proto.SetWorkingDirectoryRequest()
-        request.path = os.fspath(path)
-        self.service.set_working_directory(request)
+        self.service.set_working_directory(path=path)
 
 
-class ApplicationRuntimeV0(ApplicationRuntime):
-    """Application runtime for the v0 proto API."""
+class ApplicationRuntimeV261(AbstractApplicationRuntime):
+    """Application runtime for Fluent 26R1.
+
+    ``is_wildcard`` is migrated to settings in 27R1.
+    ``is_solution_data_available`` is migrated to field_data in 27R1.
+    ``register_pause_on_solution_events`` is migrated to events in 27R1.
+    ``resume_on_solution_event`` is migrated to events in 27R1.
+    ``unregister_pause_on_solution_events`` is migrated to events in 27R1.
+    """
+
+    def __init__(self, service):
+        """Initialize ApplicationRuntime."""
+        self.service = service
+
+    def get_product_version(self) -> str:
+        """Get product version."""
+        return self.service.get_product_version()
+
+    def get_build_info(self) -> BuildInfo:
+        """Get build info."""
+        return self.service.get_build_info()
+
+    def get_controller_process_info(self) -> ProcessInfo:
+        """Get controller process info."""
+        return self.service.get_controller_process_info()
+
+    def get_solver_process_info(self) -> ProcessInfo:
+        """Get solver process info."""
+        return self.service.get_solver_process_info()
 
     def get_app_mode(self) -> Enum:
         """Get app mode.
@@ -341,81 +298,62 @@ class ApplicationRuntimeV0(ApplicationRuntime):
         ValueError
             If app mode is unknown.
         """
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-        import ansys.fluent.core as pyfluent
+        return self.service.get_app_mode()
 
-        request = _proto.GetAppModeRequest()
-        response = self.service.get_app_mode(request)
-        match response.app_mode:
-            case _proto.APP_MODE_UNKNOWN:
-                raise ValueError("Unknown app mode.")
-            case _proto.APP_MODE_MESHING:
-                return pyfluent.FluentMode.MESHING
-            case _proto.APP_MODE_SOLVER:
-                return pyfluent.FluentMode.SOLVER
-            case _proto.APP_MODE_SOLVER_ICING:
-                return pyfluent.FluentMode.SOLVER_ICING
-            case _proto.APP_MODE_SOLVER_AERO:
-                return pyfluent.FluentMode.SOLVER_AERO
+    def start_python_journal(self, journal_name: str | None = None) -> int:
+        """Start python journal."""
+        return self.service.start_python_journal(journal_name=journal_name)
+
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
+        """Stop python journal."""
+        return self.service.stop_python_journal(journal_id=journal_id)
+
+    def is_beta_enabled(self) -> bool:
+        """Return whether beta features are enabled."""
+        return self.service.is_beta_enabled()
+
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        self.service.enable_beta()
+
+    def exit(self) -> None:
+        """Exit the server."""
+        self.service.exit()
+
+    def set_working_directory(self, path: PathType) -> None:
+        """Change the client cortex working directory."""
+        self.service.set_working_directory(path=path)
 
     def is_wildcard(self, input: str | None = None) -> bool:
         """Return whether *input* contains a wildcard pattern."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.IsWildcardRequest()
-        request.input = input
-        response = self.service.is_wildcard(request)
-        return response.is_wildcard
+        return self.service.is_wildcard(input=input)
 
     def is_solution_data_available(self) -> bool:
         """Return whether solution data is currently available."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.IsSolutionDataAvailableRequest()
-        response = self.service.is_solution_data_available(request)
-        return response.is_solution_data_available
+        return self.service.is_solution_data_available()
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.RegisterPauseOnSolutionEventsRequest()
-        request.solution_event = _proto.SOLUTION_EVENT_UNKNOWN
-        match solution_event:
-            case SolverEvent.ITERATION_ENDED:
-                request.solution_event = _proto.SOLUTION_EVENT_ITERATION
-            case SolverEvent.TIMESTEP_ENDED:
-                request.solution_event = _proto.SOLUTION_EVENT_TIME_STEP
-        response = self.service.register_pause_on_solution_events(request)
-        return response.registration_id
+        return self.service.register_pause_on_solution_events(
+            solution_event=solution_event
+        )
 
     def resume_on_solution_event(self, registration_id: int) -> None:
         """Resume on solution event."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.ResumeOnSolutionEventRequest()
-        request.registration_id = registration_id
-        self.service.resume_on_solution_event(request)
+        return self.service.resume_on_solution_event(registration_id=registration_id)
 
     def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
-        from ansys.api.fluent.v0 import app_utilities_pb2 as _proto
-
-        request = _proto.UnregisterPauseOnSolutionEventsRequest()
-        request.registration_id = registration_id
-        self.service.unregister_pause_on_solution_events(request)
+        return self.service.unregister_pause_on_solution_events(
+            registration_id=registration_id
+        )
 
 
-# ---------------------------------------------------------------------------
-# Fluent 25R2 variant – EnableBeta not yet on the server
-# ---------------------------------------------------------------------------
-
-
-class ApplicationRuntimeV252(ApplicationRuntimeV0):
+class ApplicationRuntimeV252(ApplicationRuntimeV261):
     """Application runtime for Fluent 25R2.
 
     ``enable_beta`` is not implemented on the 25R2 server so it falls
-    back to a Scheme call.  Accepts either a v0 or v1 service.
+    back to a Scheme call.
     """
 
     def __init__(self, service, scheme):
