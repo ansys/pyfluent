@@ -94,7 +94,6 @@ def test_initialization_settings(new_solver_session):
     }
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(new_solver_session):
     solver = new_solver_session
     case_name = download_file("vki_turbine.cas.gz", "pyfluent/vki_turbine")

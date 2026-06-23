@@ -45,7 +45,6 @@ from util.solver import check_report_definition_result
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 def test_exhaust_system(
     fault_tolerant_workflow_session_wo_exit, exhaust_system_geometry_filename
 ):
@@ -382,7 +381,7 @@ def test_exhaust_system(
                 "void-region-1",
                 "fluid-region-1",
             ],
-            "AllRegionOversetComponenList": ["no"] * 7,
+            "AllRegionOversetComponentList": ["no"] * 7,
             "AllRegionSourceList": ["object"] * 5 + ["mpt"] * 2,
             "AllRegionTypeList": ["void"] * 6 + ["fluid"],
             "AllRegionVolumeFillList": ["none"] * 6 + ["tet"],
@@ -390,13 +389,13 @@ def test_exhaust_system(
             "OldRegionLeakageSizeList": [""],
             "OldRegionMeshMethodList": ["wrap"],
             "OldRegionNameList": ["fluid-region-1"],
-            "OldRegionOversetComponenList": ["no"],
+            "OldRegionOversetComponentList": ["no"],
             "OldRegionTypeList": ["fluid"],
             "OldRegionVolumeFillList": ["hexcore"],
             "RegionLeakageSizeList": [""],
             "RegionMeshMethodList": ["wrap"],
             "RegionNameList": ["fluid-region-1"],
-            "RegionOversetComponenList": ["no"],
+            "RegionOversetComponentList": ["no"],
             "RegionTypeList": ["fluid"],
             "RegionVolumeFillList": ["tet"],
         }

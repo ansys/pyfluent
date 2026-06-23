@@ -22,10 +22,15 @@
 
 """Provides a module to create gRPC services."""
 
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesService as AppUtilitiesServiceV0,
+)
 from ansys.fluent.core.services.app_utilities import AppUtilities as AppUtilitiesV0
-from ansys.fluent.core.services.app_utilities_v1 import AppUtilities
-from ansys.fluent.core.services.batch_ops import BatchOpsService as BatchOpsServiceV0
-from ansys.fluent.core.services.batch_ops_v1 import BatchOpsService
+from ansys.fluent.core.services.app_utilities_v1 import (
+    AppUtilities,
+    AppUtilitiesService,
+)
+from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
 )
@@ -38,12 +43,23 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.datamodel_tui_v1 import (
     DatamodelService as DatamodelService_TUI,
 )
+from ansys.fluent.core.services.deprecated_field_data import (
+    DeprecatedFieldData as DeprecatedFieldDataV0,
+)
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService as EventsServiceV0
 from ansys.fluent.core.services.events_v1 import EventsService
+from ansys.fluent.core.services.field_data import (
+    ZoneInfo,
+)
+from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
 from ansys.fluent.core.services.field_data import LiveFieldData as LiveFieldDataV0
 from ansys.fluent.core.services.field_data import _FieldInfo as _FieldInfoV0
-from ansys.fluent.core.services.field_data_v1 import LiveFieldData, _FieldInfo
+from ansys.fluent.core.services.field_data_v1 import (
+    FieldDataService,
+    LiveFieldData,
+    _FieldInfo,
+)
 from ansys.fluent.core.services.health_check import (
     HealthCheckService as HealthCheckServiceV0,
 )
@@ -52,8 +68,11 @@ from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServic
 from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
 from ansys.fluent.core.services.reduction import Reduction as ReductionV0
 from ansys.fluent.core.services.reduction_v1 import Reduction
+from ansys.fluent.core.services.scheme_eval import (
+    SchemeEvalService as SchemeEvalServiceV0,
+)
 from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
-from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService as SettingsServiceV0
 from ansys.fluent.core.services.settings_v1 import SettingsService
 from ansys.fluent.core.services.solution_variables import (
@@ -77,6 +96,52 @@ from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
     FieldDataStreaming,
 )
 
+__all__ = (
+    "AppUtilities",
+    "AppUtilitiesV0",
+    "AppUtilitiesService",
+    "AppUtilitiesServiceV0",
+    "BatchOpsService",
+    "BatchOps",
+    "DatamodelService_SE",
+    "DatamodelService_SE_V0",
+    "DatamodelService_TUI",
+    "DatamodelService_TUI_V0",
+    "DeprecatedFieldData",
+    "DeprecatedFieldDataV0",
+    "EventsService",
+    "EventsServiceV0",
+    "FieldDataService",
+    "FieldDataServiceV0",
+    "FieldDataStreaming",
+    "FieldDataStreamingV0",
+    "HealthCheckService",
+    "HealthCheckServiceV0",
+    "LiveFieldData",
+    "LiveFieldDataV0",
+    "MonitorsService",
+    "MonitorsServiceV0",
+    "Reduction",
+    "ReductionV0",
+    "SchemeEval",
+    "SchemeEvalService",
+    "SchemeEvalServiceV0",
+    "SchemeEvalV0",
+    "SettingsService",
+    "SettingsServiceV0",
+    "SolutionVariableData",
+    "SolutionVariableDataV0",
+    "SolutionVariableService",
+    "SolutionVariableServiceV0",
+    "TranscriptService",
+    "TranscriptServiceV0",
+    "_FieldInfo",
+    "_FieldInfoV0",
+    "ZoneInfo",
+    "service_creator",
+)
+
+
 _service_cls_by_name_v0 = {
     "app_utilities": AppUtilitiesV0,
     "health_check": HealthCheckServiceV0,
@@ -93,7 +158,7 @@ _service_cls_by_name_v0 = {
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
     "transcript": TranscriptServiceV0,
-    "batch_ops": BatchOpsServiceV0,
+    "batch_ops": BatchOpsService,
     "field_data_streaming": FieldDataStreamingV0,
 }
 
@@ -118,6 +183,7 @@ _service_cls_by_name = {
 }
 
 
+# This class is swapped in Fluent Python Console
 class service_creator:
     """A gRPC service creator."""
 

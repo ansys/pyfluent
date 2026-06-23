@@ -41,8 +41,6 @@ def _get_certs_folder():
 
 @pytest.mark.skip(reason=SKIP_UNKNOWN)
 # Root cause is unknown - works fine locally and on Test Custom Run workflow, fails on CI.
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container():
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples

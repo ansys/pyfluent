@@ -28,7 +28,6 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.units.variable_descriptor import VariableCatalog
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_solution_variables(new_solver_session):
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -47,7 +46,7 @@ def test_solution_variables(new_solver_session):
 
     assert zones_info.domains == ["mixture"]
 
-    assert set(zones_info.zones) == {
+    assert set(zones_info.zone_names) == {
         "symmetry-xyplane",
         "hot-inlet",
         "cold-inlet",
@@ -101,11 +100,11 @@ def test_solution_variables(new_solver_session):
     )
     assert sv_p_wall_fluid.domain == "mixture"
 
-    assert sv_p_wall_fluid.zones == ["wall-elbow", "elbow-fluid"]
+    assert sv_p_wall_fluid.zone_names == ["wall-elbow", "elbow-fluid"]
 
-    fluid_temp = sv_p_wall_fluid["elbow-fluid"]
-    assert fluid_temp.size == 17822
-    assert str(fluid_temp.dtype) == "float64"
+    fluid_press = sv_p_wall_fluid["elbow-fluid"]
+    assert fluid_press.size == 17822
+    assert str(fluid_press.dtype) == "float64"
 
     wall_press_array = solution_variable_data.create_empty_array(
         VariableCatalog.PRESSURE, "wall-elbow", "mixture"
@@ -132,7 +131,7 @@ def test_solution_variables(new_solver_session):
     )
 
     assert updated_sv_p_data.domain == "mixture"
-    assert updated_sv_p_data.zones == ["wall-elbow", "elbow-fluid"]
+    assert updated_sv_p_data.zone_names == ["wall-elbow", "elbow-fluid"]
 
     assert updated_sv_p_data["elbow-fluid"].size == 17822
     assert str(updated_sv_p_data["elbow-fluid"].dtype) == "float64"
@@ -141,7 +140,6 @@ def test_solution_variables(new_solver_session):
     assert updated_sv_p_data["elbow-fluid"][-1] == 600.0
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_solution_variables_single_precision(new_solver_session_sp):
     solver = new_solver_session_sp
     import_file_name = examples.download_file(
@@ -160,7 +158,7 @@ def test_solution_variables_single_precision(new_solver_session_sp):
 
     assert zones_info.domains == ["mixture"]
 
-    assert set(zones_info.zones) == {
+    assert set(zones_info.zone_names) == {
         "symmetry-xyplane",
         "hot-inlet",
         "cold-inlet",
@@ -214,14 +212,13 @@ def test_solution_variables_single_precision(new_solver_session_sp):
     )
     assert sv_p_wall_fluid.domain == "mixture"
 
-    assert sv_p_wall_fluid.zones == ["wall-elbow", "elbow-fluid"]
+    assert sv_p_wall_fluid.zone_names == ["wall-elbow", "elbow-fluid"]
 
-    fluid_temp = sv_p_wall_fluid["elbow-fluid"]
-    assert fluid_temp.size == 17822
-    assert str(fluid_temp.dtype) == "float32"
+    fluid_press = sv_p_wall_fluid["elbow-fluid"]
+    assert fluid_press.size == 17822
+    assert str(fluid_press.dtype) == "float32"
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_solution_variable_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

@@ -28,8 +28,8 @@ what differs for the v1 protobuf schema.
 
 from typing import Any, Sequence
 
-from ansys.api.fluent.v1 import scheme_eval_pb2 as SchemeEvalProtoModule
-from ansys.api.fluent.v1 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
+from ansys.api.fluent.v1 import scheme_interpreter_pb2 as SchemeEvalProtoModule
+from ansys.api.fluent.v1 import scheme_interpreter_pb2_grpc as SchemeEvalGrpcModule
 from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.scheme_eval import (
     SchemeEvalService as _SchemeEvalServiceV0,
@@ -108,7 +108,7 @@ class SchemeEvalService(_SchemeEvalServiceV0):
 
     def _create_stub(self, intercept_channel):
         """Create the v1 gRPC stub."""
-        return SchemeEvalGrpcModule.SchemeEvalStub(intercept_channel)
+        return SchemeEvalGrpcModule.SchemeInterpreterStub(intercept_channel)
 
 
 class SchemeEval(_SchemeEvalV0):
@@ -132,7 +132,7 @@ class SchemeEval(_SchemeEvalV0):
     ) -> str:
         """Executes a sequence of scheme commands."""
         request = SchemeEvalProtoModule.ExecRequest()
-        request.command.extend(commands)
+        request.commands.extend(commands)
         request.wait = wait
         request.silent = silent
         response = self.service.exec(request)

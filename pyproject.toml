@@ -18,11 +18,11 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-    "ansys-api-fluent>=0.3.37",
+    "ansys-api-fluent>=0.3.43",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
-    "ansys-units~=0.11.0",
+    "ansys-units~=0.12.1",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",
@@ -33,7 +33,9 @@ dependencies = [
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
-    "pyyaml>=6.0"
+    "pandas-stubs>=1.1.0,<3.0.0",
+    "pyyaml>=6.0",
+    "typing-extensions>=4.12",
 ]
 dynamic = ["version"]
 
@@ -45,37 +47,55 @@ reader = ["h5py>=3.15.1"]
 ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 tests = [
-    "pytest==9.0.2",
+    "pytest==9.0.3",
     "pytest-cov==7.1.0",
     "pytest-mock==3.15.1",
     "pytest-xdist==3.8.0",
-    "pyfakefs==6.1.6"
+    "pyfakefs==6.2.0"
 ]
 docs = [
     "Sphinx==8.1.3",
     "jupyter_sphinx==0.5.3",
     "numpydoc==1.10.0",
-    "matplotlib==3.10.8",
-    "ansys-sphinx-theme==1.7.2",
+    "matplotlib==3.10.9",
+    "ansys-sphinx-theme==1.8.2",
     "pypandoc==1.17",
     "pytest-sphinx==0.7.1",
     "sphinx-autobuild==2024.10.3",
     "sphinx-autodoc-typehints==3.0.1",
     "sphinx-copybutton==0.5.2",
-    "sphinx-gallery==0.20.0",
+    "sphinx-gallery==0.21.0",
     "sphinx-notfound-page==1.1.0",
     "sphinxcontrib-websupport==2.0.0",
     "sphinx_design==0.6.1",
     "sphinxemoji==0.3.2",
     "sphinx-toggleprompt==0.6.0",
-    "autodocsumm==0.2.14",
+    "autodocsumm==0.2.15",
     "beautifulsoup4==4.14.3",
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.9.36",
+    "quarto-cli==1.9.38",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2"
+]
+ci_types = [
+    "basedpyright==1.39.6",
+    "ansys-fluent-visualization",
+    "h5py",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pyfakefs",
+    "tensorflow",
+    "matplotlib",
+    "plotly",
+    "scikit-learn",
+    "seaborn",
+    "xgboost",
+    "imageio",
+    "tomli",
 ]
 
 [tool.flit.module]
@@ -98,7 +118,6 @@ addopts = """
 markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",
     "nightly: Tests that run under nightly CI",
-    "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
     "standalone: Tests that cannot be run within container"
 ]
@@ -145,7 +164,6 @@ non-cap = [
     "executeCommand",
     "createCommandArguments",
     "deleteCommandArguments",
-    "getSpecs",
     "getStaticInfo",
     "subscribeEvents",
     "unsubscribeEvents"
@@ -223,5 +241,15 @@ skips = [
     "B602",
     "B603",
     "B604",
-    "B607"
-]
+    "B607",
+    ]
+
+[tool.basedpyright]
+reportAny = false
+reportUnknownMemberType = false
+reportExplicitAny = false
+reportPrivateUsage = false
+reportUnusedCallResult = false
+reportUnannotatedClassAttribute = false
+ignore = ["doc", "src/ansys/fluent/core/generated"]
+baselineFile = ".ci/basedpyright.json"

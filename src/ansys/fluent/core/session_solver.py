@@ -24,18 +24,19 @@
 
 import logging
 import threading
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, cast
 import warnings
 import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
-from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services import SchemeEval, service_creator
+from ansys.fluent.core.services import MonitorsServiceV0, SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
+from ansys.fluent.core.services.monitor_v1 import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction as ReductionV0
 from ansys.fluent.core.services.reduction import ReductionService as ReductionServiceV0
 from ansys.fluent.core.services.reduction_v1 import Reduction, ReductionService
@@ -45,9 +46,13 @@ from ansys.fluent.core.services.solution_variables import (
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo as SolutionVariableInfoV0,
 )
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableService as SolutionVariableServiceV0,
+)
 from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
     SolutionVariableInfo,
+    SolutionVariableService,
 )
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_shared import (
@@ -77,6 +82,15 @@ from ansys.fluent.core.utils.fluent_version import (
 )
 from ansys.fluent.core.workflow import ClassicWorkflow
 
+if TYPE_CHECKING:
+    from ansys.fluent.core.fluent_connection import FluentConnection
+    from ansys.fluent.core.generated.datamodel_261.preferences import (
+        Root as preferences_root,
+    )
+    import ansys.fluent.core.generated.solver.settings_261 as settings_root
+    from ansys.fluent.core.generated.solver.tui_261 import main_menu
+
+
 tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
@@ -95,7 +109,7 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
             datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
-class Solver(BaseSession):
+class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     """Encapsulates a Fluent solver session.
 
     A ``tui`` object for solver TUI
@@ -108,7 +122,7 @@ class Solver(BaseSession):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """Solver session.
 
@@ -129,7 +143,7 @@ class Solver(BaseSession):
         _solver_event = (
             SolverEvent if fluent_connection._server_supports_v1 else SolverEventV0
         )
-        super(Solver, self).__init__(
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
@@ -145,10 +159,10 @@ class Solver(BaseSession):
 
     def _build_from_fluent_connection(
         self,
-        fluent_connection,
+        fluent_connection: "FluentConnection",
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         self._tui_service = self._datamodel_service_tui
         self._se_service = self._datamodel_service_se
@@ -162,7 +176,7 @@ class Solver(BaseSession):
             "svar", supports_v1=fluent_connection._server_supports_v1
         ).create(fluent_connection._channel, fluent_connection._metadata)
         if fluent_connection._server_supports_v1:
-            self._reduction_service = self._fluent_connection.create_grpc_service(
+            self._reduction_service = fluent_connection.create_grpc_service(
                 ReductionService, self._error_state
             )
             self.fields.reduction = Reduction(self._reduction_service, self)
@@ -170,13 +184,14 @@ class Solver(BaseSession):
                 self._solution_variable_service
             )
         else:
-            self._reduction_service = self._fluent_connection.create_grpc_service(
+            self._reduction_service = fluent_connection.create_grpc_service(
                 ReductionServiceV0, self._error_state
             )
             self.fields.reduction = ReductionV0(self._reduction_service, self)
             self.fields.solution_variable_info = SolutionVariableInfoV0(
                 self._solution_variable_service
             )
+
         self.fields.solution_variable_data = self._solution_variable_data(
             fluent_connection._server_supports_v1
         )
@@ -223,7 +238,7 @@ class Solver(BaseSession):
         )
 
     @property
-    def settings(self):
+    def settings(self) -> "settings_root.root":
         """Settings root handle."""
         if self._settings is None:
             #: Root settings object.
@@ -234,7 +249,7 @@ class Solver(BaseSession):
                 file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.scheme.eval,
             )
-        return self._settings
+        return cast("settings_root.root", self._settings)
 
     @property
     def svar_data(self):
@@ -295,16 +310,16 @@ class Solver(BaseSession):
         return self._fluent_version
 
     @property
-    def tui(self):
+    def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
             self._tui = _make_tui_module(self, "solver")
 
-        return self._tui
+        return cast("main_menu", self._tui)
 
     @property
-    def workflow(self):
+    def workflow(self) -> ClassicWorkflow:
         """Datamodel root for workflow."""
         if not self._workflow:
             self._workflow = ClassicWorkflow(
@@ -326,18 +341,18 @@ class Solver(BaseSession):
                 command._root.solution.run_calculation.interrupt()
 
     @property
-    def system_coupling(self):
+    def system_coupling(self) -> SystemCoupling:
         """System coupling object."""
         if self._system_coupling is None:
             self._system_coupling = SystemCoupling(self)
         return self._system_coupling
 
     @property
-    def preferences(self):
+    def preferences(self) -> "preferences_root":
         """Datamodel root of preferences."""
         if self._preferences is None:
             self._preferences = _make_datamodel_module(self, "preferences")
-        return self._preferences
+        return cast("preferences_root", self._preferences)
 
     def _start_bg_session_and_sync(self, launcher_args):
         """Start a background session and sync it with the current session."""
@@ -346,7 +361,7 @@ class Solver(BaseSession):
         except Exception as ex:
             raise RuntimeError("Unable to read mesh") from ex
         state = self.settings.get_state()
-        super(Solver, self)._build_from_fluent_connection(
+        super()._build_from_fluent_connection(
             bg_session._fluent_connection,
             bg_session._fluent_connection._connection_interface.scheme_eval,
             event_type=(
@@ -402,28 +417,33 @@ class Solver(BaseSession):
     def __call__(self):
         return self.get_state()
 
-    def __getattribute__(self, item: str):
-        if item.startswith("__") and item.endswith("__"):
-            return super().__getattribute__(item)
-        try:
-            _connection = super(Solver, self).__getattribute__("_fluent_connection")
-        except AttributeError:
-            _connection = False
-        if _connection is None and item not in BaseSession._inactive_session_allow_list:
-            raise AttributeError(
-                f"'{type(self).__name__}' object has no attribute '{item}'"
-            )
-        try:
-            return super(Solver, self).__getattribute__(item)
-        except AttributeError:
-            settings = super(Solver, self).__getattribute__("settings")
-            if item in settings.child_names:
-                warnings.warn(
-                    f"'{item}' is deprecated. Use 'settings.{item}' instead.",
-                    DeprecatedSettingWarning,
+    if not TYPE_CHECKING:
+
+        def __getattribute__(self, item: str):
+            if item.startswith("__") and item.endswith("__"):
+                return super().__getattribute__(item)
+            try:
+                _connection = super().__getattribute__("_fluent_connection")
+            except AttributeError:
+                _connection = False
+            if (
+                _connection is None
+                and item not in BaseSession._inactive_session_allow_list
+            ):
+                raise AttributeError(
+                    f"'{type(self).__name__}' object has no attribute '{item}'"
                 )
-                return getattr(settings, item)
-            raise
+            try:
+                return super().__getattribute__(item)
+            except AttributeError:
+                settings = super().__getattribute__("settings")
+                if item in settings.child_names:
+                    warnings.warn(
+                        f"'{item}' is deprecated. Use 'settings.{item}' instead.",
+                        DeprecatedSettingWarning,
+                    )
+                    return getattr(settings, item)
+                raise
 
     def __dir__(self):
         dir_list = set(super().__dir__()) - {
