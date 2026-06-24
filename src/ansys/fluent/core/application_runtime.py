@@ -29,18 +29,18 @@ service.  The raw service stubs live in:
 
 Class hierarchy
 ---------------
-``ApplicationRuntimeOld``
-    Scheme-based fallback used for Fluent versions before 25R2.
-
 ``ApplicationRuntime``
     gRPC-based implementation (v1 proto API).
 
-``ApplicationRuntimeV261``
+``ApplicationRuntimeV261(ApplicationRuntimeV261V252)``
     gRPC-based implementation valid till 26R1 (v0 proto API).
 
-``ApplicationRuntimeV252(ApplicationRuntimeV261)``
+``ApplicationRuntimeV252(ApplicationRuntimeV261V252)``
     Fallback for Fluent 25R2 servers where ``EnableBeta`` was not yet
     implemented; delegates to Scheme instead.
+
+``ApplicationRuntimeOld``
+    Scheme-based fallback used for Fluent versions before 25R2.
 """
 
 from enum import Enum
@@ -55,7 +55,184 @@ from ansys.fluent.core.abstract_application_runtime import (
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
 
-class ApplicationRuntimeOld(AbstractApplicationRuntime):
+class ApplicationRuntime(AbstractApplicationRuntime):
+    """Application runtime backed by the ApplicationRuntime gRPC service."""
+
+    def __init__(self, service):
+        """Initialize ApplicationRuntime."""
+        self.service = service
+
+    def get_product_version(self) -> str:
+        """Get product version."""
+        return self.service.get_product_version()
+
+    def get_build_info(self) -> BuildInfo:
+        """Get build info."""
+        return self.service.get_build_info()
+
+    def get_controller_process_info(self) -> ProcessInfo:
+        """Get controller process info."""
+        return self.service.get_controller_process_info()
+
+    def get_solver_process_info(self) -> ProcessInfo:
+        """Get solver process info."""
+        return self.service.get_solver_process_info()
+
+    def get_app_mode(self) -> Enum:
+        """Get app mode.
+
+        Raises
+        ------
+        ValueError
+            If app mode is unknown.
+        """
+        return self.service.get_app_mode()
+
+    def start_python_journal(self, journal_name: str | None = None) -> int:
+        """Start python journal."""
+        return self.service.start_python_journal(journal_name=journal_name)
+
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
+        """Stop python journal."""
+        return self.service.stop_python_journal(journal_id=journal_id)
+
+    def is_beta_enabled(self) -> bool:
+        """Return whether beta features are enabled."""
+        return self.service.is_beta_enabled()
+
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        self.service.enable_beta()
+
+    def exit(self) -> None:
+        """Exit the server."""
+        self.service.exit()
+
+    def set_working_directory(self, path: PathType) -> None:
+        """Change the client cortex working directory."""
+        self.service.set_working_directory(path=path)
+
+
+class ApplicationRuntimeV261V252:
+    """Application runtime for Fluent 26R1 and 25R2.
+
+    ``is_wildcard`` is migrated to settings in 27R1.
+    ``is_solution_data_available`` is migrated to field_data in 27R1.
+    ``register_pause_on_solution_events`` is migrated to events in 27R1.
+    ``resume_on_solution_event`` is migrated to events in 27R1.
+    ``unregister_pause_on_solution_events`` is migrated to events in 27R1.
+    """
+
+    def __init__(self, service):
+        """Initialize ApplicationRuntime."""
+        self.service = service
+
+    def get_product_version(self) -> str:
+        """Get product version."""
+        return self.service.get_product_version()
+
+    def get_build_info(self) -> BuildInfo:
+        """Get build info."""
+        return self.service.get_build_info()
+
+    def get_controller_process_info(self) -> ProcessInfo:
+        """Get controller process info."""
+        return self.service.get_controller_process_info()
+
+    def get_solver_process_info(self) -> ProcessInfo:
+        """Get solver process info."""
+        return self.service.get_solver_process_info()
+
+    def get_app_mode(self) -> Enum:
+        """Get app mode.
+
+        Raises
+        ------
+        ValueError
+            If app mode is unknown.
+        """
+        return self.service.get_app_mode()
+
+    def start_python_journal(self, journal_name: str | None = None) -> int:
+        """Start python journal."""
+        return self.service.start_python_journal(journal_name=journal_name)
+
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
+        """Stop python journal."""
+        return self.service.stop_python_journal(journal_id=journal_id)
+
+    def is_beta_enabled(self) -> bool:
+        """Return whether beta features are enabled."""
+        return self.service.is_beta_enabled()
+
+    def exit(self) -> None:
+        """Exit the server."""
+        self.service.exit()
+
+    def set_working_directory(self, path: PathType) -> None:
+        """Change the client cortex working directory."""
+        self.service.set_working_directory(path=path)
+
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """Return whether *input* contains a wildcard pattern."""
+        return self.service.is_wildcard(input=input)
+
+    def is_solution_data_available(self) -> bool:
+        """Return whether solution data is currently available."""
+        return self.service.is_solution_data_available()
+
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
+        """Register pause on solution events."""
+        return self.service.register_pause_on_solution_events(
+            solution_event=solution_event
+        )
+
+    def resume_on_solution_event(self, registration_id: int) -> None:
+        """Resume on solution event."""
+        return self.service.resume_on_solution_event(registration_id=registration_id)
+
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
+        """Unregister pause on solution events."""
+        return self.service.unregister_pause_on_solution_events(
+            registration_id=registration_id
+        )
+
+
+class ApplicationRuntimeV261(ApplicationRuntimeV261V252):
+    """Application runtime for Fluent 26R1.
+
+    ``enable_beta`` is implemented in the 26R1 server.
+    """
+
+    def __init__(self, service):
+        """Initialize ApplicationRuntimeV252."""
+        super().__init__(service)
+
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        self.service.enable_beta()
+
+
+class ApplicationRuntimeV252(ApplicationRuntimeV261V252):
+    """Application runtime for Fluent 25R2.
+
+    ``enable_beta`` is not implemented on the 25R2 server so it falls
+    back to a Scheme call.
+    """
+
+    def __init__(self, service, scheme):
+        """Initialize ApplicationRuntimeV252."""
+        super().__init__(service)
+        self.scheme = scheme
+
+    def enable_beta(self) -> None:
+        """Enable beta features via Scheme (25R2 fallback)."""
+        self.scheme.eval(
+            '(fl-execute-cmd "file" "beta-settings" (list (cons "enable?" #t)))'
+        )
+
+
+class ApplicationRuntimeOld:
     """Application runtime backed by Scheme evaluation (Fluent < 25R2)."""
 
     def __init__(self, scheme_eval):
@@ -200,169 +377,3 @@ class ApplicationRuntimeOld(AbstractApplicationRuntime):
     def set_working_directory(self, path: PathType) -> None:
         """Change the client cortex working directory."""
         self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
-
-
-class ApplicationRuntime(AbstractApplicationRuntime):
-    """Application runtime backed by the ApplicationRuntime gRPC service."""
-
-    def __init__(self, service):
-        """Initialize ApplicationRuntime."""
-        self.service = service
-
-    def get_product_version(self) -> str:
-        """Get product version."""
-        return self.service.get_product_version()
-
-    def get_build_info(self) -> BuildInfo:
-        """Get build info."""
-        return self.service.get_build_info()
-
-    def get_controller_process_info(self) -> ProcessInfo:
-        """Get controller process info."""
-        return self.service.get_controller_process_info()
-
-    def get_solver_process_info(self) -> ProcessInfo:
-        """Get solver process info."""
-        return self.service.get_solver_process_info()
-
-    def get_app_mode(self) -> Enum:
-        """Get app mode.
-
-        Raises
-        ------
-        ValueError
-            If app mode is unknown.
-        """
-        return self.service.get_app_mode()
-
-    def start_python_journal(self, journal_name: str | None = None) -> int:
-        """Start python journal."""
-        return self.service.start_python_journal(journal_name=journal_name)
-
-    def stop_python_journal(self, journal_id: str | None = None) -> str:
-        """Stop python journal."""
-        return self.service.stop_python_journal(journal_id=journal_id)
-
-    def is_beta_enabled(self) -> bool:
-        """Return whether beta features are enabled."""
-        return self.service.is_beta_enabled()
-
-    def enable_beta(self) -> None:
-        """Enable beta features."""
-        self.service.enable_beta()
-
-    def exit(self) -> None:
-        """Exit the server."""
-        self.service.exit()
-
-    def set_working_directory(self, path: PathType) -> None:
-        """Change the client cortex working directory."""
-        self.service.set_working_directory(path=path)
-
-
-class ApplicationRuntimeV261(AbstractApplicationRuntime):
-    """Application runtime for Fluent 26R1.
-
-    ``is_wildcard`` is migrated to settings in 27R1.
-    ``is_solution_data_available`` is migrated to field_data in 27R1.
-    ``register_pause_on_solution_events`` is migrated to events in 27R1.
-    ``resume_on_solution_event`` is migrated to events in 27R1.
-    ``unregister_pause_on_solution_events`` is migrated to events in 27R1.
-    """
-
-    def __init__(self, service):
-        """Initialize ApplicationRuntime."""
-        self.service = service
-
-    def get_product_version(self) -> str:
-        """Get product version."""
-        return self.service.get_product_version()
-
-    def get_build_info(self) -> BuildInfo:
-        """Get build info."""
-        return self.service.get_build_info()
-
-    def get_controller_process_info(self) -> ProcessInfo:
-        """Get controller process info."""
-        return self.service.get_controller_process_info()
-
-    def get_solver_process_info(self) -> ProcessInfo:
-        """Get solver process info."""
-        return self.service.get_solver_process_info()
-
-    def get_app_mode(self) -> Enum:
-        """Get app mode.
-
-        Raises
-        ------
-        ValueError
-            If app mode is unknown.
-        """
-        return self.service.get_app_mode()
-
-    def start_python_journal(self, journal_name: str | None = None) -> int:
-        """Start python journal."""
-        return self.service.start_python_journal(journal_name=journal_name)
-
-    def stop_python_journal(self, journal_id: str | None = None) -> str:
-        """Stop python journal."""
-        return self.service.stop_python_journal(journal_id=journal_id)
-
-    def is_beta_enabled(self) -> bool:
-        """Return whether beta features are enabled."""
-        return self.service.is_beta_enabled()
-
-    def enable_beta(self) -> None:
-        """Enable beta features."""
-        self.service.enable_beta()
-
-    def exit(self) -> None:
-        """Exit the server."""
-        self.service.exit()
-
-    def set_working_directory(self, path: PathType) -> None:
-        """Change the client cortex working directory."""
-        self.service.set_working_directory(path=path)
-
-    def is_wildcard(self, input: str | None = None) -> bool:
-        """Return whether *input* contains a wildcard pattern."""
-        return self.service.is_wildcard(input=input)
-
-    def is_solution_data_available(self) -> bool:
-        """Return whether solution data is currently available."""
-        return self.service.is_solution_data_available()
-
-    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
-        """Register pause on solution events."""
-        return self.service.register_pause_on_solution_events(
-            solution_event=solution_event
-        )
-
-    def resume_on_solution_event(self, registration_id: int) -> None:
-        """Resume on solution event."""
-        return self.service.resume_on_solution_event(registration_id=registration_id)
-
-    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
-        """Unregister pause on solution events."""
-        return self.service.unregister_pause_on_solution_events(
-            registration_id=registration_id
-        )
-
-
-class ApplicationRuntimeV252(ApplicationRuntimeV261):
-    """Application runtime for Fluent 25R2.
-
-    ``enable_beta`` is not implemented on the 25R2 server so it falls
-    back to a Scheme call.
-    """
-
-    def __init__(self, service, scheme):
-        """Initialize ApplicationRuntimeV252."""
-        super().__init__(service)
-        self.scheme = scheme
-
-    def enable_beta(self) -> None:
-        """Enable beta features via Scheme (25R2 fallback)."""
-        self.scheme.eval(
-            '(fl-execute-cmd "file" "beta-settings" (list (cons "enable?" #t)))'
-        )
