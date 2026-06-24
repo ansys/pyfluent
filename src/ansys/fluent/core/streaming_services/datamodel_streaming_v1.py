@@ -26,7 +26,7 @@ import logging
 
 from google.protobuf.json_format import MessageToDict
 
-from ansys.api.fluent.v1 import datamodel_pb2
+from ansys.api.fluent.v1 import object_model_pb2
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
@@ -55,11 +55,11 @@ class DatamodelStream(StreamingService):
         **kwargs,
     ):
         """Processes datamodel events."""
-        data_model_request = datamodel_pb2.StreamStateChangesRequest(*args, **kwargs)
+        data_model_request = object_model_pb2.StreamStateChangesRequest(*args, **kwargs)
         data_model_request.rules = rules
         data_model_request.return_state_changes = config.datamodel_return_state_changes
         if no_commands_diff_state:
-            data_model_request.diff_state = datamodel_pb2.DIFF_STATE_NOCOMMANDS
+            data_model_request.diff_state = object_model_pb2.DIFF_STATE_NOCOMMANDS
         responses = self._streaming_service.begin_streaming(
             data_model_request,
             started_evt,
@@ -68,7 +68,7 @@ class DatamodelStream(StreamingService):
         )
         while True:
             try:
-                response: datamodel_pb2.StreamStateChangesResponse = next(responses)
+                response: object_model_pb2.StreamStateChangesResponse = next(responses)
                 if not config.hide_log_secrets:
                     network_logger.debug(
                         "GRPC_TRACE: RPC = "
