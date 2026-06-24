@@ -29,27 +29,36 @@ no code-generated modules, no local settings tree.
   HTTP client using stdlib ``urllib`` only.  Each method makes one HTTP
   call and returns the server's JSON directly.
 
-* :func:`~ansys.fluent.core.rest.rest_launcher.launch_webserver` – **primary
-  entry point**. Spawns a local Fluent process with ``-ws -ws-port={port}``,
-  generates and configures the web server authentication token internally
-  for the subprocess, and returns a connected
-    :class:`~ansys.fluent.core.rest.client.FluentRestClient`.
+* :class:`~ansys.fluent.core.rest.rest_launcher.RestSolverSession` – session
+  wrapper for an already-running Fluent REST server.
 
-Example::
+* :func:`~ansys.fluent.core.rest.rest_launcher.connect_to_webserver` – connect
+  to an already-running Fluent web server and return a session object.
 
-    from ansys.fluent.core.rest import launch_webserver
+* :func:`~ansys.fluent.core.rest.rest_launcher.launch_webserver` – **phase 2**
+  (future): spawn a local Fluent process with ``-ws -ws-port={port}``.
 
-    client = launch_webserver()
+Example (connect to already-running server)::
+
+    from ansys.fluent.core.rest import connect_to_webserver
+
+    session = connect_to_webserver(
+        ip="127.0.0.1",
+        port=5000,
+        auth_token="my-secret-token",
+    )
+    client = session._client
     print(client.get_var("setup/models/energy/enabled"))
-    client.set_var("setup/models/energy/enabled", False)
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.rest.rest_launcher import (
-    launch_webserver,
+    RestSolverSession,
+    connect_to_webserver,
 )
 
 __all__ = [
     "FluentRestClient",
-    "launch_webserver",
+    "RestSolverSession",
+    "connect_to_webserver",
 ]

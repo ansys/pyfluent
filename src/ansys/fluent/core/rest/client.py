@@ -220,20 +220,20 @@ class FluentRestClient:
         except OSError as exc:
             raise FluentRestError.from_transport(exc) from exc
 
-    # def _back_off(self, attempt: int) -> None:
-    #     """Sleep for an exponentially increasing amount of time."""
-    #     time.sleep(self._retry_delay * (2**attempt))
+    def _back_off(self, attempt: int) -> None:
+        """Sleep for an exponentially increasing amount of time."""
+        time.sleep(self._retry_delay * (2**attempt))
 
-    # def _send_with_retry(self, req: urllib.request.Request, retries: int) -> Any:
-    #     """Send a request with retry logic for retryable errors."""
-    #     for attempt in range(retries):
-    #         try:
-    #             return self._send(req)
-    #         except FluentRestError as exc:
-    #             if not exc.retryable and exc.status in _RETRYABLE_STATUS_CODES:
-    #                 exc.retryable = True
-    #             self._back_off(attempt)
-    #     return self._send(req)
+    def _send_with_retry(self, req: urllib.request.Request, retries: int) -> Any:
+        """Send a request with retry logic for retryable errors."""
+        for attempt in range(retries):
+            try:
+                return self._send(req)
+            except FluentRestError as exc:
+                if not exc.retryable and exc.status in _RETRYABLE_STATUS_CODES:
+                    exc.retryable = True
+                self._back_off(attempt)
+        return self._send(req)
 
     def _request(
         self,
