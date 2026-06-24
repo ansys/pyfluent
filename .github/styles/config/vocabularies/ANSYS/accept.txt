@@ -1,7 +1,6 @@
 (?i)Ansys
 (?i)gRPC
 (?i)PyAnsys
-(?i)Synopsys
 [Ff]luent
 [Jj]ournaling
 [Mm]atplotlib
@@ -79,3 +78,4 @@ Univa
 venv
 create_workflow
 load_workflow
+Synopsys

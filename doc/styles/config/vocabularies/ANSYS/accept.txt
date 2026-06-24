@@ -1,7 +1,6 @@
 (?i)Ansys
 (?i)gRPC
 (?i)PyAnsys
-(?i)Synopsys
 [Bb]oolean
 [Ff]luent
 [Jj]ournaling
@@ -90,3 +89,4 @@ discoverability
 NGons
 config
 user_guide_variables
+Synopsys
