@@ -64,7 +64,7 @@ if __name__ == "__main__":
     t1 = time()
     print(f"\nTime to fetch static info: {t1 - t0:.2f} seconds")
     config.codegen_outdir.mkdir(parents=True, exist_ok=True)
-    print_fluent_version(solver._application_runtime)
+    print_fluent_version(solver.application_runtime)
     solver.exit()
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."

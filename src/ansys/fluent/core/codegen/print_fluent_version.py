@@ -41,4 +41,4 @@ def print_fluent_version(application_runtime):
 
 if __name__ == "__main__":
     solver = launch_fluent()
-    print_fluent_version(solver._application_runtime)
+    print_fluent_version(solver.application_runtime)

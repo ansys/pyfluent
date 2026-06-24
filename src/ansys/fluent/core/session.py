@@ -241,13 +241,13 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
-        self._application_runtime = (
+        self.application_runtime = (
             _ApplicationRuntimeFactory._create_application_runtime(
                 self.scheme, self._fluent_connection
             )
         )
 
-        self.journal = Journal(self._application_runtime)
+        self.journal = Journal(self.application_runtime)
 
         self._datamodel_service_tui = service_creator(
             "tui", supports_v1=fluent_connection._server_supports_v1
@@ -255,7 +255,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
-            self._application_runtime,
+            self.application_runtime,
             self.scheme,
         )
 
@@ -332,7 +332,7 @@ class BaseSession:
             ).create(
                 fluent_connection._channel,
                 fluent_connection._metadata,
-                self._application_runtime,
+                self.application_runtime,
                 self.scheme,
                 self._error_state,
             )
@@ -588,7 +588,7 @@ class BaseSession:
         path : os.PathLike[str | bytes] | str | bytes
             Path of the directory to change.
         """
-        self._application_runtime.set_working_directory(os.fspath(path))
+        self.application_runtime.set_working_directory(os.fspath(path))
 
     def __enter__(self):
         return self
@@ -619,11 +619,11 @@ class BaseSession:
 
     def enable_beta_features(self):
         """Enable access to Fluent beta-features"""
-        self._application_runtime.enable_beta()
+        self.application_runtime.enable_beta()
 
     @property
     def _is_beta_enabled(self):
-        return self._application_runtime.is_beta_enabled()
+        return self.application_runtime.is_beta_enabled()
 
 
 class Fields:
@@ -650,7 +650,7 @@ class Fields:
             )
         else:
             self._is_solution_data_valid = (
-                _session._application_runtime.is_solution_data_available
+                _session.application_runtime.is_solution_data_available
             )
             self._field_info = service_creator(
                 "field_info", supports_v1=server_supports_v1

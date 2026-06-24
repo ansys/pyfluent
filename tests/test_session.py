@@ -766,9 +766,9 @@ def test_general_exception_behaviour_in_session(new_solver_session):
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
-    assert solver._application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
+    assert solver.application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
 
-    assert not solver._application_runtime.is_beta_enabled()
+    assert not solver.application_runtime.is_beta_enabled()
 
     if solver.get_fluent_version() >= FluentVersion.v271:
         assert not solver._settings_service.is_wildcard("no")
@@ -777,11 +777,11 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
         assert not solver._field_data_service.is_solution_data_available()
     else:
-        assert not solver._application_runtime.is_wildcard("no")
+        assert not solver.application_runtime.is_wildcard("no")
 
-        assert solver._application_runtime.is_wildcard("yes*")
+        assert solver.application_runtime.is_wildcard("yes*")
 
-        assert not solver._application_runtime.is_solution_data_available()
+        assert not solver.application_runtime.is_solution_data_available()
 
     tmp_path = tempfile.mkdtemp(dir=pyfluent.config.examples_path)
 
@@ -791,8 +791,8 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     solver.chdir(tmp_folder)
 
-    cortex_info = solver._application_runtime.get_controller_process_info()
-    solver_info = solver._application_runtime.get_solver_process_info()
+    cortex_info = solver.application_runtime.get_controller_process_info()
+    solver_info = solver.application_runtime.get_solver_process_info()
 
     assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
 

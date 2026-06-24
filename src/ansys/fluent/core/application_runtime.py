@@ -35,11 +35,11 @@ Class hierarchy
 ``ApplicationRuntime``
     gRPC-based implementation (v1 proto API).
 
-``ApplicationRuntimeV1(ApplicationRuntime)``
-    Thin v0 subclass – overrides and adds only required methods.
+``ApplicationRuntimeV261``
+    gRPC-based implementation valid till 26R1 (v0 proto API).
 
-``ApplicationRuntimeV252(ApplicationRuntime)``
-    Fallback for Fluent 25R2 servers where ``EnableBeta`` is not yet
+``ApplicationRuntimeV252(ApplicationRuntimeV261)``
+    Fallback for Fluent 25R2 servers where ``EnableBeta`` was not yet
     implemented; delegates to Scheme instead.
 """
 
