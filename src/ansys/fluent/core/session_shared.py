@@ -26,15 +26,8 @@ import logging
 
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import warning_for_fluent_dev_version
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.utils import load_module
-
-_CODEGEN_MSG_DATAMODEL = (
-    "Currently calling the datamodel API in a generic manner. "
-    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local datamodel API classes."
-)
 
 _CODEGEN_MSG_TUI = (
     "Currently calling the TUI commands in a generic manner. "
@@ -74,7 +67,5 @@ def _make_datamodel_module(session, module_name):
         warning_for_fluent_dev_version(session._version)
         return module.Root(session._se_service, module_name, [])
     except (ImportError, FileNotFoundError) as ex:
-        datamodel_logger.debug(ex)
-        datamodel_logger.warning("Generated API not found for %s.", module_name)
-        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-        return PyMenuGeneric(session._se_service, module_name)
+        msg = "Please run `python codegen/allapigen.py` from the top-level pyfluent directory to generate the local datamodel API classes."
+        raise RuntimeError(msg) from ex

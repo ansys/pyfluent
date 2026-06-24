@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over StateEngine based datamodel gRPC service of Fluent (v1 proto API).
+"""Wrappers over StateEngine based object model gRPC service of Fluent (v1 proto API).
 
 All shared logic lives in datamodel_se.py (v0). This module keeps only
 v1-specific proto/stub/request differences.
@@ -31,13 +31,16 @@ from typing import Any, Callable
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
 
-from ansys.api.fluent.v1 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.api.fluent.v1 import datamodel_se_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v1 import object_model_pb2 as DataModelProtoModule
+from ansys.api.fluent.v1 import object_model_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services import (
     datamodel_se as _v0,  # v0 base: shared logic is reused; only v1-specific proto/stub differences are overridden below
+)
+from ansys.fluent.core.services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
 )
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -51,11 +54,6 @@ Path = _v0.Path
 PyMenuT = _v0.PyMenuT
 ValueT = _v0.ValueT
 logger = _v0.logger
-
-member_specs_oneof_fields = [
-    x.name
-    for x in DataModelProtoModule.MemberSpecs.DESCRIPTOR.oneofs_by_name["as"].fields
-]
 
 _get_value_from_message_dict = _v0._get_value_from_message_dict
 
@@ -171,7 +169,7 @@ def _normalize_v1_event_request_dict(data):
 
 
 class DatamodelServiceImpl:
-    """Wraps the StateEngine-based datamodel gRPC service of Fluent (v1)."""
+    """Wraps the StateEngine-based object model gRPC service of Fluent (v1)."""
 
     def __init__(
         self,
@@ -188,15 +186,9 @@ class DatamodelServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = DataModelGrpcModule.DataModelServiceStub(intercept_channel)
+        self._stub = DataModelGrpcModule.ObjectModelStub(intercept_channel)
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
-
-    def initialize_datamodel(
-        self, request: DataModelProtoModule.InitDatamodelRequest
-    ) -> DataModelProtoModule.InitDatamodelResponse:
-        """RPC InitDatamodel of DataModel service."""
-        return self._stub.InitDatamodel(request, metadata=self._metadata)
 
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
@@ -246,6 +238,12 @@ class DatamodelServiceImpl:
         """RPC UpdateDict of DataModel service."""
         return self._stub.UpdateDict(request, metadata=self._metadata)
 
+    def create_object(
+        self, request: DataModelProtoModule.CreateObjectRequest
+    ) -> DataModelProtoModule.CreateObjectResponse:
+        """RPC CreateObject of DataModel service."""
+        return self._stub.CreateObject(request, metadata=self._metadata)
+
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
@@ -291,17 +289,11 @@ class DatamodelServiceImpl:
                 "supported from Ansys 2023R2 onward."
             ) from None
 
-    def get_specs(
-        self, request: DataModelProtoModule.GetSpecsRequest
-    ) -> DataModelProtoModule.GetSpecsResponse:
-        """RPC GetSpecs of DataModel service."""
-        return self._stub.GetSpecs(request, metadata=self._metadata)
-
-    def get_static_info(
-        self, request: DataModelProtoModule.GetStaticInfoRequest
-    ) -> DataModelProtoModule.GetStaticInfoResponse:
-        """RPC GetStaticInfo of DataModel service."""
-        return self._stub.GetStaticInfo(request, metadata=self._metadata)
+    def get_schema(
+        self, request: DataModelProtoModule.GetSchemaRequest
+    ) -> DataModelProtoModule.GetSchemaResponse:
+        """RPC GetSchema of DataModel service."""
+        return self._stub.GetSchema(request, metadata=self._metadata)
 
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
@@ -362,7 +354,7 @@ class EventSubscription:
             self._service.subscriptions.remove(self.tag)
 
 
-class DatamodelService(StreamingService):
+class DatamodelService(CommandArgumentsCleanupMixin, StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl (v1)."""
 
     def __init__(
@@ -501,6 +493,20 @@ class DatamodelService(StreamingService):
                 version=self.version,
             )
 
+    def create_object(self, rules: str, path: str, name: str) -> None:
+        """Create a named object."""
+        request = DataModelProtoModule.CreateObjectRequest(
+            rules=rules, path=path, name=name, wait=True
+        )
+        response = self._impl.create_object(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deleted_paths,
+                version=self.version,
+            )
+
     def delete_object(self, rules: str, path: str) -> None:
         """Delete an object."""
         request = DataModelProtoModule.DeleteObjectRequest(
@@ -552,37 +558,27 @@ class DatamodelService(StreamingService):
         response = self._impl.create_command_arguments(request)
         return response.command_id
 
-    def delete_command_arguments(
+    def _delete_command_arguments_rpc(
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
-        """Delete command arguments."""
+        """Issue RPC to delete command arguments."""
         request = DataModelProtoModule.DeleteCommandArgumentsRequest(
             rules=rules, path=path, command=command, command_id=commandid
         )
         self._impl.delete_command_arguments(request)
 
-    def get_specs(
-        self,
-        rules: str,
-        path: str,
-    ) -> dict[str, Any]:
-        """Get specifications."""
-        request = DataModelProtoModule.GetSpecsRequest(
-            rules=rules,
-            path=path,
-        )
-        return _normalize_v1_datamodel_dict_keys(
-            MessageToDict(
-                self._impl.get_specs(request).member, use_integers_for_enums=True
-            )
-        )
+    def delete_command_arguments(
+        self, rules: str, path: str, command: str, commandid: str
+    ) -> None:
+        """Delete command arguments."""
+        return super().delete_command_arguments(rules, path, command, commandid)
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
-        request = DataModelProtoModule.GetStaticInfoRequest(rules=rules)
+        request = DataModelProtoModule.GetSchemaRequest(rules=rules)
         return _normalize_v1_datamodel_dict_keys(
             MessageToDict(
-                self._impl.get_static_info(request).info, use_integers_for_enums=True
+                self._impl.get_schema(request).info, use_integers_for_enums=True
             )
         )
 
@@ -810,9 +806,7 @@ PyArgumentsDictionarySubItem = _v0.PyArgumentsDictionarySubItem
 PyArgumentsParameterSubItem = _v0.PyArgumentsParameterSubItem
 PyArgumentsSingletonSubItem = _v0.PyArgumentsSingletonSubItem
 arg_class_by_type = _v0.arg_class_by_type
-PyMenuGeneric = _v0.PyMenuGeneric
 PySimpleMenuGeneric = _v0.PySimpleMenuGeneric
-PyNamedObjectContainerGeneric = _v0.PyNamedObjectContainerGeneric
 
 _bool_value_if_none = _v0._bool_value_if_none
 true_if_none = _v0.true_if_none
