@@ -56,33 +56,51 @@ from __future__ import annotations
 
 import hashlib
 import logging
-
-# import os
-# import secrets
-import socket
 import ssl
-
-# import subprocess
-# import time
 import urllib.error
 import urllib.request
 
-# from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path  # (phase 2: launch_webserver)
 from ansys.fluent.core.rest.client import FluentRestClient
-
-# from ansys.fluent.core.rest.tls import _build_ssl_context, _find_cert_dir  # (phase 2: launch_webserver)
 
 __all__ = ["connect_to_webserver", "RestSolverSession"]
 
 logger = logging.getLogger(__name__)
 
-_LOCALHOST = "127.0.0.1"
+
+def _get_ssl_context_for_https() -> ssl.SSLContext | None:
+    """Discover and build SSL context for HTTPS connections.
+
+    Searches for certificates in the following order:
+    1. ``FLUENT_WEBSERVER_CERTIFICATE_ROOT`` environment variable
+    2. Default Fluent installation path via ``AWP_ROOTnnn``
+
+    Required files at the certificate directory:
+    * ``webserver.crt`` — SSL certificate
+    * ``webserver.key`` — private key
+    * ``dh.pem`` — DH parameters
+
+    Returns
+    -------
+    ssl.SSLContext or None
+        An SSL context configured with the discovered certificates, or ``None``
+        if no valid certificate directory was found.
+    """
+    try:
+        from ansys.fluent.core.rest.tls import _build_ssl_context, _find_cert_dir
+
+        cert_dir = _find_cert_dir()
+        if cert_dir:
+            return _build_ssl_context(cert_dir)
+    except Exception as exc:
+        logger.debug("Failed to build SSL context: %s", exc)
+    return None
 
 
 def _probe_server(
     base_url: str,
     auth_token: str | None,
     timeout: float,
+    ssl_context: ssl.SSLContext | None = None,
 ) -> bool:
     """Check if a Fluent REST server is reachable via the readiness probe endpoint.
 
@@ -100,6 +118,8 @@ def _probe_server(
         Authorization header.
     timeout : float
         Socket timeout in seconds for the probe request.
+    ssl_context : ssl.SSLContext, optional
+        SSL context for HTTPS connections. Defaults to ``None`` (HTTP only).
 
     Returns
     -------
@@ -113,7 +133,9 @@ def _probe_server(
             # Build auth header same way as FluentRestClient._make_auth_headers
             auth_hash = hashlib.sha256(auth_token.encode()).hexdigest()
             req.add_header("Authorization", f"Bearer {auth_hash}")
-        with urllib.request.urlopen(req, timeout=timeout):  # nosec B310
+        with urllib.request.urlopen(
+            req, timeout=timeout, context=ssl_context
+        ):  # nosec B310
             logger.debug("Server reachability probe succeeded: %s", probe_url)
             return True
     except urllib.error.HTTPError as exc:
@@ -187,36 +209,56 @@ class RestSolverSession:
 
     def __init__(
         self,
-        base_url: str,
+        ip: str,
+        port: int,
+        auth_token: str,
         *,
-        auth_token: str | None = None,
+        scheme: str = "http",
         component: str = "fluent_1",
         timeout: float = 30.0,
         max_retries: int = 0,
         retry_delay: float = 1.0,
         ssl_context: ssl.SSLContext | None = None,
     ) -> None:
-        """Initialize a RestSolverSession."""
-        self._base_url = base_url
-        self._auth_token = auth_token
-        self._component = component
-        self._timeout = timeout
-        self._max_retries = max_retries
+        """Initialize a RestSolverSession.
+
+        This is normally called by :func:`connect_to_webserver`, not directly.
+        """
+        # Store connection parameters (Option B: session owns state)
+        self.ip = ip
+        self.port = port
+        self.auth_token = auth_token
         self._retry_delay = retry_delay
         self._ssl_context = ssl_context
+
+        # Build base_url from components
+        base_url = f"{scheme}://{ip}:{port}"
+
+        # Create the low-level REST client
         self._client = FluentRestClient(
             base_url,
             auth_token=auth_token,
             component=component,
             timeout=timeout,
             max_retries=max_retries,
-            retry_delay=retry_delay,
-            ssl_context=ssl_context,
         )
-        # Session attributes (set by connect_to_webserver)
-        self.ip: str | None = None
-        self.port: int | None = None
-        self.auth_token: str | None = auth_token
+
+    @property
+    def client(self) -> FluentRestClient:
+        """The low-level REST client for path-based operations."""
+        return self._client
+
+    def exit(self) -> None:
+        """Shut down the Fluent server and close the underlying client."""
+        self._client.exit()
+
+    def __enter__(self) -> "RestSolverSession":
+        """Enter the context manager."""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """Exit the context manager — calls :meth:`exit`."""
+        self.exit()
 
 
 # ---------------------------------------------------------------------------
@@ -235,19 +277,20 @@ def connect_to_webserver(
     timeout: float = 30.0,
     max_retries: int = 0,
     retry_delay: float = 1.0,
+    ssl_context: ssl.SSLContext | None = None,
 ) -> RestSolverSession:
-    """Connect to an already-running Fluent REST (SimBA) server.
+    """Connect to an already-running Fluent REST server.
 
-    Use this function when the SimBA server is already running and you know
+    Use this function when the server is already running and you know
     its ``ip``, ``port``, and ``auth_token``.  For a fully automated local
     launch use :func:`launch_webserver` instead (phase 2).
 
     Parameters
     ----------
     ip : str
-        IP address or hostname of the SimBA server, e.g. ``"127.0.0.1"``.
+        IP address or hostname of the Fluent server, e.g. ``"127.0.0.1"``.
     port : int
-        TCP port the SimBA server is listening on.
+        TCP port the Fluent server is listening on.
     auth_token : str
         Bearer token (password) for authentication.
     scheme : str, optional
@@ -266,6 +309,10 @@ def connect_to_webserver(
     retry_delay : float, optional
         Base delay in seconds between retries (exponential back-off).
         Defaults to ``1.0``.
+    ssl_context : ssl.SSLContext, optional
+        Custom SSL context for HTTPS connections.  If not provided and
+        *scheme* is ``"https"``, attempts to auto-discover certificates.
+        Defaults to ``None``.
 
     Returns
     -------
@@ -295,34 +342,91 @@ def connect_to_webserver(
     if scheme not in ("http", "https"):
         raise ValueError(f"scheme must be 'http' or 'https', got {scheme!r}")
 
-    base_url = f"{scheme}://{ip}:{port}"
+    # Determine actual scheme and SSL context
+    actual_scheme = scheme
+    actual_ssl_context = ssl_context
+    probe_timeout = min(timeout, 5.0)
+
+    # If HTTPS requested, try to discover and use certificates
+    if scheme == "https":
+        if ssl_context is None:
+            # Auto-discover certificates
+            actual_ssl_context = _get_ssl_context_for_https()
+            if actual_ssl_context is None:
+                logger.warning(
+                    "HTTPS requested but no certificates found. "
+                    "Set FLUENT_WEBSERVER_CERTIFICATE_ROOT environment variable "
+                    "or check default installation path. Falling back to HTTP."
+                )
+                actual_scheme = "http"
+                actual_ssl_context = None
+
+    base_url = f"{actual_scheme}://{ip}:{port}"
 
     # Reachability probe — fail-fast before building the session
-    if not _probe_server(base_url, auth_token, timeout=min(timeout, 5.0)):
+    probe_result = _probe_server(
+        base_url, auth_token, probe_timeout, actual_ssl_context
+    )
+
+    # If HTTPS was requested but failed, try HTTP as fallback
+    if not probe_result and scheme == "https" and actual_scheme == "https":
+        logger.warning(
+            "HTTPS probe failed at %s://%s:%d. Attempting HTTP fallback.",
+            scheme,
+            ip,
+            port,
+        )
+        fallback_base_url = f"http://{ip}:{port}"
+        probe_result = _probe_server(fallback_base_url, auth_token, probe_timeout)
+        if probe_result:
+            actual_scheme = "http"
+            base_url = fallback_base_url
+            actual_ssl_context = None
+            logger.warning(
+                "HTTP fallback succeeded. Ensure SSL certificates "
+                "are properly installed at FLUENT_WEBSERVER_CERTIFICATE_ROOT."
+            )
+
+    # Single error path for all probe failures
+    if not probe_result:
         raise ConnectionError(
-            f"SimBA server at {base_url} did not respond to the reachability "
-            "probe (GET /api/connection/run_mode). "
-            "Verify that the server is running on the given ip and port, "
-            "and that the auth_token is correct."
+            f"Fluent server at {base_url} did not respond. "
+            f"Verify that the server is running on the given ip and port, "
+            f"and that the auth_token is correct."
         )
 
+    # Probe passed — create the session
     session = RestSolverSession(
-        base_url,
-        auth_token=auth_token,
+        ip,
+        port,
+        auth_token,
+        scheme=actual_scheme,
         component=component,
         timeout=timeout,
         max_retries=max_retries,
         retry_delay=retry_delay,
+        ssl_context=actual_ssl_context,
     )
-    session.ip = ip
-    session.port = port
-    session.auth_token = auth_token
-    if version:
-        logger.info(
-            "Connected to Fluent REST server: version=%s, ip=%s, port=%d, component=%s",
-            version,
-            ip,
-            port,
-            component,
+
+    # Log connection (version at DEBUG, connection at INFO)
+    logger.info(
+        "Connected to Fluent REST server at %s://%s:%d (component=%s)",
+        actual_scheme,
+        ip,
+        port,
+        component,
+    )
+
+    # Warn if scheme was downgraded from HTTPS to HTTP
+    if actual_scheme != scheme:
+        logger.warning(
+            "Connected via %s instead of requested %s. "
+            "For production, ensure SSL certificates are installed.",
+            actual_scheme.upper(),
+            scheme.upper(),
         )
+
+    if version:
+        logger.debug("Fluent version: %s", version)
+
     return session

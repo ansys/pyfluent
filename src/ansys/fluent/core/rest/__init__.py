@@ -51,7 +51,7 @@ Example (connect to already-running server)::
     print(client.get_var("setup/models/energy/enabled"))
 """
 
-from ansys.fluent.core.rest.client import FluentRestClient
+from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
 from ansys.fluent.core.rest.rest_launcher import (
     RestSolverSession,
     connect_to_webserver,
@@ -61,4 +61,5 @@ __all__ = [
     "FluentRestClient",
     "RestSolverSession",
     "connect_to_webserver",
+    "FluentRestError",
 ]
