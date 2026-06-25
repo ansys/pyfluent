@@ -48,8 +48,7 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
 )
 
 from ansys.fluent.core.application_runtime import (
-    ApplicationRuntimeOld,
-    ApplicationRuntimeV252,
+    get_service_implementation as application_runtime_implementation,
 )
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
@@ -60,18 +59,11 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
-from ansys.fluent.core.services import (
-    ApplicationRuntimeService,
-    ApplicationRuntimeServiceV0,
-    HealthCheckService,
-    HealthCheckServiceV0,
-    SchemeEval,
-    SchemeEvalService,
-    SchemeEvalServiceV0,
-    SchemeEvalV0,
-    service_creator,
-)
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services._protocols import ServiceProtocol
+from ansys.fluent.core.services.scheme_eval_v1 import (
+    get_service_implementation as scheme_implementation,
+)
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -392,40 +384,9 @@ E = TypeVar("E")
 class _ConnectionInterface:
     def __init__(
         self,
-        create_grpc_service: Callable[[T, E], T],
-        error_state: E,
-        supports_v1: bool,
+        application_runtime,
     ):
-        if supports_v1:
-            self._scheme_eval_service = create_grpc_service(
-                SchemeEvalService, error_state
-            )
-            self._application_runtime_service = create_grpc_service(
-                ApplicationRuntimeService, error_state
-            )
-        else:
-            self._scheme_eval_service = create_grpc_service(
-                SchemeEvalServiceV0, error_state
-            )
-            self._application_runtime_service = create_grpc_service(
-                ApplicationRuntimeServiceV0, error_state
-            )
-        self.scheme_eval = service_creator(
-            "scheme_eval", supports_v1=supports_v1
-        ).create(self._scheme_eval_service)
-        match FluentVersion(self.scheme_eval.version):
-            case v if v < FluentVersion.v252:
-                self._application_runtime = ApplicationRuntimeOld(self.scheme_eval)
-
-            case FluentVersion.v252:
-                self._application_runtime = (ApplicationRuntimeV252)(
-                    self._application_runtime_service, self.scheme_eval
-                )
-
-            case _:
-                self._application_runtime = service_creator(
-                    "app_utilities", supports_v1=supports_v1
-                ).create(self._application_runtime_service)
+        self._application_runtime = application_runtime
 
     @property
     def product_build_info(self) -> str:
@@ -652,11 +613,21 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        self._connection_interface = _ConnectionInterface(
-            self.create_grpc_service,
-            self._error_state,
-            supports_v1=self._server_supports_v1,
+        self._scheme_eval_service = service_creator(
+            "scheme_interpreter", supports_v1=self._server_supports_v1
+        ).create(self._channel, self._metadata, self._error_state)
+        self.scheme_eval = scheme_implementation(supports_v1=self._server_supports_v1)(
+            self._scheme_eval_service
         )
+
+        self._application_runtime_service = service_creator(
+            "application_runtime", supports_v1=self._server_supports_v1
+        ).create(self._channel, self._metadata, self._error_state)
+        self._application_runtime = application_runtime_implementation(
+            self.scheme_eval, supports_v1=self._server_supports_v1
+        )(self._application_runtime_service)
+
+        self._connection_interface = _ConnectionInterface(self._application_runtime)
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
         )

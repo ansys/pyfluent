@@ -22,24 +22,10 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.application_runtime import (
-    ApplicationRuntime,
-    ApplicationRuntimeOld,
-    ApplicationRuntimeV252,
-    ApplicationRuntimeV261,
-    BuildInfo,
-    ProcessInfo,
-)
 from ansys.fluent.core.services.application_runtime import ApplicationRuntimeService
 from ansys.fluent.core.services.application_runtime_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
-
-# Backward-compat aliases: callers that import AppUtilities* from services
-# continue to work without changes.
-AppUtilities = ApplicationRuntime
-AppUtilitiesV0 = ApplicationRuntimeV261
-AppUtilitiesOld = ApplicationRuntimeOld
 from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
@@ -81,8 +67,7 @@ from ansys.fluent.core.services.reduction_v1 import Reduction
 from ansys.fluent.core.services.scheme_eval import (
     SchemeEvalService as SchemeEvalServiceV0,
 )
-from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
-from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval, SchemeEvalService
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService as SettingsServiceV0
 from ansys.fluent.core.services.settings_v1 import SettingsService
 from ansys.fluent.core.services.solution_variables import (
@@ -107,16 +92,6 @@ from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
 )
 
 __all__ = (
-    "ApplicationRuntime",
-    "ApplicationRuntimeOld",
-    "ApplicationRuntimeV261",
-    "ApplicationRuntimeV252",
-    "BuildInfo",
-    "ProcessInfo",
-    # Backward-compat aliases
-    "AppUtilities",
-    "AppUtilitiesOld",
-    "AppUtilitiesV0",
     "ApplicationRuntimeService",
     "ApplicationRuntimeServiceV0",
     "BatchOpsService",
@@ -141,10 +116,8 @@ __all__ = (
     "MonitorsServiceV0",
     "Reduction",
     "ReductionV0",
-    "SchemeEval",
     "SchemeEvalService",
     "SchemeEvalServiceV0",
-    "SchemeEvalV0",
     "SettingsService",
     "SettingsServiceV0",
     "SolutionVariableData",
@@ -161,12 +134,12 @@ __all__ = (
 
 
 _service_cls_by_name_v0 = {
-    "app_utilities": ApplicationRuntimeV261,
+    "application_runtime": ApplicationRuntimeServiceV0,
     "health_check": HealthCheckServiceV0,
     "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI_V0,
     "settings": SettingsServiceV0,
-    "scheme_eval": SchemeEvalV0,
+    "scheme_interpreter": SchemeEvalServiceV0,
     "events": EventsServiceV0,
     "field_data": LiveFieldDataV0,
     "field_data_old": DeprecatedFieldData,
@@ -181,12 +154,12 @@ _service_cls_by_name_v0 = {
 }
 
 _service_cls_by_name = {
-    "app_utilities": ApplicationRuntime,
+    "application_runtime": ApplicationRuntimeService,
     "health_check": HealthCheckService,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
     "settings": SettingsService,
-    "scheme_eval": SchemeEval,
+    "scheme_interpreter": SchemeEvalService,
     "events": EventsService,
     "field_data": LiveFieldData,
     "field_data_old": DeprecatedFieldData,

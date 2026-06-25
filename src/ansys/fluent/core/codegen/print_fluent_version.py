@@ -22,12 +22,12 @@
 
 """Module to write Fluent version information."""
 
-from ansys.fluent.core import FluentVersion, __version__, config, launch_fluent
+from ansys.fluent.core import __version__, config, launch_fluent
 
 
 def print_fluent_version(application_runtime):
     """Write Fluent version information to file."""
-    version = FluentVersion(application_runtime.get_product_version()).number
+    version = application_runtime.get_product_version().number
     build_info = application_runtime.get_build_info()
     version_file = (config.codegen_outdir / f"fluent_version_{version}.py").resolve()
     with open(version_file, "w", encoding="utf8") as f:

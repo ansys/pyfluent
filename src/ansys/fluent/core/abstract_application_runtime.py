@@ -27,6 +27,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+
 
 @dataclass
 class ProcessInfo:
@@ -51,7 +53,7 @@ class AbstractApplicationRuntime(ABC):
     """Abstract base class for the Application runtime."""
 
     @abstractmethod
-    def get_product_version(self) -> str:
+    def get_product_version(self) -> FluentVersion:
         """Get product version."""
         pass
 

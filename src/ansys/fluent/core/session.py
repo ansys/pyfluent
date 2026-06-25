@@ -34,7 +34,6 @@ import weakref
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.application_runtime import ApplicationRuntimeOld
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
@@ -56,7 +55,6 @@ from ansys.fluent.core.services import (
     FieldDataStreamingV0,
     LiveFieldData,
     LiveFieldDataV0,
-    SchemeEval,
     SettingsService,
     SettingsServiceV0,
     SolutionVariableData,
@@ -68,6 +66,7 @@ from ansys.fluent.core.services import (
     _FieldInfoV0,
     service_creator,
 )
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -126,17 +125,6 @@ class _IsDataValid:
 
     def __call__(self):
         return self._scheme_eval.scheme_eval("(data-valid?)")
-
-
-class _ApplicationRuntimeFactory:
-    """ApplicationRuntime factory."""
-
-    @staticmethod
-    def _create_application_runtime(scheme_eval, fluent_connection):
-        if FluentVersion(scheme_eval.version) < FluentVersion.v252:
-            return ApplicationRuntimeOld(scheme_eval)
-        else:
-            return fluent_connection._connection_interface._application_runtime
 
 
 class BaseSession:
@@ -241,11 +229,7 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
-        self.application_runtime = (
-            _ApplicationRuntimeFactory._create_application_runtime(
-                self.scheme, self._fluent_connection
-            )
-        )
+        self.application_runtime = self._fluent_connection._application_runtime
 
         self.journal = Journal(self.application_runtime)
 
@@ -459,7 +443,7 @@ class BaseSession:
         )
         session = cls(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,

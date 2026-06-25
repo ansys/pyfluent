@@ -23,21 +23,25 @@
 """High-level application runtime wrappers.
 
 This module owns the business-logic layer on top of the ApplicationRuntime gRPC
-service.  The raw service stubs live in:
+service.  The grpc service implementation lives in:
 
-* ``ansys.fluent.core.services.application_runtime`` (v0 and v1 proto API)
+* ``ansys.fluent.core.services.application_runtime`` (v1 proto API)
+* ``ansys.fluent.core.services.application_runtime_v0`` (v0 proto API)
 
 Class hierarchy
 ---------------
 ``ApplicationRuntime``
     gRPC-based implementation (v1 proto API).
 
+``ApplicationRuntimeV261V252``
+    Shared implementation for 25R2 and 26R1.
+
 ``ApplicationRuntimeV261(ApplicationRuntimeV261V252)``
     gRPC-based implementation valid till 26R1 (v0 proto API).
 
 ``ApplicationRuntimeV252(ApplicationRuntimeV261V252)``
-    Fallback for Fluent 25R2 servers where ``EnableBeta`` was not yet
-    implemented; delegates to Scheme instead.
+    gRPC-based implementation valid till 25R2 (v0 proto API). ``EnableBeta``
+    was not yet implemented; delegates to Scheme instead.
 
 ``ApplicationRuntimeOld``
     Scheme-based fallback used for Fluent versions before 25R2.
@@ -52,7 +56,9 @@ from ansys.fluent.core.abstract_application_runtime import (
     BuildInfo,
     ProcessInfo,
 )
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval, SchemeEvalV0
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class ApplicationRuntime(AbstractApplicationRuntime):
@@ -62,7 +68,7 @@ class ApplicationRuntime(AbstractApplicationRuntime):
         """Initialize ApplicationRuntime."""
         self.service = service
 
-    def get_product_version(self) -> str:
+    def get_product_version(self) -> FluentVersion:
         """Get product version."""
         return self.service.get_product_version()
 
@@ -127,7 +133,7 @@ class ApplicationRuntimeV261V252:
         """Initialize ApplicationRuntime."""
         self.service = service
 
-    def get_product_version(self) -> str:
+    def get_product_version(self) -> FluentVersion:
         """Get product version."""
         return self.service.get_product_version()
 
@@ -239,9 +245,9 @@ class ApplicationRuntimeOld:
         """Initialize ApplicationRuntimeOld."""
         self.scheme = scheme_eval
 
-    def get_product_version(self) -> str:
+    def get_product_version(self) -> FluentVersion:
         """Get product version."""
-        return self.scheme.version
+        return FluentVersion(self.scheme.version)
 
     def get_build_info(self) -> BuildInfo:
         """Get build info."""
@@ -377,3 +383,21 @@ class ApplicationRuntimeOld:
     def set_working_directory(self, path: PathType) -> None:
         """Change the client cortex working directory."""
         self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
+
+
+def get_service_implementation(
+    scheme_eval: SchemeEval | SchemeEvalV0, supports_v1: bool
+):
+    """Select the implementation layer based on Fluent version."""
+    match FluentVersion(scheme_eval.version):
+        case v if v < FluentVersion.v252:
+            return ApplicationRuntimeOld
+        case FluentVersion.v252:
+            return lambda service: ApplicationRuntimeV252(service, scheme_eval)
+        case FluentVersion.v261:
+            return ApplicationRuntimeV261()
+        case _:
+            if supports_v1:
+                return ApplicationRuntime
+            else:
+                return ApplicationRuntimeV261

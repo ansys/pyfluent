@@ -41,6 +41,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class ApplicationRuntimeService(ServiceProtocol):
@@ -60,11 +61,11 @@ class ApplicationRuntimeService(ServiceProtocol):
         self._stub = app_utilities_pb2_grpc.AppUtilitiesStub(intercept_channel)
         self._metadata = metadata
 
-    def get_product_version(self) -> str:
+    def get_product_version(self) -> FluentVersion:
         """GetProductVersion RPC."""
         request = app_utilities_pb2.GetProductVersionRequest()
         response = self._stub.GetProductVersion(request, metadata=self._metadata)
-        return f"{response.major}.{response.minor}.{response.patch}"
+        return FluentVersion(f"{response.major}.{response.minor}.{response.patch}")
 
     def get_build_info(self) -> BuildInfo:
         """GetBuildInfo RPC."""

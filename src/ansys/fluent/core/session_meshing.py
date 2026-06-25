@@ -25,7 +25,7 @@
 from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services import SchemeEval
+from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver

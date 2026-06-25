@@ -37,7 +37,7 @@ from ansys.fluent.core.services.scheme_eval import (
 from ansys.fluent.core.services.scheme_eval import (  # noqa: F401 - re-exported for consumers
     Symbol,
 )
-from ansys.fluent.core.services.scheme_eval import SchemeEval as _SchemeEvalV0
+from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
 
 
 def _convert_py_value_to_scheme_pointer(
@@ -111,7 +111,7 @@ class SchemeEvalService(_SchemeEvalServiceV0):
         return SchemeEvalGrpcModule.SchemeInterpreterStub(intercept_channel)
 
 
-class SchemeEval(_SchemeEvalV0):
+class SchemeEval(SchemeEvalV0):
     """Class on which Fluent's scheme code can be executed (v1 proto API)."""
 
     def _eval(self, val: Any, suppress_prompts: bool = True) -> Any:
@@ -144,3 +144,11 @@ class SchemeEval(_SchemeEvalV0):
         request.input = input
         response = self.service.string_eval(request)
         return response.output
+
+
+def get_service_implementation(supports_v1: bool) -> SchemeEval | SchemeEvalV0:
+    """Select the implementation layer based on Fluent version."""
+    if supports_v1:
+        return SchemeEval
+    else:
+        return SchemeEvalV0
