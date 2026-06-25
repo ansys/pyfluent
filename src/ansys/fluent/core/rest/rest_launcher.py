@@ -395,7 +395,6 @@ def connect_to_webserver(
             f"and that the auth_token is correct."
         )
 
-    # Probe passed — create the session
     session = RestSolverSession(
         ip,
         port,
