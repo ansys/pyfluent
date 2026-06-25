@@ -76,6 +76,12 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 # *Saving the case file
 # *Closing the solver
 
+
+# .. note::
+# This example has been verified and validated using Ansys Fluent 2026 R1.
+# It is recommended to run this example with the same version.
+
+
 ################################################################################################################
 # Import required libraries/modules
 # ==============================================================================================================
