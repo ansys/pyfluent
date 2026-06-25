@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over StateEngine based datamodel gRPC service of Fluent (v1 proto API).
+"""Wrappers over StateEngine based object model gRPC service of Fluent (v1 proto API).
 
 All shared logic lives in datamodel_se.py (v0). This module keeps only
 v1-specific proto/stub/request differences.
@@ -31,8 +31,8 @@ from typing import Any, Callable
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
 
-from ansys.api.fluent.v1 import datamodel_pb2 as DataModelProtoModule
-from ansys.api.fluent.v1 import datamodel_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v1 import object_model_pb2 as DataModelProtoModule
+from ansys.api.fluent.v1 import object_model_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.module_config import config
@@ -169,7 +169,7 @@ def _normalize_v1_event_request_dict(data):
 
 
 class DatamodelServiceImpl:
-    """Wraps the StateEngine-based datamodel gRPC service of Fluent (v1)."""
+    """Wraps the StateEngine-based object model gRPC service of Fluent (v1)."""
 
     def __init__(
         self,
@@ -186,15 +186,9 @@ class DatamodelServiceImpl:
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
+        self._stub = DataModelGrpcModule.ObjectModelStub(intercept_channel)
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
-
-    def initialize_datamodel(
-        self, request: DataModelProtoModule.InitDatamodelRequest
-    ) -> DataModelProtoModule.InitDatamodelResponse:
-        """RPC InitDatamodel of DataModel service."""
-        return self._stub.InitDatamodel(request, metadata=self._metadata)
 
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
