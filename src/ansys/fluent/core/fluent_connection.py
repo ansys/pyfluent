@@ -47,9 +47,6 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
     ProtoReflectionDescriptorDatabase,
 )
 
-from ansys.fluent.core.application_runtime import (
-    get_service_implementation as application_runtime_implementation,
-)
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -61,6 +58,9 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services._protocols import ServiceProtocol
+from ansys.fluent.core.services.application_runtime import (
+    get_service_implementation as application_runtime_implementation,
+)
 from ansys.fluent.core.services.scheme_eval_v1 import (
     get_service_implementation as scheme_implementation,
 )

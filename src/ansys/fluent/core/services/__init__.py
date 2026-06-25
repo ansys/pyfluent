@@ -22,8 +22,10 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.application_runtime import ApplicationRuntimeService
-from ansys.fluent.core.services.application_runtime_v0 import (
+from ansys.fluent.core._grpc_services.application_runtime import (
+    ApplicationRuntimeService,
+)
+from ansys.fluent.core._grpc_services.application_runtime_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService

@@ -24,7 +24,7 @@
 
 from typing import TypeVar
 
-from ansys.fluent.core.application_runtime import ApplicationRuntime
+from ansys.fluent.core.services.application_runtime import ApplicationRuntime
 
 _TApiUpgradeAdvisor = TypeVar("_TApiUpgradeAdvisor", bound="ApiUpgradeAdvisor")
 

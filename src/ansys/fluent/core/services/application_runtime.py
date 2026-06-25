@@ -20,143 +20,381 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""gRPC service stub wrappers for the ApplicationRuntime service (v1 proto API).
+"""High-level application runtime wrappers.
 
-Business logic lives in :mod:`ansys.fluent.core.application_runtime`.
+This module owns the business-logic layer on top of the ApplicationRuntime gRPC
+service.  The grpc service implementation lives in:
+
+* ``ansys.fluent.core.services.application_runtime`` (v1 proto API)
+* ``ansys.fluent.core.services.application_runtime_v0`` (v0 proto API)
+
+Class hierarchy
+---------------
+``ApplicationRuntime``
+    gRPC-based implementation (v1 proto API).
+
+``ApplicationRuntimeV261V252``
+    Shared implementation for 25R2 and 26R1.
+
+``ApplicationRuntimeV261(ApplicationRuntimeV261V252)``
+    gRPC-based implementation valid till 26R1 (v0 proto API).
+
+``ApplicationRuntimeV252(ApplicationRuntimeV261V252)``
+    gRPC-based implementation valid till 25R2 (v0 proto API). ``EnableBeta``
+    was not yet implemented; delegates to Scheme instead.
+
+``ApplicationRuntimeOld``
+    Scheme-based fallback used for Fluent versions before 25R2.
 """
 
 from enum import Enum
 import os
 
-import grpc
-
-from ansys.api.fluent.v1 import application_runtime_pb2, application_runtime_pb2_grpc
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.abstract_application_runtime import BuildInfo, ProcessInfo
-from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
+from ansys.fluent.core.services.abstract_application_runtime import (
+    AbstractApplicationRuntime,
+    BuildInfo,
+    ProcessInfo,
 )
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-class ApplicationRuntimeService(ServiceProtocol):
-    """ApplicationRuntime gRPC service wrapper (v1 proto API)."""
+class ApplicationRuntime(AbstractApplicationRuntime):
+    """Application runtime backed by the ApplicationRuntime gRPC service."""
 
-    def __init__(  # pyright: ignore[reportMissingSuperCall]
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
-    ):
-        """Initialize ApplicationRuntimeService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
-        self._stub = application_runtime_pb2_grpc.ApplicationRuntimeStub(
-            intercept_channel
-        )
-        self._metadata = metadata
+    def __init__(self, service):
+        """Initialize ApplicationRuntime."""
+        self.service = service
 
     def get_product_version(self) -> FluentVersion:
-        """GetProductVersion RPC."""
-        request = application_runtime_pb2.GetProductVersionRequest()
-        response = self._stub.GetProductVersion(request, metadata=self._metadata)
-        return FluentVersion(f"{response.major}.{response.minor}.{response.patch}")
+        """Get product version."""
+        return self.service.get_product_version()
 
     def get_build_info(self) -> BuildInfo:
-        """GetBuildInfo RPC."""
-        request = application_runtime_pb2.GetBuildInfoRequest()
-        response = self._stub.GetBuildInfo(request, metadata=self._metadata)
-        return BuildInfo(
-            build_time=response.build_time,
-            build_id=response.build_id,
-            vcs_revision=response.vcs_revision,
-            vcs_branch=response.vcs_branch,
-        )
+        """Get build info."""
+        return self.service.get_build_info()
 
     def get_controller_process_info(self) -> ProcessInfo:
-        """GetControllerProcessInfo RPC."""
-        request = application_runtime_pb2.GetControllerProcessInfoRequest()
-        response = self._stub.GetControllerProcessInfo(request, metadata=self._metadata)
-        return ProcessInfo(
-            process_id=response.process_id,
-            hostname=response.hostname,
-            working_directory=response.working_directory,
-        )
+        """Get controller process info."""
+        return self.service.get_controller_process_info()
 
     def get_solver_process_info(self) -> ProcessInfo:
-        """GetSolverProcessInfo RPC."""
-        request = application_runtime_pb2.GetSolverProcessInfoRequest()
-        response = self._stub.GetSolverProcessInfo(request, metadata=self._metadata)
-        return ProcessInfo(
-            process_id=response.process_id,
-            hostname=response.hostname,
-            working_directory=response.working_directory,
-        )
+        """Get solver process info."""
+        return self.service.get_solver_process_info()
 
     def get_app_mode(self) -> Enum:
-        """GetAppMode RPC.
+        """Get app mode.
 
         Raises
         ------
         ValueError
             If app mode is unknown.
         """
-        from ansys.fluent.core import FluentMode
-
-        request = application_runtime_pb2.GetAppModeRequest()
-        response = self._stub.GetAppMode(request, metadata=self._metadata)
-        match response.app_mode:
-            case application_runtime_pb2.APP_MODE_UNSPECIFIED:
-                raise ValueError("Unknown app mode.")
-            case application_runtime_pb2.APP_MODE_MESHING:
-                return FluentMode.MESHING
-            case application_runtime_pb2.APP_MODE_SOLVER:
-                return FluentMode.SOLVER
-            case application_runtime_pb2.APP_MODE_SOLVER_ICING:
-                return FluentMode.SOLVER_ICING
-            case application_runtime_pb2.APP_MODE_SOLVER_AERO:
-                return FluentMode.SOLVER_AERO
+        return self.service.get_app_mode()
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
-        """StartPythonJournal RPC."""
-        request = application_runtime_pb2.StartPythonJournalRequest()
-        if journal_name:
-            request.journal_name = journal_name
-        response = self._stub.StartPythonJournal(request, metadata=self._metadata)
-        return response.journal_id
+        """Start python journal."""
+        return self.service.start_python_journal(journal_name=journal_name)
 
     def stop_python_journal(self, journal_id: str | None = None) -> str:
-        """StopPythonJournal RPC."""
-        request = application_runtime_pb2.StopPythonJournalRequest()
-        if journal_id:
-            request.journal_id = journal_id
-        response = self._stub.StopPythonJournal(request, metadata=self._metadata)
-        return response.journal_str
+        """Stop python journal."""
+        return self.service.stop_python_journal(journal_id=journal_id)
 
     def is_beta_enabled(self) -> bool:
-        """IsBetaEnabled RPC."""
-        request = application_runtime_pb2.IsBetaEnabledRequest()
-        response = self._stub.IsBetaEnabled(request, metadata=self._metadata)
-        return response.is_beta_enabled
+        """Return whether beta features are enabled."""
+        return self.service.is_beta_enabled()
 
     def enable_beta(self) -> None:
-        """EnableBeta RPC."""
-        request = application_runtime_pb2.EnableBetaRequest()
-        self._stub.EnableBeta(request, metadata=self._metadata)
+        """Enable beta features."""
+        self.service.enable_beta()
 
     def exit(self) -> None:
-        """Exit RPC."""
-        request = application_runtime_pb2.ExitRequest()
-        self._stub.Exit(request, metadata=self._metadata)
+        """Exit the server."""
+        self.service.exit()
 
     def set_working_directory(self, path: PathType) -> None:
-        """SetWorkingDirectory RPC."""
-        request = application_runtime_pb2.SetWorkingDirectoryRequest()
-        request.path = os.fspath(path)
-        self._stub.SetWorkingDirectory(request, metadata=self._metadata)
+        """Change the client cortex working directory."""
+        self.service.set_working_directory(path=path)
+
+
+class ApplicationRuntimeV261V252:
+    """Application runtime for Fluent 26R1 and 25R2.
+
+    ``is_wildcard`` is migrated to settings in 27R1.
+    ``is_solution_data_available`` is migrated to field_data in 27R1.
+    ``register_pause_on_solution_events`` is migrated to events in 27R1.
+    ``resume_on_solution_event`` is migrated to events in 27R1.
+    ``unregister_pause_on_solution_events`` is migrated to events in 27R1.
+    """
+
+    def __init__(self, service):
+        """Initialize ApplicationRuntime."""
+        self.service = service
+
+    def get_product_version(self) -> FluentVersion:
+        """Get product version."""
+        return self.service.get_product_version()
+
+    def get_build_info(self) -> BuildInfo:
+        """Get build info."""
+        return self.service.get_build_info()
+
+    def get_controller_process_info(self) -> ProcessInfo:
+        """Get controller process info."""
+        return self.service.get_controller_process_info()
+
+    def get_solver_process_info(self) -> ProcessInfo:
+        """Get solver process info."""
+        return self.service.get_solver_process_info()
+
+    def get_app_mode(self) -> Enum:
+        """Get app mode.
+
+        Raises
+        ------
+        ValueError
+            If app mode is unknown.
+        """
+        return self.service.get_app_mode()
+
+    def start_python_journal(self, journal_name: str | None = None) -> int:
+        """Start python journal."""
+        return self.service.start_python_journal(journal_name=journal_name)
+
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
+        """Stop python journal."""
+        return self.service.stop_python_journal(journal_id=journal_id)
+
+    def is_beta_enabled(self) -> bool:
+        """Return whether beta features are enabled."""
+        return self.service.is_beta_enabled()
+
+    def exit(self) -> None:
+        """Exit the server."""
+        self.service.exit()
+
+    def set_working_directory(self, path: PathType) -> None:
+        """Change the client cortex working directory."""
+        self.service.set_working_directory(path=path)
+
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """Return whether *input* contains a wildcard pattern."""
+        return self.service.is_wildcard(input=input)
+
+    def is_solution_data_available(self) -> bool:
+        """Return whether solution data is currently available."""
+        return self.service.is_solution_data_available()
+
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
+        """Register pause on solution events."""
+        return self.service.register_pause_on_solution_events(
+            solution_event=solution_event
+        )
+
+    def resume_on_solution_event(self, registration_id: int) -> None:
+        """Resume on solution event."""
+        return self.service.resume_on_solution_event(registration_id=registration_id)
+
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
+        """Unregister pause on solution events."""
+        return self.service.unregister_pause_on_solution_events(
+            registration_id=registration_id
+        )
+
+
+class ApplicationRuntimeV261(ApplicationRuntimeV261V252):
+    """Application runtime for Fluent 26R1.
+
+    ``enable_beta`` is implemented in the 26R1 server.
+    """
+
+    def __init__(self, service):
+        """Initialize ApplicationRuntimeV252."""
+        super().__init__(service)
+
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        self.service.enable_beta()
+
+
+class ApplicationRuntimeV252(ApplicationRuntimeV261V252):
+    """Application runtime for Fluent 25R2.
+
+    ``enable_beta`` is not implemented on the 25R2 server so it falls
+    back to a Scheme call.
+    """
+
+    def __init__(self, service, scheme):
+        """Initialize ApplicationRuntimeV252."""
+        super().__init__(service)
+        self.scheme = scheme
+
+    def enable_beta(self) -> None:
+        """Enable beta features via Scheme (25R2 fallback)."""
+        self.scheme.eval(
+            '(fl-execute-cmd "file" "beta-settings" (list (cons "enable?" #t)))'
+        )
+
+
+class ApplicationRuntimeOld:
+    """Application runtime backed by Scheme evaluation (Fluent < 25R2)."""
+
+    def __init__(self, scheme_eval):
+        """Initialize ApplicationRuntimeOld."""
+        self.scheme = scheme_eval
+
+    def get_product_version(self) -> FluentVersion:
+        """Get product version."""
+        return FluentVersion(self.scheme.version)
+
+    def get_build_info(self) -> BuildInfo:
+        """Get build info."""
+        return BuildInfo(
+            build_time=self.scheme.eval("(inquire-build-time)"),
+            build_id=self.scheme.eval("(inquire-build-id)"),
+            vcs_revision=self.scheme.eval("(inquire-src-vcs-id)"),
+            vcs_branch=self.scheme.eval("(inquire-src-vcs-branch)"),
+        )
+
+    def get_controller_process_info(self) -> ProcessInfo:
+        """Get controller process info."""
+        return ProcessInfo(
+            process_id=self.scheme.eval("(cx-cortex-id)"),
+            hostname=self.scheme.eval("(cx-cortex-host)"),
+            working_directory=self.scheme.eval("(cortex-pwd)"),
+        )
+
+    def get_solver_process_info(self) -> ProcessInfo:
+        """Get solver process info."""
+        return ProcessInfo(
+            process_id=self.scheme.eval("(cx-client-id)"),
+            hostname=self.scheme.eval("(cx-client-host)"),
+            working_directory=self.scheme.eval("(cx-send '(cx-client-pwd))"),
+        )
+
+    def get_app_mode(self) -> Enum:
+        """Get app mode."""
+        from ansys.fluent.core import FluentMode
+
+        if self.scheme.eval("(cx-solver-mode?)"):
+            mode_str = self.scheme.eval('(getenv "PRJAPP_APP")')
+            if mode_str == "flaero_server":
+                return FluentMode.SOLVER_AERO
+            elif mode_str == "flicing":
+                return FluentMode.SOLVER_ICING
+            else:
+                return FluentMode.SOLVER
+        else:
+            return FluentMode.MESHING
+
+    def start_python_journal(self, journal_name: str | None = None) -> int:
+        """Start python journal."""
+        if journal_name:
+            self.scheme.exec([f'(api-start-python-journal "{journal_name}")'])
+        else:
+            self.scheme.eval("(define pyfluent-journal-str-port (open-output-string))")
+            self.scheme.eval("(api-echo-python-port pyfluent-journal-str-port)")
+            return "1"
+
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
+        """Stop python journal."""
+        if journal_id:
+            self.scheme.eval("(api-unecho-python-port pyfluent-journal-str-port)")
+            journal_str = self.scheme.eval(
+                "(close-output-port pyfluent-journal-str-port)"
+            )
+            return journal_str
+        else:
+            self.scheme.exec(["(api-stop-python-journal)"])
+
+    def is_beta_enabled(self) -> bool:
+        """Return whether beta features are enabled."""
+        return self.scheme.eval("(is-beta-feature-available?)")
+
+    def enable_beta(self):
+        """Enable beta features.
+
+        Raises
+        ------
+        RuntimeError
+            Not supported before Fluent 2025 R2.
+        """
+        raise RuntimeError(
+            "Enabling beta is not supported by PyFluent for Fluent versions before 2025 R2."
+        )
+
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """Return whether *input* contains a wildcard pattern."""
+        return self.scheme.eval(f'(has-fnmatch-wild-card? "{input}")')
+
+    def is_solution_data_available(self) -> bool:
+        """Return whether solution data is currently available."""
+        return self.scheme.eval("(data-valid?)")
+
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
+        """Register pause on solution events."""
+        unique_id: int = self.scheme.eval(
+            f"""
+            (let
+                ((ids
+                    (let loop ((i 1))
+                        (define next-id (string->symbol (format #f "pyfluent-~d" i)))
+                        (if (check-monitor-existence next-id)
+                            (loop (1+ i))
+                            (list i next-id)
+                            )
+                        )
+                    ))
+                (register-solution-monitor
+                    (cadr ids)
+                    (lambda (niter time)
+                        (if (integer? niter)
+                            (begin
+                                (events/transmit 'auto-pause (cons (car ids) niter))
+                                (grpcserver/auto-pause (is-server-running?) (cadr ids))
+                                )
+                            )
+                        ()
+                        )
+                    {"#t" if solution_event == SolverEvent.TIMESTEP_ENDED else "#f"}
+                    )
+                (car ids)
+                )
+        """
+        )
+        return unique_id
+
+    def resume_on_solution_event(self, registration_id: int) -> None:
+        """Resume on solution event."""
+        self.scheme.eval(
+            f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{registration_id})"
+        )
+
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
+        """Unregister pause on solution events."""
+        self.scheme.eval(f"(cancel-solution-monitor 'pyfluent-{registration_id})")
+
+    def exit(self) -> None:
+        """Exit the server."""
+        self.scheme.exec(("(exit-server)",))
+
+    def set_working_directory(self, path: PathType) -> None:
+        """Change the client cortex working directory."""
+        self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
+
+
+def get_service_implementation(scheme_eval, supports_v1: bool):
+    """Select the implementation layer based on Fluent version."""
+    match FluentVersion(scheme_eval.version):
+        case v if v < FluentVersion.v252:
+            return lambda service: ApplicationRuntimeOld(scheme_eval)
+        case FluentVersion.v252:
+            return lambda service: ApplicationRuntimeV252(service, scheme_eval)
+        case FluentVersion.v261:
+            return ApplicationRuntimeV261
+        case _:
+            if supports_v1:
+                return ApplicationRuntime
+            else:
+                return ApplicationRuntimeV261
