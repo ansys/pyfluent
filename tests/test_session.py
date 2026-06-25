@@ -185,7 +185,7 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
         )
         session = BaseSession(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
         )
 
     fluent_connection = FluentConnection(
@@ -199,7 +199,7 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     assert session.is_active()
     server.stop(None)
@@ -240,7 +240,7 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     assert session.is_active()
     server.stop(None)
@@ -273,7 +273,7 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     assert session.is_active()
     server.stop(None)
@@ -389,7 +389,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
@@ -437,7 +437,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
@@ -601,7 +601,7 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     solver1.__class__.__bases__[0]._build_from_fluent_connection(
         solver1,
         fluent_connection=solver2._fluent_connection,
-        scheme_eval=solver2._fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=solver2._fluent_connection.scheme_eval,
     )
     assert solver1.is_active()
     assert solver2.is_active()

@@ -364,7 +364,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         state = self.settings.get_state()
         super()._build_from_fluent_connection(
             bg_session._fluent_connection,
-            bg_session._fluent_connection._connection_interface.scheme_eval,
+            bg_session._fluent_connection.scheme_eval,
             event_type=(
                 SolverEvent
                 if bg_session._fluent_connection._server_supports_v1
@@ -374,7 +374,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         )
         self._build_from_fluent_connection(
             bg_session._fluent_connection,
-            bg_session._fluent_connection._connection_interface.scheme_eval,
+            bg_session._fluent_connection.scheme_eval,
             launcher_args=launcher_args,
         )
         # TODO temporary fix till set_state at settings root is fixed
