@@ -56,7 +56,6 @@ from ansys.fluent.core.abstract_application_runtime import (
     BuildInfo,
     ProcessInfo,
 )
-from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval, SchemeEvalV0
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -385,9 +384,7 @@ class ApplicationRuntimeOld:
         self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
 
 
-def get_service_implementation(
-    scheme_eval: SchemeEval | SchemeEvalV0, supports_v1: bool
-):
+def get_service_implementation(scheme_eval, supports_v1: bool):
     """Select the implementation layer based on Fluent version."""
     match FluentVersion(scheme_eval.version):
         case v if v < FluentVersion.v252:
