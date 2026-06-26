@@ -22,12 +22,6 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core._grpc_services.application_runtime import (
-    ApplicationRuntimeService,
-)
-from ansys.fluent.core._grpc_services.application_runtime_v0 import (
-    ApplicationRuntimeService as ApplicationRuntimeServiceV0,
-)
 from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE_V0,
@@ -84,8 +78,6 @@ from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
 )
 
 __all__ = (
-    "ApplicationRuntimeService",
-    "ApplicationRuntimeServiceV0",
     "BatchOpsService",
     "BatchOps",
     "DatamodelService_SE",
@@ -126,7 +118,6 @@ __all__ = (
 
 
 _service_cls_by_name_v0 = {
-    "application_runtime": ApplicationRuntimeServiceV0,
     "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI_V0,
     "settings": SettingsServiceV0,
@@ -143,7 +134,6 @@ _service_cls_by_name_v0 = {
 }
 
 _service_cls_by_name = {
-    "application_runtime": ApplicationRuntimeService,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
     "settings": SettingsService,
