@@ -41,12 +41,9 @@ import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
-from google.protobuf.descriptor_pool import DescriptorPool
 import grpc
-from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
-    ProtoReflectionDescriptorDatabase,
-)
 
+from ansys.fluent.core._grpc_services import GRPCFactory, _server_supports_v1
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -56,17 +53,9 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
-from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.application_runtime import (
-    get_service_implementation as application_runtime_implementation,
-)
-from ansys.fluent.core.services.scheme_eval_v1 import (
-    get_service_implementation as scheme_implementation,
-)
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
 from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
@@ -448,22 +437,6 @@ def _pid_exists(pid):
             return True
 
 
-def _server_supports_v1(channel) -> bool:
-    try:
-        reflection_db = ProtoReflectionDescriptorDatabase(channel)
-        desc_pool = DescriptorPool(reflection_db)
-        service_desc = desc_pool.FindServiceByName(
-            "ansys.api.fluent.v1.application_runtime.ApplicationRuntime"
-        )
-        method_desc = service_desc.FindMethodByName("GetProductVersion")
-        return (
-            method_desc.full_name
-            == "ansys.api.fluent.v1.application_runtime.ApplicationRuntime.GetProductVersion"
-        )
-    except KeyError:
-        return False
-
-
 S = TypeVar("S", bound=ServiceProtocol)
 
 
@@ -588,9 +561,14 @@ class FluentConnection:
 
         self._server_supports_v1 = _server_supports_v1(channel=self._channel)
 
-        self._health_check = service_creator(
-            "health_check", supports_v1=self._server_supports_v1
-        ).create(self._channel, self._metadata, self._error_state)
+        self._service_factory = GRPCFactory(
+            channel=self._channel,
+            metadata=self._metadata,
+            error_state=self._error_state,
+        )
+
+        self._health_check = self._service_factory.health_check
+
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
@@ -613,21 +591,10 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        self._scheme_eval_service = service_creator(
-            "scheme_interpreter", supports_v1=self._server_supports_v1
-        ).create(self._channel, self._metadata, self._error_state)
-        self.scheme_eval = scheme_implementation(supports_v1=self._server_supports_v1)(
-            self._scheme_eval_service
-        )
+        self.scheme_eval = self._service_factory.scheme_interpreter
+        self.application_runtime = self._service_factory.application_runtime
 
-        self._application_runtime_service = service_creator(
-            "application_runtime", supports_v1=self._server_supports_v1
-        ).create(self._channel, self._metadata, self._error_state)
-        self._application_runtime = application_runtime_implementation(
-            self.scheme_eval, supports_v1=self._server_supports_v1
-        )(self._application_runtime_service)
-
-        self._connection_interface = _ConnectionInterface(self._application_runtime)
+        self._connection_interface = _ConnectionInterface(self.application_runtime)
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
         )

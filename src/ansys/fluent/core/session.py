@@ -66,7 +66,7 @@ from ansys.fluent.core.services import (
     _FieldInfoV0,
     service_creator,
 )
-from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -134,8 +134,8 @@ class BaseSession:
 
     Attributes
     ----------
-    scheme: SchemeEval
-        Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+    scheme: SchemeInterpreter
+        Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
 
     Methods
     -------
@@ -152,7 +152,7 @@ class BaseSession:
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
@@ -165,8 +165,8 @@ class BaseSession:
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
-        scheme_eval: SchemeEval
-            Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+        scheme_eval: SchemeInterpreter
+            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
@@ -203,7 +203,7 @@ class BaseSession:
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
@@ -229,7 +229,7 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
-        self.application_runtime = self._fluent_connection._application_runtime
+        self.application_runtime = self._fluent_connection.application_runtime
 
         self.journal = Journal(self.application_runtime)
 

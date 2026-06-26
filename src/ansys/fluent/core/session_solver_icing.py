@@ -29,7 +29,7 @@ import importlib
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session_solver import Solver
 
 
@@ -43,7 +43,7 @@ class SolverIcing(Solver):
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
@@ -54,8 +54,8 @@ class SolverIcing(Solver):
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
-        scheme_eval: SchemeEval
-            Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+        scheme_eval: SchemeInterpreter
+            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional

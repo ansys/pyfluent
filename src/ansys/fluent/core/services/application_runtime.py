@@ -382,19 +382,3 @@ class ApplicationRuntimeOld:
     def set_working_directory(self, path: PathType) -> None:
         """Change the client cortex working directory."""
         self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
-
-
-def get_service_implementation(scheme_eval, supports_v1: bool):
-    """Select the implementation layer based on Fluent version."""
-    match FluentVersion(scheme_eval.version):
-        case v if v < FluentVersion.v252:
-            return lambda service: ApplicationRuntimeOld(scheme_eval)
-        case FluentVersion.v252:
-            return lambda service: ApplicationRuntimeV252(service, scheme_eval)
-        case FluentVersion.v261:
-            return ApplicationRuntimeV261
-        case _:
-            if supports_v1:
-                return ApplicationRuntime
-            else:
-                return ApplicationRuntimeV261

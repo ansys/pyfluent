@@ -20,24 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the health check gRPC service of Fluent (v1 proto API).
+"""Abstract health check wrapper."""
 
-All shared logic lives in health_check.py (grpc-health API). This module keeps
-only v1-specific proto construction.
-"""
-
-from ansys.api.fluent.v1 import health_pb2 as HealthCheckModule
-from ansys.api.fluent.v1 import health_pb2_grpc as HealthCheckGrpcModule
-from ansys.fluent.core.services.health_check import HealthCheckService as _HealthCheckV0
+from abc import ABC, abstractmethod
+from enum import Enum
 
 
-class HealthCheckService(_HealthCheckV0):
-    """Class wrapping the health check gRPC service of Fluent (v1 proto API)."""
+class AbstractHealthCheck(ABC):
+    """Abstract base class for the health check."""
 
-    def _create_stub(self, intercept_channel):
-        """Create the v1 gRPC stub."""
-        return HealthCheckGrpcModule.HealthStub(intercept_channel)
+    @abstractmethod
+    def check_health(self) -> Enum:
+        """Check the health of the Fluent connection."""
+        pass
 
-    def _create_health_check_request(self):
-        """Create a v1 health-check request."""
-        return HealthCheckModule.HealthCheckRequest()
+    @abstractmethod
+    def wait_for_server(self, timeout: int) -> None:
+        """Keeps a watch on the health of the Fluent connection."""
+        pass
+
+    @abstractmethod
+    def status(self) -> Enum:
+        """Check health of Fluent connection."""
+        pass
