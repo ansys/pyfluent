@@ -40,6 +40,7 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.api.fluent.v1 import health_pb2 as health_pb2_v1
 from ansys.api.fluent.v1 import health_pb2_grpc as health_pb2_grpc_v1
+from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_grpc
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
@@ -123,6 +124,23 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
+class MockSchemeEvalServicerV1(scheme_interpreter_pb2_grpc.SchemeInterpreterServicer):
+    def StringEval(self, request, context):
+        if request.input == "(cx-version)":
+            return scheme_interpreter_pb2.StringEvalResponse(output="(25 1 0)")
+
+    def SchemeEval(
+        self,
+        request,
+        context: grpc.ServicerContext,
+    ) -> scheme_interpreter_pb2.SchemeEvalResponse:
+        metadata = dict(context.invocation_metadata())
+        password = metadata.get("password", None)
+        if password != "12345":
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+        return scheme_interpreter_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
+
+
 class MockHealthServicerV1(health_pb2_grpc_v1.HealthServicer):
     def Check(self, request, context: grpc.ServicerContext):  # noqa N802
         metadata = dict(context.invocation_metadata())
@@ -163,6 +181,9 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     reflection.enable_server_reflection(
         (
@@ -220,6 +241,9 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
+    )
     reflection.enable_server_reflection(
         (
             health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
@@ -258,6 +282,9 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
+    )
     reflection.enable_server_reflection(
         (
             health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
@@ -291,6 +318,9 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path, monkeypatch) 
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     reflection.enable_server_reflection(
         (
@@ -326,6 +356,9 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
     server.add_insecure_port(f"{ip}:{port}")
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
@@ -366,6 +399,9 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     reflection.enable_server_reflection(
@@ -413,6 +449,9 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     reflection.enable_server_reflection(
