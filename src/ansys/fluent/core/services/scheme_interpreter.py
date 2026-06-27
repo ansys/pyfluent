@@ -144,3 +144,21 @@ class SchemeInterpreter(AbstractSchemeInterpreter):
         return not self.eval(
             f"(lexical-unreferenceable? user-initial-environment '{symbol})"
         )
+
+    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+        """Evaluates a scheme expression in string format.
+
+        Parameters
+        ----------
+        scm_input : str
+            Input scheme expression in string format
+
+        suppress_prompts : bool, optional
+            Whether to suppress prompts in Fluent, by default True
+
+        Returns
+        -------
+        Any
+            Output scheme value represented as Python datatype
+        """
+        return self.service.eval(scm_input, suppress_prompts)

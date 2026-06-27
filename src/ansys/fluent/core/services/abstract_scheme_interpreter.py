@@ -48,3 +48,8 @@ class AbstractSchemeInterpreter(ABC):
     def string_eval(self, input: str) -> str:
         """Evaluates a scheme expression in string format."""
         pass
+
+    @abstractmethod
+    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+        """Evaluates a scheme expression in string format."""
+        pass
