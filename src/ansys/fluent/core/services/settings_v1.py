@@ -147,6 +147,4 @@ class SettingsService(_SettingsServiceV0):
     @_trace
     def has_wildcard(self, name: str) -> bool:
         """Check whether a name has a wildcard pattern (v1: uses Settings.IsWildcard directly)."""
-        return self._scheme_eval.is_defined(
-            "has-fnmatch-wild-card?"
-        ) and self.is_wildcard(name)
+        return self.is_wildcard(name)

@@ -424,9 +424,11 @@ class SettingsService:
     @_trace
     def has_wildcard(self, name: str) -> bool:
         """Checks whether a name has a wildcard pattern."""
-        return self._scheme_eval.is_defined(
-            "has-fnmatch-wild-card?"
-        ) and self._app_utilities.is_wildcard(name)
+        if not hasattr(self, "_has_fnmatch_wild_card"):
+            self._has_fnmatch_wild_card = self._scheme_eval.is_defined(
+                "has-fnmatch-wild-card?"
+            )
+        return self._has_fnmatch_wild_card and self._app_utilities.is_wildcard(name)
 
     @_trace
     def is_interactive_mode(self) -> bool:

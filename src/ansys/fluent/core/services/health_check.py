@@ -53,7 +53,7 @@ class HealthCheck(AbstractHealthCheck):
         -------
         Status
         """
-        return self.service.check_health()
+        return self.Status(self.service.check_health().value)
 
     def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
