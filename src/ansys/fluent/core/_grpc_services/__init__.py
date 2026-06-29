@@ -173,4 +173,8 @@ class GRPCFactory:
         if self._product_version >= FluentVersion.v271:
             return Settings(self._get_instantiated_grpc_service(SettingsService))
         else:
-            return SettingsV261(self._get_instantiated_grpc_service(SettingsServiceV0))
+            return SettingsV261(
+                self._get_instantiated_grpc_service(SettingsServiceV0),
+                self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
+                self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
+            )
