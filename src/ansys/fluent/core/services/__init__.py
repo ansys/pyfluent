@@ -54,8 +54,6 @@ from ansys.fluent.core.services.field_data_v1 import (
 )
 from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServiceV0
 from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
-from ansys.fluent.core.services.settings import SettingsService as SettingsServiceV0
-from ansys.fluent.core.services.settings_v1 import SettingsService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData as SolutionVariableDataV0,
 )
@@ -102,8 +100,6 @@ __all__ = (
     "ReductionV0",
     "SchemeEvalService",
     "SchemeEvalServiceV0",
-    "SettingsService",
-    "SettingsServiceV0",
     "SolutionVariableData",
     "SolutionVariableDataV0",
     "SolutionVariableService",
@@ -120,7 +116,6 @@ __all__ = (
 _service_cls_by_name_v0 = {
     "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI_V0,
-    "settings": SettingsServiceV0,
     "events": EventsServiceV0,
     "field_data": LiveFieldDataV0,
     "field_data_old": DeprecatedFieldData,
@@ -136,7 +131,6 @@ _service_cls_by_name_v0 = {
 _service_cls_by_name = {
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
-    "settings": SettingsService,
     "events": EventsService,
     "field_data": LiveFieldData,
     "field_data_old": DeprecatedFieldData,
