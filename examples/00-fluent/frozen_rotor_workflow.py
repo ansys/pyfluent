@@ -78,7 +78,7 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 
 # .. note::
 # This example has been verified and validated using Ansys Fluent 2025 R2.
-# It requires Ansys Fluent version 2025 R2 or later, as it uses features that are not available in 
+# It requires Ansys Fluent version 2025 R2 or later, as it uses features that are not available in
 # earlier versions.
 
 ################################################################################################################
