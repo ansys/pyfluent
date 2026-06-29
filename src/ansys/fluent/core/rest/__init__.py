@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""REST-based PyFluent settings client and session.
+"""REST-based PyFluent client for Fluent web server.
 
 Standalone HTTP transport layer for PyFluent, connecting to Fluent's
 embedded web server via REST.  Pure HTTP/JSON — no gRPC, no protobuf,
@@ -29,37 +29,28 @@ no code-generated modules, no local settings tree.
   HTTP client using stdlib ``urllib`` only.  Each method makes one HTTP
   call and returns the server's JSON directly.
 
-* :class:`~ansys.fluent.core.rest.rest_launcher.RestSolverSession` – session
-  wrapper for an already-running Fluent REST server.
-
 * :func:`~ansys.fluent.core.rest.rest_launcher.connect_to_webserver` – connect
-  to an already-running Fluent web server and return a session object.
+  to an already-running Fluent web server and return a FluentRestClient.
 
-* :func:`~ansys.fluent.core.rest.rest_launcher.launch_webserver` – **phase 2**
-  (future): spawn a local Fluent process with ``-ws -ws-port={port}``.
+* :class:`~ansys.fluent.core.rest.client.FluentRestError` – exception raised
+  on HTTP failures.
 
 Example (connect to already-running server)::
 
     from ansys.fluent.core.rest import connect_to_webserver
 
-    session = connect_to_webserver(
-        ip="127.0.0.1",
-        port=5000,
+    client = connect_to_webserver(
+        url="http://127.0.0.1:5000",
         auth_token="my-secret-token",
     )
-    client = session._client
     print(client.get_var("setup/models/energy/enabled"))
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
-from ansys.fluent.core.rest.rest_launcher import (
-    RestSolverSession,
-    connect_to_webserver,
-)
+from ansys.fluent.core.rest.rest_launcher import connect_to_webserver
 
 __all__ = [
     "FluentRestClient",
-    "RestSolverSession",
     "connect_to_webserver",
     "FluentRestError",
 ]

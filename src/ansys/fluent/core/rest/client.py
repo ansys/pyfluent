@@ -86,6 +86,9 @@ class FluentRestError(RuntimeError):
 class FluentRestClient:
     """HTTP client for the Fluent DataModel REST API.
 
+    This is typically obtained via :func:`ansys.fluent.core.rest.connect_to_webserver`
+    rather than instantiated directly.
+
     Parameters
     ----------
     base_url : str
@@ -218,24 +221,6 @@ class FluentRestClient:
         req = self._build_request(method, endpoint, body)
         retries = self._max_retries if method.upper() in _RETRYABLE_METHODS else 0
         return self._send_with_retry(req, retries)
-
-    # ------------------------------------------------------------------
-    # Connection health
-    # ------------------------------------------------------------------
-
-    def is_server_reachable(self) -> bool:
-        """Return ``True`` if the server answers the readiness probe.
-
-        Issues ``GET /api/connection/run_mode``.  A ``2xx`` response, or a
-        ``401`` (server is up but rejected our credentials), both count as
-        reachable; anything else — including a refused or reset connection —
-        counts as unreachable.
-        """
-        try:
-            self._request("GET", "api/connection/run_mode")
-            return True
-        except FluentRestError as exc:
-            return exc.status == 401
 
     # ------------------------------------------------------------------
     # Settings API — read / write
