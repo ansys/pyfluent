@@ -170,7 +170,7 @@ class SettingsService(ServiceProtocol):
         # type is empty
         if not response.info.type:
             raise RuntimeError
-        return response.info
+        return self._extract_static_info(response.info)
 
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute a given command with the provided keyword arguments."""
@@ -212,3 +212,54 @@ class SettingsService(ServiceProtocol):
         if recursive:
             return self._parse_attrs(response)
         return self._get_state_from_value(response.values)
+
+    def _extract_static_info(self, info) -> dict[str, Any]:
+        ret = {}
+        ret["type"] = info.type
+        for key, value in sorted(info.attrs.items()):
+            ret[key] = self._get_state_from_value(value)
+        if info.has_allowed_values:
+            ret["has-allowed-values"] = info.has_allowed_values
+        if info.children:
+            ret["children"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.children
+            }
+        if info.commands:
+            ret["commands"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.commands
+            }
+        if hasattr(info, "queries") and info.queries:
+            ret["queries"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.queries
+            }
+        if info.arguments:
+            ret["arguments"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.arguments
+            }
+        if info.HasField("object_type"):
+            ret["object-type"] = self._extract_static_info(info.object_type)
+        if info.help:
+            ret["help"] = info.help
+        try:
+            if info.include_child_named_objects:
+                ret["include_child_named_objects"] = info.include_child_named_objects
+        except AttributeError:
+            pass
+
+        try:
+            if info.list_size:
+                ret["list_size"] = info.list_size
+        except AttributeError:
+            pass
+
+        try:
+            if info.user_creatable:
+                ret["user_creatable"] = info.user_creatable
+        except AttributeError:
+            ret["user_creatable"] = True
+
+        return ret
