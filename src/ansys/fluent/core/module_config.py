@@ -26,6 +26,7 @@ import os
 from pathlib import Path
 from typing import Any, Generic, TypeVar, cast
 import warnings
+import sys
 
 __all__ = ("config",)
 
@@ -351,16 +352,14 @@ class Config:
     def print(self):
         """Print all configuration variables."""
         config_dict = {}
-        for (
-            k,
-            v,
-        ) in cast(
+        if sys.version_info >= (3, 11):
+            members = inspect.getmembers_static(self)
+        else:
+            members = inspect.getmembers(self)
+        for (k,v,) in cast(
             list[tuple[str, Any]],
-            inspect.getmembers_static(  # pyright: ignore[reportAttributeAccessIssue]
-                self
-            ),
+            members,
         ):
-            # FIXME: This is an actual bug due to not being in 3.10 (added in 3.11)
             if isinstance(v, (_ConfigDescriptor, property)):
                 config_dict[k] = v.__get__(self, self.__class__)
         max_key_length = max(len(k) for k in config_dict)

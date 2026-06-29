@@ -62,4 +62,4 @@ class FieldDataStreaming(StreamingService):
 
     def callbacks(self) -> list[list[Callable | list | dict]]:
         """Get list of callbacks along with arguments and keyword arguments."""
-        return self._service_callbacks.values()
+        return list(self._service_callbacks.values())

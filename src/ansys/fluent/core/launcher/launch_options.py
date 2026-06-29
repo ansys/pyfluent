@@ -379,7 +379,7 @@ def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     return FluentVersion.get_latest_installed()
 
 
-def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int):
+def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | None):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
