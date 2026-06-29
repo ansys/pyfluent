@@ -232,4 +232,26 @@ PHASE 4: Test Updates (depends on Phase 3)
 **Recommended execution:**
 1. Start Phases 1 & 2 tasks in parallel (after decision on P2.4)
 2. Complete all Phase 2 tasks before starting Phase 3
-3. Complete Phase 3 before running Phase 4 verification
+3. Complete Phase 3 before running Phase 4 verification 
+
+
+
+
+Need to run this after every command. 
+
+basedpyright src/ansys/fluent/core
+pytest tests/test_public_api.py tests/test_launcher.py -q
+
+
+
+
+
+NOTE : 
+
+run this once and commit the results 
+
+basedpyright --writebaseline
+
+
+
+Question : Do we need the baseline or we can get rid of it and also why we need this and its use ? 
