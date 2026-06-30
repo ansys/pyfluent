@@ -23,6 +23,7 @@
 
 This client talks to ``/api/{component}/...`` and sends
 ``Authorization: Bearer <sha256(auth_token)>`` when a token is configured.
+
 Most HTTP failures are raised as :class:`FluentRestError`.
 """
 

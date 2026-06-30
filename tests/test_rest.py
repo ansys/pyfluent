@@ -61,9 +61,7 @@ from ansys.fluent.core.rest import (
     FluentRestError,
     connect_to_webserver,
 )
-from ansys.fluent.core.rest.client import (
-    FluentRestClient as FluentRestClientDirect,
-)
+from ansys.fluent.core.rest.client import FluentRestClient as FluentRestClientDirect
 from ansys.fluent.core.rest.rest_connect import (
     connect_to_webserver as connect_to_webserver_direct,
 )
@@ -721,9 +719,7 @@ class TestRealServerObjectListing:
     """get_object_names / get_list_size against a live server."""
 
     def test_velocity_inlet_returns_list(self, real_client):
-        names = real_client.get_object_names(
-            "setup/boundary-conditions/velocity-inlet"
-        )
+        names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
         assert isinstance(names, list)
         assert all(isinstance(n, str) for n in names)
 

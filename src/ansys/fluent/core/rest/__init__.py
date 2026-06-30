@@ -35,15 +35,6 @@ no code-generated modules, no local settings tree.
 * :class:`~ansys.fluent.core.rest.client.FluentRestError` – exception raised
   on HTTP failures.
 
-Example (connect to already-running server)::
-
-    from ansys.fluent.core.rest import connect_to_webserver
-
-    client = connect_to_webserver(
-        url="http://127.0.0.1:5000",
-        auth_token="my-secret-token",
-    )
-    print(client.get_var("setup/models/energy/enabled"))
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError

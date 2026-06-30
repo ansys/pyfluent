@@ -33,13 +33,12 @@ Examples
 --------
 Connect to a Fluent web server and interact via the REST client::
 
-    from ansys.fluent.core.rest import connect_to_webserver
-
-    client = connect_to_webserver(
-        url="http://127.0.0.1:5000",
-        auth_token="my-secret-token",
-    )
-    enabled = client.get_var("setup/models/energy/enabled")
+    >>> from ansys.fluent.core.rest import connect_to_webserver
+    >>> client = connect_to_webserver(
+    ...     url="http://127.0.0.1:5000",
+    ...     auth_token="my-secret-token",
+    ... )
+    >>> result = client.get_var("setup/models/energy/enabled")
 """
 
 from __future__ import annotations
@@ -69,14 +68,6 @@ def connect_to_webserver(url: str, auth_token: str) -> FluentRestClient:
     FluentRestClient
         A client instance ready for REST operations.
 
-    Examples
-    --------
-    >>> from ansys.fluent.core.rest import connect_to_webserver
-    >>> client = connect_to_webserver(
-    ...     url="http://127.0.0.1:5000",
-    ...     auth_token="my-secret-token",
-    ... )
-    >>> result = client.get_var("setup/models/energy/enabled")
     """
     logger.info("Connecting to Fluent REST server at %s", url)
     return FluentRestClient(url, auth_token=auth_token)
