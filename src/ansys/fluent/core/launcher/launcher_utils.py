@@ -210,16 +210,12 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
 
 
 def _build_journal_argument(
-    topy: None | bool | str,
-    journal_file_names: None | str | list[str],
-    include_journal_file_names: bool = True,
+    topy: None | bool | str, journal_file_names: None | str | list[str]
 ) -> str:
     """Build Fluent commandline journal argument."""
 
     def _impl(
-        topy: None | bool | str,
-        journal_file_names: None | str | list[str],
-        include_journal_file_names: bool,
+        topy: None | bool | str, journal_file_names: None | str | list[str]
     ) -> str:
         if journal_file_names and not isinstance(journal_file_names, (str, list)):
             raise TypeError(
@@ -232,7 +228,7 @@ def _build_journal_argument(
         fluent_jou_arg = ""
         if isinstance(journal_file_names, str):
             journal_file_names = [journal_file_names]
-        if journal_file_names and include_journal_file_names:
+        if journal_file_names:
             fluent_jou_arg += "".join(
                 [f' -i "{journal}"' for journal in journal_file_names]
             )
@@ -243,4 +239,19 @@ def _build_journal_argument(
                 fluent_jou_arg += " -topy"
         return fluent_jou_arg
 
-    return _impl(topy, journal_file_names, include_journal_file_names)
+    return _impl(topy, journal_file_names)
+
+
+def _read_journals(session, journal_file_names: None | str | list[str]) -> None:
+    """Read one or more journal files into an already-connected session.
+
+    This is used instead of the startup ``-i`` argument when a case file is
+    also being read, so that the case is processed before the journal
+    (see issue #4265).
+    """
+    if not journal_file_names:
+        return
+    if isinstance(journal_file_names, str):
+        journal_file_names = [journal_file_names]
+    for journal in journal_file_names:
+        session.execute_tui(f'file/read-journal "{journal}"')

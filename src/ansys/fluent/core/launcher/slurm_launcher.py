@@ -69,6 +69,7 @@ import shutil
 import subprocess
 import time
 from typing import Any, Generic, TypedDict
+from warnings import warn
 
 from typing_extensions import TypeVar, Unpack
 
@@ -76,6 +77,7 @@ from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+    LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
 )
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
@@ -573,6 +575,11 @@ class SlurmLauncher:
         argvals = {name: kwargs.get(name) for name in SlurmLauncherArgs.__annotations__}
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
+        if self._argvals.get("lightweight_mode") and self._argvals.get(
+            "journal_file_names"
+        ):
+            warn(LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL, UserWarning)
+            self._argvals["lightweight_mode"] = False
         if config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self._argvals["ui_mode"] = UIMode(ui_mode)

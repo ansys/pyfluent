@@ -62,3 +62,9 @@ INSECURE_MODE_WARNING = (
     "This mode is not recommended. For more details on the implications "
     "and usage of insecure mode, refer to the Fluent documentation."
 )
+
+LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL = (
+    "``lightweight_mode`` cannot be combined with ``journal_file_names`` and "
+    "will be ignored. There is no consistent way to read a case in lightweight "
+    "mode while also executing a journal, so the case is read normally instead."
+)
