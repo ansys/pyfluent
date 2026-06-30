@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Fluent DataModel settings REST API client.
+"""Fluent settings REST API client.
 
 This module is intentionally free of HTTP mechanics.  All transport
 concerns (auth, retry, SSL) live in
