@@ -377,6 +377,9 @@ class FluentRestClient:
 
     def __exit__(
         self,
+        exc_type: object | None,
+        exc_value: object | None,
+        traceback: object | None,
     ) -> None:
         """Exit the context manager — calls :meth:`exit`."""
         self.exit()

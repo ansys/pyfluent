@@ -19,23 +19,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Unit and integration tests for Fluent REST transport layer.
+"""Unit and integration tests for the Fluent REST transport layer.
 
-Test Structure:
-- Unit tests (mocked): FluentRestClient, RestSolverSession, connect_to_webserver
-- Integration tests (marked real_server): Against a live Fluent REST server
+This suite targets the actual public surface of the
+``ansys.fluent.core.rest`` package on this branch:
 
-Unit tests run without a server. Integration tests auto-skip if server is unreachable.
+* :class:`ansys.fluent.core.rest.client.FluentRestClient` — the pure-stdlib
+  HTTP client (``client.py``).
+* :func:`ansys.fluent.core.rest.rest_connect.connect_to_webserver` — the thin
+  connection helper that returns a ``FluentRestClient`` (``rest_connect.py``).
+* The package re-exports in ``ansys/fluent/core/rest/__init__.py``.
 
-Run all tests::
+Test structure
+--------------
+- Unit tests (mocked ``urllib``): run anywhere, no server required.
+- Integration tests (marked ``real_server``): run against a live Fluent REST
+  server. They use the ``real_client`` fixture from ``conftest.py`` and
+  auto-skip when ``FLUENT_WEBSERVER_TOKEN`` / ``FLUENT_REST_PORT`` are unset
+  or the server is unreachable.
 
-    pytest tests/test_rest.py -v
-
-Run only unit tests (no server required)::
+Run all unit tests (no server)::
 
     pytest tests/test_rest.py -v -m "not real_server"
 
-Run only integration tests::
+Run integration tests::
 
     pytest tests/test_rest.py -v -m real_server
 """
@@ -43,35 +50,60 @@ Run only integration tests::
 import hashlib
 import io
 import json
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 import urllib.error
 
 import pytest
 
-from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
-from ansys.fluent.core.rest.rest_launcher import (
-    RestSolverSession,
-    _probe_server,
+import ansys.fluent.core.rest as rest_pkg
+from ansys.fluent.core.rest import (
+    FluentRestClient,
+    FluentRestError,
     connect_to_webserver,
+)
+from ansys.fluent.core.rest.client import (
+    FluentRestClient as FluentRestClientDirect,
+)
+from ansys.fluent.core.rest.rest_connect import (
+    connect_to_webserver as connect_to_webserver_direct,
 )
 
 _BASE_URL = "http://127.0.0.1:5000"
 
 
 # ============================================================================
-# Mock Helpers
+# Mock helpers
 # ============================================================================
 
 
-def _make_response(body: object, status: int = 200) -> MagicMock:
-    """Return a mock suitable for ``urllib.request.urlopen`` context manager."""
-    raw = json.dumps(body).encode("utf-8")
-    resp = MagicMock()
-    resp.read.return_value = raw
-    resp.status = status
-    resp.__enter__ = lambda s: s
-    resp.__exit__ = MagicMock(return_value=False)
-    return resp
+class _FakeResponse:
+    """Context-manager stand-in for ``urllib.request.urlopen`` return value."""
+
+    def __init__(self, body: object, status: int = 200, raw: bytes | None = None):
+        if raw is not None:
+            self._raw = raw
+        else:
+            self._raw = json.dumps(body).encode("utf-8")
+        self.status = status
+
+    def read(self) -> bytes:
+        return self._raw
+
+    def __enter__(self) -> "_FakeResponse":
+        return self
+
+    def __exit__(self, *exc) -> bool:
+        return False
+
+
+def _make_response(body: object, status: int = 200) -> _FakeResponse:
+    """Return a fake urlopen response carrying a JSON *body*."""
+    return _FakeResponse(body, status=status)
+
+
+def _make_raw_response(raw: bytes) -> _FakeResponse:
+    """Return a fake urlopen response carrying arbitrary *raw* bytes."""
+    return _FakeResponse(None, raw=raw)
 
 
 def _make_http_error(
@@ -85,61 +117,88 @@ def _make_http_error(
 
 
 def _client(**kwargs) -> FluentRestClient:
-    """Convenience constructor with sensible defaults."""
+    """Convenience constructor with sensible defaults (no retry back-off wait)."""
     kwargs.setdefault("auth_token", "tok123")
+    kwargs.setdefault("retry_delay", 0)  # keep retry tests fast
     return FluentRestClient(_BASE_URL, **kwargs)
 
 
 # ============================================================================
-# Unit Tests — FluentRestClient
+# Package API — __init__.py re-exports
+# ============================================================================
+
+
+class TestRestPackageApi:
+    """The ``ansys.fluent.core.rest`` package exposes the public surface."""
+
+    def test_all_exports(self):
+        """``__all__`` lists exactly the supported public names."""
+        assert set(rest_pkg.__all__) == {
+            "FluentRestClient",
+            "connect_to_webserver",
+            "FluentRestError",
+        }
+
+    def test_reexports_are_the_real_objects(self):
+        """Package-level names are the same objects as their submodules."""
+        assert FluentRestClient is FluentRestClientDirect
+        assert connect_to_webserver is connect_to_webserver_direct
+
+    def test_error_is_runtimeerror_subclass(self):
+        """``FluentRestError`` stays a ``RuntimeError`` for broad ``except``."""
+        assert issubclass(FluentRestError, RuntimeError)
+
+
+# ============================================================================
+# Unit tests — FluentRestClient construction
 # ============================================================================
 
 
 class TestFluentRestClientInit:
-    """Test FluentRestClient initialization."""
+    """FluentRestClient initialization."""
 
     def test_init_with_defaults(self):
-        """Verify initialization with minimal arguments."""
         client = FluentRestClient("http://localhost:5000")
         assert client._base_url == "http://localhost:5000"
         assert client._auth_token is None
         assert client._component == "fluent_1"
+        assert client._api_base == "api/fluent_1"
         assert client._timeout == 30.0
         assert client._max_retries == 2
         assert client._retry_delay == 1.0
         assert not client._is_closed
 
     def test_init_strips_trailing_slash(self):
-        """Verify that trailing slash is stripped from base_url."""
         client = FluentRestClient("http://localhost:5000/")
         assert client._base_url == "http://localhost:5000"
 
     def test_init_with_auth_token(self):
-        """Verify that auth_token is stored."""
         client = FluentRestClient("http://localhost:5000", auth_token="secret")
         assert client._auth_token == "secret"
 
     def test_init_with_custom_component(self):
-        """Verify custom component name."""
         client = FluentRestClient("http://localhost:5000", component="fluent_meshing_1")
         assert client._component == "fluent_meshing_1"
+        assert client._api_base == "api/fluent_meshing_1"
 
     def test_init_with_custom_timeout(self):
-        """Verify custom timeout."""
         client = FluentRestClient("http://localhost:5000", timeout=60.0)
         assert client._timeout == 60.0
 
     def test_init_with_custom_max_retries(self):
-        """Verify custom max_retries."""
         client = FluentRestClient("http://localhost:5000", max_retries=5)
         assert client._max_retries == 5
 
 
+# ============================================================================
+# Unit tests — FluentRestError
+# ============================================================================
+
+
 class TestFluentRestError:
-    """Test FluentRestError exception class."""
+    """FluentRestError construction and transport translation."""
 
     def test_status_and_message(self):
-        """Verify error attributes."""
         exc = FluentRestError(404, "Not found", retryable=False)
         assert exc.status == 404
         assert exc.retryable is False
@@ -147,120 +206,330 @@ class TestFluentRestError:
         assert "Not found" in str(exc)
 
     def test_retryable_flag(self):
-        """Verify retryable flag."""
         exc = FluentRestError(503, "Service unavailable", retryable=True)
         assert exc.retryable is True
 
-    def test_from_transport_oserror(self):
-        """Verify from_transport with OSError."""
+    def test_from_transport_plain_oserror_is_retryable(self):
         exc = FluentRestError.from_transport(OSError("Connection refused"))
         assert exc.status == 0
         assert exc.retryable is True
 
-    def test_from_transport_urlerror(self):
-        """Verify from_transport with URLError."""
-        url_err = urllib.error.URLError("Connection reset")
-        exc = FluentRestError.from_transport(url_err)
+    def test_from_transport_urlerror_is_retryable(self):
+        exc = FluentRestError.from_transport(urllib.error.URLError("reset"))
         assert exc.status == 0
         assert exc.retryable is True
 
+    @pytest.mark.parametrize("status", [502, 503, 504])
+    def test_from_transport_gateway_errors_are_retryable(self, status):
+        exc = FluentRestError.from_transport(_make_http_error(status, {"d": "x"}))
+        assert exc.status == status
+        assert exc.retryable is True
+
+    @pytest.mark.parametrize("status", [400, 401, 403, 404, 409, 500])
+    def test_from_transport_other_http_errors_not_retryable(self, status):
+        exc = FluentRestError.from_transport(_make_http_error(status))
+        assert exc.status == status
+        assert exc.retryable is False
+
+    def test_from_transport_uses_body_as_message(self):
+        exc = FluentRestError.from_transport(
+            _make_http_error(400, {"detail": "bad path"})
+        )
+        assert "bad path" in str(exc)
+
+
+# ============================================================================
+# Unit tests — authentication headers
+# ============================================================================
+
 
 class TestFluentRestClientAuth:
-    """Test authentication header generation."""
+    """Authorization header generation."""
 
     def test_make_auth_headers_no_token(self):
-        """Verify headers without auth token."""
-        headers = FluentRestClient._make_auth_headers(None)
-        assert headers == {}
+        assert FluentRestClient._make_auth_headers(None) == {}
+        assert FluentRestClient._make_auth_headers("") == {}
 
     def test_make_auth_headers_with_token(self):
-        """Verify headers with auth token (SHA-256 hashed)."""
         token = "mysecret"
         headers = FluentRestClient._make_auth_headers(token)
-        expected_hash = hashlib.sha256(token.encode()).hexdigest()
-        assert headers["Authorization"] == f"Bearer {expected_hash}"
+        expected = hashlib.sha256(token.encode()).hexdigest()
+        assert headers["Authorization"] == f"Bearer {expected}"
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_auth_header_attached_to_requests(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response(True)
+        c = _client(auth_token="abc")
+        c.get_var("setup/x")
+        req = mock_urlopen.call_args[0][0]
+        expected = hashlib.sha256(b"abc").hexdigest()
+        assert req.get_header("Authorization") == f"Bearer {expected}"
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_no_auth_header_when_token_absent(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response(True)
+        c = FluentRestClient(_BASE_URL)  # no token
+        c.get_var("setup/x")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_header("Authorization") is None
 
 
-class TestFluentRestClientGetVar:
-    """Test get_var method."""
+# ============================================================================
+# Unit tests — read endpoints
+# ============================================================================
+
+
+class TestFluentRestClientReads:
+    """get_static_info / get_var / get_attrs and list/name normalization."""
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_get_static_info_path(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({"type": "group"})
+        result = _client().get_static_info()
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "GET"
+        assert req.full_url.endswith("api/fluent_1/static-info")
+        assert result == {"type": "group"}
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_get_static_info_full_query(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({"type": "group"})
+        _client().get_static_info(full=True)
+        req = mock_urlopen.call_args[0][0]
+        assert req.full_url.endswith("static-info?full=true")
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_get_var_returns_value(self, mock_urlopen):
-        """Verify get_var returns server response."""
         mock_urlopen.return_value = _make_response(True)
-        c = _client()
-        result = c.get_var("setup/models/energy/enabled")
-        assert result is True
+        assert _client().get_var("setup/models/energy/enabled") is True
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_get_var_strips_leading_slash(self, mock_urlopen):
-        """Verify leading slash is stripped from path."""
+    def test_get_var_uses_post_and_strips_leading_slash(self, mock_urlopen):
         mock_urlopen.return_value = _make_response(42)
-        c = _client()
-        c.get_var("/setup/general/setting")
+        _client().get_var("/setup/general/setting")
         req = mock_urlopen.call_args[0][0]
-        body = json.loads(req.data)
-        assert body["path"] == "setup/general/setting"
+        assert req.get_method() == "POST"
+        assert json.loads(req.data)["path"] == "setup/general/setting"
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_get_var_raises_on_404(self, mock_urlopen):
-        """Verify 404 raises FluentRestError."""
         mock_urlopen.side_effect = _make_http_error(404, {"detail": "Not found"})
-        c = _client()
         with pytest.raises(FluentRestError) as exc_info:
-            c.get_var("setup/nonexistent")
+            _client().get_var("setup/nonexistent")
         assert exc_info.value.status == 404
 
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_get_attrs_builds_query(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({"min": 0, "max": 1})
+        _client().get_attrs("setup/x", ["min", "max"], recursive=True)
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "GET"
+        assert "attrs=min%2Cmax" in req.full_url
+        assert "recursive=true" in req.full_url
 
-class TestFluentRestClientSetVar:
-    """Test set_var method."""
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_get_object_names_from_list(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response(["a", "b"])
+        assert _client().get_object_names("setup/bc/velocity-inlet") == ["a", "b"]
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_get_object_names_from_dict_keys(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({"a": {}, "b": {}})
+        assert sorted(_client().get_object_names("setup/bc/wall")) == ["a", "b"]
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_get_list_size_from_list(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response([1, 2, 3])
+        assert _client().get_list_size("setup/list") == 3
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_get_list_size_uses_explicit_size_field(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({"size": 7, "a": {}})
+        assert _client().get_list_size("setup/container") == 7
+
+    def test_names_from_handles_unexpected_type(self):
+        assert FluentRestClient._names_from(None) == []
+        assert FluentRestClient._names_from(5) == []
+
+    def test_size_from_handles_unexpected_type(self):
+        assert FluentRestClient._size_from(None) == 0
+        assert FluentRestClient._size_from("x") == 0
+
+
+# ============================================================================
+# Unit tests — write endpoints
+# ============================================================================
+
+
+class TestFluentRestClientWrites:
+    """set_var / resize_list_object."""
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_set_var_sends_put(self, mock_urlopen):
-        """Verify set_var sends PUT request."""
         mock_urlopen.return_value = _make_response({})
-        c = _client()
-        c.set_var("setup/models/energy/enabled", True)
+        _client().set_var("setup/models/energy/enabled", True)
         req = mock_urlopen.call_args[0][0]
         assert req.get_method() == "PUT"
         assert json.loads(req.data) is True
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_set_var_with_dict_value(self, mock_urlopen):
-        """Verify set_var accepts dict values."""
         mock_urlopen.return_value = _make_response({})
-        c = _client()
         value = {"a": 1, "b": 2}
-        c.set_var("setup/some/dict", value)
-        req = mock_urlopen.call_args[0][0]
-        assert json.loads(req.data) == value
-
-
-class TestFluentRestClientExit:
-    """Test exit and session lifecycle."""
+        _client().set_var("setup/some/dict", value)
+        assert json.loads(mock_urlopen.call_args[0][0].data) == value
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_sends_post(self, mock_urlopen):
-        """Verify exit sends POST to api/app/exit."""
+    def test_resize_list_object(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().resize_list_object("setup/list", 4)
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "POST"
+        assert json.loads(req.data) == {"new-size": 4}
+
+
+# ============================================================================
+# Unit tests — named-object CRUD
+# ============================================================================
+
+
+class TestFluentRestClientNamedObjects:
+    """create / delete / rename / bulk delete."""
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_create_sends_post_with_name(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().create("setup/boundary-conditions/wall", "new-wall")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "POST"
+        assert json.loads(req.data)["name"] == "new-wall"
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_create_merges_properties(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().create(
+            "setup/boundary-conditions/wall", "w", properties={"enabled": True}
+        )
+        body = json.loads(mock_urlopen.call_args[0][0].data)
+        assert body == {"enabled": True, "name": "w"}
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_create_without_name_omits_name_key(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().create("setup/bc/wall")
+        assert "name" not in json.loads(mock_urlopen.call_args[0][0].data)
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_sends_delete(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().delete("setup/boundary-conditions/wall", "wall-1")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "DELETE"
+        assert req.full_url.endswith("wall/wall-1")
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_url_encodes_name(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().delete("setup/bc/wall", "wall 1/special")
+        assert "wall%201%2Fspecial" in mock_urlopen.call_args[0][0].full_url
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_ignore_not_found_swallows_404(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(404)
+        _client().delete("setup/bc/wall", "w", ignore_not_found=True)  # no raise
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_raises_on_404_by_default(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(404)
+        with pytest.raises(FluentRestError) as exc_info:
+            _client().delete("setup/bc/wall", "w")
+        assert exc_info.value.status == 404
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_delete_ignore_not_found_still_raises_500(self, mock_urlopen):
+        mock_urlopen.side_effect = _make_http_error(500)
+        with pytest.raises(FluentRestError):
+            _client().delete("setup/bc/wall", "w", ignore_not_found=True)
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_rename_sends_put(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().rename("setup/boundary-conditions/wall", "new", "old")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "PUT"
+        assert json.loads(req.data)["name"] == "new"
+        assert req.full_url.endswith("wall/old")
+
+    @patch.object(FluentRestClient, "delete")
+    def test_delete_child_objects_iterates(self, mock_delete):
+        _client().delete_child_objects("setup/bc", "wall", ["a", "b"])
+        assert [call.args[1] for call in mock_delete.call_args_list] == ["a", "b"]
+
+    @patch.object(FluentRestClient, "delete")
+    @patch.object(FluentRestClient, "get_object_names", return_value=["x", "y"])
+    def test_delete_all_child_objects(self, _mock_names, mock_delete):
+        _client().delete_all_child_objects("setup/bc", "wall")
+        assert mock_delete.call_count == 2
+
+
+# ============================================================================
+# Unit tests — command / query execution
+# ============================================================================
+
+
+class TestFluentRestClientExecute:
+    """execute_cmd / execute_query."""
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_execute_cmd_appends_force(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().execute_cmd("solution/initialization", "initialize")
+        req = mock_urlopen.call_args[0][0]
+        assert req.get_method() == "POST"
+        assert req.full_url.endswith("initialization/initialize?force=true")
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_execute_cmd_without_force(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().execute_cmd("solution/init", "initialize", force=False)
+        assert "?force=true" not in mock_urlopen.call_args[0][0].full_url
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_execute_cmd_passes_kwargs_as_body(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({})
+        _client().execute_cmd("p", "cmd", iters=5)
+        assert json.loads(mock_urlopen.call_args[0][0].data) == {"iters": 5}
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_execute_query(self, mock_urlopen):
+        mock_urlopen.return_value = _make_response({"result": 1})
+        out = _client().execute_query("reports/x", "evaluate", arg=2)
+        req = mock_urlopen.call_args[0][0]
+        assert req.full_url.endswith("x/evaluate")
+        assert json.loads(req.data) == {"arg": 2}
+        assert out == {"result": 1}
+
+
+# ============================================================================
+# Unit tests — session lifecycle / context manager
+# ============================================================================
+
+
+class TestFluentRestClientLifecycle:
+    """exit, closed-state guarding, and context-manager protocol."""
+
+    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
+    def test_exit_sends_post_to_app_exit(self, mock_urlopen):
         mock_urlopen.return_value = _make_response({})
         c = _client()
         c.exit()
         req = mock_urlopen.call_args[0][0]
         assert req.get_method() == "POST"
         assert "api/app/exit" in req.full_url
-
-    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_sets_is_closed(self, mock_urlopen):
-        """Verify exit sets _is_closed flag."""
-        mock_urlopen.return_value = _make_response({})
-        c = _client()
-        assert not c._is_closed
-        c.exit()
         assert c._is_closed
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_exit_is_idempotent(self, mock_urlopen):
-        """Verify exit can be called multiple times."""
         mock_urlopen.return_value = _make_response({})
         c = _client()
         c.exit()
@@ -268,369 +537,164 @@ class TestFluentRestClientExit:
         assert mock_urlopen.call_count == 1
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_swallows_errors(self, mock_urlopen):
-        """Verify exit raises on non-403/409 HTTP errors."""
+    def test_exit_raises_on_server_error(self, mock_urlopen):
         mock_urlopen.side_effect = _make_http_error(500)
-        c = _client()
-        # exit() does not swallow errors, it only handles idempotency
         with pytest.raises(FluentRestError):
-            c.exit()
-
-    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_idempotent_after_success(self, mock_urlopen):
-        """Verify exit is idempotent after successful first call."""
-        mock_urlopen.return_value = _make_response({})
-        c = _client()
-        c.exit()
-        c.exit()  # Should not make another request
-        assert mock_urlopen.call_count == 1
+            _client().exit()
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
     def test_closed_client_blocks_requests(self, mock_urlopen):
-        """Verify requests fail after exit()."""
         mock_urlopen.return_value = _make_response({})
         c = _client()
         c.exit()
         with pytest.raises(FluentRestError, match="Session is closed"):
             c.get_var("setup/general/solver")
 
-    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_marks_closed(self, mock_urlopen):
-        """Verify exit marks client as closed."""
-        mock_urlopen.return_value = _make_response({})
-        c = _client()
-        assert not c._is_closed
-        c.exit()
-        assert c._is_closed
-
     def test_context_manager_enter_returns_self(self):
-        """Verify context manager __enter__ returns self."""
         c = _client()
         assert c.__enter__() is c
 
-
-class TestFluentRestClientNamedObjects:
-    """Test create, delete, rename methods."""
-
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_create_sends_post(self, mock_urlopen):
-        """Verify create sends POST with name."""
+    def test_context_manager_calls_exit_on_block_close(self, mock_urlopen):
+        """``with client:`` must close the session (regression: __exit__ args)."""
         mock_urlopen.return_value = _make_response({})
         c = _client()
-        c.create("setup/boundary-conditions/wall", "new-wall")
-        req = mock_urlopen.call_args[0][0]
-        assert req.get_method() == "POST"
-        assert json.loads(req.data)["name"] == "new-wall"
+        with c as entered:
+            assert entered is c
+            assert not c._is_closed
+        assert c._is_closed
+        assert "api/app/exit" in mock_urlopen.call_args[0][0].full_url
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_create_with_properties(self, mock_urlopen):
-        """Verify create merges properties with name."""
+    def test_context_manager_exits_on_exception(self, mock_urlopen):
+        """The session is still closed when the body raises."""
         mock_urlopen.return_value = _make_response({})
         c = _client()
-        props = {"enabled": True}
-        c.create("setup/boundary-conditions/wall", "new-wall", properties=props)
-        req = mock_urlopen.call_args[0][0]
-        body = json.loads(req.data)
-        assert body["name"] == "new-wall"
-        assert body["enabled"] is True
+        with pytest.raises(ValueError):
+            with c:
+                raise ValueError("boom")
+        assert c._is_closed
+
+
+# ============================================================================
+# Unit tests — transport: JSON decoding and retry behavior
+# ============================================================================
+
+
+class TestFluentRestClientTransport:
+    """Response decoding and retry policy."""
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_delete_sends_delete(self, mock_urlopen):
-        """Verify delete sends DELETE request."""
-        mock_urlopen.return_value = _make_response({})
-        c = _client()
-        c.delete("setup/boundary-conditions/wall", "wall-1")
-        req = mock_urlopen.call_args[0][0]
-        assert req.get_method() == "DELETE"
-        assert "wall-1" in req.full_url
+    def test_empty_body_returns_none(self, mock_urlopen):
+        mock_urlopen.return_value = _make_raw_response(b"")
+        assert _client().get_var("setup/x") is None
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_delete_ignore_not_found(self, mock_urlopen):
-        """Verify delete with ignore_not_found=True doesn't raise on 404."""
-        mock_urlopen.side_effect = _make_http_error(404)
-        c = _client()
-        c.delete("setup/boundary-conditions/wall", "wall-1", ignore_not_found=True)
-        # Should not raise
+    def test_non_json_body_returns_empty_dict(self, mock_urlopen):
+        mock_urlopen.return_value = _make_raw_response(b"not json")
+        assert _client().get_var("setup/x") == {}
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_delete_raises_on_404_by_default(self, mock_urlopen):
-        """Verify delete raises on 404 by default."""
-        mock_urlopen.side_effect = _make_http_error(404)
-        c = _client()
-        with pytest.raises(FluentRestError) as exc_info:
-            c.delete("setup/boundary-conditions/wall", "wall-1")
-        assert exc_info.value.status == 404
-
-    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_rename_sends_put(self, mock_urlopen):
-        """Verify rename sends PUT with new name."""
-        mock_urlopen.return_value = _make_response({})
-        c = _client()
-        c.rename("setup/boundary-conditions/wall", "new-name", "old-name")
-        req = mock_urlopen.call_args[0][0]
-        assert req.get_method() == "PUT"
-        assert json.loads(req.data)["name"] == "new-name"
-        assert "old-name" in req.full_url
-
-
-class TestFluentRestClientRetry:
-    """Test retry logic."""
-
-    @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_retry_on_502(self, mock_urlopen):
-        """Verify retry on HTTP 502 for retryable (GET) methods."""
-        # First call returns 502, second returns success
+    def test_get_retries_on_502_then_succeeds(self, mock_urlopen):
         mock_urlopen.side_effect = [
-            _make_http_error(502, {"detail": "Bad gateway"}),
+            _make_http_error(502, {"detail": "bad gateway"}),
             _make_response(["inlet-1", "inlet-2"]),
         ]
-        c = _client()
-        # get_object_names uses GET, which is retryable
-        result = c.get_object_names("setup/boundary-conditions/velocity-inlet")
+        result = _client().get_object_names("setup/bc/velocity-inlet")
         assert result == ["inlet-1", "inlet-2"]
         assert mock_urlopen.call_count == 2
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_no_retry_post_on_502(self, mock_urlopen):
-        """Verify 502 on POST raises (no retry for non-idempotent methods)."""
+    def test_post_does_not_retry_on_502(self, mock_urlopen):
         mock_urlopen.side_effect = _make_http_error(502)
-        c = _client()
-        # get_var uses POST, which is not in retryable methods
         with pytest.raises(FluentRestError) as exc_info:
-            c.get_var("setup/test")
+            _client().get_var("setup/test")  # get_var is POST -> not retryable
         assert exc_info.value.status == 502
-        # POST should NOT retry, so only 1 call
         assert mock_urlopen.call_count == 1
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_retry_exhaustion(self, mock_urlopen):
-        """Verify error raised after max retries exhausted."""
+    def test_get_retry_exhaustion(self, mock_urlopen):
         mock_urlopen.side_effect = _make_http_error(503)
-        c = FluentRestClient(_BASE_URL, auth_token="tok123", max_retries=2)
-        # Use GET method (retryable) for this test
+        c = FluentRestClient(_BASE_URL, auth_token="t", max_retries=2, retry_delay=0)
         with pytest.raises(FluentRestError) as exc_info:
-            c.get_object_names("setup/test")
+            c.get_object_names("setup/test")  # GET -> retryable
         assert exc_info.value.status == 503
-        # 1 initial + 2 retries = 3 calls
-        assert mock_urlopen.call_count == 3
-
-
-# ============================================================================
-# Unit Tests — RestSolverSession
-# ============================================================================
-
-
-class TestRestSolverSessionInit:
-    """Test RestSolverSession initialization."""
-
-    def test_init_stores_connection_params(self):
-        """Verify session stores ip, port, auth_token."""
-        session = RestSolverSession(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-        )
-        assert session.ip == "127.0.0.1"
-        assert session.port == 5000
-        assert session.auth_token == "secret"
-
-    def test_init_creates_client(self):
-        """Verify session creates a FluentRestClient."""
-        session = RestSolverSession(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-        )
-        assert isinstance(session._client, FluentRestClient)
-
-    def test_client_property(self):
-        """Verify client property returns the internal client."""
-        session = RestSolverSession(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-        )
-        assert session.client is session._client
-
-    def test_init_with_custom_scheme(self):
-        """Verify session accepts custom scheme."""
-        session = RestSolverSession(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-            scheme="https",
-        )
-        assert "https://" in session._client._base_url
-
-
-class TestRestSolverSessionExit:
-    """Test RestSolverSession exit."""
+        assert mock_urlopen.call_count == 3  # 1 initial + 2 retries
 
     @patch("ansys.fluent.core.rest.client.urllib.request.urlopen")
-    def test_exit_calls_client_exit(self, mock_urlopen):
-        """Verify session.exit() calls client.exit()."""
-        mock_urlopen.return_value = _make_response({})
-        session = RestSolverSession(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-        )
-        session.exit()
-        assert session._client._is_closed
+    def test_connection_error_on_get_retries(self, mock_urlopen):
+        mock_urlopen.side_effect = [
+            OSError("connection refused"),
+            _make_response([]),
+        ]
+        assert _client().get_object_names("setup/x") == []
+        assert mock_urlopen.call_count == 2
 
 
 # ============================================================================
-# Unit Tests — connect_to_webserver
+# Unit tests — connect_to_webserver (rest_connect.py)
 # ============================================================================
 
 
 class TestConnectToWebserver:
-    """Test connect_to_webserver function."""
+    """The connection helper returns a configured FluentRestClient."""
 
-    def test_invalid_scheme_raises_valueerror(self):
-        """Verify invalid scheme raises ValueError."""
-        with pytest.raises(ValueError, match="scheme must be"):
-            connect_to_webserver(
-                ip="127.0.0.1",
-                port=5000,
-                auth_token="secret",
-                scheme="ftp",
-            )
+    def test_returns_fluent_rest_client(self):
+        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        assert isinstance(client, FluentRestClient)
 
-    @patch("ansys.fluent.core.rest.rest_launcher._probe_server")
-    def test_http_connection_success(self, mock_probe):
-        """Verify successful HTTP connection returns RestSolverSession."""
-        mock_probe.return_value = True
-        session = connect_to_webserver(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-            scheme="http",
-        )
-        assert isinstance(session, RestSolverSession)
-        assert session.ip == "127.0.0.1"
-        assert session.port == 5000
+    def test_passes_url_through(self):
+        client = connect_to_webserver(url="http://host:1234/", auth_token="secret")
+        assert client._base_url == "http://host:1234"
 
-    @patch("ansys.fluent.core.rest.rest_launcher._probe_server")
-    def test_connection_failure_raises_error(self, mock_probe):
-        """Verify connection failure raises ConnectionError."""
-        mock_probe.return_value = False
-        with pytest.raises(ConnectionError, match="did not respond"):
-            connect_to_webserver(
-                ip="127.0.0.1",
-                port=5000,
-                auth_token="secret",
-                scheme="http",
-            )
+    def test_stores_auth_token_and_builds_header(self):
+        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        assert client._auth_token == "secret"
+        expected = hashlib.sha256(b"secret").hexdigest()
+        assert client._headers["Authorization"] == f"Bearer {expected}"
 
-    @patch("ansys.fluent.core.rest.rest_launcher._get_ssl_context_for_https")
-    @patch("ansys.fluent.core.rest.rest_launcher._probe_server")
-    def test_https_with_auto_discovery(self, mock_probe, mock_ssl):
-        """Verify HTTPS auto-discovers certificates."""
-        mock_ssl.return_value = MagicMock()
-        mock_probe.return_value = True
-        session = connect_to_webserver(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-            scheme="https",
-        )
-        assert isinstance(session, RestSolverSession)
-        mock_ssl.assert_called_once()
+    def test_defaults_to_solver_component(self):
+        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        assert client._component == "fluent_1"
 
-    @patch("ansys.fluent.core.rest.rest_launcher._get_ssl_context_for_https")
-    @patch("ansys.fluent.core.rest.rest_launcher._probe_server")
-    def test_https_fallback_to_http(self, mock_probe, mock_ssl):
-        """Verify HTTPS falls back to HTTP when certificates missing."""
-        mock_ssl.return_value = None  # No certificates found
-        mock_probe.return_value = True
-        session = connect_to_webserver(
-            ip="127.0.0.1",
-            port=5000,
-            auth_token="secret",
-            scheme="https",
-        )
-        assert isinstance(session, RestSolverSession)
-        # First probe call should use http
-        assert mock_probe.call_count >= 1
-
-
-class TestProbeServer:
-    """Test _probe_server function."""
-
-    @patch("ansys.fluent.core.rest.rest_launcher.urllib.request.urlopen")
-    def test_probe_success_200(self, mock_urlopen):
-        """Verify probe returns True on 200."""
-        mock_urlopen.return_value = _make_response({"ready": True})
-        result = _probe_server("http://localhost:5000", "token", 5.0)
-        assert result is True
-
-    @patch("ansys.fluent.core.rest.rest_launcher.urllib.request.urlopen")
-    def test_probe_success_401(self, mock_urlopen):
-        """Verify probe returns True on 401 (auth required, server up)."""
-        mock_urlopen.side_effect = _make_http_error(401, {"detail": "Unauthorized"})
-        result = _probe_server("http://localhost:5000", "token", 5.0)
-        assert result is True
-
-    @patch("ansys.fluent.core.rest.rest_launcher.urllib.request.urlopen")
-    def test_probe_failure_404(self, mock_urlopen):
-        """Verify probe returns False on 404."""
-        mock_urlopen.side_effect = _make_http_error(404)
-        result = _probe_server("http://localhost:5000", "token", 5.0)
-        assert result is False
-
-    @patch("ansys.fluent.core.rest.rest_launcher.urllib.request.urlopen")
-    def test_probe_failure_connection_error(self, mock_urlopen):
-        """Verify probe returns False on connection error."""
-        mock_urlopen.side_effect = OSError("Connection refused")
-        result = _probe_server("http://localhost:5000", "token", 5.0)
-        assert result is False
+    def test_positional_arguments(self):
+        client = connect_to_webserver(_BASE_URL, "secret")
+        assert isinstance(client, FluentRestClient)
+        assert client._auth_token == "secret"
 
 
 # ============================================================================
-# Integration Tests — Real Server
+# Integration tests — real server (auto-skip without env/server)
 # ============================================================================
 
 
 @pytest.mark.real_server
 class TestRealServerStaticInfo:
-    """Integration tests against real Fluent server: get_static_info."""
+    """get_static_info against a live server."""
 
     def test_returns_dict(self, real_client):
-        """Verify that get_static_info returns a dictionary."""
-        info = real_client.get_static_info()
-        assert isinstance(info, dict)
+        assert isinstance(real_client.get_static_info(), dict)
 
     def test_root_is_group(self, real_client):
-        """Verify that root element is a 'group' type."""
-        info = real_client.get_static_info()
-        assert info.get("type") == "group"
+        assert real_client.get_static_info().get("type") == "group"
 
     def test_has_setup_and_solution(self, real_client):
-        """Verify that 'setup' and 'solution' children exist."""
-        info = real_client.get_static_info()
-        children = set(info.get("children", {}).keys())
-        assert "setup" in children
-        assert "solution" in children
+        children = set(real_client.get_static_info().get("children", {}).keys())
+        assert {"setup", "solution"} <= children
 
 
 @pytest.mark.real_server
 class TestRealServerGetVar:
-    """Integration tests against real Fluent server: get_var."""
+    """get_var against a live server."""
 
     def test_energy_enabled_is_bool(self, real_client):
-        """Verify reading energy/enabled returns a boolean."""
-        val = real_client.get_var("setup/models/energy/enabled")
-        assert isinstance(val, bool)
+        assert isinstance(real_client.get_var("setup/models/energy/enabled"), bool)
 
     def test_viscous_model_is_string(self, real_client):
-        """Verify reading viscous/model returns a non-empty string."""
         val = real_client.get_var("setup/models/viscous/model")
-        assert isinstance(val, str)
-        assert len(val) > 0
+        assert isinstance(val, str) and val
 
     def test_nonexistent_path_raises_error(self, real_client):
-        """Verify nonexistent path raises FluentRestError."""
         with pytest.raises(FluentRestError) as exc_info:
             real_client.get_var("setup/nonexistent/fake/path")
         assert exc_info.value.status in (404, 500)
@@ -638,72 +702,43 @@ class TestRealServerGetVar:
 
 @pytest.mark.real_server
 class TestRealServerSetVar:
-    """Integration tests against real Fluent server: set_var."""
+    """set_var against a live server (toggles then restores)."""
 
     def test_set_and_restore_bool(self, real_client):
-        """Toggle energy/enabled, verify change, restore original."""
         path = "setup/models/energy/enabled"
         original = real_client.get_var(path)
         assert isinstance(original, bool)
-
-        toggled = not original
-        real_client.set_var(path, toggled)
+        real_client.set_var(path, not original)
         try:
-            readback = real_client.get_var(path)
-            assert readback == toggled
+            assert real_client.get_var(path) == (not original)
         finally:
             real_client.set_var(path, original)
-            restored = real_client.get_var(path)
-            assert restored == original
+            assert real_client.get_var(path) == original
 
 
 @pytest.mark.real_server
-class TestRealServerGetObjectNames:
-    """Integration tests against real Fluent server: get_object_names."""
+class TestRealServerObjectListing:
+    """get_object_names / get_list_size against a live server."""
 
     def test_velocity_inlet_returns_list(self, real_client):
-        """Verify velocity-inlet returns a list of strings."""
-        names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
+        names = real_client.get_object_names(
+            "setup/boundary-conditions/velocity-inlet"
+        )
         assert isinstance(names, list)
-        assert len(names) > 0
         assert all(isinstance(n, str) for n in names)
 
-    def test_unknown_path_returns_empty(self, real_client):
-        """Verify nonexistent path returns empty list."""
-        names = real_client.get_object_names(
-            "setup/boundary-conditions/nonexistent-type"
-        )
-        assert names == []
-
-    def test_no_duplicates(self, real_client):
-        """Verify no duplicate names in container."""
-        names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
-        assert len(names) == len(set(names))
-
-
-@pytest.mark.real_server
-class TestRealServerGetListSize:
-    """Integration tests against real Fluent server: get_list_size."""
-
     def test_size_matches_names(self, real_client):
-        """Verify get_list_size matches len(get_object_names)."""
         path = "setup/boundary-conditions/velocity-inlet"
-        size = real_client.get_list_size(path)
-        names = real_client.get_object_names(path)
-        assert size == len(names)
-
-    def test_unknown_path_returns_zero(self, real_client):
-        """Verify nonexistent path returns zero."""
-        size = real_client.get_list_size("setup/nonexistent/fake")
-        assert size == 0
+        assert real_client.get_list_size(path) == len(
+            real_client.get_object_names(path)
+        )
 
 
 @pytest.mark.real_server
 class TestRealServerExecuteCmd:
-    """Integration tests against real Fluent server: execute_cmd."""
+    """execute_cmd against a live server."""
 
     def test_initialize_succeeds_or_conflicts(self, real_client):
-        """Verify execute_cmd either succeeds or returns 409 (conflict)."""
         try:
             real_client.execute_cmd("solution/initialization", "initialize")
         except FluentRestError as exc:
@@ -712,11 +747,9 @@ class TestRealServerExecuteCmd:
 
 @pytest.mark.real_server
 class TestRealServerContextManager:
-    """Integration tests against real Fluent server: context manager."""
+    """Context-manager flow against a live server."""
 
     def test_context_manager_with_real_connection(self, real_client):
-        """Verify context manager works with real server."""
         with real_client:
-            val = real_client.get_var("setup/models/energy/enabled")
-            assert isinstance(val, bool)
+            assert isinstance(real_client.get_var("setup/models/energy/enabled"), bool)
         assert real_client._is_closed

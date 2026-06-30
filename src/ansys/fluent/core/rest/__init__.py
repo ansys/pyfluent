@@ -29,7 +29,7 @@ no code-generated modules, no local settings tree.
   HTTP client using stdlib ``urllib`` only.  Each method makes one HTTP
   call and returns the server's JSON directly.
 
-* :func:`~ansys.fluent.core.rest.rest_launcher.connect_to_webserver` – connect
+* :func:`~ansys.fluent.core.rest.rest_connect.connect_to_webserver` – connect
   to an already-running Fluent web server and return a FluentRestClient.
 
 * :class:`~ansys.fluent.core.rest.client.FluentRestError` – exception raised
@@ -47,7 +47,7 @@ Example (connect to already-running server)::
 """
 
 from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
-from ansys.fluent.core.rest.rest_launcher import connect_to_webserver
+from ansys.fluent.core.rest.rest_connect import connect_to_webserver
 
 __all__ = [
     "FluentRestClient",
