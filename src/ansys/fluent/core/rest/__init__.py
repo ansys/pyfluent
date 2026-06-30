@@ -25,23 +25,39 @@ Standalone HTTP transport layer for PyFluent, connecting to Fluent's
 embedded web server via REST.  Pure HTTP/JSON — no gRPC, no protobuf,
 no code-generated modules, no local settings tree.
 
-* :class:`~ansys.fluent.core.rest.client.FluentRestClient` – pure-Python
-  HTTP client using stdlib ``urllib`` only.  Each method makes one HTTP
-  call and returns the server's JSON directly.
+* :class:`~ansys.fluent.core.rest.client.FluentRestClient` – settings API
+  client.  Use :meth:`~ansys.fluent.core.rest.client.FluentRestClient.connect`
+  to create a production instance, or inject a fake
+  :class:`~ansys.fluent.core.rest.transport.RequestStrategy` for unit tests.
 
-* :func:`~ansys.fluent.core.rest.rest_connect.connect_to_webserver` – connect
-  to an already-running Fluent web server and return a FluentRestClient.
+* :class:`~ansys.fluent.core.rest.transport.HttpRequestStrategy` – real HTTP
+  transport built on stdlib ``urllib``.
 
-* :class:`~ansys.fluent.core.rest.client.FluentRestError` – exception raised
+* :class:`~ansys.fluent.core.rest.transport.RequestStrategy` – protocol that
+  test doubles must satisfy (structural — no inheritance required).
+
+* :class:`~ansys.fluent.core.rest.errors.FluentRestError` – exception raised
   on HTTP failures.
+
+Quick start::
+
+    >>> from ansys.fluent.core.rest import FluentRestClient
+    >>> client = FluentRestClient.connect("http://127.0.0.1:5000", auth_token="secret")
+    >>> client.get_var("setup/models/energy/enabled")
 
 """
 
-from ansys.fluent.core.rest.client import FluentRestClient, FluentRestError
-from ansys.fluent.core.rest.rest_connect import connect_to_webserver
+from ansys.fluent.core.rest.client import FluentRestClient
+from ansys.fluent.core.rest.errors import FluentRestError
+from ansys.fluent.core.rest.transport import HttpRequestStrategy, RequestStrategy
+
+# Backwards-compatible alias — callers using connect_to_webserver() continue to work.
+connect_to_webserver = FluentRestClient.connect
 
 __all__ = [
     "FluentRestClient",
-    "connect_to_webserver",
     "FluentRestError",
+    "HttpRequestStrategy",
+    "RequestStrategy",
+    "connect_to_webserver",
 ]
