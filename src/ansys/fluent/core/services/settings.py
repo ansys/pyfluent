@@ -115,12 +115,12 @@ class SettingsV261(AbstractSettings):
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute a given command with the provided keyword arguments."""
-        return self.service.execute_cmd(path, command, kwds)
+        return self.service.execute_cmd(path, command, **kwds)
 
     @_trace
     def execute_query(self, path: str, query: str, **kwds) -> Any:
         """Execute a given query with the provided keyword arguments."""
-        return self.service.execute_query(path, query, kwds)
+        return self.service.execute_query(path, query, **kwds)
 
     @_trace
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
@@ -212,12 +212,12 @@ class Settings(AbstractSettings):
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
         """Execute a given command with the provided keyword arguments."""
-        return self.service.execute_cmd(path, command, kwds)
+        return self.service.execute_cmd(path, command, **kwds)
 
     @_trace
     def execute_query(self, path: str, query: str, **kwds) -> Any:
         """Execute a given query with the provided keyword arguments."""
-        return self.service.execute_query(path, query, kwds)
+        return self.service.execute_query(path, query, **kwds)
 
     @_trace
     def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
