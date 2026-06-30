@@ -29,6 +29,7 @@ import logging
 import re
 import warnings
 
+from ansys.fluent.core.codegen.api_tree import get_api_tree_data_file_path
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.error_message import closest_allowed_names
 
@@ -43,15 +44,10 @@ _NLTK_MISSING_MSG = (
 )
 
 
-def _get_api_tree_data_file_path():
-    """Get API tree data file."""
-    return (config.codegen_outdir / "api_tree" / "api_objects.json").resolve()
-
-
 @functools.cache
 def _get_api_tree_data():
     """Get API tree data."""
-    api_tree_data_file_path = _get_api_tree_data_file_path()
+    api_tree_data_file_path = get_api_tree_data_file_path()
     if api_tree_data_file_path.exists():
         with open(api_tree_data_file_path) as json_file:
             api_tree_data = json.load(json_file)

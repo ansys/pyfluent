@@ -22,6 +22,8 @@
 
 """Api tree hierarchy."""
 from collections.abc import Mapping
+import json
+import os
 from pathlib import Path
 import pickle
 
@@ -35,6 +37,11 @@ from ansys.fluent.core.utils.fluent_version import (
 def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
     return (config.codegen_outdir / f"api_tree_{version}.pickle").resolve()
+
+
+def get_api_tree_data_file_path():
+    """Get API tree data file."""
+    return (config.codegen_outdir / "api_tree" / "api_objects.json").resolve()
 
 
 def _remove_suffix(input: str, suffix):
@@ -119,4 +126,18 @@ def generate_api_data(
         list(api_object_name_map["solver_session"])
     )
     api_tree_data["api_object_name_map"] = api_object_name_map
+
+    def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
+        json_file_folder = Path(os.path.join(config.codegen_outdir, "api_tree"))
+        json_file_folder.mkdir(parents=True, exist_ok=True)
+
+        api_tree_file_path = get_api_tree_data_file_path()
+        api_tree_file_path.touch()
+        with open(api_tree_file_path, "w") as json_file:
+            json.dump(api_tree_data, json_file)
+
+    _write_api_tree_file(
+        api_tree_data=api_tree_data, api_object_names=list(api_object_names)
+    )
+
     api_tree_file.unlink()
