@@ -62,9 +62,8 @@ from ansys.fluent.core.rest import (
     connect_to_webserver,
 )
 from ansys.fluent.core.rest.client import FluentRestClient as FluentRestClientDirect
-from ansys.fluent.core.rest.rest_connect import (
-    connect_to_webserver as connect_to_webserver_direct,
-)
+
+connect_to_webserver_direct = FluentRestClientDirect.connect
 
 _BASE_URL = "http://127.0.0.1:5000"
 
