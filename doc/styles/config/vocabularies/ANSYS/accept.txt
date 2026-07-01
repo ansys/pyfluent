@@ -89,3 +89,4 @@ discoverability
 NGons
 config
 user_guide_variables
+Synopsys
