@@ -254,4 +254,4 @@ def _read_journals(session, journal_file_names: None | str | list[str]) -> None:
     if isinstance(journal_file_names, str):
         journal_file_names = [journal_file_names]
     for journal in journal_file_names:
-        session.execute_tui(f'file/read-journal "{journal}"')
+        session.execute_tui(f'/file/read-journal "{journal}"')

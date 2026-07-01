@@ -474,13 +474,6 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
-def test_build_journal_argument_without_journal_files_but_with_topy():
-    assert (
-        _build_journal_argument("a.py", ["a.jou"], include_journal_file_names=False)
-        == ' -topy="a.py"'
-    )
-
-
 def test_lightweight_case_journal_read_is_completed_before_sync_step():
     launcher = object.__new__(StandaloneLauncher)
     launcher.argvals = {
