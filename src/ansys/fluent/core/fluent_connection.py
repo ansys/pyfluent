@@ -394,14 +394,14 @@ def _get_channel(
                 )
 
 
-T = TypeVar("T", bound=type)
+T = TypeVar("T")
 E = TypeVar("E")
 
 
 class _ConnectionInterface:
     def __init__(
         self,
-        create_grpc_service: Callable[[T, E], T],
+        create_grpc_service: Callable[[type[T], E], T],
         error_state: E,
         supports_v1: bool,
     ):
