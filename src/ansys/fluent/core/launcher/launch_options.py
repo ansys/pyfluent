@@ -389,7 +389,7 @@ def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | Non
     dimension : int, optional
         Geometric dimensionality of the Fluent simulation.
     """
-    if Dimension(dimension) == Dimension.TWO and gpu:
+    if dimension is not None and Dimension(dimension) == Dimension.TWO and gpu:
         raise exceptions.GPUSolverSupportError()
 
 

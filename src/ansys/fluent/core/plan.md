@@ -37,7 +37,6 @@ Address remaining Copilot suggestions (11 items) from type-checking PR #4761. Th
 
 | File | Issue | Why | Change |
 |------|-------|-----|--------|
-| `launcher/launcher.py` (3 sub-issues) | • Unused `BaseSession` import | Code hygiene | Remove unused import |
 | | • `LaunchFluentArgs` typing too narrow for `start_container`/`container_dict` | Prevents valid dry-run container launches | Expand type union to include container dict return types |
 | | • Compose flags default to `False` | Silent override of env/config defaults | Add conditional logic to respect existing config |
 | `launcher/launch_options.py:399-409` | `dimension=None` passed to `_validate_gpu()` without guard | Causes `ValueError` at runtime | Add null check in `_validate_gpu()` |
