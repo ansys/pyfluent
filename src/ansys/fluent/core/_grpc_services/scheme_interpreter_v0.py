@@ -59,13 +59,6 @@ class SchemeInterpreterService(ServiceProtocol):
         self._stub = scheme_eval_pb2_grpc.SchemeEvalStub(intercept_channel)
         self._metadata = metadata
 
-    @property
-    def version(self):
-        """Gets the version of the server."""
-        return FluentVersion(
-            ".".join(self.string_eval("(cx-version)").strip("()").split())
-        )
-
     def exec(
         self,
         commands: Sequence[str],

@@ -105,7 +105,9 @@ class GRPCFactory:
             if _server_supports_v1(channel=self._channel)
             else self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
         )
-        return grpc_service.version
+        return FluentVersion(
+            ".".join(grpc_service.string_eval("(cx-version)").strip("()").split())
+        )
 
     def _get_instantiated_grpc_service(self, grpc_service_class):
         """Generic lookup method that instantiates services lazily and caches them."""
