@@ -1,6 +1,7 @@
 (?i)Ansys
 (?i)gRPC
 (?i)PyAnsys
+[Bb]oolean
 [Ff]luent
 [Jj]ournaling
 [Mm]atplotlib
@@ -88,3 +89,4 @@ discoverability
 NGons
 config
 user_guide_variables
+Synopsys

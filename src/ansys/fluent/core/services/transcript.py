@@ -25,15 +25,22 @@
 import grpc
 
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.streaming import StreamingService
 
 
-class TranscriptService(StreamingService):
+class TranscriptService(
+    StreamingService, ServiceProtocol
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the transcript gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of TranscriptService class."""
         super().__init__(
-            stub=TranscriptGrpcModule.TranscriptStub(channel),
+            stub=self._create_stub(channel),
             metadata=metadata,
         )
+
+    def _create_stub(self, channel: grpc.Channel):
+        """Create the gRPC stub. Override in subclasses to use a different proto version."""
+        return TranscriptGrpcModule.TranscriptStub(channel)

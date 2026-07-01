@@ -22,9 +22,10 @@
 
 """Deprecate Arguments."""
 
+from collections.abc import Callable
 import functools
 import inspect
-from typing import Any, Callable
+from typing import Any
 import warnings
 
 from deprecated.sphinx import deprecated

@@ -21,13 +21,14 @@
 # SOFTWARE.
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
+
+from collections.abc import Callable, Iterator, Sequence
 from enum import Enum
 import functools
-import itertools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
+from typing import Any, Iterable, NoReturn, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -37,6 +38,10 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.module_config import config
+from ansys.fluent.core.services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -46,16 +51,14 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _completer_info_method,
+)
 
 Path = list[tuple[str, str]]
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
 ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
-
-member_specs_oneof_fields = [
-    x.name
-    for x in DataModelProtoModule.MemberSpecs.DESCRIPTOR.oneofs_by_name["as"].fields
-]
 
 
 def _get_value_from_message_dict(d: dict[str, Any], key: list[str | Sequence[str]]):
@@ -175,7 +178,7 @@ class _FilterDatamodelNames:
         return [name for name in names if validate_name(name)]
 
 
-class DatamodelServiceImpl:
+class DatamodelServiceImpl(ServiceProtocol):
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
     def __init__(
@@ -197,7 +200,6 @@ class DatamodelServiceImpl:
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
 
-    # TODO: Remove it from the proto interface
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
@@ -296,12 +298,6 @@ class DatamodelServiceImpl:
                 "while deleting a command instance. Command instancing is"
                 "supported from Ansys 2023R2 onward."
             ) from None
-
-    def get_specs(
-        self, request: DataModelProtoModule.GetSpecsRequest
-    ) -> DataModelProtoModule.GetSpecsResponse:
-        """RPC getSpecs of DataModel service."""
-        return self._stub.getSpecs(request, metadata=self._metadata)
 
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
@@ -493,7 +489,9 @@ class SubscriptionList:
                 v.unsubscribe()
 
 
-class DatamodelService(StreamingService):
+class DatamodelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
+    CommandArgumentsCleanupMixin, StreamingService, ServiceProtocol
+):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(
@@ -515,6 +513,15 @@ class DatamodelService(StreamingService):
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.version = version
+
+    def _delete_command_arguments_rpc(
+        self, rules: str, path: str, command: str, commandid: str
+    ) -> None:
+        """Issue RPC to delete command arguments."""
+        request = DataModelProtoModule.DeleteCommandArgumentsRequest(
+            rules=rules, path=path, command=command, commandid=commandid
+        )
+        self._impl.delete_command_arguments(request)
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
@@ -694,24 +701,7 @@ class DatamodelService(StreamingService):
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
         """Delete command arguments."""
-        request = DataModelProtoModule.DeleteCommandArgumentsRequest(
-            rules=rules, path=path, command=command, commandid=commandid
-        )
-        self._impl.delete_command_arguments(request)
-
-    def get_specs(
-        self,
-        rules: str,
-        path: str,
-    ) -> dict[str, Any]:
-        """Get specifications."""
-        request = DataModelProtoModule.GetSpecsRequest(
-            rules=rules,
-            path=path,
-        )
-        return MessageToDict(
-            self._impl.get_specs(request).member, use_integers_for_enums=True
-        )
+        return super().delete_command_arguments(rules, path, command, commandid)
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
@@ -980,6 +970,18 @@ class PyCallableStateObject:
         return self.get_state()
 
 
+def _get_completer_info(
+    obj, base_class: type, prefix: str, excluded: Iterable
+) -> list[list[str]]:
+    return _completer_info_method(
+        obj=obj,
+        base_class=base_class,
+        prefix=prefix,
+        excluded=excluded,
+        type_name_map=_type_name_map,
+    )
+
+
 class PyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use this class
     instead of directly calling DatamodelService's method.
@@ -1062,6 +1064,20 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     setState = set_state
+
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyStateContainer, prefix=prefix, excluded=excluded
+        )
 
     def _get_remote_attr(self, attrib: str) -> Any:
         return self.service.get_attribute_value(
@@ -1163,7 +1179,6 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-
         all_children = list(self.__dict__) + dir(type(self))
 
         filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
@@ -1251,7 +1266,7 @@ class PyMenu(PyStateContainer):
         ----------
         obj_type: str
             Type of the named object container.
-        child_names : List[str]
+        child_names : list[str]
             List of named objects.
         """
         for child_name in child_names:
@@ -1615,32 +1630,6 @@ class PyNamedObjectContainer:
         else:
             self.path = path
 
-    def _get_child_object_names(self) -> list[str]:
-        parent_path = self.path[0:-1]
-        child_type_suffix = self.path[-1][0] + ":"
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(parent_path)
-        )
-        child_object_names = []
-        for struct_type in ("singleton", "namedobject"):
-            struct_field = response.get(struct_type)
-            if struct_field:
-                for member in struct_field["members"]:
-                    if member.startswith(child_type_suffix):
-                        child_object_names.append(member[len(child_type_suffix) :])
-        return child_object_names
-
-    def _get_child_object_display_names(self) -> list[str]:
-        child_object_display_names = []
-        for name in self._get_child_object_names():
-            name_path = self.path[0:-1]
-            name_path.append((self.path[-1][0], name))
-            name_path.append(("_name_", ""))
-            child_object_display_names.append(
-                PyMenu(self.service, self.rules, name_path).get_state()
-            )
-        return child_object_display_names
-
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
         return self.service.get_object_names(
@@ -1648,6 +1637,23 @@ class PyNamedObjectContainer:
         )
 
     getChildObjectDisplayNames = get_object_names
+
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self,
+            base_class=PyNamedObjectContainer,
+            prefix=prefix,
+            excluded=excluded,
+        )
 
     def __len__(self) -> int:
         """Return a count of child objects.
@@ -1683,7 +1689,7 @@ class PyNamedObjectContainer:
             )
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def _del_item(self, key: str) -> None:
@@ -1706,7 +1712,7 @@ class PyNamedObjectContainer:
             self.service.delete_object(self.rules, se_path)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def __getitem__(self, key: str) -> PyMenu:
@@ -1848,6 +1854,20 @@ class PyAction:
         args = self._get_create_instance_args()
         if args is not None:
             return PyArguments(*args)
+
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
+
+        Returns
+        -------
+        list[list[str]]
+            Name, type and docstring of all children.
+        """
+        return _get_completer_info(
+            obj=self, base_class=PyAction, prefix=prefix, excluded=excluded
+        )
 
 
 class PyQuery(PyAction):
@@ -2039,17 +2059,23 @@ class PyArguments(PyStateContainer):
             )
         )
         self.path.append((command, id))
+        self.service.register_command_arguments(
+            self.rules,
+            convert_path_to_se_path(self.path[:-1]),
+            self.path[-1][0],
+            self.path[-1][1],
+        )
 
     def __del__(self) -> None:
         try:
-            self.service.delete_command_arguments(
+            self.service.release_command_arguments(
                 self.rules,
                 convert_path_to_se_path(self.path[:-1]),
                 self.path[-1][0],
                 self.path[-1][1],
             )
         except Exception as exc:
-            logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
+            logger.info(f"__del__ {type(exc).__name__}: {exc}")
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -2178,57 +2204,6 @@ arg_class_by_type = {
 }
 
 
-class PyMenuGeneric(PyMenu):
-    """Generic PyMenu class for when generated API code is not available."""
-
-    attrs = ("service", "rules", "path", "_cached_attrs")
-
-    def _get_child_names(self) -> tuple[list, list, list, list]:
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
-        )
-        singleton_names = []
-        creatable_type_names = []
-        command_names = []
-        query_names = []
-        for struct_type in ("singleton", "namedobject"):
-            struct_field = response.get(struct_type)
-            if struct_field:
-                for member in struct_field["members"]:
-                    if ":" not in member:
-                        singleton_names.append(member)
-                creatable_type_names = struct_field.get("creatabletypes", [])
-                command_names = [x["name"] for x in struct_field.get("commands", [])]
-                query_names = [x["name"] for x in struct_field.get("queries", [])]
-        return singleton_names, creatable_type_names, command_names, query_names
-
-    def _get_child(self, name: str) -> PyNamedObjectContainer | PyCommand | PyQuery:
-        singletons, creatable_types, commands, queries = self._get_child_names()
-        if name in singletons:
-            child_path = self.path + [(name, "")]
-            return PyMenuGeneric(self.service, self.rules, child_path)
-        elif name in creatable_types:
-            child_path = self.path + [(name, "")]
-            return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
-        elif name in commands:
-            return PyCommand(self.service, self.rules, name, self.path)
-        elif name in queries:
-            return PyQuery(self.service, self.rules, name, self.path)
-        else:
-            raise LookupError(
-                f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"
-            )
-
-    def __dir__(self) -> list[str]:
-        return list(itertools.chain(*self._get_child_names()))
-
-    def __getattr__(self, name: str):
-        if name in PyMenuGeneric.attrs:
-            return super().__getattr__(name)
-        else:
-            return self._get_child(name)
-
-
 class PySimpleMenuGeneric(PyMenu, PyDictionary):
     """A simple implementation of PyMenuGeneric applicable only for SINGLETONS.
 
@@ -2249,22 +2224,8 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
             return self._get_child(name)
 
 
-class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
-    """Generic PyNamedObjectContainer class for when generated API code is not
-    available."""
-
-    def __iter__(self) -> Iterator[PyMenuGeneric]:
-        for name in self.get_object_names():
-            child_path = self.path[:-1]
-            child_path.append((self.path[-1][0], name))
-            yield PyMenuGeneric(self.service, self.rules, child_path)
-
-    def _get_item(self, key: str) -> PyMenuGeneric:
-        if key in self.get_object_names():
-            child_path = self.path[:-1]
-            child_path.append((self.path[-1][0], key))
-            return PyMenuGeneric(self.service, self.rules, child_path)
-        else:
-            raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
-            )
+_type_name_map = {
+    _InputFile: "InputFilename",
+    _OutputFile: "OutputFilename",
+    _InOutFile: "InOutFilename",
+}

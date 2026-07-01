@@ -27,6 +27,7 @@ import grpc
 
 from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
 from ansys.api.fluent.v0 import monitor_pb2_grpc as MonitorGrpcModule
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -35,7 +36,9 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.services.streaming import StreamingService
 
 
-class MonitorsService(StreamingService):
+class MonitorsService(
+    StreamingService, ServiceProtocol
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the monitor gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
@@ -46,12 +49,20 @@ class MonitorsService(StreamingService):
             TracingInterceptor(),
             BatchInterceptor(),
         )
-        self._stub = MonitorGrpcModule.MonitorStub(intercept_channel)
+        self._stub = self._create_stub(intercept_channel)
         self._metadata = metadata
         super().__init__(
             stub=self._stub,
             metadata=self._metadata,
         )
+
+    def _create_stub(self, intercept_channel):
+        """Create the Monitor gRPC stub.
+
+        Extracted as a hook so that the v1 adapter can swap in the v1 stub
+        without duplicating the entire ``__init__`` interceptor chain.
+        """
+        return MonitorGrpcModule.MonitorStub(intercept_channel)
 
     def get_monitors_info(self) -> dict:
         """Get monitors information.

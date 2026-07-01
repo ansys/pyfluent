@@ -20,7 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over TUI-based datamodel gRPC service of Fluent."""
+"""Wrappers over TUI-based datamodel gRPC service of Fluent.
+
+This module contains the shared TUI runtime/menu logic reused by the v1
+adapter module, which overrides only v1 proto/stub/request differences.
+"""
 
 import keyword
 import logging
@@ -32,6 +36,7 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -139,7 +144,7 @@ def _convert_gvalue_to_value(gval: Variant) -> Any:
         return val
 
 
-class DatamodelService:
+class DatamodelService(ServiceProtocol):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(

@@ -36,12 +36,16 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple, TypeVar
+from typing import Any, Callable, TypeVar
 import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
+from google.protobuf.descriptor_pool import DescriptorPool
 import grpc
+from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
+    ProtoReflectionDescriptorDatabase,
+)
 
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
@@ -52,13 +56,31 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
-from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services import (
+    AppUtilities,
+    AppUtilitiesService,
+    AppUtilitiesV0,
+    HealthCheckService,
+    HealthCheckServiceV0,
+    SchemeEval,
+    SchemeEvalService,
+    SchemeEvalServiceV0,
+    SchemeEvalV0,
+    service_creator,
+)
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
-    AppUtilitiesService,
-    AppUtilitiesV252,
 )
-from ansys.fluent.core.services.scheme_eval import SchemeEvalService
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesService as AppUtilitiesServiceV0,
+)
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesV252 as AppUtilitiesV252V0,
+)
+from ansys.fluent.core.services.app_utilities_v1 import (
+    AppUtilitiesV252 as AppUtilitiesV252V1,
+)
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -127,7 +149,7 @@ class MonitorThread(threading.Thread):
     def __init__(self):
         """Initialize MonitorThread."""
         super().__init__(daemon=True)
-        self.cbs: List[Callable] = []
+        self.cbs: list[Callable] = []
 
     def run(self) -> None:
         """Run monitor thread."""
@@ -226,11 +248,34 @@ class ErrorState:
         self._details = ""
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class FluentConnectionProperties:
-    """Stores Fluent connection properties, including connection IP, port and password;
+    """Stores Fluent connection properties, including connection IP/port or UDS path and password;
     Fluent Cortex working directory, process ID and hostname; and whether Fluent was
     launched in a docker container.
+
+    Attributes
+    ----------
+    ip : str | None
+        IP address used to connect to Fluent.
+    port : int | None
+        Port used to connect to Fluent.
+    uds_fullpath : str | Path | None
+        Full path to the Unix Domain Socket used for local connections on Linux.
+    password : str | None
+        Password used for authentication when calling Fluent services.
+    cortex_pwd : str | None
+        Fluent Cortex working directory.
+    cortex_pid : int | None
+        Process ID of the Cortex process.
+    cortex_host : str | None
+        Hostname of the Cortex process.
+    fluent_host_pid : int | None
+        Process ID of the Fluent solver host process.
+    inside_container : bool | ContainerT | None
+        Container context for Fluent.
+        Returns ``False`` when not running in a container,
+        and the container instance when running in one.
 
     Examples
     --------
@@ -246,6 +291,7 @@ class FluentConnectionProperties:
 
     ip: str | None = None
     port: int | None = None
+    uds_fullpath: str | Path | None = None
     password: str | None = None
     cortex_pwd: str | None = None
     cortex_pid: int | None = None
@@ -348,28 +394,47 @@ def _get_channel(
                 )
 
 
+T = TypeVar("T", bound=type)
+E = TypeVar("E")
+
+
 class _ConnectionInterface:
-    def __init__(self, create_grpc_service, error_state):
-        self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
-        self._app_utilities_service = create_grpc_service(
-            AppUtilitiesService, error_state
-        )
+    def __init__(
+        self,
+        create_grpc_service: Callable[[T, E], T],
+        error_state: E,
+        supports_v1: bool,
+    ):
+        if supports_v1:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalService, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesService, error_state
+            )
+        else:
+            self._scheme_eval_service = create_grpc_service(
+                SchemeEvalServiceV0, error_state
+            )
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesServiceV0, error_state
+            )
+        self.scheme_eval = service_creator(
+            "scheme_eval", supports_v1=supports_v1
+        ).create(self._scheme_eval_service)
         match FluentVersion(self.scheme_eval.version):
             case v if v < FluentVersion.v252:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
 
             case FluentVersion.v252:
-                self._app_utilities = AppUtilitiesV252(
-                    self._app_utilities_service, self.scheme_eval
-                )
+                self._app_utilities = (
+                    AppUtilitiesV252V1 if supports_v1 else AppUtilitiesV252V0
+                )(self._app_utilities_service, self.scheme_eval)
 
             case _:
-                self._app_utilities = service_creator("app_utilities").create(
-                    self._app_utilities_service
-                )
+                self._app_utilities = service_creator(
+                    "app_utilities", supports_v1=supports_v1
+                ).create(self._app_utilities_service)
 
     @property
     def product_build_info(self) -> str:
@@ -431,6 +496,25 @@ def _pid_exists(pid):
             return True
 
 
+def _server_supports_v1(channel) -> bool:
+    try:
+        reflection_db = ProtoReflectionDescriptorDatabase(channel)
+        desc_pool = DescriptorPool(reflection_db)
+        service_desc = desc_pool.FindServiceByName(
+            "ansys.api.fluent.v1.application_runtime.ApplicationRuntime"
+        )
+        method_desc = service_desc.FindMethodByName("GetProductVersion")
+        return (
+            method_desc.full_name
+            == "ansys.api.fluent.v1.application_runtime.ApplicationRuntime.GetProductVersion"
+        )
+    except KeyError:
+        return False
+
+
+S = TypeVar("S", bound=ServiceProtocol)
+
+
 class FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -440,7 +524,7 @@ class FluentConnection:
         Close the Fluent connection and exit Fluent.
     """
 
-    _on_exit_cbs: List[Callable] = []
+    _on_exit_cbs: list[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: MonitorThread | None = None
 
@@ -524,14 +608,14 @@ class FluentConnection:
         self._channel_str = None
         self._slurm_job_id = None
         self.finalizer_cbs = []
+        self._uds_fullpath = None
         if channel is not None:
             self._channel = channel
         else:
-            uds_fullpath = None
             if address is not None:
                 self._channel_str = address
-                uds_fullpath = get_uds_path(address)
-                if uds_fullpath is None:
+                self._uds_fullpath = get_uds_path(address)
+                if self._uds_fullpath is None:
                     ip, port = address.rsplit(":", 1)
                     port = int(port)
             else:
@@ -540,19 +624,21 @@ class FluentConnection:
             self._channel = _get_channel(
                 ip=ip,
                 port=port,
-                uds_fullpath=uds_fullpath,
+                uds_fullpath=self._uds_fullpath,
                 allow_remote_host=allow_remote_host,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
                 inside_container=inside_container,
             )
-        self._metadata: List[Tuple[str, str]] = (
+        self._metadata: list[tuple[str, str]] = (
             [("password", password)] if password else []
         )
 
-        self._health_check = service_creator("health_check").create(
-            self._channel, self._metadata, self._error_state
-        )
+        self._server_supports_v1 = _server_supports_v1(channel=self._channel)
+
+        self._health_check = service_creator(
+            "health_check", supports_v1=self._server_supports_v1
+        ).create(self._channel, self._metadata, self._error_state)
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
@@ -576,7 +662,9 @@ class FluentConnection:
             FluentConnection._monitor_thread.start()
 
         self._connection_interface = _ConnectionInterface(
-            self.create_grpc_service, self._error_state
+            self.create_grpc_service,
+            self._error_state,
+            supports_v1=self._server_supports_v1,
         )
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
@@ -601,14 +689,15 @@ class FluentConnection:
                 )
 
         self.connection_properties = FluentConnectionProperties(
-            ip,
-            port,
-            password,
-            cortex_pwd,
-            cortex_pid,
-            cortex_host,
-            fluent_host_pid,
-            inside_container,
+            ip=ip,
+            port=port,
+            uds_fullpath=self._uds_fullpath,
+            password=password,
+            cortex_pwd=cortex_pwd,
+            cortex_pid=cortex_pid,
+            cortex_host=cortex_host,
+            fluent_host_pid=fluent_host_pid,
+            inside_container=inside_container,
         )
 
         self._remote_instance = remote_instance
@@ -751,7 +840,7 @@ class FluentConnection:
         else:
             self.finalizer_cbs.append(cb)
 
-    def create_grpc_service(self, service, *args):
+    def create_grpc_service(self, service: type[S], *args) -> S:
         """Create a gRPC service.
 
         Parameters
@@ -768,15 +857,15 @@ class FluentConnection:
         """
         return service(self._channel, self._metadata, *args)
 
-    def wait_process_finished(self, wait: float | int | bool = 60):
+    def wait_process_finished(self, wait: float | int | bool = 100):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
-        are still running when wait limit (default 60 seconds) is reached. Immediately
+        are still running when wait limit (default 100 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------
         wait : float, int or bool, optional
-            How long to wait for processes to finish before returning, by default 60 seconds.
+            How long to wait for processes to finish before returning, by default 100 seconds.
             Can also be set to ``True``, which will result in waiting indefinitely.
 
         Raises
@@ -790,7 +879,7 @@ class FluentConnection:
             raise UnsupportedRemoteFluentInstance()
         if isinstance(wait, bool):
             if wait:
-                wait = 60
+                wait = 100
             else:
                 logger.debug("Wait limit set to 'False', cancelling process wait.")
                 return
@@ -812,8 +901,10 @@ class FluentConnection:
             )
         else:
             _response = timeout_loop(
-                lambda connection: _pid_exists(connection.fluent_host_pid)
-                or _pid_exists(connection.cortex_pid),
+                lambda connection: (
+                    _pid_exists(connection.fluent_host_pid)
+                    or _pid_exists(connection.cortex_pid)
+                ),
                 wait,
                 args=(self.connection_properties,),
                 idle_period=0.5,
@@ -844,7 +935,7 @@ class FluentConnection:
             Specifies whether to wait for local Fluent processes to finish completely before proceeding.
             If omitted or specified as ``False``, will proceed as usual without
             waiting for the Fluent processes to finish.
-            Can be set to ``True`` which will wait for up to 60 seconds,
+            Can be set to ``True`` which will wait for up to 100 seconds,
             or set to a float or int value to specify the wait limit.
             If wait limit is reached, will forcefully terminate the Fluent process.
             If set to wait, will return as soon as processes completely finish.

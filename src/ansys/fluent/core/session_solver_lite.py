@@ -25,7 +25,7 @@
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
 
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core.session_solver import Solver
 
@@ -40,7 +40,7 @@ class SolverLite(Solver):
         fluent_connection=None,
         scheme_eval=None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """SolverLite session.
 

@@ -25,7 +25,6 @@ import pytest
 from ansys.fluent.core.services.datamodel_se import ReadOnlyObjectError
 
 
-@pytest.mark.codegen_required
 def test_solver_preferences(new_solver_session):
     solver = new_solver_session
     preferred_meshing = solver.preferences.MeshingWorkflow
@@ -58,7 +57,6 @@ def test_solver_preferences(new_solver_session):
     assert perfered_graphics.AnimationOption() == "wireframe"
 
 
-@pytest.mark.codegen_required
 def test_meshing_preferences(new_meshing_session):
     meshing = new_meshing_session
     preferred_meshing = meshing.preferences.MeshingWorkflow
@@ -91,7 +89,6 @@ def test_meshing_preferences(new_meshing_session):
     assert preferred_graphics.AnimationOption() == "wireframe"
 
 
-@pytest.mark.codegen_required
 def test_read_only_preferences(new_solver_session):
     solver = new_solver_session
     m = solver.preferences.MeshingWorkflow

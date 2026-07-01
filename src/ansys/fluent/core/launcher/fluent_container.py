@@ -76,7 +76,7 @@ import os
 from pathlib import Path, PurePosixPath
 from pprint import pformat
 import tempfile
-from typing import Any, List
+from typing import Any
 import warnings
 
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
@@ -150,7 +150,7 @@ def dict_to_str(dict: dict) -> str:
     version="v0.23.0",
 )
 def configure_container_dict(
-    args: List[str],
+    args: list[str],
     mount_source: str | Path | None = None,
     mount_target: str | Path | None = None,
     timeout: int | None = None,
@@ -471,9 +471,9 @@ def configure_container_dict(
 
 
 def start_fluent_container(
-    args: List[str],
+    args: list[str],
     container_dict: dict | None = None,
-    start_timeout: int = 60,
+    start_timeout: int = 100,
     compose_config: ComposeConfig | None = None,
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
@@ -485,7 +485,7 @@ def start_fluent_container(
     container_dict : dict, optional
         Dictionary with Docker container configuration.
     start_timeout : int, optional
-        Timeout in seconds for the container to start. If not specified, it defaults to 60
+        Timeout in seconds for the container to start. If not specified, it defaults to 100
         seconds.
     compose_config : ComposeConfig, optional
         Configuration for Docker Compose, if using Docker Compose to launch the container.

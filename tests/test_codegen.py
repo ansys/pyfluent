@@ -32,12 +32,11 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen.api_tree import get_api_tree_file_name
 from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
-from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
-@pytest.mark.codegen_required
 def test_allapigen_files(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
     importlib.import_module(f"ansys.fluent.core.generated.fluent_version_{version}")
@@ -58,7 +57,6 @@ def test_allapigen_files(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=26.1")
-@pytest.mark.codegen_required
 def test_settings_allowed_values(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
     module = importlib.import_module(
@@ -453,6 +451,7 @@ def _get_group_settings_static_info(name, children, commands, queries):
             "commands": commands,
             "queries": queries,
             "type": "group",
+            "api_exposure_level": "alpha",
             "help": f"{name} help",
         }
     }
@@ -470,7 +469,9 @@ def _get_named_object_settings_static_info(name, object_type, children):
 
 
 def _get_parameter_settings_static_info(name, type_):
-    return {name: {"type": type_, "help": f"{name} help"}}
+    return {
+        name: {"type": type_, "api_exposure_level": "stable", "help": f"{name} help"}
+    }
 
 
 def _get_command_settings_static_info(name, args):
@@ -521,6 +522,7 @@ _expected_settings_api_output = '''#
 from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
+    ExposureLevel,
     _ChildNamedObjectAccessorMixin,
     _NonCreatableNamedObjectMixin,
     _InputFile,
@@ -529,13 +531,14 @@ from ansys.fluent.core.solver.flobject import (
     _FlStringConstant,
 )
 
-SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"
+SHASH = "855b05953087d440471b35817227cb48708938415a9d3cc7eaa5ae71fb305d19"
 
 class P3(Integer):
     """
     P3 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'P3'
     _python_name = 'P3'
 
@@ -544,6 +547,7 @@ class G2(Group):
     G2 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'G2'
     _python_name = 'G2'
     child_names = ['P3']
@@ -556,6 +560,7 @@ class P2(Real):
     P2 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'P2'
     _python_name = 'P2'
 
@@ -564,6 +569,7 @@ class A2(Real):
     A2 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'A2'
     _python_name = 'A2'
 
@@ -577,6 +583,7 @@ class C2(Command):
             A2 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'C2'
     _python_name = 'C2'
     argument_names = ['A2']
@@ -594,6 +601,7 @@ class Q2(Query):
             A2 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'Q2'
     _python_name = 'Q2'
     argument_names = ['A2']
@@ -606,6 +614,7 @@ class G1(Group):
     G1 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'G1'
     _python_name = 'G1'
     child_names = ['G2', 'P2']
@@ -623,6 +632,7 @@ class P1(String):
     P1 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.STABLE
     fluent_name = 'P1'
     _python_name = 'P1'
 
@@ -631,6 +641,7 @@ class P4(String):
     P4 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.STABLE
     fluent_name = 'P4'
     _python_name = 'P4'
 
@@ -639,6 +650,7 @@ class N1_child(Group):
     'child_object_type' of N1.
     """
     _version = '251'
+    exposure_level = ExposureLevel.ALPHA
     fluent_name = 'child-object-type'
     _python_name = 'N1_child'
 
@@ -647,6 +659,7 @@ class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     N1 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.STABLE
     fluent_name = 'N1'
     _python_name = 'N1'
     child_names = ['P4']
@@ -660,6 +673,7 @@ class A1(String):
     A1 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.STABLE
     fluent_name = 'A1'
     _python_name = 'A1'
 
@@ -673,6 +687,7 @@ class C1(Command):
             A1 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.STABLE
     fluent_name = 'C1'
     _python_name = 'C1'
     argument_names = ['A1']
@@ -690,6 +705,7 @@ class Q1(Query):
             A1 help.
     """
     _version = '251'
+    exposure_level = ExposureLevel.STABLE
     fluent_name = 'Q1'
     _python_name = 'Q1'
     argument_names = ['A1']
@@ -702,6 +718,7 @@ class root(Group):
     'root' object.
     """
     _version = '251'
+    exposure_level = ExposureLevel.STABLE
     fluent_name = ''
     _python_name = 'root'
     child_names = ['G1', 'P1', 'N1']

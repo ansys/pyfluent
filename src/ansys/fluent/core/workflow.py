@@ -24,11 +24,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Iterator
 from contextlib import suppress
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, Tuple
+from typing import Any
 import warnings
 
 from ansys.fluent.core.pyfluent_warnings import (
@@ -39,7 +40,6 @@ from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
     PyCommand,
     PyMenu,
-    PyMenuGeneric,
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -1333,17 +1333,17 @@ class Workflow:
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        command_source: PyMenuGeneric,
+        workflow: PyMenu,
+        command_source: PyMenu,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize WorkflowWrapper.
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             The workflow object.
-        command_source : PyMenuGeneric
+        command_source : PyMenu
             The application root for commanding.
         """
         self.__dict__.update(
@@ -1529,7 +1529,7 @@ class Workflow:
     def _workflow_state(self):
         return self._workflow()
 
-    def _workflow_and_task_list_state(self) -> Tuple[dict, dict]:
+    def _workflow_and_task_list_state(self) -> tuple[dict, dict]:
         workflow_state = self._workflow_state()
         prefix = "TaskObject:"
         task_list = [
@@ -1712,17 +1712,17 @@ class ClassicWorkflow:
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        command_source: PyMenuGeneric,
+        workflow: PyMenu,
+        command_source: PyMenu,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize ClassicWorkflow.
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             The workflow object.
-        command_source : PyMenuGeneric
+        command_source : PyMenu
             The application root for commanding.
         """
         self._workflow = workflow
