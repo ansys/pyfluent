@@ -281,9 +281,11 @@ class StandaloneLauncher:
         ) and not self.argvals.get("topy")
         self._launch_string += _build_journal_argument(
             self.argvals.get("topy", []),
-            None
-            if self._defer_journal_read
-            else self.argvals.get("journal_file_names"),
+            (
+                None
+                if self._defer_journal_read
+                else self.argvals.get("journal_file_names")
+            ),
         )
 
         if is_windows():
