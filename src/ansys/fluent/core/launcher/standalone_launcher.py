@@ -41,12 +41,16 @@ import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
+from warnings import warn
 
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
+)
+from ansys.fluent.core.launcher.error_warning_messages import (
+    LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
 )
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
@@ -59,6 +63,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
+    _read_journals,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
@@ -224,6 +229,14 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
+        # lightweight_mode reads the case in a background session while a
+        # journal would run in the foreground session; there is no consistent
+        # ordering for that combination, so ignore lightweight_mode (issue #4265).
+        if self.argvals.get("lightweight_mode") and self.argvals.get(
+            "journal_file_names"
+        ):
+            warn(LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL, UserWarning)
+            self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
@@ -257,8 +270,22 @@ class StandaloneLauncher:
         )
         if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
+        # The case/case-data file must be read before the journal (issue #4265).
+        # The startup ``-i`` argument runs the journal before the post-connection
+        # case read, so when a case is requested we defer the journal and read it
+        # after the case in ``__call__``. ``topy`` conversion is a startup-only
+        # Fluent feature tied to ``-i``, so it keeps the original behavior.
+        self._defer_journal_file_read = bool(
+            self.argvals.get("case_file_name")
+            or self.argvals.get("case_data_file_name")
+        ) and not self.argvals.get("topy")
         self._launch_string += _build_journal_argument(
-            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
+            self.argvals.get("topy", []),
+            (
+                None
+                if self._defer_journal_file_read
+                else self.argvals.get("journal_file_names")
+            ),
         )
 
         if is_windows():
@@ -289,6 +316,47 @@ class StandaloneLauncher:
                 )
         except Exception as ex:
             logger.debug(f"Could not reset Idle Timeout: {ex}")
+
+    def _process_case_data_and_journals(self, session) -> None:
+        """Process case, case-data, and journal files for the session.
+
+        This method handles reading case/data/journal files after the session
+        is connected, ensuring correct processing order: case → case-data → journals.
+        For lightweight mode, synchronization is deferred until after journals are read.
+        """
+        # Read the case file first
+        if self.argvals.get("case_file_name"):
+            if FluentMode.is_meshing(self.argvals.get("mode")):
+                session.tui.file.read_case(self.argvals.get("case_file_name"))
+            elif self.argvals.get("lightweight_mode"):
+                # For lightweight mode, defer sync until after journals are read
+                session.read_case_lightweight(
+                    self.argvals.get("case_file_name"),
+                    start_sync=False,
+                )
+            else:
+                session.settings.file.read(
+                    file_type="case",
+                    file_name=self.argvals.get("case_file_name"),
+                )
+
+        # Read the case-data file second (only for non-meshing modes)
+        if self.argvals.get("case_data_file_name"):
+            if not FluentMode.is_meshing(self.argvals.get("mode")):
+                session.settings.file.read(
+                    file_type="case-data",
+                    file_name=self.argvals.get("case_data_file_name"),
+                )
+            else:
+                raise RuntimeError("Case and data file cannot be read in meshing mode.")
+
+        # Read journals after case and case-data files
+        if self.argvals.get("journal_file_names"):
+            _read_journals(session, self.argvals.get("journal_file_names"))
+
+        # For lightweight mode, finalize sync after journals are read
+        if self.argvals.get("lightweight_mode"):
+            session.start_case_lightweight_sync()
 
     def __call__(
         self,
@@ -353,26 +421,12 @@ class StandaloneLauncher:
                     )
             # PyFluent is now connected: disable the idle-timeout guard.
             self._disable_idle_timeout_guard(session)
-            if self.argvals.get("case_file_name"):
-                if FluentMode.is_meshing(self.argvals.get("mode")):
-                    session.tui.file.read_case(self.argvals.get("case_file_name"))
-                elif self.argvals.get("lightweight_mode"):
-                    session.read_case_lightweight(self.argvals.get("case_file_name"))
-                else:
-                    session.settings.file.read(
-                        file_type="case",
-                        file_name=self.argvals.get("case_file_name"),
-                    )
-            if self.argvals.get("case_data_file_name"):
-                if not FluentMode.is_meshing(self.argvals.get("mode")):
-                    session.settings.file.read(
-                        file_type="case-data",
-                        file_name=self.argvals.get("case_data_file_name"),
-                    )
-                else:
-                    raise RuntimeError(
-                        "Case and data file cannot be read in meshing mode."
-                    )
+
+            # Process case, case-data, and journal files in the correct order.
+            # (issue #4265). When no case is read, the journal is handled at
+            # startup via the ``-i`` argument instead.
+            if self._defer_journal_file_read:
+                self._process_case_data_and_journals(session)
 
             return session
         except Exception as ex:

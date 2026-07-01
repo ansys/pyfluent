@@ -240,3 +240,18 @@ def _build_journal_argument(
         return fluent_jou_arg
 
     return _impl(topy, journal_file_names)
+
+
+def _read_journals(session, journal_file_names: None | str | list[str]) -> None:
+    """Read one or more journal files into an already-connected session.
+
+    This is used instead of the startup ``-i`` argument when a case file is
+    also being read, so that the case is processed before the journal
+    (see issue #4265).
+    """
+    if not journal_file_names:
+        return
+    if isinstance(journal_file_names, str):
+        journal_file_names = [journal_file_names]
+    for journal in journal_file_names:
+        session.execute_tui(f'/file/read-journal "{journal}"')
