@@ -5,7 +5,7 @@
 Using PyFluent sessions
 =======================
 
-The encouraged way to create a PyFluent session is to use the ``from_<...>`` class methods on a session type, for
+Create a PyFluent session is to use the ``from_<...>`` class methods on a session type, for
 example :meth:`Solver.from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>`,
 :meth:`Solver.from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>`,
 :meth:`Solver.from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`, or
