@@ -36,7 +36,7 @@ import numpy as np
 from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v1 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services import field_data as _v0
+from ansys.fluent.core.services import _field_data as _v0
 
 FieldDataSource = _v0.FieldDataSource
 SurfaceDataType = _v0.SurfaceDataType

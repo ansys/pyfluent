@@ -41,12 +41,12 @@ from ansys.fluent.core.services.deprecated_field_data import (
 from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService as EventsServiceV0
 from ansys.fluent.core.services.events_v1 import EventsService
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core.services._field_data import (
     ZoneInfo,
 )
-from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
-from ansys.fluent.core.services.field_data import LiveFieldData as LiveFieldDataV0
-from ansys.fluent.core.services.field_data import _FieldInfo as _FieldInfoV0
+from ansys.fluent.core.services._field_data import FieldDataService as FieldDataServiceV0
+from ansys.fluent.core.services._field_data import LiveFieldData as LiveFieldDataV0
+from ansys.fluent.core.services._field_data import _FieldInfo as _FieldInfoV0
 from ansys.fluent.core.services.field_data_v1 import (
     FieldDataService,
     LiveFieldData,

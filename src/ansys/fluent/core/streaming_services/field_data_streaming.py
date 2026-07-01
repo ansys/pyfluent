@@ -25,7 +25,7 @@
 from collections.abc import Callable
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
-from ansys.fluent.core.services.field_data import ChunkParser
+from ansys.fluent.core.services._field_data import ChunkParser
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
