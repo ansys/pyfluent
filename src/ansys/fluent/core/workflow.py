@@ -325,7 +325,7 @@ class BaseTask:
         """
         return []
 
-    def get_id(self) -> str:
+    def get_id(self) -> str:  # pylint: disable=missing-raises-doc
         """Get the unique string identifier of this task, as it is in the application.
 
         Returns
@@ -340,6 +340,10 @@ class BaseTask:
                     type_, id_ = k.split(":")
                     if type_ == "TaskObject":
                         return id_
+        raise RuntimeError(
+            f"Task ID not found for task '{self.name()}'. "
+            "This may indicate the task was not properly initialized."
+        )
 
     def get_idx(self) -> int:
         """Get the unique integer index of this task, as it is in the application.
