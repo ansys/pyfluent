@@ -36,7 +36,6 @@ from ansys.fluent.core.services.interceptors import (
     GrpcErrorInterceptor,
     TracingInterceptor,
 )
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class SchemeInterpreterService(ServiceProtocol):
