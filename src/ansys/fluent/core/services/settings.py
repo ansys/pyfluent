@@ -133,12 +133,16 @@ class SettingsV251(AbstractSettings):
     @_trace
     def is_wildcard(self, input: str | None = None) -> bool:
         """Check whether a name contains a wildcard pattern."""
-        return self._scheme_interpreter_is_defined("has-fnmatch-wild-card?")
+        return self._scheme_interpreter_service.eval(
+            f'(has-fnmatch-wild-card? "{input}")'
+        )
 
     @_trace
     def has_wildcard(self, name: str) -> bool:
         """Checks whether a name has a wildcard pattern."""
-        return self._scheme_interpreter_is_defined("has-fnmatch-wild-card?")
+        return self._scheme_interpreter_is_defined(
+            "has-fnmatch-wild-card?"
+        ) and self.is_wildcard(name)
 
     @_trace
     def is_interactive_mode(self) -> bool:
