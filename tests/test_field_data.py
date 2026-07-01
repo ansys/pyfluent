@@ -751,8 +751,6 @@ def test_fields_allowed_variables_no_warning_when_all_mapped() -> None:
     assert len(caught) == 0
 
 
-@pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/2404
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -766,8 +764,7 @@ def test_field_data_does_not_modify_case(new_solver_session):
     assert not solver.scheme.eval("(case-modified?)")
 
 
-@pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/5051
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     meshing = new_meshing_session
     import_file_name = examples.download_file(
