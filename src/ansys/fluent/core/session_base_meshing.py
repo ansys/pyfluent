@@ -73,6 +73,37 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 class BaseMeshing:
     """Encapsulates base methods of a meshing session."""
 
+    # Workflow configuration registry for factory method
+    _WORKFLOW_REGISTRY = {
+        "watertight": {
+            "legacy_enum": "WATERTIGHT_MESHING_MODE",
+            "new_class_name": "WatertightMeshingWorkflow",
+        },
+        "fault_tolerant": {
+            "legacy_enum": "FAULT_TOLERANT_MESHING_MODE",
+            "new_class_name": "FaultTolerantMeshingWorkflow",
+            "legacy_extra_args": True,  # Needs PartManagement, PMFileManagement
+        },
+        "two_dimensional": {
+            "legacy_enum": "TWO_DIMENSIONAL_MESHING_MODE",
+            "new_class_name": "TwoDimensionalMeshingWorkflow",
+        },
+        "topology_based": {
+            "legacy_enum": "TOPOLOGY_BASED_MESHING_MODE",
+            "new_class_name": "TopologyBasedMeshingWorkflow",
+        },
+        "load": {
+            "legacy_class_name": "LoadWorkflow",
+            "new_class_name": "LoadWorkflow",
+            "requires_file_path": True,
+            "legacy_no_initialize": True,  # Legacy LoadWorkflow doesn't take initialize
+        },
+        "create": {
+            "legacy_class_name": "CreateWorkflow",
+            "new_class_name": "CreateWorkflow",
+        },
+    }
+
     def __init__(
         self,
         session_execute_tui,
@@ -229,6 +260,187 @@ class BaseMeshing:
         # Case 3: User explicitly requests legacy mode (legacy=True)
         return True
 
+    def _create_workflow(
+        self,
+        workflow_key: str,
+        initialize: bool = True,
+        legacy: bool | None = None,
+        file_path: PathType = None,
+    ):
+        """Factory method orchestrator to create workflow instances.
+
+        Eliminates code duplication by routing to specialized handlers based on
+        workflow type and implementation mode (legacy vs. new).
+
+        Parameters
+        ----------
+        workflow_key : str
+            Key identifying the workflow type in _WORKFLOW_REGISTRY.
+            Valid values: "watertight", "fault_tolerant", "two_dimensional",
+            "topology_based", "load", "create".
+        initialize : bool, optional
+            Whether to initialize the workflow, by default True.
+        legacy : bool or None, optional
+            Whether to use legacy implementation, by default None (auto-detect).
+        file_path : PathType, optional
+            File path for LoadWorkflow only, by default None.
+
+        Returns
+        -------
+        Workflow
+            The created workflow instance.
+        """
+        legacy = self._fallback_check(legacy)
+        config = self._WORKFLOW_REGISTRY[workflow_key]
+
+        if legacy:
+            # Route to appropriate legacy handler
+            if config.get("requires_file_path") or "legacy_class_name" in config:
+                # Special workflows: LoadWorkflow, CreateWorkflow (direct class, not enum)
+                self._current_workflow = self._create_legacy_special_workflow(
+                    config, initialize, file_path
+                )
+            else:
+                # Standard workflows: Watertight, FaultTolerant, etc. (via WorkflowMode enum)
+                self._current_workflow = self._create_legacy_standard_workflow(
+                    config, initialize
+                )
+        else:
+            # New mode (26R1+) - single handler for all workflows
+            self._current_workflow = self._create_new_workflow(
+                config, initialize, file_path
+            )
+
+        return self._current_workflow
+
+    def _create_legacy_standard_workflow(self, config: dict, initialize: bool):
+        """Create standard legacy workflows via WorkflowMode enum.
+
+        Handles: Watertight, FaultTolerant, TwoDimensional, TopologyBased
+
+        Parameters
+        ----------
+        config : dict
+            Workflow configuration from _WORKFLOW_REGISTRY.
+        initialize : bool
+            Whether to initialize the workflow.
+
+        Returns
+        -------
+        Workflow
+            Instantiated legacy workflow from enum factory.
+        """
+        from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
+
+        enum_value = getattr(WorkflowMode, config["legacy_enum"]).value
+
+        # Build positional arguments for legacy constructor
+        # Order matters: datamodel, meshing, [extra args], version, [initialize]
+        args = [
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+        ]
+
+        # Fault-tolerant workflow needs PartManagement and PMFileManagement
+        if config.get("legacy_extra_args"):
+            args.extend([self.PartManagement, self.PMFileManagement])
+
+        # All workflows need fluent version
+        args.append(self.get_fluent_version())
+
+        # Some workflows support initialize parameter
+        if not config.get("legacy_no_initialize"):
+            args.append(initialize)
+
+        return enum_value(*args)
+
+    def _create_legacy_special_workflow(
+        self,
+        config: dict,
+        initialize: bool,
+        file_path: PathType = None,
+    ):
+        """Create special legacy workflows via direct class import.
+
+        Handles: LoadWorkflow, CreateWorkflow (not in WorkflowMode enum)
+
+        Parameters
+        ----------
+        config : dict
+            Workflow configuration from _WORKFLOW_REGISTRY.
+        initialize : bool
+            Whether to initialize the workflow.
+        file_path : PathType, optional
+            File path for LoadWorkflow, by default None.
+
+        Returns
+        -------
+        Workflow
+            Instantiated legacy workflow from direct class.
+        """
+        module = __import__(
+            "ansys.fluent.core.meshing.meshing_workflow",
+            fromlist=[config["legacy_class_name"]],
+        )
+        cls = getattr(module, config["legacy_class_name"])
+
+        # Build positional arguments for legacy constructor
+        # Order: datamodel, meshing, [file_path for LoadWorkflow], version, [initialize]
+        args = [
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+        ]
+
+        # LoadWorkflow requires file_path at this position
+        if config.get("requires_file_path") and file_path is not None:
+            args.append(os.fspath(file_path))
+
+        # All workflows need fluent version
+        args.append(self.get_fluent_version())
+
+        # Some workflows support initialize parameter
+        if not config.get("legacy_no_initialize"):
+            args.append(initialize)
+
+        return cls(*args)
+
+    def _create_new_workflow(
+        self,
+        config: dict,
+        initialize: bool,
+        file_path: PathType = None,
+    ):
+        """Create workflows using new implementation (26R1+).
+
+        Handles all workflow types uniformly with modern kwargs-based API.
+
+        Parameters
+        ----------
+        config : dict
+            Workflow configuration from _WORKFLOW_REGISTRY.
+        initialize : bool
+            Whether to initialize the workflow.
+        file_path : PathType, optional
+            File path for LoadWorkflow, by default None.
+
+        Returns
+        -------
+        Workflow
+            Instantiated new workflow.
+        """
+        from ansys.fluent.core.meshing import meshing_workflow_new
+
+        cls = getattr(meshing_workflow_new, config["new_class_name"])
+
+        # New implementations use keyword arguments (cleaner, more flexible)
+        kwargs = {"session": self, "initialize": initialize}
+
+        # LoadWorkflow optionally needs file_path
+        if config.get("requires_file_path") and file_path is not None:
+            kwargs["file_path"] = file_path
+
+        return cls(**kwargs)
+
     def watertight_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow_new.WatertightMeshingWorkflow":
@@ -248,20 +460,7 @@ class BaseMeshing:
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
-        legacy = self._fallback_check(legacy)
-        if legacy:
-            root_module = "workflow"
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
-        else:
-            root_module = "meshing_workflow"
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
-        self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
-            _make_datamodel_module(self, root_module),
-            self.meshing,
-            self.get_fluent_version(),
-            initialize,
-        )
-        return self._current_workflow
+        return self._create_workflow("watertight", initialize, legacy)
 
     def fault_tolerant_workflow(
         self, initialize: bool = True, legacy: bool | None = None
@@ -282,22 +481,7 @@ class BaseMeshing:
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
-        legacy = self._fallback_check(legacy)
-        if legacy:
-            root_module = "workflow"
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
-        else:
-            root_module = "meshing_workflow"
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
-        self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
-            _make_datamodel_module(self, root_module),
-            self.meshing,
-            self.PartManagement,
-            self.PMFileManagement,
-            self.get_fluent_version(),
-            initialize,
-        )
-        return self._current_workflow
+        return self._create_workflow("fault_tolerant", initialize, legacy)
 
     def two_dimensional_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
@@ -318,20 +502,7 @@ class BaseMeshing:
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
-        legacy = self._fallback_check(legacy)
-        if legacy:
-            root_module = "workflow"
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
-        else:
-            root_module = "meshing_workflow"
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
-        self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
-            _make_datamodel_module(self, root_module),
-            self.meshing,
-            self.get_fluent_version(),
-            initialize,
-        )
-        return self._current_workflow
+        return self._create_workflow("two_dimensional", initialize, legacy)
 
     def topology_based_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
@@ -352,21 +523,7 @@ class BaseMeshing:
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
-        legacy = self._fallback_check(legacy)
-        if legacy:
-            root_module = "workflow"
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
-        else:
-            root_module = "meshing_workflow"
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
-
-        self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
-            _make_datamodel_module(self, root_module),
-            self.meshing,
-            self.get_fluent_version(),
-            initialize,
-        )
-        return self._current_workflow
+        return self._create_workflow("topology_based", initialize, legacy)
 
     def load_workflow(
         self,
@@ -395,29 +552,7 @@ class BaseMeshing:
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
-        legacy = self._fallback_check(legacy)
-        if legacy:
-            root_module = "workflow"
-            from ansys.fluent.core.meshing.meshing_workflow import LoadWorkflow
-
-            self._current_workflow = LoadWorkflow(
-                _make_datamodel_module(self, root_module),
-                self.meshing,
-                os.fspath(file_path),
-                self.get_fluent_version(),
-            )
-        else:
-            root_module = "meshing_workflow"
-            from ansys.fluent.core.meshing.meshing_workflow_new import LoadWorkflow
-
-            self._current_workflow = LoadWorkflow(
-                _make_datamodel_module(self, root_module),
-                self.meshing,
-                self.get_fluent_version(),
-                os.fspath(file_path),
-                initialize,
-            )
-        return self._current_workflow
+        return self._create_workflow("load", initialize, legacy, file_path=file_path)
 
     def create_workflow(
         self, initialize: bool = True, legacy: bool | None = None
@@ -440,21 +575,7 @@ class BaseMeshing:
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
-        legacy = self._fallback_check(legacy)
-        if legacy:
-            root_module = "workflow"
-            from ansys.fluent.core.meshing.meshing_workflow import CreateWorkflow
-        else:
-            root_module = "meshing_workflow"
-            from ansys.fluent.core.meshing.meshing_workflow_new import CreateWorkflow
-
-        self._current_workflow = CreateWorkflow(
-            _make_datamodel_module(self, root_module),
-            self.meshing,
-            self.get_fluent_version(),
-            initialize,
-        )
-        return self._current_workflow
+        return self._create_workflow("create", initialize, legacy)
 
     def current_workflow(
         self, legacy: bool | None = None

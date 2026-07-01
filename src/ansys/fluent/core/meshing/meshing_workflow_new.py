@@ -30,118 +30,154 @@ import os
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.datamodel_se import PyMenu
-from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.session_base_meshing import BaseMeshing
+from ansys.fluent.core.session_meshing import Meshing
+from ansys.fluent.core.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session_shared import _make_datamodel_module
 from ansys.fluent.core.workflow_new import Workflow
+
+
+def _check_if_meshing_session(session) -> "BaseMeshing":
+    """Extract a ``BaseMeshing`` instance from a session object.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        A meshing session.
+
+    Returns
+    -------
+    BaseMeshing
+        The underlying ``BaseMeshing`` instance.
+
+    Raises
+    ------
+    TypeError
+        If *session* is not a recognised meshing session type.
+    """
+    from ansys.fluent.core.session_base_meshing import BaseMeshing
+
+    if isinstance(session, BaseMeshing):
+        return session
+
+    # PureMeshing / Meshing expose _base_meshing
+    session = getattr(session, "_base_meshing", None)
+    if session is not None and isinstance(session, BaseMeshing):
+        return session
+
+    raise TypeError(
+        f"Expected a PureMeshing or Meshing, " f"got {type(session).__name__}."
+    )
 
 
 class MeshingWorkflow(Workflow):
     """Provides meshing specialization of the workflow wrapper that extends the core
-    functionality in an object-oriented manner."""
+    functionality in an object-oriented manner.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session from which the workflow is constructed.
+    name : str
+        Workflow name used to initialise the workflow
+        (e.g. ``"Watertight Geometry"``).
+    initialize : bool, optional
+        If ``True`` (default), the workflow is initialised immediately.
+
+    Examples
+    --------
+    >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+    >>> wf = MeshingWorkflow(session=meshing, name="Watertight Geometry")
+    """
 
     def __init__(
         self,
-        workflow: PyMenu,
-        meshing: PyMenu,
+        session: "PureMeshing | Meshing ",
         name: str,
-        fluent_version: FluentVersion,
         initialize: bool = True,
     ) -> None:
-        """Initialize MeshingWorkflow.
+        session = _check_if_meshing_session(session)
+        workflow_root = _make_datamodel_module(session, "meshing_workflow")
+        meshing_root = session.meshing
+        fluent_version = session.get_fluent_version()
 
-        Parameters
-        ----------
-        workflow : PyMenu
-            Underlying workflow object.
-        meshing : PyMenu
-            Meshing object.
-        name: str
-            Workflow name to initialize it.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        initialize: bool
-            Flag to initialize the workflow, defaults to True.
-        """
         super().__init__(
-            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+            workflow=workflow_root,
+            command_source=meshing_root,
+            fluent_version=fluent_version,
         )
-        self._meshing = meshing
+        self._meshing = meshing_root
+        self._base_meshing = session
         self._name = name
         if initialize:
             self._new_workflow(name=self._name)
         self._initialized = True
+        session._current_workflow = self
 
 
 class WatertightMeshingWorkflow(MeshingWorkflow):
-    """Provides watertight meshing specialization of the workflow wrapper."""
+    """Watertight meshing workflow.
+
+    Initialises the *Watertight Geometry* guided workflow on the connected
+    Fluent meshing session.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session from which the workflow is constructed.
+    initialize : bool, optional
+        If ``True`` (default), the workflow is initialised immediately.
+
+    Examples
+    --------
+    >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+    >>> watertight = WatertightMeshing(session=meshing)
+    """
 
     def __init__(
         self,
-        workflow: PyMenu,
-        meshing: PyMenu,
-        fluent_version: FluentVersion,
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
-        """Initialize WatertightMeshingWorkflow.
-
-        Parameters
-        ----------
-        workflow : PyMenu
-            Underlying workflow object.
-        meshing : PyMenu
-            Meshing object.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        initialize: bool
-            Flag to initialize the workflow, defaults to True.
-        """
         super().__init__(
-            workflow=workflow,
-            meshing=meshing,
+            session=session,
             name="Watertight Geometry",
-            fluent_version=fluent_version,
             initialize=initialize,
         )
 
 
 class FaultTolerantMeshingWorkflow(MeshingWorkflow):
-    """Provides fault-tolerant meshing specialization of the workflow wrapper."""
+    """Fault-tolerant meshing workflow.
+
+    Initialises the *Fault-tolerant Meshing* guided workflow on the connected
+    Fluent meshing session.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session from which the workflow is constructed.
+    initialize : bool, optional
+        If ``True`` (default), the workflow is initialised immediately.
+
+    Examples
+    --------
+    >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+    >>> fault_tolerant = FaultTolerantMeshing(session=meshing)
+    """
 
     def __init__(
         self,
-        workflow: PyMenu,
-        meshing: PyMenu,
-        part_management: PyMenu,
-        pm_file_management: PyMenu,
-        fluent_version: FluentVersion,
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
-        """Initialize FaultTolerantMeshingWorkflow.
-
-        Parameters
-        ----------
-        workflow : PyMenu
-            Underlying workflow object.
-        meshing : PyMenu
-            Meshing object.
-        part_management : PyMenu
-            Part management object.
-        pm_file_management : PyMenu
-            File management object in the part management object.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        initialize: bool
-            Flag to initialize the workflow, defaults to True.
-        """
         super().__init__(
-            workflow=workflow,
-            meshing=meshing,
+            session=session,
             name="Fault-tolerant Meshing",
-            fluent_version=fluent_version,
             initialize=initialize,
         )
-        self._parent_workflow = workflow
-        self._part_management = part_management
-        self._pm_file_management = pm_file_management
+        self._parent_workflow = self._workflow
+        self._part_management = session.PartManagement
+        self._pm_file_management = session.PMFileManagement
 
     @property
     def parts(self) -> PyMenu | None:
@@ -191,65 +227,63 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
 
 class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
-    """Provides 2D meshing specialization of the workflow wrapper."""
+    """2-D meshing workflow.
+
+    Initialises the *2D Meshing* guided workflow on the connected Fluent
+    meshing session.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session from which the workflow is constructed.
+    initialize : bool, optional
+        If ``True`` (default), the workflow is initialised immediately.
+
+    Examples
+    --------
+    >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+    >>> two_d = TwoDimensionalMeshing(session=meshing)
+    """
 
     def __init__(
         self,
-        workflow: PyMenu,
-        meshing: PyMenu,
-        fluent_version: FluentVersion,
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
-        """Initialize TwoDimensionalMeshingWorkflow.
-
-        Parameters
-        ----------
-        workflow : PyMenu
-            Underlying workflow object.
-        meshing : PyMenu
-            Meshing object.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        initialize: bool
-            Flag to initialize the workflow, defaults to True.
-        """
         super().__init__(
-            workflow=workflow,
-            meshing=meshing,
+            session=session,
             name="2D Meshing",
-            fluent_version=fluent_version,
             initialize=initialize,
         )
 
 
 class TopologyBasedMeshingWorkflow(MeshingWorkflow):
-    """Provides topology-based meshing specialization of the workflow wrapper."""
+    """Topology-based meshing workflow.
+
+    Initialises the *Topology Based Meshing* guided workflow on the connected
+    Fluent meshing session.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session from which the workflow is constructed.
+    initialize : bool, optional
+        If ``True`` (default), the workflow is initialised immediately.
+
+    Examples
+    --------
+    >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+    >>> topo = TopologyBasedMeshing(session=meshing)
+    """
 
     def __init__(
         self,
-        workflow: PyMenu,
-        meshing: PyMenu,
-        fluent_version: FluentVersion,
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
-        """Initialize TopologyBasedMeshingWorkflow.
-
-        Parameters
-        ----------
-        workflow : PyMenu
-            Underlying workflow object.
-        meshing : PyMenu
-            Meshing object.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        initialize: bool
-            Flag to initialize the workflow, defaults to True.
-        """
         super().__init__(
-            workflow=workflow,
-            meshing=meshing,
+            session=session,
             name="Topology Based Meshing",
-            fluent_version=fluent_version,
             initialize=initialize,
         )
 
@@ -264,73 +298,104 @@ class WorkflowMode(Enum):
 
 
 class LoadWorkflow(Workflow):
-    """Provides a specialization of the workflow wrapper for a loaded workflow."""
+    """Load a previously saved meshing workflow from a file.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session from which the workflow is constructed.
+    file_path : str or PathType, optional
+        Path to the saved workflow file.
+    initialize : bool, optional
+        If ``True`` (default), the workflow is loaded immediately.
+
+    Examples
+    --------
+    >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+    >>> loaded = LoadWorkflow(session=meshing, file_path="my_workflow.wft")
+    """
 
     def __init__(
         self,
-        workflow: PyMenu,
-        meshing: PyMenu,
-        fluent_version: FluentVersion,
+        session: "PureMeshing | Meshing ",
         file_path: PathType = None,
         initialize: bool = True,
     ) -> None:
-        """Initialize a ``LoadWorkflow`` instance.
+        session = _check_if_meshing_session(session)
+        workflow_root = _make_datamodel_module(session, "meshing_workflow")
+        meshing_root = session.meshing
+        fluent_version = session.get_fluent_version()
 
-        Parameters
-        ----------
-        workflow : PyMenu
-            Underlying workflow object.
-        meshing : PyMenu
-            Meshing object.
-        file_path: os.PathLike[str | bytes] | str | bytes
-            Path to the saved workflow file.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        initialize: bool
-            Flag to initialize the workflow, defaults to True.
-        """
         super().__init__(
-            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+            workflow=workflow_root,
+            command_source=meshing_root,
+            fluent_version=fluent_version,
         )
-        self._meshing = meshing
+        self._meshing = meshing_root
+        self._base_meshing = session
+        self._name = "Load Workflow"
         if initialize:
             self._load_workflow(file_path=os.fspath(file_path))
+        session._current_workflow = self
 
 
 class CreateWorkflow(Workflow):
-    """Provides a specialization of the workflow wrapper for a newly created
-    workflow."""
+    """Create a new blank meshing workflow for manual task configuration.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session from which the workflow is constructed.
+    initialize : bool, optional
+        If ``True`` (default), an empty workflow is created immediately.
+
+    Examples
+    --------
+    >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+    >>> blank = CreateWorkflow(session=meshing)
+    """
 
     def __init__(
         self,
-        workflow: PyMenu,
-        meshing: PyMenu,
-        fluent_version: FluentVersion,
+        session: "PureMeshing | Meshing ",
         initialize: bool = True,
     ) -> None:
-        """Initialize a ``CreateWorkflow`` instance.
+        session = _check_if_meshing_session(session)
+        workflow_root = _make_datamodel_module(session, "meshing_workflow")
+        meshing_root = session.meshing
+        fluent_version = session.get_fluent_version()
 
-        Parameters
-        ----------
-        workflow : PyMenu
-            Underlying workflow object.
-        meshing : PyMenu
-            Meshing object.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        initialize: bool
-            Flag to initialize the workflow, defaults to True.
-        """
         super().__init__(
-            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+            workflow=workflow_root,
+            command_source=meshing_root,
+            fluent_version=fluent_version,
         )
-        self._meshing = meshing
+        self._meshing = meshing_root
+        self._base_meshing = session
+        self._name = "Create New"
         if initialize:
             self._create_workflow()
+        session._current_workflow = self
+
+
+# ---------------------------------------------------------------------------
+# Public aliases – short, user-facing names
+# ---------------------------------------------------------------------------
+WatertightMeshing = WatertightMeshingWorkflow
+"""Alias for :class:`WatertightMeshingWorkflow`."""
+
+FaultTolerantMeshing = FaultTolerantMeshingWorkflow
+"""Alias for :class:`FaultTolerantMeshingWorkflow`."""
+
+TwoDimensionalMeshing = TwoDimensionalMeshingWorkflow
+"""Alias for :class:`TwoDimensionalMeshingWorkflow`."""
+
+TopologyBasedMeshing = TopologyBasedMeshingWorkflow
+"""Alias for :class:`TopologyBasedMeshingWorkflow`."""
 
 
 def _get_current_workflow(current_workflow, name: str):
-    if current_workflow and current_workflow._name == name:
+    if current_workflow and getattr(current_workflow, "_name", None) == name:
         return current_workflow
 
 
