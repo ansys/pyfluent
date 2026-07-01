@@ -50,6 +50,102 @@ def _trace(fn):
     return _fn
 
 
+class SettingsV251(AbstractSettings):
+    """Service for accessing and modifying Fluent settings before Fluent 27R1."""
+
+    def __init__(self, service, scheme_interpreter_service) -> None:
+        """__init__ method of SettingsV251 class."""
+        self.service = service
+        self._scheme_interpreter_service = scheme_interpreter_service
+
+    @_trace
+    def set_var(self, path: str, value: Any) -> None:
+        """Set the value for the given path."""
+        self.service.set_var(path, value)
+
+    @_trace
+    def get_var(self, path: str) -> Any:
+        """Get the value for the given path."""
+        return self.service.get_var(path)
+
+    @_trace
+    def rename(self, path: str, new: str, old: str) -> None:
+        """Rename the object at the given path."""
+        self.service.rename(path, new, old)
+
+    @_trace
+    def create(self, path: str, name: str) -> None:
+        """Create a named object child for the given path."""
+        self.service.create(path, name)
+
+    @_trace
+    def delete(self, path: str, name: str) -> None:
+        """Delete the object with the given name at the given path."""
+        self.service.delete(path, name)
+
+    @_trace
+    def get_object_names(self, path: str) -> list[str]:
+        """Get a list of named objects."""
+        return self.service.get_object_names(path)
+
+    @_trace
+    def get_list_size(self, path: str) -> int:
+        """Get the number of elements in a list object."""
+        return self.service.get_list_size(path)
+
+    @_trace
+    def resize_list_object(self, path: str, size: int) -> None:
+        """Resize a list object."""
+        self.service.resize_list_object(path, size)
+
+    @_trace
+    def get_static_info(self) -> dict[str, Any]:
+        """Get static-info for settings.
+
+        Raises
+        ------
+        RuntimeError
+            If type is empty.
+        """
+        return self.service.get_static_info()
+
+    @_trace
+    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+        """Execute a given command with the provided keyword arguments."""
+        return self.service.execute_cmd(path, command, **kwds)
+
+    @_trace
+    def execute_query(self, path: str, query: str, **kwds) -> Any:
+        """Execute a given query with the provided keyword arguments."""
+        return self.service.execute_query(path, query, **kwds)
+
+    @_trace
+    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+        """Return values of given attributes."""
+        return self.service.get_attrs(path, attrs, recursive)
+
+    @_trace
+    def _scheme_interpreter_is_defined(self, symbol: str) -> bool:
+        return not self._scheme_interpreter_service.eval(
+            f"(lexical-unreferenceable? user-initial-environment '{symbol})", True
+        )
+
+    @_trace
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """Check whether a name contains a wildcard pattern."""
+        return self._scheme_interpreter_is_defined("has-fnmatch-wild-card?")
+
+    @_trace
+    def has_wildcard(self, name: str) -> bool:
+        """Checks whether a name has a wildcard pattern."""
+        return self._scheme_interpreter_is_defined("has-fnmatch-wild-card?")
+
+    @_trace
+    def is_interactive_mode(self) -> bool:
+        """Checks whether commands can be executed interactively."""
+        return False
+
+
 class SettingsV261(AbstractSettings):
     """Service for accessing and modifying Fluent settings before Fluent 27R1."""
 

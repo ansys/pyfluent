@@ -60,7 +60,7 @@ from ansys.fluent.core.services.application_runtime import (
 from ansys.fluent.core.services.health_check import HealthCheck
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.services.settings import Settings, SettingsV261
+from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -170,11 +170,17 @@ class GRPCFactory:
     @cached_property
     def settings(self):
         """Settings service."""
-        if self._product_version >= FluentVersion.v271:
-            return Settings(self._get_instantiated_grpc_service(SettingsService))
-        else:
-            return SettingsV261(
-                self._get_instantiated_grpc_service(SettingsServiceV0),
-                self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
-                self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
-            )
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return Settings(self._get_instantiated_grpc_service(SettingsService))
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return SettingsV261(
+                    self._get_instantiated_grpc_service(SettingsServiceV0),
+                    self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
+                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
+                )
+            case _:
+                return SettingsV251(
+                    self._get_instantiated_grpc_service(SettingsServiceV0),
+                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
+                )
