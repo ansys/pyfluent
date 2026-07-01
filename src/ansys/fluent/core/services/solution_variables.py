@@ -36,7 +36,7 @@ from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core.services._field_data import (
     _FieldDataConstants,
     override_help_text,
 )
