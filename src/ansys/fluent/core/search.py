@@ -20,157 +20,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to search a word through the Fluent's object hierarchy.."""
+"""Provides a module to search a word through the Fluent's object hierarchy."""
 
-from collections.abc import Mapping
 import fnmatch
 import functools
 import json
 import logging
-import os
-from pathlib import Path
-import pickle
 import re
 import warnings
 
+from ansys.fluent.core.codegen.api_tree import get_api_tree_data_file_path
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.error_message import closest_allowed_names
-from ansys.fluent.core.utils.fluent_version import (
-    FluentVersion,
-    get_version_for_file_name,
-)
 
 __all__ = ("search",)
 warnings.filterwarnings("ignore", category=UserWarning, module="nltk")
 
 logger = logging.getLogger("pyfluent.general")
 
-
-def _get_api_tree_data_file_path():
-    """Get API tree data file."""
-    return (config.codegen_outdir / "api_tree" / "api_objects.json").resolve()
-
-
-def get_api_tree_file_name(version: str) -> Path:
-    """Get API tree file name."""
-    return (config.codegen_outdir / f"api_tree_{version}.pickle").resolve()
-
-
-def _remove_suffix(input: str, suffix):
-    if hasattr(input, "removesuffix"):
-        return input.removesuffix(suffix)
-    else:
-        if suffix and input.endswith(suffix):
-            return input[: -len(suffix)]
-        return input
-
-
-def _generate_api_data(
-    version: str | None = None,
-):
-    """Generate API tree data.
-
-    Parameters
-    ----------
-    version : str, optional
-        Fluent version to search in. The default is ``None``. If ``None``,
-        it searches in the latest version for which codegen was run.
-    write_api_tree_data: bool, optional
-        Whether to write the API tree data.
-    """
-    api_objects = set()
-    api_tui_objects = set()
-    api_object_name_map = {"meshing_session": set(), "solver_session": set()}
-    api_object_names = set()
-    if version:
-        version = get_version_for_file_name(version)
-    if not version:
-        for fluent_version in FluentVersion:
-            version = get_version_for_file_name(fluent_version.value)
-            if get_api_tree_file_name(version).exists():
-                break
-    api_tree_file = get_api_tree_file_name(version)
-    with open(api_tree_file, "rb") as f:
-        # Safe to load: file is generated internally by PyFluent
-        api_tree = pickle.load(f)  # nosec B301
-
-    def inner(tree, path):
-        for k, v in tree.items():
-            if k in ("<meshing_session>", "<solver_session>"):
-                next_path = k
-            else:
-                if k.endswith(":<name>"):
-                    k = _remove_suffix(k, ":<name>")
-                    next_path = f'{path}.{k}["<name>"]'
-                elif k.endswith(":<index>"):
-                    k = _remove_suffix(k, ":<index>")
-                    next_path = f"{path}.{k}[<index>]"
-                else:
-                    next_path = f"{path}.{k}"
-                type_ = "Object" if isinstance(v, Mapping) else v
-                api_object_names.add(k)
-                if "meshing_session" in next_path:
-                    api_object_name_map["meshing_session"].add(k)
-                if "solver_session" in next_path:
-                    api_object_name_map["solver_session"].add(k)
-                next_path = (
-                    next_path.replace("MeshingUtilities", "meshing_utilities")
-                    if "MeshingUtilities" in next_path
-                    else next_path
-                )
-                if "tui" in next_path:
-                    api_tui_objects.add(f"{next_path} ({type_})")
-                else:
-                    api_objects.add(f"{next_path} ({type_})")
-            if isinstance(v, Mapping):
-                inner(v, next_path)
-
-    inner(api_tree, "")
-
-    api_tree_data = dict()
-    api_tree_data["api_objects"] = sorted(list(api_objects))
-    api_tree_data["api_tui_objects"] = sorted(list(api_tui_objects))
-    api_tree_data["all_api_object_names"] = sorted(list(api_object_names))
-    api_object_name_map["meshing_session"] = sorted(
-        list(api_object_name_map["meshing_session"])
-    )
-    api_object_name_map["solver_session"] = sorted(
-        list(api_object_name_map["solver_session"])
-    )
-    api_tree_data["api_object_name_map"] = api_object_name_map
-
-    def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
-        from nltk.corpus import wordnet as wn
-
-        _download_nltk_data()
-        json_file_folder = Path(os.path.join(config.codegen_outdir, "api_tree"))
-        json_file_folder.mkdir(parents=True, exist_ok=True)
-
-        all_api_object_name_synsets = dict()
-        for name in api_object_names:
-            api_object_name_synsets = wn.synsets(name, lang="eng")
-            synset_names = set()
-            for api_object_name_synset in api_object_name_synsets:
-                synset_names.add(api_object_name_synset.name())
-            if synset_names:
-                all_api_object_name_synsets[name] = sorted(list(synset_names))
-        api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
-
-        api_tree_file_path = _get_api_tree_data_file_path()
-        api_tree_file_path.touch()
-        with open(api_tree_file_path, "w") as json_file:
-            json.dump(api_tree_data, json_file)
-
-    _write_api_tree_file(
-        api_tree_data=api_tree_data, api_object_names=list(api_object_names)
-    )
-    api_tree_file.unlink()
+_NLTK_MISSING_MSG = (
+    "nltk is not installed. Semantic search is unavailable. "
+    "To enable it: pip install 'ansys-fluent-core[search]'\n"
+)
 
 
 @functools.cache
 def _get_api_tree_data():
     """Get API tree data."""
-    api_tree_data_file_path = _get_api_tree_data_file_path()
+    api_tree_data_file_path = get_api_tree_data_file_path()
     if api_tree_data_file_path.exists():
         with open(api_tree_data_file_path) as json_file:
             api_tree_data = json.load(json_file)
@@ -495,9 +372,12 @@ def _search_whole_word(
 
 def _download_nltk_data():
     """Download NLTK data on demand."""
-    import ssl
+    try:
+        import nltk
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(_NLTK_MISSING_MSG) from exc
 
-    import nltk
+    import ssl
 
     try:
         _create_unverified_context = ssl._create_unverified_context
@@ -516,7 +396,10 @@ def _download_nltk_data():
 
 
 def _are_words_semantically_close(query, api_name, language="eng"):
-    from nltk.corpus import wordnet as wn
+    try:
+        from nltk.corpus import wordnet as wn
+    except ImportError as exc:
+        raise ImportError(_NLTK_MISSING_MSG) from exc
 
     similarity_threshold = (
         3.2 if language == "eng" else 0.8

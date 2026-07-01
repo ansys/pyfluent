@@ -76,6 +76,11 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 # *Saving the case file
 # *Closing the solver
 
+# .. note::
+# This example has been verified and validated using Ansys Fluent 2025 R2.
+# It requires Ansys Fluent version 2025 R2 or later, as it uses features that are not available in
+# earlier versions.
+
 ################################################################################################################
 # Import required libraries/modules
 # ==============================================================================================================
@@ -232,7 +237,7 @@ impeller_hub = solver_session.settings.setup.boundary_conditions.wall[
     "impeller-hub"
 ].momentum
 impeller_hub.wall_motion = "Moving Wall"
-impeller_hub.relative = True
+impeller_hub.relative = "Relative to Adjacent Cell Zone"
 impeller_hub.velocity_spec = "Rotational"
 
 #  inblock-shroud
@@ -241,7 +246,7 @@ inblock_shroud = solver_session.settings.setup.boundary_conditions.wall[
     "inblock-shroud"
 ].momentum
 inblock_shroud.wall_motion = "Moving Wall"
-inblock_shroud.relative = False
+inblock_shroud.relative = "Absolute"
 inblock_shroud.velocity_spec = "Rotational"
 
 ################################################################################################################
