@@ -1,0 +1,151 @@
+:orphan:
+
+Deprecated APIs
+===============
+
+Deprecated PyFluent APIs
+------------------------
+
+.. list-table:: Deprecated PyFluent APIs
+   :header-rows: 1
+
+   * - Target
+     - Deprecated
+     - Alternatives
+   * - :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.Transaction.add_requests <ansys.fluent.core.file_session.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.file_session.Transaction.add_scalar_fields_request <ansys.fluent.core.file_session.Transaction.add_scalar_fields_request>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.Transaction.add_requests <ansys.fluent.core.file_session.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.file_session.Transaction.add_vector_fields_request <ansys.fluent.core.file_session.Transaction.add_vector_fields_request>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.Transaction.add_requests <ansys.fluent.core.file_session.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_surface_data <ansys.fluent.core.file_session.FileFieldData.get_surface_data>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_field_data <ansys.fluent.core.file_session.FileFieldData.get_field_data>`
+   * - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data <ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_field_data <ansys.fluent.core.file_session.FileFieldData.get_field_data>`
+   * - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_vector_field_data <ansys.fluent.core.file_session.FileFieldData.get_vector_field_data>`
+     - 0.25.0
+     - :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_field_data <ansys.fluent.core.file_session.FileFieldData.get_field_data>`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.field_info <ansys.fluent.core.session.BaseSession.field_info>`
+     - 0.20.dev9
+     - `session.fields.field_info`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.field_data <ansys.fluent.core.session.BaseSession.field_data>`
+     - 0.20.dev9
+     - `session.fields.field_data`
+   * - :py:meth:`ansys.fluent.core.session.BaseSession.field_data_streaming <ansys.fluent.core.session.BaseSession.field_data_streaming>`
+     - 0.20.dev9
+     - `session.fields.field_data_streaming`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_surfaces_request <ansys.fluent.core.services.field_data.Transaction.add_surfaces_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request <ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request <ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request>`
+     - 0.23.dev0
+     - :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_requests <ansys.fluent.core.services.field_data.Transaction.add_requests>`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_scalar_fields_request <ansys.fluent.core.file_session.Transaction.add_scalar_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_vector_fields_request <ansys.fluent.core.file_session.Transaction.add_vector_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request <ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_scalar_fields_request <ansys.fluent.core.file_session.Transaction.add_scalar_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_vector_fields_request <ansys.fluent.core.file_session.Transaction.add_vector_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request <ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_surface_data <ansys.fluent.core.file_session.FileFieldData.get_surface_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data <ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_vector_field_data <ansys.fluent.core.file_session.FileFieldData.get_vector_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data <ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_surface_data <ansys.fluent.core.file_session.FileFieldData.get_surface_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data <ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_vector_field_data <ansys.fluent.core.file_session.FileFieldData.get_vector_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data <ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data>`
+     - 0.25.0
+     - `surfaces`
+   * - The `container_mount_path` argument of :py:meth:`ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy>`
+     - 0.23.dev1
+     - `mount_target`
+   * - The `host_mount_path` argument of :py:meth:`ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy>`
+     - 0.23.dev1
+     - `mount_source`
+   * - The `container_mount_path` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`
+     - 0.23.dev1
+     - `mount_target`
+   * - The `host_mount_path` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`
+     - 0.23.dev1
+     - `mount_source`
+   * - The `show_gui` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
+     - 0.22.dev0
+     - `ui_mode`
+   * - The `version` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
+     - 0.22.dev0
+     - `dimension`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_surfaces_request <ansys.fluent.core.services.field_data.Transaction.add_surfaces_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`nsys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request <ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_names` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request <ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_surfaces_request <ansys.fluent.core.services.field_data.Transaction.add_surfaces_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request <ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request <ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+   * - The `surface_ids` argument of :py:meth:`ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request <ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request>`
+     - 0.23.dev0
+     - `surfaces`
+Deprecated Ansys Fluent APIs
+----------------------------
+
+.. list-table:: Deprecated Ansys Fluent APIs
+   :header-rows: 1
+
+   * - Target
+     - Deprecated

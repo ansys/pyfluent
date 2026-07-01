@@ -1,0 +1,14 @@
+.. _ref_solver_tui_define_overset_interfaces_collar_meshes:
+
+collar_meshes
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.define.overset_interfaces.collar_meshes
+   :members: add, delete, delete_all, list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

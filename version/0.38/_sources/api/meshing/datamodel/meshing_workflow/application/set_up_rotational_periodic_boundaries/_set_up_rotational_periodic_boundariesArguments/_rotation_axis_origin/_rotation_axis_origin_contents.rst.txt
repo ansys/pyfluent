@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_set_up_rotational_periodic_boundaries__set_up_rotational_periodic_boundariesArguments__rotation_axis_origin:
+
+_rotation_axis_origin
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.set_up_rotational_periodic_boundaries._set_up_rotational_periodic_boundariesArguments._rotation_axis_origin
+   :members: _x, _y, _z
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

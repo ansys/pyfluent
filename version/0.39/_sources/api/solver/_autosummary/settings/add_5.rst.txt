@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_5:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================================================
+
+Parent                                                                             Summary
+
+==================================   =====================================================
+:ref:`hnco_species <hnco_species>`       Enable/disable additional hnco species equations.
+
+==================================   =====================================================
+

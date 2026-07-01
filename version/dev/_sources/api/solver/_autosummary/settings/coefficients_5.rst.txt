@@ -1,0 +1,40 @@
+:orphan:
+
+.. _coefficients_5:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coefficients_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =================================
+
+Attribute                                                                  Summary
+
+==============================================   =================================
+:ref:`cmu <cmu>`                                        The model coefficient Cmu.
+
+:ref:`c1_epsilon <c1_epsilon>`                   The model coefficient C1-Epsilon.
+
+:ref:`c2_epsilon <c2_epsilon>`                   The model coefficient C2-Epsilon.
+
+:ref:`tke_prandtl_number <tke_prandtl_number>`             The TKE Prandtl number.
+
+:ref:`tdr_prandtl_number <tdr_prandtl_number>`             The TDR Prandtl number.
+
+==============================================   =================================
+
+.. rubric:: Included in:
+
+============================   ========================
+
+Parent                                          Summary
+
+============================   ========================
+:ref:`k_epsilon <k_epsilon>`   K-epsilon model options.
+
+============================   ========================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_volume_mesh_wtm__create_volume_mesh_wtmArguments__face_scope:
+
+_face_scope
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.create_volume_mesh_wtm._create_volume_mesh_wtmArguments._face_scope
+   :members: _face_scope_mesh_object, _grow_on, _regions_type, _topology_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

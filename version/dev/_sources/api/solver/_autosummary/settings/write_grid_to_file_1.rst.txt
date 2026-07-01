@@ -1,0 +1,32 @@
+:orphan:
+
+.. _write_grid_to_file_1:
+
+write_grid_to_file
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.write_grid_to_file_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =======================================
+
+Argument                                                           Summary
+
+================================   =======================================
+:ref:`grid_file <grid_file_1_1>`   Output XY file for c-grid distribution.
+
+================================   =======================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`edit_c_grid_settings <edit_c_grid_settings>`   Editor group for flamelet c-grid settings.
+
+==================================================   ==========================================
+

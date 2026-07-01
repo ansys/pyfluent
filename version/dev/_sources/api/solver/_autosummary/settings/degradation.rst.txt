@@ -1,0 +1,67 @@
+:orphan:
+
+.. _degradation:
+
+degradation
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.degradation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==============================================================
+
+Attribute                                                                                                   Summary
+
+==================================================   ==============================================================
+:ref:`enable <enable_15>`                                                                Enable-degradation-model?.
+
+:ref:`material <material_3>`                                                          Degradation mixture material.
+
+:ref:`mode <mode_1>`                                      Degradation solver mode. 0 for standalone, 1 for coupled.
+
+:ref:`init_value <init_value>`                                                     Initial concentration (kmol/m3).
+
+:ref:`time_step <time_step>`                                              Time step (s) for the degradation solver.
+
+:ref:`stop_time <stop_time_1>`                                            Stop time (s) for the degradation solver.
+
+:ref:`semi_coupled <semi_coupled>`                   Enable one-way coupling for the standalone degradation solver.
+
+:ref:`membrane_temperature <membrane_temperature>`                    Temperature (K) for the degradation membrane.
+
+:ref:`coupled_niter <coupled_niter>`                            Number of steady-state iterations per coupled step.
+
+:ref:`coupled_time_step <coupled_time_step>`                      Time step (s) for the coupled degradation solver.
+
+:ref:`coupled_nsteps <coupled_nsteps>`                           Number of degradation time steps per coupled step.
+
+:ref:`coupled_ncoupled <coupled_ncoupled>`                   Number of coupled degradation-solver iteration cycles.
+
+==================================================   ==============================================================
+
+.. rubric:: Methods
+
+==================================================   ====================================
+
+Method                                                                            Summary
+
+==================================================   ====================================
+:ref:`standalone_calculate <standalone_calculate>`               Degradation calculation.
+
+:ref:`coupled_calculate <coupled_calculate>`         Run coupled degradation calculation.
+
+==================================================   ====================================
+
+.. rubric:: Included in:
+
+==============================   ==================
+
+Parent                                      Summary
+
+==============================   ==================
+:ref:`advanced_2 <advanced_2>`   Advanced settings.
+
+==============================   ==================
+

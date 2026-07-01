@@ -1,0 +1,21 @@
+:orphan:
+
+.. _weight:
+
+weight
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.weight
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================================   ===========================================================
+
+Parent                                                                                                                                     Summary
+
+====================================================================================   ===========================================================
+:ref:`definition_of_progress_variable_child <definition_of_progress_variable_child>`       'child_object_type' of definition_of_progress_variable.
+
+====================================================================================   ===========================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _include_modal_influence_coefficients:
+
+include_modal_influence_coefficients
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.include_modal_influence_coefficients
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================================================================================================================================
+
+Parent                                                                                                                                                                    Summary
+
+==========================   ====================================================================================================================================================
+:ref:`graphics <graphics>`   Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+==========================   ====================================================================================================================================================
+

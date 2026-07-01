@@ -1,0 +1,40 @@
+:orphan:
+
+.. _continuous_heat_coeff:
+
+continuous_heat_coeff
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.continuous_heat_coeff
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ========================================================
+
+Attribute                                                                                                     Summary
+
+==========================================================   ========================================================
+:ref:`ht_cont_method <ht_cont_method>`                                          Continuous phase heat transfer model.
+
+:ref:`ht_cont_constant <ht_cont_constant>`                   Constant heat transfer coefficient for continuous phase.
+
+:ref:`ht_cont_nusselt <ht_cont_nusselt>`                                         Nusselt number for continuous phase.
+
+:ref:`ht_cont_udf <ht_cont_udf>`                                              Udf for continuous phase heat transfer.
+
+:ref:`ht_cont_time_scale_group <ht_cont_time_scale_group>`                 Time scale sub-model for continuous phase.
+
+==========================================================   ========================================================
+
+.. rubric:: Included in:
+
+========================================================   ===================================
+
+Parent                                                                                 Summary
+
+========================================================   ===================================
+:ref:`ht_two_resistance_group <ht_two_resistance_group>`   Two resistance heat transfer model.
+
+========================================================   ===================================
+

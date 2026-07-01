@@ -1,0 +1,34 @@
+:orphan:
+
+.. _read_3:
+
+read
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.read_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =======================
+
+Argument                                           Summary
+
+================================   =======================
+:ref:`file_name <file_name_1_8>`       The case file name.
+
+:ref:`unit <unit_2>`                         'unit' child.
+
+================================   =======================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`surface_mesh <surface_mesh>`       The surface mesh object.
+
+==================================   ============================
+

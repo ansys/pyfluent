@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_flow_to_face_area_ratio:
+
+minimum_flow_to_face_area_ratio
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.minimum_flow_to_face_area_ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===========================================================
+
+Parent                                                                                   Summary
+
+==================================   ===========================================================
+:ref:`parameters_1 <parameters_1>`   Gas-Side Pressure Drop parameters of a core porosity model.
+
+==================================   ===========================================================
+

@@ -1,0 +1,51 @@
+:orphan:
+
+.. _turbo_description:
+
+turbo_description
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.turbo_description
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =====================================================================================================================================================
+
+Attribute                                                                                                                                                                                Summary
+
+========================================   =====================================================================================================================================================
+:ref:`number_of_rows <number_of_rows>`                                                                                                              Number of rows (stages) in the turbomachine.
+
+:ref:`rotational_axis <rotational_axis>`   Rotational axis vector of the turbomachine (X, Y, Z components). First axis extracted is set as machine axis, next axes are compared for consistency.
+
+:ref:`rows <rows_1>`                                                                                                Collection of turbomachine rows. Create rows and configure their properties.
+
+========================================   =====================================================================================================================================================
+
+.. rubric:: Methods
+
+==================================   ================================================================================================================================================================================================================
+
+Method                                                                                                                                                                                                                                        Summary
+
+==================================   ================================================================================================================================================================================================================
+:ref:`create <create_15>`            Create turbomachine description with specified number of rows. Each row will be initialized with default values that you need to configure. Enable 'Auto from Turbo Setup' to populate from Turbo Workflow data.
+
+:ref:`delete <delete_6>`                                                                                                                                                                                 Delete the current turbomachine description.
+
+:ref:`list_details <list_details>`                                                                                                                                                              Display the current turbomachine description details.
+
+==================================   ================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`turbomachinery <turbomachinery>`   The turbomachinery models.
+
+======================================   ==========================
+

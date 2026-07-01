@@ -1,0 +1,36 @@
+:orphan:
+
+.. _location_3:
+
+location
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.location_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =======================
+
+Attribute                                      Summary
+
+============================   =======================
+:ref:`physics <physics>`            The physics names.
+
+:ref:`surfaces <surfaces_7>`   The user-surface names.
+
+:ref:`geometry <geometry>`         The geometry names.
+
+============================   =======================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`periodic_instances_child <periodic_instances_child>`   'child_object_type' of periodic_instances.
+
+==========================================================   ==========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pdf_include_equilibrium:
+
+pdf_include_equilibrium
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pdf_include_equilibrium
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =========================
+
+Parent                                         Summary
+
+==========================   =========================
+:ref:`flamelet <flamelet>`       PDF Flamelet Options.
+
+==========================   =========================
+

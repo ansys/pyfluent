@@ -1,0 +1,26 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_Scene__Scene:
+
+_Scene
+======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.flicing.Root.Case.Results.Graphics.Scene._Scene
+   :members: GraphicsObjects, MirrorPlaneNames, SaveFlag, SyncStatus, ViewName, WindowId, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Diff/Diff_contents
+   Display/Display_contents
+   ManageViews/ManageViews_contents
+   Pull/Pull_contents
+   Push/Push_contents
+   SaveAnimation/SaveAnimation_contents
+   SaveImage/SaveImage_contents
+   SaveImageOptions/SaveImageOptions_contents
+   SaveView/SaveView_contents

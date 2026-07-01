@@ -1,0 +1,21 @@
+:orphan:
+
+.. _osmotic_drag_coeff:
+
+osmotic_drag_coeff
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.osmotic_drag_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================================
+
+Parent                                                               Summary
+
+====================================   =====================================
+:ref:`customization <customization>`   Customization for electrolysis model.
+
+====================================   =====================================
+

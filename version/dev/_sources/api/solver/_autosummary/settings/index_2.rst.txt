@@ -1,0 +1,21 @@
+:orphan:
+
+.. _index_2:
+
+index
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.index_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =============================================
+
+Parent                                                                         Summary
+
+======================================   =============================================
+:ref:`delete_product <delete_product>`   Delete a product from this reaction by index.
+
+======================================   =============================================
+

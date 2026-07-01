@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_choose_mesh_control_options:
+
+choose_mesh_control_options
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.choose_mesh_control_options
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _choose_mesh_control_optionsArguments/_choose_mesh_control_optionsArguments_contents

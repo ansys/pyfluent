@@ -1,0 +1,20 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_apply_share_topology__apply_share_topology_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.apply_share_topology._apply_share_topology.arguments
+   :members: edge_labels, gap_distance, gap_distance_connect, interface_select, min_size
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   improve_surface_mesh_preferences/improve_surface_mesh_preferences_contents
+   share_topology_preferences/share_topology_preferences_contents
+   surface_mesh_preferences/surface_mesh_preferences_contents

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_5:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.delete_5
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   =================
+
+Argument                                         Summary
+
+====================================   =================
+:ref:`profile_name <profile_name_1>`       Profile name.
+
+====================================   =================
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`profiles <profiles>`       Profile display object.
+
+==========================   ===========================
+

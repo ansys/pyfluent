@@ -1,0 +1,77 @@
+:orphan:
+
+.. _advanced_options:
+
+advanced_options
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.advanced_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================================   ==================================================================================
+
+Attribute                                                                                                                                                           Summary
+
+======================================================================================   ==================================================================================
+:ref:`expert <expert_5>`                                                                 Enable expert options that expose additional low-level controls for the gap model.
+
+:ref:`alternative_marking <alternative_marking>`                                                                   Mark gap regions using an alternative marking algorithm.
+
+:ref:`cell_check_distance_factor <cell_check_distance_factor>`                                                                           Value of the cell distance factor.
+
+:ref:`flow_blocking_stabilization_parameters <flow_blocking_stabilization_parameters>`     Adjust stabilization settings for the sponge layer used for blocked gap regions.
+
+:ref:`precise_gap_marking <precise_gap_marking>`                                                            Mark cells in gap regions using more accurate search algorithm.
+
+:ref:`render_flow_modeling_gaps <render_flow_modeling_gaps>`                                                                Render solution inside flow modeling gap cells.
+
+:ref:`reduce_gap_regions <reduce_gap_regions>`                                                         Using a more restrictive algorithm for marking cells in gap regions.
+
+:ref:`fill_data_in_gap_regions <fill_data_in_gap_regions>`                                                            Interpolate solution data into the whole gap regions.
+
+:ref:`enhanced_data_interpolation <enhanced_data_interpolation>`                                   Use enhanced data interpolation for updating information in gap regions.
+
+:ref:`sponge_layer <sponge_layer_1>`                                                                                            Advanced settings for the gap sponge layer.
+
+:ref:`solution_stabilization <solution_stabilization_1>`                                            Solution stabilization level for gap model: none, low, medium, or high.
+
+:ref:`include_coupled_walls <include_coupled_walls>`                                        Allow face zones that are coupled walls to participate in gap region detection.
+
+:ref:`check_cfl_condition <check_cfl_condition>`                                                                               Check time step size for better convergence.
+
+:ref:`extend_gap_regions <extend_gap_regions>`                                                                                   Extend gap regions for better convergence.
+
+:ref:`verbosity <verbosity_14>`                                                                             Verbosity level for gap model solver output: 0=silent, 1=basic.
+
+:ref:`render_gap_interface <render_gap_interface>`                                                                                   Enable rendering on the gap interface.
+
+======================================================================================   ==================================================================================
+
+.. rubric:: Methods
+
+==============================================================   ====================================================================
+
+Method                                                                                                                        Summary
+
+==============================================================   ====================================================================
+:ref:`update_gap_regions <update_gap_regions>`                                 Update gap regions and gap model solution information.
+
+:ref:`clear_gap_regions <clear_gap_regions>`                                          Clear gap model solution information and marks.
+
+:ref:`revert_controls_to_default <revert_controls_to_default>`   Revert gap stabilization and any related solver settings to default.
+
+==============================================================   ====================================================================
+
+.. rubric:: Included in:
+
+============================   ===================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                     Summary
+
+============================   ===================================================================================================================================================================================
+:ref:`gap_model <gap_model>`   Configure the gap model for simulation of narrow passages. The gap model applies special interpolation and flow-blocking or flow-modeling treatments inside identified gap regions.
+
+============================   ===================================================================================================================================================================================
+

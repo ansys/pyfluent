@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_MoveToNewSubobject__MoveToNewSubobjectCommandArguments:
+
+_MoveToNewSubobjectCommandArguments
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root.MoveToNewSubobject._MoveToNewSubobjectCommandArguments
+   :members: _Paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

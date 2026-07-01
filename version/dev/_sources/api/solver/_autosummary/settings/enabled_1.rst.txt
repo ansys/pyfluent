@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_1:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enabled_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ============================
+
+Parent                                                                              Summary
+
+============================================================   ============================
+:ref:`k_omega_low_re_correction <k_omega_low_re_correction>`   Low-Re Corrections settings.
+
+============================================================   ============================
+

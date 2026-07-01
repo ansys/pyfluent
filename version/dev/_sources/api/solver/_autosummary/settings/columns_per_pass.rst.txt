@@ -1,0 +1,21 @@
+:orphan:
+
+.. _columns_per_pass:
+
+columns_per_pass
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.columns_per_pass
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================================================
+
+Parent                                                               Summary
+
+======================   ===================================================
+:ref:`layout <layout>`   Tube bank pass and row/column counts for this core.
+
+======================   ===================================================
+

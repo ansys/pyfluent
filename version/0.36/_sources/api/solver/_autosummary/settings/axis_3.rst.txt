@@ -1,0 +1,33 @@
+:orphan:
+
+.. _axis_3:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.axis_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =================================================
+
+Parent                                                                                       Summary
+
+================================================   =================================================
+:ref:`copy_move_cell_zone <copy_move_cell_zone>`           Copy and translate or rotate a cell zone.
+
+:ref:`rotate_zone <rotate_zone>`                       Rotate nodal coordinates of input cell zones.
+
+:ref:`one_dof_rotation <one_dof_rotation>`                                 'one_dof_rotation' child.
+
+:ref:`orientation <orientation>`                                                'orientation' child.
+
+:ref:`in_cylinder_props <in_cylinder_props>`                              'in_cylinder_props' child.
+
+:ref:`cylinder_def <cylinder_def>`                                             'cylinder_def' child.
+
+:ref:`injection_2_child <injection_2_child>`                       'child_object_type' of injection.
+
+================================================   =================================================
+

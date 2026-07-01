@@ -1,0 +1,38 @@
+:orphan:
+
+.. _enable_lwf_continuity_formulation:
+
+enable_lwf_continuity_formulation
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_lwf_continuity_formulation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ===================================================================================================================================================
+
+Attribute                                                                                                                                                                                                            Summary
+
+======================================================================   ===================================================================================================================================================
+:ref:`enable <enable_11>`                                                                                                                          Enables solution of the wall-film continuity equation for wall film flow.
+
+:ref:`single <single>`                                                                                                                         Defines whether to assume a single contiguous film region for wall film flow.
+
+:ref:`film_flow_stabilization_factor <film_flow_stabilization_factor>`   Sets the stabilization factor [0 - 1] for wall film flow. Use lower for radially spreading films and higher values for film flows in one direction.
+
+:ref:`radial_spreading_term <radial_spreading_term>`                                                                                                         Includes radial spreading in the wall film continuity equation.
+
+======================================================================   ===================================================================================================================================================
+
+.. rubric:: Included in:
+
+============================   =====================================================================================
+
+Parent                                                                                                       Summary
+
+============================   =====================================================================================
+:ref:`wall_film <wall_film>`   Controls physical modeling and numerical treatment of the Lagrangian thin-film model.
+
+============================   =====================================================================================
+

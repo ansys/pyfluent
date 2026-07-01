@@ -1,0 +1,21 @@
+:orphan:
+
+.. _udf_10:
+
+udf
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.udf_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =======================
+
+Parent                                                       Summary
+
+==========================================   =======================
+:ref:`passage_number_1 <passage_number_1>`   'passage_number' child.
+
+==========================================   =======================
+

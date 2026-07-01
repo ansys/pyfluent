@@ -1,0 +1,40 @@
+:orphan:
+
+.. _auto_range:
+
+auto_range
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.auto_range
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ============================================
+
+Attribute                                                         Summary
+
+==========================   ============================================
+:ref:`min_auto <min_auto>`       Minimum axis range value automatically?.
+
+:ref:`min <min>`                       Minimum value represented on axis.
+
+:ref:`max_auto <max_auto>`       Maximum axis range value automatically?.
+
+:ref:`max <max>`                       Maximum value represented on axis.
+
+==========================   ============================================
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`x_6 <x_6>`       X-axis properties.
+
+:ref:`y_6 <y_6>`       Y-axis properties.
+
+================   ======================
+

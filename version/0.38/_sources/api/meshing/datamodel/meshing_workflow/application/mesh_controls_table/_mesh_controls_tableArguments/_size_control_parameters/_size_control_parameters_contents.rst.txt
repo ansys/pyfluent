@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_mesh_controls_table__mesh_controls_tableArguments__size_control_parameters:
+
+_size_control_parameters
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.mesh_controls_table._mesh_controls_tableArguments._size_control_parameters
+   :members: _new_label_cells, _new_label_curvature, _new_label_max, _new_label_min, _new_label_objects, _new_label_resolution, _new_label_type, _new_labels, _new_zone_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

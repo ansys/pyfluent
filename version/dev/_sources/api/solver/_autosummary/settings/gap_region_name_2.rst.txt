@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gap_region_name_2:
+
+gap_region_name
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gap_region_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===================================
+
+Parent                                                   Summary
+
+==========================   ===================================
+:ref:`delete_4 <delete_4>`   Delete a single gap region by name.
+
+==========================   ===================================
+

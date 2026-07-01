@@ -1,0 +1,23 @@
+:orphan:
+
+.. _total_number_of_gpus:
+
+total_number_of_gpus
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.total_number_of_gpus
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`job_settings <job_settings>`       Remote Job Settings.
+
+:ref:`job_settings_1 <job_settings_1>`   Remote Job Settings.
+
+======================================   ====================
+

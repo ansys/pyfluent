@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cathode_mpl_brugg_coeff:
+
+cathode_mpl_brugg_coeff
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cathode_mpl_brugg_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================
+
+Parent                                                   Summary
+
+==========================================   ===================
+:ref:`cathode_mpl_zone <cathode_mpl_zone>`       Up cathode MPL.
+
+==========================================   ===================
+

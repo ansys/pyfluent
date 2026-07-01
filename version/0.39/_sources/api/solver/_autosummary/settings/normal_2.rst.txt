@@ -1,0 +1,21 @@
+:orphan:
+
+.. _normal_2:
+
+normal
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.normal_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`plane_def <plane_def>`       'plane_def' child.
+
+============================   ======================
+

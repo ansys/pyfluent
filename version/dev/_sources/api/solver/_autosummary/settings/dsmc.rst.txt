@@ -1,0 +1,61 @@
+:orphan:
+
+.. _dsmc:
+
+dsmc
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.dsmc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================   ============================================================================
+
+Attribute                                                                                                                                                   Summary
+
+====================================================================================   ============================================================================
+:ref:`enabled <enabled_69>`                                                                                      Enable Direct Simulation Monte Carlo (DSMC) model.
+
+:ref:`time_step <time_step_1>`                                                                                      Direct Simulation Monte Carlo (DSMC) time step.
+
+:ref:`sampling_begin_iteration <sampling_begin_iteration>`                                           Direct Simulation Monte Carlo (DSMC) sampling begin iteration.
+
+:ref:`real_to_simulated_particle_ratio <real_to_simulated_particle_ratio>`                   Direct Simulation Monte Carlo (DSMC) real to simulated particle ratio.
+
+:ref:`collision_scheme <collision_scheme>`                                                              Direct Simulation Monte Carlo (DSMC) collision scheme type.
+
+:ref:`collision_pair_selection <collision_pair_selection>`                                      Direct Simulation Monte Carlo (DSMC) collision pair selection type.
+
+:ref:`target_number_of_particle_per_subcell <target_number_of_particle_per_subcell>`   Target number of particle per subcell for transient adaptive subcell method.
+
+:ref:`advanced <advanced_4>`                                                                                Advanced Direct Simulation Monte Carlo (DSMC) settings.
+
+====================================================================================   ============================================================================
+
+.. rubric:: Methods
+
+==============================================================   ================================
+
+Method                                                                                    Summary
+
+==============================================================   ================================
+:ref:`reset_macroscopic_solution <reset_macroscopic_solution>`   Zeroes the macroscopic solution.
+
+==============================================================   ================================
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`methods_2 <methods_2>`               The solution methods object.
+
+:ref:`controls_1 <controls_1>`                Solution controls object.
+
+:ref:`run_calculation <run_calculation>`        Run-calculation object.
+
+========================================   ============================
+

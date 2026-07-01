@@ -1,0 +1,21 @@
+:orphan:
+
+.. _erosion_accretion_rate_accumulation_enabled_1:
+
+erosion_accretion_rate_accumulation_enabled
+===========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.erosion_accretion_rate_accumulation_enabled_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================================
+
+Parent                                                                                                  Summary
+
+==================================================   ==========================================================
+:ref:`sampling_and_erosion <sampling_and_erosion>`   Configure sampling of particle trajectory data for output.
+
+==================================================   ==========================================================
+

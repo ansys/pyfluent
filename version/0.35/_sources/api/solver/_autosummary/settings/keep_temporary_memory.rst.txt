@@ -1,0 +1,21 @@
+:orphan:
+
+.. _keep_temporary_memory:
+
+keep_temporary_memory
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.keep_temporary_memory
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================
+
+Parent                                            Summary
+
+============================   ==========================
+:ref:`expert_10 <expert_10>`       Expert options object.
+
+============================   ==========================
+

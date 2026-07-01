@@ -1,0 +1,36 @@
+:orphan:
+
+.. _nita_controls_child:
+
+nita_controls_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.nita_controls_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =====================
+
+Attribute                                                          Summary
+
+==================================================   =====================
+:ref:`max_corrections <max_corrections>`                  Max Corrections.
+
+:ref:`correction_tolerance <correction_tolerance>`   Correction Tolerance.
+
+:ref:`residual_tolerance <residual_tolerance>`         Residual Tolerance.
+
+==================================================   =====================
+
+.. rubric:: Included in:
+
+====================================   ==============================
+
+Parent                                                        Summary
+
+====================================   ==============================
+:ref:`nita_controls <nita_controls>`   Non-Iterative Solver Controls.
+
+====================================   ==============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _user_defined_edc_scales:
+
+user_defined_edc_scales
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.user_defined_edc_scales
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`edc_options <edc_options>`       EDC model options.
+
+================================   ======================
+

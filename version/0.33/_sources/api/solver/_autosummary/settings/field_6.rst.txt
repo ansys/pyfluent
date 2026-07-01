@@ -1,0 +1,21 @@
+:orphan:
+
+.. _field_6:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.field_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =============================================
+
+Parent                                                                             Summary
+
+==========================================   =============================================
+:ref:`style_attributes <style_attributes>`       Specifies Track Style for graphic object.
+
+==========================================   =============================================
+

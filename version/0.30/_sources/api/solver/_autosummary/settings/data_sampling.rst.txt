@@ -1,0 +1,56 @@
+:orphan:
+
+.. _data_sampling:
+
+data_sampling
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.data_sampling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   ===============================================================================================================
+
+Attribute                                                                                                                                                                      Summary
+
+====================================================================   ===============================================================================================================
+:ref:`enabled <enabled_62>`                                                                                                                Specifies whether to include data sampling.
+
+:ref:`sampling_interval <sampling_interval>`                                                                                                                    The sampling interval.
+
+:ref:`time_sampled <time_sampled>`                                         Display the amount of simulated time/iterations covered by the data sampled for unsteady/steady statistics.
+
+:ref:`flow_shear_stresses <flow_shear_stresses>`                                                                      Specifies whether to include statistics for flow shear stresses.
+
+:ref:`flow_heat_fluxes <flow_heat_fluxes>`                                                                               Specifies whether to include statistics for flow heat fluxes.
+
+:ref:`wall_statistics <wall_statistics>`                                                                                                 Specifies whether to include wall statistics.
+
+:ref:`force_statistics <force_statistics>`                                                                                              Specifies whether to include force statistics.
+
+:ref:`dpm_variables <dpm_variables>`                                                                                        Specifies whether to include statistics for DPM variables.
+
+:ref:`species_list <species_list>`                                                                                                Specifies whether to include statistics for species.
+
+:ref:`statistics_mixture_fraction <statistics_mixture_fraction>`                                                         Specifies whether to include statistics for mixture fraction.
+
+:ref:`statistics_reaction_progress <statistics_reaction_progress>`                                                      Specifies whether to include statistics for reaction progress.
+
+:ref:`enable_custom_field_functions <enable_custom_field_functions>`                                               Specifies whether to include statistics for Custom Field Functions.
+
+:ref:`custom_field_functions <custom_field_functions>`                                                                                Calculate statistics for custom field functions.
+
+====================================================================   ===============================================================================================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`run_calculation <run_calculation>`       Run-calculation object.
+
+========================================   ===========================
+

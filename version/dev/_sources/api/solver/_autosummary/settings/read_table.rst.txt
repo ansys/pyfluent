@@ -1,0 +1,32 @@
+:orphan:
+
+.. _read_table:
+
+read_table
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.read_table
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   ======================
+
+Argument                                           Summary
+
+=================================   ======================
+:ref:`file_name <file_name_1_24>`   File name for reading.
+
+=================================   ======================
+
+.. rubric:: Included in:
+
+================================================   ====================================================
+
+Parent                                                                                          Summary
+
+================================================   ====================================================
+:ref:`heat_transfer_table <heat_transfer_table>`   2D heat transfer data structure in a 2D table class.
+
+================================================   ====================================================
+

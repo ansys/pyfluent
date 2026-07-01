@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_45:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_45
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   =============================================================
+
+Parent                                                                                                               Summary
+
+============================================================   =============================================================
+:ref:`diagnostics_visualization <diagnostics_visualization>`   Enable visualization of stabilization tool diagnostic fields.
+
+============================================================   =============================================================
+

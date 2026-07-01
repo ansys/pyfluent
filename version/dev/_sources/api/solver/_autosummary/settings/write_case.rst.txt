@@ -1,0 +1,36 @@
+:orphan:
+
+.. _write_case:
+
+write_case
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.write_case
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================================   ==============================================================================
+
+Argument                                                                                                                          Summary
+
+========================================================   ==============================================================================
+:ref:`file_name <file_name_7>`                                                                        The name of the case file to write.
+
+:ref:`register_with_project <register_with_project>`       Specifies whether to register the written file with the active Fluent project.
+
+:ref:`write_in_new_simulation <write_in_new_simulation>`                    Specifies whether to write the case file in a new simulation.
+
+========================================================   ==============================================================================
+
+.. rubric:: Included in:
+
+==================   ==============================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                      Summary
+
+==================   ==============================================================================================================================================================================================================
+:ref:`file <file>`   Import and export several kinds of files. Files that are read include mesh, case, data, profile, Scheme, and journal files. Files that are written include case, data, profile, journal, and transcript files.
+
+==================   ==============================================================================================================================================================================================================
+

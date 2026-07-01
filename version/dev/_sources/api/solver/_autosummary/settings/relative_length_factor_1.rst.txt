@@ -1,0 +1,21 @@
+:orphan:
+
+.. _relative_length_factor_1:
+
+relative_length_factor
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.relative_length_factor_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==================================================
+
+Parent                                                                                        Summary
+
+================================================   ==================================================
+:ref:`add_local_tolerance <add_local_tolerance>`   Set one-to-one local tolerance for selected zones.
+
+================================================   ==================================================
+

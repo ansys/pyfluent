@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coarsen_rate:
+
+coarsen_rate
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.coarsen_rate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ========================
+
+Parent                                                                      Summary
+
+========================================================   ========================
+:ref:`specify_coarsening_rate <specify_coarsening_rate>`       AMG coarsening rate.
+
+========================================================   ========================
+

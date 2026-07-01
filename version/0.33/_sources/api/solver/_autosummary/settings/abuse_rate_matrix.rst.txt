@@ -1,0 +1,39 @@
+:orphan:
+
+.. _abuse_rate_matrix:
+
+abuse_rate_matrix
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.abuse_rate_matrix
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_1>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`abuse_rate_matrix_child <abuse_rate_matrix_child>`
+
+
+.. rubric:: Included in:
+
+==============================   ======================================
+
+Parent                                                          Summary
+
+==============================   ======================================
+:ref:`n_equation <n_equation>`       N-equation abuse model parameters.
+
+==============================   ======================================
+

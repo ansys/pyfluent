@@ -1,0 +1,21 @@
+:orphan:
+
+.. _proximity_threshold_1:
+
+proximity_threshold
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.proximity_threshold_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`gap_regions_child <gap_regions_child>`   'child_object_type' of gap_regions.
+
+============================================   ===================================
+

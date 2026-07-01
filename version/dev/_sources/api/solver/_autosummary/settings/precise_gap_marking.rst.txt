@@ -1,0 +1,21 @@
+:orphan:
+
+.. _precise_gap_marking:
+
+precise_gap_marking
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.precise_gap_marking
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`advanced_options <advanced_options>`   Advanced and expert controls for the gap model.
+
+==========================================   ===============================================
+

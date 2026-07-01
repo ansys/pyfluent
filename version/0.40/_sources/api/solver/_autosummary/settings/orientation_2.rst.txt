@@ -1,0 +1,45 @@
+:orphan:
+
+.. _orientation_2:
+
+orientation
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.orientation_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =================================================================================================
+
+Attribute                                                                                                                          Summary
+
+======================================   =================================================================================================
+:ref:`skip <skip_6>`                         Display fewer orientation arrows, for cases where the arrow density obscures the orientation.
+
+:ref:`display_arrows <display_arrows>`                                       Toggle display of orientation arrows on the bounded surfaces.
+
+======================================   =================================================================================================
+
+.. rubric:: Methods
+
+==========================================   ==============================
+
+Method                                                              Summary
+
+==========================================   ==============================
+:ref:`reverse_surfaces <reverse_surfaces>`       Reverse selected surfaces.
+
+==========================================   ==============================
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`bounded_by_surfaces_child <bounded_by_surfaces_child>`       'child_object_type' of bounded_by_surfaces.
+
+============================================================   ===============================================
+

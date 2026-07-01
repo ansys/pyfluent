@@ -1,0 +1,158 @@
+:orphan:
+
+.. _create_displacement:
+
+create_displacement
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_displacement
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================================================   ===================================================================================
+
+Argument                                                                                                                                                         Summary
+
+==================================================================================   ===================================================================================
+:ref:`displacement_name <displacement_name>`                                                                                          Name of the periodic displacement.
+
+:ref:`autofill <autofill>`                                                           When enabled, automatically populate displacement fields from a mode-shape profile.
+
+:ref:`mode_shape_profile <mode_shape_profile>`                                                                              Name of the mode-shape profile for autofill.
+
+:ref:`real <real>`                                                                                                          Whether mode shape is real[y] or complex[n].
+
+:ref:`mode_shape_profile_cmplx <mode_shape_profile_cmplx>`                                                                  Name of the mode-shape profile for autofill.
+
+:ref:`x_displacement_use_profile <x_displacement_use_profile>`                                                          If yes, X displacement is defined via a profile.
+
+:ref:`x_displacement_use_udf <x_displacement_use_udf>`                                                                        If yes, X displacement uses a UDF profile.
+
+:ref:`x_displacement_type <x_displacement_type>`                                                                                        Type: constant, profile, or udf.
+
+:ref:`x_displacement_profile <x_displacement_profile>`                                                                                  Profile name for X displacement.
+
+:ref:`x_displacement_field <x_displacement_field>`                                                                     Field name within the profile for X displacement.
+
+:ref:`x_displacement <x_displacement>`                                                                           The number for constant value, or an expression string.
+
+:ref:`y_displacement_use_profile <y_displacement_use_profile>`                                                          If yes, Y displacement is defined via a profile.
+
+:ref:`y_displacement_use_udf <y_displacement_use_udf>`                                                                        If yes, Y displacement uses a UDF profile.
+
+:ref:`y_displacement_type <y_displacement_type>`                                                                                        Type: constant, profile, or udf.
+
+:ref:`y_displacement_profile <y_displacement_profile>`                                                                                  Profile name for Y displacement.
+
+:ref:`y_displacement_field <y_displacement_field>`                                                                     Field name within the profile for Y displacement.
+
+:ref:`y_displacement <y_displacement>`                                                                           The number for constant value, or an expression string.
+
+:ref:`z_displacement_use_profile <z_displacement_use_profile>`                                                          If yes, Z displacement is defined via a profile.
+
+:ref:`z_displacement_use_udf <z_displacement_use_udf>`                                                                        If yes, Z displacement uses a UDF profile.
+
+:ref:`z_displacement_type <z_displacement_type>`                                                                                        Type: constant, profile, or udf.
+
+:ref:`z_displacement_profile <z_displacement_profile>`                                                                                  Profile name for Z displacement.
+
+:ref:`z_displacement_field <z_displacement_field>`                                                                     Field name within the profile for Z displacement.
+
+:ref:`z_displacement <z_displacement>`                                                                           The number for constant value, or an expression string.
+
+:ref:`x_imaginary_displacement_use_profile <x_imaginary_displacement_use_profile>`                            If yes, X imaginary displacement is defined via a profile.
+
+:ref:`x_imaginary_displacement_use_udf <x_imaginary_displacement_use_udf>`                                          If yes, X imaginary displacement uses a UDF profile.
+
+:ref:`x_imaginary_displacement_type <x_imaginary_displacement_type>`                                                                    Type: constant, profile, or udf.
+
+:ref:`x_imaginary_displacement_profile <x_imaginary_displacement_profile>`                                                    Profile name for X imaginary displacement.
+
+:ref:`x_imaginary_displacement_field <x_imaginary_displacement_field>`                                       Field name within the profile for X imaginary displacement.
+
+:ref:`x_imaginary_displacement <x_imaginary_displacement>`                                                       The number for constant value, or an expression string.
+
+:ref:`y_imaginary_displacement_use_profile <y_imaginary_displacement_use_profile>`                            If yes, Y imaginary displacement is defined via a profile.
+
+:ref:`y_imaginary_displacement_use_udf <y_imaginary_displacement_use_udf>`                                          If yes, Y imaginary displacement uses a UDF profile.
+
+:ref:`y_imaginary_displacement_type <y_imaginary_displacement_type>`                                                                    Type: constant, profile, or udf.
+
+:ref:`y_imaginary_displacement_profile <y_imaginary_displacement_profile>`                                                    Profile name for Y imaginary displacement.
+
+:ref:`y_imaginary_displacement_field <y_imaginary_displacement_field>`                                       Field name within the profile for Y imaginary displacement.
+
+:ref:`y_imaginary_displacement <y_imaginary_displacement>`                                                       The number for constant value, or an expression string.
+
+:ref:`z_imaginary_displacement_use_profile <z_imaginary_displacement_use_profile>`                            If yes, Z imaginary displacement is defined via a profile.
+
+:ref:`z_imaginary_displacement_use_udf <z_imaginary_displacement_use_udf>`                                          If yes, Z imaginary displacement uses a UDF profile.
+
+:ref:`z_imaginary_displacement_type <z_imaginary_displacement_type>`                                                                    Type: constant, profile, or udf.
+
+:ref:`z_imaginary_displacement_profile <z_imaginary_displacement_profile>`                                                    Profile name for Z imaginary displacement.
+
+:ref:`z_imaginary_displacement_field <z_imaginary_displacement_field>`                                       Field name within the profile for Z imaginary displacement.
+
+:ref:`z_imaginary_displacement <z_imaginary_displacement>`                                                       The number for constant value, or an expression string.
+
+:ref:`frequency_use_profile <frequency_use_profile>`                                                                         If yes, frequency is defined via a profile.
+
+:ref:`frequency_use_udf <frequency_use_udf>`                                                                                       If yes, frequency uses a UDF profile.
+
+:ref:`frequency_type <frequency_type>`                                                                                                  Type: constant, profile, or udf.
+
+:ref:`frequency_profile <frequency_profile>`                                                                                                 Profile name for frequency.
+
+:ref:`frequency_field <frequency_field>`                                                                                    Field name within the profile for frequency.
+
+:ref:`frequency <frequency_3>`                                                                                   The number for constant value, or an expression string.
+
+:ref:`normalized <normalized_1>`                                                                                                      Whether the profile is normalized.
+
+:ref:`amplitude_use_profile <amplitude_use_profile>`                                                                         If yes, amplitude is defined via a profile.
+
+:ref:`amplitude_use_udf <amplitude_use_udf>`                                                                                       If yes, amplitude uses a UDF profile.
+
+:ref:`amplitude_type <amplitude_type>`                                                                                                  Type: constant, profile, or udf.
+
+:ref:`amplitude_profile <amplitude_profile>`                                                                                                 Profile name for amplitude.
+
+:ref:`amplitude_field <amplitude_field>`                                                                                    Field name within the profile for amplitude.
+
+:ref:`amplitude <amplitude_3>`                                                                                   The number for constant value, or an expression string.
+
+:ref:`method <method_14>`                                                                   Mode propagation option: 0=None, 1=Travelling Wave, 2=Influence Coefficient.
+
+:ref:`nodal_diameter <nodal_diameter_1>`                                                                                                           Nodal diameter value.
+
+:ref:`forward <forward>`                                                                                                  Travelling direction: #t=Forward, #f=Backward.
+
+:ref:`passage_number_use_profile <passage_number_use_profile>`                                                          If yes, passage number is defined via a profile.
+
+:ref:`passage_number_use_udf <passage_number_use_udf>`                                                                        If yes, passage number uses a UDF profile.
+
+:ref:`passage_number_type <passage_number_type>`                                                                                        Type: constant, profile, or udf.
+
+:ref:`passage_number_profile <passage_number_profile>`                                                                                  Profile name for passage number.
+
+:ref:`passage_number_field <passage_number_field>`                                                                     Field name within the profile for passage number.
+
+:ref:`passage_number <passage_number_2>`                                                                         The number for constant value, or an expression string.
+
+:ref:`aerodamping <aerodamping>`                                                                                                            Enable aerodamping monitors.
+
+==================================================================================   ===================================================================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

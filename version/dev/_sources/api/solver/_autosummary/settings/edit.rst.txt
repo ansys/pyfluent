@@ -1,0 +1,82 @@
+:orphan:
+
+.. _edit:
+
+edit
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.edit
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================================================   =========================================================================================================
+
+Argument                                                                                                                                                                           Summary
+
+==============================================================================   =========================================================================================================
+:ref:`gap_region_name <gap_region_name_1>`                                                                                                        Name of the existing gap region to edit.
+
+:ref:`new_name <new_name_5>`                                                                           Rename the gap region to this name. Leave empty (default) to keep the current name.
+
+:ref:`face_zone_ids <face_zone_ids_2>`                                           Face zones forming the gap (at least two required). Leave empty (default) to keep the current face zones.
+
+:ref:`threshold <threshold_1>`                                                                                        Proximity threshold. 0.0 (default) means keep the current threshold.
+
+:ref:`type <type_18>`                                                                                                            Gap type. Leave empty (default) to keep the current type.
+
+:ref:`flow_modeling_method <flow_modeling_method>`                                                                              Flow-modeling method. Empty (default) keeps current value.
+
+:ref:`sponge_resistance_type <sponge_resistance_type>`                                                                                  Sponge-layer resistance type. Empty keeps current.
+
+:ref:`sponge_gap_reynolds_number <sponge_gap_reynolds_number>`                                                           Gap Reynolds number for sponge-layer. -1 (default) keeps current.
+
+:ref:`sponge_gap_viscosity <sponge_gap_viscosity>`                                                                             Gap viscosity for sponge-layer. -1 (default) keeps current.
+
+:ref:`sponge_local_stabilization <sponge_local_stabilization>`                                                    Enable sponge-layer local stabilization: yes or no. Empty keeps current.
+
+:ref:`rom_flow_control_type <rom_flow_control_type>`                                                                       Flow control type for reduced-order model. Empty keeps current.
+
+:ref:`decelerated_customize_inputs <decelerated_customize_inputs>`                                            Adjust decelerated-flow modeling parameters: yes or no. Empty keeps current.
+
+:ref:`decelerated_scale_factor <decelerated_scale_factor>`                                                                  Scale factor for decelerated flow. -1 (default) keeps current.
+
+:ref:`decelerated_inertial_coefficient <decelerated_inertial_coefficient>`                                          Inertial coefficient for decelerated flow. -1 (default) keeps current.
+
+:ref:`decelerated_viscous_coefficient <decelerated_viscous_coefficient>`                                             Viscous coefficient for decelerated flow. -1 (default) keeps current.
+
+:ref:`decelerated_relative_velocity <decelerated_relative_velocity>`                                        Enable relative velocity for decelerated flow: yes or no. Empty keeps current.
+
+:ref:`resisted_customize_inputs <resisted_customize_inputs>`                                                     Adjust resisted-flow modeling parameters: yes or no. Empty keeps current.
+
+:ref:`resisted_pressure_drop_formulation <resisted_pressure_drop_formulation>`                                           Pressure-drop formulation for resisted flow. Empty keeps current.
+
+:ref:`resisted_correction_coefficient <resisted_correction_coefficient>`                                             Correction coefficient for resisted flow. -1 (default) keeps current.
+
+:ref:`resisted_gap_length <resisted_gap_length>`                                                                  Gap characteristic length for resisted flow. -1 (default) keeps current.
+
+:ref:`resisted_gap_width <resisted_gap_width>`                                                                     Gap characteristic width for resisted flow. -1 (default) keeps current.
+
+:ref:`resisted_relative_velocity <resisted_relative_velocity>`                                                 Enable relative velocity for resisted flow: yes or no. Empty keeps current.
+
+:ref:`gap_flow_x_velocity <gap_flow_x_velocity>`                                                                                    X-velocity for gap flow. 1e30 (default) keeps current.
+
+:ref:`gap_flow_y_velocity <gap_flow_y_velocity>`                                                                                    Y-velocity for gap flow. 1e30 (default) keeps current.
+
+:ref:`gap_flow_z_velocity <gap_flow_z_velocity>`                                                                          Z-velocity for gap flow (3D only). 1e30 (default) keeps current.
+
+:ref:`udf_source <udf_source_1>`                                                                                             UDF name for gap source terms. Empty (default) keeps current.
+
+==============================================================================   =========================================================================================================
+
+.. rubric:: Included in:
+
+============================   ===================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                     Summary
+
+============================   ===================================================================================================================================================================================
+:ref:`gap_model <gap_model>`   Configure the gap model for simulation of narrow passages. The gap model applies special interpolation and flow-blocking or flow-modeling treatments inside identified gap regions.
+
+============================   ===================================================================================================================================================================================
+

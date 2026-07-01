@@ -1,0 +1,36 @@
+:orphan:
+
+.. _gradient_options:
+
+gradient_options
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gradient_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ================================================================================================================================
+
+Attribute                                                                                                                                                                                           Summary
+
+========================================================================   ================================================================================================================================
+:ref:`pressure_reconstruction_generic <pressure_reconstruction_generic>`   Enable use of the specified spatial gradient scheme for the reconstruction gradient used in second order pressure interpolation.
+
+:ref:`least_squares <least_squares>`                                                                                                                  Options for Least Squares Cell Based gradient scheme.
+
+:ref:`green_gauss_node_based <green_gauss_node_based>`                                                                                                  Options for Green-Gauss Node Based gradient scheme.
+
+========================================================================   ================================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   =========================
+
+Parent                                             Summary
+
+==============================   =========================
+:ref:`controls_1 <controls_1>`   Solution controls object.
+
+==============================   =========================
+

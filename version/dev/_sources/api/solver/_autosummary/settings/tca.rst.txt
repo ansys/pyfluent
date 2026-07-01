@@ -1,0 +1,21 @@
+:orphan:
+
+.. _tca:
+
+tca
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.tca
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===================================================
+
+Parent                                                                             Summary
+
+====================================   ===================================================
+:ref:`butler_volmer <butler_volmer>`   Butler-Volmer kinetic parameters for this reaction.
+
+====================================   ===================================================
+

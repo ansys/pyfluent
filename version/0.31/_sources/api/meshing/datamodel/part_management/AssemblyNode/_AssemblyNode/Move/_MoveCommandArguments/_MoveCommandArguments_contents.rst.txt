@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_AssemblyNode__AssemblyNode_Move__MoveCommandArguments:
+
+_MoveCommandArguments
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root.AssemblyNode._AssemblyNode.Move._MoveCommandArguments
+   :members: _Paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

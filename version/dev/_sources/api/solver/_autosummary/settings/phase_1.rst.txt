@@ -1,0 +1,23 @@
+:orphan:
+
+.. _phase_1:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.phase_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =====================================================
+
+Parent                                                                           Summary
+
+================================   =====================================================
+:ref:`add_product <add_product>`                 Add a product species to this reaction.
+
+:ref:`set_product <set_product>`   Modify an existing product in this reaction by index.
+
+================================   =====================================================
+

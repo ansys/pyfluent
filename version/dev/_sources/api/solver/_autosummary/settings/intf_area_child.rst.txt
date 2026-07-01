@@ -1,0 +1,42 @@
+:orphan:
+
+.. _intf_area_child:
+
+intf_area_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.intf_area_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =======================================
+
+Attribute                                                            Summary
+
+==================================   =======================================
+:ref:`ia_method <ia_method>`                        Interfacial area method.
+
+:ref:`ia_udf <ia_udf>`               Interfacial area user-defined function.
+
+:ref:`ia_hyb_fs <ia_hyb_fs>`                      Free Surface Area Density.
+
+:ref:`ia_hyb_bub <ia_hyb_bub>`                     Bubbly Flow Area Density.
+
+:ref:`ia_hyb_drop <ia_hyb_drop>`                  Droplet Flow Area Density.
+
+:ref:`ia_hyb_blend <ia_hyb_blend>`                          Blending Method.
+
+==================================   =======================================
+
+.. rubric:: Included in:
+
+============================   =================
+
+Parent                                   Summary
+
+============================   =================
+:ref:`intf_area <intf_area>`   Interfacial area.
+
+============================   =================
+

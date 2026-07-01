@@ -1,0 +1,32 @@
+:orphan:
+
+.. _zoom:
+
+zoom
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zoom
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   =============================================
+
+Argument                                                       Summary
+
+======================   =============================================
+:ref:`factor <factor>`       Specifies the zoom factor for the camera.
+
+======================   =============================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`camera <camera>`       'camera' child.
+
+======================   ===================
+

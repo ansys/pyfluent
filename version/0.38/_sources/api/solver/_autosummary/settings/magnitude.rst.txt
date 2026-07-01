@@ -1,0 +1,21 @@
+:orphan:
+
+.. _magnitude:
+
+magnitude
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.magnitude
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============================================================
+
+Parent                                                                            Summary
+
+==========================   ============================================================
+:ref:`velocity <velocity>`       Lagrangian particle injection initial velocity settings.
+
+==========================   ============================================================
+

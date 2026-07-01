@@ -1,0 +1,34 @@
+:orphan:
+
+.. _delete_species:
+
+delete_species
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.delete_species
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ======================================
+
+Argument                                                              Summary
+
+====================================   ======================================
+:ref:`species_name <species_name_2>`       Pick a species you want to delete.
+
+====================================   ======================================
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`setup_1 <setup_1>`                Membrane species diffusivity.
+
+:ref:`init_value <init_value>`       Initial concentration (kmol/m3).
+
+==============================   ====================================
+

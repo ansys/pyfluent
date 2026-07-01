@@ -1,0 +1,112 @@
+:orphan:
+
+.. _create_13:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_13
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ============================================================================================================
+
+Argument                                                                                                                                        Summary
+
+========================================   ============================================================================================================
+:ref:`name <name_33>`                                                                                         Name of the new Generalized Force object.
+
+:ref:`ct_id <ct_id>`                           Cell thread ID associated with the force object. Must be a valid cell thread ID from the available list.
+
+:ref:`wt_id <wt_id>`                                                                  List of wall thread IDs on which to map the displacement profile.
+
+:ref:`autofill <autofill>`                                                          Use automatic filling function to read uploaded mode shape profile.
+
+:ref:`mode_shape_prof <mode_shape_prof>`                                                                                Mesh displacement profile name.
+
+:ref:`cmplx <cmplx_1>`                                                                                       Whether the mode shape is complex or real.
+
+:ref:`dispx_type <dispx_type>`                                                                                                  Type of X displacement.
+
+:ref:`dispx_udf <dispx_udf>`                                                                             Whether to use UDF profile for X displacement.
+
+:ref:`dispx_prof <dispx_prof>`                                                                                         Profile name for X displacement.
+
+:ref:`dispx_field <dispx_field>`                                         Field name for X displacement. When UDF is selected, must be a valid UDF name.
+
+:ref:`dispx_value <dispx_value>`                                                                                     Constant value for X displacement.
+
+:ref:`dispy_type <dispy_type>`                                                                                                  Type of Y displacement.
+
+:ref:`dispy_udf <dispy_udf>`                                                                             Whether to use UDF profile for Y displacement.
+
+:ref:`dispy_prof <dispy_prof>`                                                                                         Profile name for Y displacement.
+
+:ref:`dispy_field <dispy_field>`                                         Field name for Y displacement. When UDF is selected, must be a valid UDF name.
+
+:ref:`dispy_value <dispy_value>`                                                                                     Constant value for Y displacement.
+
+:ref:`dispz_type <dispz_type>`                                                                                                  Type of Z displacement.
+
+:ref:`dispz_udf <dispz_udf>`                                                                             Whether to use UDF profile for Z displacement.
+
+:ref:`dispz_prof <dispz_prof>`                                                                                         Profile name for Z displacement.
+
+:ref:`dispz_field <dispz_field>`                                         Field name for Z displacement. When UDF is selected, must be a valid UDF name.
+
+:ref:`dispz_value <dispz_value>`                                                                                     Constant value for Z displacement.
+
+:ref:`imagx_type <imagx_type>`                                                                                                     Type of X imaginary.
+
+:ref:`imagx_udf <imagx_udf>`                                                                   Whether to use UDF profile for X imaginary displacement.
+
+:ref:`imagx_prof <imagx_prof>`                                                                                            Profile name for X imaginary.
+
+:ref:`imagx_field <imagx_field>`                                            Field name for X imaginary. When UDF is selected, must be a valid UDF name.
+
+:ref:`imagx_value <imagx_value>`                                                                                        Constant value for X imaginary.
+
+:ref:`imagy_type <imagy_type>`                                                                                                     Type of Y imaginary.
+
+:ref:`imagy_udf <imagy_udf>`                                                                   Whether to use UDF profile for Y imaginary displacement.
+
+:ref:`imagy_prof <imagy_prof>`                                                                                            Profile name for Y imaginary.
+
+:ref:`imagy_field <imagy_field>`                                            Field name for Y imaginary. When UDF is selected, must be a valid UDF name.
+
+:ref:`imagy_value <imagy_value>`                                                                                        Constant value for Y imaginary.
+
+:ref:`imagz_type <imagz_type>`                                                                                                     Type of Z imaginary.
+
+:ref:`imagz_udf <imagz_udf>`                                                                   Whether to use UDF profile for Z imaginary displacement.
+
+:ref:`imagz_prof <imagz_prof>`                                                                                            Profile name for Z imaginary.
+
+:ref:`imagz_field <imagz_field>`                                            Field name for Z imaginary. When UDF is selected, must be a valid UDF name.
+
+:ref:`imagz_value <imagz_value>`                                                                                        Constant value for Z imaginary.
+
+:ref:`norm <norm_1>`                                                                                              Whether the mode shape is normalized.
+
+:ref:`scalar_field <scalar_field>`                                                                                                  Scalar field index.
+
+:ref:`fourier_decomp <fourier_decomp>`                                            Whether the Fourier decomposition of the chosen scalar field is used.
+
+:ref:`ibfreq <ibfreq>`                                   Base frequency index for Fourier coefficient. Selected from allowed indices for the cell zone.
+
+:ref:`harmonic <harmonic>`                                            Harmonic selected from available harmonics for the cell zone and frequency index.
+
+========================================   ============================================================================================================
+
+.. rubric:: Included in:
+
+========================   ======================================
+
+Parent                                                    Summary
+
+========================   ======================================
+:ref:`objects <objects>`       Manage Generalized Forces objects.
+
+========================   ======================================
+

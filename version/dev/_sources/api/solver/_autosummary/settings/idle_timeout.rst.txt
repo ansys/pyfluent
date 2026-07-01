@@ -1,0 +1,21 @@
+:orphan:
+
+.. _idle_timeout:
+
+idle_timeout
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.idle_timeout
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`job_settings_1 <job_settings_1>`   Remote Job Settings.
+
+======================================   ====================
+

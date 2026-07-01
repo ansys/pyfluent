@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_remove_labels_on_edge_zones__remove_labels_on_edge_zonesCommandArguments:
+
+_remove_labels_on_edge_zonesCommandArguments
+============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.remove_labels_on_edge_zones._remove_labels_on_edge_zonesCommandArguments
+   :members: _edge_zone_id_list, _edge_zone_name_list, _edge_zone_name_pattern, _label_name_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

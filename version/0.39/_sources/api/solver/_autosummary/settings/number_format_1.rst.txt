@@ -1,0 +1,36 @@
+:orphan:
+
+.. _number_format_1:
+
+number_format
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.number_format_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ========================
+
+Attribute                                             Summary
+
+==================================   ========================
+:ref:`format_type <format_type_1>`       'format_type' child.
+
+:ref:`precision <precision_1>`             'precision' child.
+
+==================================   ========================
+
+.. rubric:: Included in:
+
+================   ==============
+
+Parent                    Summary
+
+================   ==============
+:ref:`x_8 <x_8>`       'x' child.
+
+:ref:`y_8 <y_8>`       'y' child.
+
+================   ==============
+

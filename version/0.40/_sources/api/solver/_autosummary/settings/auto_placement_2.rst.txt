@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_placement_2:
+
+auto_placement
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.auto_placement_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`minor_gridlines_1 <minor_gridlines_1>`       Minor rules settings.
+
+============================================   =========================
+

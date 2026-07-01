@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AddVirtualTopology__AddVirtualTopologyCommandArguments:
+
+_AddVirtualTopologyCommandArguments
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.AddVirtualTopology._AddVirtualTopologyCommandArguments
+   :members: _AddChild, _ControlName, _FaceLabelList, _FaceZoneList, _NewFaces, _SelectionType
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

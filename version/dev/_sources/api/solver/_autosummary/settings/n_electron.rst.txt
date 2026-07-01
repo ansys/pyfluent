@@ -1,0 +1,21 @@
+:orphan:
+
+.. _n_electron:
+
+n_electron
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.n_electron
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =============================================
+
+Parent                                                         Summary
+
+======================   =============================================
+:ref:`nernst <nernst>`   Nernst equation parameters for this reaction.
+
+======================   =============================================
+

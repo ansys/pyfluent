@@ -1,0 +1,54 @@
+:orphan:
+
+.. _divergence_tracker:
+
+divergence_tracker
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.divergence_tracker
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =====================================================================================
+
+Attribute                                                                                                                        Summary
+
+================================================   =====================================================================================
+:ref:`enable <enable_44>`                                  Enable local divergence tracker to stop simulation upon divergence detection.
+
+:ref:`write <write_2>`                                           Enable writing diagnostics data to a file for local divergence tracker.
+
+:ref:`print <print_2>`                                     Enable printing diagnostics data to the console for local divergence tracker.
+
+:ref:`velocity_tracker <velocity_tracker>`                                  Monitor maximum velocity magnitude for divergence detection.
+
+:ref:`max_vel <max_vel>`                                                             Define maximum velocity magnitude divergence limit.
+
+:ref:`vel_rfname <vel_rfname_1>`                                            Filename for velocity divergence tracker diagnostics output.
+
+:ref:`temperature_tracker <temperature_tracker>`   Monitor maximum/minimum temperature for divergence detection (requires energy model).
+
+:ref:`max_temp <max_temp>`                                                                  Define maximum temperature divergence limit.
+
+:ref:`min_temp <min_temp>`                                                                  Define minimum temperature divergence limit.
+
+:ref:`temp_rfname <temp_rfname_1>`                                       Filename for temperature divergence tracker diagnostics output.
+
+:ref:`stop <stop_2>`                                                          Stop simulation automatically when divergence is detected.
+
+:ref:`verbosity <verbosity_17>`                             Verbosity level for divergence tracker stop condition (0=normal, 1=verbose).
+
+================================================   =====================================================================================
+
+.. rubric:: Included in:
+
+============================================   ============================================================================
+
+Parent                                                                                                              Summary
+
+============================================   ============================================================================
+:ref:`diagnostics_tools <diagnostics_tools>`   Configure diagnostics tools for monitoring and inspecting simulation health.
+
+============================================   ============================================================================
+

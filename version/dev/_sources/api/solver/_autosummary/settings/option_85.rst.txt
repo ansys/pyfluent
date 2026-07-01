@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_85:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_85
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =======================================
+
+Parent                                                                                 Summary
+
+====================================================   =======================================
+:ref:`cumulative_plot_child <cumulative_plot_child>`   'child_object_type' of cumulative_plot.
+
+====================================================   =======================================
+

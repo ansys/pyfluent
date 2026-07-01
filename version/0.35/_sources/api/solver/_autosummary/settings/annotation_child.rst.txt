@@ -1,0 +1,50 @@
+:orphan:
+
+.. _annotation_child:
+
+annotation_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.annotation_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =======================================================================================================================================================
+
+Attribute                                                                                                                                                                                  Summary
+
+========================================   =======================================================================================================================================================
+:ref:`name <name_33>`                                                                                                                                   A suitable name for the annotation object.
+
+:ref:`text <text_3>`                                                                                                                            Specifies the text that appears in the annotation.
+
+:ref:`font_name <font_name_1>`                                                                                                                 Specifies the name of the font used in the display.
+
+:ref:`font_size <font_size_2>`                                                                                                                                            Specifies the font size.
+
+:ref:`font_weight <font_weight>`                                                                                                                     Specifies whether the displayed text is bold.
+
+:ref:`font_slant <font_slant>`                                                                                                                 Specifies whether the dislpayed text is italicized.
+
+:ref:`font_color <font_color>`                                                                                                                          Specifies the color of the displayed text.
+
+:ref:`append_quantity <append_quantity>`       Append the following values to the text: Date | Time | Version | Number of iterations | Number of timesteps | Flow time | <any defined expression>.
+
+:ref:`number_format <number_format_1>`                                                             The number format and precision for the annotation text's variable quantity (eg: %0.4e, %0.2f).
+
+:ref:`position <position_2>`                                                                                                    Specifies the annotation object's position in the graphics window.
+
+========================================   =======================================================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`annotation <annotation>`       Add, Edit, Remove annotations in case file.
+
+==============================   ===============================================
+

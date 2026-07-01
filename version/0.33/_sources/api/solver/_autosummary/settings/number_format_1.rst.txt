@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_format_1:
+
+number_format
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.number_format_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`annotation_child <annotation_child>`       'child_object_type' of annotation.
+
+==========================================   ======================================
+

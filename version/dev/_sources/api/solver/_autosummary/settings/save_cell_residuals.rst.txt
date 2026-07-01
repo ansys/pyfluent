@@ -1,0 +1,21 @@
+:orphan:
+
+.. _save_cell_residuals:
+
+save_cell_residuals
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.save_cell_residuals
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`expert_13 <expert_13>`   Expert options object.
+
+============================   ======================
+

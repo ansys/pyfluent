@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temp_rfname_1:
+
+temp_rfname
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.temp_rfname_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================================
+
+Parent                                                                                            Summary
+
+==============================================   ========================================================
+:ref:`divergence_tracker <divergence_tracker>`   Stop simulation after a divergence incident is detected.
+
+==============================================   ========================================================
+

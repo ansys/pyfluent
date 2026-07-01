@@ -1,0 +1,34 @@
+:orphan:
+
+.. _database:
+
+database
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.database
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   ==================================
+
+Method                                                                Summary
+
+========================================   ==================================
+:ref:`copy_by_name <copy_by_name>`            Copy database material by name.
+
+:ref:`copy_by_formula <copy_by_formula>`   Copy database material by formula.
+
+========================================   ==================================
+
+.. rubric:: Included in:
+
+============================   ================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+============================   ================================================================================================================================
+:ref:`materials <materials>`   Accesses the material database and configuration tools for defining fluid, solid, and particle materials used in the simulation.
+
+============================   ================================================================================================================================
+

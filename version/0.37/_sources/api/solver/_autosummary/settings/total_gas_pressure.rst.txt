@@ -1,0 +1,21 @@
+:orphan:
+
+.. _total_gas_pressure:
+
+total_gas_pressure
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.total_gas_pressure
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================================
+
+Parent                                                                                    Summary
+
+==========================================   ====================================================
+:ref:`input_parameters <input_parameters>`       Input parameters in water chemistry calculation.
+
+==========================================   ====================================================
+

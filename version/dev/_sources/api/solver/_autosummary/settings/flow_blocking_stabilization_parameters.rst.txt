@@ -1,0 +1,38 @@
+:orphan:
+
+.. _flow_blocking_stabilization_parameters:
+
+flow_blocking_stabilization_parameters
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_blocking_stabilization_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ===============================================================================
+
+Attribute                                                                                                                            Summary
+
+==========================================================   ===============================================================================
+:ref:`stabilization_method <stabilization_method>`                                  Method used to scale viscosity near blocked gap regions.
+
+:ref:`gap_viscosity_factor <gap_viscosity_factor>`                              Maximum viscosity scaling factor applied inside gap regions.
+
+:ref:`viscosity_ramp_up_factor <viscosity_ramp_up_factor>`        Rate at which the viscosity scaling ramps up across layers toward the gap.
+
+:ref:`viscosity_ramp_up_layers <viscosity_ramp_up_layers>`   Number of cell layers over which viscosity scaling is ramped up toward the gap.
+
+==========================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`advanced_options <advanced_options>`   Advanced and expert controls for the gap model.
+
+==========================================   ===============================================
+

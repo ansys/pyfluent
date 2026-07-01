@@ -1,0 +1,40 @@
+:orphan:
+
+.. _divergence_prevention_1:
+
+divergence_prevention
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.divergence_prevention_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =====================================================================================================================
+
+Attribute                                                                                                                                              Summary
+
+======================================   =====================================================================================================================
+:ref:`enable <enable_46>`                                                     Adjust numerical settings automatically when a divergence pattern is identified.
+
+:ref:`interval <interval>`                                                                                     Number of iterations between divergence checks.
+
+:ref:`velocity_range <velocity_range>`   Expected velocity range preset for divergence detection (0=0-100, 1=0-500, 2=0-2000, 3=0-4000 m/s, 4=user-specified).
+
+:ref:`max_vel <max_vel_1>`                                                                                        Maximum velocity magnitude divergence limit.
+
+:ref:`max_tvr <max_tvr>`                                                                                   Maximum turbulent viscosity ratio divergence limit.
+
+======================================   =====================================================================================================================
+
+.. rubric:: Included in:
+
+============================================   ======================================================
+
+Parent                                                                                        Summary
+
+============================================   ======================================================
+:ref:`contingency_tools <contingency_tools>`   Contingency tools for reactive robustness adjustments.
+
+============================================   ======================================================
+

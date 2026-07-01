@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_boiling_bdf_constant:
+
+mt_boiling_bdf_constant
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_bdf_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================================================
+
+Parent                                                                                                      Summary
+
+============================================   ====================================================================
+:ref:`mt_boiling_params <mt_boiling_params>`   Boiling sub-model parameters: BDD, NSD, BDF, AIC, blending function.
+
+============================================   ====================================================================
+

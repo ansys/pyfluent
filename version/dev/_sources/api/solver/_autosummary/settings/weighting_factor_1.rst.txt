@@ -1,0 +1,21 @@
+:orphan:
+
+.. _weighting_factor_1:
+
+weighting_factor
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.weighting_factor_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================================================
+
+Parent                                                                               Summary
+
+====================================   =====================================================
+:ref:`least_squares <least_squares>`   Options for Least Squares Cell Based gradient scheme.
+
+====================================   =====================================================
+

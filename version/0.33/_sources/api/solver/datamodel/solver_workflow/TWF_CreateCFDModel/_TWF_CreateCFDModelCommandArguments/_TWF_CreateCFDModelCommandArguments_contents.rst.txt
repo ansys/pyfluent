@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_CreateCFDModel__TWF_CreateCFDModelCommandArguments:
+
+_TWF_CreateCFDModelCommandArguments
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.solver_workflow.Root.TWF_CreateCFDModel._TWF_CreateCFDModelCommandArguments
+   :members: _AxisOfRotation, _CFDMChildName, _CFDMRowNumList, _CFDMSelectMeshAssociation, _DelayCFDModelCreation, _EstimateNumBlades, _NewCFDMAngleOffset, _NewCFDMBladesPerSectorList, _NewCFDMModelBladesList, _NewCFDMNumOfBladesList, _OldCFDMAngleOffset, _OldCFDMBladesPerSectorList, _OldCFDMModelBladesList, _OldCFDMNumOfBladesList, _RestrictToFactors
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

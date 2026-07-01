@@ -1,0 +1,27 @@
+:orphan:
+
+.. _option_25:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_25
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================================
+
+Parent                                                                                           Summary
+
+================================================   =====================================================
+:ref:`mass_flow_rate <mass_flow_rate>`                   The total auxiliary fluid mass flow rate value.
+
+:ref:`heat_rejection <heat_rejection>`             The total heat rejected by the auxiliary fluid value.
+
+:ref:`inlet_temperature <inlet_temperature>`                The auxiliary fluid inlet temperature value.
+
+:ref:`initial_temperature <initial_temperature>`          The auxiliary fluid initial temperature value.
+
+================================================   =====================================================
+

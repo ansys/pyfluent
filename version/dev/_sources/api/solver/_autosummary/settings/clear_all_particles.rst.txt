@@ -1,0 +1,23 @@
+:orphan:
+
+.. _clear_all_particles:
+
+clear_all_particles
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.clear_all_particles
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =============================================================================================================
+
+Parent                                                                                                                                               Summary
+
+============================================   =============================================================================================================
+:ref:`discrete_phase <discrete_phase>`         Configures the Discrete Phase Model (DPM) to track particles, droplets, or bubbles in a Lagrangian framework.
+
+:ref:`unsteady_tracking <unsteady_tracking>`             Configures particle tracking that advances particle in sync with the transient motion of the fluid.
+
+============================================   =============================================================================================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mechanisms_child:
+
+mechanisms_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mechanisms_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ===================================================================================
+
+Attribute                                                                                                    Summary
+
+==============================   ===================================================================================
+:ref:`name <name_5>`                                                                             Name of the object.
+
+:ref:`reactions <reactions_2>`   List of reaction names assigned to this mechanism. Select from available reactions.
+
+==============================   ===================================================================================
+
+.. rubric:: Included in:
+
+==============================   ================================================================================
+
+Parent                                                                                                    Summary
+
+==============================   ================================================================================
+:ref:`mechanisms <mechanisms>`   Manage electrochemistry mechanisms. Each mechanism groups one or more reactions.
+
+==============================   ================================================================================
+

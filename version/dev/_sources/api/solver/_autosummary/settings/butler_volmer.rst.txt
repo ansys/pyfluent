@@ -1,0 +1,40 @@
+:orphan:
+
+.. _butler_volmer:
+
+butler_volmer
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.butler_volmer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================   =======================================
+
+Attribute                                            Summary
+
+==================   =======================================
+:ref:`jref <jref>`       Reference exchange current density.
+
+:ref:`ea <ea>`           Activation energy for the reaction.
+
+:ref:`tref <tref>`   Reference temperature for the reaction.
+
+:ref:`tca <tca>`                Anodic transfer coefficient.
+
+:ref:`tcc <tcc>`              Cathodic transfer coefficient.
+
+==================   =======================================
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`reactions_1_child <reactions_1_child>`   'child_object_type' of reactions.
+
+============================================   =================================
+

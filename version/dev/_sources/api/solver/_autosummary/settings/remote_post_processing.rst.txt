@@ -1,0 +1,51 @@
+:orphan:
+
+.. _remote_post_processing:
+
+remote_post_processing
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.remote_post_processing
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ====================
+
+Attribute                                           Summary
+
+====================================   ====================
+:ref:`job_settings <job_settings_1>`   Remote Job Settings.
+
+====================================   ====================
+
+.. rubric:: Methods
+
+==============================================================================   =====================================================
+
+Method                                                                                                                         Summary
+
+==============================================================================   =====================================================
+:ref:`submit_job <submit_job_1>`                                                   Submit job to remote cluster with current settings.
+
+:ref:`get_list_of_case_files <get_list_of_case_files>`                                       Get list of case files for the given job.
+
+:ref:`get_list_of_data_files <get_list_of_data_files>`                                       Get list of data files for the given job.
+
+:ref:`get_list_of_associated_input_files <get_list_of_associated_input_files>`   Get list of associated input files for the given job.
+
+:ref:`get_list_of_generated_files <get_list_of_generated_files>`                        Get list of generated files for the given job.
+
+==============================================================================   =====================================================
+
+.. rubric:: Included in:
+
+================================   ===================
+
+Parent                                         Summary
+
+================================   ===================
+:ref:`job_actions <job_actions>`   Remote Job Actions.
+
+================================   ===================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _email_id_1:
+
+email_id
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.email_id_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`job_settings_1 <job_settings_1>`   Remote Job Settings.
+
+======================================   ====================
+

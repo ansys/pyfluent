@@ -1,0 +1,21 @@
+:orphan:
+
+.. _voltage_tap_locations:
+
+voltage_tap_locations
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.voltage_tap_locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`electric_field <electric_field>`       Electric field model settings.
+
+======================================   ==================================
+

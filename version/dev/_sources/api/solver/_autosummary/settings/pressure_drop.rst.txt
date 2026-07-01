@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pressure_drop:
+
+pressure_drop
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pressure_drop
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`inlet_conditions <inlet_conditions>`   The auxiliary fluid inlet condition parameters.
+
+==========================================   ===============================================
+

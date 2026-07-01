@@ -1,0 +1,25 @@
+:orphan:
+
+.. _zone2_list:
+
+zone2_list
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zone2_list
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =====================================
+
+Parent                                                                       Summary
+
+============================================   =====================================
+:ref:`create_8 <create_8>`                                   Create mesh interfaces.
+
+:ref:`interface_4_child <interface_4_child>`       'child_object_type' of interface.
+
+:ref:`create_7 <create_7>`                                  Create a mesh interface.
+
+============================================   =====================================
+

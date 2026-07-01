@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mat_names:
+
+mat_names
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mat_names
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`database_command <database_command>`   Copy materials from database.
+
+==========================================   =============================
+

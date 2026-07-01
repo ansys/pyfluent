@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_22:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_22
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   =========================================
+
+Parent                                                   Summary
+
+====================   =========================================
+:ref:`split <split>`   Input volume and location names to split.
+
+====================   =========================================
+
