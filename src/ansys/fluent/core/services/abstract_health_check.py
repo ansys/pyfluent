@@ -20,30 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""A module for controlling the writing of Fluent Python journals."""
+"""Abstract health check wrapper."""
+
+from abc import ABC, abstractmethod
+from enum import Enum
 
 
-class PythonJournalNotSupported(RuntimeError):
-    """Raised when Python journal is unsupported."""
+class AbstractHealthCheck(ABC):
+    """Abstract base class for the health check."""
 
-    def __init__(self):
-        """Initialize PythonJournalNotSupported."""
-        super().__init__(
-            "Python journaling is available in Fluent version 2023 R1 or later."
-        )
+    @abstractmethod
+    def check_health(self) -> Enum:
+        """Check the health of the Fluent connection."""
+        pass
 
+    @abstractmethod
+    def wait_for_server(self, timeout: int) -> None:
+        """Keeps a watch on the health of the Fluent connection."""
+        pass
 
-class Journal:
-    """Control the writing of Fluent Python journals."""
-
-    def __init__(self, app_utilities):
-        """__init__ method of Journal class."""
-        self._app_utilities = app_utilities
-
-    def start(self, file_name: str):
-        """Start writing a Fluent Python journal at the specified file_name."""
-        self._app_utilities.start_python_journal(journal_name=file_name)
-
-    def stop(self):
-        """Stop writing the Fluent Python journal."""
-        self._app_utilities.stop_python_journal()
+    @abstractmethod
+    def status(self) -> Enum:
+        """Check health of Fluent connection."""
+        pass

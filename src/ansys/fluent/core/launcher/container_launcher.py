@@ -335,7 +335,7 @@ class DockerLauncher:
 
         session = self.new_session(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
             launcher_args=self.argvals,
