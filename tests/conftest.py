@@ -22,12 +22,15 @@
 
 from contextlib import nullcontext
 import functools
+import hashlib
 import inspect
 import operator
 import os
 from pathlib import Path
 import shutil
+import ssl
 import sys
+import urllib.request
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
@@ -524,3 +527,98 @@ def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture
 def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+
+
+# ---------------------------------------------------------------------------
+# REST transport fixtures (real-server integration tests)
+# ---------------------------------------------------------------------------
+
+
+def _get_rest_env() -> dict[str, str]:
+    """Read REST env vars at call time (not import time).
+
+    Returns a dict with keys: token, port_str, host, component, scheme.
+    """
+    return {
+        "token": os.environ.get("FLUENT_WEBSERVER_TOKEN", ""),
+        "port_str": os.environ.get("FLUENT_REST_PORT", ""),
+        "host": os.environ.get("FLUENT_REST_HOST", "127.0.0.1"),
+        "component": os.environ.get("FLUENT_REST_COMPONENT", "fluent_1"),
+        "scheme": os.environ.get("FLUENT_REST_SCHEME", "http"),
+    }
+
+
+def _rest_env_vars_present() -> bool:
+    """Return ``True`` when mandatory REST env vars are set."""
+    env = _get_rest_env()
+    return bool(env["token"] and env["port_str"])
+
+
+def _parse_rest_port() -> int | None:
+    """Parse ``FLUENT_REST_PORT`` as an integer, or return ``None``."""
+    port_str = os.environ.get("FLUENT_REST_PORT", "")
+    try:
+        return int(port_str)
+    except ValueError:
+        return None
+
+
+def _rest_server_reachable() -> bool:
+    """Return ``True`` if the real REST server responds to a probe."""
+    if not _rest_env_vars_present():
+        return False
+    port = _parse_rest_port()
+    if port is None:
+        return False
+    env = _get_rest_env()
+
+    url = f"{env['scheme']}://{env['host']}:{port}/api/connection/run_mode"
+    req = urllib.request.Request(url, method="GET")
+    req.add_header(
+        "Authorization",
+        f"Bearer {hashlib.sha256(env['token'].encode()).hexdigest()}",
+    )
+    # Support self-signed certs for HTTPS probes
+    ssl_ctx = None
+    if env["scheme"] == "https":
+        ssl_ctx = ssl.create_default_context()
+        cert_path = os.environ.get("FLUENT_REST_CA_CERT", "")
+        if cert_path and os.path.isfile(cert_path):
+            ssl_ctx.load_verify_locations(cert_path)
+        else:
+            # Self-signed / dev certs — skip verification for probe only
+            ssl_ctx.check_hostname = False
+            ssl_ctx.verify_mode = ssl.CERT_NONE
+    try:
+        with urllib.request.urlopen(req, timeout=3, context=ssl_ctx):  # nosec B310
+            return True
+    except Exception:
+        return False
+
+
+@pytest.fixture(scope="module")
+def real_client():
+    """Provide a :class:`FluentRestClient` connected to a live REST server.
+
+    Auto-skips when ``FLUENT_WEBSERVER_TOKEN`` / ``FLUENT_REST_PORT`` are
+    unset or the server is unreachable.
+    """
+    from ansys.fluent.core.rest.client import FluentRestClient
+
+    env = _get_rest_env()
+    if not _rest_env_vars_present():
+        pytest.skip(
+            "REST env vars not set — set FLUENT_WEBSERVER_TOKEN and "
+            "FLUENT_REST_PORT to run real-server tests."
+        )
+    port = _parse_rest_port()
+    if port is None:
+        pytest.skip(f"FLUENT_REST_PORT={env['port_str']!r} is not a valid integer.")
+    if not _rest_server_reachable():
+        pytest.skip(f"REST server at {env['host']}:{port} not reachable.")
+    base_url = f"{env['scheme']}://{env['host']}:{port}"
+    return FluentRestClient(
+        base_url,
+        auth_token=env["token"],
+        component=env["component"],
+    )
