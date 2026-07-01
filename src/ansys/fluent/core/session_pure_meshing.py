@@ -24,7 +24,7 @@
 
 import functools
 import os
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
@@ -34,9 +34,41 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
-from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
-from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
+from ansys.fluent.core.streaming_services.datamodel_streaming import (
+    DatamodelStream as DatamodelStreamV0,
+)
+from ansys.fluent.core.streaming_services.datamodel_streaming_v1 import (
+    DatamodelStream,
+)
+from ansys.fluent.core.streaming_services.events_streaming import (
+    MeshingEvent as MeshingEventV0,
+)
+from ansys.fluent.core.streaming_services.events_streaming_v1 import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
+    from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
+        Root as meshing_utilities_root,
+    )
+    from ansys.fluent.core.generated.datamodel_261.meshing_workflow import (
+        Root as meshing_workflow_root,
+    )
+    from ansys.fluent.core.generated.datamodel_261.part_management import (
+        Root as partmanagement_root,
+    )
+    from ansys.fluent.core.generated.datamodel_261.pm_file_management import (
+        Root as pmfilemanagement_root,
+    )
+    from ansys.fluent.core.generated.datamodel_261.preferences import (
+        Root as preferences_root,
+    )
+    from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
+    from ansys.fluent.core.generated.meshing.tui_261 import main_menu
+    from ansys.fluent.core.meshing import (
+        meshing_workflow_new,
+    )
+    from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow
 
 
 class PureMeshing(BaseSession):
@@ -67,7 +99,7 @@ class PureMeshing(BaseSession):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """PureMeshing session.
 
@@ -85,13 +117,16 @@ class PureMeshing(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(PureMeshing, self).__init__(
+        _meshing_event = (
+            MeshingEvent if fluent_connection._server_supports_v1 else MeshingEventV0
+        )
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
-            event_type=MeshingEvent,
+            event_type=_meshing_event,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
@@ -114,7 +149,11 @@ class PureMeshing(BaseSession):
                         else NameKey.INTERNAL
                     ),
                 )
-                stream = DatamodelStream(datamodel_service_se)
+                stream = (
+                    DatamodelStream(datamodel_service_se)
+                    if fluent_connection._server_supports_v1
+                    else DatamodelStreamV0(datamodel_service_se)
+                )
                 stream.register_callback(
                     functools.partial(
                         datamodel_service_se.cache.update_cache,
@@ -130,23 +169,23 @@ class PureMeshing(BaseSession):
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 
     @property
-    def tui(self):
+    def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         return self._base_meshing.tui
 
     @property
-    def meshing(self):
+    def meshing(self) -> "meshing_root":
         """Datamodel root of meshing."""
         return self._base_meshing.meshing
 
     @property
-    def meshing_utilities(self):
+    def meshing_utilities(self) -> "meshing_utilities_root | None":
         """Datamodel root of meshing_utilities."""
         return self._base_meshing.meshing_utilities
 
     @property
-    def workflow(self):
+    def workflow(self) -> "workflow_root":
         """Datamodel root of workflow."""
         return self._base_meshing.workflow
 
@@ -155,7 +194,9 @@ class PureMeshing(BaseSession):
         """Full API to meshing and meshing_workflow."""
         return self._base_meshing.meshing_workflow
 
-    def watertight(self, legacy: bool | None = None):
+    def watertight(
+        self, legacy: bool | None = None
+    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow_new.WatertightMeshingWorkflow":
         """Get a new watertight meshing workflow.
 
         Parameters
@@ -310,17 +351,17 @@ class PureMeshing(BaseSession):
         return self._base_meshing.topology_based_meshing_workflow(legacy=legacy)
 
     @property
-    def PartManagement(self):
+    def PartManagement(self) -> "partmanagement_root":
         """Datamodel root of PartManagement."""
         return self._base_meshing.PartManagement
 
     @property
-    def PMFileManagement(self):
+    def PMFileManagement(self) -> "pmfilemanagement_root":
         """Datamodel root of PMFileManagement."""
         return self._base_meshing.PMFileManagement
 
     @property
-    def preferences(self):
+    def preferences(self) -> "preferences_root":
         """Datamodel root of preferences."""
         return self._base_meshing.preferences
 

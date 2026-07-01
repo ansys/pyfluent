@@ -25,11 +25,11 @@
 Expose aero capabilities.
 """
 
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+from ansys.fluent.core.services.datamodel_se import PySimpleMenuGeneric
 from ansys.fluent.core.session_solver import Solver
 
 
@@ -46,7 +46,7 @@ class SolverAero(Solver):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """SolverAero session.
 
@@ -64,7 +64,7 @@ class SolverAero(Solver):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(SolverAero, self).__init__(
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
@@ -104,12 +104,10 @@ class SolverAero(Solver):
     @property
     def _flserver(self):
         """Root datamodel object."""
-        return PyMenuGeneric(service=self._se_service, rules="flserver")
+        # TODO: Have the generated files for this first before implementing this property
+        return PySimpleMenuGeneric(service=self._se_service, rules="flserver")
 
     @property
     def aero(self):
         """Instance of aero (Case.App) -> root datamodel object."""
         return self._flserver.Case.App
-
-    def __dir__(self):
-        return super(SolverAero, self).__dir__()

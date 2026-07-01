@@ -54,7 +54,7 @@ jobs:
         run: make install
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -129,7 +129,7 @@ jobs:
           popd
 
       - name: Upload HTML Documentation
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
@@ -150,7 +150,7 @@ jobs:
       pull-requests: write # Required when deployment action creates or updates pull requests.
     steps:
       - name: "Deploy development documentation"
-        uses: ansys/actions/doc-deploy-dev@v10.2.7
+        uses: ansys/actions/doc-deploy-dev@d946b24b9a765f4169bcc94afdb27bd1a0533741 # v10.3.2
         with:
           doc-artifact-name: "HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}"
           decompress-artifact: true

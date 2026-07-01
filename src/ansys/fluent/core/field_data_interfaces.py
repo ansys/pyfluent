@@ -21,9 +21,12 @@
 # SOFTWARE.
 
 """Common interfaces for field data."""
+
 from abc import ABC, abstractmethod
+from collections.abc import Callable
+import dataclasses
 from enum import Enum
-from typing import Callable, Dict, List, NamedTuple
+from typing import TYPE_CHECKING, Iterable
 import warnings
 
 import numpy as np
@@ -34,7 +37,19 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
-from ansys.units.variable_descriptor import VariableDescriptor
+from ansys.units.variable_descriptor import (
+    ScalarVariableDescriptor,
+    VariableDescriptor,
+    VectorVariableDescriptor,
+)
+
+__all__ = (
+    "PathlinesFieldDataRequest",
+    "ScalarFieldDataRequest",
+    "SurfaceDataType",
+    "SurfaceFieldDataRequest",
+    "VectorFieldDataRequest",
+)
 
 _naming_strategy_instance = naming_strategy()
 _to_field_name_str = _naming_strategy_instance.to_string
@@ -49,36 +64,81 @@ class SurfaceDataType(Enum):
     FacesCentroid = "centroid"
 
 
-class SurfaceFieldDataRequest(NamedTuple):
+@dataclasses.dataclass(frozen=True)
+class BaseDataRequest:
+    """Abstract base container for data requests sharing common fields and methods."""
+
+    surfaces: list[int | str | object]
+
+    def _asdict(self) -> dict:
+        """Serialize dataclass fields dynamically."""
+        return {field: getattr(self, field) for field in self.__dataclass_fields__}
+
+    def _replace(self, **changes) -> "BaseDataRequest":
+        """Replicate NamedTuple._replace behavior for frozen dataclasses."""
+        return dataclasses.replace(self, **changes)
+
+    def __post_init__(self):
+        """Validate shared attributes."""
+        if not isinstance(self.surfaces, Iterable) or isinstance(
+            self.surfaces, (str, bytes)
+        ):
+            raise TypeError("surfaces must be iterable.")
+        self._validate_inputs()
+
+    def _validate_inputs(self) -> None:
+        """Hook method for subclasses to implement specific input validations."""
+        pass
+
+
+@dataclasses.dataclass(frozen=True)
+class SurfaceFieldDataRequest(BaseDataRequest):
     """Container storing parameters for surface data request."""
 
-    data_types: List[SurfaceDataType] | List[str]
-    surfaces: List[int | str | object]
+    data_types: list[SurfaceDataType] | list[str]
     overset_mesh: bool | None = False
     flatten_connectivity: bool = False
 
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.data_types, Iterable) or isinstance(
+            self.data_types, (str, bytes)
+        ):
+            raise TypeError("`data_types` must be iterable.")
 
-class ScalarFieldDataRequest(NamedTuple):
+
+@dataclasses.dataclass(frozen=True)
+class ScalarFieldDataRequest(BaseDataRequest):
     """Container storing parameters for scalar field data request."""
 
-    field_name: str
-    surfaces: List[int | str | object]
+    field_name: str | ScalarVariableDescriptor
     node_value: bool | None = True
     boundary_value: bool | None = True
 
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
+            raise TypeError(
+                "field_name must be a string or `ScalarVariableDescriptor`."
+            )
 
-class VectorFieldDataRequest(NamedTuple):
+
+@dataclasses.dataclass(frozen=True)
+class VectorFieldDataRequest(BaseDataRequest):
     """Container storing parameters for vector field data request."""
 
-    field_name: str
-    surfaces: List[int | str | object]
+    field_name: str | VectorVariableDescriptor
+
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.field_name, (str, VectorVariableDescriptor)):
+            raise TypeError(
+                "field_name must be a string or `VectorVariableDescriptor`."
+            )
 
 
-class PathlinesFieldDataRequest(NamedTuple):
+@dataclasses.dataclass(frozen=True)
+class PathlinesFieldDataRequest(BaseDataRequest):
     """Container storing parameters for path-lines field data request."""
 
-    field_name: str
-    surfaces: List[int | str | object]
+    field_name: str | ScalarVariableDescriptor
     additional_field_name: str = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
@@ -93,18 +153,31 @@ class PathlinesFieldDataRequest(NamedTuple):
     zones: list | None = None
     flatten_connectivity: bool = False
 
+    def _validate_inputs(self) -> None:
+        if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
+            raise TypeError(
+                "field_name must be a string or `ScalarVariableDescriptor`."
+            )
 
-def _set_namedtuple_field_docs(cls: type, field_docs: dict[str, str]) -> None:
-    """Set docstrings for NamedTuple-generated field attributes.
 
-    Without this, Sphinx may render default ``NamedTuple`` field docs like
+def _set_dataclass_field_docs(cls: type, field_docs: dict[str, str]) -> None:
+    """Set docstrings for dataclass-generated field attributes.
+
+    Without this, Sphinx may render default ``dataclass`` field docs like
     "Alias for field number N" in attribute/member tables.
     """
-    for field_name, field_doc in field_docs.items():
-        getattr(cls, field_name).__doc__ = field_doc
+    if dataclasses.is_dataclass(cls):
+        # Update metadata dict inside dataclass fields for Sphinx/autodoc parsing
+        for field in dataclasses.fields(cls):
+            if field.name in field_docs:
+                # Add to metadata dict (or modify existing proxy wrapper)
+                current_metadata = dict(field.metadata)
+                current_metadata["doc"] = field_docs[field.name]
+                field.metadata = current_metadata
+        return
 
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     SurfaceFieldDataRequest,
     {
         "data_types": "Surface data entries to request: vertices, face connectivity, face normals, and face centroids.",
@@ -114,7 +187,7 @@ _set_namedtuple_field_docs(
     },
 )
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     ScalarFieldDataRequest,
     {
         "field_name": "Scalar field name to request.",
@@ -124,7 +197,7 @@ _set_namedtuple_field_docs(
     },
 )
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     VectorFieldDataRequest,
     {
         "field_name": "Vector field name to request.",
@@ -132,7 +205,7 @@ _set_namedtuple_field_docs(
     },
 )
 
-_set_namedtuple_field_docs(
+_set_dataclass_field_docs(
     PathlinesFieldDataRequest,
     {
         "field_name": "Scalar field name to sample along computed pathlines.",
@@ -173,8 +246,11 @@ class BaseFieldInfo(ABC):
 
     @abstractmethod
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self,
+        field: str | ScalarVariableDescriptor,
+        node_value: bool = False,
+        surface_ids: list[int] | None = None,
+    ) -> list[float]:
         """
         Retrieve the range (minimum and maximum values) of a scalar field.
 
@@ -187,11 +263,17 @@ class BaseFieldInfo(ABC):
         Returns
         -------
             List[float]: A list containing the minimum and maximum values of the requested scalar field.
+
+        Raises
+        ------
+        TypeError
+            If `field` is not a scalar.
         """
-        pass
+        if not isinstance(field, (str, ScalarVariableDescriptor)):
+            raise TypeError("field must be a string or `ScalarVariableDescriptor`.")
 
     @abstractmethod
-    def get_scalar_fields_info(self) -> Dict[str, Dict]:
+    def get_scalar_fields_info(self) -> dict[str, dict]:
         """
         Retrieve information about available scalar fields.
 
@@ -204,7 +286,7 @@ class BaseFieldInfo(ABC):
         pass
 
     @abstractmethod
-    def get_vector_fields_info(self) -> Dict[str, Dict]:
+    def get_vector_fields_info(self) -> dict[str, dict]:
         """ "
         Retrieve information about available vector fields.
 
@@ -217,7 +299,7 @@ class BaseFieldInfo(ABC):
         pass
 
     @abstractmethod
-    def get_surfaces_info(self) -> Dict[str, Dict]:
+    def get_surfaces_info(self) -> dict[str, dict]:
         """
         Retrieve information about available surfaces.
 
@@ -246,7 +328,7 @@ class BaseFieldDataSource(ABC):
     """
 
     @abstractmethod
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+    def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
         """Retrieve a list of surface IDs based on input surface names or numerical identifiers."""
         pass
 
@@ -259,7 +341,7 @@ class BaseFieldDataSource(ABC):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> Dict[int | str, Dict | np.array]:
+    ) -> "dict[int | str, SurfaceData | np.ndarray]":
         """
         Retrieve the field data for a given request.
 
@@ -268,7 +350,7 @@ class BaseFieldDataSource(ABC):
 
         Returns
         -------
-            Dict[int | str, Dict | np.array]: A dictionary where keys represent surface
+            Dict[int | str, SurfaceData | np.ndarray]: A dictionary where keys represent surface
             IDs or names, and values contain the corresponding field data.
         """
         pass
@@ -315,7 +397,7 @@ class FieldBatch(ABC):
     """
 
     @abstractmethod
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+    def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
         """Retrieve a list of surface IDs based on input surface names or numerical identifiers."""
         pass
 
@@ -360,7 +442,7 @@ class _SurfaceNames:
         """Lists available surface names."""
         return list(self._allowed_surface_names())
 
-    def validate(self, surfaces: List[str]) -> bool:
+    def validate(self, surfaces: list[str]) -> bool:
         """
         Validate that the given surfaces are in the list of allowed surface names.
 
@@ -393,7 +475,7 @@ class _SurfaceIds:
         """Lists available surface ids."""
         return self._allowed_surface_ids()
 
-    def validate(self, surface_ids: List[int]) -> bool:
+    def validate(self, surface_ids: list[int]) -> bool:
         """
         Validate that the given surface IDs are in the list of allowed surface IDs.
 
@@ -472,7 +554,7 @@ class _ScalarFields(_Fields):
         self._field_info = field_info
 
     def range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 
@@ -542,7 +624,7 @@ class _AllowedFieldNames(_AllowedNames):
 
 
 class _AllowedSurfaceNames(_AllowedNames):
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool = True) -> list[str]:
         return self._info if self._info else self._field_info._get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
@@ -567,7 +649,7 @@ class _AllowedSurfaceNames(_AllowedNames):
 
 
 class _AllowedSurfaceIDs(_AllowedNames):
-    def __call__(self, respect_data_valid: bool = True) -> List[int]:
+    def __call__(self, respect_data_valid: bool = True) -> list[int]:
         try:
             return [
                 info["surface_id"][0]
@@ -587,7 +669,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
     _field_name_error = DisallowedValuesError
     _field_unavailable_error = FieldUnavailable
 
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool = True) -> list[str]:
         field_dict = (
             self._info if self._info else self._field_info._get_scalar_fields_info()
         )
@@ -606,7 +688,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
     _field_name_error = DisallowedValuesError
     _field_unavailable_error = FieldUnavailable
 
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool = True) -> list[str]:
         return (
             self._info
             if self._info
@@ -690,14 +772,13 @@ class PathlinesData:
 
 
 class _ReturnFieldData:
-
     @staticmethod
     def _scalar_data(
         field_name: str,
-        surfaces: List[int | str | object],
-        surface_ids: List[int],
-        scalar_field_data: np.array,
-    ) -> Dict[int | str, np.array]:
+        surfaces: list[int | str | object],
+        surface_ids: list[int],
+        scalar_field_data: np.ndarray,
+    ) -> dict[int | str, np.ndarray]:
         surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: scalar_field_data[surface_ids[count]][field_name]
@@ -706,13 +787,13 @@ class _ReturnFieldData:
 
     @staticmethod
     def _surface_data(
-        data_types: List[SurfaceDataType],
-        surfaces: List[int | str | object],
-        surface_ids: List[int],
-        surface_data: np.array | List[np.array],
+        data_types: list[SurfaceDataType],
+        surfaces: list[int | str | object],
+        surface_ids: list[int],
+        surface_data: np.ndarray | list[np.ndarray],
         deprecated_flag: bool | None = False,
         flatten_connectivity: bool = False,
-    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
         for count, surface in enumerate(surfaces):
@@ -748,10 +829,10 @@ class _ReturnFieldData:
     @staticmethod
     def _vector_data(
         field_name: str,
-        surfaces: List[int | str | object],
-        surface_ids: List[int],
-        vector_field_data: np.array,
-    ) -> Dict[int | str, np.array]:
+        surfaces: list[int | str | object],
+        surface_ids: list[int],
+        vector_field_data: np.ndarray,
+    ) -> dict[int | str, np.ndarray]:
         surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)
@@ -761,12 +842,12 @@ class _ReturnFieldData:
     @staticmethod
     def _pathlines_data(
         field_name: str,
-        surfaces: List[int | str | object],
-        surface_ids: List[int],
-        pathlines_data: Dict,
+        surfaces: list[int | str | object],
+        surface_ids: list[int],
+        pathlines_data: dict,
         deprecated_flag: bool | None = False,
         flatten_connectivity: bool = False,
-    ) -> Dict[int | str, Dict[str, np.array | List[np.array]]]:
+    ) -> dict[int | str, dict[str, np.ndarray | list[np.ndarray]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
@@ -803,7 +884,7 @@ class _ReturnFieldData:
         return path_lines_dict
 
 
-def get_surfaces_from_objects(surfaces: List[int | str | object]):
+def get_surfaces_from_objects(surfaces: list[int | str | object]):
     """
     Extract surface names or identifiers from a list of surfaces.
 
