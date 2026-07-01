@@ -12,7 +12,7 @@ install:
 
 install-test:
 	@pip install -r requirements/requirements_build.txt
-	@pip install ansys-fluent-core[reader,tests]
+	@pip install ansys-fluent-core[reader,search,tests]
 	@python -m pip install -q --force-reinstall dist/*.whl > /dev/null
 	@bash .ci/generate_certs.sh
 
