@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper to settings gRPC service of Fluent."""
+"""Wrapper over the settings gRPC service of Fluent (v0 proto API)."""
 
 import collections.abc
 from typing import Any
@@ -45,12 +45,12 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
 
 
 class SettingsService(ServiceProtocol):
-    """Service for accessing and modifying Fluent settings (v0 proto files)."""
+    """Settings gRPC service wrapper (v0 proto API)."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ) -> None:
-        """__init__ method of SettingsService class."""
+        """Initialize SettingsService."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),

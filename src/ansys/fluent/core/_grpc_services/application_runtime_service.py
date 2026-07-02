@@ -20,10 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""gRPC service stub wrappers for the ApplicationRuntime service (v1 proto API).
-
-Business logic lives in :mod:`ansys.fluent.core.application_runtime`.
-"""
+"""Wrapper over the application runtime gRPC service of Fluent (v1 proto API)."""
 
 from enum import Enum
 import os

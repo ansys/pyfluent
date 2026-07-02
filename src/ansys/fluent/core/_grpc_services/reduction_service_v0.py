@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over Reduction gRPC service of Fluent."""
+"""Wrapper over the reduction gRPC service of Fluent (v0 proto API)."""
 
 from typing import Any
 
@@ -29,13 +29,7 @@ import grpc
 from ansys.api.fluent.v0 import reduction_pb2, reduction_pb2_grpc
 from ansys.fluent.core._grpc_services.reduction_service import (
     BadReductionRequest,
-    _expand_locn_container,
-    _is_iterable,
-    _locn_name_and_obj,
-    _locn_names_and_objs,
     _locns,
-    _root,
-    _validate_locn_list,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
@@ -54,12 +48,12 @@ Path = list[tuple[str, str]]
 
 
 class ReductionService(ServiceProtocol):
-    """Reduction Service."""
+    """Reduction gRPC service wrapper (v0 proto API)."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ):
-        """__init__ method of Reduction class."""
+        """Initialize ReductionService."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),

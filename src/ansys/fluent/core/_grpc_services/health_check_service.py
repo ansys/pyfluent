@@ -42,13 +42,7 @@ logger: logging.Logger = logging.getLogger("pyfluent.general")
 
 
 class HealthCheckService(ServiceProtocol):
-    """Class wrapping the health check gRPC service of Fluent.
-
-    Methods
-    -------
-    check_health()
-        Check the health of the Fluent connection.
-    """
+    """HealthCheck gRPC service wrapper (v1 proto API)."""
 
     class Status(Enum):
         """Health check status."""
@@ -59,7 +53,7 @@ class HealthCheckService(ServiceProtocol):
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ) -> None:
-        """__init__ method of HealthCheckService class."""
+        """Initialize HealthCheckService."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),

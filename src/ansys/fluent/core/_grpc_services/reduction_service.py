@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over Reduction gRPC service of Fluent."""
+"""Wrapper over the reduction gRPC service of Fluent (v1 proto API)."""
 
 from typing import Any
 
@@ -44,12 +44,12 @@ Path = list[tuple[str, str]]
 
 
 class ReductionService(ServiceProtocol):
-    """Reduction Service."""
+    """Reduction gRPC service wrapper (v1 proto API)."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ):
-        """__init__ method of Reduction class."""
+        """Initialize ReductionService."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),
