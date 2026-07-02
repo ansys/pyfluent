@@ -238,7 +238,7 @@ class BaseFieldData:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
-                ("dataLocation", 0 if kwargs.get("node_value") else 1),
+                ("dataLocation", 1 if kwargs.get("node_value") else 0),
                 ("boundaryValues", kwargs.get("boundary_value")),
             )
         ]
@@ -375,46 +375,6 @@ class Batch(FieldBatch):
         self._allowed_scalar_field_names = allowed_scalar_field_names
         self._allowed_vector_field_names = allowed_vector_field_names
 
-        surface_args = dict(
-            surface_ids=allowed_surface_ids,
-            surface_names=self._allowed_surface_names,
-        )
-        scalar_field_args = {
-            **dict(field_name=self._allowed_scalar_field_names),
-            **surface_args,
-        }
-        self.add_scalar_fields_request = override_help_text(
-            _FieldMethod(
-                field_data_accessor=self.add_scalar_fields_request,
-                args_allowed_values_accessors=scalar_field_args,
-            ),
-            self.add_scalar_fields_request,
-        )
-        self.add_vector_fields_request = override_help_text(
-            _FieldMethod(
-                field_data_accessor=self.add_vector_fields_request,
-                args_allowed_values_accessors={
-                    **dict(field_name=self._allowed_vector_field_names),
-                    **surface_args,
-                },
-            ),
-            self.add_vector_fields_request,
-        )
-        self.add_surfaces_request = override_help_text(
-            _FieldMethod(
-                field_data_accessor=self.add_surfaces_request,
-                args_allowed_values_accessors=surface_args,
-            ),
-            self.add_surfaces_request,
-        )
-        self.add_pathlines_fields_request = override_help_text(
-            _FieldMethod(
-                field_data_accessor=self.add_pathlines_fields_request,
-                args_allowed_values_accessors=scalar_field_args,
-            ),
-            self.add_pathlines_fields_request,
-        )
-
         self._fetched_data = _FetchFieldData()
         self._pathline_field_data = []
         self._cache_requests = []
@@ -475,17 +435,17 @@ class Batch(FieldBatch):
         self._field_data._add_pathlines_fields_request(
             field_name,
             kwargs.get("surfaces"),
-            additionalField=additional_field_name,
-            provideParticleTimeField=kwargs.get("provide_particle_time_field"),
-            dataLocation=kwargs.get("node_value"),
+            additional_field_name=additional_field_name,
+            provide_particle_time_field=kwargs.get("provide_particle_time_field"),
+            node_value=kwargs.get("node_value"),
             steps=kwargs.get("steps"),
-            stepSize=kwargs.get("step_size"),
+            step_size=kwargs.get("step_size"),
             skip=kwargs.get("skip"),
             reverse=kwargs.get("reverse"),
-            accuracyControlOn=kwargs.get("accuracy_control_on"),
+            accuracy_control_on=kwargs.get("accuracy_control_on"),
             tolerance=kwargs.get("tolerance"),
             coarsen=kwargs.get("coarsen"),
-            velocityDomain=kwargs.get("velocity_domain"),
+            velocity_domain=kwargs.get("velocity_domain"),
             zones=zones,
         )
 

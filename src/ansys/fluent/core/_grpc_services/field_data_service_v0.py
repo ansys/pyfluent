@@ -254,7 +254,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         self._batched_fields_request.pathlinesFieldRequest.extend(
             self._fetched_data._pathlines_data(
                 field_name,
-                surfaces,
+                surface_ids=surfaces,
                 additionalField=additional_field_name,
                 provideParticleTimeField=provide_particle_time_field,
                 dataLocation=(
@@ -296,7 +296,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         fields_request.pathlinesFieldRequest.extend(
             fetched_data._pathlines_data(
                 field_name=field_name,
-                surfaces=surfaces,
+                surface_ids=surfaces,
                 additionalField=additional_field_name,
                 provideParticleTimeField=provide_particle_time_field,
                 dataLocation=(

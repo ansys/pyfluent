@@ -187,7 +187,7 @@ class FieldDataBase:
             surfaces=surfaces,
         )
 
-    def _get_pathlines_data(
+    def _get_pathlines_field_data(
         self,
         field_name: str,
         surfaces: list[int | str],

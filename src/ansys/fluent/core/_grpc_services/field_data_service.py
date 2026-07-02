@@ -252,13 +252,14 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         zones: list | None = None,
     ) -> None:
         zones = zones or []
+        fetched_data = _FetchFieldData()
         self._batched_fields_request.pathlines_field_requests.extend(
-            self._fetched_data._pathlines_data(
+            fetched_data._pathlines_data(
                 field_name=field_name,
-                surfaces=surfaces,
-                additional_field_name=additional_field_name,
+                surface_ids=surfaces,
+                additional_field=additional_field_name,
                 provide_particle_time_field=provide_particle_time_field,
-                node_value=(
+                data_location=(
                     field_data_pb2.DataLocation.DATA_LOCATION_NODES
                     if node_value
                     else field_data_pb2.DataLocation.DATA_LOCATION_ELEMENTS
@@ -267,7 +268,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
                 step_size=step_size,
                 skip=skip,
                 reverse=reverse,
-                accuracy_control_on=accuracy_control_on,
+                accuracy_control_enabled=accuracy_control_on,
                 tolerance=tolerance,
                 coarsen=coarsen,
                 velocity_domain=velocity_domain,
@@ -297,10 +298,10 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         fields_request.pathlines_field_requests.extend(
             fetched_data._pathlines_data(
                 field_name=field_name,
-                surfaces=surfaces,
-                additional_field_name=additional_field_name,
+                surface_ids=surfaces,
+                additional_field=additional_field_name,
                 provide_particle_time_field=provide_particle_time_field,
-                node_value=(
+                data_location=(
                     field_data_pb2.DataLocation.DATA_LOCATION_NODES
                     if node_value
                     else field_data_pb2.DataLocation.DATA_LOCATION_ELEMENTS
@@ -309,7 +310,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
                 step_size=step_size,
                 skip=skip,
                 reverse=reverse,
-                accuracy_control_on=accuracy_control_on,
+                accuracy_control_enabled=accuracy_control_on,
                 tolerance=tolerance,
                 coarsen=coarsen,
                 velocity_domain=velocity_domain,
