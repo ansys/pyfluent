@@ -20,7 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the health check gRPC service of Fluent."""
+"""High-level health check wrappers.
+
+This module owns the business-logic layer on top of the HealthCheck gRPC
+service.  The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.health_check_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.health_check_service_v0`` (v0 proto API)
+
+Class hierarchy
+---------------
+``HealthCheck``
+    gRPC-based implementation (v1 and v0 proto API).
+"""
 
 from enum import Enum
 
@@ -28,13 +40,7 @@ from ansys.fluent.core.services.abstract_health_check import AbstractHealthCheck
 
 
 class HealthCheck(AbstractHealthCheck):
-    """Class wrapping the health check gRPC service of Fluent.
-
-    Methods
-    -------
-    check_health()
-        Check the health of the Fluent connection.
-    """
+    """Health check backed by the HealthCheck gRPC service."""
 
     class Status(Enum):
         """Health check status."""
@@ -43,7 +49,7 @@ class HealthCheck(AbstractHealthCheck):
         NOT_SERVING: int = 2
 
     def __init__(self, service):
-        """Initialize ApplicationRuntime."""
+        """Initialize HealthCheck."""
         self.service = service
 
     def check_health(self) -> Status:

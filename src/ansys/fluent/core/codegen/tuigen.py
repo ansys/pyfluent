@@ -43,6 +43,7 @@ import platform
 import shutil
 import string
 import subprocess
+import tempfile
 from typing import Any
 import uuid
 
@@ -91,11 +92,10 @@ def _get_tui_docdir(mode: str):
     )
 
 
-_XML_HELP_FILE = (Path(__file__) / ".." / "data" / "fluent_gui_help.xml").resolve()
 _XML_HELPSTRINGS = {}
 
 
-def _copy_tui_help_xml_file(version: str):
+def _copy_tui_help_xml_file(version: str, xml_help_file: Path):
     if pyfluent.config.launch_fluent_container:
         image_tag = pyfluent.config.fluent_image_tag
         image_name = f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
@@ -107,7 +107,7 @@ def _copy_tui_help_xml_file(version: str):
         )
         xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
         subprocess.run(
-            f"docker cp {container_name}:{xml_source} {str(_XML_HELP_FILE)}",
+            f"docker cp {container_name}:{xml_source} {str(xml_help_file)}",
             shell=is_linux,
         )
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
@@ -127,18 +127,15 @@ def _copy_tui_help_xml_file(version: str):
                 / "fluent_gui_help.xml"
             )
             if xml_source.exists():
-                shutil.copy(str(xml_source), _XML_HELP_FILE)
+                shutil.copy(str(xml_source), str(xml_help_file))
             else:
                 logger.warning("fluent_gui_help.xml is not found.")
         except FileNotFoundError:
             logger.warning("fluent_gui_help.xml is not found.")
 
 
-def _populate_xml_helpstrings():
-    if not Path(_XML_HELP_FILE).exists():
-        return
-
-    tree = parse(_XML_HELP_FILE)
+def _populate_xml_helpstrings(xml_help_file: Path):
+    tree = parse(xml_help_file)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
@@ -156,7 +153,6 @@ def _populate_xml_helpstrings():
         else:
             v = "".join(node.find("p").itertext())
             _XML_HELPSTRINGS[k] = v
-    _XML_HELP_FILE.unlink(missing_ok=True)
 
 
 def _is_valid_tui_menu_name(name):
@@ -323,8 +319,13 @@ def generate(version, static_infos: dict, verbose: bool = False):
         and StaticInfoType.TUI_SOLVER not in static_infos
     ):
         return api_tree
-    _copy_tui_help_xml_file(version)
-    _populate_xml_helpstrings()
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        xml_help_file = Path(temp_dir) / f"fluent_gui_help_{version}.xml"
+        _copy_tui_help_xml_file(version, xml_help_file)
+        if xml_help_file.exists():
+            _populate_xml_helpstrings(xml_help_file)
+
     if StaticInfoType.TUI_MESHING in static_infos:
         api_tree["<meshing_session>"] = TUIGenerator(
             "meshing", version, static_infos, verbose

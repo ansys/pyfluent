@@ -26,11 +26,15 @@ from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
 
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
-from ansys.fluent.core._grpc_services.scheme_interpreter_v0 import (
+from ansys.fluent.core._grpc_services.scheme_interpreter_service import (
+    Symbol as SymbolV1,
+)
+from ansys.fluent.core._grpc_services.scheme_interpreter_service_v0 import (
     Symbol,
     _convert_py_value_to_scheme_pointer,
     _convert_scheme_pointer_to_py_value,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.parametrize(
@@ -256,9 +260,13 @@ def test_two_way_conversion_for_pairs() -> None:
 
 def test_long_list(new_solver_session) -> None:
     length = 10**6
-    assert new_solver_session.scheme._eval([Symbol("+")] + list(range(length))) == sum(
+    if new_solver_session.get_fluent_version() >= FluentVersion.v271:
+        s = SymbolV1
+    else:
+        s = Symbol
+    assert new_solver_session.scheme._eval([s("+")] + list(range(length))) == sum(
         range(length)
     )
-    assert sum(new_solver_session.scheme._eval([Symbol("range"), length])) == sum(
+    assert sum(new_solver_session.scheme._eval([s("range"), length])) == sum(
         range(length)
     )

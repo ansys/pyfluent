@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over SchemeInterpreter gRPC service of Fluent."""
+"""Wrapper over the scheme interpreter gRPC service of Fluent (v0 proto API)."""
 
 
 from typing import Any, Sequence
@@ -36,19 +36,15 @@ from ansys.fluent.core.services.interceptors import (
     GrpcErrorInterceptor,
     TracingInterceptor,
 )
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class SchemeInterpreterService(ServiceProtocol):
-    """Class wrapping the SchemeInterpreter gRPC service of Fluent.
-
-    Using the methods from the SchemeInterpreter class is recommended.
-    """
+    """SchemeInterpreter gRPC service wrapper (v0 proto API)."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ) -> None:
-        """__init__ method of SchemeInterpreterService class."""
+        """Initialize SchemeInterpreterService."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),
@@ -60,11 +56,9 @@ class SchemeInterpreterService(ServiceProtocol):
         self._metadata = metadata
 
     @property
-    def version(self):
+    def version(self) -> str:
         """Gets the version of the server."""
-        return FluentVersion(
-            ".".join(self.string_eval("(cx-version)").strip("()").split())
-        )
+        return ".".join(self.string_eval("(cx-version)").strip("()").split())
 
     def exec(
         self,

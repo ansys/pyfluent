@@ -29,10 +29,10 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
     ProtoReflectionDescriptorDatabase,
 )
 
-from ansys.fluent.core._grpc_services.application_runtime import (
+from ansys.fluent.core._grpc_services.application_runtime_service import (
     ApplicationRuntimeService,
 )
-from ansys.fluent.core._grpc_services.application_runtime_v0 import (
+from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
 from ansys.fluent.core._grpc_services.health_check_service import HealthCheckService
@@ -43,8 +43,10 @@ from ansys.fluent.core._grpc_services.reduction_service import ReductionService
 from ansys.fluent.core._grpc_services.reduction_service_v0 import (
     ReductionService as ReductionServiceV0,
 )
-from ansys.fluent.core._grpc_services.scheme_interpreter import SchemeInterpreterService
-from ansys.fluent.core._grpc_services.scheme_interpreter_v0 import (
+from ansys.fluent.core._grpc_services.scheme_interpreter_service import (
+    SchemeInterpreterService,
+)
+from ansys.fluent.core._grpc_services.scheme_interpreter_service_v0 import (
     SchemeInterpreterService as SchemeInterpreterServiceV0,
 )
 from ansys.fluent.core._grpc_services.settings_service import SettingsService
@@ -60,7 +62,7 @@ from ansys.fluent.core.services.application_runtime import (
 from ansys.fluent.core.services.health_check import HealthCheck
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.services.settings import Settings, SettingsV261
+from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -105,7 +107,7 @@ class GRPCFactory:
             if _server_supports_v1(channel=self._channel)
             else self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
         )
-        return grpc_service.version
+        return FluentVersion(grpc_service.version)
 
     def _get_instantiated_grpc_service(self, grpc_service_class):
         """Generic lookup method that instantiates services lazily and caches them."""
@@ -170,11 +172,17 @@ class GRPCFactory:
     @cached_property
     def settings(self):
         """Settings service."""
-        if self._product_version >= FluentVersion.v271:
-            return Settings(self._get_instantiated_grpc_service(SettingsService))
-        else:
-            return SettingsV261(
-                self._get_instantiated_grpc_service(SettingsServiceV0),
-                self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
-                self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
-            )
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return Settings(self._get_instantiated_grpc_service(SettingsService))
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return SettingsV261(
+                    self._get_instantiated_grpc_service(SettingsServiceV0),
+                    self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
+                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
+                )
+            case _:
+                return SettingsV251(
+                    self._get_instantiated_grpc_service(SettingsServiceV0),
+                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
+                )

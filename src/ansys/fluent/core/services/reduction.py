@@ -20,7 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over Reduction gRPC service of Fluent."""
+"""High-level reduction wrappers.
+
+This module owns the business-logic layer on top of the Reduction gRPC
+service.  The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.reduction_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.reduction_service_v0`` (v0 proto API)
+
+Class hierarchy
+---------------
+``Reduction``
+    gRPC-based implementation (v1 and v0 proto API).
+"""
 
 from collections.abc import Iterable
 from typing import Any
@@ -34,10 +46,10 @@ Path = list[tuple[str, str]]
 
 
 class Reduction(AbstractReduction):
-    """Reduction."""
+    """Reduction backed by the Reduction gRPC service."""
 
     def __init__(self, service):
-        """__init__ method of Reduction class."""
+        """Initialize Reduction."""
         self.service = service
         self.ctxt = None
 
