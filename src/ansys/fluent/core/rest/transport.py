@@ -31,7 +31,6 @@ import json
 import ssl
 import time
 from typing import Any, Protocol, runtime_checkable
-
 import urllib.request
 
 from ansys.fluent.core.rest.errors import FluentRestError
