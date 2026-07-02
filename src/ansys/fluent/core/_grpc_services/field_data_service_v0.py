@@ -297,21 +297,21 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             fetched_data._pathlines_data(
                 field_name=field_name,
                 surfaces=surfaces,
-                additional_field_name=additional_field_name,
-                provide_particle_time_field=provide_particle_time_field,
-                node_value=(
+                additionalField=additional_field_name,
+                provideParticleTimeField=provide_particle_time_field,
+                dataLocation=(
                     field_data_pb2.DataLocation.Nodes
                     if node_value
                     else field_data_pb2.DataLocation.Elements
                 ),
                 steps=steps,
-                step_size=step_size,
+                stepSize=step_size,
                 skip=skip,
                 reverse=reverse,
-                accuracy_control_on=accuracy_control_on,
+                accuracyControlOn=accuracy_control_on,
                 tolerance=tolerance,
                 coarsen=coarsen,
-                velocity_domain=velocity_domain,
+                velocityDomain=velocity_domain,
                 zones=zones,
             )
         )

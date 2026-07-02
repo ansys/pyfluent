@@ -321,14 +321,6 @@ class BaseSession:
         return self._health_check
 
     @property
-    @deprecated(
-        version="0.20.dev9", reason="Use ``session.fields.field_data_streaming``."
-    )
-    def field_data_streaming(self):
-        """Field gRPC streaming service of Fluent."""
-        return self.fields.field_data_streaming
-
-    @property
     def id(self) -> str:
         """Return the session ID."""
         return self._fluent_connection._id

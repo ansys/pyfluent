@@ -41,7 +41,7 @@ from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
     _Fields,
 )
-from ansys.fluent.core.services.live_field_data import (
+from ansys.fluent.core.fields.live_field_data import (
     CellElementType,
     ZoneType,
 )

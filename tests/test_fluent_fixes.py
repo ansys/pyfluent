@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.field_data_interfaces import VectorFieldDataRequest
 from ansys.fluent.core.utils.execution import timeout_loop
 
 
@@ -96,7 +97,7 @@ def test_empty_vector_field_data_2339(new_solver_session):
 
     assert [
         a[0]
-        for a in solver.fields.field_data.get_vector_field_data(
-            field_name="velocity", surfaces=[1]
+        for a in solver.fields.field_data.get_field_data(
+            VectorFieldDataRequest(field_name="velocity", surfaces=[1])
         )[1]
     ][:5]

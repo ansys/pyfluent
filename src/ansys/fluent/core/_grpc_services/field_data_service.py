@@ -162,7 +162,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         boundary_value: bool,
     ):
         fetched_data = _FetchFieldData()
-        self._batched_fields_request.scalarFieldRequest.extend(
+        self._batched_fields_request.scalar_field_requests.extend(
             fetched_data._scalar_data(
                 field_name,
                 surfaces,
@@ -180,7 +180,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     ):
         fields_request = get_fields_request()
         fetched_data = _FetchFieldData()
-        fields_request.scalarFieldRequest.extend(
+        fields_request.scalar_field_requests.extend(
             fetched_data._scalar_data(
                 field_name,
                 surface_ids,
@@ -194,7 +194,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         self, data_types, surfaces: list[int | str], overset_mesh: bool
     ):
         fetched_data = _FetchFieldData()
-        self._batched_fields_request.surfaceRequest.extend(
+        self._batched_fields_request.surface_requests.extend(
             fetched_data._surface_data(
                 data_types,
                 surfaces,
@@ -205,7 +205,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     def _get_surface_data(self, data_types, surface_ids: list[int], overset_mesh: bool):
         fields_request = get_fields_request()
         fetched_data = _FetchFieldData()
-        fields_request.surfaceRequest.extend(
+        fields_request.surface_requests.extend(
             fetched_data._surface_data(
                 data_types,
                 surface_ids,
@@ -216,7 +216,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def _add_vector_fields_request(self, field_name: str, surfaces: list[int | str]):
         fetched_data = _FetchFieldData()
-        self._batched_fields_request.vectorFieldRequest.extend(
+        self._batched_fields_request.vector_field_requests.extend(
             fetched_data._vector_data(
                 field_name,
                 surfaces,
@@ -226,7 +226,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     def _get_vector_field_data(self, field_name: str, surface_ids: list[int]):
         fields_request = get_fields_request()
         fetched_data = _FetchFieldData()
-        fields_request.vectorFieldRequest.extend(
+        fields_request.vector_field_requests.extend(
             fetched_data._vector_data(
                 field_name,
                 surface_ids,
@@ -252,7 +252,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         zones: list | None = None,
     ) -> None:
         zones = zones or []
-        self._batched_fields_request.pathlinesFieldRequest.extend(
+        self._batched_fields_request.pathlines_field_requests.extend(
             self._fetched_data._pathlines_data(
                 field_name=field_name,
                 surfaces=surfaces,
@@ -294,7 +294,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     ):
         fields_request = get_fields_request()
         fetched_data = _FetchFieldData()
-        fields_request.pathlinesFieldRequest.extend(
+        fields_request.pathlines_field_requests.extend(
             fetched_data._pathlines_data(
                 field_name=field_name,
                 surfaces=surfaces,

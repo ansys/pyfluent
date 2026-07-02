@@ -126,7 +126,7 @@ class FieldDataBase:
         overset_mesh: bool | None = False,
     ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
-        return self._service.get_surface_data(data_types, surfaces, overset_mesh)
+        return self._service._get_surface_data(data_types, surfaces, overset_mesh)
 
     def _add_surfaces_request(
         self,
@@ -147,9 +147,9 @@ class FieldDataBase:
         boundary_value: bool | None = True,
     ) -> dict[int | str, np.ndarray]:
         """Get scalar field data on a surface."""
-        return self._service.get_scalar_field_data(
+        return self._service._get_scalar_field_data(
             field_name=field_name,
-            surfaces=surfaces,
+            surface_ids=surfaces,
             node_value=node_value,
             boundary_value=boundary_value,
         )
@@ -175,7 +175,14 @@ class FieldDataBase:
         surfaces: list[int | str],
     ) -> dict[int | str, np.ndarray]:
         """Get vector field data on a surface."""
-        return self._service.get_vector_field_data(
+        return self._service._get_vector_field_data(
+            field_name=field_name,
+            surface_ids=surfaces,
+        )
+
+    def _add_vector_fields_request(self, field_name: str, surfaces: list[int | str]):
+        """Add a vector field request to the batched fields request."""
+        return self._service._add_vector_fields_request(
             field_name=field_name,
             surfaces=surfaces,
         )
@@ -198,7 +205,42 @@ class FieldDataBase:
         zones: list | None = None,
     ) -> dict:
         """Get the pathlines field data on a surface."""
-        return self._service.get_pathlines_field_data(
+        return self._service._get_pathlines_field_data(
+            field_name=field_name,
+            surfaces=surfaces,
+            additional_field_name=additional_field_name,
+            provide_particle_time_field=provide_particle_time_field,
+            node_value=node_value,
+            steps=steps,
+            step_size=step_size,
+            skip=skip,
+            reverse=reverse,
+            accuracy_control_on=accuracy_control_on,
+            tolerance=tolerance,
+            coarsen=coarsen,
+            velocity_domain=velocity_domain,
+            zones=zones,
+        )
+
+    def _add_pathlines_fields_request(
+        self,
+        field_name: str,
+        surfaces: list[int | str],
+        additional_field_name: str = "",
+        provide_particle_time_field: bool | None = False,
+        node_value: bool | None = True,
+        steps: int | None = 500,
+        step_size: float | None = 500,
+        skip: int | None = 0,
+        reverse: bool | None = False,
+        accuracy_control_on: bool | None = False,
+        tolerance: float | None = 0.001,
+        coarsen: int | None = 1,
+        velocity_domain: str | None = "all-phases",
+        zones: list | None = None,
+    ) -> None:
+        """Add a pathlines field request to the batched fields request."""
+        return self._service._add_pathlines_fields_request(
             field_name=field_name,
             surfaces=surfaces,
             additional_field_name=additional_field_name,
