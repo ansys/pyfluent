@@ -25,8 +25,8 @@
 This module owns the business-logic layer on top of the ApplicationRuntime gRPC
 service.  The grpc service implementation lives in:
 
-* ``ansys.fluent.core.services.application_runtime`` (v1 proto API)
-* ``ansys.fluent.core.services.application_runtime_v0`` (v0 proto API)
+* ``ansys.fluent.core._grpc_services.application_runtime_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.application_runtime_service_v0`` (v0 proto API)
 
 Class hierarchy
 ---------------

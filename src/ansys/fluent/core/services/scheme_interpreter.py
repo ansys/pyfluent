@@ -20,7 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over SchemeInterpreter gRPC service of Fluent.
+"""High-level scheme interpreter wrappers.
+
+This module owns the business-logic layer on top of the SchemeInterpreter gRPC
+service.  The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.scheme_interpreter_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.scheme_interpreter_service_v0`` (v0 proto API)
+
+Class hierarchy
+---------------
+``SchemeInterpreter``
+    gRPC-based implementation (v1 and v0 proto API).
 
 Example
 -------
@@ -44,20 +55,10 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class SchemeInterpreter(AbstractSchemeInterpreter):
-    """Class on which Fluent's scheme code can be executed.
-
-    Methods
-    -------
-    exec(commands, wait, silent)
-        Executes a sequence of scheme commands, returns TUI output
-        string
-    eval(input)
-        Evaluates a scheme expression in string format, returns Python
-        value
-    """
+    """SchemeInterpreter backed by the SchemeInterpreter gRPC service."""
 
     def __init__(self, service) -> None:
-        """__init__ method of SchemeInterpreter class."""
+        """Initialize SchemeInterpreter."""
         self.service = service
         try:
             version = self.string_eval("(cx-version)")
