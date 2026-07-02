@@ -200,7 +200,9 @@ class FluentRestClient:
     # Settings API — named objects CRUD
     # ------------------------------------------------------------------
 
-    def create(self, path: str, name: str = "", properties: dict | None = None) -> Any:
+    def create(
+        self, path: str, name: str = "", properties: dict[str, Any] | None = None
+    ) -> Any:
         """Create a child object at DataModel path.
 
         Parameters
@@ -211,7 +213,7 @@ class FluentRestClient:
         name : str, optional
             Name for the created object. If provided, it is merged into the
             request body. Defaults to ``""``.
-        properties : dict | None, optional
+        properties : dict[str, Any] | None, optional
             Properties to set on creation. These are merged with the ``name``
             parameter in the request body. Defaults to ``None``.
 
