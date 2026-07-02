@@ -35,8 +35,8 @@ Typical use::
 
 import logging
 import ssl
-import urllib.parse
 from typing import Any
+import urllib.parse
 
 from ansys.fluent.core.rest.errors import FluentRestError
 from ansys.fluent.core.rest.transport import HttpRequestStrategy, RequestStrategy
@@ -172,7 +172,22 @@ class FluentRestClient:
         return _size_from(result)
 
     def set_var(self, path: str, value: Any) -> None:
-        """Write *value* at *path* (PUT ``{path}``)."""
+        """Write value at DataModel path.
+
+        Parameters
+        ----------
+        path : str
+            DataModel path where the value will be written (e.g.,
+            ``"setup/models/viscous/model"``).
+        value : Any
+            Value to write. This will be JSON-encoded in the request body.
+
+        Raises
+        ------
+        FluentRestError
+            If the request fails. Returns HTTP 404 if the DataModel path
+            does not exist.
+        """
         self._strategy.request("PUT", f"{self._api_base}/{path}", body=value)
 
     def resize_list_object(self, path: str, size: int) -> None:
@@ -186,7 +201,24 @@ class FluentRestClient:
     # ------------------------------------------------------------------
 
     def create(self, path: str, name: str = "", properties: dict | None = None) -> Any:
-        """Create a child object at *path* (POST {path}).
+        """Create a child object at DataModel path.
+
+        Parameters
+        ----------
+        path : str
+            DataModel path where the object will be created (e.g.,
+            ``"setup/boundary_conditions/velocity_inlet"``).
+        name : str, optional
+            Name for the created object. If provided, it is merged into the
+            request body. Defaults to ``""``.
+        properties : dict | None, optional
+            Properties to set on creation. These are merged with the ``name``
+            parameter in the request body. Defaults to ``None``.
+
+        Returns
+        -------
+        Any
+            Server response containing details of the created object.
 
         Raises
         ------
@@ -199,7 +231,18 @@ class FluentRestClient:
         return self._strategy.request("POST", f"{self._api_base}/{path}", body=body)
 
     def delete(self, path: str, name: str, *, ignore_not_found: bool = False) -> None:
-        """Delete named object *name* at *path* (DELETE {path}/{name}).
+        """Delete named object from DataModel path.
+
+        Parameters
+        ----------
+        path : str
+            DataModel path containing the object (e.g.,
+            ``"setup/boundary_conditions/velocity_inlet"``).
+        name : str
+            Name of the object to delete (e.g., ``"inlet_1"``).
+        ignore_not_found : bool, optional
+            If ``True``, suppress ``FluentRestError`` when object not found (404).
+            Defaults to ``False``.
 
         Raises
         ------
@@ -215,7 +258,23 @@ class FluentRestClient:
                 raise
 
     def rename(self, path: str, new: str, old: str) -> None:
-        """Rename *old* to *new* at *path* (PUT {path}/{old})."""
+        """Rename object from *old* to *new* at DataModel path.
+
+        Parameters
+        ----------
+        path : str
+            DataModel path containing the object (e.g.,
+            ``"setup/boundary_conditions/velocity_inlet"``).
+        new : str
+            New name for the object.
+        old : str
+            Current name of the object to rename.
+
+        Raises
+        ------
+        FluentRestError
+            If the rename operation fails.
+        """
         self._strategy.request(
             "PUT",
             f"{self._api_base}/{path}/{urllib.parse.quote(old, safe='')}",

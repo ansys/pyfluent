@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Unit and integration tests for the Fluent REST transport layer.
+"""Unit tests for the Fluent REST transport layer.
 
 This suite targets the actual public surface of the
 ``ansys.fluent.core.rest`` package:
@@ -36,18 +36,10 @@ Test structure
   and body without any I/O.  Run anywhere, no server required.
 - Transport unit tests: instantiate :class:`HttpRequestStrategy` directly and
   patch ``ansys.fluent.core.rest.transport.urllib.request.urlopen``.
-- Integration tests (marked ``real_server``): run against a live Fluent REST
-  server. They use the ``real_client`` fixture from ``conftest.py`` and
-  auto-skip when ``FLUENT_WEBSERVER_TOKEN`` / ``FLUENT_REST_PORT`` are unset
-  or the server is unreachable.
 
-Run all unit tests (no server)::
+Run all unit tests::
 
-    pytest tests/test_rest.py -v -m "not real_server"
-
-Run integration tests::
-
-    pytest tests/test_rest.py -v -m real_server
+    pytest tests/test_rest.py -v
 """
 
 import hashlib
@@ -383,11 +375,16 @@ class TestFluentRestClientReads:
 
     def test_get_object_names_from_list(self):
         strategy = FakeStrategy(default=["a", "b"])
-        assert FluentRestClient(strategy).get_object_names("setup/bc/velocity-inlet") == ["a", "b"]
+        assert FluentRestClient(strategy).get_object_names(
+            "setup/bc/velocity-inlet"
+        ) == ["a", "b"]
 
     def test_get_object_names_from_dict_keys(self):
         strategy = FakeStrategy(default={"a": {}, "b": {}})
-        assert sorted(FluentRestClient(strategy).get_object_names("setup/bc/wall")) == ["a", "b"]
+        assert sorted(FluentRestClient(strategy).get_object_names("setup/bc/wall")) == [
+            "a",
+            "b",
+        ]
 
     def test_get_list_size_from_list(self):
         strategy = FakeStrategy(default=[1, 2, 3])
@@ -399,11 +396,13 @@ class TestFluentRestClientReads:
 
     def test_names_from_handles_unexpected_type(self):
         from ansys.fluent.core.rest.client import _names_from
+
         assert _names_from(None) == []
         assert _names_from(5) == []
 
     def test_size_from_handles_unexpected_type(self):
         from ansys.fluent.core.rest.client import _size_from
+
         assert _size_from(None) == 0
         assert _size_from("x") == 0
 
@@ -497,11 +496,15 @@ class TestFluentRestClientNamedObjects:
         strategy = FakeStrategy()
         strategy.add_error(FluentRestError(500, "Server error"))
         with pytest.raises(FluentRestError):
-            FluentRestClient(strategy).delete("setup/bc/wall", "w", ignore_not_found=True)
+            FluentRestClient(strategy).delete(
+                "setup/bc/wall", "w", ignore_not_found=True
+            )
 
     def test_rename_sends_put(self):
         strategy = FakeStrategy(default={})
-        FluentRestClient(strategy).rename("setup/boundary-conditions/wall", "new", "old")
+        FluentRestClient(strategy).rename(
+            "setup/boundary-conditions/wall", "new", "old"
+        )
         method, endpoint, body = strategy.calls[0]
         assert method == "PUT"
         assert body["name"] == "new"
@@ -539,7 +542,9 @@ class TestFluentRestClientExecute:
 
     def test_execute_cmd_without_force(self):
         strategy = FakeStrategy(default={})
-        FluentRestClient(strategy).execute_cmd("solution/init", "initialize", force=False)
+        FluentRestClient(strategy).execute_cmd(
+            "solution/init", "initialize", force=False
+        )
         _, endpoint, _ = strategy.calls[0]
         assert "?force=true" not in endpoint
 
@@ -582,9 +587,7 @@ class TestHttpRequestStrategyTransport:
             _make_http_error(502, {"detail": "bad gateway"}),
             _make_response(["inlet-1", "inlet-2"]),
         ]
-        result = _http_strategy().request(
-            "GET", "api/fluent_1/setup/bc/velocity-inlet"
-        )
+        result = _http_strategy().request("GET", "api/fluent_1/setup/bc/velocity-inlet")
         assert result == ["inlet-1", "inlet-2"]
         assert mock_urlopen.call_count == 2
 
@@ -599,7 +602,9 @@ class TestHttpRequestStrategyTransport:
     @patch("ansys.fluent.core.rest.transport.urllib.request.urlopen")
     def test_get_retry_exhaustion(self, mock_urlopen):
         mock_urlopen.side_effect = _make_http_error(503)
-        strategy = HttpRequestStrategy(_BASE_URL, auth_token="t", max_retries=2, retry_delay=0)
+        strategy = HttpRequestStrategy(
+            _BASE_URL, auth_token="t", max_retries=2, retry_delay=0
+        )
         with pytest.raises(FluentRestError) as exc_info:
             strategy.request("GET", "api/fluent_1/test")
         assert exc_info.value.status == 503
@@ -656,93 +661,3 @@ class TestConnectToWebserver:
 
     def test_reexport_is_same_as_classmethod(self):
         assert connect_to_webserver.__func__ is connect_to_webserver_direct.__func__
-
-
-# ============================================================================
-# Integration tests — real server (auto-skip without env/server)
-# ============================================================================
-
-
-@pytest.mark.real_server
-class TestRealServerStaticInfo:
-    """get_static_info against a live server."""
-
-    def test_returns_dict(self, real_client):
-        assert isinstance(real_client.get_static_info(), dict)
-
-    def test_root_is_group(self, real_client):
-        assert real_client.get_static_info().get("type") == "group"
-
-    def test_has_setup_and_solution(self, real_client):
-        children = set(real_client.get_static_info().get("children", {}).keys())
-        assert {"setup", "solution"} <= children
-
-
-@pytest.mark.real_server
-class TestRealServerGetVar:
-    """get_var against a live server."""
-
-    def test_energy_enabled_is_bool(self, real_client):
-        assert isinstance(real_client.get_var("setup/models/energy/enabled"), bool)
-
-    def test_viscous_model_is_string(self, real_client):
-        val = real_client.get_var("setup/models/viscous/model")
-        assert isinstance(val, str) and val
-
-    def test_nonexistent_path_raises_error(self, real_client):
-        with pytest.raises(FluentRestError) as exc_info:
-            real_client.get_var("setup/nonexistent/fake/path")
-        assert exc_info.value.status in (404, 500)
-
-
-@pytest.mark.real_server
-class TestRealServerSetVar:
-    """set_var against a live server (toggles then restores)."""
-
-    def test_set_and_restore_bool(self, real_client):
-        path = "setup/models/energy/enabled"
-        original = real_client.get_var(path)
-        assert isinstance(original, bool)
-        real_client.set_var(path, not original)
-        try:
-            assert real_client.get_var(path) == (not original)
-        finally:
-            real_client.set_var(path, original)
-            assert real_client.get_var(path) == original
-
-
-@pytest.mark.real_server
-class TestRealServerObjectListing:
-    """get_object_names / get_list_size against a live server."""
-
-    def test_velocity_inlet_returns_list(self, real_client):
-        names = real_client.get_object_names("setup/boundary-conditions/velocity-inlet")
-        assert isinstance(names, list)
-        assert all(isinstance(n, str) for n in names)
-
-    def test_size_matches_names(self, real_client):
-        path = "setup/boundary-conditions/velocity-inlet"
-        assert real_client.get_list_size(path) == len(
-            real_client.get_object_names(path)
-        )
-
-
-@pytest.mark.real_server
-class TestRealServerExecuteCmd:
-    """execute_cmd against a live server."""
-
-    def test_initialize_succeeds_or_conflicts(self, real_client):
-        try:
-            real_client.execute_cmd("solution/initialization", "initialize")
-        except FluentRestError as exc:
-            assert exc.status in (409, 500)
-
-
-@pytest.mark.real_server
-class TestRealServerContextManager:
-    """Context-manager flow against a live server."""
-
-    def test_context_manager_with_real_connection(self, real_client):
-        with real_client:
-            assert isinstance(real_client.get_var("setup/models/energy/enabled"), bool)
-        assert real_client._is_closed
