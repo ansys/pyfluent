@@ -29,10 +29,10 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
     ProtoReflectionDescriptorDatabase,
 )
 
-from ansys.fluent.core._grpc_services.application_runtime import (
+from ansys.fluent.core._grpc_services.application_runtime_service import (
     ApplicationRuntimeService,
 )
-from ansys.fluent.core._grpc_services.application_runtime_v0 import (
+from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
 from ansys.fluent.core._grpc_services.health_check_service import HealthCheckService
@@ -43,8 +43,10 @@ from ansys.fluent.core._grpc_services.reduction_service import ReductionService
 from ansys.fluent.core._grpc_services.reduction_service_v0 import (
     ReductionService as ReductionServiceV0,
 )
-from ansys.fluent.core._grpc_services.scheme_interpreter import SchemeInterpreterService
-from ansys.fluent.core._grpc_services.scheme_interpreter_v0 import (
+from ansys.fluent.core._grpc_services.scheme_interpreter_service import (
+    SchemeInterpreterService,
+)
+from ansys.fluent.core._grpc_services.scheme_interpreter_service_v0 import (
     SchemeInterpreterService as SchemeInterpreterServiceV0,
 )
 from ansys.fluent.core._grpc_services.settings_service import SettingsService

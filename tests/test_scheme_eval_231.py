@@ -26,8 +26,10 @@ from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
 
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
-from ansys.fluent.core._grpc_services.scheme_interpreter import Symbol as SymbolV1
-from ansys.fluent.core._grpc_services.scheme_interpreter_v0 import (
+from ansys.fluent.core._grpc_services.scheme_interpreter_service import (
+    Symbol as SymbolV1,
+)
+from ansys.fluent.core._grpc_services.scheme_interpreter_service_v0 import (
     Symbol,
     _convert_py_value_to_scheme_pointer,
     _convert_scheme_pointer_to_py_value,
