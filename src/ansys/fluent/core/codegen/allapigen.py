@@ -32,8 +32,8 @@ from ansys.fluent.core.codegen import (  # noqa: F401
     settingsgen,
     tuigen,
 )
+from ansys.fluent.core.codegen.api_tree import get_api_tree_file_name
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.search import get_api_tree_file_name
 
 
 def _update_first_level(d, u):
