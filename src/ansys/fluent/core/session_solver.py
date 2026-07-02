@@ -32,10 +32,10 @@ from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
 from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import MonitorsServiceV0, service_creator
-from ansys.fluent.core.services._field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.monitor_v1 import MonitorsService
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.solution_variables import (

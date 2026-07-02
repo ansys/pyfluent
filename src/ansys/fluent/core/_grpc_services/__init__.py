@@ -29,11 +29,16 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
     ProtoReflectionDescriptorDatabase,
 )
 
+from ansys.fluent.core._grpc_services._chunk_parser import ChunkParser, ChunkParserV0
 from ansys.fluent.core._grpc_services.application_runtime_service import (
     ApplicationRuntimeService,
 )
 from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
+)
+from ansys.fluent.core._grpc_services.field_data_service import FieldDataService
+from ansys.fluent.core._grpc_services.field_data_service_v0 import (
+    FieldDataService as FieldDataServiceV0,
 )
 from ansys.fluent.core._grpc_services.health_check_service import HealthCheckService
 from ansys.fluent.core._grpc_services.health_check_service_v0 import (
@@ -59,10 +64,15 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
+from ansys.fluent.core.services.field_data import FieldData, FieldDataV261
 from ansys.fluent.core.services.health_check import HealthCheck
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
+from ansys.fluent.core.streaming_services.field_data_streaming import (
+    FieldDataStreaming,
+    FieldDataStreamingV261,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -186,3 +196,32 @@ class GRPCFactory:
                     self._get_instantiated_grpc_service(SettingsServiceV0),
                     self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
                 )
+
+    @cached_property
+    def field_data(self):
+        """Field data service."""
+        if self._product_version >= FluentVersion.v271:
+            return FieldData(
+                self._get_instantiated_grpc_service(FieldDataService),
+                ChunkParser(),
+            )
+        else:
+            return FieldDataV261(
+                self._get_instantiated_grpc_service(FieldDataServiceV0),
+                ChunkParserV0(),
+                self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
+            )
+
+    @cached_property
+    def field_data_streaming(self):
+        """Field data service."""
+        if self._product_version >= FluentVersion.v271:
+            return FieldDataStreaming(
+                self._get_instantiated_grpc_service(FieldDataService),
+                ChunkParser,
+            )
+        else:
+            return FieldDataStreamingV261(
+                self._get_instantiated_grpc_service(FieldDataServiceV0),
+                ChunkParserV0,
+            )

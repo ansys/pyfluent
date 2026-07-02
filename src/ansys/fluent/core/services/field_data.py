@@ -22,20 +22,25 @@
 
 """Wrappers over FieldData gRPC service of Fluent."""
 
+from typing import Any
+
 import numpy as np
+import numpy.typing as npt
 
 from ansys.fluent.core.field_data_interfaces import SurfaceDataType
 
 
-class FieldData:
+class FieldDataBase:
+    """Shared base class for FieldData and FieldDataV261 classes."""
+
     def __init__(
         self,
         service,
-        application_runtime_service,
-        scheme_interpreter_service,
+        chunk_parser,
     ):
         """__init__ method of FieldData class."""
         self._service = service
+        self._chunk_parser = chunk_parser
 
     def get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
@@ -113,7 +118,7 @@ class FieldData:
         List[float]
         """
         return self._service.get_solver_mesh_elements(domain_id, thread_id)
-    
+
     def _get_surface_data(
         self,
         data_types: list[SurfaceDataType],
@@ -122,7 +127,18 @@ class FieldData:
     ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         return self._service.get_surface_data(data_types, surfaces, overset_mesh)
-    
+
+    def _add_surfaces_request(
+        self,
+        data_types: list[SurfaceDataType],
+        surfaces: list[int | str],
+        overset_mesh: bool | None = False,
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
+        """Get surface data (vertices, faces connectivity, centroids, and normals)."""
+        return self._service._add_surfaces_request(
+            data_types=data_types, surfaces=surfaces, overset_mesh=overset_mesh
+        )
+
     def _get_scalar_field_data(
         self,
         field_name: str,
@@ -137,7 +153,22 @@ class FieldData:
             node_value=node_value,
             boundary_value=boundary_value,
         )
-    
+
+    def _add_scalar_fields_request(
+        self,
+        field_name: str,
+        surfaces: list[int | str],
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
+    ) -> None:
+        """Add a scalar field request to the batched fields request."""
+        return self._service._add_scalar_fields_request(
+            field_name=field_name,
+            surfaces=surfaces,
+            node_value=node_value,
+            boundary_value=boundary_value,
+        )
+
     def _get_vector_field_data(
         self,
         field_name: str,
@@ -183,3 +214,41 @@ class FieldData:
             velocity_domain=velocity_domain,
             zones=zones,
         )
+
+    def extract_fields(self, chunk_iterator) -> dict[Any, dict[str, npt.NDArray[Any]]]:
+        """Extract fields from the chunk iterator."""
+        return self._chunk_parser.extract_fields(chunk_iterator)
+
+    def get_batched_fields(self) -> dict[Any, dict[str, npt.NDArray[Any]]]:
+        """Get the batched fields from the service."""
+        return self._service.get_fields(self._service._batched_fields_request)
+
+
+class FieldDataV261(FieldDataBase):
+    """Class for FieldDataV261 service."""
+
+    def __init__(
+        self,
+        service,
+        chunk_parser,
+        application_runtime_service,
+    ):
+        """__init__ method of FieldDataV261 class."""
+        super().__init__(service, chunk_parser)
+        self._application_runtime_service = application_runtime_service
+        self.is_data_valid = (
+            self._application_runtime_service.is_solution_data_available
+        )
+
+
+class FieldData(FieldDataBase):
+    """Class for FieldData service."""
+
+    def __init__(
+        self,
+        service,
+        chunk_parser,
+    ):
+        """__init__ method of FieldData class."""
+        super().__init__(service, chunk_parser)
+        self.is_data_valid = self._service.is_solution_data_available

@@ -27,7 +27,7 @@ import warnings
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services._field_data import (
+from ansys.fluent.core.services.live_field_data import (
     Batch,
     ChunkParser,
     FieldDataService,

@@ -245,7 +245,7 @@ class BaseFieldInfo(ABC):
     """
 
     @abstractmethod
-    def get_scalar_field_range(
+    def _get_scalar_field_range(
         self,
         field: str | ScalarVariableDescriptor,
         node_value: bool = False,
@@ -273,7 +273,7 @@ class BaseFieldInfo(ABC):
             raise TypeError("field must be a string or `ScalarVariableDescriptor`.")
 
     @abstractmethod
-    def get_scalar_fields_info(self) -> dict[str, dict]:
+    def _get_scalar_fields_info(self) -> dict[str, dict]:
         """
         Retrieve information about available scalar fields.
 
@@ -286,7 +286,7 @@ class BaseFieldInfo(ABC):
         pass
 
     @abstractmethod
-    def get_vector_fields_info(self) -> dict[str, dict]:
+    def _get_vector_fields_info(self) -> dict[str, dict]:
         """ "
         Retrieve information about available vector fields.
 
@@ -299,7 +299,7 @@ class BaseFieldInfo(ABC):
         pass
 
     @abstractmethod
-    def get_surfaces_info(self) -> dict[str, dict]:
+    def _get_surfaces_info(self) -> dict[str, dict]:
         """
         Retrieve information about available surfaces.
 

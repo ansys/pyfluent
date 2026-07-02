@@ -35,23 +35,8 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.datamodel_tui_v1 import (
     DatamodelService as DatamodelService_TUI,
 )
-from ansys.fluent.core.services.deprecated_field_data import (
-    DeprecatedFieldData as DeprecatedFieldDataV0,
-)
-from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService as EventsServiceV0
 from ansys.fluent.core.services.events_v1 import EventsService
-from ansys.fluent.core.services._field_data import (
-    ZoneInfo,
-)
-from ansys.fluent.core.services._field_data import FieldDataService as FieldDataServiceV0
-from ansys.fluent.core.services._field_data import LiveFieldData as LiveFieldDataV0
-from ansys.fluent.core.services._field_data import _FieldInfo as _FieldInfoV0
-from ansys.fluent.core.services.field_data_v1 import (
-    FieldDataService,
-    LiveFieldData,
-    _FieldInfo,
-)
 from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServiceV0
 from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
 from ansys.fluent.core.services.solution_variables import (
@@ -68,12 +53,6 @@ from ansys.fluent.core.services.transcript import (
     TranscriptService as TranscriptServiceV0,
 )
 from ansys.fluent.core.services.transcript_v1 import TranscriptService
-from ansys.fluent.core.streaming_services.field_data_streaming import (
-    FieldDataStreaming as FieldDataStreamingV0,
-)
-from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
-    FieldDataStreaming,
-)
 
 __all__ = (
     "BatchOpsService",
@@ -82,18 +61,10 @@ __all__ = (
     "DatamodelService_SE_V0",
     "DatamodelService_TUI",
     "DatamodelService_TUI_V0",
-    "DeprecatedFieldData",
-    "DeprecatedFieldDataV0",
     "EventsService",
     "EventsServiceV0",
-    "FieldDataService",
-    "FieldDataServiceV0",
-    "FieldDataStreaming",
-    "FieldDataStreamingV0",
     "HealthCheckService",
     "HealthCheckServiceV0",
-    "LiveFieldData",
-    "LiveFieldDataV0",
     "MonitorsService",
     "MonitorsServiceV0",
     "Reduction",
@@ -106,9 +77,6 @@ __all__ = (
     "SolutionVariableServiceV0",
     "TranscriptService",
     "TranscriptServiceV0",
-    "_FieldInfo",
-    "_FieldInfoV0",
-    "ZoneInfo",
     "service_creator",
 )
 
@@ -117,30 +85,22 @@ _service_cls_by_name_v0 = {
     "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI_V0,
     "events": EventsServiceV0,
-    "field_data": LiveFieldDataV0,
-    "field_data_old": DeprecatedFieldData,
-    "field_info": _FieldInfoV0,
     "monitors": MonitorsServiceV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
     "transcript": TranscriptServiceV0,
     "batch_ops": BatchOpsService,
-    "field_data_streaming": FieldDataStreamingV0,
 }
 
 _service_cls_by_name = {
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
     "events": EventsService,
-    "field_data": LiveFieldData,
-    "field_data_old": DeprecatedFieldData,
-    "field_info": _FieldInfo,
     "monitors": MonitorsService,
     "svar": SolutionVariableService,
     "svar_data": SolutionVariableData,
     "transcript": TranscriptService,
     "batch_ops": BatchOpsService,
-    "field_data_streaming": FieldDataStreaming,
 }
 
 

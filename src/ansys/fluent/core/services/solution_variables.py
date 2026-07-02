@@ -34,12 +34,9 @@ import numpy.typing as npt
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
+from ansys.fluent.core.fields.live_field_data import override_help_text
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services._field_data import (
-    _FieldDataConstants,
-    override_help_text,
-)
 from ansys.fluent.core.services.interceptors import (
     GrpcErrorInterceptor,
     TracingInterceptor,
@@ -51,6 +48,32 @@ from ansys.fluent.core.variable_strategies import (
 )
 
 _to_field_name_str = naming_strategy().to_string
+
+
+class _FieldDataConstants:
+    """Defines constants for Fluent field data."""
+
+    # data mapping
+    proto_field_type_to_np_data_type = {
+        FieldDataProtoModule.FieldType.INT_ARRAY: np.int32,
+        FieldDataProtoModule.FieldType.LONG_ARRAY: np.int64,
+        FieldDataProtoModule.FieldType.FLOAT_ARRAY: np.float32,
+        FieldDataProtoModule.FieldType.DOUBLE_ARRAY: np.float64,
+    }
+    np_data_type_to_proto_field_type = {
+        np.int32: FieldDataProtoModule.FieldType.INT_ARRAY,
+        np.int64: FieldDataProtoModule.FieldType.LONG_ARRAY,
+        np.float32: FieldDataProtoModule.FieldType.FLOAT_ARRAY,
+        np.float64: FieldDataProtoModule.FieldType.DOUBLE_ARRAY,
+    }
+    chunk_size = 256 * 1024
+    bytes_stream = True
+    payloadTags = {
+        FieldDataProtoModule.PayloadTag.OVERSET_MESH: 1,
+        FieldDataProtoModule.PayloadTag.ELEMENT_LOCATION: 2,
+        FieldDataProtoModule.PayloadTag.NODE_LOCATION: 4,
+        FieldDataProtoModule.PayloadTag.BOUNDARY_VALUES: 8,
+    }
 
 
 class SolutionVariableService(ServiceProtocol):
