@@ -30,6 +30,8 @@ import warnings
 import numpy as np
 import numpy.typing as npt
 
+from ansys.api.fluent.v0 import field_data_pb2 as field_data_pb2_v0
+from ansys.api.fluent.v1 import field_data_pb2 as field_data_pb2_v1
 from ansys.fluent.core._grpc_services.field_data_service import _FieldDataConstants
 from ansys.fluent.core._grpc_services.field_data_service_v0 import (
     _FieldDataConstants as _FieldDataConstantsV0,
@@ -72,7 +74,15 @@ class ChunkParserV0:
         ) -> tuple[tuple[str, str], tuple[str, Any], tuple[str, Any]]:
             return (
                 ("type", "scalar-field"),
-                ("dataLocation", scalar_field_request.dataLocation),
+                (
+                    "dataLocation",
+                    (
+                        1
+                        if scalar_field_request.dataLocation
+                        == field_data_pb2_v0.DataLocation.Nodes
+                        else 0
+                    ),
+                ),
                 ("boundaryValues", scalar_field_request.provideBoundaryValues),
             )
 
@@ -210,7 +220,15 @@ class ChunkParser(ChunkParserV0):
         def _get_tag_for_scalar_field_request(scalar_field_request):
             return (
                 ("type", "scalar-field"),
-                ("dataLocation", scalar_field_request.data_location),
+                (
+                    "dataLocation",
+                    (
+                        1
+                        if scalar_field_request.data_location
+                        == field_data_pb2_v1.DataLocation.DATA_LOCATION_NODES
+                        else 0
+                    ),
+                ),
                 ("boundaryValues", scalar_field_request.provide_boundary_values),
             )
 
