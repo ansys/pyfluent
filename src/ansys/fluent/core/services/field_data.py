@@ -326,7 +326,10 @@ class FieldDataV251(FieldDataBase):
         """__init__ method of FieldDataV251 class."""
         super().__init__(service, chunk_parser)
         self._scheme_interpreter_service = scheme_interpreter_service
-        self.is_data_valid = self._scheme_interpreter_service.eval("(data-valid?)")
+
+    def is_data_valid(self):
+        """Check if the solution data is valid."""
+        return self._scheme_interpreter_service.eval("(data-valid?)")
 
 
 class FieldData(FieldDataBase):

@@ -34,6 +34,7 @@ import weakref
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.fields.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
@@ -41,20 +42,7 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.services import (
-    BatchOpsService,
-    DatamodelService_SE,
-    DatamodelService_SE_V0,
-    DatamodelService_TUI,
-    DatamodelService_TUI_V0,
-    EventsService,
-    EventsServiceV0,
-    SolutionVariableData,
-    SolutionVariableService,
-    TranscriptService,
-    TranscriptServiceV0,
-    service_creator,
-)
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
@@ -66,9 +54,6 @@ from ansys.fluent.core.streaming_services.events_streaming import (
     EventsManager as EventsManagerV0,
 )
 from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
-from ansys.fluent.core.streaming_services.field_data_streaming import (
-    FieldDataStreaming,
-)
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptV0,
 )
@@ -523,7 +508,6 @@ class BaseSession:
                 or name in {"is_active", "wait_process_finished"}
             ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
-            "field_data_streaming",
             "start_journal",
             "stop_journal",
             "scheme_eval",
@@ -554,6 +538,7 @@ class Fields:
         self.field_data = LiveFieldData(
             field_data, self._field_info, _session.scheme, get_zones_info
         )
-        self.field_data_streaming = (
-            fluent_connection._service_factory.field_data_streaming
+        field_data_streaming = fluent_connection._service_factory.field_data_streaming
+        self.field_data_streaming = FieldDataStreaming(
+            _session._fluent_connection._id, field_data_streaming
         )

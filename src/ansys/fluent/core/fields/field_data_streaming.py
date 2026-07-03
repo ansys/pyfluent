@@ -25,7 +25,6 @@
 from collections.abc import Callable
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
-from ansys.fluent.core._grpc_services._chunk_parser import ChunkParser
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -42,24 +41,17 @@ class FieldDataStreaming(StreamingService):
 
     _proto_module = FieldDataProtoModule
 
-    def __init__(self, session_id: str, service):
+    def __init__(self, session_id: str, field_data_streaming):
         """Initialize FieldDataStreaming."""
-        super().__init__(
-            stream_begin_method="BeginFieldsStreaming",
-            target=type(self)._process_streaming,
-            streaming_service=service,
-        )
+        self._field_data_streaming = field_data_streaming
         self._session_id: str = session_id
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes field data streaming."""
-        request = self._proto_module.BeginFieldsStreamingRequest(*args, **kwargs)
-        ChunkParser(self).extract_fields(
-            self._streaming_service.begin_streaming(
-                request, started_evt, id=id, stream_begin_method=stream_begin_method
-            )
+        self._field_data_streaming._process_streaming(
+            id, stream_begin_method, started_evt, *args, **kwargs
         )
 
     def callbacks(self) -> list[list[Callable | list | dict]]:
         """Get list of callbacks along with arguments and keyword arguments."""
-        return self._service_callbacks.values()
+        return self._field_data_streaming.callbacks()
