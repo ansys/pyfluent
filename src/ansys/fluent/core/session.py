@@ -105,17 +105,6 @@ def _parse_server_info_file(file_name: str):
         return ip, port, password
 
 
-class _IsDataValid:
-    def __init__(self, scheme_eval):
-        self._scheme_eval = scheme_eval
-
-    def __bool__(self):
-        return self()
-
-    def __call__(self):
-        return self._scheme_eval.scheme_eval("(data-valid?)")
-
-
 class BaseSession:
     """Encapsulates a Fluent session.
 

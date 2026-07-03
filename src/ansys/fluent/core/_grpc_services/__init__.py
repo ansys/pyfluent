@@ -64,7 +64,11 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
-from ansys.fluent.core.services.field_data import FieldData, FieldDataV261
+from ansys.fluent.core.services.field_data import (
+    FieldData,
+    FieldDataV251,
+    FieldDataV261,
+)
 from ansys.fluent.core.services.health_check import HealthCheck
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
@@ -200,17 +204,24 @@ class GRPCFactory:
     @cached_property
     def field_data(self):
         """Field data service."""
-        if self._product_version >= FluentVersion.v271:
-            return FieldData(
-                self._get_instantiated_grpc_service(FieldDataService),
-                ChunkParser(),
-            )
-        else:
-            return FieldDataV261(
-                self._get_instantiated_grpc_service(FieldDataServiceV0),
-                ChunkParserV0(),
-                self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
-            )
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return FieldData(
+                    self._get_instantiated_grpc_service(FieldDataService),
+                    ChunkParser(),
+                )
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return FieldDataV261(
+                    self._get_instantiated_grpc_service(FieldDataServiceV0),
+                    ChunkParserV0(),
+                    self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
+                )
+            case _:
+                return FieldDataV251(
+                    self._get_instantiated_grpc_service(FieldDataServiceV0),
+                    ChunkParserV0(),
+                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
+                )
 
     @cached_property
     def field_data_streaming(self):

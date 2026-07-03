@@ -283,6 +283,21 @@ class FieldDataV261(FieldDataBase):
         )
 
 
+class FieldDataV251(FieldDataBase):
+    """Class for FieldDataV251 service."""
+
+    def __init__(
+        self,
+        service,
+        chunk_parser,
+        scheme_interpreter_service,
+    ):
+        """__init__ method of FieldDataV251 class."""
+        super().__init__(service, chunk_parser)
+        self._scheme_interpreter_service = scheme_interpreter_service
+        self.is_data_valid = self._scheme_interpreter_service.eval("(data-valid?)")
+
+
 class FieldData(FieldDataBase):
     """Class for FieldData service."""
 
