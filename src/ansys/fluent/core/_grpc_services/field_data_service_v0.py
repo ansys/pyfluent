@@ -251,8 +251,9 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
     ) -> None:
+        fetched_data = _FetchFieldData()
         self._batched_fields_request.pathlinesFieldRequest.extend(
-            self._fetched_data._pathlines_data(
+            fetched_data._pathlines_data(
                 field_name,
                 surface_ids=surfaces,
                 additionalField=additional_field_name,
