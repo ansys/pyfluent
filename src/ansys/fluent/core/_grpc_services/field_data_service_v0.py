@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over FieldData gRPC service of Fluent."""
+"""Wrapper over the field data gRPC service of Fluent (v0 proto API)."""
 
 import grpc
 import numpy as np
@@ -51,12 +51,12 @@ def get_fields_request() -> field_data_pb2.GetFieldsRequest:
 class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     StreamingService, ServiceProtocol
 ):
-    """FieldData service of Fluent."""
+    """FieldData service of Fluent (v0 proto API)."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ):
-        """__init__ method of FieldDataService class."""
+        """Initialize FieldDataService."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),

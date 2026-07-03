@@ -23,7 +23,7 @@
 """High-level application runtime wrappers.
 
 This module owns the business-logic layer on top of the ApplicationRuntime gRPC
-service.  The grpc service implementation lives in:
+service. The grpc service implementation lives in:
 
 * ``ansys.fluent.core._grpc_services.application_runtime_service`` (v1 proto API)
 * ``ansys.fluent.core._grpc_services.application_runtime_service_v0`` (v0 proto API)

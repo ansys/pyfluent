@@ -23,7 +23,7 @@
 """High-level settings wrappers.
 
 This module owns the business-logic layer on top of the Settings gRPC
-service.  The grpc service implementation lives in:
+service. The grpc service implementation lives in:
 
 * ``ansys.fluent.core._grpc_services.settings_service`` (v1 proto API)
 * ``ansys.fluent.core._grpc_services.settings_service_v0`` (v0 proto API)
