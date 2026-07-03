@@ -95,48 +95,6 @@ class _FieldInfo(BaseFieldInfo):
         return self._field_data.get_surfaces_info()
 
 
-class _FieldMethod:
-    class _Arg:
-        def __init__(self, accessor):
-            self._accessor = accessor
-
-        def allowed_values(self):
-            """Returns set of allowed values."""
-            if self._accessor.__class__.__name__ == "_AllowedScalarFieldNames":
-                warnings.warn(
-                    "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'scalar_fields.allowed_values()' instead",
-                    PyFluentDeprecationWarning,
-                )
-            elif self._accessor.__class__.__name__ == "_AllowedVectorFieldNames":
-                warnings.warn(
-                    "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'vector_fields.allowed_values()' instead",
-                    PyFluentDeprecationWarning,
-                )
-            elif self._accessor.__class__.__name__ == "_AllowedSurfaceNames":
-                warnings.warn(
-                    "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'field_data.surfaces.allowed_values()' instead",
-                    PyFluentDeprecationWarning,
-                )
-            elif self._accessor.__class__.__name__ == "_AllowedSurfaceIDs":
-                warnings.warn(
-                    "This usage is deprecated and will be removed in a future release. "
-                    "Please use 'field_data.surface_ids.allowed_values()' instead",
-                    PyFluentDeprecationWarning,
-                )
-            return sorted(self._accessor())
-
-    def __init__(self, field_data_accessor, args_allowed_values_accessors):
-        self._field_data_accessor = field_data_accessor
-        for arg_name, accessor in args_allowed_values_accessors.items():
-            setattr(self, arg_name, _FieldMethod._Arg(accessor))
-
-    def __call__(self, *args, **kwargs):
-        return self._field_data_accessor(*args, **kwargs)
-
-
 class _FetchFieldData:
     @staticmethod
     def _surface_data(
