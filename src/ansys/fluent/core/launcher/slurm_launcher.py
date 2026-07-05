@@ -547,6 +547,11 @@ class SlurmLauncher:
         :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
             Session object or configuration dictionary if ``dry_run = True``.
 
+        Raises
+        ------
+        ValueError
+            If neither ``certificates_folder`` nor ``insecure_mode`` is set, or if both ``certificates_folder`` and ``insecure_mode`` are provided.
+
         Notes
         -----
         Job scheduler environments such as SLURM, LSF, and PBS, allocate resources and compute nodes.
