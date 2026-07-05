@@ -1082,10 +1082,21 @@ class String(SettingsBase[str], Textual):
     set_state = Textual.set_state
 
 
+def _unescape_path(value):
+    """Collapse double backslashes that Fluent returns for file paths."""
+    if isinstance(value, str):
+        return value.replace("\\\\", "\\")
+    return value
+
+
 class Filename(SettingsBase[str], Textual):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
+
+    @classmethod
+    def to_python_keys(cls, value: str) -> str:
+        return _unescape_path(value)
 
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
@@ -1096,6 +1107,12 @@ class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
+
+    @classmethod
+    def to_python_keys(cls, value: str) -> str:
+        if isinstance(value, (list, tuple)):
+            return [_unescape_path(v) for v in value]
+        return value
 
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
