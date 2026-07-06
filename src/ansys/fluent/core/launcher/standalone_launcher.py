@@ -20,403 +20,223 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module for launching Fluent in standalone mode.
-
-Examples
---------
-
->>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
-
->>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode=FluentMode.MESHING)
->>> standalone_meshing_session = standalone_meshing_launcher()
-
->>> standalone_solver_launcher = create_launcher(LaunchMode.STANDALONE)
->>> standalone_solver_session = standalone_solver_launcher()
-"""
+"""Provides a module for launching utilities."""
 
 import logging
-import math
 import os
 from pathlib import Path
+import platform
+import shutil
+import socket
 import subprocess
-from typing import TYPE_CHECKING, Any, TypedDict
+import sys
+import time
+from typing import Any
 import warnings
 
-from typing_extensions import Unpack
-
-from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.launcher.error_handler import (
-    LaunchFluentError,
-)
-from ansys.fluent.core.launcher.launch_options import (
-    FluentMode,
-    UIMode,
-    _get_argvals_and_session,
-    _get_standalone_launch_fluent_version,
-)
-from ansys.fluent.core.launcher.launcher_utils import (
-    _await_fluent_launch,
-    _build_journal_argument,
-    _confirm_watchdog_start,
-    _get_subprocess_kwargs_for_fluent,
-    is_windows,
-)
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.server_info import (
-    _get_server_info,
-    _get_server_info_file_names,
-)
-import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-
-if TYPE_CHECKING:
-    from ansys.fluent.core.session_meshing import Meshing
-    from ansys.fluent.core.session_pure_meshing import PureMeshing
-    from ansys.fluent.core.session_solver import Solver
-    from ansys.fluent.core.session_solver_aero import SolverAero
-    from ansys.fluent.core.session_solver_icing import SolverIcing
-
-
-class StandaloneArgsWithoutDryRunMode(
-    LauncherArgsBase, TypedDict, total=False
-):  # pylint: disable=missing-class-docstring
-    journal_file_names: None | str | list[str]
-    """Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``."""
-    env: dict[str, Any] | None
-    """A mapping for modifying environment variables in Fluent. Defaults to ``None``."""
-    case_file_name: str | None
-    """Name of the case file to read into the Fluent session. Defaults to None."""
-    case_data_file_name: str | None
-    """Name of the case data file. If both case and data files are provided, they are read into the session."""
-    lightweight_mode: bool | None
-    """If True, runs in lightweight mode where mesh settings are read into a background solver session,
-    replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
-    """
-    py: bool | None
-    """If True, runs Fluent in Python mode. Defaults to None."""
-    cwd: str | None
-    """Working directory for the Fluent client."""
-    fluent_path: str | None
-    """User-specified path for Fluent installation."""
-    topy: str | list[Any] | None
-    """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
-    a filename for the new Python journal.
-    """
-
-
-class StandaloneArgsWithoutDryRun(
-    StandaloneArgsWithoutDryRunMode
-):  # pylint: disable=missing-class-docstring
-    mode: FluentMode
-    """Specifies the launch mode of Fluent to target a specific session type."""
-
-
-class StandaloneArgsWithoutMode(
-    StandaloneArgsWithoutDryRunMode, total=False
-):  # pylint: disable=missing-class-docstring
-    dry_run: bool | None
-    """If True, does not launch Fluent but prints configuration information instead. The `call()` method
-    returns a tuple containing the launch string and server info file name. Defaults to False.
-    """
-
-
-class StandaloneArgs(
-    StandaloneArgsWithoutMode, StandaloneArgsWithoutDryRun, total=False
-):
-    """Arguments for launching Fluent in standalone mode."""
-
+from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")
 
 
-class StandaloneLauncher:
-    """Instantiates Fluent session in standalone mode."""
+class ComposeConfig:
+    """Configuration for Docker or Podman Compose usage in PyFluent."""
 
     def __init__(
         self,
-        **kwargs: Unpack[StandaloneArgs],
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
     ):
-        """
-        Launch a Fluent session in standalone mode.
+        from ansys.fluent.core.module_config import config
 
-        Parameters
-        ----------
-        mode : FluentMode
-            Specifies the launch mode of Fluent to target a specific session type.
-        ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
-            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
-        graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
-        product_version : FluentVersion or str or float or int, optional
-            Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
-            ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
-            which uses the newest installed version.
-        dimension : Dimension or int, optional
-            Specifies the geometric dimensionality of the Fluent simulation. Defaults to ``None``,
-            which corresponds to ``Dimension.THREE``. Acceptable values are from the ``Dimension`` enum
-            (``Dimension.TWO`` or ``Dimension.THREE``) or integers ``2`` and ``3``.
-        precision : Precision or str, optional
-            Defines the floating point precision. Defaults to ``None``, which corresponds to
-            ``Precision.DOUBLE``. Acceptable values are from the ``Precision`` enum (``Precision.SINGLE``
-            or ``Precision.DOUBLE``) or strings ``"single"`` and ``"double"``.
-        processor_count : int, optional
-            Specifies the number of processors to use. Defaults to ``None``, which uses 1 processor.
-            In job scheduler environments, this value limits the total number of allocated cores.
-        journal_file_names : str or list of str, optional
-            Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``.
-        start_timeout : int, optional
-            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 100 seconds.
-        additional_arguments : str, optional
-            Additional command-line arguments for Fluent, formatted as they would be on the command line.
-        env : dict[str, str], optional
-            A mapping for modifying environment variables in Fluent. Defaults to ``None``.
-        cleanup_on_exit : bool, optional
-            Determines whether to shut down the connected Fluent session when exiting PyFluent or calling
-            the session's `exit()` method. Defaults to True.
-        dry_run : bool, optional
-            If True, does not launch Fluent but prints configuration information instead. The `call()` method
-            returns a tuple containing the launch string and server info file name. Defaults to False.
-        start_transcript : bool, optional
-            Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
-            streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
-        case_file_name : :class:`os.PathLike` or str, optional
-            Name of the case file to read into the Fluent session. Defaults to None.
-        case_data_file_name : :class:`os.PathLike` or str, optional
-            Name of the case data file. If both case and data files are provided, they are read into the session.
-        lightweight_mode : bool, optional
-            If True, runs in lightweight mode where mesh settings are read into a background solver session,
-            replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
-            When combined with `journal_file_names`, a warning is issued and `lightweight_mode` is set to False, as
-            journal processing cannot be reliably ordered with mesh-only initialization.
-        py : bool, optional
-            If True, runs Fluent in Python mode. Defaults to None.
-        gpu : bool, optional
-            If True, starts Fluent with GPU Solver enabled.
-        cwd : :class:`os.PathLike` or str, optional
-            Working directory for the Fluent client.
-        fluent_path: :class:`os.PathLike` or str, optional
-            User-specified path for Fluent installation.
-        topy :  bool or str, optional
-            A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
-            a filename for the new Python journal.
-        start_watchdog : bool, optional
-            When `cleanup_on_exit` is True, defaults to True; an independent watchdog process ensures that any local
-            GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
-        file_transfer_service : Any
-            Service for uploading/downloading files to/from the server.
+        self._env_docker = config.use_docker_compose
+        self._env_podman = config.use_podman_compose
 
-        Raises
-        ------
-        UnexpectedKeywordArgument
-            If an unexpected keyword argument is provided.
+        self._use_docker = use_docker_compose
+        self._use_podman = use_podman_compose
 
-        Notes
-        -----
-        In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
-        and core counts are queried from these environments before being passed to Fluent.
+        if use_docker_compose is None and self._env_docker:
+            self._warn_env_deprecated()
+        if use_podman_compose is None and self._env_podman:
+            self._warn_env_deprecated()
 
-        File processing order: Case files are processed before case-data files, which are processed before
-        journal files. In lightweight mode, journal files are read before the background session is synchronized
-        with the foreground session.
-        """
-        import ansys.fluent.core as pyfluent
+    def _warn_env_deprecated(self):
+        warnings.warn(
+            (
+                "The environment variables 'PYFLUENT_USE_DOCKER_COMPOSE' and "
+                "'PYFLUENT_USE_PODMAN_COMPOSE' are deprecated. "
+                "Use the 'use_docker_compose' and 'use_podman_compose' parameters instead."
+            ),
+            category=PyFluentDeprecationWarning,
+            stacklevel=3,
+        )
 
-        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
-        self.file_transfer_service = kwargs.get("file_transfer_service")
-        if pyfluent.config.show_fluent_gui:
-            kwargs["ui_mode"] = UIMode.GUI
-        self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-        if self.argvals.get("lightweight_mode") is None:
-            self.argvals["lightweight_mode"] = False
+    @property
+    def use_docker_compose(self) -> bool:
+        """Check if Docker Compose is configured to be used."""
+        return self._use_docker if self._use_docker is not None else self._env_docker
 
-        if self.argvals["lightweight_mode"] and self.argvals.get("journal_file_names"):
-            warnings.warn(
-                "'lightweight_mode' is not supported together with "
-                "'journal_file_names' and will be ignored.",
-                PyFluentUserWarning,
-            )
-            self.argvals["lightweight_mode"] = False
+    @property
+    def use_podman_compose(self) -> bool:
+        """Check if Podman Compose is configured to be used."""
+        return self._use_podman if self._use_podman is not None else self._env_podman
 
-        fluent_version = _get_standalone_launch_fluent_version(self.argvals)
+    @property
+    def is_compose(self) -> bool:
+        """Check if either Docker Compose or Podman Compose is configured to be used."""
+        return self.use_docker_compose or self.use_podman_compose
 
+
+def is_windows():
+    """Check if the current operating system is Windows."""
+    return platform.system() == "Windows"
+
+
+def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:
+    import ansys.fluent.core as pyfluent
+
+    scheduler_options = argvals.get("scheduler_options")
+    is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
+    kwargs: dict[str, Any] = {}
+    if is_slurm:
+        kwargs.update(stdout=subprocess.PIPE)
+    else:
+        kwargs.update(
+            stdout=pyfluent.config.launch_fluent_stdout,
+            stderr=pyfluent.config.launch_fluent_stderr,
+        )
+    if is_windows():
+        kwargs.update(
+            shell=True,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.CREATE_NO_WINDOW,
+        )
+    else:
+        kwargs.update(shell=True, start_new_session=True)
+    fluent_env = os.environ.copy()
+    if env:
+        fluent_env.update({k: str(v) for k, v in env.items()})
+    fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    fluent_env["REMOTING_THROW_LAST_SETTINGS_ERROR"] = "1"
+    if pyfluent.config.clear_fluent_para_envs:
+        fluent_env.pop("PARA_NPROCS", None)
+        fluent_env.pop("PARA_MESH_NPROCS", None)
+
+    if pyfluent.config.launch_fluent_ip:
+        fluent_env["REMOTING_SERVER_ADDRESS"] = pyfluent.config.launch_fluent_ip
+
+    if pyfluent.config.launch_fluent_port:
+        fluent_env["REMOTING_PORTS"] = (
+            f"{pyfluent.config.launch_fluent_port}/portspan=2"
+        )
+
+    if pyfluent.config.launch_fluent_skip_password_check:
+        fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
+
+    if not is_slurm:
         if (
-            fluent_version
-            and fluent_version >= FluentVersion.v251
-            and self.argvals.get("py") is None
+            pyfluent.config.infer_remoting_ip
+            and "REMOTING_SERVER_ADDRESS" not in fluent_env
         ):
-            self.argvals["py"] = True
+            remoting_ip = find_remoting_ip()
+            if remoting_ip:
+                fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
 
-        if pyfluent.config.fluent_debug:
-            self.argvals["fluent_debug"] = True
+    if not pyfluent.config.fluent_automatic_transcript:
+        fluent_env["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
-        server_info_file_name_for_server, server_info_file_name_for_client = (
-            _get_server_info_file_names()
-        )
-        self._server_info_file_name = server_info_file_name_for_client
-        self._launch_string = _generate_launch_string(
-            self.argvals,
-            server_info_file_name_for_server,
-        )
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 100
-        # Negative start_timeout values are treated as "no timeout".
-        start_timeout = self.argvals.get("start_timeout")
+    kwargs.update(env=fluent_env)
+    return kwargs
+
+
+def _get_app_data_root() -> Path:
+    if sys.platform == "win32":
+        return Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Application Support"
+    if sys.platform.startswith(("linux", "freebsd", "openbsd")):
+        return Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share"))
+    return Path.home() / ".config"
+
+
+def _update_server_info_file(server_info_file_name: str, pid: int | None = None):
+    try:
+        servers_dir = _get_app_data_root() / "pyfluent" / "servers"
+        servers_dir.mkdir(parents=True, exist_ok=True)
+        si_file = servers_dir / Path(server_info_file_name).name
+        shutil.copy2(server_info_file_name, si_file)
+        if pid is not None:
+            with open(si_file, "a", encoding="utf-8") as f:
+                f.write(f"\n{pid}")
+    except PermissionError:
+        logger.warning("Insufficient permissions to update server info file. Skipping.")
+
+
+def _await_fluent_launch(
+    server_info_file_name: str,
+    start_timeout: int,
+    sifile_last_mtime: float,
+    pid: int | None = None,
+):
+    """Wait for successful fluent launch or raise an error."""
+    while True:
+        if Path(server_info_file_name).stat().st_mtime > sifile_last_mtime:
+            time.sleep(1)
+            logger.info("Fluent has been successfully launched.")
+            _update_server_info_file(server_info_file_name, pid)
+            break
+        if start_timeout == 0:
+            raise TimeoutError("The launch process has timed out.")
+        time.sleep(1)
+        start_timeout -= 1
+        logger.info("Waiting for Fluent to launch...")
         if start_timeout >= 0:
-            self._launch_string += self._construct_timeout_arg(start_timeout)
+            logger.info(f"...{start_timeout} seconds remaining")
 
-        self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
-        self._kwargs = _get_subprocess_kwargs_for_fluent(
-            self.argvals.get("env") or {}, self.argvals
-        )
-        if self.argvals["cwd"]:
-            self._kwargs.update(cwd=self.argvals["cwd"])
 
-        topy = self.argvals.get("topy", [])
-        if topy:
-            self._launch_string += _build_journal_argument(
-                topy, self.argvals.get("journal_file_names")
+def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
+    """Confirm whether Fluent is running locally, and whether the Watchdog should be
+    started."""
+    if start_watchdog is None and cleanup_on_exit:
+        host = fluent_connection.connection_properties.cortex_host
+        if host == socket.gethostname():
+            logger.debug(
+                "Fluent running on the host machine and 'cleanup_on_exit' activated, will launch Watchdog."
             )
+            start_watchdog = True
+    return start_watchdog
 
-        if is_windows():
-            self._launch_cmd = self._launch_string
-        else:
-            if self.argvals.get("ui_mode") not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
-                # Using nohup to hide Fluent output from the current terminal
-                self._launch_cmd = "nohup " + self._launch_string + " &"
-            else:
-                self._launch_cmd = self._launch_string
 
-    @staticmethod
-    def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
-        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
-        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
-        return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+def _build_journal_argument(
+    topy: None | bool | str, journal_file_names: None | str | list[str]
+) -> str:
+    """Build Fluent commandline journal argument."""
 
-    @staticmethod
-    def _disable_idle_timeout_guard(session):
-        try:
-            if session.get_fluent_version() >= FluentVersion.v271:
-                session._app_utilities.set_idle_timeout(
-                    session.preferences.General.IdleTimeout() * 60
-                )
-            else:
-                session.scheme_eval.eval(
-                    f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
-                )
-        except Exception as ex:
-            logger.debug(f"Could not reset Idle Timeout: {ex}")
-
-    def __call__(
-        self,
-    ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
-        if self.argvals.get("dry_run"):
-            print(f"Fluent launch string: {self._launch_string}")
-            return self._launch_string, self._server_info_file_name
-        try:
-            logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-            process = subprocess.Popen(self._launch_cmd, **self._kwargs)
-
-            try:
-                _await_fluent_launch(
-                    self._server_info_file_name,
-                    self.argvals.get("start_timeout", 100),
-                    self._sifile_last_mtime,
-                    process.pid,
-                )
-            except TimeoutError as ex:
-                if is_windows():
-                    logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = self._launch_string.replace('"', "", 2)
-                    self._kwargs.update(shell=False)
-                    logger.warning(
-                        f"Retrying Fluent launch with less robust command: {launch_cmd}"
-                    )
-                    process = subprocess.Popen(launch_cmd, **self._kwargs)
-                    _await_fluent_launch(
-                        self._server_info_file_name,
-                        self.argvals.get("start_timeout", 100),
-                        self._sifile_last_mtime,
-                        process.pid,
-                    )
-                else:
-                    raise ex
-
-            session = self.new_session._create_from_server_info_file(
-                server_info_file_name=self._server_info_file_name,
-                file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
-                start_transcript=self.argvals.get("start_transcript"),
-                launcher_args=self.argvals,
-                inside_container=False,
+    def _impl(
+        topy: None | bool | str, journal_file_names: None | str | list[str]
+    ) -> str:
+        if journal_file_names and not isinstance(journal_file_names, (str, list)):
+            raise TypeError(
+                "Use 'journal_file_names' to specify and convert journal files."
             )
-            session._process = process
-            start_watchdog = _confirm_watchdog_start(
-                self.argvals.get("start_watchdog"),
-                self.argvals.get("cleanup_on_exit"),
-                session._fluent_connection,
+        if topy and not journal_file_names:
+            raise InvalidArgument(
+                "Use 'journal_file_names' to specify and convert journal files."
             )
-            if start_watchdog:
-                logger.info("Launching Watchdog for local Fluent client...")
-                values = _get_server_info(self._server_info_file_name)
-                if len(values) == 3:
-                    ip, port, password = values
-                    watchdog.launch(os.getpid(), port, password, ip)
-            self._process_case_data_and_journals(session)
-
-            return session
-        except Exception as ex:
-            logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
-            raise LaunchFluentError(self._launch_cmd) from ex
-        finally:
-            server_info_file = Path(self._server_info_file_name)
-            if server_info_file.exists():
-                server_info_file.unlink()
-
-    @staticmethod
-    def _get_journal_file_names(
-        journal_file_names: None | str | list[str],
-    ) -> list[str]:
+        fluent_jou_arg = ""
         if isinstance(journal_file_names, str):
-            return [journal_file_names]
-        return journal_file_names or []
-
-    def _process_case_data_and_journals(self, session) -> None:
-        if self.argvals["case_file_name"]:
-            if FluentMode.is_meshing(self.argvals["mode"]):
-                session.tui.file.read_case(self.argvals["case_file_name"])
-            elif self.argvals["lightweight_mode"]:
-                session.read_case_lightweight(
-                    self.argvals["case_file_name"],
-                    start_sync=False,
-                )
+            journal_file_names = [journal_file_names]
+        if journal_file_names:
+            fluent_jou_arg += "".join(
+                [f' -i "{journal}"' for journal in journal_file_names]
+            )
+        if topy:
+            if isinstance(topy, str):
+                fluent_jou_arg += f' -topy="{topy}"'
             else:
-                session.settings.file.read(
-                    file_type="case",
-                    file_name=self.argvals["case_file_name"],
-                )
-        if self.argvals["case_data_file_name"]:
-            if not FluentMode.is_meshing(self.argvals["mode"]):
-                session.settings.file.read(
-                    file_type="case-data",
-                    file_name=self.argvals["case_data_file_name"],
-                )
-            else:
-                raise RuntimeError("Case and data file cannot be read in meshing mode.")
+                fluent_jou_arg += " -topy"
+        return fluent_jou_arg
 
-        if self.argvals.get("topy"):
-            for journal_file_name in self._get_journal_file_names(
-                self.argvals.get("journal_file_names")
-            ):
-                session.tui.file.write_journal(f"{journal_file_name}.topy")
-        else:
-            for journal_file_name in self._get_journal_file_names(
-                self.argvals.get("journal_file_names")
-            ):
-                session.execute_tui(f'/file/read-journal "{journal_file_name}"')
-
-        if self.argvals.get("lightweight_mode"):
-            session.start_case_lightweight_sync()
+    return _impl(topy, journal_file_names)
