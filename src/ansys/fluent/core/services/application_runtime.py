@@ -246,7 +246,9 @@ class ApplicationRuntimeOld:
 
     def get_product_version(self) -> FluentVersion:
         """Get product version."""
-        return FluentVersion(self.scheme.version)
+        return FluentVersion(
+            ".".join(self.scheme.string_eval("(cx-version)").strip("()").split())
+        )
 
     def get_build_info(self) -> BuildInfo:
         """Get build info."""
