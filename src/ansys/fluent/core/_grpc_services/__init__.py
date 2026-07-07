@@ -82,13 +82,76 @@ def _server_supports_v1(channel) -> bool:
         return False
 
 
-class GRPCFactory:
-    """Factory for getting instantialted public facing grpc methods."""
+class GRPCServiceFactory:
+    """Factory that creates and caches version-appropriate gRPC service wrappers.
+
+    ``GRPCServiceFactory`` is the single entry point for obtaining all high-level service
+    objects that communicate with a running Fluent server over gRPC.  It inspects
+    the connected server's product version at construction time and thereafter
+    returns the correct concrete wrapper class (v1 proto API for Fluent 27.1 and
+    later, v0/legacy proto API for earlier releases) for every service.
+
+    All service properties are ``cached_property`` instances, meaning each wrapper
+    is instantiated at most once per factory and the same object is returned on
+    every subsequent access.
+
+    Parameters
+    ----------
+    channel : grpc.Channel
+        Active gRPC channel connected to the Fluent server.
+    metadata : list[tuple[str, str]]
+        gRPC call metadata, typically containing authentication credentials.
+    error_state : object, optional
+        Shared error-state object passed to interceptors so that fatal server
+        errors can be surfaced to callers.  When ``None``, no error-state
+        checking is performed.
+    product_version : FluentVersion, optional
+        Explicit Fluent product version to use instead of auto-detecting it
+        from the server.  Primarily intended for testing or when the version
+        is already known, avoiding the extra RPC round-trip needed for
+        auto-detection.
+
+    Attributes
+    ----------
+    scheme_interpreter : SchemeInterpreter
+        Service for evaluating Fluent Scheme expressions.
+    application_runtime : ApplicationRuntime | ApplicationRuntimeV261 | ApplicationRuntimeV252 | ApplicationRuntimeOld
+        Service exposing application-level runtime information such as the
+        product version and session lifecycle management.  The concrete type
+        depends on ``product_version``.
+    health_check : HealthCheck
+        Service for querying the health/serving status of the Fluent server.
+    reduction : Reduction
+        Service for performing data-reduction operations (e.g., force/moment
+        integrals) on solver results.
+    settings : Settings | SettingsV261 | SettingsV251
+        Service for reading and writing Fluent solver settings.  The concrete
+        type depends on ``product_version``.
+    field_data : FieldData | FieldDataV261 | FieldDataV251
+        Service for retrieving surface and volume field data from the solver.
+        The concrete type depends on ``product_version``.
+    field_data_streaming : FieldDataStreaming | FieldDataStreamingV261
+        Streaming variant of the field-data service used to receive field data
+        as a stream of chunks rather than a single response.
+    object_model : ObjectModel | ObjectModelV261
+        Service for interacting with Fluent's state-engine datamodel,
+        including reading/writing object state, executing commands, and
+        subscribing to datamodel events.  The concrete type depends on
+        ``product_version``.
+
+    Notes
+    -----
+    Underlying gRPC service objects (stubs + interceptors) are themselves
+    lazily instantiated and cached via ``_get_instantiated_grpc_service``, so
+    services that share the same underlying proto stub (e.g. ``scheme_interpreter``
+    and ``application_runtime`` on older Fluent builds) reuse a single stub
+    instance.
+    """
 
     def __init__(
         self, channel, metadata, error_state=None, product_version: FluentVersion = None
     ):
-        """__init__ method of GRPCFactory."""
+        """Initialize GRPCServiceFactory."""
         self._channel = channel
         self._metadata = metadata
         self._error_state = error_state

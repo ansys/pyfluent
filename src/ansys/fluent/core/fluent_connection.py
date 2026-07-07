@@ -43,7 +43,7 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
-from ansys.fluent.core._grpc_services import GRPCFactory, _server_supports_v1
+from ansys.fluent.core._grpc_services import GRPCServiceFactory, _server_supports_v1
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -561,7 +561,7 @@ class FluentConnection:
 
         self._server_supports_v1 = _server_supports_v1(channel=self._channel)
 
-        self._service_factory = GRPCFactory(
+        self._service_factory = GRPCServiceFactory(
             channel=self._channel,
             metadata=self._metadata,
             error_state=self._error_state,
