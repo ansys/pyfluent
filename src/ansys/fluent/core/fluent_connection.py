@@ -563,7 +563,7 @@ class FluentConnection:
         self._server_supports_v1 = _server_supports_v1(channel=self._channel)
 
         self._service_factory = ServiceFactory(
-            grpc_service_factory=GRPCServiceFactory(
+            service_factory=GRPCServiceFactory(
                 channel=self._channel,
                 metadata=self._metadata,
                 error_state=self._error_state,
