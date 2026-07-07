@@ -55,11 +55,6 @@ class SchemeInterpreterService(ServiceProtocol):
         self._stub = scheme_eval_pb2_grpc.SchemeEvalStub(intercept_channel)
         self._metadata = metadata
 
-    @property
-    def version(self) -> str:
-        """Gets the version of the server."""
-        return ".".join(self.string_eval("(cx-version)").strip("()").split())
-
     def exec(
         self,
         commands: Sequence[str],
@@ -125,7 +120,7 @@ class SchemeInterpreterService(ServiceProtocol):
             Output scheme value represented as Python datatype
         """
         request = scheme_eval_pb2.SchemeEvalRequest()
-        _convert_py_value_to_scheme_pointer(val, request.input, self.version)
+        _convert_py_value_to_scheme_pointer(val, request.input)
         metadata = []
         if not suppress_prompts:
             metadata.append(("no-suppress-prompts", "1"))
@@ -133,7 +128,7 @@ class SchemeInterpreterService(ServiceProtocol):
         if metadata:
             new_metadata = self._metadata + metadata
         response = self._stub.SchemeEval(request, metadata=new_metadata)
-        return _convert_scheme_pointer_to_py_value(response.output, self.version)
+        return _convert_scheme_pointer_to_py_value(response.output)
 
     def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression in string format.
@@ -177,24 +172,20 @@ class Symbol:
         return self.str
 
 
-def _convert_pair_to_scheme_pointer(
-    val: tuple[Any, Any], p: SchemePointer, version: str
-) -> None:
-    _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
-    _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
+def _convert_pair_to_scheme_pointer(val: tuple[Any, Any], p: SchemePointer) -> None:
+    _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
+    _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
 
 
 def _convert_list_of_pairs_to_scheme_pointer(
-    val: list[tuple[Any, Any]], p: SchemePointer, version: str
+    val: list[tuple[Any, Any]], p: SchemePointer
 ) -> None:
     if len(val) > 0:
-        _convert_pair_to_scheme_pointer(val[0], p.pair.car, version)
-        _convert_list_of_pairs_to_scheme_pointer(val[1:], p.pair.cdr, version)
+        _convert_pair_to_scheme_pointer(val[0], p.pair.car)
+        _convert_list_of_pairs_to_scheme_pointer(val[1:], p.pair.cdr)
 
 
-def _convert_py_value_to_scheme_pointer(
-    val: Any, p: SchemePointer, version: str
-) -> None:
+def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer) -> None:
     """Convert Python datatype to Scheme pointer."""
     if isinstance(val, bool):
         p.b = val
@@ -207,23 +198,23 @@ def _convert_py_value_to_scheme_pointer(
     elif isinstance(val, Symbol):
         p.sym = val.str
     elif isinstance(val, tuple) and len(val) == 2:
-        _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
-        _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
+        _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
+        _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
     elif isinstance(val, list) or isinstance(val, tuple):
         for item in val:
-            _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
+            _convert_py_value_to_scheme_pointer(item, p.list.item.add())
     elif isinstance(val, dict):
         for k, v in val.items():
             item = p.list.item.add()
-            _convert_py_value_to_scheme_pointer(k, item.pair.car, version)
-            _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
+            _convert_py_value_to_scheme_pointer(k, item.pair.car)
+            _convert_py_value_to_scheme_pointer(v, item.pair.cdr)
 
 
-def _convert_scheme_pointer_to_py_list(p: SchemePointer, version: str) -> dict | list:
+def _convert_scheme_pointer_to_py_list(p: SchemePointer) -> dict | list:
     val = []
-    val.append(_convert_scheme_pointer_to_py_value(p.pair.car, version))
+    val.append(_convert_scheme_pointer_to_py_value(p.pair.car))
     if p.pair.cdr.HasField("pair"):
-        tail = _convert_scheme_pointer_to_py_list(p.pair.cdr, version)
+        tail = _convert_scheme_pointer_to_py_list(p.pair.cdr)
         val.extend([tail] if isinstance(tail, dict) else tail)
     if all(
         isinstance(x, dict)
@@ -244,7 +235,7 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer, version: str) -> dict |
     return val
 
 
-def _convert_scheme_pointer_to_py_value(p: SchemePointer, version: str) -> Any:
+def _convert_scheme_pointer_to_py_value(p: SchemePointer) -> Any:
     """Convert Scheme pointer to Python datatype."""
     if p.HasField("b"):
         return p.b
@@ -259,22 +250,19 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version: str) -> Any:
     elif p.HasField("sym"):
         return Symbol(p.sym)
     elif p.HasField("pair"):
-        car = _convert_scheme_pointer_to_py_value(p.pair.car, version)
-        cdr = _convert_scheme_pointer_to_py_value(p.pair.cdr, version)
+        car = _convert_scheme_pointer_to_py_value(p.pair.car)
+        cdr = _convert_scheme_pointer_to_py_value(p.pair.cdr)
         return (car,) if cdr is None else (car, cdr)
     elif p.HasField("list"):
         is_dict = all(item.HasField("pair") for item in p.list.item)
         if is_dict:
             return {
                 _convert_scheme_pointer_to_py_value(
-                    item.pair.car, version
-                ): _convert_scheme_pointer_to_py_value(item.pair.cdr, version)
+                    item.pair.car
+                ): _convert_scheme_pointer_to_py_value(item.pair.cdr)
                 for item in p.list.item
             }
         else:
-            return [
-                _convert_scheme_pointer_to_py_value(item, version)
-                for item in p.list.item
-            ]
+            return [_convert_scheme_pointer_to_py_value(item) for item in p.list.item]
 
     return None

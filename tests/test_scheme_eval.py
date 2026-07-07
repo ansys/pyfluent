@@ -97,7 +97,7 @@ def test_convert_py_value_to_scheme_pointer(
     py_value: Any, json_dict: dict[str, Any]
 ) -> None:
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
     assert MessageToDict(p) == json_dict
 
 
@@ -189,7 +189,7 @@ def test_convert_scheme_pointer_to_py_value(
 ) -> None:
     p = SchemePointer()
     ParseDict(json_dict, p)
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    val = _convert_scheme_pointer_to_py_value(p)
     assert val == py_value
 
 
@@ -204,7 +204,7 @@ def test_convert_scheme_pointer_having_symbol_to_py_value() -> None:
         },
         p,
     )
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    val = _convert_scheme_pointer_to_py_value(p)
     assert isinstance(val, tuple)
     assert len(val) == 2
     assert val[0] == "abc"
@@ -231,16 +231,16 @@ def test_convert_scheme_pointer_having_symbol_to_py_value() -> None:
 )
 def test_two_way_conversion(py_value: Any) -> None:
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
+    val = _convert_scheme_pointer_to_py_value(p)
     assert val == py_value
 
 
 def test_two_way_conversion_for_symbol() -> None:
     py_value = [Symbol("+"), 2.0, 3.0]
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
+    val = _convert_scheme_pointer_to_py_value(p)
     assert isinstance(val, list)
     assert isinstance(val[0], Symbol)
     assert val[0].str == "+"
@@ -250,8 +250,8 @@ def test_two_way_conversion_for_symbol() -> None:
 def test_two_way_conversion_for_pairs() -> None:
     py_value = ("abc", 5.0)
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
+    val = _convert_scheme_pointer_to_py_value(p)
     assert isinstance(val, tuple)
     assert len(val) == 2
     assert val[0] == "abc"

@@ -53,6 +53,7 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
+from ansys.fluent.core.services import ServiceFactory
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
@@ -561,10 +562,12 @@ class FluentConnection:
 
         self._server_supports_v1 = _server_supports_v1(channel=self._channel)
 
-        self._service_factory = GRPCServiceFactory(
-            channel=self._channel,
-            metadata=self._metadata,
-            error_state=self._error_state,
+        self._service_factory = ServiceFactory(
+            grpc_service_factory=GRPCServiceFactory(
+                channel=self._channel,
+                metadata=self._metadata,
+                error_state=self._error_state,
+            ),
         )
 
         self._health_check = self._service_factory.health_check
