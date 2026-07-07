@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""".. _Axial_Fan_Performance_Curve_Workflow
+""".. _Axial_Fan_Performance_Curve_Workflow:
 
 Axial Fan Performance Curve_Workflow
 ========================================================
@@ -43,9 +43,6 @@ Axial Fan Performance Curve_Workflow
 # ![alt text](problem_schematic.png)
 
 # ## Import required libraries and download required files
-
-# In[ ]:
-
 
 import os
 
