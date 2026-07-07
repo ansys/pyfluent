@@ -163,7 +163,6 @@ class service_creator:
 
 from functools import cached_property
 
-from ansys.fluent.core._grpc_services import GRPCServiceFactory
 from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntime,
     ApplicationRuntimeOld,
