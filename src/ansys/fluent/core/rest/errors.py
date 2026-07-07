@@ -23,8 +23,15 @@
 
 import urllib.error
 
+# Gateway error codes that are transient and worth retrying.
 # Lives here because FluentRestError.from_transport is its only consumer.
-_RETRYABLE_STATUS_CODES = frozenset({502, 503, 504})
+_RETRYABLE_STATUS_CODES = frozenset(
+    {
+        502,  # Bad Gateway — upstream server is down or unreachable
+        503,  # Service Unavailable — server is temporarily overloaded or in maintenance
+        504,  # Gateway Timeout — upstream server took too long to respond
+    }
+)
 
 
 class FluentRestError(RuntimeError):

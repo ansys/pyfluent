@@ -120,7 +120,10 @@ class HttpRequestStrategy:
         self._headers = _make_auth_headers(auth_token)
 
     # ------------------------------------------------------------------
-    # Internal plumbing
+    # HTTP request execution with retry logic
+    # ------------------------------------------------------------------
+    # Flow: request() → _send_with_retry() → _send() → _send_once()
+    #       Retry logic     Error handling   HTTP call  Parse response
     # ------------------------------------------------------------------
 
     def _build_request(
@@ -139,6 +142,11 @@ class HttpRequestStrategy:
         )
 
     def _send_once(self, req: urllib.request.Request) -> Any:
+        """Execute HTTP request once without retry; parse response body.
+
+        Returns ``None`` for empty responses, ``{}`` for non-JSON bodies.
+        Lets ``OSError`` propagate (handled by ``_send``).
+        """
         with urllib.request.urlopen(  # nosec B310
             req, timeout=self._timeout, context=self._ssl_context
         ) as resp:
@@ -148,26 +156,38 @@ class HttpRequestStrategy:
             try:
                 return json.loads(raw)
             except json.JSONDecodeError:
+                # Server sent a 2xx response but with non-JSON body (e.g., HTML error page).
+                # Return empty dict as safe fallback; downstream expects a dict, not bytes.
+                # This prevents crashes on malformed successful responses.
                 return {}
 
     def _send(self, req: urllib.request.Request) -> Any:
+        """Execute HTTP request and convert transport errors to FluentRestError.
+
+        Translates ``urllib`` exceptions (HTTPError, URLError, socket errors)
+        into domain exceptions with proper ``retryable`` classification.
+        """
         try:
             return self._send_once(req)
         except OSError as exc:
             raise FluentRestError.from_transport(exc) from exc
 
-    def _back_off(self, attempt: int) -> None:
-        time.sleep(self._retry_delay * (2**attempt))
-
     def _send_with_retry(self, req: urllib.request.Request, retries: int) -> Any:
+        """Execute HTTP request with exponential backoff retry on transient failures.
+
+        Retries only on retryable exceptions (502/503/504 or connection errors).
+        Non-retryable errors (4xx, 5xx non-gateway) raise immediately.
+        """
         attempt = 0
         while True:
             try:
                 return self._send(req)
             except FluentRestError as exc:
+                # Retry only if error is transient AND we haven't exhausted retries
                 if not exc.retryable or attempt >= retries:
                     raise
-                self._back_off(attempt)
+                # Exponential backoff: 1s, 2s, 4s, 8s, ...
+                time.sleep(self._retry_delay * (2**attempt))
                 attempt += 1
 
     # ------------------------------------------------------------------
