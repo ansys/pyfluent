@@ -55,7 +55,7 @@ Class hierarchy
 from functools import wraps
 from typing import Any
 
-from ansys.fluent.core.services.abstract_setting import AbstractSettings
+from ansys.fluent.core.services.abstract_settings import AbstractSettings
 
 trace: bool = False
 _indent: int = 0
