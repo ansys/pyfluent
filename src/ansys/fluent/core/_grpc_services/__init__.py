@@ -44,6 +44,10 @@ from ansys.fluent.core._grpc_services.health_check_service import HealthCheckSer
 from ansys.fluent.core._grpc_services.health_check_service_v0 import (
     HealthCheckService as HealthCheckServiceV0,
 )
+from ansys.fluent.core._grpc_services.object_model_service import ObjectModelService
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    ObjectModelService as ObjectModelServiceV0,
+)
 from ansys.fluent.core._grpc_services.reduction_service import ReductionService
 from ansys.fluent.core._grpc_services.reduction_service_v0 import (
     ReductionService as ReductionServiceV0,

@@ -207,15 +207,7 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = service_creator(
-            "datamodel", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self.get_fluent_version(),
-            self._error_state,
-            self._file_transfer_service,
-        )
+        self._datamodel_service_se = fluent_connection._service_factory.object_model
 
         self._datamodel_events = (
             DatamodelEvents(self._datamodel_service_se)
@@ -265,7 +257,7 @@ class BaseSession:
             self._datamodel_service_se.unsubscribe_all_events
         )
         self._fluent_connection.register_finalizer_cb(
-            self._datamodel_service_se.delete_all_command_arguments
+            self._datamodel_service_se._service.delete_all_command_arguments
         )
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)

@@ -36,7 +36,7 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyArguments,
     PyArgumentsSingletonSubItem,
     PyArgumentsTextualSubItem,

@@ -36,7 +36,7 @@ import warnings
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
 )
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyArgumentsSingletonSubItem,
     PyCallableStateObject,
     PyCommand,
