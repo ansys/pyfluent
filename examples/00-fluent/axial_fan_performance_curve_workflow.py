@@ -3,12 +3,12 @@
 
 # # Axial Fan Performance Curve Workflow
 
-# ### Contributors: Mustafa Kaddoura, Achilleas Krikas 
-# ### Product Version: Ansys Fluent 2026 R1   
+# ### Contributors: Mustafa Kaddoura, Achilleas Krikas
+# ### Product Version: Ansys Fluent 2026 R1
 
 # ## Overview
 # The axial fan performance curve workflow demonstrates basic end to end comprehensive solution for simulating an axial fan and constructing its performance curve. This example also demonstrate using Python APIs capabilities to setup complex workflows and to run parametric studies.
-# 
+#
 # This workflow includes:
 # - Importing a CFD mesh
 # - Creating input parameters
@@ -16,7 +16,7 @@
 # - Creating report definitions and output parameters
 # - Initiating and running a parametric study.
 # - Plotting fan performance curve.
-# 
+#
 # ![alt text](problem_schematic.png)
 
 # ## Import required libraries and download required files
@@ -25,8 +25,9 @@
 
 
 import os
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -48,10 +49,10 @@ from ansys.fluent.core import examples
 
 solver = pyfluent.launch_fluent(
     mode="solver",
-    processor_count = 8,
+    processor_count=8,
     precision="double",
-    ui_mode='gui',
-    cleanup_on_exit=True
+    ui_mode="gui",
+    cleanup_on_exit=True,
 )
 
 
@@ -62,12 +63,12 @@ solver = pyfluent.launch_fluent(
 # In[ ]:
 
 
-#### DELETE THESE LINES IF DOWNLOADING THE MESH FILE FROM THE EXAMPLES DIRECTORY
-# import mesh file from local dirctory
-import_file_name = r'D:\generic_fan_case\Pyfluent\PyFluent_Example_Sharable\axial_fan_case\axial_fan.msh.h5'
-###########################
+# DELETE THESE LINES IF DOWNLOADING THE MESH FILE FROM THE EXAMPLES DIRECTORY
+# import mesh file from local directory
+import_file_name = r"D:\generic_fan_case\Pyfluent\PyFluent_Example_Sharable\axial_fan_case\axial_fan.msh.h5"
+# ##########################
 
-solver.settings.file.read_mesh(file_name = import_file_name)
+solver.settings.file.read_mesh(file_name=import_file_name)
 solver.settings.mesh.check()
 
 
@@ -80,13 +81,15 @@ solver.settings.mesh.check()
 
 # Create a named expression to parameterize the pressure outlet value
 solver.settings.setup.named_expressions.create(name="pressure_outlet")
-solver.settings.setup.named_expressions['pressure_outlet'].definition = '0 [Pa]'
-solver.settings.setup.named_expressions['pressure_outlet'].input_parameter = True
+solver.settings.setup.named_expressions["pressure_outlet"].definition = "0 [Pa]"
+solver.settings.setup.named_expressions["pressure_outlet"].input_parameter = True
 
 # Create a named expression to parameterize the rotational speed value
-solver.settings.setup.named_expressions.create(name = 'rotational_speed')
-solver.settings.setup.named_expressions['rotational_speed'].definition = '155.534 [rad/s]'
-solver.settings.setup.named_expressions['rotational_speed'].input_parameter = True
+solver.settings.setup.named_expressions.create(name="rotational_speed")
+solver.settings.setup.named_expressions["rotational_speed"].definition = (
+    "155.534 [rad/s]"
+)
+solver.settings.setup.named_expressions["rotational_speed"].input_parameter = True
 
 
 # ## Solver setup
@@ -97,10 +100,10 @@ solver.settings.setup.named_expressions['rotational_speed'].input_parameter = Tr
 
 
 # General: Solver Type: Pressure-Based
-solver.settings.setup.general.solver.type = 'pressure-based'
+solver.settings.setup.general.solver.type = "pressure-based"
 
 # General: Time: Steady State
-solver.settings.setup.general.solver.time = 'steady'
+solver.settings.setup.general.solver.time = "steady"
 
 # General: activate gravity
 solver.settings.setup.general.operating_conditions.gravity.enable = True
@@ -114,11 +117,11 @@ solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 
 # In[30]:
 
 
-solver.settings.setup.models.viscous.model = 'k-omega'
-solver.settings.setup.models.viscous.k_omega_model = 'sst'
-solver.settings.setup.models.viscous.options.curvature_correction.enabled= True
+solver.settings.setup.models.viscous.model = "k-omega"
+solver.settings.setup.models.viscous.k_omega_model = "sst"
+solver.settings.setup.models.viscous.options.curvature_correction.enabled = True
 solver.settings.setup.models.viscous.options.production_kato_launder_enabled = True
-solver.settings.setup.models.viscous.options.production_limiter.enabled='True'
+solver.settings.setup.models.viscous.options.production_limiter.enabled = "True"
 
 
 # ## Cell Zones
@@ -129,15 +132,25 @@ solver.settings.setup.models.viscous.options.production_limiter.enabled='True'
 
 
 # Activate MRF model for the 'rotating fan' zone
-solver.settings.setup.cell_zone_conditions.fluid['rotating-fan'].reference_frame.frame_motion = True
+solver.settings.setup.cell_zone_conditions.fluid[
+    "rotating-fan"
+].reference_frame.frame_motion = True
 
 # Assign the rotational speed value to the MRF angular velocity parameter
-solver.settings.setup.cell_zone_conditions.fluid['rotating-fan'].reference_frame.mrf_omega.value = 'rotational_speed'
+solver.settings.setup.cell_zone_conditions.fluid[
+    "rotating-fan"
+].reference_frame.mrf_omega.value = "rotational_speed"
 
 # rotating fan zone: Specify Rotation-Axis Direction (X, Y, Z): [0,1,0] for Y-axis rotation
-solver.settings.setup.cell_zone_conditions.fluid['rotating-fan'].reference_frame.reference_frame_axis_direction[0].value = 0
-solver.settings.setup.cell_zone_conditions.fluid['rotating-fan'].reference_frame.reference_frame_axis_direction[1].value = 1
-solver.settings.setup.cell_zone_conditions.fluid['rotating-fan'].reference_frame.reference_frame_axis_direction[2].value = 0
+solver.settings.setup.cell_zone_conditions.fluid[
+    "rotating-fan"
+].reference_frame.reference_frame_axis_direction[0].value = 0
+solver.settings.setup.cell_zone_conditions.fluid[
+    "rotating-fan"
+].reference_frame.reference_frame_axis_direction[1].value = 1
+solver.settings.setup.cell_zone_conditions.fluid[
+    "rotating-fan"
+].reference_frame.reference_frame_axis_direction[2].value = 0
 
 
 # ## Boundary conditions
@@ -150,18 +163,38 @@ solver.settings.setup.cell_zone_conditions.fluid['rotating-fan'].reference_frame
 
 
 # Boundary conditions: 'inlet' boundary: type: Pressure Inlet
-solver.settings.setup.boundary_conditions.set_zone_type(new_type = 'pressure-inlet', zone_list = ['inlet'])
-solver.settings.setup.boundary_conditions.pressure_inlet['inlet'].momentum.gauge_total_pressure.value = 0
-solver.settings.setup.boundary_conditions.pressure_inlet['inlet'].turbulence.turbulence_specification = 'Intensity and Viscosity Ratio'
-solver.settings.setup.boundary_conditions.pressure_inlet['inlet'].turbulence.turbulent_intensity = 0.05
-solver.settings.setup.boundary_conditions.pressure_inlet['inlet'].turbulence.turbulent_viscosity_ratio = 10
+solver.settings.setup.boundary_conditions.set_zone_type(
+    new_type="pressure-inlet", zone_list=["inlet"]
+)
+solver.settings.setup.boundary_conditions.pressure_inlet[
+    "inlet"
+].momentum.gauge_total_pressure.value = 0
+solver.settings.setup.boundary_conditions.pressure_inlet[
+    "inlet"
+].turbulence.turbulence_specification = "Intensity and Viscosity Ratio"
+solver.settings.setup.boundary_conditions.pressure_inlet[
+    "inlet"
+].turbulence.turbulent_intensity = 0.05
+solver.settings.setup.boundary_conditions.pressure_inlet[
+    "inlet"
+].turbulence.turbulent_viscosity_ratio = 10
 
 # Boundary conditions: 'pressure-outlet' boundary: type: Pressure Outlet
-solver.settings.setup.boundary_conditions.set_zone_type(new_type = 'pressure-outlet', zone_list = ['pressure-outlet'])
-solver.settings.setup.boundary_conditions.pressure_outlet['pressure-outlet'].momentum.gauge_pressure.value = 'pressure_outlet'
-solver.settings.setup.boundary_conditions.pressure_outlet['pressure-outlet'].turbulence.turbulence_specification = 'Intensity and Viscosity Ratio'
-solver.settings.setup.boundary_conditions.pressure_outlet['pressure-outlet'].turbulence.turbulent_intensity = 0.05
-solver.settings.setup.boundary_conditions.pressure_outlet['pressure-outlet'].turbulence.turbulent_viscosity_ratio = 10
+solver.settings.setup.boundary_conditions.set_zone_type(
+    new_type="pressure-outlet", zone_list=["pressure-outlet"]
+)
+solver.settings.setup.boundary_conditions.pressure_outlet[
+    "pressure-outlet"
+].momentum.gauge_pressure.value = "pressure_outlet"
+solver.settings.setup.boundary_conditions.pressure_outlet[
+    "pressure-outlet"
+].turbulence.turbulence_specification = "Intensity and Viscosity Ratio"
+solver.settings.setup.boundary_conditions.pressure_outlet[
+    "pressure-outlet"
+].turbulence.turbulent_intensity = 0.05
+solver.settings.setup.boundary_conditions.pressure_outlet[
+    "pressure-outlet"
+].turbulence.turbulent_viscosity_ratio = 10
 
 
 # ## Solution methods and controls
@@ -172,18 +205,26 @@ solver.settings.setup.boundary_conditions.pressure_outlet['pressure-outlet'].tur
 
 
 # Solution methods
-solver.settings.solution.methods.p_v_coupling.flow_scheme = 'SIMPLEC'
-solver.settings.solution.methods.spatial_discretization.discretization_scheme['pressure'] = 'presto!'
-solver.settings.solution.methods.spatial_discretization.discretization_scheme['mom'] = 'first-order-upwind'
-solver.settings.solution.methods.spatial_discretization.discretization_scheme['k'] = 'first-order-upwind'
-solver.settings.solution.methods.spatial_discretization.discretization_scheme['omega'] = 'first-order-upwind'
+solver.settings.solution.methods.p_v_coupling.flow_scheme = "SIMPLEC"
+solver.settings.solution.methods.spatial_discretization.discretization_scheme[
+    "pressure"
+] = "presto!"
+solver.settings.solution.methods.spatial_discretization.discretization_scheme["mom"] = (
+    "first-order-upwind"
+)
+solver.settings.solution.methods.spatial_discretization.discretization_scheme["k"] = (
+    "first-order-upwind"
+)
+solver.settings.solution.methods.spatial_discretization.discretization_scheme[
+    "omega"
+] = "first-order-upwind"
 
 # Solution controls: Under-relaxation factors
-solver.settings.solution.controls.under_relaxation['pressure'] = 0.3
-solver.settings.solution.controls.under_relaxation['mom'] = 0.7
-solver.settings.solution.controls.under_relaxation['k'] = 0.6
-solver.settings.solution.controls.under_relaxation['omega'] = 0.6
-solver.settings.solution.controls.under_relaxation['turb-viscosity'] = 0.8
+solver.settings.solution.controls.under_relaxation["pressure"] = 0.3
+solver.settings.solution.controls.under_relaxation["mom"] = 0.7
+solver.settings.solution.controls.under_relaxation["k"] = 0.6
+solver.settings.solution.controls.under_relaxation["omega"] = 0.6
+solver.settings.solution.controls.under_relaxation["turb-viscosity"] = 0.8
 
 
 # ## Create report definitions and output parameters
@@ -194,42 +235,82 @@ solver.settings.solution.controls.under_relaxation['turb-viscosity'] = 0.8
 
 
 # Report definition: Inlet volume flow rate
-solver.settings.solution.report_definitions.surface.create(name = 'inlet-volume-flow-rate')
-solver.settings.solution.report_definitions.surface['inlet-volume-flow-rate'] = {'report_type' : 'surface-volumeflowrate'}
-solver.settings.solution.report_definitions.surface['inlet-volume-flow-rate'].surface_names = ['inlet']
-solver.settings.solution.report_definitions.surface['inlet-volume-flow-rate'].create_report_file = True
-solver.settings.solution.report_definitions.surface['inlet-volume-flow-rate'].create_report_plot = True
-solver.settings.solution.report_definitions.surface['inlet-volume-flow-rate'].output_parameter = True
+solver.settings.solution.report_definitions.surface.create(
+    name="inlet-volume-flow-rate"
+)
+solver.settings.solution.report_definitions.surface["inlet-volume-flow-rate"] = {
+    "report_type": "surface-volumeflowrate"
+}
+solver.settings.solution.report_definitions.surface[
+    "inlet-volume-flow-rate"
+].surface_names = ["inlet"]
+solver.settings.solution.report_definitions.surface[
+    "inlet-volume-flow-rate"
+].create_report_file = True
+solver.settings.solution.report_definitions.surface[
+    "inlet-volume-flow-rate"
+].create_report_plot = True
+solver.settings.solution.report_definitions.surface[
+    "inlet-volume-flow-rate"
+].output_parameter = True
 
 # Report definition: Outlet static pressure  (Ps,out)
-solver.settings.solution.report_definitions.surface.create(name = 'p_static_out')
-solver.settings.solution.report_definitions.surface['p_static_out'] = {'report_type' : 'surface-areaavg'}
-solver.settings.solution.report_definitions.surface['p_static_out'].surface_names = ['pressure-outlet']
-solver.settings.solution.report_definitions.surface['p_static_out'].create_report_file = True
-solver.settings.solution.report_definitions.surface['p_static_out'].create_report_plot = True
+solver.settings.solution.report_definitions.surface.create(name="p_static_out")
+solver.settings.solution.report_definitions.surface["p_static_out"] = {
+    "report_type": "surface-areaavg"
+}
+solver.settings.solution.report_definitions.surface["p_static_out"].surface_names = [
+    "pressure-outlet"
+]
+solver.settings.solution.report_definitions.surface[
+    "p_static_out"
+].create_report_file = True
+solver.settings.solution.report_definitions.surface[
+    "p_static_out"
+].create_report_plot = True
 
 # Report definition: Inlet total pressure (Pt,in)
-solver.settings.solution.report_definitions.surface.create(name = 'p_total_in')
-solver.settings.solution.report_definitions.surface['p_total_in'] = {'report_type' : 'surface-areaavg'}
-solver.settings.solution.report_definitions.surface['p_total_in'].field = 'total-pressure'
-solver.settings.solution.report_definitions.surface['p_total_in'].surface_names = ['inlet']
-solver.settings.solution.report_definitions.surface['p_total_in'].create_report_file = True
+solver.settings.solution.report_definitions.surface.create(name="p_total_in")
+solver.settings.solution.report_definitions.surface["p_total_in"] = {
+    "report_type": "surface-areaavg"
+}
+solver.settings.solution.report_definitions.surface["p_total_in"].field = (
+    "total-pressure"
+)
+solver.settings.solution.report_definitions.surface["p_total_in"].surface_names = [
+    "inlet"
+]
+solver.settings.solution.report_definitions.surface["p_total_in"].create_report_file = (
+    True
+)
 
 # Report definition: Total-to-static pressure difference: Pts = Ps,out - Pt,in
-solver.settings.solution.report_definitions.single_valued_expression.create(name = 'total-to-static-pressure')
-solver.settings.solution.report_definitions.single_valued_expression['total-to-static-pressure'].definition = '{p_static_out}-{p_total_in}'
-solver.settings.solution.report_definitions.single_valued_expression['total-to-static-pressure'].output_parameter = True
-solver.settings.solution.report_definitions.single_valued_expression['total-to-static-pressure'].create_report_file = True
-solver.settings.solution.report_definitions.single_valued_expression['total-to-static-pressure'].create_report_plot = True
+solver.settings.solution.report_definitions.single_valued_expression.create(
+    name="total-to-static-pressure"
+)
+solver.settings.solution.report_definitions.single_valued_expression[
+    "total-to-static-pressure"
+].definition = "{p_static_out}-{p_total_in}"
+solver.settings.solution.report_definitions.single_valued_expression[
+    "total-to-static-pressure"
+].output_parameter = True
+solver.settings.solution.report_definitions.single_valued_expression[
+    "total-to-static-pressure"
+].create_report_file = True
+solver.settings.solution.report_definitions.single_valued_expression[
+    "total-to-static-pressure"
+].create_report_plot = True
 
 # Report definition: Torque
-solver.settings.solution.report_definitions.moment.create(name = 'torque')
-solver.settings.solution.report_definitions.moment['torque'] = {'report_type' : 'moment'}
-solver.settings.solution.report_definitions.moment['torque'].report_output_type = 'Moment'
-solver.settings.solution.report_definitions.moment['torque'].zones = ['fan-walls']
-solver.settings.solution.report_definitions.moment['torque'].create_report_file = True
-solver.settings.solution.report_definitions.moment['torque'].create_report_plot = True
-solver.settings.solution.report_definitions.moment['torque'].output_parameter = True
+solver.settings.solution.report_definitions.moment.create(name="torque")
+solver.settings.solution.report_definitions.moment["torque"] = {"report_type": "moment"}
+solver.settings.solution.report_definitions.moment["torque"].report_output_type = (
+    "Moment"
+)
+solver.settings.solution.report_definitions.moment["torque"].zones = ["fan-walls"]
+solver.settings.solution.report_definitions.moment["torque"].create_report_file = True
+solver.settings.solution.report_definitions.moment["torque"].create_report_plot = True
+solver.settings.solution.report_definitions.moment["torque"].output_parameter = True
 
 
 # ## Set the number of iterations for the calculation and enable convergence condition check
@@ -288,29 +369,41 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 
 
 # Add four more design points to the parametric study
-solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(write_data=False, capture_simulation_report_data=True)
-solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(write_data=False, capture_simulation_report_data=True)
-solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(write_data=False, capture_simulation_report_data=True)
-solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(write_data=False, capture_simulation_report_data=True)
+solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(
+    write_data=False, capture_simulation_report_data=True
+)
+solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(
+    write_data=False, capture_simulation_report_data=True
+)
+solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(
+    write_data=False, capture_simulation_report_data=True
+)
+solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(
+    write_data=False, capture_simulation_report_data=True
+)
 
 # Update input parameters for the new design points
 solver.settings.parametric_studies["axial_fan-Solve"].design_points[
-    "DP1"].input_parameters = {
+    "DP1"
+].input_parameters = {
     "pressure_outlet": 50,
     "rotational_speed": 155.534,
 }
 solver.settings.parametric_studies["axial_fan-Solve"].design_points[
-    "DP2"].input_parameters = {
+    "DP2"
+].input_parameters = {
     "pressure_outlet": 125,
     "rotational_speed": 155.534,
 }
 solver.settings.parametric_studies["axial_fan-Solve"].design_points[
-    "DP3"].input_parameters = {
+    "DP3"
+].input_parameters = {
     "pressure_outlet": 150,
     "rotational_speed": 155.534,
 }
 solver.settings.parametric_studies["axial_fan-Solve"].design_points[
-    "DP4"].input_parameters = {
+    "DP4"
+].input_parameters = {
     "pressure_outlet": 200,
     "rotational_speed": 155.534,
 }
@@ -326,7 +419,7 @@ solver.settings.file.parametric_project.save()
 
 # ## Update all design points
 
-# Update all design points by running the CFD simulation for every design point. 
+# Update all design points by running the CFD simulation for every design point.
 
 # In[41]:
 
@@ -351,7 +444,7 @@ solver.settings.file.parametric_project.save()
 
 # parametric_table_save_path = os.path.join(working_directory, 'design_point_table_study.csv')
 solver.settings.parametric_studies.export_design_table(
-    filepath = '../../../design_point_table_study.csv'
+    filepath="../../../design_point_table_study.csv"
 )
 
 
@@ -363,8 +456,8 @@ solver.settings.parametric_studies.export_design_table(
 
 
 # Load the design point study results data from the CSV file
-file = 'design_point_table_study.csv'
-data = np.loadtxt(file, delimiter=',', skiprows=2, usecols=range(1,6))
+file = "design_point_table_study.csv"
+data = np.loadtxt(file, delimiter=",", skiprows=2, usecols=range(1, 6))
 
 # Plot the results data
 plt.plot(data[:, 2], data[:, 4], "-o")
@@ -387,4 +480,3 @@ plt.show()
 
 
 solver.exit()
-
