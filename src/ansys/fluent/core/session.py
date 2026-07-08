@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,9 +56,6 @@ from ansys.fluent.core.services import (
     FieldDataStreamingV0,
     LiveFieldData,
     LiveFieldDataV0,
-    SchemeEval,
-    SettingsService,
-    SettingsServiceV0,
     SolutionVariableData,
     SolutionVariableService,
     TranscriptService,
@@ -67,7 +65,7 @@ from ansys.fluent.core.services import (
     _FieldInfoV0,
     service_creator,
 )
-from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -128,17 +126,6 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
-class _AppUtilitiesFactory:
-    """AppUtilities factory."""
-
-    @staticmethod
-    def _create_app_utilities(scheme_eval, fluent_connection):
-        if FluentVersion(scheme_eval.version) < FluentVersion.v252:
-            return AppUtilitiesOld(scheme_eval)
-        else:
-            return fluent_connection._connection_interface._app_utilities
-
-
 class BaseSession:
     """Encapsulates a Fluent session.
 
@@ -146,8 +133,8 @@ class BaseSession:
 
     Attributes
     ----------
-    scheme: SchemeEval
-        Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+    scheme: SchemeInterpreter
+        Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
 
     Methods
     -------
@@ -164,7 +151,7 @@ class BaseSession:
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
@@ -177,8 +164,8 @@ class BaseSession:
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
-        scheme_eval: SchemeEval
-            Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+        scheme_eval: SchemeInterpreter
+            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
@@ -215,7 +202,7 @@ class BaseSession:
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
@@ -241,11 +228,9 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
-        self._app_utilities = _AppUtilitiesFactory._create_app_utilities(
-            self.scheme, self._fluent_connection
-        )
+        self.application_runtime = self._fluent_connection.application_runtime
 
-        self.journal = Journal(self._app_utilities)
+        self.journal = Journal(self.application_runtime)
 
         self._datamodel_service_tui = service_creator(
             "tui", supports_v1=fluent_connection._server_supports_v1
@@ -253,7 +238,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
-            self._app_utilities,
+            self.application_runtime,
             self.scheme,
         )
 
@@ -288,7 +273,6 @@ class BaseSession:
                     events_service,
                     self._error_state,
                     weakref.proxy(self),
-                    server_supports_v1=True,
                 )
             else:
                 self.events = EventsManagerV0[event_type](
@@ -296,7 +280,6 @@ class BaseSession:
                     events_service,
                     self._error_state,
                     weakref.proxy(self),
-                    server_supports_v1=False,
                 )
             self.events.start()
         else:
@@ -315,15 +298,7 @@ class BaseSession:
             self, get_zones_info, fluent_connection._server_supports_v1
         )
 
-        self._settings_service = service_creator(
-            "settings", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self._app_utilities,
-            self.scheme,
-            self._error_state,
-        )
+        self._settings_service = fluent_connection._service_factory.settings
 
         self._health_check = fluent_connection._health_check
         self.connection_properties = fluent_connection.connection_properties
@@ -447,7 +422,7 @@ class BaseSession:
         )
         session = cls(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
@@ -576,7 +551,7 @@ class BaseSession:
         path : os.PathLike[str | bytes] | str | bytes
             Path of the directory to change.
         """
-        self._app_utilities.set_working_directory(os.fspath(path))
+        self.application_runtime.set_working_directory(os.fspath(path))
 
     def __enter__(self):
         return self
@@ -607,11 +582,11 @@ class BaseSession:
 
     def enable_beta_features(self):
         """Enable access to Fluent beta-features"""
-        self._app_utilities.enable_beta()
+        self.application_runtime.enable_beta()
 
     @property
     def _is_beta_enabled(self):
-        return self._app_utilities.is_beta_enabled()
+        return self.application_runtime.is_beta_enabled()
 
 
 class Fields:
@@ -624,31 +599,44 @@ class Fields:
         server_supports_v1: bool = False,
     ):
         """Initialize Fields."""
-        self._is_solution_data_valid = (
-            _session._app_utilities.is_solution_data_available
-        )
-        self._field_info = service_creator(
-            "field_info", supports_v1=server_supports_v1
-        ).create(
-            _session._field_data_service,
-            self._is_solution_data_valid,
-        )
-        self.field_data = service_creator(
-            "field_data", supports_v1=server_supports_v1
-        ).create(
-            _session._field_data_service,
-            self._field_info,
-            self._is_solution_data_valid,
-            _session.scheme,
-            get_zones_info,
-        )
+        if server_supports_v1:
+            self._field_info = service_creator(
+                "field_info", supports_v1=server_supports_v1
+            ).create(_session._field_data_service)
+            self.field_data = service_creator(
+                "field_data", supports_v1=server_supports_v1
+            ).create(
+                _session._field_data_service,
+                self._field_info,
+                _session.scheme,
+                get_zones_info,
+            )
+        else:
+            self._is_solution_data_valid = (
+                _session.application_runtime.is_solution_data_available
+            )
+            self._field_info = service_creator(
+                "field_info", supports_v1=server_supports_v1
+            ).create(
+                _session._field_data_service,
+                self._is_solution_data_valid,
+            )
+            self.field_data = service_creator(
+                "field_data", supports_v1=server_supports_v1
+            ).create(
+                _session._field_data_service,
+                self._field_info,
+                self._is_solution_data_valid,
+                _session.scheme,
+                get_zones_info,
+            )
         self.field_data_streaming = service_creator(
             "field_data_streaming", supports_v1=server_supports_v1
         ).create(_session._fluent_connection._id, _session._field_data_service)
         self.field_data_old = service_creator("field_data_old").create(
             _session._field_data_service,
             self._field_info,
-            self._is_solution_data_valid,
+            self.field_data.is_data_valid,
             _session.scheme,
         )
 
