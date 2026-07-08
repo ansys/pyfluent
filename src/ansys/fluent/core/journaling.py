@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,16 +41,10 @@ class Journal:
         """__init__ method of Journal class."""
         self._app_utilities = app_utilities
 
-    def _check_python_journaling_support(self):
-        if self._app_utilities.get_product_version() == "22.2.0":
-            raise PythonJournalNotSupported()
-
     def start(self, file_name: str):
         """Start writing a Fluent Python journal at the specified file_name."""
-        self._check_python_journaling_support()
         self._app_utilities.start_python_journal(journal_name=file_name)
 
     def stop(self):
         """Stop writing the Fluent Python journal."""
-        self._check_python_journaling_support()
         self._app_utilities.stop_python_journal()

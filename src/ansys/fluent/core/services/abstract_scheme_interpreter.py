@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,24 +20,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the health check gRPC service of Fluent (v1 proto API).
+"""Abstract scheme interpreter wrapper."""
 
-All shared logic lives in health_check.py (grpc-health API). This module keeps
-only v1-specific proto construction.
-"""
-
-from ansys.api.fluent.v1 import health_pb2 as HealthCheckModule
-from ansys.api.fluent.v1 import health_pb2_grpc as HealthCheckGrpcModule
-from ansys.fluent.core.services.health_check import HealthCheckService as _HealthCheckV0
+from abc import ABC, abstractmethod
+from typing import Any, Sequence
 
 
-class HealthCheckService(_HealthCheckV0):
-    """Class wrapping the health check gRPC service of Fluent (v1 proto API)."""
+class AbstractSchemeInterpreter(ABC):
+    """Abstract base class for the scheme interpreter."""
 
-    def _create_stub(self, intercept_channel):
-        """Create the v1 gRPC stub."""
-        return HealthCheckGrpcModule.HealthStub(intercept_channel)
+    @abstractmethod
+    def _eval(self, val: Any, suppress_prompts: bool = True) -> Any:
+        """Evaluates a scheme expression."""
+        pass
 
-    def _create_health_check_request(self):
-        """Create a v1 health-check request."""
-        return HealthCheckModule.HealthCheckRequest()
+    @abstractmethod
+    def exec(
+        self,
+        commands: Sequence[str],
+        wait: bool = True,
+        silent: bool = True,
+    ) -> str:
+        """Executes a sequence of scheme commands."""
+        pass
+
+    @abstractmethod
+    def string_eval(self, input: str) -> str:
+        """Evaluates a scheme expression in string format."""
+        pass
+
+    @abstractmethod
+    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+        """Evaluates a scheme expression in string format."""
+        pass
