@@ -1,5 +1,6 @@
-# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -71,6 +72,14 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 ###############################################################################
 # .. image:: ../../_static/lunar_lander_thermal_setup.png
 #   :align: center
+
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# matplotlib
+# numpy
+# pandas
 
 ###############################################################################
 # Preliminary Setup

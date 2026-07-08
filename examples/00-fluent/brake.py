@@ -1,5 +1,6 @@
-# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,6 +37,13 @@ This example demonstrates:
 * Post processing using PyVista (3D Viewer) and Matplotlib (2D graphs)
 
 """
+
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# ansys-fluent-visualization
+# matplotlib
 
 ####################################################################################
 # Import required libraries/modules
