@@ -387,7 +387,7 @@ def _download_nltk_data():
     else:
         ssl._create_default_https_context = _create_unverified_context
 
-    packages = ["wordnet", "omw-1.4"]
+    packages = ["wordnet", "omw-2.0"]
     for package in packages:
         nltk.download(
             package,

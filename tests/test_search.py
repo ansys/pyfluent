@@ -42,7 +42,7 @@ from ansys.fluent.core.search import (
 def test_nltk_data_download():
     import nltk
 
-    packages = ["wordnet", "omw-1.4"]
+    packages = ["wordnet", "omw-2.0"]
     for package in packages:
         nltk.download(package, quiet=True)
 
