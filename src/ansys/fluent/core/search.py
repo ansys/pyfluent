@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -386,7 +387,7 @@ def _download_nltk_data():
     else:
         ssl._create_default_https_context = _create_unverified_context
 
-    packages = ["wordnet", "omw-1.4"]
+    packages = ["wordnet", "omw-2.0"]
     for package in packages:
         nltk.download(
             package,

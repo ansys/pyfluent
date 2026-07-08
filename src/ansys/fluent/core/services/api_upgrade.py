@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +25,7 @@
 
 from typing import TypeVar
 
-from ansys.fluent.core.services.app_utilities import AppUtilities
+from ansys.fluent.core.services.application_runtime import ApplicationRuntime
 
 _TApiUpgradeAdvisor = TypeVar("_TApiUpgradeAdvisor", bound="ApiUpgradeAdvisor")
 
@@ -34,7 +35,7 @@ class ApiUpgradeAdvisor:
 
     def __init__(
         self,
-        app_utilities: AppUtilities,
+        app_utilities: ApplicationRuntime,
         version: str,
         mode: str,
     ) -> None:
