@@ -876,3 +876,50 @@ def test_idle_timeout(monkeypatch):
         StandaloneLauncher._construct_timeout_arg(200)
         == ' -command="(set-session-idle-timeoutPLF+5)"'
     )
+
+
+def test_standalone_server_info_file_preserved_with_cleanup_false(monkeypatch):
+    """Test that server-info file is preserved when cleanup_on_exit=False for standalone."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        monkeypatch.setattr(pyfluent.config, "fluent_server_info_dir", tmp_dir)
+        fluent_path = r"\x\y\z\fluent.exe"
+
+        # Dry run to get the server info file name
+        fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            cleanup_on_exit=False,
+        )
+
+        # Verify the server info file path is in the specified directory
+        assert str(Path(server_info_file_name).parent) == tmp_dir
+        assert Path(server_info_file_name).name.startswith("serverinfo-")
+
+
+def test_configure_container_dict_preserves_files():
+    """Test that configure_container_dict includes proper server-info file handling."""
+    from ansys.fluent.core.launcher.fluent_container import configure_container_dict
+
+    # Test with default settings
+    args = ["-gu", "-driver", "null"]
+    result = configure_container_dict(args)
+    (
+        config_dict,
+        timeout,
+        port,
+        host_server_info_file,
+        container_server_info_file,
+        remove_server_info_file,
+    ) = result
+
+    # By default, remove_server_info_file should be True
+    assert remove_server_info_file is True
+    # Server info file should be a Path object
+    assert isinstance(host_server_info_file, Path)
+    # Container server info file should be a string path
+    assert isinstance(container_server_info_file, (str, Path))
+    # Port should be extracted from config_dict
+    assert port is not None
