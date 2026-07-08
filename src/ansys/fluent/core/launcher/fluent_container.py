@@ -476,6 +476,7 @@ def start_fluent_container(
     container_dict: dict | None = None,
     start_timeout: int = 100,
     compose_config: ComposeConfig | None = None,
+    cleanup_on_exit: bool = True,
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
 
@@ -490,6 +491,9 @@ def start_fluent_container(
         seconds.
     compose_config : ComposeConfig, optional
         Configuration for Docker Compose, if using Docker Compose to launch the container.
+    cleanup_on_exit : bool, optional
+        If True, the server-info file will be deleted when the container starts.
+        If False, the server-info file will be preserved for debugging. Defaults to True.
 
     Returns
     -------
@@ -606,5 +610,9 @@ def start_fluent_container(
         logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
         raise LaunchFluentError(launch_string) from ex
     finally:
-        if remove_server_info_file and host_server_info_file.exists():
+        if (
+            remove_server_info_file
+            and cleanup_on_exit
+            and host_server_info_file.exists()
+        ):
             host_server_info_file.unlink()
