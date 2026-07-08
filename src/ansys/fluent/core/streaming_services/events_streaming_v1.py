@@ -34,7 +34,6 @@ import ansys.fluent.core.streaming_services.events_streaming as _v0
 __all__ = _v0.__all__
 
 _missing_for_events = _v0._missing_for_events
-EventsManager = _v0.EventsManager
 EventInfoBase = _v0.EventInfoBase
 TimestepStartedEventInfo = _v0.TimestepStartedEventInfo
 TimestepEndedEventInfo = _v0.TimestepEndedEventInfo
@@ -105,3 +104,96 @@ class MeshingEvent(Enum):
     @classmethod
     def _missing_(cls, value: str):
         return _missing_for_events(cls, value)
+
+
+class EventsManager(_v0.EventsManager, _v0.Generic[_v0.TEvent]):
+    """Manages server-side events.
+
+    This class allows the client to register and unregister callbacks with server
+    events.
+    """
+
+    def __init__(
+        self,
+        event_type: type[_v0.TEvent],
+        session_events_service,
+        fluent_error_state,
+        session,
+    ):
+        """__init__ method of EventsManager class."""
+        super().__init__(
+            event_type,
+            session_events_service,
+            fluent_error_state,
+            session,
+        )
+        self._service = session_events_service
+
+    def _construct_event_info(
+        self, response: _v0.EventsProtoModule.BeginStreamingResponse, event: _v0.TEvent
+    ):
+        event_info_msg = getattr(response, event.value.lower())
+        # Note: MessageToDict's parameter names are different in different protobuf versions
+        event_info_dict = _v0.MessageToDict(event_info_msg, True)
+        event_info_cls = EventInfoBase.derived_classes.get(event.name)
+        # Some event-info classes intentionally have no fields. Instantiate them without payload.
+        dataclass_fields = getattr(event_info_cls, "__dataclass_fields__", None)
+        if dataclass_fields is None or len(dataclass_fields) == 0:
+            return event_info_cls()
+        # v1 servers can emit empty payloads for some events; keep fallback v1-only
+        # to avoid changing backward-compatible v0 behavior.
+        if not event_info_dict:
+            return event_info_cls()
+        # Key names can be different, but their order is the same
+        return event_info_cls(*event_info_dict.values())
+
+    def unregister_callback(self, callback_id: str):
+        """Unregister the callback.
+
+        Parameters
+        ----------
+        callback_id : str
+            ID of the registered callback.
+        """
+        with self._impl._lock:
+            for callbacks_map in self._impl._service_callbacks.values():
+                if callback_id in callbacks_map:
+                    del callbacks_map[callback_id]
+            sync_event_id = self._sync_event_ids.pop(callback_id, None)
+            if sync_event_id:
+                self._service.unregister_pause_on_solution_events(
+                    registration_id=sync_event_id
+                )
+
+    def _register_solution_event_sync_callback(
+        self,
+        event_type,
+        callback_id: str,
+        callback: _v0.Callable,
+    ) -> tuple[_v0.TEvent, _v0.Callable]:
+        unique_id: int = self._service.register_pause_on_solution_events(
+            solution_event=event_type
+        )
+
+        def on_pause(session, event_info: SolutionPausedEventInfo):
+            if unique_id == int(event_info.level):
+                if event_type.name == "ITERATION_ENDED":
+                    event_info = IterationEndedEventInfo(index=event_info.index)
+                else:
+                    event_info = TimestepEndedEventInfo(
+                        # TODO: Timestep size is currently not available
+                        index=event_info.index,
+                        size=0,
+                    )
+                try:
+                    callback(session, event_info)
+                except Exception as e:
+                    network_logger.error(
+                        f"Error in callback for event {event_type}: {e}",
+                        exc_info=True,
+                    )
+                finally:
+                    self._service.resume_on_solution_event(registration_id=unique_id)
+
+        self._sync_event_ids[callback_id] = unique_id
+        return self._event_type.SOLUTION_PAUSED, on_pause

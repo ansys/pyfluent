@@ -398,7 +398,6 @@ class EventsManager(Generic[TEvent]):
         session_events_service,
         fluent_error_state,
         session,
-        server_supports_v1: bool = False,
     ):
         """__init__ method of EventsManager class."""
         self._event_type = event_type
@@ -411,7 +410,6 @@ class EventsManager(Generic[TEvent]):
         # This has been updated from id to session, which
         # can also be done in other streaming services
         self._session = session
-        self._server_supports_v1 = server_supports_v1
         self._sync_event_ids = {}
 
     def _construct_event_info(
@@ -424,10 +422,6 @@ class EventsManager(Generic[TEvent]):
         # Some event-info classes intentionally have no fields. Instantiate them without payload.
         dataclass_fields = getattr(event_info_cls, "__dataclass_fields__", None)
         if dataclass_fields is None or len(dataclass_fields) == 0:
-            return event_info_cls()
-        # v1 servers can emit empty payloads for some events; keep fallback v1-only
-        # to avoid changing backward-compatible v0 behavior.
-        if self._server_supports_v1 and not event_info_dict:
             return event_info_cls()
         # Key names can be different, but their order is the same
         return event_info_cls(*event_info_dict.values())
@@ -605,7 +599,7 @@ class EventsManager(Generic[TEvent]):
                     del callbacks_map[callback_id]
             sync_event_id = self._sync_event_ids.pop(callback_id, None)
             if sync_event_id:
-                self._session._app_utilities.unregister_pause_on_solution_events(
+                self._session.application_runtime.unregister_pause_on_solution_events(
                     registration_id=sync_event_id
                 )
 
@@ -623,8 +617,10 @@ class EventsManager(Generic[TEvent]):
         callback_id: str,
         callback: Callable,
     ) -> tuple[TEvent, Callable]:
-        unique_id: int = self._session._app_utilities.register_pause_on_solution_events(
-            solution_event=event_type
+        unique_id: int = (
+            self._session.application_runtime.register_pause_on_solution_events(
+                solution_event=event_type
+            )
         )
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
@@ -645,7 +641,7 @@ class EventsManager(Generic[TEvent]):
                         exc_info=True,
                     )
                 finally:
-                    session._app_utilities.resume_on_solution_event(
+                    session.application_runtime.resume_on_solution_event(
                         registration_id=unique_id
                     )
 

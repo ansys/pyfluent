@@ -21,38 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over Reduction gRPC service of Fluent (v1 proto API).
+"""Abstract health check wrapper."""
 
-All shared logic lives in reduction.py (v0). This module keeps only
-v1-specific proto and stub bindings for compatibility.
-"""
-
-from ansys.api.fluent.v1 import reduction_pb2 as ReductionProtoModule
-from ansys.api.fluent.v1 import reduction_pb2_grpc as ReductionGrpcModule
-import ansys.fluent.core.services.reduction as _v0
-
-# Re-export shared helpers/types for compatibility with legacy imports.
-Path = _v0.Path
-BadReductionRequest = _v0.BadReductionRequest
-_validate_locn_list = _v0._validate_locn_list
-_is_iterable = _v0._is_iterable
-_expand_locn_container = _v0._expand_locn_container
-_locn_name_and_obj = _v0._locn_name_and_obj
-_locn_names_and_objs = _v0._locn_names_and_objs
-_root = _v0._root
-_locns = _v0._locns
-Weight = _v0.Weight
+from abc import ABC, abstractmethod
+from enum import Enum
 
 
-class ReductionService(_v0.ReductionService):
-    """Reduction service of Fluent (v1 proto API)."""
+class AbstractHealthCheck(ABC):
+    """Abstract base class for the health check."""
 
-    def _create_stub(self, intercept_channel):
-        """Create the v1 gRPC stub."""
-        return ReductionGrpcModule.ReductionStub(intercept_channel)
+    @abstractmethod
+    def check_health(self) -> Enum:
+        """Check the health of the Fluent connection."""
+        pass
 
+    @abstractmethod
+    def wait_for_server(self, timeout: int) -> None:
+        """Keeps a watch on the health of the Fluent connection."""
+        pass
 
-class Reduction(_v0.Reduction):
-    """Reduction (v1 proto API)."""
-
-    _proto_module = ReductionProtoModule
+    @abstractmethod
+    def status(self) -> Enum:
+        """Check health of Fluent connection."""
+        pass

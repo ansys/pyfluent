@@ -677,7 +677,7 @@ def connect_to_fluent(
 
     return new_session(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
         start_transcript=start_transcript,
         file_transfer_service=file_transfer_service,
     )

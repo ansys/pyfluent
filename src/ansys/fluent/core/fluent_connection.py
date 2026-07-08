@@ -42,12 +42,9 @@ import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
-from google.protobuf.descriptor_pool import DescriptorPool
 import grpc
-from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
-    ProtoReflectionDescriptorDatabase,
-)
 
+from ansys.fluent.core._grpc_services import GRPCServiceFactory, _server_supports_v1
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -57,34 +54,10 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
-from ansys.fluent.core.services import (
-    AppUtilities,
-    AppUtilitiesService,
-    AppUtilitiesV0,
-    HealthCheckService,
-    HealthCheckServiceV0,
-    SchemeEval,
-    SchemeEvalService,
-    SchemeEvalServiceV0,
-    SchemeEvalV0,
-    service_creator,
-)
+from ansys.fluent.core.services import ServiceFactory
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesOld,
-)
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesService as AppUtilitiesServiceV0,
-)
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesV252 as AppUtilitiesV252V0,
-)
-from ansys.fluent.core.services.app_utilities_v1 import (
-    AppUtilitiesV252 as AppUtilitiesV252V1,
-)
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
 from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
@@ -402,45 +375,14 @@ E = TypeVar("E")
 class _ConnectionInterface:
     def __init__(
         self,
-        create_grpc_service: Callable[[T, E], T],
-        error_state: E,
-        supports_v1: bool,
+        application_runtime,
     ):
-        if supports_v1:
-            self._scheme_eval_service = create_grpc_service(
-                SchemeEvalService, error_state
-            )
-            self._app_utilities_service = create_grpc_service(
-                AppUtilitiesService, error_state
-            )
-        else:
-            self._scheme_eval_service = create_grpc_service(
-                SchemeEvalServiceV0, error_state
-            )
-            self._app_utilities_service = create_grpc_service(
-                AppUtilitiesServiceV0, error_state
-            )
-        self.scheme_eval = service_creator(
-            "scheme_eval", supports_v1=supports_v1
-        ).create(self._scheme_eval_service)
-        match FluentVersion(self.scheme_eval.version):
-            case v if v < FluentVersion.v252:
-                self._app_utilities = AppUtilitiesOld(self.scheme_eval)
-
-            case FluentVersion.v252:
-                self._app_utilities = (
-                    AppUtilitiesV252V1 if supports_v1 else AppUtilitiesV252V0
-                )(self._app_utilities_service, self.scheme_eval)
-
-            case _:
-                self._app_utilities = service_creator(
-                    "app_utilities", supports_v1=supports_v1
-                ).create(self._app_utilities_service)
+        self._application_runtime = application_runtime
 
     @property
     def product_build_info(self) -> str:
         """Get Fluent build information."""
-        build_info = self._app_utilities.get_build_info()
+        build_info = self._application_runtime.get_build_info()
         return f"Build Time: {build_info.build_time}  Build Id: {build_info.build_id}  Revision: {build_info.vcs_revision}  Branch: {build_info.vcs_branch}"
 
     def get_cortex_connection_properties(self):
@@ -449,8 +391,8 @@ class _ConnectionInterface:
         try:
             logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
-            cortex_info = self._app_utilities.get_controller_process_info()
-            solver_info = self._app_utilities.get_solver_process_info()
+            cortex_info = self._application_runtime.get_controller_process_info()
+            solver_info = self._application_runtime.get_solver_process_info()
             fluent_host_pid = solver_info.process_id
             cortex_host = cortex_info.hostname
             cortex_pid = cortex_info.process_id
@@ -470,11 +412,11 @@ class _ConnectionInterface:
 
     def get_mode(self):
         """Get the mode of a running fluent session."""
-        return self._app_utilities.get_app_mode()
+        return self._application_runtime.get_app_mode()
 
     def exit_server(self):
         """Exits the server."""
-        self._app_utilities.exit()
+        self._application_runtime.exit()
 
 
 def _pid_exists(pid):
@@ -495,22 +437,6 @@ def _pid_exists(pid):
         else:
             ctypes.windll.kernel32.CloseHandle(process_handle)
             return True
-
-
-def _server_supports_v1(channel) -> bool:
-    try:
-        reflection_db = ProtoReflectionDescriptorDatabase(channel)
-        desc_pool = DescriptorPool(reflection_db)
-        service_desc = desc_pool.FindServiceByName(
-            "ansys.api.fluent.v1.application_runtime.ApplicationRuntime"
-        )
-        method_desc = service_desc.FindMethodByName("GetProductVersion")
-        return (
-            method_desc.full_name
-            == "ansys.api.fluent.v1.application_runtime.ApplicationRuntime.GetProductVersion"
-        )
-    except KeyError:
-        return False
 
 
 S = TypeVar("S", bound=ServiceProtocol)
@@ -637,9 +563,16 @@ class FluentConnection:
 
         self._server_supports_v1 = _server_supports_v1(channel=self._channel)
 
-        self._health_check = service_creator(
-            "health_check", supports_v1=self._server_supports_v1
-        ).create(self._channel, self._metadata, self._error_state)
+        self._service_factory = ServiceFactory(
+            service_factory=GRPCServiceFactory(
+                channel=self._channel,
+                metadata=self._metadata,
+                error_state=self._error_state,
+            ),
+        )
+
+        self._health_check = self._service_factory.health_check
+
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
@@ -662,11 +595,10 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        self._connection_interface = _ConnectionInterface(
-            self.create_grpc_service,
-            self._error_state,
-            supports_v1=self._server_supports_v1,
-        )
+        self.scheme_eval = self._service_factory.scheme_interpreter
+        self.application_runtime = self._service_factory.application_runtime
+
+        self._connection_interface = _ConnectionInterface(self.application_runtime)
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
         )

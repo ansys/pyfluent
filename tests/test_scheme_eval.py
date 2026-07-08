@@ -27,11 +27,15 @@ from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
 
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
-from ansys.fluent.core.services.scheme_eval import (
+from ansys.fluent.core._grpc_services.scheme_interpreter_service import (
+    Symbol as SymbolV1,
+)
+from ansys.fluent.core._grpc_services.scheme_interpreter_service_v0 import (
     Symbol,
     _convert_py_value_to_scheme_pointer,
     _convert_scheme_pointer_to_py_value,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.parametrize(
@@ -94,7 +98,7 @@ def test_convert_py_value_to_scheme_pointer(
     py_value: Any, json_dict: dict[str, Any]
 ) -> None:
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
     assert MessageToDict(p) == json_dict
 
 
@@ -186,7 +190,7 @@ def test_convert_scheme_pointer_to_py_value(
 ) -> None:
     p = SchemePointer()
     ParseDict(json_dict, p)
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    val = _convert_scheme_pointer_to_py_value(p)
     assert val == py_value
 
 
@@ -201,7 +205,7 @@ def test_convert_scheme_pointer_having_symbol_to_py_value() -> None:
         },
         p,
     )
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    val = _convert_scheme_pointer_to_py_value(p)
     assert isinstance(val, tuple)
     assert len(val) == 2
     assert val[0] == "abc"
@@ -228,16 +232,16 @@ def test_convert_scheme_pointer_having_symbol_to_py_value() -> None:
 )
 def test_two_way_conversion(py_value: Any) -> None:
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
+    val = _convert_scheme_pointer_to_py_value(p)
     assert val == py_value
 
 
 def test_two_way_conversion_for_symbol() -> None:
     py_value = [Symbol("+"), 2.0, 3.0]
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
+    val = _convert_scheme_pointer_to_py_value(p)
     assert isinstance(val, list)
     assert isinstance(val[0], Symbol)
     assert val[0].str == "+"
@@ -247,8 +251,8 @@ def test_two_way_conversion_for_symbol() -> None:
 def test_two_way_conversion_for_pairs() -> None:
     py_value = ("abc", 5.0)
     p = SchemePointer()
-    _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
-    val = _convert_scheme_pointer_to_py_value(p, "23.1.0")
+    _convert_py_value_to_scheme_pointer(py_value, p)
+    val = _convert_scheme_pointer_to_py_value(p)
     assert isinstance(val, tuple)
     assert len(val) == 2
     assert val[0] == "abc"
@@ -257,9 +261,13 @@ def test_two_way_conversion_for_pairs() -> None:
 
 def test_long_list(new_solver_session) -> None:
     length = 10**6
-    assert new_solver_session.scheme._eval([Symbol("+")] + list(range(length))) == sum(
+    if new_solver_session.get_fluent_version() >= FluentVersion.v271:
+        s = SymbolV1
+    else:
+        s = Symbol
+    assert new_solver_session.scheme._eval([s("+")] + list(range(length))) == sum(
         range(length)
     )
-    assert sum(new_solver_session.scheme._eval([Symbol("range"), length])) == sum(
+    assert sum(new_solver_session.scheme._eval([s("range"), length])) == sum(
         range(length)
     )

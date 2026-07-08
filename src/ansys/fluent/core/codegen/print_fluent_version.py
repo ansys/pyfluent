@@ -23,13 +23,13 @@
 
 """Module to write Fluent version information."""
 
-from ansys.fluent.core import FluentVersion, __version__, config, launch_fluent
+from ansys.fluent.core import __version__, config, launch_fluent
 
 
-def print_fluent_version(app_utilities):
+def print_fluent_version(application_runtime):
     """Write Fluent version information to file."""
-    version = FluentVersion(app_utilities.get_product_version()).number
-    build_info = app_utilities.get_build_info()
+    version = application_runtime.get_product_version().number
+    build_info = application_runtime.get_build_info()
     version_file = (config.codegen_outdir / f"fluent_version_{version}.py").resolve()
     with open(version_file, "w", encoding="utf8") as f:
         f.write(f'FLUENT_VERSION = "{version}"\n')
@@ -42,4 +42,4 @@ def print_fluent_version(app_utilities):
 
 if __name__ == "__main__":
     solver = launch_fluent()
-    print_fluent_version(solver._app_utilities)
+    print_fluent_version(solver.application_runtime)

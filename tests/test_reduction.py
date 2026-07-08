@@ -26,10 +26,11 @@ from typing import Any
 import pytest
 
 from ansys.fluent.core import FluentVersion
+from ansys.fluent.core._grpc_services.reduction_service import _locn_names_and_objs
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.services.reduction import Weight, _locn_names_and_objs
 from ansys.fluent.core.solver.function import reduction
+from ansys.fluent.core.solver.function.reduction import Weight
 from ansys.units import VariableCatalog
 
 
