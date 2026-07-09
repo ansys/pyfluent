@@ -196,3 +196,12 @@ class GRPCServiceFactory:
     def _chunk_parser(self) -> ChunkParser | ChunkParserV0:
         """Chunk parser for field data operations."""
         return ChunkParser if self._proto_version == "v1" else ChunkParserV0
+
+    @cached_property
+    def object_model(self) -> ObjectModelService | ObjectModelServiceV0:
+        """gRPC stub for object model operations."""
+        return (
+            self._get_instantiated_grpc_service(ObjectModelService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(ObjectModelServiceV0)
+        )

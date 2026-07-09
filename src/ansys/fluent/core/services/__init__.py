@@ -122,6 +122,7 @@ from ansys.fluent.core.services.field_data import (
     FieldDataV261,
 )
 from ansys.fluent.core.services.health_check import HealthCheck
+from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
@@ -237,4 +238,18 @@ class ServiceFactory:
             return FieldDataStreamingV261(
                 self._service_factory.field_data,
                 self._service_factory._chunk_parser,
+            )
+
+    @cached_property
+    def object_model(self):
+        """Object model service."""
+        if self._product_version >= FluentVersion.v271:
+            return ObjectModel(
+                self._service_factory.object_model,
+                self._service_factory.scheme_interpreter,
+            )
+        else:
+            return ObjectModelV261(
+                self._service_factory.object_model,
+                self._service_factory.scheme_interpreter,
             )
