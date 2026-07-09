@@ -53,11 +53,11 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 # Download the example mesh file
-# import_file_name = examples.download_file(
-#     "axial_fan.msh",
-#     "pyfluent/axial_fan_perfrormance_curve",
-#     save_path=os.getcwd(),
-# )
+import_file_name = examples.download_file(
+    "axial_fan.msh",
+    "pyfluent/axial_fan_perfrormance_curve",
+    save_path=os.getcwd(),
+)
 
 
 # ## Launch Fluent
