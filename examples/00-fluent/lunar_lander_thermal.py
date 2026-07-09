@@ -1,14 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "matplotlib",
-#   "numpy",
-#   "pandas",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -80,6 +72,14 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 ###############################################################################
 # .. image:: ../../_static/lunar_lander_thermal_setup.png
 #   :align: center
+
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# matplotlib
+# numpy
+# pandas
 
 ###############################################################################
 # Preliminary Setup
@@ -864,7 +864,7 @@ plt.show()
 # [2] R. J. Christie, D. W. Plachta, and M. M. Yasan, “Transient Thermal Model
 # and Analysis of the Lunar Surface and Regolith for Cryogenic Fluid Storage,”
 # NASA Glenn Research Center, Cleveland, Ohio, NASA Technical Report
-# TM-2008-215300, Aug. 2008. [Online]. Available:
+# TM-2008 - 215300, Aug. 2008. [Online]. Available:
 # https://ntrs.nasa.gov/citations/20080039640
 #
 # .. _3:
@@ -878,5 +878,5 @@ plt.show()
 #
 # [4] L. Kauder, “Spacecraft Thermal Control Coatings References,” Goddard
 # Space Flight Center, Greenbelt, MD 20771, NASA Technical Report
-# NASA/TP-2005-212792, Dec. 2005. [Online]. Available:
+# NASA/TP-2005 - 212792, Dec. 2005. [Online]. Available:
 # https://ntrs.nasa.gov/citations/20070014757

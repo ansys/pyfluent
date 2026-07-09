@@ -1,12 +1,6 @@
-# /// script
-# dependencies = [
-#   "imageio",
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -78,6 +72,12 @@ Simulation of Steady Vortex in a Stirred Tank
 
 # sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
 # sphinx_gallery_thumbnail_path = '_static/steady_vortex/steady_vortex_setup.png'
+
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# imageio
 
 import os
 

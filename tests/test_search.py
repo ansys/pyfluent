@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,7 +42,7 @@ from ansys.fluent.core.search import (
 def test_nltk_data_download():
     import nltk
 
-    packages = ["wordnet", "omw-1.4"]
+    packages = ["wordnet", "omw-2.0"]
     for package in packages:
         nltk.download(package, quiet=True)
 

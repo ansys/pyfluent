@@ -79,3 +79,4 @@ venv
 create_workflow
 load_workflow
 Synopsys
+synopsys

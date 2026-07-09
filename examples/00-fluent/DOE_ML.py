@@ -1,18 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-#   "matplotlib",
-#   "numpy",
-#   "pandas",
-#   "plotly",
-#   "scikit-learn",
-#   "seaborn",
-#   "tensorflow",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,6 +43,18 @@ Design of Experiments and Machine Learning model building
 #
 # * Design of Experiment, Fluent setup and simulation using PyFluent.
 # * Building of Supervised Machine Learning Model.
+
+#######################################################################################
+# Dependencies
+# =====================================================================================
+# ansys-fluent-core
+# matplotlib
+# numpy
+# pandas
+# plotly
+# scikit-learn
+# seaborn
+# tensorflow
 
 ###################################
 # Import required libraries/modules

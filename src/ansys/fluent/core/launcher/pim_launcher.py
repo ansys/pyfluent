@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -319,7 +320,7 @@ def launch_remote_fluent(
 
     return session_cls(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
         file_transfer_service=file_transfer_service,
         start_transcript=start_transcript,
     )

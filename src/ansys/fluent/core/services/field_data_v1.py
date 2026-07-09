@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -57,9 +58,25 @@ class FieldDataService(_v0.FieldDataService):
         """Create the v1 gRPC stub."""
         return FieldGrpcModule.FieldDataStub(intercept_channel)
 
+    def is_data_available(
+        self, request: FieldDataProtoModule.IsDataAvailableRequest
+    ) -> FieldDataProtoModule.IsDataAvailableResponse:
+        """IsDataAvailable RPC of FieldData service (v1)."""
+        return self._stub.IsDataAvailable(request, metadata=self._metadata)
+
+    def is_solution_data_available(self) -> bool:
+        """Return whether solution data is currently available."""
+        request = FieldDataProtoModule.IsDataAvailableRequest()
+        response = self.is_data_available(request)
+        return response.is_data_available
+
 
 class _FieldInfo(_v0._FieldInfo):
     """Provides internal access to Fluent field information."""
+
+    def __init__(self, service: FieldDataService):
+        """__init__ method of FieldInfo class."""
+        super().__init__(service, service.is_solution_data_available)
 
     def _get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
@@ -121,14 +138,14 @@ class _FieldInfo(_v0._FieldInfo):
 class FieldInfo(_FieldInfo):
     """Provides access to Fluent field information."""
 
-    def __init__(self, service: FieldDataService, is_data_valid):
+    def __init__(self, service: FieldDataService):
         """__init__ method of FieldInfo class."""
         warnings.warn(
             "'FieldInfo' is deprecated and will be removed in a future release. "
             "Please use relevant methods from 'FieldData' instead",
             PyFluentDeprecationWarning,
         )
-        super().__init__(service, is_data_valid)
+        super().__init__(service, service.is_solution_data_available)
 
 
 class _FetchFieldData:
@@ -584,7 +601,6 @@ class LiveFieldData(_v0.LiveFieldData):
         self,
         service: FieldDataService,
         field_info: _FieldInfo,
-        is_data_valid,
         scheme_eval=None,
         get_zones_info=None,
     ):
@@ -592,7 +608,7 @@ class LiveFieldData(_v0.LiveFieldData):
         super().__init__(
             service,
             field_info,
-            is_data_valid,
+            service.is_solution_data_available,
             scheme_eval=scheme_eval,
             get_zones_info=get_zones_info,
         )
