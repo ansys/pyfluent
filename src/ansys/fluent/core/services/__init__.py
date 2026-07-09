@@ -132,10 +132,19 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
+from ansys.fluent.core.services.field_data import (
+    FieldData,
+    FieldDataV251,
+    FieldDataV261,
+)
 from ansys.fluent.core.services.health_check import HealthCheck
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
+from ansys.fluent.core.streaming_services.field_data_streaming import (
+    FieldDataStreaming,
+    FieldDataStreamingV261,
+)
 
 
 class ServiceFactory:
@@ -209,3 +218,39 @@ class ServiceFactory:
                     self._service_factory.settings,
                     self._service_factory.scheme_interpreter,
                 )
+
+    @cached_property
+    def field_data(self):
+        """Field data service."""
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return FieldData(
+                    self._service_factory.field_data,
+                    self._service_factory._chunk_parser(),
+                )
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return FieldDataV261(
+                    self._service_factory.field_data,
+                    self._service_factory._chunk_parser(),
+                    self._service_factory.application_runtime,
+                )
+            case _:
+                return FieldDataV251(
+                    self._service_factory.field_data,
+                    self._service_factory._chunk_parser(),
+                    self._service_factory.scheme_interpreter,
+                )
+
+    @cached_property
+    def field_data_streaming(self):
+        """Field data service."""
+        if self._product_version >= FluentVersion.v271:
+            return FieldDataStreaming(
+                self._service_factory.field_data,
+                self._service_factory._chunk_parser,
+            )
+        else:
+            return FieldDataStreamingV261(
+                self._service_factory.field_data,
+                self._service_factory._chunk_parser,
+            )

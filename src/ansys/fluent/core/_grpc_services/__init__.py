@@ -179,38 +179,16 @@ class GRPCServiceFactory:
             else self._get_instantiated_grpc_service(SettingsServiceV0)
         )
 
-    # @cached_property
-    # def field_data(self):
-    #     """Field data service."""
-    #     match self._product_version:
-    #         case v if v >= FluentVersion.v271:
-    #             return FieldData(
-    #                 self._get_instantiated_grpc_service(FieldDataService),
-    #                 ChunkParser(),
-    #             )
-    #         case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
-    #             return FieldDataV261(
-    #                 self._get_instantiated_grpc_service(FieldDataServiceV0),
-    #                 ChunkParserV0(),
-    #                 self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
-    #             )
-    #         case _:
-    #             return FieldDataV251(
-    #                 self._get_instantiated_grpc_service(FieldDataServiceV0),
-    #                 ChunkParserV0(),
-    #                 self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
-    #             )
+    @cached_property
+    def field_data(self) -> FieldDataService | FieldDataServiceV0:
+        """gRPC stub for field data operations."""
+        return (
+            self._get_instantiated_grpc_service(FieldDataService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(FieldDataServiceV0)
+        )
 
-    # @cached_property
-    # def field_data_streaming(self):
-    #     """Field data service."""
-    #     if self._product_version >= FluentVersion.v271:
-    #         return FieldDataStreaming(
-    #             self._get_instantiated_grpc_service(FieldDataService),
-    #             ChunkParser,
-    #         )
-    #     else:
-    #         return FieldDataStreamingV261(
-    #             self._get_instantiated_grpc_service(FieldDataServiceV0),
-    #             ChunkParserV0,
-    #         )
+    @cached_property
+    def _chunk_parser(self) -> ChunkParser | ChunkParserV0:
+        """Chunk parser for field data operations."""
+        return ChunkParser if self._proto_version == "v1" else ChunkParserV0
