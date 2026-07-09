@@ -49,6 +49,7 @@ Class hierarchy
 
 from enum import Enum
 import os
+import platform
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.abstract_application_runtime import (
@@ -69,29 +70,80 @@ class ApplicationRuntime(AbstractApplicationRuntime):
 
     def get_product_version(self) -> FluentVersion:
         """Get product version."""
-        return self.service.get_product_version()
+        return FluentVersion(self.service.get_product_version())
 
     def get_build_info(self) -> BuildInfo:
         """Get build info."""
-        return self.service.get_build_info()
+        build_time, build_id, vcs_revision, vcs_branch = self.service.get_build_info()
+        return BuildInfo(
+            build_time=build_time,
+            build_id=build_id,
+            vcs_revision=vcs_revision,
+            vcs_branch=vcs_branch,
+        )
 
     def get_controller_process_info(self) -> ProcessInfo:
         """Get controller process info."""
-        return self.service.get_controller_process_info()
+        process_id, hostname, working_directory = (
+            self.service.get_controller_process_info()
+        )
+        return ProcessInfo(
+            process_id=process_id,
+            hostname=hostname,
+            working_directory=working_directory,
+        )
 
     def get_solver_process_info(self) -> ProcessInfo:
         """Get solver process info."""
-        return self.service.get_solver_process_info()
+        process_id, hostname, working_directory = self.service.get_solver_process_info()
+        return ProcessInfo(
+            process_id=process_id,
+            hostname=hostname,
+            working_directory=working_directory,
+        )
 
     def get_app_mode(self) -> Enum:
-        """Get app mode.
+        """Get app mode."""
+        from ansys.fluent.core import FluentMode
 
-        Raises
-        ------
-        ValueError
-            If app mode is unknown.
-        """
-        return self.service.get_app_mode()
+        return FluentMode(self.service.get_mode())
+
+    def get_dimension(self) -> Enum:
+        """Get dimension."""
+        from ansys.fluent.core import Dimension
+
+        return Dimension(self.service.get_dimension())
+
+    def get_precision(self) -> Enum:
+        """Get precision."""
+        from ansys.fluent.core import Precision
+
+        return Precision(self.service.get_precision())
+
+    def get_processor_count(self) -> int:
+        """Get processor count."""
+        return self.service.get_processor_count()
+
+    def get_ui_mode(self) -> Enum:
+        """Get UI mode."""
+        from ansys.fluent.core import UIMode
+
+        return UIMode(self.service.get_ui_mode())
+
+    def get_graphics_driver(self) -> Enum:
+        """Get graphics driver."""
+        if platform.system() == "Windows":
+            from ansys.fluent.core import FluentWindowsGraphicsDriver
+
+            return FluentWindowsGraphicsDriver(self.service.get_graphics_driver())
+        else:
+            from ansys.fluent.core import FluentLinuxGraphicsDriver
+
+            return FluentLinuxGraphicsDriver(self.service.get_graphics_driver())
+
+    def get_gpu_config(self) -> bool | list[int]:
+        """Get GPU config."""
+        return self.service.get_gpu_config()
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
@@ -128,35 +180,156 @@ class ApplicationRuntimeV261V252:
     ``unregister_pause_on_solution_events`` is migrated to events in 27R1.
     """
 
-    def __init__(self, service):
+    def __init__(self, service, scheme):
         """Initialize ApplicationRuntime."""
         self.service = service
+        self.scheme = scheme
 
     def get_product_version(self) -> FluentVersion:
         """Get product version."""
-        return self.service.get_product_version()
+        return FluentVersion(self.service.get_product_version())
 
     def get_build_info(self) -> BuildInfo:
         """Get build info."""
-        return self.service.get_build_info()
+        build_time, build_id, vcs_revision, vcs_branch = self.service.get_build_info()
+        return BuildInfo(
+            build_time=build_time,
+            build_id=build_id,
+            vcs_revision=vcs_revision,
+            vcs_branch=vcs_branch,
+        )
 
     def get_controller_process_info(self) -> ProcessInfo:
         """Get controller process info."""
-        return self.service.get_controller_process_info()
+        process_id, hostname, working_directory = (
+            self.service.get_controller_process_info()
+        )
+        return ProcessInfo(
+            process_id=process_id,
+            hostname=hostname,
+            working_directory=working_directory,
+        )
 
     def get_solver_process_info(self) -> ProcessInfo:
         """Get solver process info."""
-        return self.service.get_solver_process_info()
+        process_id, hostname, working_directory = self.service.get_solver_process_info()
+        return ProcessInfo(
+            process_id=process_id,
+            hostname=hostname,
+            working_directory=working_directory,
+        )
 
     def get_app_mode(self) -> Enum:
-        """Get app mode.
+        """Get app mode."""
+        from ansys.fluent.core import FluentMode
+
+        return FluentMode(self.service.get_app_mode())
+
+    def get_dimension(self) -> Enum:
+        """Get dimension."""
+        from ansys.fluent.core import Dimension
+
+        if self.scheme.eval("(rp-3d?)"):
+            return Dimension.THREE
+        else:
+            return Dimension.TWO
+
+    def get_precision(self) -> Enum:
+        """Get precision."""
+        from ansys.fluent.core import Precision
+
+        if self.scheme.eval("(rp-double?)"):
+            return Precision.DOUBLE
+        else:
+            return Precision.SINGLE
+
+    def get_processor_count(self) -> int:
+        """Get processor count."""
+        return self.scheme.eval("(string->number (rpgetvar 'parallel/nprocs_string))")
+
+    def get_ui_mode(self) -> Enum:
+        """Get UI mode."""
+        from ansys.fluent.core import UIMode
+
+        if not self.scheme.eval("(cx-gui?)") and not self.scheme.eval("(cx-graphics?)"):
+            return UIMode.NO_GUI_OR_GRAPHICS
+        elif not self.scheme.eval("(cx-gui?)"):
+            return UIMode.NO_GUI
+        elif self.scheme.eval("(cx-gui-hidden?)"):
+            return UIMode.HIDDEN_GUI
+        elif not self.scheme.eval("(cx-graphics?)"):
+            return UIMode.NO_GRAPHICS
+        else:
+            return UIMode.GUI
+
+    def get_graphics_driver(self) -> Enum:
+        """Get graphics driver.
 
         Raises
         ------
         ValueError
-            If app mode is unknown.
+            If the graphics driver is unknown.
         """
-        return self.service.get_app_mode()
+        driver_str = "null"
+        if self.scheme.eval("(cx-graphics?)"):
+            driver_str = self.scheme.eval("(cx-get-current-graphics-driver)")
+            if not driver_str:
+                driver_str = "auto"
+        if platform.system() == "Windows":
+            from ansys.fluent.core import FluentWindowsGraphicsDriver
+
+            if driver_str == "null":
+                return FluentWindowsGraphicsDriver.NULL
+            elif driver_str == "msw":
+                return FluentWindowsGraphicsDriver.MSW
+            elif driver_str == "dx11":
+                return FluentWindowsGraphicsDriver.DX11
+            elif driver_str == "opengl2":
+                return FluentWindowsGraphicsDriver.OPENGL2
+            elif driver_str == "opengl":
+                return FluentWindowsGraphicsDriver.OPENGL
+            elif driver_str == "auto":
+                return FluentWindowsGraphicsDriver.AUTO
+            else:
+                raise ValueError(f"Unknown graphics driver: {driver_str}")
+        else:
+            from ansys.fluent.core import FluentLinuxGraphicsDriver
+
+            if driver_str == "null":
+                return FluentLinuxGraphicsDriver.NULL
+            elif driver_str == "x11":
+                return FluentLinuxGraphicsDriver.X11
+            elif driver_str == "opengl2":
+                return FluentLinuxGraphicsDriver.OPENGL2
+            elif driver_str == "opengl":
+                return FluentLinuxGraphicsDriver.OPENGL
+            elif driver_str == "auto":
+                return FluentLinuxGraphicsDriver.AUTO
+            else:
+                raise ValueError(f"Unknown graphics driver: {driver_str}")
+
+    def get_gpu_config(self) -> bool | list[int]:
+        """Get GPU config.
+
+        Raises
+        ------
+        ValueError
+            If the GPU ID string cannot be parsed.
+        """
+        if not self.scheme.eval("(gpuapp-enabled?)"):
+            return False
+        config_str = self.scheme.eval("(rpgetvar 'parallel/gpgpu-selected)")
+        if config_str == "True":
+            return True
+        if config_str == "False" or not config_str:
+            return False
+        config_str = config_str.strip("[]")
+        try:
+            return [int(token) for token in config_str.split(",") if token]
+        except ValueError:
+            raise ValueError(
+                f"Failed to parse malformed GPU ID string configuration: {config_str!r}"
+            )
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
@@ -209,9 +382,9 @@ class ApplicationRuntimeV261(ApplicationRuntimeV261V252):
     ``enable_beta`` is implemented in the 26R1 server.
     """
 
-    def __init__(self, service):
+    def __init__(self, service, scheme):
         """Initialize ApplicationRuntimeV252."""
-        super().__init__(service)
+        super().__init__(service, scheme)
 
     def enable_beta(self) -> None:
         """Enable beta features."""
@@ -227,8 +400,7 @@ class ApplicationRuntimeV252(ApplicationRuntimeV261V252):
 
     def __init__(self, service, scheme):
         """Initialize ApplicationRuntimeV252."""
-        super().__init__(service)
-        self.scheme = scheme
+        super().__init__(service, scheme)
 
     def enable_beta(self) -> None:
         """Enable beta features via Scheme (25R2 fallback)."""
@@ -289,6 +461,112 @@ class ApplicationRuntimeOld:
                 return FluentMode.SOLVER
         else:
             return FluentMode.MESHING
+
+    def get_dimension(self) -> Enum:
+        """Get dimension."""
+        from ansys.fluent.core import Dimension
+
+        if self.scheme.eval("(rp-3d?)"):
+            return Dimension.THREE
+        else:
+            return Dimension.TWO
+
+    def get_precision(self) -> Enum:
+        """Get precision."""
+        from ansys.fluent.core import Precision
+
+        if self.scheme.eval("(rp-double?)"):
+            return Precision.DOUBLE
+        else:
+            return Precision.SINGLE
+
+    def get_processor_count(self) -> int:
+        """Get processor count."""
+        return self.scheme.eval("(string->number (rpgetvar 'parallel/nprocs_string))")
+
+    def get_ui_mode(self) -> Enum:
+        """Get UI mode."""
+        from ansys.fluent.core import UIMode
+
+        if not self.scheme.eval("(cx-gui?)") and not self.scheme.eval("(cx-graphics?)"):
+            return UIMode.NO_GUI_OR_GRAPHICS
+        elif not self.scheme.eval("(cx-gui?)"):
+            return UIMode.NO_GUI
+        elif self.scheme.eval("(cx-gui-hidden?)"):
+            return UIMode.HIDDEN_GUI
+        elif not self.scheme.eval("(cx-graphics?)"):
+            return UIMode.NO_GRAPHICS
+        else:
+            return UIMode.GUI
+
+    def get_graphics_driver(self) -> Enum:
+        """Get graphics driver.
+
+        Raises
+        ------
+        ValueError
+            If the graphics driver is unknown.
+        """
+        driver_str = "null"
+        if self.scheme.eval("(cx-graphics?)"):
+            driver_str = self.scheme.eval("(cx-get-current-graphics-driver)")
+            if not driver_str:
+                driver_str = "auto"
+        if platform.system() == "Windows":
+            from ansys.fluent.core import FluentWindowsGraphicsDriver
+
+            if driver_str == "null":
+                return FluentWindowsGraphicsDriver.NULL
+            elif driver_str == "msw":
+                return FluentWindowsGraphicsDriver.MSW
+            elif driver_str == "dx11":
+                return FluentWindowsGraphicsDriver.DX11
+            elif driver_str == "opengl2":
+                return FluentWindowsGraphicsDriver.OPENGL2
+            elif driver_str == "opengl":
+                return FluentWindowsGraphicsDriver.OPENGL
+            elif driver_str == "auto":
+                return FluentWindowsGraphicsDriver.AUTO
+            else:
+                raise ValueError(f"Unknown graphics driver: {driver_str}")
+        else:
+            from ansys.fluent.core import FluentLinuxGraphicsDriver
+
+            if driver_str == "null":
+                return FluentLinuxGraphicsDriver.NULL
+            elif driver_str == "x11":
+                return FluentLinuxGraphicsDriver.X11
+            elif driver_str == "opengl2":
+                return FluentLinuxGraphicsDriver.OPENGL2
+            elif driver_str == "opengl":
+                return FluentLinuxGraphicsDriver.OPENGL
+            elif driver_str == "auto":
+                return FluentLinuxGraphicsDriver.AUTO
+            else:
+                raise ValueError(f"Unknown graphics driver: {driver_str}")
+
+    def get_gpu_config(self) -> bool | list[int]:
+        """Get GPU config.
+
+        Raises
+        ------
+        ValueError
+            If the GPU ID string cannot be parsed.
+        """
+        if not self.scheme.eval("(gpuapp-enabled?)"):
+            return False
+        config_str = self.scheme.eval("(rpgetvar 'parallel/gpgpu-selected)")
+        if config_str == "True":
+            return True
+        if config_str == "False" or not config_str:
+            return False
+        config_str = config_str.strip("[]")
+        try:
+            return [int(token) for token in config_str.split(",") if token]
+        except ValueError:
+            raise ValueError(
+                f"Failed to parse malformed GPU ID string configuration: {config_str!r}"
+            )
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
