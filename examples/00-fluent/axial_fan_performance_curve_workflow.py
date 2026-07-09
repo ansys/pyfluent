@@ -62,7 +62,7 @@ from ansys.fluent.core import examples
 
 # ## Launch Fluent
 
-# Launch Fluent in solution mode with double precission running on eight processors.
+# Launch Fluent in solution mode with double precision running on eight processors.
 
 # In[26]:
 
@@ -92,9 +92,9 @@ solver.settings.file.read_mesh(file_name=import_file_name)
 solver.settings.mesh.check()
 
 
-# ## Creat inpt parameters
+# ## Creat input parameters
 
-# Create named expressions for the pressure outlet boundary condition and for the fan rotational speed, and set them as input parameters. Pressure outlet value is set to 0.0 Pa (atmospheric gage pressure) and rotational speed is set to 155.534 rad/s.
+# Create named expressions for the pressure outlet boundary condition and for the fan rotational speed, and set them as input parameters. Pressure outlet value is set to 0.0 Pa (atmospheric gauge pressure) and rotational speed is set to 155.534 rad/s.
 
 # In[28]:
 
@@ -175,7 +175,7 @@ solver.settings.setup.cell_zone_conditions.fluid[
 
 # ## Boundary conditions
 
-# Set the <code>'inlet'</code> boundary as pressure-inlet boundary condition type, and assign to it a presure value of 0.0 Pa (atmospheric gage pressure).
+# Set the <code>'inlet'</code> boundary as pressure-inlet boundary condition type, and assign to it a pressure value of 0.0 Pa (atmospheric gauge pressure).
 # Set the <code>'pressure-outlet'</code> boundary as pressure-outlet boundary condition type, and assign to it the previously defined input parameter.
 # Keep the remaining boundaries as no-slip wall boundary condition type (default settings - no changes)
 
