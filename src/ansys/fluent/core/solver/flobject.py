@@ -984,7 +984,7 @@ class String(SettingsBase[str], Textual):
     set_state = Textual.set_state
 
 
-class Filename(SettingsBase[PathType], Textual):
+class Filename(SettingsBase[str], Textual):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
@@ -1008,7 +1008,10 @@ class FilenameList(SettingsBase[StringListType], Textual):
     @override
     def set_state(self, state: Sequence[PathType] | None = None, **kwargs):
         if state is not None:
-            state = [os.fspath(path) for path in state]
+            if isinstance(state, (str, bytes)):
+                state = [os.fspath(state)]
+            else:
+                state = [os.fspath(path) for path in state]
         return super().set_state(state, **kwargs)
 
     def file_purpose(self):

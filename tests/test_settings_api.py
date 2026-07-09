@@ -844,7 +844,7 @@ def test_named_object_commands(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     inlets = VelocityInlets(solver)
     inlets.list()
-    inlets.list_properties(object_name="hot-i   nlet")
+    inlets.list_properties(object_name="hot-inlet")
     if solver.get_fluent_version() >= FluentVersion.v261:
         NamedObject.list(inlets)
         NamedObject.list_properties(inlets, object_name="hot-inlet")
