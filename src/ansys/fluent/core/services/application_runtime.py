@@ -47,11 +47,18 @@ Class hierarchy
     Scheme-based fallback used for Fluent versions before 25R2.
 """
 
-from enum import Enum
 import os
 import platform
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.launcher.launch_options import (
+    Dimension,
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    Precision,
+    UIMode,
+)
 from ansys.fluent.core.services.abstract_application_runtime import (
     AbstractApplicationRuntime,
     BuildInfo,
@@ -102,43 +109,33 @@ class ApplicationRuntime(AbstractApplicationRuntime):
             working_directory=working_directory,
         )
 
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> FluentMode:
         """Get app mode."""
-        from ansys.fluent.core import FluentMode
-
         return FluentMode(self.service.get_mode())
 
-    def get_dimension(self) -> Enum:
+    def get_dimension(self) -> Dimension:
         """Get dimension."""
-        from ansys.fluent.core import Dimension
-
         return Dimension(self.service.get_dimension())
 
-    def get_precision(self) -> Enum:
+    def get_precision(self) -> Precision:
         """Get precision."""
-        from ansys.fluent.core import Precision
-
         return Precision(self.service.get_precision())
 
     def get_processor_count(self) -> int:
         """Get processor count."""
         return self.service.get_processor_count()
 
-    def get_ui_mode(self) -> Enum:
+    def get_ui_mode(self) -> UIMode:
         """Get UI mode."""
-        from ansys.fluent.core import UIMode
-
         return UIMode(self.service.get_ui_mode())
 
-    def get_graphics_driver(self) -> Enum:
+    def get_graphics_driver(
+        self,
+    ) -> FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver:
         """Get graphics driver."""
         if platform.system() == "Windows":
-            from ansys.fluent.core import FluentWindowsGraphicsDriver
-
             return FluentWindowsGraphicsDriver(self.service.get_graphics_driver())
         else:
-            from ansys.fluent.core import FluentLinuxGraphicsDriver
-
             return FluentLinuxGraphicsDriver(self.service.get_graphics_driver())
 
     def get_gpu_config(self) -> bool | list[int]:
@@ -219,25 +216,19 @@ class ApplicationRuntimeV261V252:
             working_directory=working_directory,
         )
 
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> FluentMode:
         """Get app mode."""
-        from ansys.fluent.core import FluentMode
-
         return FluentMode(self.service.get_app_mode())
 
-    def get_dimension(self) -> Enum:
+    def get_dimension(self) -> Dimension:
         """Get dimension."""
-        from ansys.fluent.core import Dimension
-
         if self.scheme.eval("(rp-3d?)"):
             return Dimension.THREE
         else:
             return Dimension.TWO
 
-    def get_precision(self) -> Enum:
+    def get_precision(self) -> Precision:
         """Get precision."""
-        from ansys.fluent.core import Precision
-
         if self.scheme.eval("(rp-double?)"):
             return Precision.DOUBLE
         else:
@@ -247,10 +238,8 @@ class ApplicationRuntimeV261V252:
         """Get processor count."""
         return self.scheme.eval("(string->number (rpgetvar 'parallel/nprocs_string))")
 
-    def get_ui_mode(self) -> Enum:
+    def get_ui_mode(self) -> UIMode:
         """Get UI mode."""
-        from ansys.fluent.core import UIMode
-
         if not self.scheme.eval("(cx-gui?)") and not self.scheme.eval("(cx-graphics?)"):
             return UIMode.NO_GUI_OR_GRAPHICS
         elif not self.scheme.eval("(cx-gui?)"):
@@ -262,7 +251,9 @@ class ApplicationRuntimeV261V252:
         else:
             return UIMode.GUI
 
-    def get_graphics_driver(self) -> Enum:
+    def get_graphics_driver(
+        self,
+    ) -> FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver:
         """Get graphics driver.
 
         Raises
@@ -276,8 +267,6 @@ class ApplicationRuntimeV261V252:
             if not driver_str:
                 driver_str = "auto"
         if platform.system() == "Windows":
-            from ansys.fluent.core import FluentWindowsGraphicsDriver
-
             if driver_str == "null":
                 return FluentWindowsGraphicsDriver.NULL
             elif driver_str == "msw":
@@ -293,8 +282,6 @@ class ApplicationRuntimeV261V252:
             else:
                 raise ValueError(f"Unknown graphics driver: {driver_str}")
         else:
-            from ansys.fluent.core import FluentLinuxGraphicsDriver
-
             if driver_str == "null":
                 return FluentLinuxGraphicsDriver.NULL
             elif driver_str == "x11":
@@ -447,10 +434,8 @@ class ApplicationRuntimeOld:
             working_directory=self.scheme.eval("(cx-send '(cx-client-pwd))"),
         )
 
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> FluentMode:
         """Get app mode."""
-        from ansys.fluent.core import FluentMode
-
         if self.scheme.eval("(cx-solver-mode?)"):
             mode_str = self.scheme.eval('(getenv "PRJAPP_APP")')
             if mode_str == "flaero_server":
@@ -462,19 +447,15 @@ class ApplicationRuntimeOld:
         else:
             return FluentMode.MESHING
 
-    def get_dimension(self) -> Enum:
+    def get_dimension(self) -> Dimension:
         """Get dimension."""
-        from ansys.fluent.core import Dimension
-
         if self.scheme.eval("(rp-3d?)"):
             return Dimension.THREE
         else:
             return Dimension.TWO
 
-    def get_precision(self) -> Enum:
+    def get_precision(self) -> Precision:
         """Get precision."""
-        from ansys.fluent.core import Precision
-
         if self.scheme.eval("(rp-double?)"):
             return Precision.DOUBLE
         else:
@@ -484,10 +465,8 @@ class ApplicationRuntimeOld:
         """Get processor count."""
         return self.scheme.eval("(string->number (rpgetvar 'parallel/nprocs_string))")
 
-    def get_ui_mode(self) -> Enum:
+    def get_ui_mode(self) -> UIMode:
         """Get UI mode."""
-        from ansys.fluent.core import UIMode
-
         if not self.scheme.eval("(cx-gui?)") and not self.scheme.eval("(cx-graphics?)"):
             return UIMode.NO_GUI_OR_GRAPHICS
         elif not self.scheme.eval("(cx-gui?)"):
@@ -499,7 +478,9 @@ class ApplicationRuntimeOld:
         else:
             return UIMode.GUI
 
-    def get_graphics_driver(self) -> Enum:
+    def get_graphics_driver(
+        self,
+    ) -> FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver:
         """Get graphics driver.
 
         Raises
@@ -513,8 +494,6 @@ class ApplicationRuntimeOld:
             if not driver_str:
                 driver_str = "auto"
         if platform.system() == "Windows":
-            from ansys.fluent.core import FluentWindowsGraphicsDriver
-
             if driver_str == "null":
                 return FluentWindowsGraphicsDriver.NULL
             elif driver_str == "msw":
@@ -530,8 +509,6 @@ class ApplicationRuntimeOld:
             else:
                 raise ValueError(f"Unknown graphics driver: {driver_str}")
         else:
-            from ansys.fluent.core import FluentLinuxGraphicsDriver
-
             if driver_str == "null":
                 return FluentLinuxGraphicsDriver.NULL
             elif driver_str == "x11":

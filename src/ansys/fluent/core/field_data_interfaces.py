@@ -23,6 +23,8 @@
 
 """Common interfaces for field data."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 import dataclasses
@@ -30,8 +32,9 @@ from enum import Enum
 from typing import TYPE_CHECKING, Iterable
 import warnings
 
-import numpy as np
-import numpy.typing as npt
+if TYPE_CHECKING:
+    import numpy as np
+    import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
