@@ -47,9 +47,9 @@ Class hierarchy
     Scheme-based fallback used for Fluent versions before 25R2.
 """
 
-from enum import Enum
 import os
 import platform
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.abstract_application_runtime import (
@@ -59,6 +59,16 @@ from ansys.fluent.core.services.abstract_application_runtime import (
 )
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core import (
+        Dimension,
+        FluentLinuxGraphicsDriver,
+        FluentMode,
+        FluentWindowsGraphicsDriver,
+        Precision,
+        UIMode,
+    )
 
 
 class ApplicationRuntime(AbstractApplicationRuntime):
@@ -102,19 +112,19 @@ class ApplicationRuntime(AbstractApplicationRuntime):
             working_directory=working_directory,
         )
 
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> "FluentMode":
         """Get app mode."""
         from ansys.fluent.core import FluentMode
 
         return FluentMode(self.service.get_mode())
 
-    def get_dimension(self) -> Enum:
+    def get_dimension(self) -> "Dimension":
         """Get dimension."""
         from ansys.fluent.core import Dimension
 
         return Dimension(self.service.get_dimension())
 
-    def get_precision(self) -> Enum:
+    def get_precision(self) -> "Precision":
         """Get precision."""
         from ansys.fluent.core import Precision
 
@@ -124,13 +134,15 @@ class ApplicationRuntime(AbstractApplicationRuntime):
         """Get processor count."""
         return self.service.get_processor_count()
 
-    def get_ui_mode(self) -> Enum:
+    def get_ui_mode(self) -> "UIMode":
         """Get UI mode."""
         from ansys.fluent.core import UIMode
 
         return UIMode(self.service.get_ui_mode())
 
-    def get_graphics_driver(self) -> Enum:
+    def get_graphics_driver(
+        self,
+    ) -> "FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver":
         """Get graphics driver."""
         if platform.system() == "Windows":
             from ansys.fluent.core import FluentWindowsGraphicsDriver
@@ -219,13 +231,13 @@ class ApplicationRuntimeV261V252:
             working_directory=working_directory,
         )
 
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> "FluentMode":
         """Get app mode."""
         from ansys.fluent.core import FluentMode
 
         return FluentMode(self.service.get_app_mode())
 
-    def get_dimension(self) -> Enum:
+    def get_dimension(self) -> "Dimension":
         """Get dimension."""
         from ansys.fluent.core import Dimension
 
@@ -234,7 +246,7 @@ class ApplicationRuntimeV261V252:
         else:
             return Dimension.TWO
 
-    def get_precision(self) -> Enum:
+    def get_precision(self) -> "Precision":
         """Get precision."""
         from ansys.fluent.core import Precision
 
@@ -247,7 +259,7 @@ class ApplicationRuntimeV261V252:
         """Get processor count."""
         return self.scheme.eval("(string->number (rpgetvar 'parallel/nprocs_string))")
 
-    def get_ui_mode(self) -> Enum:
+    def get_ui_mode(self) -> "UIMode":
         """Get UI mode."""
         from ansys.fluent.core import UIMode
 
@@ -262,7 +274,9 @@ class ApplicationRuntimeV261V252:
         else:
             return UIMode.GUI
 
-    def get_graphics_driver(self) -> Enum:
+    def get_graphics_driver(
+        self,
+    ) -> "FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver":
         """Get graphics driver.
 
         Raises
@@ -447,7 +461,7 @@ class ApplicationRuntimeOld:
             working_directory=self.scheme.eval("(cx-send '(cx-client-pwd))"),
         )
 
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> "FluentMode":
         """Get app mode."""
         from ansys.fluent.core import FluentMode
 
@@ -462,7 +476,7 @@ class ApplicationRuntimeOld:
         else:
             return FluentMode.MESHING
 
-    def get_dimension(self) -> Enum:
+    def get_dimension(self) -> "Dimension":
         """Get dimension."""
         from ansys.fluent.core import Dimension
 
@@ -471,7 +485,7 @@ class ApplicationRuntimeOld:
         else:
             return Dimension.TWO
 
-    def get_precision(self) -> Enum:
+    def get_precision(self) -> "Precision":
         """Get precision."""
         from ansys.fluent.core import Precision
 
@@ -484,7 +498,7 @@ class ApplicationRuntimeOld:
         """Get processor count."""
         return self.scheme.eval("(string->number (rpgetvar 'parallel/nprocs_string))")
 
-    def get_ui_mode(self) -> Enum:
+    def get_ui_mode(self) -> "UIMode":
         """Get UI mode."""
         from ansys.fluent.core import UIMode
 
@@ -499,7 +513,9 @@ class ApplicationRuntimeOld:
         else:
             return UIMode.GUI
 
-    def get_graphics_driver(self) -> Enum:
+    def get_graphics_driver(
+        self,
+    ) -> "FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver":
         """Get graphics driver.
 
         Raises
