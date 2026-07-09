@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,10 +26,11 @@ from typing import Any
 import pytest
 
 from ansys.fluent.core import FluentVersion
+from ansys.fluent.core._grpc_services.reduction_service import _locn_names_and_objs
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.services.reduction import _locn_names_and_objs
 from ansys.fluent.core.solver.function import reduction
+from ansys.fluent.core.solver.function.reduction import Weight
 from ansys.units import VariableCatalog
 
 
@@ -397,7 +399,7 @@ def _test_sum_if(solver):
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight=solver.fields.reduction.weight.AREA,
+        weight=Weight.AREA,
     )
 
     assert val == expr_val
@@ -426,7 +428,6 @@ def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_reductions(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ) -> None:
@@ -459,7 +460,6 @@ def test_reductions(
     _test_centroid_2_sources(solver1, solver2)
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
@@ -473,7 +473,6 @@ def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     assert not solver.scheme.eval("(case-modified?)")
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
@@ -571,7 +570,7 @@ def test_named_expression_as_input(static_mixer_case_session):
         expression=absolute_pressure_expression,
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight=solver.fields.reduction.weight.AREA,
+        weight=Weight.AREA,
     )
     assert val == expr_val
 

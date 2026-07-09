@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,9 +28,13 @@ import logging
 from pathlib import Path
 import sys
 
-from ansys.fluent.core.search import search  # noqa: F401
-
 logger = logging.getLogger("pyfluent.general")
+
+
+__all__ = (
+    "load_module",
+    "get_user_data_dir",
+)
 
 
 def load_module(module_name, file_path):

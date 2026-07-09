@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,6 +26,8 @@
 from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.session_solver import Solver
 
+__all__ = ("setup_for_fluent",)
+
 
 def setup_for_fluent(*args, **kwargs):
     """Returns global PyConsole objects."""
@@ -36,7 +39,7 @@ def setup_for_fluent(*args, **kwargs):
         globals["PMFileManagement"] = session.PMFileManagement
         globals["solver"] = Solver(
             fluent_connection=session._fluent_connection,
-            scheme_eval=session._fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=session._fluent_connection.scheme_eval,
         )
     else:
         globals["solver"] = session

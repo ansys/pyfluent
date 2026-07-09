@@ -1,5 +1,7 @@
 ﻿# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
 # SPDX-License-Identifier: MIT
 #
 #
@@ -136,7 +138,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
         )
         session = BaseSession(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
         )
 
         file_transfer_service = PimFileTransferService(pim_instance=mock_instance)
@@ -245,8 +247,6 @@ def test_rename_downloaded_file(ext, a, b, c, d):
         shutil.rmtree(dir_path, ignore_errors=True)
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_file_purpose_on_remote_instance(
     monkeypatch, new_solver_session, new_meshing_session
 ):
@@ -256,7 +256,7 @@ def test_file_purpose_on_remote_instance(
 
     solver_session = Solver(
         fluent_connection=solver._fluent_connection,
-        scheme_eval=solver._fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=solver._fluent_connection.scheme_eval,
         file_transfer_service=file_service,
     )
 
@@ -283,7 +283,7 @@ def test_file_purpose_on_remote_instance(
 
     meshing_session = PureMeshing(
         fluent_connection=meshing._fluent_connection,
-        scheme_eval=meshing._fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=meshing._fluent_connection.scheme_eval,
         file_transfer_service=file_service,
     )
 

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -235,8 +236,6 @@ def test_update_cache_internal_names_as_keys(
     assert cache_rules == final_cache
 
 
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_get_cached_values_in_command_arguments(new_meshing_session):
     wt = new_meshing_session.watertight(legacy=True)
     geo_import = new_meshing_session.workflow.TaskObject["Import Geometry"]
@@ -444,7 +443,6 @@ def test_cache_set_state(
     assert final_cache == cache_rules[rules]
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_cache_per_session():
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     with (

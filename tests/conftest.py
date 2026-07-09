@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -111,6 +112,7 @@ def pytest_runtest_setup(item):
 
     version_specs = []
     fluent_release_version = FluentVersion.current_release().value
+    fluent_dev_version = FluentVersion.current_dev().value
     for mark in item.iter_markers(name="fluent_version"):
         spec = mark.args[0]
         # if a test is marked as fluent_version("latest")
@@ -122,6 +124,8 @@ def pytest_runtest_setup(item):
                 if is_nightly or is_solvermode_option
                 else f"=={fluent_release_version}"
             )
+        elif spec == "dev":
+            spec = f"=={fluent_dev_version}"
         version_specs.append(SpecifierSet(spec))
     if version_specs:
         combined_spec = functools.reduce(operator.and_, version_specs)

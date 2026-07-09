@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,7 +38,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_simple_solve(mixing_elbow_param_case_data_session):
     """Use case 1: This optiSLang integration test performs these steps.
@@ -143,7 +143,6 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_simple_solve_unitless(static_mixer_params_unitless_session):
     solver_session = static_mixer_params_unitless_session
@@ -207,7 +206,6 @@ def test_simple_solve_unitless(static_mixer_params_unitless_session):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_generate_read_mesh(mixing_elbow_geometry_filename):
     """Use case 2: This optiSLang integration test performs these steps.
@@ -271,7 +269,6 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_case_file():
     case_path = examples.download_file(
@@ -310,7 +307,6 @@ def test_case_file():
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_parameters(mixing_elbow_param_case_data_session):
     solver_session = mixing_elbow_param_case_data_session
@@ -338,7 +334,6 @@ def test_parameters(mixing_elbow_param_case_data_session):
 
 
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_session):
     Path(pyfluent.config.examples_path).mkdir(parents=True, exist_ok=True)

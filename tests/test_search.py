@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,12 +38,11 @@ from ansys.fluent.core.search import (
 )
 
 
-@pytest.mark.codegen_required
 @pytest.mark.fluent_version("==24.2")
 def test_nltk_data_download():
     import nltk
 
-    packages = ["wordnet", "omw-1.4"]
+    packages = ["wordnet", "omw-2.0"]
     for package in packages:
         nltk.download(package, quiet=True)
 
@@ -55,7 +55,6 @@ def test_nltk_data_download():
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_get_exact_match_for_word_from_names():
     api_tree_data = _get_api_tree_data()
     api_object_names = api_tree_data["all_api_object_names"]
@@ -68,7 +67,6 @@ def test_get_exact_match_for_word_from_names():
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_get_capitalize_match_for_word_from_names():
     api_tree_data = _get_api_tree_data()
     api_object_names = api_tree_data["all_api_object_names"]
@@ -95,7 +93,6 @@ def test_get_capitalize_match_for_word_from_names():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
     api_object_names = api_tree_data["all_api_object_names"]
@@ -113,7 +110,6 @@ def test_get_wildcard_matches_for_word_from_names():
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_get_close_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
     api_object_names = api_tree_data["all_api_object_names"]
@@ -143,7 +139,6 @@ def test_get_close_matches_for_word_from_names():
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_search_wildcard(capsys):
     api_tree_data = _get_api_tree_data()
     _search_wildcard(
@@ -165,7 +160,6 @@ def test_search_wildcard(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_search_whole_word(capsys):
     api_tree_data = _get_api_tree_data()
     _search_whole_word(
@@ -192,7 +186,6 @@ def test_search_whole_word(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_search_semantic(capsys):
     api_tree_data = _get_api_tree_data()
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
@@ -211,7 +204,6 @@ def test_search_semantic(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_whole_word_search(capsys):
     pyfluent.search("Font", match_whole_word=True)
     lines = capsys.readouterr().out.splitlines()
@@ -221,7 +213,6 @@ def test_whole_word_search(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_match_case_search(capsys):
     pyfluent.search("font", match_whole_word=True, match_case=True)
     lines = capsys.readouterr().out.splitlines()
@@ -233,7 +224,6 @@ def test_match_case_search(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_match_whole_word_and_case_search(capsys):
     pyfluent.search("font", match_whole_word=True, match_case=True)
     lines = capsys.readouterr().out.splitlines()
@@ -249,7 +239,6 @@ def test_match_whole_word_and_case_search(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_misspelled_search(capsys):
     pyfluent.search("cfb_lma")
     lines = capsys.readouterr().out.splitlines()
@@ -260,7 +249,6 @@ def test_misspelled_search(capsys):
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_wildcard_search(capsys):
     pyfluent.search("local*")
     lines = capsys.readouterr().out.splitlines()
@@ -271,7 +259,6 @@ def test_wildcard_search(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_chinese_semantic_search(capsys):
     pyfluent.search("读", language="cmn")
     lines = capsys.readouterr().out.splitlines()
@@ -283,7 +270,6 @@ def test_chinese_semantic_search(capsys):
 
 
 @pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
     lines = capsys.readouterr().out.splitlines()
@@ -327,7 +313,6 @@ def test_match_whole_word(monkeypatch):
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_solver_api_path():
     import ansys.fluent.core as pyfluent
 
@@ -341,7 +326,6 @@ def test_solver_api_path():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_meshing_api_path():
     import ansys.fluent.core as pyfluent
 
@@ -353,7 +337,6 @@ def test_meshing_api_path():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_solver_specific_api_path():
     import ansys.fluent.core as pyfluent
 
@@ -367,7 +350,6 @@ def test_solver_specific_api_path():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_match_whole_word_with_api_path():
     import ansys.fluent.core as pyfluent
 
@@ -383,7 +365,6 @@ def test_match_whole_word_with_api_path():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_wildcard_with_api_path():
     import ansys.fluent.core as pyfluent
 
@@ -397,7 +378,6 @@ def test_wildcard_with_api_path():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_wildcard_with_api_object():
     import ansys.fluent.core as pyfluent
 
@@ -411,7 +391,6 @@ def test_wildcard_with_api_object():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_match_whole_word_with_api_object_2():
     import ansys.fluent.core as pyfluent
 
@@ -427,7 +406,6 @@ def test_match_whole_word_with_api_object_2():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_semantic_search_read():
     import ansys.fluent.core as pyfluent
 
@@ -442,7 +420,6 @@ def test_semantic_search_read():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_multiple_words():
     import ansys.fluent.core as pyfluent
 
@@ -453,7 +430,6 @@ def test_multiple_words():
 
 
 @pytest.mark.fluent_version("==26.1")
-@pytest.mark.codegen_required
 def test_multiple_words_2():
     import ansys.fluent.core as pyfluent
 

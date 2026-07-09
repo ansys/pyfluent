@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,14 +42,12 @@ Example
 from __future__ import annotations
 
 import collections
-import collections.abc
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
 from functools import total_ordering
 import hashlib
-import inspect
 import keyword
 import logging
 import os
@@ -59,14 +58,11 @@ import sys
 import types
 from typing import (
     Any,
-    Callable,
-    Dict,
     ForwardRef,
     Generic,
-    List,
+    Iterable,
     NewType,
     Protocol,
-    Tuple,
     TypeVar,
     Union,
     _eval_type,
@@ -84,6 +80,9 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.get_completer_info import (
+    get_completer_info as _get_completer_info,
+)
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -144,6 +143,64 @@ class ExposureLevel(Enum):
         return NotImplemented
 
 
+def _is_hidden_by_exposure_level(child_cls, parent_obj) -> bool:
+    """Whether a child settings class should be hidden based on exposure level.
+
+    Parameters
+    ----------
+    child_cls : type
+        The child settings class to check.
+    parent_obj : Base
+        The parent object instance, used to traverse to the root for activation flags.
+
+    Returns
+    -------
+    bool
+        True if the child should be hidden from dir and attribute access; False otherwise.
+    """
+    return child_cls.exposure_level < getattr(
+        parent_obj._root, "_global_exposure_level", ExposureLevel.STABLE
+    )
+
+
+def _set_exposure_level(self, level: ExposureLevel) -> None:
+    """Set the minimum exposure level for accessible settings objects.
+
+    Parameters
+    ----------
+    level : ExposureLevel
+        The minimum exposure level to make accessible.
+        ``ExposureLevel.STABLE`` (default) hides all beta and alpha objects.
+        ``ExposureLevel.BETA`` also exposes beta objects.
+        ``ExposureLevel.ALPHA`` exposes all objects.
+    """
+    self._setattr("_global_exposure_level", level)
+
+
+def _get_hidden_names(names, child_classes, obj) -> set:
+    """Return names that should be hidden due to exposure level or deprecation."""
+    hidden = set()
+    for name in names:
+        child_cls = child_classes.get(name)
+        if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
+            hidden.add(name)
+        elif _is_deprecated(object.__getattribute__(obj, name)):
+            hidden.add(name)
+    return hidden
+
+
+def _raise_if_exposure_hidden(name, child_classes, obj) -> None:
+    """Raise AttributeError if name is hidden due to exposure level."""
+    child_cls = child_classes.get(name)
+    if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
+        raise AttributeError(
+            f"'{name}' is not available at the current exposure level. "
+            f"Call 'set_exposure_level(ExposureLevel.BETA)' or "
+            f"'set_exposure_level(ExposureLevel.ALPHA)' on the settings root "
+            f"to enable access to beta or alpha objects."
+        )
+
+
 class _InlineConstants:
     is_active = "active?"
     is_read_only = "read-only?"
@@ -156,12 +213,12 @@ class _InlineConstants:
 
 
 # Type hints
-RealType = NewType("real", Union[float, str])  # constant or expression
-RealListType = List[RealType]
-RealVectorType = Tuple[RealType, RealType, RealType]
-IntListType = List[int]
-StringListType = List[str]
-BoolListType = List[bool]
+RealType = NewType("real", float | str)  # constant or expression
+RealListType = list[RealType]
+RealVectorType = tuple[RealType, RealType, RealType]
+IntListType = list[int]
+StringListType = list[str]
+BoolListType = list[bool]
 PrimitiveStateType = Union[
     str,
     RealType,
@@ -172,8 +229,8 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = Dict[str, "StateType"]
-ListStateType = List["StateType"]
+DictStateType = dict[str, "StateType"]
+ListStateType = list["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
@@ -181,6 +238,11 @@ def check_type(val, tp):
     """Check type of object."""
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
+    if isinstance(tp, str):
+        try:
+            return check_type(val, _eval_type(ForwardRef(tp), globals(), locals()))
+        except Exception:
+            return False
     if isinstance(tp, ForwardRef):
         return check_type(val, _eval_type(tp, globals(), locals()))
     origin = get_origin(tp)
@@ -192,7 +254,7 @@ def check_type(val, tp):
         return isinstance(val, tuple) and all(
             check_type(x, t) for x, t in zip(val, get_args(tp))
         )
-    elif origin == Union:
+    elif origin in (Union, types.UnionType):
         return any(check_type(val, t) for t in get_args(tp))
     elif origin == dict:
         k_t, k_v = get_args(tp)
@@ -271,15 +333,63 @@ def _get_python_path_comps(obj):
     return comps[1:]
 
 
-def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str]):
-    """Get the class for the given alias path."""
-    parent_count = 0
-    while other_path[0] == "..":
-        parent_count += 1
-        other_path.pop(0)
-    for _ in range(parent_count):
-        some_path.pop()
-    full_path = some_path + other_path
+def get_full_path(base_path: list[str], relative_path: list[str]) -> list[str]:
+    """
+    Get full path by applying relative path to base path.
+
+    Parameters
+    ----------
+    base_path: list[str]
+        The base path.
+
+    relative_path: list[str]
+        The relative path, which can contain ".." to indicate going up one level in the hierarchy.
+
+    Returns
+    -------
+    list[str]
+        The full path obtained by applying the relative path to the base path.
+
+    Raises
+    ------
+    ValueError
+        If the relative path tries to go beyond the root of the hierarchy.
+    """
+    base_path = base_path.copy()
+    relative_path = relative_path.copy()
+    while relative_path and relative_path[0] == "..":
+        if not base_path:
+            raise ValueError("Relative path goes beyond root.")
+        base_path.pop()
+        relative_path.pop(0)
+    return base_path + relative_path
+
+
+def _get_class_from_paths(
+    root_cls, base_path: list[str], relative_path: list[str]
+) -> tuple[type, list[str]]:
+    """
+    Get the settings class from a base path and a relative path.
+
+    Parameters
+    ----------
+    root_cls: type
+        The root class to start from.
+
+    base_path: list[str]
+        The base path from the root class to the base of the relative path.
+
+    relative_path: list[str]
+        The relative path from the base to the target class. This can contain ".." to
+        indicate going up one level in the hierarchy.
+
+    Returns
+    -------
+    tuple[type, list[str]]
+        The target class and the full path from the root class to the target class.
+    """
+
+    full_path = get_full_path(base_path, relative_path)
     cls = root_cls
     for comp in full_path:
         cls = cls._child_classes[comp]
@@ -434,13 +544,26 @@ class Base:
         return ppath + "." + self.python_name
 
     def get_attrs(self, attrs, recursive=False) -> Any:
-        """Get the requested attributes for the object."""
+        """Get the requested attributes for the object.
+
+        Parameters
+        ----------
+        attrs : list
+            List of attribute names to retrieve.
+        recursive : bool, optional
+            Whether to retrieve attributes recursively, by default False.
+
+        Returns
+        -------
+        Any
+            Requested attributes.
+        """
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: type | Tuple[type] | None = None,
+        attr_type_or_types: type | tuple[type] | None = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -559,38 +682,30 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all children.
+    def get_completer_info(
+        self, prefix: str = "", excluded: Iterable = None
+    ) -> list[list[str]]:
+        """Get completer information of all children.
 
         Returns
         -------
-        List[List[str]]
+        list[list[str]]
             Name, type and docstring of all children.
         """
-        excluded = excluded or []
-        ret = []
-        for k, v in inspect.getmembers(self):
-            if not k.startswith("_") and k not in excluded and k.startswith(prefix):
-                if isinstance(v, Base):
-                    if not _is_deprecated(v):
-                        ret.append(
-                            [
-                                k,
-                                _get_type_for_completer_info(v.__class__),
-                                v.__doc__,
-                            ]
-                        )
-                elif inspect.ismethod(v):
-                    ret.append(
-                        [
-                            k,
-                            "Method",
-                            v.__doc__ or "",
-                        ]
-                    )
-                else:
-                    ret.append([k, "Data", ""])
-        return ret
+
+        def filter_deprecated(v) -> bool:
+            if isinstance(v, Base):
+                return not _is_deprecated(v)
+            return True
+
+        return _get_completer_info(
+            obj=self,
+            base_class=Base,
+            prefix=prefix,
+            excluded=excluded,
+            filter_function=filter_deprecated,
+            type_name_map=_type_name_map,
+        )
 
 
 StateT = TypeVar("StateT")
@@ -1112,21 +1227,14 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _get_type_for_completer_info(cls) -> str:
-    if issubclass(cls, (FileName, _InputFile)):
-        return "InputFilename"
-    elif issubclass(cls, (FileName, _OutputFile)):
-        return "OutputFilename"
-    elif issubclass(cls, (FileName, _InOutFile)):
-        return "InOutFilename"
-    elif issubclass(cls, (FilenameList, _InputFile)):
-        return "InputFilenameList"
-    elif issubclass(cls, (FilenameList, _OutputFile)):
-        return "OutputFilenameList"
-    elif issubclass(cls, (FilenameList, _InOutFile)):
-        return "InOutFilenameList"
-    else:
-        return cls.__bases__[0].__name__
+_type_name_map = {
+    (FileName, _InputFile): "InputFilename",
+    (FileName, _OutputFile): "OutputFilename",
+    (FileName, _InOutFile): "InOutFilename",
+    (FilenameList, _InputFile): "InputFilenameList",
+    (FilenameList, _OutputFile): "OutputFilenameList",
+    (FilenameList, _InOutFile): "InOutFilenameList",
+}
 
 
 class Group(SettingsBase[DictStateType]):
@@ -1172,7 +1280,7 @@ class Group(SettingsBase[DictStateType]):
 
         Raises
         ------
-        RuntimeError
+        ValueError
             If key is invalid.
         """
         if isinstance(value, collections.abc.Mapping):
@@ -1190,7 +1298,7 @@ class Group(SettingsBase[DictStateType]):
                         v, root_cls, alias_path
                     )
                 else:
-                    raise RuntimeError("Key '" + str(k) + "' is invalid")
+                    raise ValueError("Key '" + str(k) + "' is invalid")
             return ret
         else:
             return value
@@ -1219,7 +1327,11 @@ class Group(SettingsBase[DictStateType]):
     def get_active_child_names(self):
         """Names of children that are currently active."""
         ret = []
+        child_classes = type(self)._child_classes
         for child_name in self.child_names:
+            child_cls = child_classes.get(child_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
             child = getattr(self, child_name)
             if child.is_active() and not _is_deprecated(child):
                 ret.append(child_name)
@@ -1228,7 +1340,11 @@ class Group(SettingsBase[DictStateType]):
     def get_active_command_names(self):
         """Names of commands that are currently active."""
         ret = []
+        child_classes = type(self)._child_classes
         for command_name in self.command_names:
+            child_cls = child_classes.get(command_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
             command = getattr(self, command_name)
             if command.is_active() and not _is_deprecated(command):
                 ret.append(command_name)
@@ -1237,7 +1353,11 @@ class Group(SettingsBase[DictStateType]):
     def get_active_query_names(self):
         """Names of queries that are currently active."""
         ret = []
+        child_classes = type(self)._child_classes
         for query_name in self.query_names:
+            child_cls = child_classes.get(query_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
             query = getattr(self, query_name)
             if query.is_active() and not _is_deprecated(query):
                 ret.append(query_name)
@@ -1245,13 +1365,12 @@ class Group(SettingsBase[DictStateType]):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        return dir_list - set(
-            [
-                child
-                for child in self.child_names + self.command_names + self.query_names
-                if _is_deprecated(getattr(self, child))
-            ]
+        hidden = _get_hidden_names(
+            self.child_names + self.command_names + self.query_names,
+            type(self)._child_classes,
+            self,
         )
+        return dir_list - hidden
 
     def __getattribute__(self, name):
         # Avoiding server queries for static attributes
@@ -1262,6 +1381,9 @@ class Group(SettingsBase[DictStateType]):
             and self.is_active() is False
         ):
             raise InactiveObjectError(self.python_path)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
+        )
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -1462,6 +1584,21 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     command_names = []
     query_names = []
     _child_aliases = {}
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        hidden = _get_hidden_names(
+            self.command_names + self.query_names, type(self)._child_classes, self
+        )
+        return dir_list - hidden
+
+    def __getattribute__(self, name):
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
+        )
+        return super().__getattribute__(name)
 
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
@@ -1720,6 +1857,21 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     query_names = []
     _child_aliases = {}
 
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        hidden = _get_hidden_names(
+            self.command_names + self.query_names, type(self)._child_classes, self
+        )
+        return dir_list - hidden
+
+    def __getattribute__(self, name):
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
+        )
+        return super().__getattribute__(name)
+
     def _update_objects(self):
         cls = self.__class__.child_object_type
         self._setattr(
@@ -1901,13 +2053,16 @@ class Action(Base):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        return dir_list - set(
-            [
-                child
-                for child in self.argument_names
-                if _is_deprecated(getattr(self, child))
-            ]
+        hidden = _get_hidden_names(self.argument_names, type(self)._child_classes, self)
+        return dir_list - hidden
+
+    def __getattribute__(self, name):
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
         )
+        return super().__getattribute__(name)
 
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
@@ -1921,7 +2076,23 @@ class Action(Base):
                 )
             return alias_obj
         else:
-            return getattr(super(), name)
+            try:
+                return getattr(super(), name)
+            except AttributeError:
+                raise AttributeError(
+                    f"'{self.python_path}' is a command/query object and has no attribute '{name}'"
+                ) from None
+
+    def __setattr__(self, name: str, value):
+        attr = getattr(self, name)
+        try:
+            return attr.set_state(value)
+        except Exception as ex:
+            if hasattr(attr, "allowed_values"):
+                allowed = attr.allowed_values()
+                if allowed and value not in allowed:
+                    raise allowed_values_error(name, value, allowed) from ex
+            raise
 
 
 class BaseCommand(Action):
@@ -2394,6 +2565,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls._deprecated_version = ""
 
         taboo = set(dir(cls))
+        if version and version >= "261":
+            taboo -= {"list", "list_properties"}
         taboo |= set(
             [
                 "child_names",
@@ -2574,6 +2747,8 @@ def get_root(
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval
+    root._setattr("_global_exposure_level", ExposureLevel.STABLE)
+    root._setattr("set_exposure_level", types.MethodType(_set_exposure_level, root))
     root._setattr("_file_transfer_service", file_transfer_service)
     return root
 
@@ -2590,7 +2765,7 @@ def find_children(obj, identifier="*"):
 
     Returns
     -------
-    List
+    list
     """
     list_of_children = []
     _list_children(obj.__class__, identifier, [], list_of_children)

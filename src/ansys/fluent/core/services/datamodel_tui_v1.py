@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,8 +31,8 @@ from typing import Any
 
 import grpc
 
-from ansys.api.fluent.v1 import datamodel_tui_pb2 as DataModelProtoModule
-from ansys.api.fluent.v1 import datamodel_tui_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v1 import text_interface_pb2 as DataModelProtoModule
+from ansys.api.fluent.v1 import text_interface_pb2_grpc as DataModelGrpcModule
 from ansys.fluent.core.services import (
     datamodel_tui as _v0,  # v0 base: shared menu/runtime logic is reused; only v1-specific proto/stub differences are overridden below
 )
@@ -67,8 +68,12 @@ class DatamodelServiceImpl(_v0.DatamodelServiceImpl):
             _v0.TracingInterceptor(),
             _v0.BatchInterceptor(),
         )
-        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
+        self._stub = DataModelGrpcModule.TextInterfaceStub(intercept_channel)
         self._metadata = metadata
+
+    def get_static_info(self, request):
+        """GetSchema RPC of DataModel service."""
+        return self._stub.GetSchema(request, metadata=self._metadata)
 
 
 class DatamodelService(_v0.DatamodelService):

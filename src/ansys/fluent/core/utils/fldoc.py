@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +25,6 @@
 
 import pprint
 import pydoc
-import sys
 
 
 def docother(self, object, name=None, mod=None, parent=None, maxlen=None, doc=None):
@@ -41,13 +41,8 @@ def docother(self, object, name=None, mod=None, parent=None, maxlen=None, doc=No
             if chop < 0:
                 rep = rep[:chop] + "..."
     line = (name and self.bold(name) + " = " or "") + rep
-    #  The source have been changed in 3.9, cpython commit id fbf2786c4c89430e2067016603078cf3500cfe94
-    if sys.version_info < (3, 9):
-        if doc is not None:
-            line += "\n" + self.indent(str(doc))
-    else:
-        if not doc:
-            doc = pydoc.getdoc(object)
-        if doc:
-            line += "\n" + self.indent(str(doc)) + "\n"
+    if not doc:
+        doc = pydoc.getdoc(object)
+    if doc:
+        line += "\n" + self.indent(str(doc)) + "\n"
     return line

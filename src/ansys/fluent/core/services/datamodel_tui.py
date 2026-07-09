@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,6 +37,7 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -143,7 +145,7 @@ def _convert_gvalue_to_value(gval: Variant) -> Any:
         return val
 
 
-class DatamodelService:
+class DatamodelService(ServiceProtocol):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(

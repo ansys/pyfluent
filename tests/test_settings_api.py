@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,6 +23,7 @@
 
 from pathlib import Path
 import tempfile
+from collections import UserList
 import warnings
 
 from conftest import SKIP_INVESTIGATING
@@ -31,6 +33,7 @@ from pytest import WarningsRecorder
 from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
+from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -47,7 +50,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.1")
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -65,7 +67,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 
 
 # Failing for 24.1 but passes for 24.2 and 25.1
-@pytest.mark.fluent_version(">=24.2")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -174,7 +175,6 @@ def test_wildcard(new_solver_session):
         boundary_conditions.velocity_inlet["inl*"].moment
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -203,7 +203,6 @@ def test_wildcard_fnmatch(new_solver_session):
     assert sorted(mesh["mesh-[!2-5]"]()) == sorted(["mesh-1", "mesh-a"])
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -233,7 +232,6 @@ def test_wildcard_path_is_iterable(new_solver_session):
     assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
@@ -442,7 +440,6 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
     }
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -463,7 +460,6 @@ def warning_record():
         yield wrec
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
     icing_cls = solver.setup.boundary_conditions._child_classes[
@@ -797,7 +793,6 @@ def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(config, "use_runtime_python_classes", True)
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_runtime_python_classes(
     use_runtime_python_classes, mixing_elbow_settings_session
 ):
@@ -839,7 +834,6 @@ def test_setting_string_constants(mixing_elbow_settings_session):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_named_object_commands(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     inlets = VelocityInlets(solver)
@@ -949,3 +943,33 @@ def test_filename_with_pathlib_path(mixing_elbow_settings_session):
 
         result_path = report_file.file_name()
         assert result_path == path_str
+
+
+def test_copy_accepts_sequence_types(mixing_elbow_settings_session: Solver):
+    solver = mixing_elbow_settings_session
+    hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    hot_inlet.momentum.velocity = 1.0
+    cold_inlet.momentum.velocity = 2.0
+
+    assert cold_inlet.momentum.velocity.value() == 2.0
+
+    seq = UserList(["cold-inlet"])
+    solver.settings.setup.boundary_conditions.copy(from_="hot-inlet", to=seq)
+    assert cold_inlet.momentum.velocity.value() == 1.0
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_action_behavior(mixing_elbow_case_session):
+    solver = mixing_elbow_case_session
+    with pytest.raises(AttributeError, match="command/query object"):
+        solver.settings.solution.run_calculation.iterate.get_state()
+    assert isinstance(
+        solver.settings.solution.run_calculation.iterate.iter_count(), int
+    )
+    solver.settings.solution.run_calculation.iterate.iter_count = 55
+    assert solver.settings.solution.run_calculation.iterate.iter_count() == 55
+    result = solver.settings.solution.run_calculation.iterate.get_attrs(
+        ["active?"], recursive=True
+    )
+    assert "iter-count" in result["group_children"]

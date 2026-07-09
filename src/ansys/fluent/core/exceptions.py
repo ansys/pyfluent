@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +22,8 @@
 # SOFTWARE.
 
 """Custom common higher level exceptions."""
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 

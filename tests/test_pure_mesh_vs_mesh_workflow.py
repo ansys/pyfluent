@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,8 +26,6 @@ import pytest
 from ansys.fluent.core.examples import download_file
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_pure_meshing_mode(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
     # check a few dir elements
@@ -47,8 +46,6 @@ def test_pure_meshing_mode(mixing_elbow_watertight_pure_meshing_session):
         pure_meshing_session.switch_to_solver()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_meshing_mode(new_meshing_session_wo_exit):
     meshing_session = new_meshing_session_wo_exit
     # check a few dir elements
@@ -65,8 +62,6 @@ def test_meshing_mode(new_meshing_session_wo_exit):
     solver.exit()
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_meshing_and_solver_mode_exit(new_meshing_session_wo_exit):
     meshing_session = new_meshing_session_wo_exit
     solver_session = meshing_session.switch_to_solver()
@@ -79,8 +74,6 @@ def test_meshing_and_solver_mode_exit(new_meshing_session_wo_exit):
     assert solver_session.is_active() is False
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_meshing_mode_post_switching_to_solver(new_meshing_session_wo_exit):
     meshing_session = new_meshing_session_wo_exit
     solver = meshing_session.switch_to_solver()

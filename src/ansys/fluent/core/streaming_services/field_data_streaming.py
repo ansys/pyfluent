@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +23,7 @@
 
 """Module for Field data streaming."""
 
-from typing import Callable, Dict, List
+from collections.abc import Callable
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.services.field_data import ChunkParser
@@ -60,6 +61,6 @@ class FieldDataStreaming(StreamingService):
             )
         )
 
-    def callbacks(self) -> List[List[Callable | List | Dict]]:
+    def callbacks(self) -> list[list[Callable | list | dict]]:
         """Get list of callbacks along with arguments and keyword arguments."""
         return self._service_callbacks.values()

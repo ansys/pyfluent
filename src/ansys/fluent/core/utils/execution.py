@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,12 +23,13 @@
 
 """Module providing additional execution methods."""
 
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 import functools
 from multiprocessing.context import TimeoutError
 import multiprocessing.pool
 import time
-from typing import Any, Callable
+from typing import Any
 
 from ansys.fluent.core.exceptions import InvalidArgument
 

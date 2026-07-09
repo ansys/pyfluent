@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +24,6 @@
 """Module for monitors management."""
 
 import threading
-from typing import Dict, List, Tuple
 
 import numpy as np
 
@@ -60,7 +60,7 @@ class MonitorsManager(StreamingService):
         self._monitors_info = None
         self._data_frames = {}
 
-    def get_monitor_set_names(self) -> List[str]:
+    def get_monitor_set_names(self) -> list[str]:
         """Get monitor set names.
 
         Parameters
@@ -120,7 +120,7 @@ class MonitorsManager(StreamingService):
         monitor_set_name,
         start_index: int = 0,
         end_index: int | None = None,
-    ) -> Tuple[np.array, Dict[str, np.array]]:
+    ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
         """Get monitor set data.
 
         Parameters

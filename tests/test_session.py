@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,6 +24,7 @@
 from concurrent import futures
 import os
 from pathlib import Path
+import platform
 import tempfile
 import time
 
@@ -40,6 +42,7 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.api.fluent.v1 import health_pb2 as health_pb2_v1
 from ansys.api.fluent.v1 import health_pb2_grpc as health_pb2_grpc_v1
+from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_grpc
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
@@ -123,6 +126,23 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
+class MockSchemeEvalServicerV1(scheme_interpreter_pb2_grpc.SchemeInterpreterServicer):
+    def StringEval(self, request, context):
+        if request.input == "(cx-version)":
+            return scheme_interpreter_pb2.StringEvalResponse(output="(25 1 0)")
+
+    def SchemeEval(
+        self,
+        request,
+        context: grpc.ServicerContext,
+    ) -> scheme_interpreter_pb2.SchemeEvalResponse:
+        metadata = dict(context.invocation_metadata())
+        password = metadata.get("password", None)
+        if password != "12345":
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+        return scheme_interpreter_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
+
+
 class MockHealthServicerV1(health_pb2_grpc_v1.HealthServicer):
     def Check(self, request, context: grpc.ServicerContext):  # noqa N802
         metadata = dict(context.invocation_metadata())
@@ -164,6 +184,9 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
+    )
     reflection.enable_server_reflection(
         (
             health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
@@ -185,7 +208,7 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
         )
         session = BaseSession(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
         )
 
     fluent_connection = FluentConnection(
@@ -199,7 +222,7 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     assert session.is_active()
     server.stop(None)
@@ -219,6 +242,9 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     reflection.enable_server_reflection(
         (
@@ -240,7 +266,7 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     assert session.is_active()
     server.stop(None)
@@ -258,6 +284,9 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
+    )
     reflection.enable_server_reflection(
         (
             health_pb2.DESCRIPTOR.services_by_name["Health"].full_name,
@@ -273,7 +302,7 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     assert session.is_active()
     server.stop(None)
@@ -291,6 +320,9 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path, monkeypatch) 
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     reflection.enable_server_reflection(
         (
@@ -326,6 +358,9 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
     server.add_insecure_port(f"{ip}:{port}")
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
+    )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
     )
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
@@ -367,6 +402,9 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
+    )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     reflection.enable_server_reflection(
         (
@@ -389,7 +427,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
@@ -414,6 +452,9 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
+        MockSchemeEvalServicerV1(), server
+    )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     reflection.enable_server_reflection(
         (
@@ -437,7 +478,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     )
     session = BaseSession(
         fluent_connection=fluent_connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=fluent_connection.scheme_eval,
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
@@ -450,7 +491,6 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
-@pytest.mark.fluent_version(">=23.2")
 def test_journal_creation(file_format, new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
@@ -480,7 +520,6 @@ def test_journal_creation(file_format, new_meshing_session_wo_exit):
     session.exit()
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_start_transcript_file_write(new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
@@ -507,19 +546,16 @@ def test_start_transcript_file_write(new_meshing_session_wo_exit):
     session.exit()
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_expected_interfaces_in_solver_session(new_solver_session):
     assert all(
         intf in dir(new_solver_session) for intf in ("preferences", "tui", "workflow")
     )
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_solverworkflow_not_in_solver_session(new_solver_session):
     assert "solverworkflow" not in dir(new_solver_session)
 
 
-@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.parametrize(
     "session_fixture_name",
     ["new_solver_session", "new_meshing_session"],
@@ -531,7 +567,6 @@ def test_server_supports_v1_by_version(session_fixture_name, request):
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -565,7 +600,6 @@ def test_read_case_using_lightweight_mode():
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode_exiting():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -608,7 +642,7 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     solver1.__class__.__bases__[0]._build_from_fluent_connection(
         solver1,
         fluent_connection=solver2._fluent_connection,
-        scheme_eval=solver2._fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=solver2._fluent_connection.scheme_eval,
     )
     assert solver1.is_active()
     assert solver2.is_active()
@@ -649,10 +683,12 @@ def test_solver_methods(new_solver_session):
         "current_parametric_study",
         "parallel",
     }
+    if solver.get_fluent_version() >= FluentVersion.v271:
+        api_keys = api_keys - {"parametric_studies", "current_parametric_study"}
+        api_keys.add("parameter_workspace")
     assert api_keys.issubset(set(dir(solver.settings)))
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_get_set_state_on_solver(new_solver_session):
     solver = new_solver_session
     state = solver.get_state()
@@ -677,7 +713,6 @@ def test_solver_structure(new_solver_session):
     }.issubset(set(dir(solver.fields)))
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_general_exception_behaviour_in_session(new_solver_session):
     solver = new_solver_session
 
@@ -769,19 +804,25 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     #     assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
-    assert solver._app_utilities.get_app_mode() == pyfluent.FluentMode.SOLVER
+    assert solver.application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
 
-    assert not solver._app_utilities.is_beta_enabled()
+    assert not solver.application_runtime.is_beta_enabled()
 
-    assert not solver._app_utilities.is_wildcard("no")
+    if solver.get_fluent_version() >= FluentVersion.v271:
+        assert not solver._settings_service.is_wildcard("no")
 
-    assert solver._app_utilities.is_wildcard("yes*")
+        assert solver._settings_service.is_wildcard("yes*")
 
-    assert not solver._app_utilities.is_solution_data_available()
+        assert not solver._field_data_service.is_solution_data_available()
+    else:
+        assert not solver.application_runtime.is_wildcard("no")
+
+        assert solver.application_runtime.is_wildcard("yes*")
+
+        assert not solver.application_runtime.is_solution_data_available()
 
     tmp_path = tempfile.mkdtemp(dir=pyfluent.config.examples_path)
 
@@ -791,12 +832,36 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     solver.chdir(tmp_folder)
 
-    cortex_info = solver._app_utilities.get_controller_process_info()
-    solver_info = solver._app_utilities.get_solver_process_info()
+    cortex_info = solver.application_runtime.get_controller_process_info()
+    solver_info = solver.application_runtime.get_solver_process_info()
 
     assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
 
     assert Path(solver_info.working_directory).parts[-1] == tmp_folder
+
+
+def test_application_runtime(new_solver_session):
+    solver = new_solver_session
+
+    assert solver.application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
+    assert (
+        solver.application_runtime.get_product_version() == solver.get_fluent_version()
+    )
+    assert solver.application_runtime.get_precision() == pyfluent.Precision.DOUBLE
+    assert solver.application_runtime.get_dimension() == pyfluent.Dimension.THREE
+    assert solver.application_runtime.get_processor_count() > 0
+    assert isinstance(solver.application_runtime.get_ui_mode(), pyfluent.UIMode)
+    if platform.system() == "Windows":
+        assert isinstance(
+            solver.application_runtime.get_graphics_driver(),
+            pyfluent.FluentWindowsGraphicsDriver,
+        )
+    else:
+        assert isinstance(
+            solver.application_runtime.get_graphics_driver(),
+            pyfluent.FluentLinuxGraphicsDriver,
+        )
+    assert solver.application_runtime.get_gpu_config() is False
 
 
 @pytest.mark.standalone
@@ -962,7 +1027,6 @@ def test_beta_solver_session(new_solver_session_wo_exit):
     meshing.exit()
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_error_raised_for_beta_feature_access_for_older_versions(
     new_meshing_session, new_solver_session
 ):

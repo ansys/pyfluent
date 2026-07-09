@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,10 +26,13 @@
 import grpc
 
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.streaming import StreamingService
 
 
-class TranscriptService(StreamingService):
+class TranscriptService(
+    StreamingService, ServiceProtocol
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the transcript gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:

@@ -1,11 +1,6 @@
-# /// script
-# dependencies = [
-#   "ansys-fluent-core",
-# ]
-# ///
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -469,7 +464,7 @@ update_region.Arguments.set_state(
             "void-region-1",
             "fluid-region-1",
         ],
-        "AllRegionOversetComponenList": ["no"] * 7,
+        "AllRegionOversetComponentList": ["no"] * 7,
         "AllRegionSourceList": ["object"] * 5 + ["mpt"] * 2,
         "AllRegionTypeList": ["void"] * 6 + ["fluid"],
         "AllRegionVolumeFillList": ["none"] * 6 + ["tet"],
@@ -477,13 +472,13 @@ update_region.Arguments.set_state(
         "OldRegionLeakageSizeList": [""],
         "OldRegionMeshMethodList": ["wrap"],
         "OldRegionNameList": ["fluid-region-1"],
-        "OldRegionOversetComponenList": ["no"],
+        "OldRegionOversetComponentList": ["no"],
         "OldRegionTypeList": ["fluid"],
         "OldRegionVolumeFillList": ["hexcore"],
         "RegionLeakageSizeList": [""],
         "RegionMeshMethodList": ["wrap"],
         "RegionNameList": ["fluid-region-1"],
-        "RegionOversetComponenList": ["no"],
+        "RegionOversetComponentList": ["no"],
         "RegionTypeList": ["fluid"],
         "RegionVolumeFillList": ["tet"],
     }

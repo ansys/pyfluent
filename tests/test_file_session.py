@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -456,7 +457,9 @@ def test_error_handling_multi_phase():
 
     batch_1 = field_data.new_batch()
     with pytest.raises(InvalidMultiPhaseFieldName):
-        batch_1.add_requests(ScalarFieldDataRequest("SV_WALL_YPLUS", surfaces=[29, 30]))
+        batch_1.add_requests(
+            ScalarFieldDataRequest(field_name="SV_WALL_YPLUS", surfaces=[29, 30])
+        )
 
     with pytest.raises(InvalidMultiPhaseFieldName):
         field_data.get_field_data(

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,9 +23,10 @@
 
 """Provides a module to customize exception messages."""
 
+from collections.abc import Iterable
 import difflib
 from functools import partial
-from typing import Any, Iterable
+from typing import Any
 
 
 def closest_allowed_names(trial_name: str, allowed_names: Iterable[str]) -> list[str]:

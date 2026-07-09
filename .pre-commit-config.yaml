@@ -32,11 +32,11 @@ repos:
       --statistics,
       --max-complexity, "10",
       --max-line-length, "88",
-      --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028,
+      --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028 F403 F405 F401 E402,
       --extend-select, B909,
       src, doc, examples, tests
     ]
-  
+
 - repo: https://github.com/PyCQA/bandit
   rev: 1.8.0
   hooks:
@@ -46,6 +46,7 @@ repos:
       -c, pyproject.toml,
       src, doc, examples, tests
     ]
+    additional_dependencies: ["tomli"]
 
 - repo: https://github.com/codespell-project/codespell
   rev: v2.3.0
@@ -74,7 +75,7 @@ repos:
 #    ]
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
+  rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
   hooks:
     - id: check-yaml
 
@@ -97,9 +98,8 @@ repos:
       args: []
 
 - repo: https://github.com/ansys/pre-commit-hooks
-  rev: v0.5.1
+  rev: 55c5b6a5439abd847613579c6924da750e8b78b2 # frozen: v0.8.0
   hooks:
     - id: add-license-headers
-      stages: [manual]
       args:
       - --start_year=2021

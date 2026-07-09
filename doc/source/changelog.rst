@@ -9,6 +9,459 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.40.1 <https://github.com/ansys/pyfluent/releases/tag/v0.40.1>`_ - July 01, 2026
+==================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version to v0.40.1
+          - `#5221 <https://github.com/ansys/pyfluent/pull/5221>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update nltk version to fix vulnerability issue.
+          - `#5218 <https://github.com/ansys/pyfluent/pull/5218>`_
+
+
+`0.40.0 <https://github.com/ansys/pyfluent/releases/tag/v0.40.0>`_ - June 29, 2026
+==================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Initial bulk of type checking
+          - `#4761 <https://github.com/ansys/pyfluent/pull/4761>`_
+
+        * - Add 'get_completer_info' for datamodel.
+          - `#5168 <https://github.com/ansys/pyfluent/pull/5168>`_
+
+        * - Update the typing import to the latest release version of the generated code
+          - `#5171 <https://github.com/ansys/pyfluent/pull/5171>`_
+
+        * - Include UDS path in connection properties.
+          - `#5172 <https://github.com/ansys/pyfluent/pull/5172>`_
+
+        * - Restore service creator
+          - `#5173 <https://github.com/ansys/pyfluent/pull/5173>`_
+
+        * - Activate filtering mechanism based on exposure level.
+          - `#5204 <https://github.com/ansys/pyfluent/pull/5204>`_
+
+        * - Copy xml data source to temp location
+          - `#5210 <https://github.com/ansys/pyfluent/pull/5210>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Name of object in parametric studies example
+          - `#5162 <https://github.com/ansys/pyfluent/pull/5162>`_
+
+        * - Remove empty README.md
+          - `#5175 <https://github.com/ansys/pyfluent/pull/5175>`_
+
+        * - Update meshing workflow tests.
+          - `#5186 <https://github.com/ansys/pyfluent/pull/5186>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Updated_README [skips]
+          - `#5167 <https://github.com/ansys/pyfluent/pull/5167>`_
+
+        * - Handled the formatting of Cheatsheet [skips]
+          - `#5169 <https://github.com/ansys/pyfluent/pull/5169>`_
+
+        * - Add virtual environment steps in installation guides [skip tests]
+          - `#5178 <https://github.com/ansys/pyfluent/pull/5178>`_
+
+        * - Add hyperlink to virtual env tutorial page [skip tests]
+          - `#5203 <https://github.com/ansys/pyfluent/pull/5203>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump the actions group with 6 updates
+          - `#5163 <https://github.com/ansys/pyfluent/pull/5163>`_
+
+        * - Bump the dependencies group with 2 updates
+          - `#5164 <https://github.com/ansys/pyfluent/pull/5164>`_
+
+        * - Bump basedpyright from 1.38.0 to 1.39.6 in the dependencies group
+          - `#5170 <https://github.com/ansys/pyfluent/pull/5170>`_
+
+        * - Bump version to v0.40.dev1
+          - `#5209 <https://github.com/ansys/pyfluent/pull/5209>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Increase start_timeout and link it to Fluent's Idle timeout
+          - `#5147 <https://github.com/ansys/pyfluent/pull/5147>`_
+
+        * - Update CHANGELOG for v0.39.0
+          - `#5158 <https://github.com/ansys/pyfluent/pull/5158>`_
+
+        * - Update w.r.t. the renamed .proto files.
+          - `#5180 <https://github.com/ansys/pyfluent/pull/5180>`_
+
+        * - Update new meshing workflow to enable switching.
+          - `#5181 <https://github.com/ansys/pyfluent/pull/5181>`_
+
+        * - Clean up and update text_interface and datamodel.
+          - `#5187 <https://github.com/ansys/pyfluent/pull/5187>`_
+
+        * - Separate out Scalar and Vector Variable Descriptors.
+          - `#5190 <https://github.com/ansys/pyfluent/pull/5190>`_
+
+        * - Update CHANGELOG for v0.39.1
+          - `#5197 <https://github.com/ansys/pyfluent/pull/5197>`_
+
+        * - Datamodel -> object model.
+          - `#5200 <https://github.com/ansys/pyfluent/pull/5200>`_
+
+        * - Deploy release docs only when a tag is pushed [skip tests]
+          - `#5205 <https://github.com/ansys/pyfluent/pull/5205>`_
+
+        * - Update missing or outdated files
+          - `#5206 <https://github.com/ansys/pyfluent/pull/5206>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add test for sequence
+          - `#4868 <https://github.com/ansys/pyfluent/pull/4868>`_
+
+        * - Add pyconsole test
+          - `#5177 <https://github.com/ansys/pyfluent/pull/5177>`_
+
+
+`0.39.1 <https://github.com/ansys/pyfluent/releases/tag/v0.39.1>`_ - June 17, 2026
+==================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Patch v0.39.1 to update ci to release without testing.
+          - `#5196 <https://github.com/ansys/pyfluent/pull/5196>`_
+
+
+`0.39.1 <https://github.com/ansys/pyfluent/releases/tag/v0.39.1>`_ - June 16, 2026
+==================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version to v0.39.1
+          - `#5193 <https://github.com/ansys/pyfluent/pull/5193>`_
+
+
+`0.39.0 <https://github.com/ansys/pyfluent/releases/tag/v0.39.0>`_ - May 27, 2026
+=================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add VariableDescriptor support to field data interfaces
+          - `#4938 <https://github.com/ansys/pyfluent/pull/4938>`_
+
+        * - Keep record of Fluent sessions
+          - `#5010 <https://github.com/ansys/pyfluent/pull/5010>`_
+
+        * - Add exposure level to settings objects.
+          - `#5028 <https://github.com/ansys/pyfluent/pull/5028>`_
+
+        * - Update client code w.r.t. grpc v1 updates.
+          - `#5062 <https://github.com/ansys/pyfluent/pull/5062>`_
+
+        * - Update Client code w.r.t. updated datamodel grpc service.
+          - `#5067 <https://github.com/ansys/pyfluent/pull/5067>`_
+
+        * - Update monitor wrt grpc v1
+          - `#5071 <https://github.com/ansys/pyfluent/pull/5071>`_
+
+        * - Have new github issue template.
+          - `#5091 <https://github.com/ansys/pyfluent/pull/5091>`_
+
+        * - Support aliased paths in builtin settingsgen
+          - `#5124 <https://github.com/ansys/pyfluent/pull/5124>`_
+
+
+  .. tab-item:: Changed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Use clearer builtin settings command class names `ReadCaseAndData` and `WriteCaseAndData`, while keeping `ReadCaseData` and `WriteCaseData` as deprecated aliases.
+          - `#4642 <https://github.com/ansys/pyfluent/pull/4642>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Replace top-level package proxy imports with direct module imports
+          - `#4972 <https://github.com/ansys/pyfluent/pull/4972>`_
+
+        * - Fixed the sentence case [skip tests]
+          - `#4993 <https://github.com/ansys/pyfluent/pull/4993>`_
+
+        * - Support vector units assignment.
+          - `#5008 <https://github.com/ansys/pyfluent/pull/5008>`_
+
+        * - Failing tests due to rencent 27R1 image.
+          - `#5057 <https://github.com/ansys/pyfluent/pull/5057>`_
+
+        * - Autoscale images in modelling solidification example [skip tests]
+          - `#5072 <https://github.com/ansys/pyfluent/pull/5072>`_
+
+        * - Reactivating failing tests.
+          - `#5078 <https://github.com/ansys/pyfluent/pull/5078>`_
+
+        * - Setting string values to rp vars.
+          - `#5079 <https://github.com/ansys/pyfluent/pull/5079>`_
+
+        * - Correct the launch timeout environment variable
+          - `#5088 <https://github.com/ansys/pyfluent/pull/5088>`_
+
+        * - List and list_properties for named objects.
+          - `#5126 <https://github.com/ansys/pyfluent/pull/5126>`_
+
+        * - Avoid command-argument RPCs in destructors during shutdown by adding finalizer-based cleanup
+          - `#5127 <https://github.com/ansys/pyfluent/pull/5127>`_
+
+        * - Behavior issues with command/query objects in flobject.py
+          - `#5140 <https://github.com/ansys/pyfluent/pull/5140>`_
+
+        * - Update ansys-units version
+          - `#5155 <https://github.com/ansys/pyfluent/pull/5155>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump the dependencies group across 1 directory with 10 updates
+          - `#4966 <https://github.com/ansys/pyfluent/pull/4966>`_
+
+        * - Bump the actions group across 1 directory with 9 updates
+          - `#4967 <https://github.com/ansys/pyfluent/pull/4967>`_
+
+        * - Bump the actions group with 5 updates
+          - `#5021 <https://github.com/ansys/pyfluent/pull/5021>`_
+
+        * - Bump the dependencies group with 3 updates
+          - `#5040 <https://github.com/ansys/pyfluent/pull/5040>`_
+
+        * - Bump pyfakefs from 5.10.1 to 6.1.6
+          - `#5041 <https://github.com/ansys/pyfluent/pull/5041>`_
+
+        * - Bump the dependencies group with 6 updates
+          - `#5103 <https://github.com/ansys/pyfluent/pull/5103>`_
+
+        * - Update flit requirement from >=3.10.1 to >=3.12.0
+          - `#5104 <https://github.com/ansys/pyfluent/pull/5104>`_
+
+        * - Bump the actions group with 8 updates
+          - `#5105 <https://github.com/ansys/pyfluent/pull/5105>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Ensure builtin settings classes are well named
+          - `#4991 <https://github.com/ansys/pyfluent/pull/4991>`_
+
+        * - Added the test for the preprocessing doc
+          - `#5002 <https://github.com/ansys/pyfluent/pull/5002>`_
+
+        * - File Session.
+          - `#5054 <https://github.com/ansys/pyfluent/pull/5054>`_
+
+        * - Disable code owners  [skip tests]
+          - `#5133 <https://github.com/ansys/pyfluent/pull/5133>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update deprecated_apis table [skip tests]
+          - `#4997 <https://github.com/ansys/pyfluent/pull/4997>`_
+
+        * - Add docstrings for Field Requests.
+          - `#4999 <https://github.com/ansys/pyfluent/pull/4999>`_
+
+        * - Add posting issues guidance [skip tests]
+          - `#5089 <https://github.com/ansys/pyfluent/pull/5089>`_
+
+        * - Patch contributing docs [skip tests]
+          - `#5115 <https://github.com/ansys/pyfluent/pull/5115>`_
+
+        * - Update datamodel docgen.
+          - `#5116 <https://github.com/ansys/pyfluent/pull/5116>`_
+
+        * - Updated issue posting guidelines. [skip tests]
+          - `#5154 <https://github.com/ansys/pyfluent/pull/5154>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update missing or outdated files
+          - `#4674 <https://github.com/ansys/pyfluent/pull/4674>`_
+
+        * - Update CHANGELOG for v0.38.dev5
+          - `#4860 <https://github.com/ansys/pyfluent/pull/4860>`_
+
+        * - Use build artifact in release testing job
+          - `#4978 <https://github.com/ansys/pyfluent/pull/4978>`_
+
+        * - Update CHANGELOG for v0.39.dev0
+          - `#4979 <https://github.com/ansys/pyfluent/pull/4979>`_
+
+        * - Update lunar_lander_thermal.py to use newer syntax for auto_save
+          - `#4984 <https://github.com/ansys/pyfluent/pull/4984>`_
+
+        * - Update CI to include support for python 3.14
+          - `#4987 <https://github.com/ansys/pyfluent/pull/4987>`_
+
+        * - Update ansys-units version 0.11.0
+          - `#5000 <https://github.com/ansys/pyfluent/pull/5000>`_
+
+        * - Update CHANGELOG for v0.38.1
+          - `#5007 <https://github.com/ansys/pyfluent/pull/5007>`_
+
+        * - Update error handling of unsupported FluentVersions in get_fluent_version.
+          - `#5012 <https://github.com/ansys/pyfluent/pull/5012>`_
+
+        * - Update zones handling in pathlines data
+          - `#5025 <https://github.com/ansys/pyfluent/pull/5025>`_
+
+        * - Enhance FileSession batching reliability and error clarity
+          - `#5061 <https://github.com/ansys/pyfluent/pull/5061>`_
+
+        * - Update license metadata in pyproject.toml
+          - `#5068 <https://github.com/ansys/pyfluent/pull/5068>`_
+
+        * - Update new issue creation template in repository [skip tests]
+          - `#5097 <https://github.com/ansys/pyfluent/pull/5097>`_
+
+        * - Remove get_specs.
+          - `#5102 <https://github.com/ansys/pyfluent/pull/5102>`_
+
+        * - Update SVAR docs.
+          - `#5106 <https://github.com/ansys/pyfluent/pull/5106>`_
+
+        * - Clean up test markers
+          - `#5107 <https://github.com/ansys/pyfluent/pull/5107>`_
+
+        * - Update clients w.r.t. grpc v1 updates.
+          - `#5114 <https://github.com/ansys/pyfluent/pull/5114>`_
+
+        * - Update release ci.
+          - `#5122 <https://github.com/ansys/pyfluent/pull/5122>`_
+
+        * - Properly handle typos or errors in naming tasks.
+          - `#5135 <https://github.com/ansys/pyfluent/pull/5135>`_
+
+        * - Revert temporary fix for blocking get_attrs for Action items.
+          - `#5149 <https://github.com/ansys/pyfluent/pull/5149>`_
+
+        * - Weight not to be a property of Reduction.
+          - `#5153 <https://github.com/ansys/pyfluent/pull/5153>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Activate test_accessor_methods_on_settings_objects
+          - `#5018 <https://github.com/ansys/pyfluent/pull/5018>`_
+
+        * - Update failing nightly dev test w.r.t. the latest 27R1 image.
+          - `#5022 <https://github.com/ansys/pyfluent/pull/5022>`_
+
+        * - Skip test_py_query
+          - `#5052 <https://github.com/ansys/pyfluent/pull/5052>`_
+
+        * - Test command return types at flobject level
+          - `#5090 <https://github.com/ansys/pyfluent/pull/5090>`_
+
+        * - Parameter workspace in settings
+          - `#5150 <https://github.com/ansys/pyfluent/pull/5150>`_
+
+
 `0.38.1 <https://github.com/ansys/pyfluent/releases/tag/v0.38.1>`_ - March 23, 2026
 `0.38.dev5 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev5>`_ - January 27, 2026
 
