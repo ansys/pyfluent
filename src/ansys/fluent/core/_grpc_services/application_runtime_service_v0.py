@@ -22,7 +22,6 @@
 
 """Wrapper over the application runtime gRPC service of Fluent (v0 proto API)."""
 
-from enum import Enum
 import os
 
 import grpc
@@ -30,10 +29,6 @@ import grpc
 from ansys.api.fluent.v0 import app_utilities_pb2, app_utilities_pb2_grpc
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.abstract_application_runtime import (
-    BuildInfo,
-    ProcessInfo,
-)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -41,7 +36,6 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class ApplicationRuntimeService(ServiceProtocol):
@@ -61,44 +55,44 @@ class ApplicationRuntimeService(ServiceProtocol):
         self._stub = app_utilities_pb2_grpc.AppUtilitiesStub(intercept_channel)
         self._metadata = metadata
 
-    def get_product_version(self) -> FluentVersion:
+    def get_product_version(self) -> str:
         """GetProductVersion RPC."""
         request = app_utilities_pb2.GetProductVersionRequest()
         response = self._stub.GetProductVersion(request, metadata=self._metadata)
-        return FluentVersion(f"{response.major}.{response.minor}.{response.patch}")
+        return f"{response.major}.{response.minor}.{response.patch}"
 
-    def get_build_info(self) -> BuildInfo:
+    def get_build_info(self) -> tuple[str, str, str, str]:
         """GetBuildInfo RPC."""
         request = app_utilities_pb2.GetBuildInfoRequest()
         response = self._stub.GetBuildInfo(request, metadata=self._metadata)
-        return BuildInfo(
-            build_time=response.build_time,
-            build_id=response.build_id,
-            vcs_revision=response.vcs_revision,
-            vcs_branch=response.vcs_branch,
+        return (
+            response.build_time,
+            response.build_id,
+            response.vcs_revision,
+            response.vcs_branch,
         )
 
-    def get_controller_process_info(self) -> ProcessInfo:
+    def get_controller_process_info(self) -> tuple[int, str, str]:
         """GetControllerProcessInfo RPC."""
         request = app_utilities_pb2.GetControllerProcessInfoRequest()
         response = self._stub.GetControllerProcessInfo(request, metadata=self._metadata)
-        return ProcessInfo(
-            process_id=response.process_id,
-            hostname=response.hostname,
-            working_directory=response.working_directory,
+        return (
+            response.process_id,
+            response.hostname,
+            response.working_directory,
         )
 
-    def get_solver_process_info(self) -> ProcessInfo:
+    def get_solver_process_info(self) -> tuple[int, str, str]:
         """GetSolverProcessInfo RPC."""
         request = app_utilities_pb2.GetSolverProcessInfoRequest()
         response = self._stub.GetSolverProcessInfo(request, metadata=self._metadata)
-        return ProcessInfo(
-            process_id=response.process_id,
-            hostname=response.hostname,
-            working_directory=response.working_directory,
+        return (
+            response.process_id,
+            response.hostname,
+            response.working_directory,
         )
 
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> str:
         """GetAppMode RPC.
 
         Raises
@@ -106,21 +100,19 @@ class ApplicationRuntimeService(ServiceProtocol):
         ValueError
             If app mode is unknown.
         """
-        from ansys.fluent.core import FluentMode
-
         request = app_utilities_pb2.GetAppModeRequest()
         response = self._stub.GetAppMode(request, metadata=self._metadata)
         match response.app_mode:
             case app_utilities_pb2.APP_MODE_UNKNOWN:
                 raise ValueError("Unknown app mode.")
             case app_utilities_pb2.APP_MODE_MESHING:
-                return FluentMode.MESHING
+                return "meshing"
             case app_utilities_pb2.APP_MODE_SOLVER:
-                return FluentMode.SOLVER
+                return "solver"
             case app_utilities_pb2.APP_MODE_SOLVER_ICING:
-                return FluentMode.SOLVER_ICING
+                return "solver_icing"
             case app_utilities_pb2.APP_MODE_SOLVER_AERO:
-                return FluentMode.SOLVER_AERO
+                return "solver_aero"
 
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """StartPythonJournal RPC."""
