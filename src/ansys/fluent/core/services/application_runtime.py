@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -246,7 +246,9 @@ class ApplicationRuntimeOld:
 
     def get_product_version(self) -> FluentVersion:
         """Get product version."""
-        return FluentVersion(self.scheme.version)
+        return FluentVersion(
+            ".".join(self.scheme.string_eval("(cx-version)").strip("()").split())
+        )
 
     def get_build_info(self) -> BuildInfo:
         """Get build info."""

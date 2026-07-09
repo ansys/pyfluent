@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -53,6 +54,7 @@ from ansys.fluent.core.services.transcript import (
     TranscriptService as TranscriptServiceV0,
 )
 from ansys.fluent.core.services.transcript_v1 import TranscriptService
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 __all__ = (
     "BatchOpsService",
@@ -118,3 +120,92 @@ class service_creator:
     def create(self, *args, **kwargs):
         """Create a gRPC service."""
         return self._service_cls(*args, **kwargs)
+
+
+"""Provides a module to create gRPC services."""
+
+from functools import cached_property
+
+from ansys.fluent.core.services.application_runtime import (
+    ApplicationRuntime,
+    ApplicationRuntimeOld,
+    ApplicationRuntimeV252,
+    ApplicationRuntimeV261,
+)
+from ansys.fluent.core.services.health_check import HealthCheck
+from ansys.fluent.core.services.reduction import Reduction
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
+from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
+
+
+class ServiceFactory:
+    """Wraps raw gRPC stubs from ``GRPCServiceFactory`` in version-appropriate high-level service objects.
+
+    Reads the connected server's ``product_version`` once and uses it to
+    select the correct concrete wrapper (e.g. ``Settings`` vs ``SettingsV261``)
+    for every service property.  All properties are ``cached_property``.
+
+    Parameters
+    ----------
+    service_factory : GRPCServiceFactory
+        Source of the underlying raw gRPC stubs.
+    product_version : FluentVersion, optional
+        Fluent product version.  Derived from ``service_factory.scheme_interpreter``
+        when omitted.
+    """
+
+    def __init__(self, service_factory, product_version: FluentVersion = None):
+        """Initialize ServiceFactory."""
+        self._service_factory = service_factory
+        self._product_version = product_version or FluentVersion(
+            self.scheme_interpreter.version
+        )
+
+    @cached_property
+    def scheme_interpreter(self) -> SchemeInterpreter:
+        """Scheme expression evaluator."""
+        return SchemeInterpreter(self._service_factory.scheme_interpreter)
+
+    @cached_property
+    def application_runtime(self):
+        """Application runtime, version and session lifecycle service."""
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return ApplicationRuntime(self._service_factory.application_runtime)
+            case FluentVersion.v261:
+                return ApplicationRuntimeV261(self._service_factory.application_runtime)
+            case FluentVersion.v252:
+                return ApplicationRuntimeV252(
+                    self._service_factory.application_runtime,
+                    self._service_factory.scheme_interpreter,
+                )
+            case _:
+                return ApplicationRuntimeOld(self._service_factory.scheme_interpreter)
+
+    @cached_property
+    def health_check(self):
+        """Server health and readiness service."""
+        return HealthCheck(self._service_factory.health_check)
+
+    @cached_property
+    def reduction(self):
+        """Data-reduction service (forces, moments, etc.)."""
+        return Reduction(self._service_factory.reduction)
+
+    @cached_property
+    def settings(self):
+        """Solver settings service."""
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return Settings(self._service_factory.settings)
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return SettingsV261(
+                    self._service_factory.settings,
+                    self._service_factory.application_runtime,
+                    self._service_factory.scheme_interpreter,
+                )
+            case _:
+                return SettingsV251(
+                    self._service_factory.settings,
+                    self._service_factory.scheme_interpreter,
+                )

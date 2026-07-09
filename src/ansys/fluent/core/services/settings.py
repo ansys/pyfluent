@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,7 +56,7 @@ Class hierarchy
 from functools import wraps
 from typing import Any
 
-from ansys.fluent.core.services.abstract_setting import AbstractSettings
+from ansys.fluent.core.services.abstract_settings import AbstractSettings
 
 trace: bool = False
 _indent: int = 0

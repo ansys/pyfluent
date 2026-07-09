@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to create gRPC services."""
+"""Low-level gRPC service stubs and factory for Fluent server communication."""
 
 from functools import cached_property
 
@@ -58,26 +58,6 @@ from ansys.fluent.core._grpc_services.settings_service import SettingsService
 from ansys.fluent.core._grpc_services.settings_service_v0 import (
     SettingsService as SettingsServiceV0,
 )
-from ansys.fluent.core.services.application_runtime import (
-    ApplicationRuntime,
-    ApplicationRuntimeOld,
-    ApplicationRuntimeV252,
-    ApplicationRuntimeV261,
-)
-from ansys.fluent.core.services.field_data import (
-    FieldData,
-    FieldDataV251,
-    FieldDataV261,
-)
-from ansys.fluent.core.services.health_check import HealthCheck
-from ansys.fluent.core.services.reduction import Reduction
-from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
-from ansys.fluent.core.streaming_services.field_data_streaming import (
-    FieldDataStreaming,
-    FieldDataStreamingV261,
-)
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def _server_supports_v1(channel) -> bool:
@@ -96,13 +76,34 @@ def _server_supports_v1(channel) -> bool:
         return False
 
 
-class GRPCFactory:
-    """Factory for getting instantialted public facing grpc methods."""
+class GRPCServiceFactory:
+    """Lazily instantiates and caches raw gRPC service stubs for a Fluent server.
+
+    Selects between v1 and v0 proto stubs based on what the server advertises
+    via gRPC reflection.  Each property returns the underlying gRPC stub object
+    directly — higher-level wrapping is left to callers.
+
+    Parameters
+    ----------
+    channel : grpc.Channel
+        Active gRPC channel to the Fluent server.
+    metadata : list[tuple[str, str]]
+        gRPC call metadata (e.g. authentication credentials).
+    error_state : object, optional
+        Shared error-state object forwarded to interceptors.
+    proto_version : str, optional
+        Override proto version (``"v1"`` or ``"v0"``).  Auto-detected from
+        the server when omitted.
+    """
 
     def __init__(
-        self, channel, metadata, error_state=None, product_version: FluentVersion = None
+        self,
+        channel,
+        metadata,
+        error_state=None,
+        proto_version=None,
     ):
-        """__init__ method of GRPCFactory."""
+        """Initialize GRPCServiceFactory."""
         self._channel = channel
         self._metadata = metadata
         self._error_state = error_state
@@ -112,16 +113,14 @@ class GRPCFactory:
             "fluent_error_state": self._error_state,
         }
         self._instantiated_services = {}
-        self._product_version = product_version or self._detect_product_version()
+        self._proto_version = proto_version or self._detect_proto_version()
 
-    def _detect_product_version(self) -> FluentVersion:
+    def _detect_proto_version(self) -> str:
         """Determines the version using fallback detection logic."""
-        grpc_service = (
-            self._get_instantiated_grpc_service(SchemeInterpreterService)
-            if _server_supports_v1(channel=self._channel)
-            else self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
-        )
-        return FluentVersion(grpc_service.version)
+        if _server_supports_v1(channel=self._channel):
+            return "v1"
+        else:
+            return "v0"
 
     def _get_instantiated_grpc_service(self, grpc_service_class):
         """Generic lookup method that instantiates services lazily and caches them."""
@@ -132,107 +131,86 @@ class GRPCFactory:
         return self._instantiated_services[grpc_service_class]
 
     @cached_property
-    def scheme_interpreter(self) -> SchemeInterpreter:
-        """Scheme interpreter service."""
-        grpc_service = (
+    def scheme_interpreter(
+        self,
+    ) -> SchemeInterpreterService | SchemeInterpreterServiceV0:
+        """gRPC stub for Scheme expression evaluation."""
+        return (
             self._get_instantiated_grpc_service(SchemeInterpreterService)
-            if self._product_version >= FluentVersion.v271
+            if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
         )
-        return SchemeInterpreter(grpc_service)
 
     @cached_property
-    def application_runtime(self):
-        """Application runtime service."""
-        match self._product_version:
-            case v if v >= FluentVersion.v271:
-                return ApplicationRuntime(
-                    self._get_instantiated_grpc_service(ApplicationRuntimeService)
-                )
-            case FluentVersion.v261:
-                return ApplicationRuntimeV261(
-                    self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0)
-                )
-            case FluentVersion.v252:
-                return ApplicationRuntimeV252(
-                    self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
-                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
-                )
-            case _:
-                return ApplicationRuntimeOld(
-                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
-                )
+    def application_runtime(
+        self,
+    ) -> ApplicationRuntimeService | ApplicationRuntimeServiceV0:
+        """gRPC stub for application runtime and product version queries."""
+        return (
+            self._get_instantiated_grpc_service(ApplicationRuntimeService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0)
+        )
 
     @cached_property
-    def health_check(self):
-        """Health check service."""
-        grpc_service = (
+    def health_check(self) -> HealthCheckService | HealthCheckServiceV0:
+        """gRPC stub for server health/readiness checks."""
+        return (
             self._get_instantiated_grpc_service(HealthCheckService)
-            if self._product_version >= FluentVersion.v271
+            if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(HealthCheckServiceV0)
         )
-        return HealthCheck(grpc_service)
 
     @cached_property
-    def reduction(self):
-        """Reduction service."""
-        grpc_service = (
+    def reduction(self) -> ReductionService | ReductionServiceV0:
+        """gRPC stub for data-reduction operations (forces, moments, etc.)."""
+        return (
             self._get_instantiated_grpc_service(ReductionService)
-            if self._product_version >= FluentVersion.v271
+            if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(ReductionServiceV0)
         )
-        return Reduction(grpc_service)
 
     @cached_property
-    def settings(self):
-        """Settings service."""
-        match self._product_version:
-            case v if v >= FluentVersion.v271:
-                return Settings(self._get_instantiated_grpc_service(SettingsService))
-            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
-                return SettingsV261(
-                    self._get_instantiated_grpc_service(SettingsServiceV0),
-                    self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
-                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
-                )
-            case _:
-                return SettingsV251(
-                    self._get_instantiated_grpc_service(SettingsServiceV0),
-                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
-                )
+    def settings(self) -> SettingsService | SettingsServiceV0:
+        """gRPC stub for reading and writing solver settings."""
+        return (
+            self._get_instantiated_grpc_service(SettingsService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(SettingsServiceV0)
+        )
 
-    @cached_property
-    def field_data(self):
-        """Field data service."""
-        match self._product_version:
-            case v if v >= FluentVersion.v271:
-                return FieldData(
-                    self._get_instantiated_grpc_service(FieldDataService),
-                    ChunkParser(),
-                )
-            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
-                return FieldDataV261(
-                    self._get_instantiated_grpc_service(FieldDataServiceV0),
-                    ChunkParserV0(),
-                    self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
-                )
-            case _:
-                return FieldDataV251(
-                    self._get_instantiated_grpc_service(FieldDataServiceV0),
-                    ChunkParserV0(),
-                    self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
-                )
+    # @cached_property
+    # def field_data(self):
+    #     """Field data service."""
+    #     match self._product_version:
+    #         case v if v >= FluentVersion.v271:
+    #             return FieldData(
+    #                 self._get_instantiated_grpc_service(FieldDataService),
+    #                 ChunkParser(),
+    #             )
+    #         case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+    #             return FieldDataV261(
+    #                 self._get_instantiated_grpc_service(FieldDataServiceV0),
+    #                 ChunkParserV0(),
+    #                 self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0),
+    #             )
+    #         case _:
+    #             return FieldDataV251(
+    #                 self._get_instantiated_grpc_service(FieldDataServiceV0),
+    #                 ChunkParserV0(),
+    #                 self._get_instantiated_grpc_service(SchemeInterpreterServiceV0),
+    #             )
 
-    @cached_property
-    def field_data_streaming(self):
-        """Field data service."""
-        if self._product_version >= FluentVersion.v271:
-            return FieldDataStreaming(
-                self._get_instantiated_grpc_service(FieldDataService),
-                ChunkParser,
-            )
-        else:
-            return FieldDataStreamingV261(
-                self._get_instantiated_grpc_service(FieldDataServiceV0),
-                ChunkParserV0,
-            )
+    # @cached_property
+    # def field_data_streaming(self):
+    #     """Field data service."""
+    #     if self._product_version >= FluentVersion.v271:
+    #         return FieldDataStreaming(
+    #             self._get_instantiated_grpc_service(FieldDataService),
+    #             ChunkParser,
+    #         )
+    #     else:
+    #         return FieldDataStreamingV261(
+    #             self._get_instantiated_grpc_service(FieldDataServiceV0),
+    #             ChunkParserV0,
+    #         )
