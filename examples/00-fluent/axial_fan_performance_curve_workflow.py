@@ -82,12 +82,6 @@ solver = pyfluent.launch_fluent(
 
 # In[ ]:
 
-
-# DELETE THESE LINES IF DOWNLOADING THE MESH FILE FROM THE EXAMPLES DIRECTORY
-# import mesh file from local directory
-import_file_name = r"D:\generic_fan_case\Pyfluent\PyFluent_Example_Sharable\axial_fan_case\axial_fan.msh.h5"
-# ##########################
-
 solver.settings.file.read_mesh(file_name=import_file_name)
 solver.settings.mesh.check()
 
