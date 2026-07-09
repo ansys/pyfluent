@@ -82,7 +82,13 @@ class ObjectModelBase:
     ):
         self._service = service
         self._cache = DataModelCache() if config.datamodel_use_state_cache else None
-        self._version = FluentVersion(scheme_interpreter_service.version)
+        self._version = FluentVersion(
+            ".".join(
+                scheme_interpreter_service.string_eval("(cx-version)")
+                .strip("()")
+                .split()
+            )
+        )
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
