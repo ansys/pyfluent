@@ -136,7 +136,7 @@ markers = [
     "nightly: Tests that run under nightly CI",
     "fluent_version(version): Tests that runs with specified Fluent version",
     "standalone: Tests that cannot be run within container",
-    "real_server: Tests that require a live Fluent / SimBA server"
+    "real_server: Tests that require a live Fluent web server"
 ]
 
 [tool.black]
