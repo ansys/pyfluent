@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,7 +32,6 @@ from ansys.fluent.core.solver.flobject import InactiveObjectError
 
 @pytest.mark.skip(reason=SKIP_UNKNOWN)
 # This test works fine locally but fails on CI
-@pytest.mark.fluent_version(">=23.1")
 def test_pre_post_session():
     file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     pre_post = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PRE_POST)

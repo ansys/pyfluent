@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,35 +21,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the health check gRPC service of Fluent."""
+"""High-level health check wrappers.
+
+This module owns the business-logic layer on top of the HealthCheck gRPC
+service.  The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.health_check_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.health_check_service_v0`` (v0 proto API)
+
+Class hierarchy
+---------------
+``HealthCheck``
+    gRPC-based implementation (v1 and v0 proto API).
+"""
 
 from enum import Enum
-import logging
-import sys
 
-import grpc
-from grpc_health.v1 import health_pb2 as HealthCheckModule
-from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
-
-from ansys.fluent.core.module_config import config
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
-
-logger: logging.Logger = logging.getLogger("pyfluent.general")
+from ansys.fluent.core.services.abstract_health_check import AbstractHealthCheck
 
 
-class HealthCheckService:
-    """Class wrapping the health check gRPC service of Fluent.
-
-    Methods
-    -------
-    check_health()
-        Check the health of the Fluent connection.
-    """
+class HealthCheck(AbstractHealthCheck):
+    """Health check backed by the HealthCheck gRPC service."""
 
     class Status(Enum):
         """Health check status."""
@@ -56,28 +49,9 @@ class HealthCheckService:
         SERVING: int = 1
         NOT_SERVING: int = 2
 
-    def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
-    ) -> None:
-        """__init__ method of HealthCheckService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
-        self._stub = self._create_stub(intercept_channel)
-        self._metadata = metadata
-        self._channel = channel
-
-    def _create_stub(self, intercept_channel):
-        """Create the gRPC stub. Override in subclasses to use a different proto version."""
-        return HealthCheckGrpcModule.HealthStub(intercept_channel)
-
-    def _create_health_check_request(self):
-        """Create a health-check request. Override in subclasses for different proto modules."""
-        return HealthCheckModule.HealthCheckRequest()
+    def __init__(self, service):
+        """Initialize HealthCheck."""
+        self.service = service
 
     def check_health(self) -> Status:
         """Check the health of the Fluent connection.
@@ -86,13 +60,7 @@ class HealthCheckService:
         -------
         Status
         """
-        request = self._create_health_check_request()
-        response = self._stub.Check(
-            request,
-            metadata=self._metadata,
-            timeout=config.check_health_timeout,
-        )
-        return self.Status(response.status)
+        return self.Status(self.service.check_health().value)
 
     def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
@@ -109,40 +77,13 @@ class HealthCheckService:
         TimeoutError
             If the connection to the Fluent server could not be established within the timeout.
         """
-        request = self._create_health_check_request()
-        responses = self._stub.Watch(request, metadata=self._metadata, timeout=timeout)
-
-        while True:
-            try:
-                response = next(responses)
-                if response.status == 1:
-                    responses.cancel()
-            except StopIteration:
-                break
-            except grpc.RpcError as e:
-                if e.code() == grpc.StatusCode.CANCELLED:
-                    break
-                if e.code() == grpc.StatusCode.DEADLINE_EXCEEDED:
-                    raise TimeoutError(
-                        f"The connection to the Fluent server could not be established within the configurable {timeout} second time limit."
-                    )
-                raise
+        return self.service.wait_for_server(timeout=timeout)
 
     def status(self) -> Status:
         """Check health of Fluent connection."""
-        if self._channel:
-            try:
-                return self.check_health()
-            except Exception:
-                ex_type, ex_value, _ = sys.exc_info()
-                logger.info(
-                    f"HealthCheckService.status() caught {ex_type.__name__}: {ex_value}"
-                )
-                return self.Status.NOT_SERVING
-        else:
-            return self.Status.NOT_SERVING
+        return self.service.status()
 
     @property
     def is_serving(self) -> bool:
         """Checks whether Fluent is serving."""
-        return self.status() == self.Status.SERVING
+        return self.service.is_serving

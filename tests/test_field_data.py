@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,7 +53,6 @@ from ansys.units.variable_descriptor import VariableCatalog
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_batches_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -133,7 +133,6 @@ def test_field_data_batches_deprecated_interface(new_solver_session) -> None:
     assert data2
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_batches(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -351,7 +350,6 @@ def test_field_data_attributes(new_solver_session) -> None:
     assert not field_data.surfaces.validate(["hot-inlet", "inlet"])
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -464,7 +462,6 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"]["lines"][100]) == [100, 101]
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -603,7 +600,6 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"].lines[:3]) == [2, 0, 1]
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_2d(disk_case_session) -> None:
     solver = disk_case_session
 
@@ -758,7 +754,6 @@ def test_fields_allowed_variables_no_warning_when_all_mapped() -> None:
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
 # https://github.com/ansys/pyfluent/issues/2404
-@pytest.mark.fluent_version(">=24.2")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -774,7 +769,6 @@ def test_field_data_does_not_modify_case(new_solver_session):
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
 # https://github.com/ansys/pyfluent/issues/5051
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     meshing = new_meshing_session
     import_file_name = examples.download_file(
@@ -863,8 +857,6 @@ def test_mesh_data_3d_poly(static_mixer_case_session):
     assert max(mesh.nodes, key=lambda x: x.z).z == pytest_approx(2.500000e-03)
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -928,8 +920,6 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
     assert abs_press_data["wall-elbow"].shape == (4339,)
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_with_location_objects_overall(
     new_solver_session,
 ) -> None:
@@ -1017,3 +1007,46 @@ def test_field_data_objects_3d_with_location_objects_overall(
     assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
 
     assert list(path_lines_data["cold-inlet"].lines[100]) == [100, 101]
+
+
+def test_field_data_exceptions_using_variable_catalog(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+
+    field_data = solver.fields.field_data
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.solution.initialization.hybrid_initialize()
+    assert field_data.is_data_valid()
+
+    with pytest.raises(TypeError):
+        scalar_data_request = ScalarFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY, surfaces=["cold-inlet"]
+        )
+    scalar_data_request = ScalarFieldDataRequest(
+        field_name=VariableCatalog.ABSOLUTE_PRESSURE, surfaces=["cold-inlet"]
+    )
+    assert scalar_data_request
+
+    with pytest.raises(TypeError):
+        vector_data_request = VectorFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY_MAGNITUDE, surfaces=["cold-inlet"]
+        )
+    vector_data_request = VectorFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY, surfaces=["cold-inlet"]
+    )
+    assert vector_data_request
+
+    with pytest.raises(TypeError):
+        path_lines_data_request = PathlinesFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY,
+            surfaces=["cold-inlet", "hot-inlet"],
+            flatten_connectivity=True,
+        )
+    path_lines_data_request = PathlinesFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY_MAGNITUDE,
+        surfaces=["cold-inlet", "hot-inlet"],
+        flatten_connectivity=True,
+    )
+    assert path_lines_data_request

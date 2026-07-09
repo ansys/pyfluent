@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,9 +23,10 @@
 
 """Deprecate Arguments."""
 
+from collections.abc import Callable
 import functools
 import inspect
-from typing import Any, Callable
+from typing import Any
 import warnings
 
 from deprecated.sphinx import deprecated

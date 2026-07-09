@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -101,3 +102,10 @@ def test_set_deprecated_var_after_config(reset_examples_path):
     # Both deprecated var and config should have the latest value
     assert pyfluent.EXAMPLES_PATH == new_path2
     assert pyfluent.config.examples_path == new_path2
+
+
+def test_launch_timeout_environment_variable(monkeypatch):
+    monkeypatch.delattr(pyfluent.config, "_launch_fluent_timeout", raising=False)
+    monkeypatch.setitem(pyfluent.config._env, "PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "120")
+
+    assert pyfluent.config.launch_fluent_timeout == 120

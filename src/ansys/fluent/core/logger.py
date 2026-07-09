@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,6 +27,8 @@ import logging.config
 import os
 
 from ansys.fluent.core.module_config import config
+
+__all__ = ("set_console_logging_level",)
 
 _logging_file_enabled = False
 
@@ -103,7 +106,7 @@ def get_default_config() -> dict:
     file_name = os.path.abspath(__file__)
     file_dir = os.path.dirname(file_name)
     yaml_path = os.path.join(file_dir, "logging_config.yaml")
-    with open(yaml_path, "rt") as f:
+    with open(yaml_path) as f:
         config = yaml.safe_load(f)
     return config
 

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,10 +23,10 @@
 
 """Provides a module for streaming services."""
 
+from collections.abc import Callable
 import itertools
 import logging
 import threading
-from typing import Callable
 
 logger = logging.getLogger("pyfluent.networking")
 

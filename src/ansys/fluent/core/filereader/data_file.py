@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -178,7 +179,7 @@ class DataFile:
 
     def get_face_scalar_field_data(
         self, phase_name: str, field_name: str, surface_id: int
-    ) -> np.array:
+    ) -> np.ndarray:
         """Gets scalar field data for face.
 
         Parameters
@@ -209,7 +210,9 @@ class DataFile:
                 return field_array[min_id - array_min_id : max_id + 1 - array_min_id]
         return np.zeros(max_id + 1 - min_id)
 
-    def get_face_vector_field_data(self, phase_name: str, surface_id: int) -> np.array:
+    def get_face_vector_field_data(
+        self, phase_name: str, surface_id: int
+    ) -> np.ndarray:
         """Gets vector field data for face.
 
         Parameters

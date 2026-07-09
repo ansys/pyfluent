@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +24,6 @@
 """Provide a module to test the algorithms which parse job scheduler environments for
 machines to run on."""
 
-from builtins import range
 import os
 import socket
 import tempfile

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +25,6 @@
 
 from dataclasses import dataclass
 import os
-from typing import List
 import xml.etree.ElementTree as XmlET
 
 from defusedxml.ElementTree import fromstring
@@ -52,8 +52,8 @@ class Region:
     name: str
     display_name: str
     topology: str
-    input_variables: List[str]
-    output_variables: List[str]
+    input_variables: list[str]
+    output_variables: list[str]
 
 
 class SystemCoupling:
@@ -86,7 +86,7 @@ class SystemCoupling:
         """Get participant type."""
         return "FLUENT"
 
-    def get_variables(self) -> List[Variable]:
+    def get_variables(self) -> list[Variable]:
         """Get variables."""
 
         if self._solver.get_fluent_version() >= FluentVersion.v251:
@@ -131,7 +131,7 @@ class SystemCoupling:
             # maintains back-compatibility for 24.1 and 24.2
             return self.__get_syc_setup()["variables"]
 
-    def get_regions(self) -> List[Region]:
+    def get_regions(self) -> list[Region]:
         """Get regions."""
 
         if self._solver.get_fluent_version() >= FluentVersion.v251:
@@ -261,7 +261,7 @@ class SystemCoupling:
                     f"Could not create System Coupling SCP file: {scp_file_name}"
                 )
 
-            with open(scp_file_name, "r") as f:
+            with open(scp_file_name) as f:
                 xml_string = f.read()
 
             os.remove(scp_file_name)

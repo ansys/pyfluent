@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,10 +27,10 @@ from collections.abc import MutableMapping
 import io
 import weakref
 
-from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
+from ansys.fluent.core import ExposureLevel
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 from ansys.fluent.core.solver import flobject
@@ -374,6 +375,22 @@ class Root(Group):
             else:
                 self.parent.objs["g-1"].objs["r-1"].value -= a1
 
+    class CommandWithReturnType(Command):
+        """Command with return type."""
+
+        arguments = {}
+
+        def cb(self):
+            return ["A", "B", "C"]
+
+    class CommandWithWrongReturnType(Command):
+        """Command with wrong return type."""
+
+        arguments = {}
+
+        def cb(self):
+            return [1, 2, 3]
+
     children = {
         "g-1": G1,
         "n-1": N1,
@@ -382,6 +399,8 @@ class Root(Group):
 
     commands = {
         "c-1": Command1,
+        "c-2": CommandWithReturnType,
+        "c-3": CommandWithWrongReturnType,
     }
 
 
@@ -568,6 +587,14 @@ def test_command():
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2
     r.c_1(a_1=4.5, a_2=False)
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2 - 4.5
+    r.c_2._setattr("_version", FluentVersion.v271)
+    r.c_3._setattr("_version", FluentVersion.v271)
+    r.c_2._setattr("return_type", "string-list")
+    r.c_3._setattr("return_type", "string-list")
+    ret = r.c_2()
+    assert ret == ["A", "B", "C"]
+    with pytest.raises(TypeError):
+        ret = r.c_3()
 
 
 def test_attrs():
@@ -579,6 +606,541 @@ def test_attrs():
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError):
         r.g_1.s_4.get_attr("allowed-values")
+
+
+def test_exposure_level_filtering(monkeypatch):
+    """Test that beta/alpha objects are hidden by default and revealed by activation."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class ExposureRoot(Group):
+        children = {
+            "stable-child": Real,
+            "beta-child": Real,
+            "alpha-child": Real,
+        }
+
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "children": {
+                    "stable-child": {"type": "real"},
+                    "beta-child": {"type": "real", "api_exposure_level": "beta"},
+                    "alpha-child": {"type": "real", "api_exposure_level": "alpha"},
+                },
+            }
+
+    class ExposureProxy(Proxy):
+        root = ExposureRoot
+
+    r = flobject.get_root(ExposureProxy(), version="271")
+
+    assert "set_exposure_level" in dir(r)
+
+    # Default state
+    assert "stable_child" in dir(r)
+    assert "beta_child" not in dir(r)
+    assert "alpha_child" not in dir(r)
+
+    with pytest.raises(AttributeError):
+        _ = r.beta_child
+    with pytest.raises(AttributeError):
+        _ = r.alpha_child
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    assert "beta_child" in dir(r)
+    assert "alpha_child" not in dir(r)
+    assert r.beta_child
+    with pytest.raises(AttributeError):
+        _ = r.alpha_child
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    assert "beta_child" in dir(r)
+    assert "alpha_child" in dir(r)
+    assert r.beta_child
+    assert r.alpha_child
+
+    # Again stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+    assert "beta_child" not in dir(r)
+    assert "alpha_child" not in dir(r)
+
+    # Class generation is unaffected
+    root_cls = type(r)
+    assert root_cls.__name__ == "root"
+    root_child_classes = root_cls._child_classes
+    assert "stable_child" in root_child_classes
+    assert "beta_child" in root_child_classes
+    assert "alpha_child" in root_child_classes
+    assert root_child_classes["stable_child"].exposure_level == ExposureLevel.STABLE
+    assert root_child_classes["beta_child"].exposure_level == ExposureLevel.BETA
+    assert root_child_classes["alpha_child"].exposure_level == ExposureLevel.ALPHA
+
+
+def test_exposure_level_filtering_named_object_commands(monkeypatch):
+    """Test that beta/alpha commands and queries on NamedObject and ListObject are filtered."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class ExposureNamedRoot(Group):
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "children": {
+                    "n-1": {
+                        "type": "named-object",
+                        "user_creatable": True,
+                        "object-type": {"type": "group"},
+                        "commands": {
+                            "stable-cmd": {"type": "command", "arguments": {}},
+                            "beta-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                            "alpha-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                    "l-1": {
+                        "type": "list-object",
+                        "object-type": {"type": "group"},
+                        "commands": {
+                            "stable-cmd": {"type": "command", "arguments": {}},
+                            "beta-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                        },
+                    },
+                },
+            }
+
+    class ExposureProxy(Proxy):
+        root = ExposureNamedRoot
+
+    r = flobject.get_root(ExposureProxy(), version="271")
+
+    # Default state
+    assert "stable_cmd" in dir(r.n_1)
+    assert "beta_cmd" not in dir(r.n_1)
+    assert "alpha_cmd" not in dir(r.n_1)
+    with pytest.raises(AttributeError):
+        _ = r.n_1.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.n_1.alpha_cmd
+
+    assert "stable_cmd" in dir(r.l_1)
+    assert "beta_cmd" not in dir(r.l_1)
+    with pytest.raises(AttributeError):
+        _ = r.l_1.beta_cmd
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    assert "beta_cmd" in dir(r.n_1)
+    assert "alpha_cmd" not in dir(r.n_1)
+    assert r.n_1.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.n_1.alpha_cmd
+    assert "beta_cmd" in dir(r.l_1)
+    assert r.l_1.beta_cmd
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    assert "alpha_cmd" in dir(r.n_1)
+    assert r.n_1.alpha_cmd
+    assert r.n_1.beta_cmd
+    assert r.l_1.beta_cmd
+
+
+def test_exposure_level_filtering_complete_hierarchy(monkeypatch):
+    """Test exposure-level filtering across a complete hierarchy."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class _StubCmd(Command):
+        """Stub command/query for proxy-side is_active() resolution."""
+
+        arguments = {}
+
+        def cb(self):
+            pass
+
+    class CompleteHierarchyRoot(Group):
+        class SomeNamedObj(NamedObject):
+            class NOType(Group):
+                children = {}
+
+            child_object_type = NOType
+
+        children = {
+            "stable-param": Real,
+            "beta-param": Real,
+            "alpha-param": Real,
+            "named-obj": SomeNamedObj,
+        }
+        commands = {
+            "stable-cmd": _StubCmd,
+            "beta-cmd": _StubCmd,
+            "alpha-cmd": _StubCmd,
+            "stable-qry": _StubCmd,
+            "beta-qry": _StubCmd,
+            "alpha-qry": _StubCmd,
+        }
+
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "children": {
+                    "stable-param": {"type": "real"},
+                    "beta-param": {"type": "real", "api_exposure_level": "beta"},
+                    "alpha-param": {"type": "real", "api_exposure_level": "alpha"},
+                    "named-obj": {
+                        "type": "named-object",
+                        "user_creatable": True,
+                        "object-type": {"type": "group"},
+                        "commands": {
+                            "stable-cmd": {"type": "command", "arguments": {}},
+                            "beta-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                            "alpha-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                        "queries": {
+                            "stable-qry": {"type": "query", "arguments": {}},
+                            "beta-qry": {
+                                "type": "query",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                            "alpha-qry": {
+                                "type": "query",
+                                "arguments": {},
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                },
+                "commands": {
+                    "stable-cmd": {"type": "command", "arguments": {}},
+                    "beta-cmd": {
+                        "type": "command",
+                        "arguments": {},
+                        "api_exposure_level": "beta",
+                    },
+                    "alpha-cmd": {
+                        "type": "command",
+                        "arguments": {},
+                        "api_exposure_level": "alpha",
+                    },
+                },
+                "queries": {
+                    "stable-qry": {"type": "query", "arguments": {}},
+                    "beta-qry": {
+                        "type": "query",
+                        "arguments": {},
+                        "api_exposure_level": "beta",
+                    },
+                    "alpha-qry": {
+                        "type": "query",
+                        "arguments": {},
+                        "api_exposure_level": "alpha",
+                    },
+                },
+            }
+
+    class CompleteProxy(Proxy):
+        root = CompleteHierarchyRoot
+
+    r = flobject.get_root(CompleteProxy(), version="271")
+    no = r.named_obj
+
+    # Default state
+    assert "stable_param" in dir(r)
+    assert "beta_param" not in dir(r)
+    assert "alpha_param" not in dir(r)
+    with pytest.raises(AttributeError):
+        _ = r.beta_param
+    with pytest.raises(AttributeError):
+        _ = r.alpha_param
+
+    assert "stable_cmd" in dir(r)
+    assert "beta_cmd" not in dir(r)
+    assert "alpha_cmd" not in dir(r)
+    with pytest.raises(AttributeError):
+        _ = r.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.alpha_cmd
+
+    assert "stable_qry" in dir(r)
+    assert "beta_qry" not in dir(r)
+    assert "alpha_qry" not in dir(r)
+    with pytest.raises(AttributeError):
+        _ = r.beta_qry
+    with pytest.raises(AttributeError):
+        _ = r.alpha_qry
+
+    assert "stable_cmd" in dir(no)
+    assert "beta_cmd" not in dir(no)
+    assert "alpha_cmd" not in dir(no)
+    with pytest.raises(AttributeError):
+        _ = no.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = no.alpha_cmd
+
+    assert "stable_qry" in dir(no)
+    assert "beta_qry" not in dir(no)
+    assert "alpha_qry" not in dir(no)
+    with pytest.raises(AttributeError):
+        _ = no.beta_qry
+    with pytest.raises(AttributeError):
+        _ = no.alpha_qry
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+
+    assert "beta_param" in dir(r)
+    assert "alpha_param" not in dir(r)
+    assert r.beta_param
+    with pytest.raises(AttributeError):
+        _ = r.alpha_param
+
+    assert "beta_cmd" in dir(r)
+    assert "alpha_cmd" not in dir(r)
+    assert r.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.alpha_cmd
+
+    assert "beta_qry" in dir(r)
+    assert "alpha_qry" not in dir(r)
+    assert r.beta_qry
+    with pytest.raises(AttributeError):
+        _ = r.alpha_qry
+
+    assert "beta_cmd" in dir(no)
+    assert "alpha_cmd" not in dir(no)
+    assert no.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = no.alpha_cmd
+
+    assert "beta_qry" in dir(no)
+    assert "alpha_qry" not in dir(no)
+    assert no.beta_qry
+    with pytest.raises(AttributeError):
+        _ = no.alpha_qry
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+
+    assert "beta_param" in dir(r)
+    assert "alpha_param" in dir(r)
+    assert "beta_cmd" in dir(r)
+    assert "alpha_cmd" in dir(r)
+    assert "beta_qry" in dir(r)
+    assert "alpha_qry" in dir(r)
+    assert r.beta_param
+    assert r.alpha_param
+    assert r.beta_cmd
+    assert r.alpha_cmd
+    assert r.beta_qry
+    assert r.alpha_qry
+
+    assert "beta_cmd" in dir(no)
+    assert "alpha_cmd" in dir(no)
+    assert "beta_qry" in dir(no)
+    assert "alpha_qry" in dir(no)
+    assert no.beta_cmd
+    assert no.alpha_cmd
+    assert no.beta_qry
+    assert no.alpha_qry
+
+    # Back to stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+
+    assert "beta_param" not in dir(r)
+    assert "alpha_param" not in dir(r)
+    assert "beta_cmd" not in dir(r)
+    assert "alpha_cmd" not in dir(r)
+    assert "beta_qry" not in dir(r)
+    assert "alpha_qry" not in dir(r)
+
+    assert "beta_cmd" not in dir(no)
+    assert "alpha_cmd" not in dir(no)
+    assert "beta_qry" not in dir(no)
+    assert "alpha_qry" not in dir(no)
+
+    assert "stable_param" in dir(r)
+    assert "stable_cmd" in dir(r)
+    assert "stable_qry" in dir(r)
+    assert "stable_cmd" in dir(no)
+    assert "stable_qry" in dir(no)
+    assert r.stable_param
+    assert r.stable_cmd
+    assert r.stable_qry
+    assert no.stable_cmd
+    assert no.stable_qry
+
+    assert "set_exposure_level" in dir(r)
+    assert "set_exposure_level" not in dir(no)
+    with pytest.raises(AttributeError):
+        no.set_exposure_level(ExposureLevel.BETA)
+
+    r.set_exposure_level(ExposureLevel.STABLE)
+
+    active_params = r.get_active_child_names()
+    assert "stable_param" in active_params
+    assert "beta_param" not in active_params
+    assert "alpha_param" not in active_params
+
+    active_cmds = r.get_active_command_names()
+    assert "stable_cmd" in active_cmds
+    assert "beta_cmd" not in active_cmds
+    assert "alpha_cmd" not in active_cmds
+
+    active_qrys = r.get_active_query_names()
+    assert "stable_qry" in active_qrys
+    assert "beta_qry" not in active_qrys
+    assert "alpha_qry" not in active_qrys
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    active_params = r.get_active_child_names()
+    assert "beta_param" in active_params
+    assert "alpha_param" not in active_params
+    active_cmds = r.get_active_command_names()
+    assert "beta_cmd" in active_cmds
+    assert "alpha_cmd" not in active_cmds
+    active_qrys = r.get_active_query_names()
+    assert "beta_qry" in active_qrys
+    assert "alpha_qry" not in active_qrys
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    active_params = r.get_active_child_names()
+    assert "beta_param" in active_params
+    assert "alpha_param" in active_params
+    active_cmds = r.get_active_command_names()
+    assert "beta_cmd" in active_cmds
+    assert "alpha_cmd" in active_cmds
+    active_qrys = r.get_active_query_names()
+    assert "beta_qry" in active_qrys
+    assert "alpha_qry" in active_qrys
+
+    # Back to stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+    active_params = r.get_active_child_names()
+    assert "beta_param" not in active_params
+    assert "alpha_param" not in active_params
+    active_cmds = r.get_active_command_names()
+    assert "beta_cmd" not in active_cmds
+    assert "alpha_cmd" not in active_cmds
+    active_qrys = r.get_active_query_names()
+    assert "beta_qry" not in active_qrys
+    assert "alpha_qry" not in active_qrys
+
+
+def test_exposure_level_filtering_command_arguments(monkeypatch):
+    """Test that beta/alpha command and query arguments are filtered by exposure level."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class ArgsRoot(Group):
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "commands": {
+                    "my-cmd": {
+                        "type": "command",
+                        "arguments": {
+                            "stable-arg": {"type": "real"},
+                            "beta-arg": {"type": "real", "api_exposure_level": "beta"},
+                            "alpha-arg": {
+                                "type": "real",
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                },
+                "queries": {
+                    "my-qry": {
+                        "type": "query",
+                        "arguments": {
+                            "stable-arg": {"type": "real"},
+                            "beta-arg": {"type": "real", "api_exposure_level": "beta"},
+                            "alpha-arg": {
+                                "type": "real",
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                },
+            }
+
+    class ArgsProxy(Proxy):
+        root = ArgsRoot
+
+    r = flobject.get_root(ArgsProxy(), version="271")
+    cmd = r.my_cmd
+    qry = r.my_qry
+
+    for action in (cmd, qry):
+        # Default state
+        assert "stable_arg" in dir(action)
+        assert "beta_arg" not in dir(action)
+        assert "alpha_arg" not in dir(action)
+        with pytest.raises(AttributeError):
+            _ = action.beta_arg
+        with pytest.raises(AttributeError):
+            _ = action.alpha_arg
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    for action in (cmd, qry):
+        assert "beta_arg" in dir(action)
+        assert "alpha_arg" not in dir(action)
+        assert action.beta_arg
+        with pytest.raises(AttributeError):
+            _ = action.alpha_arg
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    for action in (cmd, qry):
+        assert "beta_arg" in dir(action)
+        assert "alpha_arg" in dir(action)
+        assert action.beta_arg
+        assert action.alpha_arg
+
+    # Back to stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+    for action in (cmd, qry):
+        assert "beta_arg" not in dir(action)
+        assert "alpha_arg" not in dir(action)
+        with pytest.raises(AttributeError):
+            _ = action.beta_arg
+        with pytest.raises(AttributeError):
+            _ = action.alpha_arg
+        assert "stable_arg" in dir(action)
+        assert action.stable_arg
 
 
 # The following test is commented out as codegen module is not packaged in the
@@ -796,28 +1358,6 @@ def test_accessor_methods_on_settings_object_types(static_mixer_settings_session
     assert max_refinements.get_attr("max") == 1000000
 
 
-@pytest.mark.fluent_version("==24.1")
-@pytest.mark.codegen_required
-def test_find_children_from_settings_root(static_mixer_settings_session):
-    setup_cls = static_mixer_settings_session.setup.__class__
-    assert len(find_children(setup_cls())) >= 10000
-    assert len(find_children(setup_cls(), "gen*")) >= 9
-    assert set(find_children(setup_cls(), "general*")) >= {
-        "general",
-        "models/discrete_phase/general_settings",
-        "models/virtual_blade_model/rotor/general",
-    }
-    assert set(find_children(setup_cls(), "general")) >= {
-        "general",
-        "models/virtual_blade_model/rotor/general",
-    }
-    assert any(
-        path
-        for path in find_children(setup_cls(), "*gen")
-        if path.endswith("p_backflow_spec_gen")
-    )
-
-
 @pytest.mark.fluent_version("latest")
 def test_find_children_from_fluent_solver_session(static_mixer_settings_session):
     setup_children = find_children(static_mixer_settings_session.setup)
@@ -844,7 +1384,6 @@ def test_find_children_from_fluent_solver_session(static_mixer_settings_session)
     }
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_settings_wild_card_access(new_solver_session) -> None:
     solver = new_solver_session
 
@@ -913,8 +1452,6 @@ def test_settings_matching_names(new_solver_session) -> None:
     )
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_settings_api_names_exception(new_solver_session):
     solver = new_solver_session
 
@@ -925,7 +1462,6 @@ def test_settings_api_names_exception(new_solver_session):
         solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(new_solver_session):
     solver = new_solver_session
     root = solver.settings
@@ -1004,7 +1540,6 @@ def get_child_nodes(node, nodes, type_list):
                     return
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_parent_class_attributes(static_mixer_settings_session):
     solver = static_mixer_settings_session
     assert solver.setup.models.energy.enabled
@@ -1023,9 +1558,7 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
-@pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/4914
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2, !=26.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     assert isinstance(solver.settings.state_with_units(), dict)
@@ -1092,7 +1625,6 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
@@ -1127,7 +1659,6 @@ def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
     }
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
     speed = ansys.units.Quantity(100, "m s^-1")
     solver = mixing_elbow_settings_session
@@ -1202,14 +1733,12 @@ def test_static_info_hash_identity(new_solver_session):
     assert hash1 == hash2
 
 
-@pytest.mark.codegen_required
 def test_no_hash_mismatch(new_solver_session, caplog):
     caplog.clear()
     new_solver_session.setup
     assert all(["Mismatch" not in record.message for record in caplog.records])
 
 
-@pytest.mark.fluent_version(">=24.2")
 def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
@@ -1240,9 +1769,11 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
 
     assert set(solver.results.graphics.contour.rename.argument_names) == {"new", "old"}
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
+    # The following is the default behavior when no arguments are associated with the command.
     if solver.get_fluent_version() < FluentVersion.v261:
-        # The following is the default behavior when no arguments are associated with the command.
         assert solver.results.graphics.contour.list_1.argument_names == []
+    else:
+        assert solver.results.graphics.contour.list.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -1259,11 +1790,13 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
 
     calls = mock_interceptor.get_traced_calls()
     assert len(calls) == 5
+    is_v1 = solver.get_fluent_version() > FluentVersion.v261
     service = (
         "/ansys.api.fluent.v0.settings.Settings/"
-        if solver.get_fluent_version() <= FluentVersion.v261
-        else "/ansys.api.fluent.v1.settings.SettingsService/"
+        if not is_v1
+        else "/ansys.api.fluent.v1.settings.Settings/"
     )
+    set_var_method = "SetState" if is_v1 else "SetVar"
     assert all(x.method == service + "GetAttrs" for x in calls[0:3])
     assert all(x.request.attrs == ["active?"] for x in calls[0:3])
     assert calls[0].request.path_info.path == ""
@@ -1271,7 +1804,7 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
     assert calls[2].request.path_info.path == "setup/boundary-conditions"
     assert calls[3].method == service + "GetObjectNames"
     assert calls[3].request.path_info.path == "setup/boundary-conditions/velocity-inlet"
-    assert calls[4].method == service + "SetVar"
+    assert calls[4].method == service + set_var_method
     assert (
         calls[4].request.path_info.path
         == "setup/boundary-conditions/velocity-inlet/inlet1"
@@ -1378,3 +1911,15 @@ def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
         list(solver.settings.setup.boundary_conditions.pressure_outlet.items())[0]
         in chained_named_objects.items()
     )
+
+
+def test_list_and_list_properties(new_solver_session):
+    solver = new_solver_session
+    if solver.get_fluent_version() < FluentVersion.v261:
+        assert {"list_1", "list_properties_1"}.issubset(
+            solver.settings.setup.materials.mixture.command_names
+        )
+    else:
+        assert {"list", "list_properties"}.issubset(
+            solver.settings.setup.materials.mixture.command_names
+        )

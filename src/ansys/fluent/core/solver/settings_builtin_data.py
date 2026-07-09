@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +23,7 @@
 
 """Data for for builtin setting classes."""
 
-from ansys.fluent.core.utils.fluent_version import FluentVersion, since
+from ansys.fluent.core.utils.fluent_version import FluentVersion, since, until
 
 # {<class name>: (<kind>, <path>)}
 DATA = {
@@ -457,11 +458,21 @@ DATA = {
     ),
     "InputParameters": (
         "Singleton",
-        "parameters.input_parameters",
+        {
+            since(
+                FluentVersion.v271
+            ): "parameter_workspace.parameters.input_parameters",
+            until(FluentVersion.v271): "parameters.input_parameters",
+        },
     ),
     "OutputParameters": (
         "Singleton",
-        "parameters.output_parameters",
+        {
+            since(
+                FluentVersion.v271
+            ): "parameter_workspace.parameters.output_parameters",
+            until(FluentVersion.v271): "parameters.output_parameters",
+        },
     ),
     "CustomFieldFunctions": (
         "Singleton",
@@ -487,10 +498,44 @@ DATA = {
         "Singleton",
         "results.report.simulation_reports",
     ),
-    "ParametricStudies": ("Singleton", "parametric_studies"),
-    "ParametricStudy": ("NamedObject", "parametric_studies"),
-    "DesignPoints": ("Singleton", "parametric_studies.design_points"),
-    "DesignPoint": ("NamedObject", "parametric_studies.design_points"),
+    "ParametricStudies": (
+        "Singleton",
+        {
+            since(FluentVersion.v271): "parameter_workspace.parametric_studies",
+            until(FluentVersion.v271): "parametric_studies",
+        },
+    ),
+    "ParametricStudy": (
+        "NamedObject",
+        {
+            since(FluentVersion.v271): "parameter_workspace.parametric_studies",
+            until(FluentVersion.v271): "parametric_studies",
+        },
+    ),
+    "DesignPoints": (
+        "Singleton",
+        {
+            since(
+                FluentVersion.v271
+            ): "parameter_workspace.parametric_studies.design_points",
+            until(FluentVersion.v271): "parametric_studies.design_points",
+        },
+    ),
+    "DesignPoint": (
+        "NamedObject",
+        {
+            since(
+                FluentVersion.v271
+            ): "parameter_workspace.parametric_studies.design_points",
+            until(FluentVersion.v271): "parametric_studies.design_points",
+        },
+    ),
+    "ParameterWorkspace": (
+        "Singleton",
+        {
+            since(FluentVersion.v271): "parameter_workspace",
+        },
+    ),
     "ReadCase": ("Command", "file.read_case"),
     "ReadData": ("Command", "file.read_data"),
     "ReadCaseData": ("Command", "file.read_case_data"),

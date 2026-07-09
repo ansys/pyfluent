@@ -49,10 +49,10 @@ that can hold any value type.
    >>> # Create string rpvars using RPVarType enum
    >>> solver_session.rp_vars.create(name="my-str-var", value="my-string", var_type=RPVarType.STRING)
    >>> solver_session.rp_vars("my-str-var")
-   '"my-string"'
+   "my-string"
    >>> solver_session.rp_vars("my-str-var", "new-str")
    >>> solver_session.rp_vars("my-str-var")
-   '"new-str"'
+   "new-str"
    
    >>> # Create custom-typed rpvars that accepts any type
    >>> solver_session.rp_vars.create(name="my-custom-var", value=100, var_type=None)
@@ -60,7 +60,7 @@ that can hold any value type.
    100
    >>> solver_session.rp_vars("my-custom-var", "any-str")
    >>> solver_session.rp_vars("my-custom-var")
-   '"any-str"'
+   "any-str"
 
 
 **Type validation:**

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -221,7 +222,6 @@ def test_case_load():
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
     case_name = download_file(
@@ -580,7 +580,7 @@ def test_standalone_launcher_dry_run(monkeypatch):
     assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
     assert (
         fluent_launch_string
-        == f"{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm"
+        == f'{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm -command="(set-session-idle-timeoutPLF+3)"'
     )
 
 
@@ -595,7 +595,7 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
         assert str(Path(server_info_file_name).parent) == tmp_dir
         assert (
             fluent_launch_string
-            == f"{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm"
+            == f'{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm -command="(set-session-idle-timeoutPLF+3)"'
         )
 
 
@@ -631,10 +631,9 @@ def test_report():
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
-    assert str(rep).count("pandas") == 1
+    assert str(rep).count("pandas") == 2
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_docker_compose(monkeypatch):
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
@@ -764,3 +763,39 @@ def test_create_launcher():
 
     session = create_launcher(LaunchMode.STANDALONE)
     assert isinstance(session, StandaloneLauncher)
+
+
+def test_idle_timeout(monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeoutPLF+3" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=200, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeoutPLF+5" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=60, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeoutPLF+2" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=0, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeoutPLF+1" in fluent_launch_string
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        start_timeout=-5, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert "timeout" not in fluent_launch_string
+
+    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+    assert (
+        StandaloneLauncher._construct_timeout_arg(60)
+        == ' -command="(set-session-idle-timeoutPLF+2)"'
+    )
+    assert (
+        StandaloneLauncher._construct_timeout_arg(200)
+        == ' -command="(set-session-idle-timeoutPLF+5)"'
+    )

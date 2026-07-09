@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -85,12 +86,12 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
-    additional_arguments = kwargs["additional_arguments"]
+    additional_arguments = kwargs.get("additional_arguments", "")
     if additional_arguments:
         launch_args_string += " " + additional_arguments
     if "-t" not in additional_arguments and "-cnf=" not in additional_arguments:
         parallel_options = build_parallel_options(
-            load_machines(ncores=kwargs["processor_count"])
+            load_machines(ncores=kwargs.get("processor_count"))
         )
         if parallel_options:
             launch_args_string += " " + parallel_options

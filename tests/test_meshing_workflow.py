@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,9 +33,7 @@ from util.meshing_workflow import (
 from ansys.fluent.core import examples
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.nightly
-@pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
     watertight_workflow_session,
     mixing_elbow_geometry_filename,
@@ -142,7 +141,6 @@ def test_mixing_elbow_meshing_workflow(
     meshing_session.tui.mesh.check_mesh()
 
 
-@pytest.mark.codegen_required
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
     watertight_workflow_session,
 ):
@@ -207,8 +205,6 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
 # Wait for later implementation.
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_meshing_session):
     session_new = new_meshing_session
     w = session_new.workflow
@@ -226,7 +222,6 @@ def test_read_only_behaviour_of_command_arguments(new_meshing_session):
     assert "set_state" in dir(m().NumParts)
 
 
-@pytest.mark.codegen_required
 def test_dummy_journal_data_model_methods(new_meshing_session):
     session_new = new_meshing_session
     w = session_new.workflow
@@ -237,7 +232,6 @@ def test_dummy_journal_data_model_methods(new_meshing_session):
         import_geom.delete_child()
 
 
-@pytest.mark.codegen_required
 def test_iterate_meshing_workflow_task_container(new_meshing_session):
     workflow = new_meshing_session.workflow
     workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -246,7 +240,6 @@ def test_iterate_meshing_workflow_task_container(new_meshing_session):
     assert tasks[0].name() == "Import Geometry"
 
 
-@pytest.mark.codegen_required
 def test_nonexistent_attrs(new_meshing_session):
     meshing = new_meshing_session
     assert not hasattr(meshing.workflow, "xyz")
@@ -254,8 +247,6 @@ def test_nonexistent_attrs(new_meshing_session):
         meshing.workflow.xyz
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_old_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -265,10 +256,7 @@ def test_old_workflow_structure(new_meshing_session):
 
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
-# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
@@ -427,7 +415,6 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     solver.exit()
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_setting_none_type_tasks(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType=r"Fault-tolerant Meshing")

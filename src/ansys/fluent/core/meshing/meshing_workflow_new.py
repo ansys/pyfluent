@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +30,7 @@ from enum import Enum
 import os
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow_new import Workflow
 
@@ -40,8 +41,8 @@ class MeshingWorkflow(Workflow):
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
+        workflow: PyMenu,
+        meshing: PyMenu,
         name: str,
         fluent_version: FluentVersion,
         initialize: bool = True,
@@ -50,9 +51,9 @@ class MeshingWorkflow(Workflow):
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             Underlying workflow object.
-        meshing : PyMenuGeneric
+        meshing : PyMenu
             Meshing object.
         name: str
             Workflow name to initialize it.
@@ -76,8 +77,8 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
+        workflow: PyMenu,
+        meshing: PyMenu,
         fluent_version: FluentVersion,
         initialize: bool = True,
     ) -> None:
@@ -85,9 +86,9 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             Underlying workflow object.
-        meshing : PyMenuGeneric
+        meshing : PyMenu
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
@@ -108,10 +109,10 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
-        part_management: PyMenuGeneric,
-        pm_file_management: PyMenuGeneric,
+        workflow: PyMenu,
+        meshing: PyMenu,
+        part_management: PyMenu,
+        pm_file_management: PyMenu,
         fluent_version: FluentVersion,
         initialize: bool = True,
     ) -> None:
@@ -119,13 +120,13 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             Underlying workflow object.
-        meshing : PyMenuGeneric
+        meshing : PyMenu
             Meshing object.
-        part_management : PyMenuGeneric
+        part_management : PyMenu
             Part management object.
-        pm_file_management : PyMenuGeneric
+        pm_file_management : PyMenu
             File management object in the part management object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
@@ -144,12 +145,12 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         self._pm_file_management = pm_file_management
 
     @property
-    def parts(self) -> PyMenuGeneric | None:
+    def parts(self) -> PyMenu | None:
         """Access part-management in fault-tolerant mode.
 
         Returns
         -------
-        PyMenuGeneric | None
+        PyMenu | None
             Part-management.
         """
         return self._parent_workflow.parts
@@ -160,30 +161,30 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Returns
         -------
-        PyMenuGeneric | None
+        PyMenu | None
             File management object in the part management object.
         """
         return self._parent_workflow.parts_files
 
     @property
-    def part_management(self) -> PyMenuGeneric | None:
+    def part_management(self) -> PyMenu | None:
         """Access part-management in fault-tolerant mode.
 
         Returns
         -------
-        PyMenuGeneric | None
+        PyMenu | None
             Part-management.
         """
         # TODO: Remove this after migrating to the new workflow
         return self._part_management
 
     @property
-    def pm_file_management(self):
+    def pm_file_management(self) -> PyMenu | None:
         """Access the part-management file-management object in fault-tolerant mode.
 
         Returns
         -------
-        PyMenuGeneric | None
+        PyMenu | None
             File management object in the part management object.
         """
         # TODO: Remove this after migrating to the new workflow
@@ -195,8 +196,8 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
+        workflow: PyMenu,
+        meshing: PyMenu,
         fluent_version: FluentVersion,
         initialize: bool = True,
     ) -> None:
@@ -204,9 +205,9 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             Underlying workflow object.
-        meshing : PyMenuGeneric
+        meshing : PyMenu
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
@@ -227,8 +228,8 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
+        workflow: PyMenu,
+        meshing: PyMenu,
         fluent_version: FluentVersion,
         initialize: bool = True,
     ) -> None:
@@ -236,9 +237,9 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             Underlying workflow object.
-        meshing : PyMenuGeneric
+        meshing : PyMenu
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
@@ -268,8 +269,8 @@ class LoadWorkflow(Workflow):
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
+        workflow: PyMenu,
+        meshing: PyMenu,
         fluent_version: FluentVersion,
         file_path: PathType = None,
         initialize: bool = True,
@@ -278,9 +279,9 @@ class LoadWorkflow(Workflow):
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             Underlying workflow object.
-        meshing : PyMenuGeneric
+        meshing : PyMenu
             Meshing object.
         file_path: os.PathLike[str | bytes] | str | bytes
             Path to the saved workflow file.
@@ -303,8 +304,8 @@ class CreateWorkflow(Workflow):
 
     def __init__(
         self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
+        workflow: PyMenu,
+        meshing: PyMenu,
         fluent_version: FluentVersion,
         initialize: bool = True,
     ) -> None:
@@ -312,9 +313,9 @@ class CreateWorkflow(Workflow):
 
         Parameters
         ----------
-        workflow : PyMenuGeneric
+        workflow : PyMenu
             Underlying workflow object.
-        meshing : PyMenuGeneric
+        meshing : PyMenu
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
@@ -341,7 +342,7 @@ def get_current_workflow(
 
     Parameters
     ----------
-    workflow_root : PyMenuGeneric
+    workflow_root : PyMenu
         Root workflow datamodel object.
     current_workflow : Workflow or None
         Currently cached workflow instance.
@@ -365,7 +366,7 @@ def get_current_workflow(
 
     # Check if no workflow is initialized
     if workflow_type in ["Select Workflow Type", None]:
-        raise RuntimeError("No workflow initialized.")
+        return
 
     # Handle loaded workflows (not in the factory map)
     if workflow_type not in workflow_factories:

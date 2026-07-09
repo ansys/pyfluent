@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +23,6 @@
 
 """Provides a module for file session."""
 
-from typing import Dict, List
 import warnings
 
 from deprecated.sphinx import deprecated
@@ -122,7 +122,7 @@ class BatchFieldData:
 
     def __init__(
         self,
-        data: Dict,
+        data: dict,
         field_info,
         allowed_surface_names,
         allowed_scalar_field_names,
@@ -134,7 +134,7 @@ class BatchFieldData:
         self._allowed_scalar_field_names = allowed_scalar_field_names
         self._returned_data = _ReturnFieldData()
 
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+    def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""
         return _get_surface_ids(
             field_info=self._field_info,
@@ -144,7 +144,7 @@ class BatchFieldData:
     def _get_scalar_field_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         node_value, boundary_value = _normalize_file_session_scalar_options(
             kwargs.get("node_value"),
             kwargs.get("boundary_value"),
@@ -169,7 +169,7 @@ class BatchFieldData:
     def _get_surface_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surface_data = self.data[(("type", "surface-data"),)]
         return self._returned_data._surface_data(
             kwargs.get("data_types"),
@@ -182,7 +182,7 @@ class BatchFieldData:
     def _get_vector_field_data(
         self,
         **kwargs,
-    ) -> Dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
             _to_vector_field_name(kwargs.get("field_name")),
@@ -194,7 +194,7 @@ class BatchFieldData:
     def _get_pathlines_field_data(
         self,
         **kwargs,
-    ) -> Dict:
+    ) -> dict:
         pathlines_data = self.data[
             (
                 ("type", "pathlines-field"),
@@ -219,7 +219,7 @@ class BatchFieldData:
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> Dict[int | str, Dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """Get the surface, scalar, vector or path-lines field data on a surface.
 
         Returns
@@ -289,7 +289,7 @@ class Batch(FieldBatch):
         self._field_info = field_info
         self._cache_requests = []
 
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+    def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""
         return _get_surface_ids(
             field_info=self._field_info,
@@ -315,8 +315,8 @@ class Batch(FieldBatch):
     @deprecate_function(version="v0.25.0", new_func="add_requests")
     def add_surfaces_request(
         self,
-        data_types: List[SurfaceDataType] | List[str],
-        surfaces: List[int | str],
+        data_types: list[SurfaceDataType] | list[str],
+        surfaces: list[int | str],
     ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
         normals).
@@ -336,8 +336,8 @@ class Batch(FieldBatch):
 
     def _add_surfaces_request(
         self,
-        data_types: List[SurfaceDataType] | List[str],
-        surfaces: List[int | str],
+        data_types: list[SurfaceDataType] | list[str],
+        surfaces: list[int | str],
     ) -> None:
         updated_types = []
         for d_type in data_types:
@@ -367,7 +367,7 @@ class Batch(FieldBatch):
     def add_scalar_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> None:
@@ -405,7 +405,7 @@ class Batch(FieldBatch):
     def _add_scalar_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> None:
@@ -450,7 +450,7 @@ class Batch(FieldBatch):
     def add_vector_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ) -> None:
         """Add request to get vector field data on surfaces.
 
@@ -475,7 +475,7 @@ class Batch(FieldBatch):
     def _add_vector_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ) -> None:
         surface_ids = self.get_surface_ids(surfaces)
         if len(self._file_session._data_file.get_phases()) > 1:
@@ -505,7 +505,7 @@ class Batch(FieldBatch):
     def add_pathlines_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ):
         """Add request to get pathlines field on surfaces.
 
@@ -525,7 +525,7 @@ class Batch(FieldBatch):
     def _add_pathlines_fields_request(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ):
         raise NotImplementedError("Pathlines are not supported.")
 
@@ -683,7 +683,7 @@ class FileFieldData(FieldDataSource):
         """Create a new field transaction."""
         return self.new_batch()
 
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+    def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""
         return _get_surface_ids(
             field_info=self._field_info,
@@ -703,8 +703,8 @@ class FileFieldData(FieldDataSource):
     @deprecate_function(version="v0.25.0", new_func="get_field_data")
     def get_surface_data(
         self,
-        data_types: List[SurfaceDataType] | List[str],
-        surfaces: List[int | str],
+        data_types: list[SurfaceDataType] | list[str],
+        surfaces: list[int | str],
         overset_mesh: bool | None = False,
         flatten_connectivity: bool = False,
     ):
@@ -760,8 +760,8 @@ class FileFieldData(FieldDataSource):
 
     def _get_surface_data(
         self,
-        data_types: List[SurfaceDataType] | List[str],
-        surfaces: List[int | str],
+        data_types: list[SurfaceDataType] | list[str],
+        surfaces: list[int | str],
         overset_mesh: bool | None = False,
         flatten_connectivity: bool = False,
     ):
@@ -812,7 +812,7 @@ class FileFieldData(FieldDataSource):
     def get_scalar_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
@@ -853,7 +853,7 @@ class FileFieldData(FieldDataSource):
     def _get_scalar_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
@@ -904,7 +904,7 @@ class FileFieldData(FieldDataSource):
     def get_vector_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ):
         """Get vector field data on a surface.
 
@@ -937,7 +937,7 @@ class FileFieldData(FieldDataSource):
     def _get_vector_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ):
         field_name = _to_vector_field_name(field_name)
         surface_ids = self.get_surface_ids(surfaces=surfaces)
@@ -986,7 +986,7 @@ class FileFieldData(FieldDataSource):
     def get_pathlines_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
     ):
         """Get the pathlines field data on a surface.
 
@@ -1008,7 +1008,7 @@ class FileFieldData(FieldDataSource):
     def _get_pathlines_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         **kwargs,
     ):
         raise NotImplementedError("Pathlines are not supported.")
@@ -1021,7 +1021,7 @@ class FileFieldData(FieldDataSource):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> Dict[int | str, SurfaceData | np.ndarray]:
+    ) -> dict[int | str, SurfaceData | np.ndarray]:
         """Get the surface, scalar, vector, or path-lines field data on a surface.
 
         Parameters
@@ -1073,8 +1073,8 @@ class _FileFieldInfo(BaseFieldInfo):
         self._file_session = file_session
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
+    ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
@@ -1097,8 +1097,8 @@ class _FileFieldInfo(BaseFieldInfo):
         return self._get_scalar_field_range(field, node_value, surface_ids)
 
     def _get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
+    ) -> list[float]:
         _normalize_file_session_scalar_options(node_value, False)
         minimum = None
         maximum = None
@@ -1287,8 +1287,8 @@ class FileSession:
 
 def _get_surface_ids(
     field_info: FileFieldInfo,
-    surfaces: List[int | str],
-) -> List[int]:
+    surfaces: list[int | str],
+) -> list[int]:
     """Get surface IDs based on surface names or IDs.
 
     Parameters

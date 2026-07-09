@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +26,7 @@
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
 
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core.session_solver import Solver
 
@@ -40,7 +41,7 @@ class SolverLite(Solver):
         fluent_connection=None,
         scheme_eval=None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """SolverLite session.
 

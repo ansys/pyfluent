@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,6 +53,7 @@ import re
 from typing import ValuesView
 
 from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -310,39 +312,15 @@ class Workflow:
 
     def _new_workflow(self, name: str):
         """Initialize a new workflow from a predefined template."""
-        if self._workflow.general.workflow.workflow_type() in [
-            "Select Workflow Type",
-            None,
-        ]:
-            self._workflow.general.initialize_workflow(workflow_type=name)
-        else:
-            raise RuntimeError(
-                "Switching between workflows or re-initializing is yet to be implemented."
-            )
+        self._workflow.general.initialize_workflow(workflow_type=name)
 
     def _load_workflow(self, file_path: str):
         """Load a workflow from a saved workflow file (.wft)."""
-        if self._workflow.general.workflow.workflow_type() in [
-            "Select Workflow Type",
-            None,
-        ]:
-            self._workflow.general.load_workflow(file_path=file_path)
-        else:
-            raise RuntimeError(
-                "Switching between workflows or re-initializing is yet to be implemented."
-            )
+        self._workflow.general.load_workflow(file_path=file_path)
 
     def _create_workflow(self):
         """Create a new empty workflow."""
-        if self._workflow.general.workflow.workflow_type() in [
-            "Select Workflow Type",
-            None,
-        ]:
-            self._workflow.general.create_new_workflow()
-        else:
-            raise RuntimeError(
-                "Switching between workflows or re-initializing is yet to be implemented."
-            )
+        self._workflow.general.create_new_workflow()
 
     def save_workflow(self, file_path: str):
         """Save the current workflow to a file."""
@@ -635,7 +613,16 @@ class Workflow:
             return make_task_wrapper(
                 self._task_dict[item], item, self._workflow, self, self._command_source
             )
-        return getattr(self._workflow, item)
+        try:
+            return getattr(self._workflow, item)
+        except AttributeError as ex:
+            raise AttributeError(
+                allowed_name_error_message(
+                    allowed_values=list(self._task_dict.keys()),
+                    context=type(self).__name__,
+                    trial_name=item,
+                )
+            ) from ex
 
     def __call__(self):
         """Get workflow state when called as a function."""
