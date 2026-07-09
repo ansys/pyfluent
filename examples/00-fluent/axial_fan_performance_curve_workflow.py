@@ -35,9 +35,11 @@ Axial Fan Performance Curve Workflow
 # %%
 # Import required libraries and download required files
 # ------------------------------------------------------
+
 import os
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
