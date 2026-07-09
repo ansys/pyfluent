@@ -211,7 +211,10 @@ class ServiceFactory:
             case v if v >= FluentVersion.v271:
                 return ApplicationRuntime(self._service_factory.application_runtime)
             case FluentVersion.v261:
-                return ApplicationRuntimeV261(self._service_factory.application_runtime)
+                return ApplicationRuntimeV261(
+                    self._service_factory.application_runtime,
+                    self._service_factory.scheme_interpreter,
+                )
             case FluentVersion.v252:
                 return ApplicationRuntimeV252(
                     self._service_factory.application_runtime,
