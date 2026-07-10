@@ -216,7 +216,7 @@ solver.settings.solution.controls.under_relaxation["turb-viscosity"] = 0.8
 
 # %%
 # Create report definitions and output parameters
-#-------------------------------------------------
+# -------------------------------------------------
 # Create report definitions for computed quantities of interest including, inlet volume flow rate, total-to-static pressure difference, and torque.
 
 # Report definition: Inlet volume flow rate
