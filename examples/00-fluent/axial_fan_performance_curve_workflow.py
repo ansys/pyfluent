@@ -9,8 +9,8 @@ Axial Fan Performance Curve Workflow
 ========================================================
 """
 
-# ### Contributors: Mustafa Kaddoura, Achilleas Krikas
-# ### Product Version: Ansys Fluent 2026 R1
+# Contributors: Mustafa Kaddoura, Achilleas Krikas
+# Product Version: Ansys Fluent 2026 R1
 
 # %%
 # Overview
@@ -432,7 +432,7 @@ plt.grid(True)
 plt.show()
 
 # %%
-# .. figure:: /_static/figure_fan_performance_curve.png
+# .. figure:: /_static/axial_fan_performance_curve/figure_fan_performance_curve.png
 #     :width: 500pt
 #     :align: center
 #
@@ -444,3 +444,5 @@ plt.show()
 # Close Fluent session.
 
 solver.exit()
+
+# sphinx_gallery_thumbnail_path = '/_static/axial_fan_performance_curve/problem_schematic.png'
