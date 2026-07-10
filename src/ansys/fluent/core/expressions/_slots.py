@@ -64,12 +64,20 @@ class LocationSlot(SlotAccessor):
         return self._discovery.surface_names()
 
     def is_allowed(self, value: Any) -> bool:
+        names = self.allowed_values()
+        # If we have no settings/field_info-derived list, be permissive but still
+        # validate that inputs are strings.
+        if not names:
+            if isinstance(value, str):
+                return True
+            if isinstance(value, (list, tuple)):
+                return all(isinstance(v, str) for v in value)
+            return False
+
         if isinstance(value, str):
-            names = self.allowed_values()
-            # If we have no settings-derived list, be permissive.
-            return not names or value in names
+            return value in names
         if isinstance(value, (list, tuple)):
-            return all(self.is_allowed(v) for v in value)
+            return all(isinstance(v, str) and v in names for v in value)
         return False
 
 
