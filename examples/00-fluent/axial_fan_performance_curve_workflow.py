@@ -432,7 +432,7 @@ plt.show()
 
 # %%
 # Closing Fluent
-#----------------
+#-----------------
 # Close Fluent session.
 
 solver.exit()
