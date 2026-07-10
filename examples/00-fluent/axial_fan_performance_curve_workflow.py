@@ -109,7 +109,7 @@ solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 
 # %%
 # Models: Turbulance/Viscous Model
 # ----------------------------------
-# Set the turbulance/viscous model to SST k-omega model. 
+# Set the turbulance/viscous model to SST k-omega model.
 # Activate curvature correction, production Kato-Launder, and production limiter options.
 
 solver.settings.setup.models.viscous.model = "k-omega"
@@ -122,7 +122,7 @@ solver.settings.setup.models.viscous.options.production_limiter.enabled = "True"
 # Cell Zones
 # -----------
 # Activate the Multiple Reference Frame (MRF) model for the <code>'rotating-fan'</code> zone,
-# specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter. 
+# specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter.
 # Keep the default setting for the remaining cell zones.
 
 # Activate MRF model for the 'rotating fan' zone
@@ -323,7 +323,7 @@ solver.settings.parametric_studies.initialize(project_filename="project_axial_fa
 # %%
 # Access and modify input parameters
 # ------------------------------------
-# Access and modify the input parameters of the base design point. 
+# Access and modify the input parameters of the base design point.
 # Set the pressure at the outlet boundary to 25 Pa, and keep the fan's rotational speed at 155.534 rad/s.
 
 # Update the Base Design Point
@@ -338,7 +338,7 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 # Add new design points
 # -------------------------
 # Create four new design points and assign outlet pressure and rotational
-# speed to each one. 
+# speed to each one.
 # The fan's rotational speed is set constant in this study.
 
 # Add four more design points to the parametric study
