@@ -114,15 +114,40 @@ class ExpressionBuilder:
 
     Parameters
     ----------
+    session : optional
+        A live PyFluent session (or anything exposing ``session.settings``
+        and/or ``session.fields.field_info``).  When provided, discovery
+        can use both the settings tree *and* live field/surface info RPCs.
     settings : optional
-        Root of a live solver settings tree.  When provided, discovery
-        helpers (``allowed_values`` etc.) may query it.  When ``None``,
-        the builder still works fully; only settings-backed discovery
-        (surface names, in-scope named expressions) is disabled.
+        Root of a solver settings tree.  Ignored when ``session`` is given
+        (in which case it is derived from ``session.settings``).  Useful
+        when a caller already has a settings root but no session handle.
+    field_info : optional
+        A ``FieldInfo``-like object (typically ``session.fields.field_info``).
+        Same fallback rules as ``settings``: derived from ``session`` when
+        not given explicitly.
+
+    Notes
+    -----
+    All three parameters are optional.  With none, the builder still works
+    fully; only server-backed discovery (live surface / variable lists,
+    in-scope named expressions) is disabled.
     """
 
-    def __init__(self, settings: Any | None = None):
-        self._discovery = Discovery(settings)
+    def __init__(
+        self,
+        session: Any | None = None,
+        settings: Any | None = None,
+        field_info: Any | None = None,
+    ):
+        if session is not None:
+            if settings is None:
+                settings = getattr(session, "settings", None)
+            if field_info is None:
+                fields = getattr(session, "fields", None)
+                field_info = getattr(fields, "field_info", None) if fields else None
+
+        self._discovery = Discovery(settings=settings, field_info=field_info)
         for group in REGISTRY.groups():
             setattr(self, group, _GroupFacade(group, self._discovery))
 

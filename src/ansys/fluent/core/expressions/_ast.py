@@ -253,6 +253,21 @@ class Call(Expr):
         return f"{self.name}(" + ",".join(str(a) for a in self.args) + ")"
 
 
+@dataclass(frozen=True)
+class KeywordArg(Expr):
+    """A ``Keyword=value`` fragment inside a :class:`Call` argument list.
+
+    Used for Fluent-side named arguments such as ``Sum(expr, [...], Weight=Area)``.
+    """
+
+    kind = Kind.SCALAR  # nominal; never used as an operand
+    keyword: str
+    value: Expr
+
+    def __fluent_expr__(self) -> str:
+        return f"{self.keyword}={self.value}"
+
+
 # --------------------------------------------------------------------------- #
 # Coercion helpers                                                            #
 # --------------------------------------------------------------------------- #
