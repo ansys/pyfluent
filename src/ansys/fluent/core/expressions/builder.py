@@ -194,7 +194,7 @@ class ExpressionBuilder:
         return self._discovery
 
     def surface_names(self) -> list[str]:
-        """All surface / zone names visible via the attached discovery handles."""
+        """All surface / zone names visible via the attached discovery handle."""
         return self._discovery.surface_names()
 
     def named_expression_names(self) -> list[str]:
