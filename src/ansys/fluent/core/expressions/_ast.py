@@ -113,7 +113,7 @@ class BooleanExpr(Expr):
 # --------------------------------------------------------------------------- #
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class Literal(ScalarExpr):
     """A numeric literal (dimensionless)."""
 
@@ -123,7 +123,7 @@ class Literal(ScalarExpr):
         return repr(self.value)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class Quantity(Expr):
     """A value with units, rendered as ``<value> [<units>]``."""
 
@@ -135,7 +135,7 @@ class Quantity(Expr):
         return f"{self.value} [{self.units}]"
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class Variable(ScalarExpr):
     """A Fluent field variable.
 
@@ -168,7 +168,7 @@ class Variable(ScalarExpr):
         return self._fluent_name  # type: ignore[attr-defined]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class RawName(ScalarExpr):
     """Escape hatch: a raw identifier (e.g. a named expression).
 
@@ -181,7 +181,7 @@ class RawName(ScalarExpr):
         return self.name
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class LocationList(Expr):
     """A list of Fluent surface / zone names, rendered as a Python-style list."""
 
@@ -204,7 +204,7 @@ class LocationList(Expr):
 # --------------------------------------------------------------------------- #
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class UnaryOp(ScalarExpr):
     op: str
     operand: Expr
@@ -213,7 +213,7 @@ class UnaryOp(ScalarExpr):
         return f"({self.op}{self.operand})"
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class BinOp(ScalarExpr):
     op: str
     left: Expr
@@ -223,7 +223,7 @@ class BinOp(ScalarExpr):
         return f"({self.left} {self.op} {self.right})"
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class Compare(BooleanExpr):
     op: str
     left: Expr
@@ -233,7 +233,7 @@ class Compare(BooleanExpr):
         return f"({self.left} {self.op} {self.right})"
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class Call(Expr):
     """Generic call node: ``name(arg1, arg2, ...)``.
 
@@ -253,7 +253,7 @@ class Call(Expr):
         return f"{self.name}(" + ",".join(str(a) for a in self.args) + ")"
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class KeywordArg(Expr):
     """A ``Keyword=value`` fragment inside a :class:`Call` argument list.
 

@@ -125,6 +125,14 @@ def test_comparison_produces_boolean(b):
     assert str(cond) == "(VelocityMagnitude > 10)"
 
 
+def test_equality_uses_compare_node_and_nodes_are_hashable(b):
+    left = b.variable(V.VELOCITY_MAGNITUDE)
+    right = b.variable(V.ABSOLUTE_PRESSURE)
+    cond = left == right
+    assert str(cond) == "(VelocityMagnitude == AbsolutePressure)"
+    assert left in {left}
+
+
 def test_negation(b):
     v = b.variable(V.VELOCITY_MAGNITUDE)
     assert str(-v) == "(-VelocityMagnitude)"
