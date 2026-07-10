@@ -53,7 +53,7 @@ import_file_name = examples.download_file(
 
 # %%
 # Launch Fluent
-#---------------
+# ---------------
 # Launch Fluent in solution mode with double precision running on eight processors.
 
 solver = pyfluent.launch_fluent(
@@ -66,7 +66,7 @@ solver = pyfluent.launch_fluent(
 
 # %%
 # Read mesh file and perform mesh check
-#---------------------------------------
+# ---------------------------------------
 # Import the mesh and perform a mesh check, which lists the minimum and maximum x, y, and z values from the mesh in the default SI units of meters.
 # The mesh check also reports a number of other mesh features that are checked.
 
@@ -75,7 +75,7 @@ solver.settings.mesh.check()
 
 # %%
 # Creat input parameters
-#------------------------
+# ------------------------
 # Create named expressions for the pressure outlet boundary condition and for the fan rotational speed, and set them as input parameters.
 # Pressure outlet value is set to 0.0 Pa (atmospheric gauge pressure) and rotational speed is set to 155.534 rad/s.
 
@@ -93,7 +93,7 @@ solver.settings.setup.named_expressions["rotational_speed"].input_parameter = Tr
 
 # %%
 # Solver setup
-#-----------------
+# -----------------
 # Set the solver type to pressure-based, and analysis type to steady state, and activate gravity in the negative x-direction.
 
 # General: Solver Type: Pressure-Based
@@ -108,7 +108,7 @@ solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 
 
 # %%
 # Models: Turbulance/Viscous Model
-#----------------------------------
+# ----------------------------------
 # Set the turbulance/viscous model to SST k-omega model. 
 # Activate curvature correction, production Kato-Launder, and production limiter options.
 
@@ -120,7 +120,7 @@ solver.settings.setup.models.viscous.options.production_limiter.enabled = "True"
 
 # %%
 # Cell Zones
-#-----------
+# -----------
 # Activate the Multiple Reference Frame (MRF) model for the <code>'rotating-fan'</code> zone,
 # specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter. 
 # Keep the default setting for the remaining cell zones.
@@ -148,7 +148,7 @@ solver.settings.setup.cell_zone_conditions.fluid[
 
 # %%
 # Boundary conditions
-#----------------------
+# ----------------------
 # Set the <code>'inlet'</code> boundary as pressure-inlet boundary condition type, and assign to it a pressure value of 0.0 Pa (atmospheric gauge pressure).
 # Set the <code>'pressure-outlet'</code> boundary as pressure-outlet boundary condition type, and assign to it the previously defined input parameter.
 # Keep the remaining boundaries as no-slip wall boundary condition type (default settings - no changes)
@@ -189,7 +189,7 @@ solver.settings.setup.boundary_conditions.pressure_outlet[
 
 # %%
 # Solution methods and controls
-#-------------------------------
+# -------------------------------
 # Set the pressure-velocity coupling scheme and spatial discretization methods. Also, set the under-relaxation factors.
 
 # Solution methods
@@ -299,7 +299,7 @@ solver.settings.solution.report_definitions.moment["torque"].output_parameter = 
 
 # %%
 # Set the number of iterations for the calculation and enable convergence condition check
-#------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------
 # Set the number of solution iterations to 2500, and enable the convergence condition check.
 
 solver.settings.solution.run_calculation.parameters.iter_count = 2500
@@ -308,21 +308,21 @@ solver.settings.solution.monitor.residual.options.criterion_type = "absolute"
 
 # %%
 # Save case file
-#-----------------
+# -----------------
 # Write the case with all settings in place.
 
 solver.settings.file.write_case(file_name="axial_fan.cas.h5")
 
 # %%
 # Initialize parametric study
-#-----------------------------
+# -----------------------------
 # Initialize a parametric design point study from a Fluent session.
 
 solver.settings.parametric_studies.initialize(project_filename="project_axial_fan")
 
 # %%
 # Access and modify input parameters
-#------------------------------------
+# ------------------------------------
 # Access and modify the input parameters of the base design point. 
 # Set the pressure at the outlet boundary to 25 Pa, and keep the fan's rotational speed at 155.534 rad/s.
 
@@ -336,7 +336,7 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 
 # %%
 # Add new design points
-#-------------------------
+# -------------------------
 # Create four new design points and assign outlet pressure and rotational speed to each one. 
 # The fan's rotational speed is set constant in this study.
 
@@ -382,26 +382,26 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 
 # %%
 # Save the current parametric project
-#--------------------------------------
+# --------------------------------------
 
 solver.settings.file.parametric_project.save()
 
 # %%
 # Update all design points
-#----------------------------
+# ----------------------------
 # Update all design points by running the CFD simulation for every design point.
 
 solver.settings.parametric_studies["axial_fan-Solve"].design_points.update_all()
 
 # %%
 # Save current parametric project
-#----------------------------------
+# ----------------------------------
 
 solver.settings.file.parametric_project.save()
 
 # %%
 # Export the design table
-#----------------------------
+# ----------------------------
 # Export the design point table to a CSV file.
 
 # parametric_table_save_path = os.path.join(working_directory, 'design_point_table_study.csv')
@@ -411,7 +411,7 @@ solver.settings.parametric_studies.export_design_table(
 
 # %%
 # Plotting fan performance curve
-#---------------------------------
+# ---------------------------------
 # Plot the computed total-to-static pressure rise versus the inlet volume flow rate.
 
 # Load the design point study results data from the CSV file
@@ -438,6 +438,7 @@ plt.show()
 #     Fan performance curve: Total-to-static pressure rise as a function of volumetric flow rate.
 
 # %%
+# Close Fluent
 # -----------------
 # Close Fluent session.
 
