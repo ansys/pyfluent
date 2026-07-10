@@ -8,11 +8,10 @@ The builder is a thin, discoverable wrapper over the Layer 1 registry:
 
 * ``builder.reductions.area_ave(expression=..., locations=...)`` returns an
   AST :class:`~._ast.Call` node ready to be composed further.
+* ``builder.reductions.area_ave.locations.allowed_values()`` queries the
+  attached settings tree for legal surface names.
 * ``builder.variable(V.TEMPERATURE)`` and ``builder.literal(1.5)`` build
   leaf nodes.
-* ``builder.locations([...])`` builds a :class:`~._ast.LocationList`.
-* ``builder.settings`` (optional) is a handle to the live solver settings
-  tree; when present, discovery helpers may consult it.
 """
 
 from __future__ import annotations
@@ -30,16 +29,15 @@ from ._ast import (
     Variable,
     coerce_location_list,
 )
+from ._discovery import Discovery
 from ._registry import REGISTRY, Signature
+from ._slots import SlotAccessor, make_slot
 
 
 class _GroupFacade:
-    """Attribute-style access to one group of registered signatures.
+    """Attribute-style access to one group of registered signatures."""
 
-    ``builder.reductions.area_ave(...)`` is dispatched here.
-    """
-
-    def __init__(self, group: str, discovery: "_Discovery"):
+    def __init__(self, group: str, discovery: Discovery):
         self._group = group
         self._sigs = REGISTRY.group(group)
         self._discovery = discovery
@@ -63,16 +61,36 @@ class _GroupFacade:
 
 
 class _SigInvoker:
-    """A callable wrapper for a :class:`Signature` that also exposes metadata."""
+    """Callable wrapper for a :class:`Signature`.
 
-    def __init__(self, sig: Signature, discovery: "_Discovery"):
+    Alongside invocation it exposes:
+
+    * ``inv.<param>`` -- a :class:`SlotAccessor` for per-slot discovery.
+    * ``inv.signature`` / ``inv.params()`` -- introspection.
+    """
+
+    def __init__(self, sig: Signature, discovery: Discovery):
         self._sig = sig
         self._discovery = discovery
+        self._slots: dict[str, SlotAccessor] = {
+            p.name: make_slot(p, discovery) for p in sig.params
+        }
 
     def __call__(self, *args, **kwargs):
         return self._sig.build(*args, **kwargs)
 
-    # -- introspection ---------------------------------------------------- #
+    def __getattr__(self, item: str) -> SlotAccessor:
+        slots = self.__dict__.get("_slots", {})
+        if item in slots:
+            return slots[item]
+        raise AttributeError(
+            f"{self._sig.py_name!r} has no parameter {item!r}. "
+            f"Available: {list(slots)}"
+        )
+
+    def __dir__(self):
+        return sorted(list(super().__dir__()) + list(self._slots))
+
     @property
     def signature(self) -> Signature:
         return self._sig
@@ -84,37 +102,6 @@ class _SigInvoker:
         params = ", ".join(f"{p.name}: {p.kind.value}" for p in self._sig.params)
         return (f"<{self._sig.py_name}({params}) "
                 f"-> {self._sig.returns.value} | fluent={self._sig.name!r}>")
-
-
-class _Discovery:
-    """Thin bridge to the live solver ``settings`` tree.
-
-    Kept deliberately small for the prototype; expand as we wire up
-    surface / variable / named-expression queries.
-    """
-
-    def __init__(self, settings: Any | None):
-        self.settings = settings
-
-    def has_settings(self) -> bool:
-        return self.settings is not None
-
-    def surface_names(self) -> list[str]:
-        """Return all surface / zone names available in the current session.
-
-        Returns an empty list when no settings handle is attached.
-        """
-        if not self.has_settings():
-            return []
-        # Best-effort: aggregate everything under setup.boundary_conditions.
-        try:
-            bcs = self.settings.setup.boundary_conditions
-        except AttributeError:
-            return []
-        names: list[str] = []
-        for child in getattr(bcs, "get_object_names", lambda: [])():
-            names.append(child)
-        return names
 
 
 # --------------------------------------------------------------------------- #
@@ -130,12 +117,12 @@ class ExpressionBuilder:
     settings : optional
         Root of a live solver settings tree.  When provided, discovery
         helpers (``allowed_values`` etc.) may query it.  When ``None``,
-        the builder still works fully; only discovery is disabled.
+        the builder still works fully; only settings-backed discovery
+        (surface names, in-scope named expressions) is disabled.
     """
 
     def __init__(self, settings: Any | None = None):
-        self._discovery = _Discovery(settings)
-        # One facade per registered group.
+        self._discovery = Discovery(settings)
         for group in REGISTRY.groups():
             setattr(self, group, _GroupFacade(group, self._discovery))
 
@@ -169,12 +156,29 @@ class ExpressionBuilder:
         """Build a :class:`LocationList` from an iterable of strings."""
         return coerce_location_list(names)
 
-    # -- convenience ------------------------------------------------------- #
+    # -- discovery / convenience ------------------------------------------ #
 
     @property
     def settings(self) -> Any | None:
         """The attached settings handle, or ``None``."""
         return self._discovery.settings
+
+    @property
+    def discovery(self) -> Discovery:
+        """The underlying :class:`Discovery` object (advanced use)."""
+        return self._discovery
+
+    def surface_names(self) -> list[str]:
+        """All surface / zone names visible via the attached settings tree."""
+        return self._discovery.surface_names()
+
+    def named_expression_names(self) -> list[str]:
+        """All in-scope named expressions visible via the attached settings tree."""
+        return self._discovery.named_expression_names()
+
+    def variables(self) -> list[VariableDescriptor]:
+        """Every :class:`VariableDescriptor` the naming strategy supports."""
+        return self._discovery.variable_descriptors()
 
     @staticmethod
     def render(expr: Expr) -> str:
