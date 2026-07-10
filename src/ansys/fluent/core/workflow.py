@@ -54,6 +54,17 @@ class CommandInstanceCreationError(RuntimeError):
         super().__init__(f"Could not create command instance for task {task_name}.")
 
 
+class TaskLookupError(LookupError):
+    """Raised when a task cannot be found by it's ID"""
+
+    def __init__(self, task_name):
+        """Initialise TaskLookupError."""
+        super().__init__(
+            f"Task ID not found for task '{task_name}'. "
+            "This may indicate the task was not properly initialized."
+        )
+
+
 def camel_to_snake_case(camel_case_str: str) -> str:
     """Convert camel case input string to snake case output string."""
     try:
@@ -341,10 +352,7 @@ class BaseTask:
                     type_, id_ = k.split(":")
                     if type_ == "TaskObject":
                         return id_
-        raise RuntimeError(
-            f"Task ID not found for task '{self.name()}'. "
-            "This may indicate the task was not properly initialized."
-        )
+        raise TaskLookupError(self.name())
 
     def get_idx(self) -> int:
         """Get the unique integer index of this task, as it is in the application.
