@@ -431,8 +431,7 @@ plt.show()
 #     Fan performance curve: Total-to-static pressure rise as a function of volumetric flow rate.
 
 # %%
-# Closing Fluent
-#-----------------
+# -----------------
 # Close Fluent session.
 
 solver.exit()
