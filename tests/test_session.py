@@ -24,6 +24,7 @@
 from concurrent import futures
 import os
 from pathlib import Path
+import platform
 import tempfile
 import time
 
@@ -837,6 +838,30 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
 
     assert Path(solver_info.working_directory).parts[-1] == tmp_folder
+
+
+def test_application_runtime(new_solver_session):
+    solver = new_solver_session
+
+    assert solver.application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
+    assert (
+        solver.application_runtime.get_product_version() == solver.get_fluent_version()
+    )
+    assert solver.application_runtime.get_precision() == pyfluent.Precision.DOUBLE
+    assert solver.application_runtime.get_dimension() == pyfluent.Dimension.THREE
+    assert solver.application_runtime.get_processor_count() > 0
+    assert isinstance(solver.application_runtime.get_ui_mode(), pyfluent.UIMode)
+    if platform.system() == "Windows":
+        assert isinstance(
+            solver.application_runtime.get_graphics_driver(),
+            pyfluent.FluentWindowsGraphicsDriver,
+        )
+    else:
+        assert isinstance(
+            solver.application_runtime.get_graphics_driver(),
+            pyfluent.FluentLinuxGraphicsDriver,
+        )
+    assert solver.application_runtime.get_gpu_config() is False
 
 
 @pytest.mark.standalone
