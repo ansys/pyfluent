@@ -209,3 +209,15 @@ class ExpressionBuilder:
     def render(expr: Expr) -> str:
         """Render an expression tree to its Fluent-side string form."""
         return expr.__fluent_expr__()
+
+    @staticmethod
+    def parse(text: str) -> Expr:
+        """Parse a Fluent expression string into an :class:`Expr` tree.
+
+        Round-trips with :meth:`render`::
+
+            b.render(b.parse(s)) == s   # for canonical builder output
+        """
+        # Local import to avoid a cycle at module load.
+        from ._parser import parse as _parse
+        return _parse(text)

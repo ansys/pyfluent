@@ -42,6 +42,7 @@ from ._ast import (  # noqa: F401
     ScalarExpr,
     VectorExpr,
 )
+from ._parser import parse  # noqa: F401
 from ._registry import Weight  # noqa: F401
 from .builder import ExpressionBuilder  # noqa: F401
 from .errors import ExpressionBuildError  # noqa: F401
