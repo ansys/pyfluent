@@ -337,7 +337,8 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 # %%
 # Add new design points
 # -------------------------
-# Create four new design points and assign outlet pressure and rotational speed to each one. 
+# Create four new design points and assign outlet pressure and rotational
+# speed to each one. 
 # The fan's rotational speed is set constant in this study.
 
 # Add four more design points to the parametric study
