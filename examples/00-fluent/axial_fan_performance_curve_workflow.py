@@ -67,7 +67,8 @@ solver = pyfluent.launch_fluent(
 # %%
 # Read mesh file and perform mesh check
 #---------------------------------------
-# Import the mesh and perform a mesh check, which lists the minimum and maximum x, y, and z values from the mesh in the default SI units of meters. The mesh check also reports a number of other mesh features that are checked.
+# Import the mesh and perform a mesh check, which lists the minimum and maximum x, y, and z values from the mesh in the default SI units of meters.
+# The mesh check also reports a number of other mesh features that are checked.
 
 solver.settings.file.read_mesh(file_name=import_file_name)
 solver.settings.mesh.check()
@@ -75,7 +76,8 @@ solver.settings.mesh.check()
 # %%
 # Creat input parameters
 #------------------------
-# Create named expressions for the pressure outlet boundary condition and for the fan rotational speed, and set them as input parameters. Pressure outlet value is set to 0.0 Pa (atmospheric gauge pressure) and rotational speed is set to 155.534 rad/s.
+# Create named expressions for the pressure outlet boundary condition and for the fan rotational speed, and set them as input parameters.
+# Pressure outlet value is set to 0.0 Pa (atmospheric gauge pressure) and rotational speed is set to 155.534 rad/s.
 
 # Create a named expression to parameterize the pressure outlet value
 solver.settings.setup.named_expressions.create(name="pressure_outlet")
@@ -107,7 +109,8 @@ solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 
 # %%
 # Models: Turbulance/Viscous Model
 #----------------------------------
-# Set the turbulance/viscous model to SST k-omega model. Activate curvature correction, production Kato-Launder, and production limiter options.
+# Set the turbulance/viscous model to SST k-omega model. 
+# Activate curvature correction, production Kato-Launder, and production limiter options.
 
 solver.settings.setup.models.viscous.model = "k-omega"
 solver.settings.setup.models.viscous.k_omega_model = "sst"
@@ -118,7 +121,9 @@ solver.settings.setup.models.viscous.options.production_limiter.enabled = "True"
 # %%
 # Cell Zones
 #-----------
-# Activate the Multiple Reference Frame (MRF) model for the <code>'rotating-fan'</code> zone, specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter. Keep the default setting for the remaining cell zones.
+# Activate the Multiple Reference Frame (MRF) model for the <code>'rotating-fan'</code> zone,
+# specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter. 
+# Keep the default setting for the remaining cell zones.
 
 # Activate MRF model for the 'rotating fan' zone
 solver.settings.setup.cell_zone_conditions.fluid[
@@ -318,7 +323,8 @@ solver.settings.parametric_studies.initialize(project_filename="project_axial_fa
 # %%
 # Access and modify input parameters
 #------------------------------------
-# Access and modify the input parameters of the base design point. Set the pressure at the outlet boundary to 25 Pa, and keep the fan's rotational speed at 155.534 rad/s.
+# Access and modify the input parameters of the base design point. 
+# Set the pressure at the outlet boundary to 25 Pa, and keep the fan's rotational speed at 155.534 rad/s.
 
 # Update the Base Design Point
 solver.settings.parametric_studies["axial_fan-Solve"].design_points[
@@ -331,7 +337,8 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 # %%
 # Add new design points
 #-------------------------
-# Create four new design points and assign outlet pressure and rotational speed to each one. The fan's rotational speed is set constant in this study.
+# Create four new design points and assign outlet pressure and rotational speed to each one. 
+# The fan's rotational speed is set constant in this study.
 
 # Add four more design points to the parametric study
 solver.settings.parametric_studies["axial_fan-Solve"].design_points.create(
