@@ -2609,7 +2609,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                     k,
                 )
 
-        allowed_values = info.get("allowed_values", [])
+        allowed_values = info.get("allowed-values", [])
         if allowed_values:
             for allowed_value in allowed_values:
                 setattr(
