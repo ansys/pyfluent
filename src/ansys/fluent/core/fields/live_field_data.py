@@ -83,7 +83,9 @@ class _FieldInfo(BaseFieldInfo):
     def _get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
-        return self._field_data.get_scalar_field_range(field, node_value, surface_ids)
+        return self._field_data.get_scalar_field_range(
+            _to_field_name_str(field), node_value, surface_ids
+        )
 
     def _get_scalar_fields_info(self) -> dict[str, dict]:
         return self._field_data.get_scalar_fields_info()

@@ -58,7 +58,7 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from ansys.fluent.core.field_data_interfaces import SurfaceDataType
+from ansys.fluent.core.field_data_interfaces import SurfaceDataType, _to_field_name_str
 from ansys.fluent.core.services.abstract_field_data import AbstractFieldData
 
 
@@ -91,7 +91,9 @@ class FieldDataBase(AbstractFieldData):
         -------
         List[float]
         """
-        return self._service.get_scalar_field_range(field, node_value, surface_ids)
+        return self._service.get_scalar_field_range(
+            _to_field_name_str(field), node_value, surface_ids
+        )
 
     def get_scalar_fields_info(self) -> dict[str, dict]:
         """Get fields information (field name, domain, and section).
@@ -158,7 +160,11 @@ class FieldDataBase(AbstractFieldData):
         overset_mesh: bool | None = False,
     ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
-        return self._service._get_surface_data(data_types, surfaces, overset_mesh)
+        return self._service._get_surface_data(
+            [dt.value if isinstance(dt, SurfaceDataType) else dt for dt in data_types],
+            surfaces,
+            overset_mesh,
+        )
 
     def _add_surfaces_request(
         self,
@@ -168,7 +174,11 @@ class FieldDataBase(AbstractFieldData):
     ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         return self._service._add_surfaces_request(
-            data_types=data_types, surfaces=surfaces, overset_mesh=overset_mesh
+            data_types=[
+                dt.value if isinstance(dt, SurfaceDataType) else dt for dt in data_types
+            ],
+            surfaces=surfaces,
+            overset_mesh=overset_mesh,
         )
 
     def _get_scalar_field_data(
