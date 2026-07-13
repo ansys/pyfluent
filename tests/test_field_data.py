@@ -39,7 +39,7 @@ from ansys.fluent.core import (
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.field_data_interfaces import (
-    FieldUnavailable,
+    FieldUnavailableError,
     _Fields,
 )
 from ansys.fluent.core.fields.live_field_data import (
@@ -495,7 +495,7 @@ def test_field_data_errors(new_solver_session) -> None:
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
-    with pytest.raises(FieldUnavailable):
+    with pytest.raises(FieldUnavailableError):
         solver.fields.field_data.get_field_data(
             ScalarFieldDataRequest(field_name="density", surfaces=[0])
         )
