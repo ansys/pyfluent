@@ -145,3 +145,14 @@ class AbstractApplicationRuntime(ABC):
     def set_working_directory(self, path: Any) -> None:
         """Change the client cortex working directory."""
         pass
+
+    @abstractmethod
+    def set_idle_timeout(self, timeout: int) -> None:
+        """Set the Fluent session idle timeout.
+
+        Parameters
+        ----------
+        timeout : int
+            Idle timeout duration in seconds. Pass 0 to disable the idle timeout.
+        """
+        pass

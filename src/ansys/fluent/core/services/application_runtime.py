@@ -166,6 +166,10 @@ class ApplicationRuntime(AbstractApplicationRuntime):
         """Change the client cortex working directory."""
         self.service.set_working_directory(path=path)
 
+    def set_idle_timeout(self, timeout: int) -> None:
+        """Set the Fluent session idle timeout."""
+        self.service.set_idle_timeout(timeout=timeout)
+
 
 class ApplicationRuntimeV261V252:
     """Application runtime for Fluent 26R1 and 25R2.
@@ -337,6 +341,10 @@ class ApplicationRuntimeV261V252:
     def set_working_directory(self, path: PathType) -> None:
         """Change the client cortex working directory."""
         self.service.set_working_directory(path=path)
+
+    def set_idle_timeout(self, timeout: int) -> None:
+        """Set the Fluent session idle timeout."""
+        self.scheme.eval(f"(set-session-idle-timeout {timeout/60})")
 
     def is_wildcard(self, input: str | None = None) -> bool:
         """Return whether *input* contains a wildcard pattern."""
@@ -639,3 +647,7 @@ class ApplicationRuntimeOld:
     def set_working_directory(self, path: PathType) -> None:
         """Change the client cortex working directory."""
         self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
+
+    def set_idle_timeout(self, timeout: int) -> None:
+        """Set the Fluent session idle timeout."""
+        self.scheme.eval(f"(set-session-idle-timeout {timeout/60})")
