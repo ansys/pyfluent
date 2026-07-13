@@ -534,7 +534,7 @@ class SlurmLauncher:
         certificates_folder : str, optional
             Path to the folder containing TLS certificates for Fluent's gRPC server. When launching a remote Fluent
             instance you must set **either** this argument (or the ``ANSYS_GRPC_CERTIFICATES`` environment variable)
-            **or** set ``insecure_mode=True``.
+            **or** set ``insecure_mode=True`` (not recommended).
             ``certificates_folder`` and ``insecure_mode`` are mutually exclusive.
         insecure_mode : bool, optional
             If True, Fluent's gRPC server will be started in insecure mode without TLS. Provide only this when
