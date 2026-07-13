@@ -33,7 +33,7 @@ from ansys.fluent.core.logger import *
 
 # isort: on
 
-from ansys.fluent.core.field_data_interfaces import *
+from ansys.fluent.core.fields.field_data_interfaces import *
 from ansys.fluent.core.get_build_details import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *

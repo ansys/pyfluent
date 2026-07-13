@@ -58,7 +58,10 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from ansys.fluent.core.field_data_interfaces import SurfaceDataType, _to_field_name_str
+from ansys.fluent.core.fields.field_data_interfaces import (
+    SurfaceDataType,
+    _to_field_name_str,
+)
 from ansys.fluent.core.services.abstract_field_data import AbstractFieldData
 
 

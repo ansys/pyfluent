@@ -30,7 +30,7 @@ import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
 from ansys.fluent.core import PyFluentDeprecationWarning
-from ansys.fluent.core.field_data_interfaces import (
+from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldInfo,
     FieldBatch,
     FieldDataSource,
