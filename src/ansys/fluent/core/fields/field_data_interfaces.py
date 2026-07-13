@@ -23,6 +23,8 @@
 
 """Common interfaces for field data."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 import dataclasses
@@ -30,14 +32,12 @@ from enum import Enum
 from typing import TYPE_CHECKING, Iterable
 import warnings
 
-import numpy as np
-import numpy.typing as npt
+if TYPE_CHECKING:
+    import numpy as np
+    import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataNamingStrategy as naming_strategy,
-)
 from ansys.units.variable_descriptor import (
     ScalarVariableDescriptor,
     VariableDescriptor,
@@ -51,9 +51,6 @@ __all__ = (
     "SurfaceFieldDataRequest",
     "VectorFieldDataRequest",
 )
-
-_naming_strategy_instance = naming_strategy()
-_to_field_name_str = _naming_strategy_instance.to_string
 
 
 class SurfaceDataType(Enum):
@@ -513,6 +510,12 @@ class _Fields:
         field_name : VariableDescriptor | str
             Field name to check. Can be a VariableDescriptor or a string.
         """
+        from ansys.fluent.core.variable_strategies import (
+            FluentFieldDataNamingStrategy as naming_strategy,
+        )
+
+        _naming_strategy_instance = naming_strategy()
+        _to_field_name_str = _naming_strategy_instance.to_string
         return _to_field_name_str(field_name) in self._available_field_names()
 
     def allowed_values(self):
@@ -529,6 +532,11 @@ class _Fields:
             Fields without a corresponding VariableDescriptor are excluded,
             and a warning is issued listing them.
         """
+        from ansys.fluent.core.variable_strategies import (
+            FluentFieldDataNamingStrategy as naming_strategy,
+        )
+
+        _naming_strategy_instance = naming_strategy()
         descriptors = []
         unmatched = []
         for field_name in self._available_field_names():
@@ -608,7 +616,6 @@ class _AllowedFieldNames(_AllowedNames):
 
     def valid_name(self, field_name):
         """Returns valid names."""
-        field_name = _to_field_name_str(field_name)
         if validate_inputs:
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):

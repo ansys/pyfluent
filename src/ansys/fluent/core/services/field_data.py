@@ -60,7 +60,6 @@ import numpy.typing as npt
 
 from ansys.fluent.core.fields.field_data_interfaces import (
     SurfaceDataType,
-    _to_field_name_str,
 )
 from ansys.fluent.core.services.abstract_field_data import AbstractFieldData
 
@@ -94,9 +93,7 @@ class FieldDataBase(AbstractFieldData):
         -------
         List[float]
         """
-        return self._service.get_scalar_field_range(
-            _to_field_name_str(field), node_value, surface_ids
-        )
+        return self._service.get_scalar_field_range(field, node_value, surface_ids)
 
     def get_scalar_fields_info(self) -> dict[str, dict]:
         """Get fields information (field name, domain, and section).

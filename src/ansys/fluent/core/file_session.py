@@ -1106,7 +1106,7 @@ class _FileFieldInfo(BaseFieldInfo):
             surface_ids = self._file_session._case_file.get_mesh().get_surface_ids()
         for surface_id in surface_ids:
             data = self._file_session._data_file.get_face_scalar_field_data(
-                "phase-1", field, surface_id
+                "phase-1", _to_scalar_field_name(field), surface_id
             )
             if len(data) == 0:
                 continue
