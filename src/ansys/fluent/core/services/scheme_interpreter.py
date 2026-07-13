@@ -23,7 +23,7 @@
 """High-level scheme interpreter wrappers.
 
 This module owns the business-logic layer on top of the SchemeInterpreter gRPC
-service.  The grpc service implementation lives in:
+service. The grpc service implementation lives in:
 
 * ``ansys.fluent.core._grpc_services.scheme_interpreter_service`` (v1 proto API)
 * ``ansys.fluent.core._grpc_services.scheme_interpreter_service_v0`` (v0 proto API)
