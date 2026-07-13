@@ -452,10 +452,7 @@ class _FieldDataConstants:
         field_data_pb2.FieldType.DOUBLE_ARRAY: np.float64,
     }
     np_data_type_to_proto_field_type = {
-        np.int32: field_data_pb2.FieldType.INT_ARRAY,
-        np.int64: field_data_pb2.FieldType.LONG_ARRAY,
-        np.float32: field_data_pb2.FieldType.FLOAT_ARRAY,
-        np.float64: field_data_pb2.FieldType.DOUBLE_ARRAY,
+        v: k for k, v in proto_field_type_to_np_data_type.items()
     }
     chunk_size = 256 * 1024
     bytes_stream = True
