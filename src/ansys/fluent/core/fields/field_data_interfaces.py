@@ -36,13 +36,11 @@ if TYPE_CHECKING:
     import numpy as np
     import numpy.typing as npt
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.units.variable_descriptor import (
-    ScalarVariableDescriptor,
-    VariableDescriptor,
-    VectorVariableDescriptor,
-)
+    from ansys.units.variable_descriptor import (
+        ScalarVariableDescriptor,
+        VariableDescriptor,
+        VectorVariableDescriptor,
+    )
 
 __all__ = (
     "PathlinesFieldDataRequest",
@@ -51,6 +49,26 @@ __all__ = (
     "SurfaceFieldDataRequest",
     "VectorFieldDataRequest",
 )
+
+
+def _validate_scalar_variable_descriptor(
+    field_name: "ScalarVariableDescriptor",
+) -> None:
+    """Validate that the provided field_name is a ScalarVariableDescriptor."""
+    from ansys.units.variable_descriptor import ScalarVariableDescriptor
+
+    if not isinstance(field_name, ScalarVariableDescriptor):
+        raise TypeError("field_name must be a `ScalarVariableDescriptor`.")
+
+
+def _validate_vector_variable_descriptor(
+    field_name: "VectorVariableDescriptor",
+) -> None:
+    """Validate that the provided field_name is a VectorVariableDescriptor."""
+    from ansys.units.variable_descriptor import VectorVariableDescriptor
+
+    if not isinstance(field_name, VectorVariableDescriptor):
+        raise TypeError("field_name must be a `VectorVariableDescriptor`.")
 
 
 class SurfaceDataType(Enum):
@@ -108,35 +126,31 @@ class SurfaceFieldDataRequest(BaseDataRequest):
 class ScalarFieldDataRequest(BaseDataRequest):
     """Container storing parameters for scalar field data request."""
 
-    field_name: str | ScalarVariableDescriptor
+    field_name: str | "ScalarVariableDescriptor"
     node_value: bool | None = True
     boundary_value: bool | None = True
 
     def _validate_inputs(self) -> None:
-        if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
-            raise TypeError(
-                "field_name must be a string or `ScalarVariableDescriptor`."
-            )
+        if not isinstance(self.field_name, (str)):
+            _validate_scalar_variable_descriptor(self.field_name)
 
 
 @dataclasses.dataclass(frozen=True)
 class VectorFieldDataRequest(BaseDataRequest):
     """Container storing parameters for vector field data request."""
 
-    field_name: str | VectorVariableDescriptor
+    field_name: str | "VectorVariableDescriptor"
 
     def _validate_inputs(self) -> None:
-        if not isinstance(self.field_name, (str, VectorVariableDescriptor)):
-            raise TypeError(
-                "field_name must be a string or `VectorVariableDescriptor`."
-            )
+        if not isinstance(self.field_name, (str)):
+            _validate_vector_variable_descriptor(self.field_name)
 
 
 @dataclasses.dataclass(frozen=True)
 class PathlinesFieldDataRequest(BaseDataRequest):
     """Container storing parameters for path-lines field data request."""
 
-    field_name: str | ScalarVariableDescriptor
+    field_name: str | "ScalarVariableDescriptor"
     additional_field_name: str = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
@@ -152,10 +166,8 @@ class PathlinesFieldDataRequest(BaseDataRequest):
     flatten_connectivity: bool = False
 
     def _validate_inputs(self) -> None:
-        if not isinstance(self.field_name, (str, ScalarVariableDescriptor)):
-            raise TypeError(
-                "field_name must be a string or `ScalarVariableDescriptor`."
-            )
+        if not isinstance(self.field_name, (str)):
+            _validate_scalar_variable_descriptor(self.field_name)
 
 
 def _set_dataclass_field_docs(cls: type, field_docs: dict[str, str]) -> None:
@@ -245,7 +257,7 @@ class BaseFieldInfo(ABC):
     @abstractmethod
     def _get_scalar_field_range(
         self,
-        field: str | ScalarVariableDescriptor,
+        field: str | "ScalarVariableDescriptor",
         node_value: bool = False,
         surface_ids: list[int] | None = None,
     ) -> list[float]:
@@ -267,8 +279,8 @@ class BaseFieldInfo(ABC):
         TypeError
             If `field` is not a scalar.
         """
-        if not isinstance(field, (str, ScalarVariableDescriptor)):
-            raise TypeError("field must be a string or `ScalarVariableDescriptor`.")
+        if not isinstance(field, (str)):
+            _validate_scalar_variable_descriptor(field)
 
     @abstractmethod
     def _get_scalar_fields_info(self) -> dict[str, dict]:
@@ -502,7 +514,7 @@ class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
 
-    def is_active(self, field_name: VariableDescriptor | str) -> bool:
+    def is_active(self, field_name: "VariableDescriptor" | str) -> bool:
         """Check whether a field is active in the given context.
 
         Parameters
@@ -522,7 +534,7 @@ class _Fields:
         """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
 
-    def allowed_variables(self) -> list[VariableDescriptor]:
+    def allowed_variables(self) -> list["VariableDescriptor"]:
         """Return allowed field names as VariableDescriptor objects.
 
         Returns
@@ -615,17 +627,27 @@ class _AllowedFieldNames(_AllowedNames):
         self._is_data_valid = is_data_valid
 
     def valid_name(self, field_name):
-        """Returns valid names."""
+        """Returns valid names.
+
+        Raises
+        ------
+        DisallowedValuesError
+            If field name is invalid.
+        FieldUnavailableError
+            If field name is valid but not currently available.
+        """
+        from ansys.fluent.core.exceptions import DisallowedValuesError
+
         if validate_inputs:
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):
-                raise self._field_name_error(
+                raise DisallowedValuesError(
                     context="field",
                     name=field_name,
                     allowed_values=list(names(respect_data_valid=False).keys()),
                 )
             if not names.is_valid(field_name, respect_data_valid=True):
-                raise self._field_unavailable_error(
+                raise FieldUnavailableError(
                     f"{field_name} is not a currently available field."
                 )
         return field_name
@@ -645,6 +667,8 @@ class _AllowedSurfaceNames(_AllowedNames):
         DisallowedValuesError
             If surface name is invalid.
         """
+        from ansys.fluent.core.exceptions import DisallowedValuesError
+
         try:
             valid_names = self()  # Fetch once, upfront
         except Exception as e:
@@ -667,15 +691,13 @@ class _AllowedSurfaceIDs(_AllowedNames):
             pass
 
 
-class FieldUnavailable(RuntimeError):
+class FieldUnavailableError(RuntimeError):
     """Raised when field is unavailable."""
 
     pass
 
 
 class _AllowedScalarFieldNames(_AllowedFieldNames):
-    _field_name_error = DisallowedValuesError
-    _field_unavailable_error = FieldUnavailable
 
     def __call__(self, respect_data_valid: bool = True) -> list[str]:
         field_dict = (
@@ -693,8 +715,6 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
 
 
 class _AllowedVectorFieldNames(_AllowedFieldNames):
-    _field_name_error = DisallowedValuesError
-    _field_unavailable_error = FieldUnavailable
 
     def __call__(self, respect_data_valid: bool = True) -> list[str]:
         return (
@@ -813,6 +833,10 @@ class _ReturnFieldData:
                             surface_ids[count]
                         ][SurfaceDataType.FacesConnectivity.value]
                     else:
+                        from ansys.fluent.core.pyfluent_warnings import (
+                            PyFluentDeprecationWarning,
+                        )
+
                         warnings.warn(
                             "Structured face connectivity output is deprecated and will be replaced by the flat format "
                             "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
@@ -862,6 +886,10 @@ class _ReturnFieldData:
             if flatten_connectivity:
                 lines_data = pathlines_data[surface_ids[count]]["lines"]
             else:
+                from ansys.fluent.core.pyfluent_warnings import (
+                    PyFluentDeprecationWarning,
+                )
+
                 warnings.warn(
                     "Structured face connectivity output is deprecated and will be replaced by the flat format "
                     "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
