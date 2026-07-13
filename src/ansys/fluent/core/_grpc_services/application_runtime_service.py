@@ -270,3 +270,15 @@ class ApplicationRuntimeService(ServiceProtocol):
         request = application_runtime_pb2.SetWorkingDirectoryRequest()
         request.path = os.fspath(path)
         self._stub.SetWorkingDirectory(request, metadata=self._metadata)
+
+    def set_idle_timeout(self, timeout: int) -> None:
+        """Set the Fluent session idle timeout.
+
+        Parameters
+        ----------
+        timeout : int
+            Idle timeout duration in seconds. Pass 0 to disable the idle timeout.
+        """
+        request = application_runtime_pb2.SetIdleTimeoutRequest()
+        request.timeout.seconds = timeout
+        self._stub.SetIdleTimeout(request, metadata=self._metadata)
