@@ -117,7 +117,7 @@ viscous.k_omega_model = "sst"
 
 solver.settings.setup.models.viscous.options.curvature_correction.enabled = True
 solver.settings.setup.models.viscous.options.production_kato_launder_enabled = True
-solver.settings.setup.models.viscous.options.production_limiter.enabled = "True"
+solver.settings.setup.models.viscous.options.production_limiter.enabled = True
 
 # %%
 # Cell Zones
