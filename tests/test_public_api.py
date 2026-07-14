@@ -95,7 +95,6 @@ def test_ansys_fluent_core_public_api():
         "docker",
         "examples",
         "exceptions",
-        "field_data_interfaces",
         "filereader",
         "fluent_connection",
         "generated",

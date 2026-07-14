@@ -35,36 +35,15 @@ import weakref
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.fields.field_data_streaming import FieldDataStreaming
+from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.services import (
-    BatchOpsService,
-    DatamodelService_SE,
-    DatamodelService_SE_V0,
-    DatamodelService_TUI,
-    DatamodelService_TUI_V0,
-    DeprecatedFieldData,
-    DeprecatedFieldDataV0,
-    EventsService,
-    EventsServiceV0,
-    FieldDataService,
-    FieldDataServiceV0,
-    FieldDataStreamingV0,
-    LiveFieldData,
-    LiveFieldDataV0,
-    SolutionVariableData,
-    SolutionVariableService,
-    TranscriptService,
-    TranscriptServiceV0,
-    ZoneInfo,
-    _FieldInfo,
-    _FieldInfoV0,
-    service_creator,
-)
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
@@ -76,9 +55,6 @@ from ansys.fluent.core.streaming_services.events_streaming import (
     EventsManager as EventsManagerV0,
 )
 from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
-from ansys.fluent.core.streaming_services.field_data_streaming import (
-    FieldDataStreaming,
-)
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptV0,
 )
@@ -113,17 +89,6 @@ def _parse_server_info_file(file_name: str):
         ip = ip_and_port[0]
         port = int(ip_and_port[1])
         return ip, port, password
-
-
-class _IsDataValid:
-    def __init__(self, scheme_eval):
-        self._scheme_eval = scheme_eval
-
-    def __bool__(self):
-        return self()
-
-    def __call__(self):
-        return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
 class BaseSession:
@@ -285,17 +250,10 @@ class BaseSession:
         else:
             self.events = None
 
-        if fluent_connection._server_supports_v1:
-            self._field_data_service = self._fluent_connection.create_grpc_service(
-                FieldDataService, self._error_state
-            )
-        else:
-            self._field_data_service = self._fluent_connection.create_grpc_service(
-                FieldDataServiceV0, self._error_state
-            )
-
         self.fields = Fields(
-            self, get_zones_info, fluent_connection._server_supports_v1
+            _session=self,
+            get_zones_info=get_zones_info,
+            fluent_connection=fluent_connection,
         )
 
         self._settings_service = fluent_connection._service_factory.settings
@@ -336,26 +294,6 @@ class BaseSession:
     def health_check(self):
         """Provides access to Health Check service."""
         return self._health_check
-
-    @property
-    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
-    def field_info(self):
-        """Provides access to Fluent field information."""
-        return self.fields.field_info
-
-    @property
-    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_data``.")
-    def field_data(self):
-        """Fluent field data on surfaces."""
-        return self.fields.field_data
-
-    @property
-    @deprecated(
-        version="0.20.dev9", reason="Use ``session.fields.field_data_streaming``."
-    )
-    def field_data_streaming(self):
-        """Field gRPC streaming service of Fluent."""
-        return self.fields.field_data_streaming
 
     @property
     def id(self) -> str:
@@ -571,9 +509,6 @@ class BaseSession:
                 or name in {"is_active", "wait_process_finished"}
             ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
-            "field_data",
-            "field_info",
-            "field_data_streaming",
             "start_journal",
             "stop_journal",
             "scheme_eval",
@@ -595,53 +530,16 @@ class Fields:
     def __init__(
         self,
         _session: BaseSession,
+        fluent_connection: FluentConnection,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
-        server_supports_v1: bool = False,
     ):
         """Initialize Fields."""
-        if server_supports_v1:
-            self._field_info = service_creator(
-                "field_info", supports_v1=server_supports_v1
-            ).create(_session._field_data_service)
-            self.field_data = service_creator(
-                "field_data", supports_v1=server_supports_v1
-            ).create(
-                _session._field_data_service,
-                self._field_info,
-                _session.scheme,
-                get_zones_info,
-            )
-        else:
-            self._is_solution_data_valid = (
-                _session.application_runtime.is_solution_data_available
-            )
-            self._field_info = service_creator(
-                "field_info", supports_v1=server_supports_v1
-            ).create(
-                _session._field_data_service,
-                self._is_solution_data_valid,
-            )
-            self.field_data = service_creator(
-                "field_data", supports_v1=server_supports_v1
-            ).create(
-                _session._field_data_service,
-                self._field_info,
-                self._is_solution_data_valid,
-                _session.scheme,
-                get_zones_info,
-            )
-        self.field_data_streaming = service_creator(
-            "field_data_streaming", supports_v1=server_supports_v1
-        ).create(_session._fluent_connection._id, _session._field_data_service)
-        self.field_data_old = service_creator("field_data_old").create(
-            _session._field_data_service,
-            self._field_info,
-            self.field_data.is_data_valid,
-            _session.scheme,
+        field_data = fluent_connection._service_factory.field_data
+        self._field_info = _FieldInfo(field_data)
+        self.field_data = LiveFieldData(
+            field_data, self._field_info, _session.scheme, get_zones_info
         )
-
-    @property
-    @deprecated(version="0.34.0", reason="Use relevant ``field_data`` methods..")
-    def field_info(self):
-        """Field Information."""
-        return self._field_info
+        field_data_streaming = fluent_connection._service_factory.field_data_streaming
+        self.field_data_streaming = FieldDataStreaming(
+            _session._fluent_connection._id, field_data_streaming
+        )

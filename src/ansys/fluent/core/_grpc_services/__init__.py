@@ -29,11 +29,16 @@ from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
     ProtoReflectionDescriptorDatabase,
 )
 
+from ansys.fluent.core._grpc_services._chunk_parser import ChunkParser, ChunkParserV0
 from ansys.fluent.core._grpc_services.application_runtime_service import (
     ApplicationRuntimeService,
 )
 from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
+)
+from ansys.fluent.core._grpc_services.field_data_service import FieldDataService
+from ansys.fluent.core._grpc_services.field_data_service_v0 import (
+    FieldDataService as FieldDataServiceV0,
 )
 from ansys.fluent.core._grpc_services.health_check_service import HealthCheckService
 from ansys.fluent.core._grpc_services.health_check_service_v0 import (
@@ -173,3 +178,17 @@ class GRPCServiceFactory:
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(SettingsServiceV0)
         )
+
+    @cached_property
+    def field_data(self) -> FieldDataService | FieldDataServiceV0:
+        """gRPC stub for field data operations."""
+        return (
+            self._get_instantiated_grpc_service(FieldDataService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(FieldDataServiceV0)
+        )
+
+    @cached_property
+    def _chunk_parser(self) -> ChunkParser | ChunkParserV0:
+        """Chunk parser for field data operations."""
+        return ChunkParser if self._proto_version == "v1" else ChunkParserV0
