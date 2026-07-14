@@ -67,8 +67,7 @@ solver = pyfluent.launch_fluent(
 # %%
 # Read mesh file and perform mesh check
 # ---------------------------------------
-# Import the mesh and perform a mesh check, which lists the minimum and maximum x, y, and z values from the mesh in the default SI units of meters.
-# The mesh check also reports a number of other mesh features that are checked.
+# Import the mesh and perform a mesh check.
 
 solver.settings.file.read_mesh(file_name=import_file_name)
 solver.settings.mesh.check()
