@@ -159,7 +159,9 @@ boundary_conditions = solver.settings.setup.boundary_conditions
 boundary_conditions.set_zone_type(new_type = 'pressure-inlet', zone_list = ['inlet'])
 inlet = solver.settings.setup.boundary_conditions.pressure_inlet["inlet"]
 inlet.momentum.gauge_total_pressure.value = 0
-inlet.turbulence.turbulence_specification = 'Intensity and Viscosity Ratio'
+inlet.turbulence.turbulence_specification = (
+    'Intensity and Viscosity Ratio'
+)
 inlet.turbulence.turbulent_intensity = 0.05
 inlet.turbulence.turbulent_viscosity_ratio = 10
 
@@ -167,7 +169,9 @@ inlet.turbulence.turbulent_viscosity_ratio = 10
 boundary_conditions.set_zone_type(new_type = 'pressure-outlet', zone_list = ['pressure-outlet'])
 pressure_outlet = solver.settings.setup.boundary_conditions.pressure_outlet["pressure-outlet"]
 pressure_outlet.momentum.gauge_pressure.value = 'pressure_outlet'
-pressure_outlet.turbulence.turbulence_specification = 'Intensity and Viscosity Ratio'
+pressure_outlet.turbulence.turbulence_specification = (
+    'Intensity and Viscosity Ratio'
+)
 pressure_outlet.turbulence.turbulent_intensity = 0.05
 pressure_outlet.turbulence.turbulent_viscosity_ratio = 10
 
