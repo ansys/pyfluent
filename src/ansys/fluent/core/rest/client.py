@@ -304,11 +304,6 @@ class FluentRestClient:
     # Commands / queries
     # ------------------------------------------------------------------
 
-    def _execute(self, path: str, name: str, **kwds) -> Any:
-        """POST a command/query endpoint and return the raw response payload."""
-        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(name, safe='')}"
-        return self._strategy.request("POST", endpoint, body=kwds)
-
     def execute_cmd(self, path: str, command: str, force: bool = True, **kwds) -> Any:
         """Execute *command* at *path*; appends ``?force=true`` when requested."""
         endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(command, safe='')}"
@@ -318,7 +313,8 @@ class FluentRestClient:
 
     def execute_query(self, path: str, query: str, **kwds) -> Any:
         """Execute *query* at *path* (POST {path}/{query})."""
-        return self._execute(path, query, **kwds)
+        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(query, safe='')}"
+        return self._strategy.request("POST", endpoint, body=kwds)
 
 
 # ------------------------------------------------------------------
