@@ -225,6 +225,18 @@ class ObjectModelBase:
         """Delete command arguments."""
         return self._service.delete_command_arguments(rules, path, command, commandid)
 
+    def register_command_arguments(
+        self, rules: str, path: str, command: str, commandid: str
+    ) -> None:
+        """Register command arguments for explicit cleanup during shutdown."""
+        return self._service.register_command_arguments(rules, path, command, commandid)
+
+    def release_command_arguments(
+        self, rules: str, path: str, command: str, commandid: str
+    ) -> None:
+        """Release command arguments when their Python wrapper is deleted."""
+        return self._service.release_command_arguments(rules, path, command, commandid)
+
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
         return self._service.get_static_info(rules)
@@ -390,9 +402,9 @@ class PyStateContainer(PyCallableStateObject):
 
     def get_state(self) -> Any:
         """Get state."""
-        if self.service.cache is not None:
-            state = self.service.cache.get_state(self.rules, self, NameKey.DISPLAY)
-            if self.service.cache.is_unassigned(state):
+        if self.service._cache is not None:
+            state = self.service._cache.get_state(self.rules, self, NameKey.DISPLAY)
+            if self.service._cache.is_unassigned(state):
                 state = self.get_remote_state()
         else:
             state = self.get_remote_state()
@@ -452,11 +464,17 @@ class PyStateContainer(PyCallableStateObject):
         cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
-            self.add_on_attribute_changed(
-                attrib,
-                functools.partial(dict.__setitem__, self._cached_attrs, attrib),
-            )
-            self._cached_attrs[attrib] = cached_val
+            try:
+                self.add_on_attribute_changed(
+                    attrib,
+                    functools.partial(dict.__setitem__, self._cached_attrs, attrib),
+                )
+                self._cached_attrs[attrib] = cached_val
+            except Exception as ex:
+                # will fail for paths/attributes
+                # that the server does not support event subscriptions on (e.g.
+                # isReadOnly at the workflow datamodel root)
+                logger.warning(ex)
         return cached_val
 
     def get_attr(self, attrib: str) -> Any:

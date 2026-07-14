@@ -33,6 +33,10 @@ from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_value_to_variant,
+    _convert_variant_to_value,
+)
 from ansys.fluent.core.services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
@@ -44,8 +48,6 @@ from ansys.fluent.core.services.object_model import (
     PyNumerical,
     PyQuery,
     ReadOnlyObjectError,
-    _convert_value_to_variant,
-    _convert_variant_to_value,
     convert_path_to_se_path,
 )
 from ansys.fluent.core.streaming_services.datamodel_streaming import (
