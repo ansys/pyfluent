@@ -27,10 +27,6 @@ import numpy as np
 
 from ansys.api.fluent.v1 import field_data_pb2, field_data_pb2_grpc
 from ansys.fluent.core._grpc_services.streaming_service import StreamingService
-from ansys.fluent.core.field_data_interfaces import (
-    SurfaceDataType,
-    _to_field_name_str,
-)
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -89,7 +85,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         if not surface_ids:
             surface_ids = []
         request = field_data_pb2.GetRangeRequest()
-        request.field_name = _to_field_name_str(field)
+        request.field_name = field
         request.node_value = node_value
         request.surface_ids.extend(
             [field_data_pb2.SurfaceId(id=int(id)) for id in surface_ids]
@@ -191,7 +187,7 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         return self.get_fields(fields_request)
 
     def _add_surfaces_request(
-        self, data_types, surfaces: list[int | str], overset_mesh: bool
+        self, data_types: list[str], surfaces: list[int | str], overset_mesh: bool
     ):
         fetched_data = _FetchFieldData()
         self._batched_fields_request.surface_requests.extend(
@@ -202,7 +198,9 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             )
         )
 
-    def _get_surface_data(self, data_types, surface_ids: list[int], overset_mesh: bool):
+    def _get_surface_data(
+        self, data_types: list[str], surface_ids: list[int], overset_mesh: bool
+    ):
         fields_request = get_fields_request()
         fetched_data = _FetchFieldData()
         fields_request.surface_requests.extend(
@@ -390,7 +388,7 @@ class _FetchFieldData:
 
     @staticmethod
     def _surface_data(
-        data_types: list[SurfaceDataType] | list[str],
+        data_types: list[str],
         surface_ids: list[int],
         overset_mesh: bool | None = False,
     ):
@@ -399,10 +397,10 @@ class _FetchFieldData:
             field_data_pb2.SurfaceRequest(
                 surface_id=surface_id,
                 overset_mesh=overset_mesh,
-                provide_faces=SurfaceDataType.FacesConnectivity in data_types,
-                provide_vertices=SurfaceDataType.Vertices in data_types,
-                provide_faces_centroid=SurfaceDataType.FacesCentroid in data_types,
-                provide_faces_normal=SurfaceDataType.FacesNormal in data_types,
+                provide_faces="faces" in data_types,
+                provide_vertices="vertices" in data_types,
+                provide_faces_centroid="centroid" in data_types,
+                provide_faces_normal="face-normal" in data_types,
             )
             for surface_id in surface_ids
         ]
@@ -469,10 +467,7 @@ class _FieldDataConstants:
         field_data_pb2.FieldType.FIELD_TYPE_DOUBLE_ARRAY: np.float64,
     }
     np_data_type_to_proto_field_type = {
-        np.int32: field_data_pb2.FieldType.FIELD_TYPE_INT_ARRAY,
-        np.int64: field_data_pb2.FieldType.FIELD_TYPE_LONG_ARRAY,
-        np.float32: field_data_pb2.FieldType.FIELD_TYPE_FLOAT_ARRAY,
-        np.float64: field_data_pb2.FieldType.FIELD_TYPE_DOUBLE_ARRAY,
+        v: k for k, v in proto_field_type_to_np_data_type.items()
     }
     chunk_size = 256 * 1024
     bytes_stream = True

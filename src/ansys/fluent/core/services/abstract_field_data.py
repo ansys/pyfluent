@@ -23,12 +23,13 @@
 """Abstract reduction wrapper."""
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import numpy.typing as npt
 
-from ansys.fluent.core.field_data_interfaces import SurfaceDataType
+if TYPE_CHECKING:
+    from ansys.fluent.core.fields.field_data_interfaces import SurfaceDataType
 
 
 class AbstractFieldData(ABC):
@@ -121,20 +122,20 @@ class AbstractFieldData(ABC):
     @abstractmethod
     def _get_surface_data(
         self,
-        data_types: list[SurfaceDataType],
+        data_types: list["SurfaceDataType"],
         surfaces: list[int | str],
         overset_mesh: bool | None = False,
-    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
+    ) -> dict[int | str, dict["SurfaceDataType", np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         pass
 
     @abstractmethod
     def _add_surfaces_request(
         self,
-        data_types: list[SurfaceDataType],
+        data_types: list["SurfaceDataType"],
         surfaces: list[int | str],
         overset_mesh: bool | None = False,
-    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
+    ) -> dict[int | str, dict["SurfaceDataType", np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         pass
 

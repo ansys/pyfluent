@@ -34,7 +34,7 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.field_data_interfaces import (
+from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldDataSource,
     BaseFieldInfo,
     FieldBatch,
@@ -52,14 +52,16 @@ from ansys.fluent.core.field_data_interfaces import (
     _ScalarFields,
     _SurfaceIds,
     _SurfaceNames,
-    _to_field_name_str,
     _VectorFields,
     get_surfaces_from_objects,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.utils.deprecate import (
-    deprecate_function,
+from ansys.fluent.core.variable_strategies import (
+    FluentFieldDataNamingStrategy as naming_strategy,
 )
+
+_naming_strategy_instance = naming_strategy()
+_to_field_name_str = _naming_strategy_instance.to_string
 
 logger = logging.getLogger("pyfluent.field_data")
 
@@ -83,7 +85,9 @@ class _FieldInfo(BaseFieldInfo):
     def _get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
-        return self._field_data.get_scalar_field_range(field, node_value, surface_ids)
+        return self._field_data.get_scalar_field_range(
+            _to_field_name_str(field), node_value, surface_ids
+        )
 
     def _get_scalar_fields_info(self) -> dict[str, dict]:
         return self._field_data.get_scalar_fields_info()
@@ -361,7 +365,9 @@ class Batch(FieldBatch):
 
     def _add_scalar_fields_request(self, **kwargs) -> None:
         self._field_data._add_scalar_fields_request(
-            self._allowed_scalar_field_names.valid_name(kwargs.get("field_name")),
+            self._allowed_scalar_field_names.valid_name(
+                _to_field_name_str(kwargs.get("field_name"))
+            ),
             surfaces=kwargs.get("surfaces"),
             node_value=kwargs.get("node_value"),
             boundary_value=kwargs.get("boundary_value"),
@@ -369,7 +375,9 @@ class Batch(FieldBatch):
 
     def _add_vector_fields_request(self, **kwargs) -> None:
         self._field_data._add_vector_fields_request(
-            self._allowed_vector_field_names.valid_name(kwargs.get("field_name")),
+            self._allowed_vector_field_names.valid_name(
+                _to_field_name_str(kwargs.get("field_name"))
+            ),
             surfaces=kwargs.get("surfaces"),
         )
 
@@ -379,7 +387,7 @@ class Batch(FieldBatch):
     ) -> None:
         zones = kwargs.get("zones", [])
         field_name = self._allowed_scalar_field_names.valid_name(
-            kwargs.get("field_name")
+            _to_field_name_str(kwargs.get("field_name"))
         )
         if field_name in self._pathline_field_data:
             raise ValueError("For 'path-lines' `field_name` should be unique.")
@@ -388,7 +396,7 @@ class Batch(FieldBatch):
         additional_field_name = kwargs.get("additional_field_name")
         if additional_field_name:
             additional_field_name = self._allowed_scalar_field_names.valid_name(
-                additional_field_name
+                _to_field_name_str(additional_field_name)
             )
         self._field_data._add_pathlines_fields_request(
             field_name,
@@ -724,16 +732,11 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             self._allowed_vector_field_names,
         )
 
-    @deprecate_function(version="v0.34.0", new_func="new_batch")
-    def new_transaction(self):
-        """Create a new field transaction."""
-        return self.new_batch()
-
     def _get_scalar_field_data(self, **kwargs):
         surfaces = kwargs.get("surfaces")
         surface_ids = self.get_surface_ids(surfaces)
         field_name = self._allowed_scalar_field_names.valid_name(
-            kwargs.get("field_name")
+            _to_field_name_str(kwargs.get("field_name"))
         )
         fields = self._field_data.extract_fields(
             self._field_data._get_scalar_field_data(
@@ -784,7 +787,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     ) -> dict[int | str, np.ndarray]:
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_vector_field_names.valid_name(
-            kwargs.get("field_name")
+            _to_field_name_str(kwargs.get("field_name"))
         )
         for surface_id in surface_ids:
             self.scheme.string_eval(f"(surface? {surface_id})")
@@ -807,12 +810,12 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         zones = kwargs.get("zones", [])
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_scalar_field_names.valid_name(
-            kwargs.get("field_name")
+            _to_field_name_str(kwargs.get("field_name"))
         )
         additional_field_name = kwargs.get("additional_field_name")
         if additional_field_name:
             additional_field_name = self._allowed_scalar_field_names.valid_name(
-                additional_field_name
+                _to_field_name_str(additional_field_name)
             )
         fields = self._field_data.extract_fields(
             self._field_data._get_pathlines_field_data(
