@@ -58,7 +58,6 @@ from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
     get_fluent_exe_path,
 )
-from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
@@ -475,82 +474,6 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
-def test_build_journal_argument_without_journal_files_but_with_topy():
-    assert (
-        _build_journal_argument("a.py", ["a.jou"], include_journal_file_names=False)
-        == ' -topy="a.py"'
-    )
-
-
-def test_lightweight_case_journal_read_is_completed_before_sync_step():
-    launcher = object.__new__(StandaloneLauncher)
-    launcher.argvals = {
-        "case_file_name": "a.cas.h5",
-        "case_data_file_name": None,
-        "mode": FluentMode.SOLVER,
-        "lightweight_mode": True,
-        "journal_file_names": ["a.jou", "b.jou"],
-    }
-    launcher._defer_journal_file_read = True
-
-    calls = []
-
-    class _DummySession:
-        def read_case_lightweight(self, file_name, start_sync=True):
-            calls.append(("read_case_lightweight", file_name, start_sync))
-
-        def execute_tui(self, command):
-            calls.append(("execute_tui", command))
-
-        def start_case_lightweight_sync(self):
-            calls.append(("start_case_lightweight_sync",))
-
-    launcher._process_case_data_and_journals(_DummySession())
-
-    assert calls == [
-        ("read_case_lightweight", "a.cas.h5", False),
-        ("execute_tui", '/file/read-journal "a.jou"'),
-        ("execute_tui", '/file/read-journal "b.jou"'),
-        ("start_case_lightweight_sync",),
-    ]
-
-
-def test_case_and_case_data_are_processed_before_journal_files():
-    launcher = object.__new__(StandaloneLauncher)
-    launcher.argvals = {
-        "case_file_name": "a.cas.h5",
-        "case_data_file_name": "a.cas.h5",
-        "mode": FluentMode.SOLVER,
-        "lightweight_mode": False,
-        "journal_file_names": ["a.jou", "b.jou"],
-    }
-    launcher._defer_journal_file_read = True
-
-    calls = []
-
-    class _DummyFile:
-        def read(self, **kwargs):
-            calls.append(("read", kwargs))
-
-    class _DummySettings:
-        file = _DummyFile()
-
-    class _DummySession:
-        settings = _DummySettings()
-
-        def execute_tui(self, command):
-            calls.append(("execute_tui", command))
-
-    launcher._process_case_data_and_journals(_DummySession())
-
-    assert calls == [
-        ("read", {"file_type": "case", "file_name": "a.cas.h5"}),
-        ("read", {"file_type": "case-data", "file_name": "a.cas.h5"}),
-        ("execute_tui", '/file/read-journal "a.jou"'),
-        ("execute_tui", '/file/read-journal "b.jou"'),
-    ]
-
-
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
@@ -876,50 +799,3 @@ def test_idle_timeout(monkeypatch):
         StandaloneLauncher._construct_timeout_arg(200)
         == ' -command="(set-session-idle-timeoutPLF+5)"'
     )
-
-
-def test_standalone_server_info_file_preserved_with_cleanup_false(monkeypatch):
-    """Test that server-info file is preserved when cleanup_on_exit=False for standalone."""
-    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
-
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        monkeypatch.setattr(pyfluent.config, "fluent_server_info_dir", tmp_dir)
-        fluent_path = r"\x\y\z\fluent.exe"
-
-        # Dry run to get the server info file name
-        fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
-            fluent_path=fluent_path,
-            dry_run=True,
-            ui_mode="no_gui",
-            cleanup_on_exit=False,
-        )
-
-        # Verify the server info file path is in the specified directory
-        assert str(Path(server_info_file_name).parent) == tmp_dir
-        assert Path(server_info_file_name).name.startswith("serverinfo-")
-
-
-def test_configure_container_dict_preserves_files():
-    """Test that configure_container_dict includes proper server-info file handling."""
-    from ansys.fluent.core.launcher.fluent_container import configure_container_dict
-
-    # Test with default settings
-    args = ["-gu", "-driver", "null"]
-    result = configure_container_dict(args)
-    (
-        config_dict,
-        timeout,
-        port,
-        host_server_info_file,
-        container_server_info_file,
-        remove_server_info_file,
-    ) = result
-
-    # By default, remove_server_info_file should be True
-    assert remove_server_info_file is True
-    # Server info file should be a Path object
-    assert isinstance(host_server_info_file, Path)
-    # Container server info file should be a string path
-    assert isinstance(container_server_info_file, (str, Path))
-    # Port should be extracted from config_dict
-    assert port is not None

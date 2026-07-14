@@ -33,10 +33,10 @@ from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
 from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import MonitorsServiceV0, service_creator
-from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.monitor_v1 import MonitorsService
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.solution_variables import (
@@ -378,21 +378,13 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             if thread.is_alive():
                 thread.join()
 
-    def start_case_lightweight_sync(self):
-        """Start pending lightweight background sync sessions."""
-        for thread in self._bg_session_threads:
-            if thread.ident is None:
-                thread.start()
-
-    def read_case_lightweight(self, file_name: str, start_sync: bool = True):
+    def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode.
 
         Parameters
         ----------
         file_name : str
             Case file name
-        start_sync : bool, optional
-            Whether to immediately start lightweight background sync.
         """
 
         self.settings.file.read(
@@ -406,8 +398,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 target=self._start_bg_session_and_sync, args=(launcher_args,)
             )
         )
-        if start_sync:
-            self.start_case_lightweight_sync()
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
