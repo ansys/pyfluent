@@ -42,7 +42,6 @@ import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
-import warnings
 
 from typing_extensions import Unpack
 
@@ -69,7 +68,6 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -191,8 +189,6 @@ class StandaloneLauncher:
         lightweight_mode : bool, optional
             If True, runs in lightweight mode where mesh settings are read into a background solver session,
             replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
-            When combined with `journal_file_names`, a warning is issued and `lightweight_mode` is set to False, as
-            journal processing cannot be reliably ordered with mesh-only initialization.
         py : bool, optional
             If True, runs Fluent in Python mode. Defaults to None.
         gpu : bool, optional
@@ -219,10 +215,6 @@ class StandaloneLauncher:
         -----
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
-
-        File processing order: Case files are processed before case-data files, which are processed before
-        journal files. In lightweight mode, journal files are read before the background session is synchronized
-        with the foreground session.
         """
         import ansys.fluent.core as pyfluent
 
@@ -233,15 +225,6 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
-
-        if self.argvals["lightweight_mode"] and self.argvals.get("journal_file_names"):
-            warnings.warn(
-                "'lightweight_mode' is not supported together with "
-                "'journal_file_names' and will be ignored.",
-                PyFluentUserWarning,
-            )
-            self.argvals["lightweight_mode"] = False
-
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
@@ -273,14 +256,11 @@ class StandaloneLauncher:
         self._kwargs = _get_subprocess_kwargs_for_fluent(
             self.argvals.get("env") or {}, self.argvals
         )
-        if self.argvals["cwd"]:
-            self._kwargs.update(cwd=self.argvals["cwd"])
-
-        topy = self.argvals.get("topy", [])
-        if topy:
-            self._launch_string += _build_journal_argument(
-                topy, self.argvals.get("journal_file_names")
-            )
+        if self.argvals.get("cwd"):
+            self._kwargs.update(cwd=self.argvals.get("cwd"))
+        self._launch_string += _build_journal_argument(
+            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
+        )
 
         if is_windows():
             self._launch_cmd = self._launch_string
@@ -363,60 +343,41 @@ class StandaloneLauncher:
                 values = _get_server_info(self._server_info_file_name)
                 if len(values) == 3:
                     ip, port, password = values
-                    watchdog.launch(os.getpid(), port, password, ip)
-            self._process_case_data_and_journals(session)
+                    watchdog.launch(
+                        os.getpid(),
+                        port,
+                        password,
+                        ip,
+                        inside_container=False,
+                    )
+            # PyFluent is now connected: disable the idle-timeout guard.
+            self._disable_idle_timeout_guard(session)
+            if self.argvals.get("case_file_name"):
+                if FluentMode.is_meshing(self.argvals.get("mode")):
+                    session.tui.file.read_case(self.argvals.get("case_file_name"))
+                elif self.argvals.get("lightweight_mode"):
+                    session.read_case_lightweight(self.argvals.get("case_file_name"))
+                else:
+                    session.settings.file.read(
+                        file_type="case",
+                        file_name=self.argvals.get("case_file_name"),
+                    )
+            if self.argvals.get("case_data_file_name"):
+                if not FluentMode.is_meshing(self.argvals.get("mode")):
+                    session.settings.file.read(
+                        file_type="case-data",
+                        file_name=self.argvals.get("case_data_file_name"),
+                    )
+                else:
+                    raise RuntimeError(
+                        "Case and data file cannot be read in meshing mode."
+                    )
 
             return session
         except Exception as ex:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(self._launch_cmd) from ex
         finally:
-            if self.argvals.get("cleanup_on_exit", True):
-                server_info_file = Path(self._server_info_file_name)
-                if server_info_file.exists():
-                    server_info_file.unlink()
-
-    @staticmethod
-    def _get_journal_file_names(
-        journal_file_names: None | str | list[str],
-    ) -> list[str]:
-        if isinstance(journal_file_names, str):
-            return [journal_file_names]
-        return journal_file_names or []
-
-    def _process_case_data_and_journals(self, session) -> None:
-        if self.argvals["case_file_name"]:
-            if FluentMode.is_meshing(self.argvals["mode"]):
-                session.tui.file.read_case(self.argvals["case_file_name"])
-            elif self.argvals["lightweight_mode"]:
-                session.read_case_lightweight(
-                    self.argvals["case_file_name"],
-                    start_sync=False,
-                )
-            else:
-                session.settings.file.read(
-                    file_type="case",
-                    file_name=self.argvals["case_file_name"],
-                )
-        if self.argvals["case_data_file_name"]:
-            if not FluentMode.is_meshing(self.argvals["mode"]):
-                session.settings.file.read(
-                    file_type="case-data",
-                    file_name=self.argvals["case_data_file_name"],
-                )
-            else:
-                raise RuntimeError("Case and data file cannot be read in meshing mode.")
-
-        if self.argvals.get("topy"):
-            for journal_file_name in self._get_journal_file_names(
-                self.argvals.get("journal_file_names")
-            ):
-                session.tui.file.write_journal(f"{journal_file_name}.topy")
-        else:
-            for journal_file_name in self._get_journal_file_names(
-                self.argvals.get("journal_file_names")
-            ):
-                session.execute_tui(f'/file/read-journal "{journal_file_name}"')
-
-        if self.argvals.get("lightweight_mode"):
-            session.start_case_lightweight_sync()
+            server_info_file = Path(self._server_info_file_name)
+            if server_info_file.exists():
+                server_info_file.unlink()
