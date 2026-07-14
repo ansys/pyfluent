@@ -51,7 +51,7 @@ from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
-__version__ = "0.40.1"
+__version__ = "0.40.2"
 
 _VERSION_INFO = None
 """

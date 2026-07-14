@@ -279,16 +279,19 @@ class StandaloneLauncher:
     @staticmethod
     def _disable_idle_timeout_guard(session):
         try:
+            default_idle_timeout = session.preferences.General.IdleTimeout()
+        except RuntimeError:
+            # This exception is raised only while running codegen locally before the preferences root is available.
+            default_idle_timeout = 0
+        try:
             if session.get_fluent_version() >= FluentVersion.v271:
-                session._app_utilities.set_idle_timeout(
-                    session.preferences.General.IdleTimeout() * 60
-                )
+                session._app_utilities.set_idle_timeout(default_idle_timeout * 60)
             else:
                 session.scheme_eval.eval(
-                    f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
+                    f"(set-session-idle-timeout {default_idle_timeout})"
                 )
         except Exception as ex:
-            logger.debug(f"Could not reset Idle Timeout: {ex}")
+            raise RuntimeError("Could not reset Idle Timeout") from ex
 
     def __call__(
         self,
