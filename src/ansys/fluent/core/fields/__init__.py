@@ -21,19 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module for Field data streaming (v1 proto API).
-
-All shared logic lives in field_data_streaming.py (v0). This module keeps only
-v1-specific proto binding required for compatibility.
-"""
-
-from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
-from ansys.fluent.core.streaming_services.field_data_streaming import (
-    FieldDataStreaming as _FieldDataStreamingV0,
-)
-
-
-class FieldDataStreaming(_FieldDataStreamingV0):
-    """Class wrapping the Field gRPC streaming service of Fluent (v1 proto API)."""
-
-    _proto_module = FieldDataProtoModule
+"""Module containing Fields objects."""
