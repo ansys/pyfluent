@@ -60,7 +60,7 @@ solver = pyfluent.launch_fluent(
     mode = pyfluent.FluentMode.SOLVER,
     precision = pyfluent.Precision.DOUBLE,
     ui_mode = pyfluent.UIMode.GUI,
-    processor_count = 8,
+    processor_count=8,
     cleanup_on_exit=True,
 )
 
