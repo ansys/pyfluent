@@ -24,9 +24,16 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from enum import Enum
 from typing import Any
 
+from ansys.fluent.core.launcher.launch_options import (
+    Dimension,
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    Precision,
+    UIMode,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -73,17 +80,17 @@ class AbstractApplicationRuntime(ABC):
         pass
 
     @abstractmethod
-    def get_app_mode(self) -> Enum:
+    def get_app_mode(self) -> FluentMode:
         """Get app mode."""
         pass
 
     @abstractmethod
-    def get_dimension(self) -> Enum:
+    def get_dimension(self) -> Dimension:
         """Get dimension."""
         pass
 
     @abstractmethod
-    def get_precision(self) -> Enum:
+    def get_precision(self) -> Precision:
         """Get precision."""
         pass
 
@@ -93,30 +100,20 @@ class AbstractApplicationRuntime(ABC):
         pass
 
     @abstractmethod
-    def get_ui_mode(self) -> Enum:
+    def get_ui_mode(self) -> UIMode:
         """Get UI mode."""
         pass
 
     @abstractmethod
-    def get_graphics_driver(self) -> Enum:
-        """Get graphics driver.
-
-        Raises
-        ------
-        ValueError
-            If the graphics driver is unknown.
-        """
+    def get_graphics_driver(
+        self,
+    ) -> FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver:
+        """Get graphics driver."""
         pass
 
     @abstractmethod
     def get_gpu_config(self) -> bool | list[int]:
-        """Get GPU config.
-
-        Raises
-        ------
-        ValueError
-            If the GPU ID string cannot be parsed.
-        """
+        """Get GPU config."""
         pass
 
     @abstractmethod

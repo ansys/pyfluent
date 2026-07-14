@@ -25,23 +25,25 @@
 
 from enum import Enum
 import os
-from typing import TypeVar
+from typing import TYPE_CHECKING, TypeVar
 import warnings
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.fluent_connection import FluentConnection
+    from ansys.fluent.core.session_meshing import Meshing
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+    from ansys.fluent.core.session_solver_aero import SolverAero
+    from ansys.fluent.core.session_solver_icing import SolverIcing
 
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.error_warning_messages import (
     BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
 )
 from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.session_meshing import Meshing
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.session_solver_aero import SolverAero
-from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
@@ -138,6 +140,12 @@ class FluentMode(FluentEnum):
         return self.SOLVER
 
     def _get_enum_map(self):
+        from ansys.fluent.core.session_meshing import Meshing
+        from ansys.fluent.core.session_pure_meshing import PureMeshing
+        from ansys.fluent.core.session_solver import Solver
+        from ansys.fluent.core.session_solver_aero import SolverAero
+        from ansys.fluent.core.session_solver_icing import SolverIcing
+
         return {
             self.MESHING: Meshing,
             self.PURE_MESHING: PureMeshing,
@@ -333,7 +341,7 @@ def _get_graphics_driver(
 
 
 def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: FluentMode | None = None
+    fluent_connection: "FluentConnection", mode: FluentMode | None = None
 ):
     """Get the mode of the running session if the mode has not been explicitly given."""
     if mode:
