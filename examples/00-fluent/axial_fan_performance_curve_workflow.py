@@ -111,8 +111,10 @@ solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 
 # Set the turbulance/viscous model to SST k-omega model.
 # Activate curvature correction, production Kato-Launder, and production limiter options.
 
-solver.settings.setup.models.viscous.model = "k-omega"
-solver.settings.setup.models.viscous.k_omega_model = "sst"
+viscous = solver.settings.setup.models.viscous
+viscous.model = "k-omega"
+viscous.k_omega_model = "sst"
+
 solver.settings.setup.models.viscous.options.curvature_correction.enabled = True
 solver.settings.setup.models.viscous.options.production_kato_launder_enabled = True
 solver.settings.setup.models.viscous.options.production_limiter.enabled = "True"
