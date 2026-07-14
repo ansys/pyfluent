@@ -57,10 +57,10 @@ import_file_name = examples.download_file(
 # Launch Fluent in solution mode with double precision running on eight processors.
 
 solver = pyfluent.launch_fluent(
-    mode="solver",
-    processor_count=8,
-    precision="double",
-    ui_mode="gui",
+    mode = pyfluent.FluentMode.SOLVER,
+    precision = pyfluent.Precision.DOUBLE,
+    ui_mode = pyfluent.UIMode.GUI,
+    processor_count = 8,
     cleanup_on_exit=True,
 )
 
