@@ -82,7 +82,7 @@ class FluentRestClient:
         auth_token: str,
         *,
         component: str = "fluent_1",
-        timeout: float = 30.0,
+        timeout: float = 60.0,
         max_retries: int = 2,
         retry_delay: float = 1.0,
         ssl_context: ssl.SSLContext | None = None,
@@ -104,7 +104,7 @@ class FluentRestClient:
         component : str, optional
             DataModel component name. Defaults to ``"fluent_1"``.
         timeout : float, optional
-            Socket timeout in seconds. Defaults to ``30.0``.
+            Socket timeout in seconds. Defaults to ``60.0``.
         max_retries : int, optional
             Maximum automatic retries on transient failures. Defaults to
             ``2``.
@@ -304,17 +304,20 @@ class FluentRestClient:
     # Commands / queries
     # ------------------------------------------------------------------
 
-    def execute_cmd(self, path: str, command: str, force: bool = True, **kwds) -> Any:
-        """Execute *command* at *path*; appends ``?force=true`` when requested."""
-        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(command, safe='')}"
+    def _execute(self, path: str, name: str, force: bool = False, **kwds) -> Any:
+        """POST a command/query endpoint and return response."""
+        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(name, safe='')}"
         if force:
             endpoint += "?force=true"
         return self._strategy.request("POST", endpoint, body=kwds)
 
+    def execute_cmd(self, path: str, command: str, force: bool = True, **kwds) -> Any:
+        """Execute command with optional force."""
+        return self._execute(path, command, force=force, **kwds)
+
     def execute_query(self, path: str, query: str, **kwds) -> Any:
-        """Execute *query* at *path* (POST {path}/{query})."""
-        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(query, safe='')}"
-        return self._strategy.request("POST", endpoint, body=kwds)
+        """Execute query (no force)."""
+        return self._execute(path, query, force=False, **kwds)
 
 
 # ------------------------------------------------------------------
