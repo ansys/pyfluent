@@ -82,6 +82,7 @@ class ObjectModelBase:
     ):
         self._service = service
         self._cache = DataModelCache() if config.datamodel_use_state_cache else None
+        self.file_transfer_service = None
         self._version = FluentVersion(
             ".".join(
                 scheme_interpreter_service.string_eval("(cx-version)")
@@ -93,6 +94,11 @@ class ObjectModelBase:
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
         return self._service.get_attribute_value(rules, path, attribute)
+
+    @property
+    def subscriptions(self):
+        """Access the subscription list of the underlying gRPC service."""
+        return self._service.subscriptions
 
     def get_state(self, rules: str, path: str) -> ValueT:
         """Get state."""
@@ -237,6 +243,10 @@ class ObjectModelBase:
         """Release command arguments when their Python wrapper is deleted."""
         return self._service.release_command_arguments(rules, path, command, commandid)
 
+    def delete_all_command_arguments(self) -> None:
+        """Delete all tracked command arguments as part of shutdown finalization."""
+        return self._service.delete_all_command_arguments()
+
     def get_static_info(self, rules: str) -> dict[str, Any]:
         """Get static info."""
         return self._service.get_static_info(rules)
@@ -323,6 +333,13 @@ class ObjectModelV261(ObjectModelBase):
         scheme_interpreter_service,
     ):
         super().__init__(service, scheme_interpreter_service)
+
+    def create_object(self, rules: str, path: str, name: str) -> None:
+        """Create an object."""
+        raise NotImplementedError(
+            "`create_object` is not supported in Fluent version <= 26.1."
+            "Please use Fluent version >= 27.1 to use this feature."
+        )
 
 
 class ObjectModel(ObjectModelBase):
