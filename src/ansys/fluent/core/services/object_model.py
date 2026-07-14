@@ -30,6 +30,7 @@ from typing import Any, Iterable, TypeVar
 
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.module_config import config
+from ansys.fluent.core.services.abstract_object_model import AbstractObjectModel
 from ansys.fluent.core.services.object_model_utilities import (
     Attribute,
     DisallowedFilePurpose,
@@ -324,7 +325,7 @@ class ObjectModelBase:
         )
 
 
-class ObjectModelV261(ObjectModelBase):
+class ObjectModelV261(ObjectModelBase, AbstractObjectModel):
     """ObjectModel class for Fluent datamodel service wrapper for Fluent version <= 26.1."""
 
     def __init__(
@@ -342,7 +343,7 @@ class ObjectModelV261(ObjectModelBase):
         )
 
 
-class ObjectModel(ObjectModelBase):
+class ObjectModel(ObjectModelBase, AbstractObjectModel):
     """ObjectModel class for Fluent datamodel service wrapper for Fluent version >= 27.1."""
 
     def __init__(
