@@ -378,8 +378,8 @@ def launch_fluent(
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str]]
-        Session object or configuration dictionary if ``dry_run = True`` for docker or a tuple of
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str] | dict[str, Any]]
+        Session object or configuration ``dict[str, Any]`` if ``dry_run = True`` for docker or a tuple of
         (fluent executable path, startup arguments) if ``dry_run = True`` for standalone launch.
 
     Raises

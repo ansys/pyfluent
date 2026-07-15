@@ -52,6 +52,45 @@ from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
+__all__ = [
+    # Explicitly exported symbols from wildcard imports
+    "Fluent",
+    "ExposureLevel",
+    # Submodules for explicit import support
+    "docker",
+    "examples",
+    "exceptions",
+    "field_data_interfaces",
+    "filereader",
+    "fluent_connection",
+    "generated",
+    "journaling",
+    "launcher",
+    "logger",
+    "module_config",
+    "parametric",
+    "pyfluent_warnings",
+    "rpvars",
+    "scheduler",
+    "search",
+    "services",
+    "session",
+    "session_base_meshing",
+    "session_meshing",
+    "session_pure_meshing",
+    "session_shared",
+    "session_solver",
+    "session_solver_aero",
+    "session_solver_icing",
+    "session_utilities",
+    "solver",
+    "streaming_services",
+    "system_coupling",
+    "utils",
+    "variable_strategies",
+    "workflow",
+]
+
 # Submodules for lazy loading - avoid circular imports
 _submodules = {
     "docker": "ansys.fluent.core.docker",
