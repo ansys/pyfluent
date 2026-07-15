@@ -302,11 +302,10 @@ class TestTimeoutLoopBehavior:
         def counter():
             nonlocal call_count
             call_count += 1
-            return call_count >= 2  # True after 2 calls
+            return call_count >= 2
 
         result = timeout_loop(counter, 5.0, expected="truthy")
 
-        # Should return truthy value
         assert result is True
         assert call_count == 2
 
@@ -317,11 +316,10 @@ class TestTimeoutLoopBehavior:
         def counter():
             nonlocal call_count
             call_count += 1
-            return call_count < 3  # False after 3 calls
+            return call_count < 3
 
         result = timeout_loop(counter, 5.0, expected="falsy")
 
-        # Should return falsy value
         assert result is False
         assert call_count == 3
 
@@ -388,7 +386,6 @@ class TestTimeoutLoopIssue3680Fix:
         """
         session = MockSession()
 
-        # This is the exact problematic usage from Issue #3680
         with pytest.raises(InvalidArgument) as exc_info:
             timeout_loop(
                 session.is_active(),  # WRONG - method call
@@ -404,13 +401,11 @@ class TestTimeoutLoopIssue3680Fix:
         """Verify the correct pattern from Issue #3680 works properly."""
         session = MockSession()
 
-        # This is the correct pattern that should work
         result = timeout_loop(
-            session.is_active,  # CORRECT - method reference
+            session.is_active,
             5.0,
             expected="falsy",
         )
 
-        # Should complete successfully
         assert result is False
         assert session.check_count >= 3
