@@ -29,7 +29,7 @@ Expose aero capabilities.
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.datamodel_se import PySimpleMenuGeneric
+from ansys.fluent.core.services.object_model import PySimpleMenuGeneric
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session_solver import Solver
 

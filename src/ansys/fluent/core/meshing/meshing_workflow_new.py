@@ -30,7 +30,7 @@ from enum import Enum
 import os
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow_new import Workflow
 

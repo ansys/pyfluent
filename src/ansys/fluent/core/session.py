@@ -207,15 +207,8 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = service_creator(
-            "datamodel", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self.get_fluent_version(),
-            self._error_state,
-            self._file_transfer_service,
-        )
+        self._datamodel_service_se = fluent_connection._service_factory.object_model
+        self._datamodel_service_se.file_transfer_service = file_transfer_service
 
         self._datamodel_events = (
             DatamodelEvents(self._datamodel_service_se)

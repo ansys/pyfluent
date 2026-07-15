@@ -24,7 +24,9 @@
 """Provides a module for datamodel event streaming (v1 proto API)."""
 
 from ansys.api.fluent.v1 import object_model_pb2 as DataModelProtoModule
-from ansys.fluent.core.services.datamodel_se_v1 import _convert_variant_to_value
+from ansys.fluent.core._grpc_services.object_model_service import (
+    _convert_variant_to_value,
+)
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     _BaseDatamodelEvents,
 )
