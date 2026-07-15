@@ -134,7 +134,11 @@ def timeout_loop(
     Parameters
     ----------
     obj : Any
-        Object to evaluate while looping if it does not return expected response.
+        Callable object (function, method, or lambda) to evaluate while looping if it
+        does not return expected response. When the callable is invoked, it will be
+        called repeatedly until the expected condition is met or timeout elapses.
+        **Important**: Pass a method reference (e.g., ``session.is_active``) NOT a
+        method call (e.g., ``session.is_active()``). See Examples below.
     timeout : float
         Time before cancelling execution and returning early.
     args : Any, optional
@@ -150,7 +154,7 @@ def timeout_loop(
     Raises
     ------
     InvalidArgument
-        If an unrecognized value is passed for ``expected``.
+        If an unrecognized value is passed for ``expected``, or if ``obj`` is not callable.
 
     Examples
     --------
@@ -165,21 +169,35 @@ def timeout_loop(
     >>> func2("test", word="hello")
     True
     >>> response = timeout_loop(func2, timeout=5.0, expected="falsy", args=("test",), kwargs={"word":"hello",})
+
+    Checking if a session is no longer active (using method reference):
+
+    >>> # CORRECT - pass method reference without parentheses
+    >>> response = timeout_loop(session.is_active, timeout=5.0, expected="falsy")
+
+    >>> # INCORRECT - do NOT call the method, this will hang
+    >>> response = timeout_loop(session.is_active(), timeout=5.0, expected="falsy")  # doctest: +SKIP
+
+    Using lambda for more complex conditions:
+
+    >>> response = timeout_loop(lambda: session.settings.solver.case == "loaded", timeout=5.0)
     """
     if args is None:
         args = ()
     if kwargs is None:
         kwargs = {}
 
-    def _exec(*_args, **_kwargs):
-        if callable(obj):
-            return obj(*_args, **_kwargs)
-        else:
-            return obj
+    if not callable(obj):
+        raise InvalidArgument(
+            f"The 'obj' parameter must be callable (a function, method, or lambda). "
+            f"Got {type(obj).__name__} instead. Did you accidentally call the method? "
+            f"Pass 'session.is_active' not 'session.is_active()'. "
+            f"You can also use a lambda: 'lambda: session.is_active()' if args/kwargs are needed."
+        )
 
     time_elapsed = 0.0
     while time_elapsed <= timeout:
-        ret_obj = _exec(*args, **kwargs)
+        ret_obj = obj(*args, **kwargs)
         if expected == "truthy":
             if ret_obj:
                 return ret_obj
