@@ -36,6 +36,9 @@ from ansys.fluent.core._grpc_services.application_runtime_service import (
 from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
+from ansys.fluent.core._grpc_services.batch_ops_service_v0 import (
+    BatchOpsService as BatchOpsServiceV0,
+)
 from ansys.fluent.core._grpc_services.events_service import EventsService
 from ansys.fluent.core._grpc_services.events_service_v0 import (
     EventsService as EventsServiceV0,
@@ -222,6 +225,11 @@ class GRPCServiceFactory:
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(EventsServiceV0)
         )
+
+    @cached_property
+    def batch_ops(self) -> BatchOpsServiceV0:
+        """gRPC stub for batch RPC operations (v0 only — no v1 implementation)."""
+        return self._get_instantiated_grpc_service(BatchOpsServiceV0)
 
     @cached_property
     def transcript(self) -> TranscriptService | TranscriptServiceV0:

@@ -215,9 +215,7 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = service_creator(
-            "batch_ops", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
+        self._batch_ops_service = fluent_connection._service_factory.batch_ops
 
         if event_type:
             events_service = fluent_connection._service_factory.events

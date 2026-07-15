@@ -23,7 +23,6 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI_V0,
 )
@@ -45,8 +44,6 @@ from ansys.fluent.core.services.solution_variables_v1 import (
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 __all__ = (
-    "BatchOpsService",
-    "BatchOps",
     "DatamodelService_TUI",
     "DatamodelService_TUI_V0",
     "MonitorsService",
@@ -64,7 +61,6 @@ _service_cls_by_name_v0 = {
     "monitors": MonitorsServiceV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
-    "batch_ops": BatchOpsService,
 }
 
 _service_cls_by_name = {
@@ -72,7 +68,6 @@ _service_cls_by_name = {
     "monitors": MonitorsService,
     "svar": SolutionVariableService,
     "svar_data": SolutionVariableData,
-    "batch_ops": BatchOpsService,
 }
 
 
@@ -102,6 +97,7 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
+from ansys.fluent.core.services.batch_ops import BatchOps
 from ansys.fluent.core.services.events import Events, EventsV251, EventsV261
 from ansys.fluent.core.services.field_data import (
     FieldData,
@@ -268,3 +264,8 @@ class ServiceFactory:
     def transcript(self):
         """Transcript service."""
         return Transcript(self._service_factory.transcript)
+
+    @cached_property
+    def batch_ops(self):
+        """Batch operations service."""
+        return self._service_factory.batch_ops
