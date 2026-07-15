@@ -134,7 +134,7 @@ class EventsV251(AbstractEvents):
                             )
                         ()
                         )
-                    {"#t" if solution_event == SolverEvent.TIMESTEP_ENDED else "#f"}
+                    {"#t" if solution_event.name == "TIMESTEP_ENDED" else "#f"}
                     )
                 (car ids)
                 )
