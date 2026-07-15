@@ -195,15 +195,7 @@ class BaseSession:
 
         self.journal = Journal(self.application_runtime)
 
-        self._datamodel_service_tui = service_creator(
-            "tui", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self._error_state,
-            self.application_runtime,
-            self.scheme,
-        )
+        self._datamodel_service_tui = fluent_connection._service_factory.text_interface
 
         self._datamodel_service_se = fluent_connection._service_factory.object_model
         self._datamodel_service_se.file_transfer_service = file_transfer_service

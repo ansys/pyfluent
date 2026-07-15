@@ -69,6 +69,10 @@ from ansys.fluent.core._grpc_services.settings_service import SettingsService
 from ansys.fluent.core._grpc_services.settings_service_v0 import (
     SettingsService as SettingsServiceV0,
 )
+from ansys.fluent.core._grpc_services.text_interface_service import TextInterfaceService
+from ansys.fluent.core._grpc_services.text_interface_service_v0 import (
+    TextInterfaceService as TextInterfaceServiceV0,
+)
 from ansys.fluent.core._grpc_services.transcript_service import TranscriptService
 from ansys.fluent.core._grpc_services.transcript_service_v0 import (
     TranscriptService as TranscriptServiceV0,
@@ -238,4 +242,13 @@ class GRPCServiceFactory:
             self._get_instantiated_grpc_service(TranscriptService)
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(TranscriptServiceV0)
+        )
+
+    @cached_property
+    def text_interface(self) -> TextInterfaceService | TextInterfaceServiceV0:
+        """gRPC stub for text interface operations."""
+        return (
+            self._get_instantiated_grpc_service(TextInterfaceService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(TextInterfaceServiceV0)
         )
