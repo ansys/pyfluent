@@ -121,16 +121,16 @@ class TextInterfaceService(ServiceProtocol):
     ) -> list[str]:
         """Get the names of child menus."""
         attribute = text_interface_pb2.Attribute.Name(
-            text_interface_pb2.Attribute.CHILD_NAMES
+            text_interface_pb2.Attribute.ATTRIBUTE_CHILD_NAMES
         ).lower()
         return self.get_attribute_value(path, attribute, include_unavailable)
 
     def get_doc_string(self, path: str, include_unavailable: bool = False) -> str:
         """Get docstring for a menu."""
         attribute = text_interface_pb2.Attribute.Name(
-            text_interface_pb2.Attribute.HELP_STRING
+            text_interface_pb2.Attribute.ATTRIBUTE_HELP_STRING
         ).lower()
-        return self._service.get_attribute_value(path, attribute, include_unavailable)
+        return self.get_attribute_value(path, attribute, include_unavailable)
 
 
 def _convert_value_to_gvalue(val: Any, gval: Variant) -> None:
