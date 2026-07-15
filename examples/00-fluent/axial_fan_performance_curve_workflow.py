@@ -154,8 +154,9 @@ solver.settings.setup.cell_zone_conditions.fluid[
 # Set the <code>'pressure-outlet'</code> boundary as pressure-outlet boundary condition type, and assign to it the previously defined input parameter.
 # Keep the remaining boundaries as no-slip wall boundary condition type (default settings - no changes)
 
-# Boundary conditions: 'inlet' boundary: type: Pressure Inlet
 boundary_conditions = solver.settings.setup.boundary_conditions
+
+# Boundary conditions: 'inlet' boundary: type: Pressure Inlet
 boundary_conditions.set_zone_type(new_type="pressure-inlet", zone_list=["inlet"])
 inlet = solver.settings.setup.boundary_conditions.pressure_inlet["inlet"]
 inlet.momentum.gauge_total_pressure.value = 0
@@ -164,9 +165,7 @@ inlet.turbulence.turbulent_intensity = 0.05
 inlet.turbulence.turbulent_viscosity_ratio = 10
 
 # Boundary conditions: 'pressure-outlet' boundary: type: Pressure Outlet
-boundary_conditions.set_zone_type(
-    new_type="pressure-outlet", zone_list=["pressure-outlet"]
-)
+boundary_conditions.set_zone_type(new_type="pressure-outlet", zone_list=["pressure-outlet"])
 outlet = solver.settings.setup.boundary_conditions.pressure_outlet["pressure-outlet"]
 outlet.momentum.gauge_pressure.value = "pressure_outlet"
 outlet.turbulence.turbulence_specification = "Intensity and Viscosity Ratio"
