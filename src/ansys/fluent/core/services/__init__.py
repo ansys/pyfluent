@@ -24,12 +24,6 @@
 """Provides a module to create gRPC services."""
 
 from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
-from ansys.fluent.core.services.datamodel_se import (
-    DatamodelService as DatamodelService_SE_V0,
-)
-from ansys.fluent.core.services.datamodel_se_v1 import (
-    DatamodelService as DatamodelService_SE,
-)
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI_V0,
 )
@@ -59,20 +53,12 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 __all__ = (
     "BatchOpsService",
     "BatchOps",
-    "DatamodelService_SE",
-    "DatamodelService_SE_V0",
     "DatamodelService_TUI",
     "DatamodelService_TUI_V0",
     "EventsService",
     "EventsServiceV0",
-    "HealthCheckService",
-    "HealthCheckServiceV0",
     "MonitorsService",
     "MonitorsServiceV0",
-    "Reduction",
-    "ReductionV0",
-    "SchemeEvalService",
-    "SchemeEvalServiceV0",
     "SolutionVariableData",
     "SolutionVariableDataV0",
     "SolutionVariableService",
@@ -84,7 +70,6 @@ __all__ = (
 
 
 _service_cls_by_name_v0 = {
-    "datamodel": DatamodelService_SE_V0,
     "tui": DatamodelService_TUI_V0,
     "events": EventsServiceV0,
     "monitors": MonitorsServiceV0,
@@ -95,7 +80,6 @@ _service_cls_by_name_v0 = {
 }
 
 _service_cls_by_name = {
-    "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
     "events": EventsService,
     "monitors": MonitorsService,
@@ -138,6 +122,7 @@ from ansys.fluent.core.services.field_data import (
     FieldDataV261,
 )
 from ansys.fluent.core.services.health_check import HealthCheck
+from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
@@ -256,4 +241,18 @@ class ServiceFactory:
             return FieldDataStreamingV261(
                 self._service_factory.field_data,
                 self._service_factory._chunk_parser,
+            )
+
+    @cached_property
+    def object_model(self):
+        """Object model service."""
+        if self._product_version >= FluentVersion.v271:
+            return ObjectModel(
+                self._service_factory.object_model,
+                self._service_factory.scheme_interpreter,
+            )
+        else:
+            return ObjectModelV261(
+                self._service_factory.object_model,
+                self._service_factory.scheme_interpreter,
             )
