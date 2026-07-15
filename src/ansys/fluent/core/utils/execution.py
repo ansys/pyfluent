@@ -151,8 +151,10 @@ def timeout_loop(
 
     Raises
     ------
+    TypeError
+        If ``obj`` is not callable.
     InvalidArgument
-        If an unrecognized value is passed for ``expected``, or if ``obj`` is not callable.
+        If an unrecognized value is passed for ``expected``.
 
     Examples
     --------
@@ -174,8 +176,8 @@ def timeout_loop(
         kwargs = {}
 
     if not callable(obj):
-        raise InvalidArgument(
-            "The 'obj' parameter must be callable (a function, method, or lambda). "
+        raise TypeError(
+            f"timeout_loop() expects a callable, got {type(obj).__name__} instead"
         )
 
     time_elapsed = 0.0
