@@ -135,7 +135,8 @@ markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",
     "nightly: Tests that run under nightly CI",
     "fluent_version(version): Tests that runs with specified Fluent version",
-    "standalone: Tests that cannot be run within container"
+    "standalone: Tests that cannot be run within container",
+    "rest_server: Tests that require a live Fluent web server"
 ]
 
 [tool.black]

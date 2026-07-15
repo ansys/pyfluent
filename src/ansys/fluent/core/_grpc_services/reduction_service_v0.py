@@ -27,12 +27,14 @@ from typing import Any
 import grpc
 
 from ansys.api.fluent.v0 import reduction_pb2, reduction_pb2_grpc
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_variant_to_value,
+)
 from ansys.fluent.core._grpc_services.reduction_service import (
     BadReductionRequest,
     _locns,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
