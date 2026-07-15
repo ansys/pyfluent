@@ -23,13 +23,6 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI_V0,
-)
-from ansys.fluent.core.services.datamodel_tui_v1 import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServiceV0
 from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
 from ansys.fluent.core.services.solution_variables import (
@@ -45,10 +38,6 @@ from ansys.fluent.core.services.solution_variables_v1 import (
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 __all__ = (
-    "BatchOpsService",
-    "BatchOps",
-    "DatamodelService_TUI",
-    "DatamodelService_TUI_V0",
     "MonitorsService",
     "MonitorsServiceV0",
     "SolutionVariableData",
@@ -60,19 +49,15 @@ __all__ = (
 
 
 _service_cls_by_name_v0 = {
-    "tui": DatamodelService_TUI_V0,
     "monitors": MonitorsServiceV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
-    "batch_ops": BatchOpsService,
 }
 
 _service_cls_by_name = {
-    "tui": DatamodelService_TUI,
     "monitors": MonitorsService,
     "svar": SolutionVariableService,
     "svar_data": SolutionVariableData,
-    "batch_ops": BatchOpsService,
 }
 
 
@@ -102,6 +87,8 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
+from ansys.fluent.core.services.batch_ops import BatchOps
+from ansys.fluent.core.services.datamodel_tui import TextInterface
 from ansys.fluent.core.services.events import Events, EventsV251, EventsV261
 from ansys.fluent.core.services.field_data import (
     FieldData,
@@ -268,3 +255,17 @@ class ServiceFactory:
     def transcript(self):
         """Transcript service."""
         return Transcript(self._service_factory.transcript)
+
+    @cached_property
+    def batch_ops(self):
+        """Batch operations service."""
+        return self._service_factory.batch_ops
+
+    @cached_property
+    def text_interface(self):
+        """Text interface service."""
+        return TextInterface(
+            self._service_factory.text_interface,
+            self._service_factory.application_runtime,
+            self._service_factory.scheme_interpreter,
+        )

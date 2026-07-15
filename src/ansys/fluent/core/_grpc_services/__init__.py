@@ -36,6 +36,9 @@ from ansys.fluent.core._grpc_services.application_runtime_service import (
 from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
+from ansys.fluent.core._grpc_services.batch_ops_service_v0 import (
+    BatchOpsService as BatchOpsServiceV0,
+)
 from ansys.fluent.core._grpc_services.events_service import EventsService
 from ansys.fluent.core._grpc_services.events_service_v0 import (
     EventsService as EventsServiceV0,
@@ -65,6 +68,10 @@ from ansys.fluent.core._grpc_services.scheme_interpreter_service_v0 import (
 from ansys.fluent.core._grpc_services.settings_service import SettingsService
 from ansys.fluent.core._grpc_services.settings_service_v0 import (
     SettingsService as SettingsServiceV0,
+)
+from ansys.fluent.core._grpc_services.text_interface_service import TextInterfaceService
+from ansys.fluent.core._grpc_services.text_interface_service_v0 import (
+    TextInterfaceService as TextInterfaceServiceV0,
 )
 from ansys.fluent.core._grpc_services.transcript_service import TranscriptService
 from ansys.fluent.core._grpc_services.transcript_service_v0 import (
@@ -224,10 +231,24 @@ class GRPCServiceFactory:
         )
 
     @cached_property
+    def batch_ops(self) -> BatchOpsServiceV0:
+        """gRPC stub for batch RPC operations (v0 only — no v1 implementation)."""
+        return self._get_instantiated_grpc_service(BatchOpsServiceV0)
+
+    @cached_property
     def transcript(self) -> TranscriptService | TranscriptServiceV0:
         """gRPC stub for transcript operations."""
         return (
             self._get_instantiated_grpc_service(TranscriptService)
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(TranscriptServiceV0)
+        )
+
+    @cached_property
+    def text_interface(self) -> TextInterfaceService | TextInterfaceServiceV0:
+        """gRPC stub for text interface operations."""
+        return (
+            self._get_instantiated_grpc_service(TextInterfaceService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(TextInterfaceServiceV0)
         )
