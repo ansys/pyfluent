@@ -261,5 +261,6 @@ class ServiceFactory:
             )
         else:
             return EventsV261(
+                self._service_factory.events,
                 self._service_factory.application_runtime,
             )

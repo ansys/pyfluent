@@ -26,8 +26,8 @@
 import grpc
 
 from ansys.api.fluent.v0 import events_pb2_grpc
+from ansys.fluent.core._grpc_services.streaming_service import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.streaming import StreamingService
 
 
 class EventsService(
@@ -35,9 +35,12 @@ class EventsService(
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the events gRPC service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of EventsService class."""
         super().__init__(
             stub=events_pb2_grpc.EventsStub(channel),
             metadata=metadata,
         )
+        del fluent_error_state  # unused in v0

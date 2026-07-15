@@ -51,12 +51,23 @@ class Events(AbstractEvents):
         """Unregister pause on solution events."""
         self.service.unregister_pause_on_solution_events(registration_id)
 
+    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+        """Begin streaming from Fluent."""
+        return self.service.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
+
+    def end_streaming(self, id, stream_begin_method) -> None:
+        """End streaming from Fluent."""
+        self.service.end_streaming(id, stream_begin_method)
+
 
 class EventsV261(AbstractEvents):
     """Events backed by the Events gRPC service."""
 
-    def __init__(self, application_runtime_service):
+    def __init__(self, service, application_runtime_service):
         """Initialize ApplicationRuntime."""
+        self.service = service
         self.application_runtime_service = application_runtime_service
 
     def register_pause_on_solution_events(
@@ -76,3 +87,13 @@ class EventsV261(AbstractEvents):
         self.application_runtime_service.unregister_pause_on_solution_events(
             registration_id
         )
+
+    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+        """Begin streaming from Fluent."""
+        return self.service.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
+
+    def end_streaming(self, id, stream_begin_method) -> None:
+        """End streaming from Fluent."""
+        self.service.end_streaming(id, stream_begin_method)

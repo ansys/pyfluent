@@ -26,20 +26,23 @@
 import grpc
 
 from ansys.api.fluent.v1 import events_pb2, events_pb2_grpc
+from ansys.fluent.core._grpc_services.streaming_service import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
 
 
 class EventsService(StreamingService, ServiceProtocol):
     """Class wrapping the events gRPC service of Fluent (v1 proto API)."""
 
-    def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of EventsService class."""
         super().__init__(
             stub=events_pb2_grpc.EventsStub(channel),
             metadata=metadata,
         )
+        del fluent_error_state  # unused in v1
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
