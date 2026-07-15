@@ -8,7 +8,7 @@
 Axial Fan Performance Curve Workflow
 ========================================================
 """
-
+# %%
 # Contributors: Mustafa Kaddoura, Achilleas Krikas
 # Product Version: Ansys Fluent 2026 R1
 
