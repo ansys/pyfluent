@@ -184,9 +184,7 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = service_creator(
-            "transcript", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
+        self._transcript_service = fluent_connection._service_factory.transcript
         self.transcript = (
             Transcript if fluent_connection._server_supports_v1 else TranscriptV0
         )(self._transcript_service)

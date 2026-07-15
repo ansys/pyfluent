@@ -66,6 +66,10 @@ from ansys.fluent.core._grpc_services.settings_service import SettingsService
 from ansys.fluent.core._grpc_services.settings_service_v0 import (
     SettingsService as SettingsServiceV0,
 )
+from ansys.fluent.core._grpc_services.transcript_service import TranscriptService
+from ansys.fluent.core._grpc_services.transcript_service_v0 import (
+    TranscriptService as TranscriptServiceV0,
+)
 
 
 def _server_supports_v1(channel) -> bool:
@@ -217,4 +221,13 @@ class GRPCServiceFactory:
             self._get_instantiated_grpc_service(EventsService)
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(EventsServiceV0)
+        )
+
+    @cached_property
+    def transcript(self) -> TranscriptService | TranscriptServiceV0:
+        """gRPC stub for transcript operations."""
+        return (
+            self._get_instantiated_grpc_service(TranscriptService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(TranscriptServiceV0)
         )

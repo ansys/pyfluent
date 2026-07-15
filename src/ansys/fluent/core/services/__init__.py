@@ -42,10 +42,6 @@ from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
     SolutionVariableService,
 )
-from ansys.fluent.core.services.transcript import (
-    TranscriptService as TranscriptServiceV0,
-)
-from ansys.fluent.core.services.transcript_v1 import TranscriptService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 __all__ = (
@@ -59,8 +55,6 @@ __all__ = (
     "SolutionVariableDataV0",
     "SolutionVariableService",
     "SolutionVariableServiceV0",
-    "TranscriptService",
-    "TranscriptServiceV0",
     "service_creator",
 )
 
@@ -70,7 +64,6 @@ _service_cls_by_name_v0 = {
     "monitors": MonitorsServiceV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
-    "transcript": TranscriptServiceV0,
     "batch_ops": BatchOpsService,
 }
 
@@ -79,7 +72,6 @@ _service_cls_by_name = {
     "monitors": MonitorsService,
     "svar": SolutionVariableService,
     "svar_data": SolutionVariableData,
-    "transcript": TranscriptService,
     "batch_ops": BatchOpsService,
 }
 
@@ -121,6 +113,7 @@ from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
+from ansys.fluent.core.services.transcript import Transcript
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
     FieldDataStreamingV261,
@@ -264,3 +257,8 @@ class ServiceFactory:
                 self._service_factory.events,
                 self._service_factory.application_runtime,
             )
+
+    @cached_property
+    def transcript(self):
+        """Transcript service."""
+        return Transcript(self._service_factory.transcript)

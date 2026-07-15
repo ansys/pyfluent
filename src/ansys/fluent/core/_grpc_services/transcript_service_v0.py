@@ -21,22 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Transcript gRPC service of Fluent."""
+"""Wrapper over the transcript gRPC service of Fluent (v0 proto API)."""
+
+import grpc
+
+from ansys.api.fluent.v0 import transcript_pb2_grpc
+from ansys.fluent.core._grpc_services.streaming_service import StreamingService
+from ansys.fluent.core.services._protocols import ServiceProtocol
 
 
-class Transcript:
-    """Transcript backed by the Transcript gRPC service."""
+class TranscriptService(
+    StreamingService, ServiceProtocol
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
+    """Class wrapping the transcript gRPC service of Fluent."""
 
-    def __init__(self, service):
-        """Initialize ApplicationRuntime."""
-        self.service = service
-
-    def begin_streaming(self, request, started_evt, id, stream_begin_method):
-        """Begin streaming from Fluent."""
-        return self.service.begin_streaming(
-            request, started_evt, id=id, stream_begin_method=stream_begin_method
+    def __init__(
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+    ) -> None:
+        """__init__ method of TranscriptService class."""
+        super().__init__(
+            stub=transcript_pb2_grpc.TranscriptStub(channel),
+            metadata=metadata,
         )
-
-    def end_streaming(self, id, stream_begin_method) -> None:
-        """End streaming from Fluent."""
-        self.service.end_streaming(id, stream_begin_method)
+        del fluent_error_state  # unused in v0
