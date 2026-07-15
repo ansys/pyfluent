@@ -190,7 +190,6 @@ def timeout_loop(
     if not callable(obj):
         raise InvalidArgument(
             f"The 'obj' parameter must be callable (a function, method, or lambda). "
-            f"Pass 'session.is_active' not 'session.is_active()'. "
             f"You can also use a lambda: 'lambda: session.is_active()' if args/kwargs are needed."
         )
 
