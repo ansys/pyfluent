@@ -102,7 +102,7 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
-from ansys.fluent.core.services.events import Events, EventsV261
+from ansys.fluent.core.services.events import Events, EventsV251, EventsV261
 from ansys.fluent.core.services.field_data import (
     FieldData,
     FieldDataV251,
@@ -248,15 +248,21 @@ class ServiceFactory:
     @cached_property
     def events(self):
         """Events service."""
-        if self._product_version >= FluentVersion.v271:
-            return Events(
-                self._service_factory.events,
-            )
-        else:
-            return EventsV261(
-                self._service_factory.events,
-                self._service_factory.application_runtime,
-            )
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return Events(
+                    self._service_factory.events,
+                )
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return EventsV261(
+                    self._service_factory.events,
+                    self._service_factory.application_runtime,
+                )
+            case _:
+                return EventsV251(
+                    self._service_factory.events,
+                    self._service_factory.scheme_interpreter,
+                )
 
     @cached_property
     def transcript(self):

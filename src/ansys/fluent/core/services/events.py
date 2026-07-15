@@ -97,3 +97,69 @@ class EventsV261(AbstractEvents):
     def end_streaming(self, id, stream_begin_method) -> None:
         """End streaming from Fluent."""
         self.service.end_streaming(id, stream_begin_method)
+
+
+class EventsV251(AbstractEvents):
+    """Events backed by the Events gRPC service."""
+
+    def __init__(self, service, scheme_interpreter_service):
+        """Initialize ApplicationRuntime."""
+        self.service = service
+        self.scheme_interpreter_service = scheme_interpreter_service
+
+    def register_pause_on_solution_events(
+        self, solution_event: SolverEvent | SolverEventV0
+    ) -> int:
+        """Register pause on solution events."""
+        unique_id: int = self.scheme_interpreter_service.eval(
+            f"""
+            (let
+                ((ids
+                    (let loop ((i 1))
+                        (define next-id (string->symbol (format #f "pyfluent-~d" i)))
+                        (if (check-monitor-existence next-id)
+                            (loop (1+ i))
+                            (list i next-id)
+                            )
+                        )
+                    ))
+                (register-solution-monitor
+                    (cadr ids)
+                    (lambda (niter time)
+                        (if (integer? niter)
+                            (begin
+                                (events/transmit 'auto-pause (cons (car ids) niter))
+                                (grpcserver/auto-pause (is-server-running?) (cadr ids))
+                                )
+                            )
+                        ()
+                        )
+                    {"#t" if solution_event == SolverEvent.TIMESTEP_ENDED else "#f"}
+                    )
+                (car ids)
+                )
+        """
+        )
+        return unique_id
+
+    def resume_on_solution_event(self, registration_id: int) -> None:
+        """Resume on solution event."""
+        self.scheme_interpreter_service.eval(
+            f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{registration_id})"
+        )
+
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
+        """Unregister pause on solution events."""
+        self.scheme_interpreter_service.eval(
+            f"(cancel-solution-monitor 'pyfluent-{registration_id})"
+        )
+
+    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+        """Begin streaming from Fluent."""
+        return self.service.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
+
+    def end_streaming(self, id, stream_begin_method) -> None:
+        """End streaming from Fluent."""
+        self.service.end_streaming(id, stream_begin_method)
