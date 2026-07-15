@@ -8,6 +8,7 @@
 Axial Fan Performance Curve Workflow
 ========================================================
 """
+
 # %%
 # Contributors: Mustafa Kaddoura, Achilleas Krikas
 # Product Version: Ansys Fluent 2026 R1
@@ -165,7 +166,9 @@ inlet.turbulence.turbulent_intensity = 0.05
 inlet.turbulence.turbulent_viscosity_ratio = 10
 
 # Boundary conditions: 'pressure-outlet' boundary: type: Pressure Outlet
-boundary_conditions.set_zone_type(new_type="pressure-outlet", zone_list=["pressure-outlet"])
+boundary_conditions.set_zone_type(
+    new_type="pressure-outlet", zone_list=["pressure-outlet"]
+)
 outlet = solver.settings.setup.boundary_conditions.pressure_outlet["pressure-outlet"]
 outlet.momentum.gauge_pressure.value = "pressure_outlet"
 outlet.turbulence.turbulence_specification = "Intensity and Viscosity Ratio"
