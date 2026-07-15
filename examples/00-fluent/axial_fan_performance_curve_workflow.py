@@ -19,12 +19,12 @@ Axial Fan Performance Curve Workflow
 # This example demonstrates an end-to-end PyFluent workflow for simulating an axial fan and performing a parametric study to generate its performance curve.
 #
 # The workflow includes:
-# - Importing a CFD mesh
-# - Defining input parameters for the parametric study
-# - Configuring the Fluent solver and physical models
-# - Creating report definitions and output parameters
-# - Running the parametric study across multiple operating conditions
-# - Plotting the resulting fan performance curve
+# * Importing a CFD mesh
+# * Defining input parameters for the parametric study
+# * Configuring the Fluent solver and physical models
+# * Creating report definitions and output parameters
+# * Running the parametric study across multiple operating conditions
+# * Plotting the resulting fan performance curve
 
 # %%
 # .. figure:: /_static/axial_fan_performance_curve/problem_schematic.png
