@@ -36,6 +36,10 @@ from ansys.fluent.core._grpc_services.application_runtime_service import (
 from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
+from ansys.fluent.core._grpc_services.events_service import EventsService
+from ansys.fluent.core._grpc_services.events_service_v0 import (
+    EventsService as EventsServiceV0,
+)
 from ansys.fluent.core._grpc_services.field_data_service import FieldDataService
 from ansys.fluent.core._grpc_services.field_data_service_v0 import (
     FieldDataService as FieldDataServiceV0,
@@ -204,4 +208,13 @@ class GRPCServiceFactory:
             self._get_instantiated_grpc_service(ObjectModelService)
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(ObjectModelServiceV0)
+        )
+
+    @cached_property
+    def events(self) -> EventsService | EventsServiceV0:
+        """gRPC stub for events operations."""
+        return (
+            self._get_instantiated_grpc_service(EventsService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(EventsServiceV0)
         )

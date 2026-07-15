@@ -30,8 +30,6 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.datamodel_tui_v1 import (
     DatamodelService as DatamodelService_TUI,
 )
-from ansys.fluent.core.services.events import EventsService as EventsServiceV0
-from ansys.fluent.core.services.events_v1 import EventsService
 from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServiceV0
 from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
 from ansys.fluent.core.services.solution_variables import (
@@ -55,8 +53,6 @@ __all__ = (
     "BatchOps",
     "DatamodelService_TUI",
     "DatamodelService_TUI_V0",
-    "EventsService",
-    "EventsServiceV0",
     "MonitorsService",
     "MonitorsServiceV0",
     "SolutionVariableData",
@@ -71,7 +67,6 @@ __all__ = (
 
 _service_cls_by_name_v0 = {
     "tui": DatamodelService_TUI_V0,
-    "events": EventsServiceV0,
     "monitors": MonitorsServiceV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
@@ -81,7 +76,6 @@ _service_cls_by_name_v0 = {
 
 _service_cls_by_name = {
     "tui": DatamodelService_TUI,
-    "events": EventsService,
     "monitors": MonitorsService,
     "svar": SolutionVariableService,
     "svar_data": SolutionVariableData,
@@ -116,6 +110,7 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
+from ansys.fluent.core.services.events import Events, EventsV261
 from ansys.fluent.core.services.field_data import (
     FieldData,
     FieldDataV251,
@@ -255,4 +250,16 @@ class ServiceFactory:
             return ObjectModelV261(
                 self._service_factory.object_model,
                 self._service_factory.scheme_interpreter,
+            )
+
+    @cached_property
+    def events(self):
+        """Events service."""
+        if self._product_version >= FluentVersion.v271:
+            return Events(
+                self._service_factory.events,
+            )
+        else:
+            return EventsV261(
+                self._service_factory.application_runtime,
             )

@@ -222,9 +222,7 @@ class BaseSession:
         ).create(fluent_connection._channel, fluent_connection._metadata)
 
         if event_type:
-            events_service = service_creator(
-                "events", supports_v1=fluent_connection._server_supports_v1
-            ).create(fluent_connection._channel, fluent_connection._metadata)
+            events_service = fluent_connection._service_factory.events
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
                     event_type,

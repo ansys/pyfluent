@@ -21,58 +21,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the events gRPC service of Fluent."""
+"""Abstract events wrapper."""
 
-from ansys.fluent.core.services.abstract_events import AbstractEvents
+from abc import ABC, abstractmethod
+
 from ansys.fluent.core.streaming_services.events_streaming import (
     SolverEvent as SolverEventV0,
 )
 from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
 
 
-class Events(AbstractEvents):
-    """Events backed by the Events gRPC service."""
+class AbstractEvents(ABC):
+    """Abstract base class for the events."""
 
-    def __init__(self, service):
-        """Initialize ApplicationRuntime."""
-        self.service = service
-
+    @abstractmethod
     def register_pause_on_solution_events(
         self, solution_event: SolverEvent | SolverEventV0
     ) -> int:
         """Register pause on solution events."""
-        return self.service.register_pause_on_solution_events(solution_event)
+        pass
 
+    @abstractmethod
     def resume_on_solution_event(self, registration_id: int) -> None:
         """Resume on solution event."""
-        self.service.resume_on_solution_event(registration_id)
+        pass
 
+    @abstractmethod
     def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
-        self.service.unregister_pause_on_solution_events(registration_id)
-
-
-class EventsV261(AbstractEvents):
-    """Events backed by the Events gRPC service."""
-
-    def __init__(self, application_runtime_service):
-        """Initialize ApplicationRuntime."""
-        self.application_runtime_service = application_runtime_service
-
-    def register_pause_on_solution_events(
-        self, solution_event: SolverEvent | SolverEventV0
-    ) -> int:
-        """Register pause on solution events."""
-        return self.application_runtime_service.register_pause_on_solution_events(
-            solution_event
-        )
-
-    def resume_on_solution_event(self, registration_id: int) -> None:
-        """Resume on solution event."""
-        self.application_runtime_service.resume_on_solution_event(registration_id)
-
-    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
-        """Unregister pause on solution events."""
-        self.application_runtime_service.unregister_pause_on_solution_events(
-            registration_id
-        )
+        pass
