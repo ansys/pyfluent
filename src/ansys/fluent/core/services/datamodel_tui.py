@@ -218,6 +218,7 @@ class PyMenu:
         """
         with ApiUpgradeAdvisor(
             self._service._app_utilities,
+            self._service._scheme_eval,
             self._version,
             self._mode,
         ):
