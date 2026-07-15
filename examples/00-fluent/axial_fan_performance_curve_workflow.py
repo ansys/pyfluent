@@ -57,9 +57,9 @@ import_file_name = examples.download_file(
 # Launch Fluent in solution mode with double precision running on eight processors.
 
 solver = pyfluent.launch_fluent(
-    mode = pyfluent.FluentMode.SOLVER,
-    precision = pyfluent.Precision.DOUBLE,
-    ui_mode = pyfluent.UIMode.GUI,
+    mode=pyfluent.FluentMode.SOLVER,
+    precision=pyfluent.Precision.DOUBLE,
+    ui_mode=pyfluent.UIMode.GUI,
     processor_count=8,
     cleanup_on_exit=True,
 )
@@ -156,22 +156,20 @@ solver.settings.setup.cell_zone_conditions.fluid[
 
 # Boundary conditions: 'inlet' boundary: type: Pressure Inlet
 boundary_conditions = solver.settings.setup.boundary_conditions
-boundary_conditions.set_zone_type(new_type = 'pressure-inlet', zone_list = ['inlet'])
+boundary_conditions.set_zone_type(new_type="pressure-inlet", zone_list=["inlet"])
 inlet = solver.settings.setup.boundary_conditions.pressure_inlet["inlet"]
 inlet.momentum.gauge_total_pressure.value = 0
-inlet.turbulence.turbulence_specification = (
-    'Intensity and Viscosity Ratio'
-)
+inlet.turbulence.turbulence_specification = "Intensity and Viscosity Ratio"
 inlet.turbulence.turbulent_intensity = 0.05
 inlet.turbulence.turbulent_viscosity_ratio = 10
 
 # Boundary conditions: 'pressure-outlet' boundary: type: Pressure Outlet
-boundary_conditions.set_zone_type(new_type = 'pressure-outlet', zone_list = ['pressure-outlet'])
-outlet = solver.settings.setup.boundary_conditions.pressure_outlet["pressure-outlet"]
-outlet.momentum.gauge_pressure.value = 'pressure_outlet'
-outlet.turbulence.turbulence_specification = (
-    'Intensity and Viscosity Ratio'
+boundary_conditions.set_zone_type(
+    new_type="pressure-outlet", zone_list=["pressure-outlet"]
 )
+outlet = solver.settings.setup.boundary_conditions.pressure_outlet["pressure-outlet"]
+outlet.momentum.gauge_pressure.value = "pressure_outlet"
+outlet.turbulence.turbulence_specification = "Intensity and Viscosity Ratio"
 outlet.turbulence.turbulent_intensity = 0.05
 outlet.turbulence.turbulent_viscosity_ratio = 10
 
