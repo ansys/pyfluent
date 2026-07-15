@@ -137,8 +137,6 @@ def timeout_loop(
         Callable object (function, method, or lambda) to evaluate while looping if it
         does not return expected response. When the callable is invoked, it will be
         called repeatedly until the expected condition is met or timeout elapses.
-        **Important**: Pass a method reference (e.g., ``session.is_active``) NOT a
-        method call (e.g., ``session.is_active()``). See Examples below.
     timeout : float
         Time before cancelling execution and returning early.
     args : Any, optional
@@ -169,18 +167,6 @@ def timeout_loop(
     >>> func2("test", word="hello")
     True
     >>> response = timeout_loop(func2, timeout=5.0, expected="falsy", args=("test",), kwargs={"word":"hello",})
-
-    Checking if a session is no longer active (using method reference):
-
-    >>> # CORRECT - pass method reference without parentheses
-    >>> response = timeout_loop(session.is_active, timeout=5.0, expected="falsy")
-
-    >>> # INCORRECT - do NOT call the method, this will hang
-    >>> response = timeout_loop(session.is_active(), timeout=5.0, expected="falsy")  # doctest: +SKIP
-
-    Using lambda for more complex conditions:
-
-    >>> response = timeout_loop(lambda: session.settings.solver.case == "loaded", timeout=5.0)
     """
     if args is None:
         args = ()
@@ -189,8 +175,7 @@ def timeout_loop(
 
     if not callable(obj):
         raise InvalidArgument(
-            f"The 'obj' parameter must be callable (a function, method, or lambda). "
-            f"You can also use a lambda: 'lambda: session.is_active()' if args/kwargs are needed."
+            "The 'obj' parameter must be callable (a function, method, or lambda). "
         )
 
     time_elapsed = 0.0
