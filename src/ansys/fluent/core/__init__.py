@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,8 +33,7 @@ from ansys.fluent.core.logger import *
 
 # isort: on
 
-# Wildcard imports from modules - order matters for circular dependencies
-from ansys.fluent.core.field_data_interfaces import *
+from ansys.fluent.core.fields.field_data_interfaces import *
 from ansys.fluent.core.get_build_details import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
@@ -125,6 +125,46 @@ _submodules = {
     "variable_strategies": "ansys.fluent.core.variable_strategies",
     "workflow": "ansys.fluent.core.workflow",
 }
+__version__ = "0.41.dev1"
+
+_VERSION_INFO = None
+"""
+Global variable indicating the version info of the PyFluent package.
+Build timestamp and commit hash are added to this variable during packaging.
+"""
+
+import os as _os  # noqa: E402
+import warnings as _warnings  # noqa: E402
+
+_THIS_DIRNAME = _os.path.dirname(__file__)
+_README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rst"))
+
+if _os.path.exists(_README_FILE):
+    with open(_README_FILE, encoding="utf8") as f:
+        __doc__ = f.read()
+
+
+def version_info() -> str:
+    """Method returning the version of PyFluent being used.
+
+    Returns
+    -------
+    str
+        The PyFluent version being used.
+
+    Notes
+    -------
+    Only available in packaged versions. Otherwise it will return __version__.
+    """
+    return _VERSION_INFO if _VERSION_INFO is not None else __version__
+
+
+import pydoc as _pydoc  # noqa: E402
+
+from ansys.fluent.core.utils import fldoc as _fldoc  # noqa: E402
+
+_pydoc.text.docother = _fldoc.docother.__get__(_pydoc.text, _pydoc.TextDoc)
+
 
 _config_by_deprecated_name = {
     "FLUENT_RELEASE_VERSION": "fluent_release_version",

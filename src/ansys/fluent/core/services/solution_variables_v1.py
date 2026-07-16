@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,8 +36,33 @@ from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
 from ansys.api.fluent.v1 import solution_variable_pb2_grpc as SvarGrpcModule
 from ansys.fluent.core.services import solution_variables as _v0
-from ansys.fluent.core.services.field_data_v1 import _FieldDataConstants
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
+
+
+class _FieldDataConstants:
+    """Defines constants for Fluent field data."""
+
+    proto_field_type_to_np_data_type = {
+        FieldDataProtoModule.FieldType.FIELD_TYPE_INT_ARRAY: np.int32,
+        FieldDataProtoModule.FieldType.FIELD_TYPE_LONG_ARRAY: np.int64,
+        FieldDataProtoModule.FieldType.FIELD_TYPE_FLOAT_ARRAY: np.float32,
+        FieldDataProtoModule.FieldType.FIELD_TYPE_DOUBLE_ARRAY: np.float64,
+    }
+    np_data_type_to_proto_field_type = {
+        np.int32: FieldDataProtoModule.FieldType.FIELD_TYPE_INT_ARRAY,
+        np.int64: FieldDataProtoModule.FieldType.FIELD_TYPE_LONG_ARRAY,
+        np.float32: FieldDataProtoModule.FieldType.FIELD_TYPE_FLOAT_ARRAY,
+        np.float64: FieldDataProtoModule.FieldType.FIELD_TYPE_DOUBLE_ARRAY,
+    }
+    chunk_size = 256 * 1024
+    bytes_stream = True
+    payloadTags = {
+        FieldDataProtoModule.PayloadTag.PAYLOAD_TAG_OVERSET_MESH: 1,
+        FieldDataProtoModule.PayloadTag.PAYLOAD_TAG_ELEMENT_LOCATION: 2,
+        FieldDataProtoModule.PayloadTag.PAYLOAD_TAG_NODE_LOCATION: 4,
+        FieldDataProtoModule.PayloadTag.PAYLOAD_TAG_BOUNDARY_VALUES: 8,
+    }
+
 
 override_help_text = _v0.override_help_text
 PyFluentDeprecationWarning = _v0.PyFluentDeprecationWarning

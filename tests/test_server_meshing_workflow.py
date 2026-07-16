@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +25,7 @@ from conftest import SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
-from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.services.object_model import PyMenu
 
 
 @pytest.mark.nightly

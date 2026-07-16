@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +39,6 @@ import argparse
 import logging
 import os
 from pathlib import Path
-import pickle
 import platform
 import shutil
 import string
@@ -182,15 +182,6 @@ class _TUIMenu:
     def get_command_path(self, command: str) -> str:
         """Get the full path to a command."""
         return convert_path_to_grpc_path(self.path + [command])
-
-
-class _RenameModuleUnpickler(pickle.Unpickler):
-    def find_class(self, module, name):
-        renamed_module = module
-        if module == "tuigen":
-            renamed_module = "ansys.fluent.core.codegen.tuigen"
-
-        return super().find_class(renamed_module, name)
 
 
 class TUIGenerator:

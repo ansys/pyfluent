@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -279,16 +280,14 @@ class StandaloneLauncher:
     @staticmethod
     def _disable_idle_timeout_guard(session):
         try:
-            if session.get_fluent_version() >= FluentVersion.v271:
-                session._app_utilities.set_idle_timeout(
-                    session.preferences.General.IdleTimeout() * 60
-                )
-            else:
-                session.scheme_eval.eval(
-                    f"(set-session-idle-timeout {session.preferences.General.IdleTimeout()})"
-                )
+            default_idle_timeout = session.preferences.General.IdleTimeout()
+        except RuntimeError:
+            # This exception is raised only while running codegen locally before the preferences root is available.
+            default_idle_timeout = 0
+        try:
+            session.application_runtime.set_idle_timeout(default_idle_timeout * 60)
         except Exception as ex:
-            logger.debug(f"Could not reset Idle Timeout: {ex}")
+            raise RuntimeError("Could not reset Idle Timeout") from ex
 
     def __call__(
         self,
