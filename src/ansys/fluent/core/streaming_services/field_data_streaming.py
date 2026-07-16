@@ -23,6 +23,7 @@
 
 """Module for Field data streaming."""
 
+from collections.abc import Callable
 from typing import Any
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModuleV0
