@@ -73,6 +73,12 @@ from ansys.fluent.core._grpc_services.settings_service import SettingsService
 from ansys.fluent.core._grpc_services.settings_service_v0 import (
     SettingsService as SettingsServiceV0,
 )
+from ansys.fluent.core._grpc_services.solution_variable_service import (
+    SolutionVariableService,
+)
+from ansys.fluent.core._grpc_services.solution_variable_service_v0 import (
+    SolutionVariableService as SolutionVariableServiceV0,
+)
 from ansys.fluent.core._grpc_services.text_interface_service import TextInterfaceService
 from ansys.fluent.core._grpc_services.text_interface_service_v0 import (
     TextInterfaceService as TextInterfaceServiceV0,
@@ -264,4 +270,13 @@ class GRPCServiceFactory:
             self._get_instantiated_grpc_service(MonitorService)
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(MonitorServiceV0)
+        )
+
+    @cached_property
+    def solution_variable(self) -> SolutionVariableService | SolutionVariableServiceV0:
+        """gRPC stub for solution variable operations."""
+        return (
+            self._get_instantiated_grpc_service(SolutionVariableService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(SolutionVariableServiceV0)
         )
