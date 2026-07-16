@@ -34,7 +34,7 @@ class Events(AbstractEvents):
     """Events backed by the Events gRPC service."""
 
     def __init__(self, service):
-        """Initialize ApplicationRuntime."""
+        """Initialize Events."""
         self.service = service
 
     def register_pause_on_solution_events(

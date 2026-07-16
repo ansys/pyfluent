@@ -51,6 +51,10 @@ from ansys.fluent.core._grpc_services.health_check_service import HealthCheckSer
 from ansys.fluent.core._grpc_services.health_check_service_v0 import (
     HealthCheckService as HealthCheckServiceV0,
 )
+from ansys.fluent.core._grpc_services.monitor_service import MonitorService
+from ansys.fluent.core._grpc_services.monitor_service_v0 import (
+    MonitorService as MonitorServiceV0,
+)
 from ansys.fluent.core._grpc_services.object_model_service import ObjectModelService
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     ObjectModelService as ObjectModelServiceV0,
@@ -251,4 +255,13 @@ class GRPCServiceFactory:
             self._get_instantiated_grpc_service(TextInterfaceService)
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(TextInterfaceServiceV0)
+        )
+
+    @cached_property
+    def monitor(self) -> MonitorService | MonitorServiceV0:
+        """gRPC stub for monitor operations."""
+        return (
+            self._get_instantiated_grpc_service(MonitorService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(MonitorServiceV0)
         )
