@@ -23,47 +23,13 @@
 
 """Wrapper over the monitor gRPC service of Fluent."""
 
-from google.protobuf.json_format import MessageToDict
-import grpc
 
-from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
-from ansys.api.fluent.v0 import monitor_pb2_grpc as MonitorGrpcModule
-from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    TracingInterceptor,
-)
-from ansys.fluent.core.services.streaming import StreamingService
+class Monitor:
+    """Monitor backed by the Monitor gRPC service."""
 
-
-class MonitorsService(
-    StreamingService, ServiceProtocol
-):  # pyright: ignore[reportUnsafeMultipleInheritance]
-    """Class wrapping the monitor gRPC service of Fluent."""
-
-    def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
-        """__init__ method of MonitorsService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
-        self._stub = self._create_stub(intercept_channel)
-        self._metadata = metadata
-        super().__init__(
-            stub=self._stub,
-            metadata=self._metadata,
-        )
-
-    def _create_stub(self, intercept_channel):
-        """Create the Monitor gRPC stub.
-
-        Extracted as a hook so that the v1 adapter can swap in the v1 stub
-        without duplicating the entire ``__init__`` interceptor chain.
-        """
-        return MonitorGrpcModule.MonitorStub(intercept_channel)
+    def __init__(self, service):
+        """Initialize Monitor."""
+        self.service = service
 
     def get_monitors_info(self) -> dict:
         """Get monitors information.
@@ -77,10 +43,14 @@ class MonitorsService(
         dict
             Dictionary containing the monitors information.
         """
-        monitors_info = {}
-        request = MonitorModule.GetMonitorsRequest()
-        response = self._stub.GetMonitors(request, metadata=self._metadata)
-        for monitor_set in response.monitorset:
-            monitor_info = MessageToDict(monitor_set)
-            monitors_info[monitor_set.name] = monitor_info
-        return monitors_info
+        return self.service.get_monitors_info()
+
+    def begin_streaming(self, request, started_evt, id, stream_begin_method):
+        """Begin streaming from Fluent."""
+        return self.service.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
+
+    def end_streaming(self, id, stream_begin_method) -> None:
+        """End streaming from Fluent."""
+        self.service.end_streaming(id, stream_begin_method)

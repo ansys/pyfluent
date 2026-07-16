@@ -23,8 +23,6 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServiceV0
-from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData as SolutionVariableDataV0,
 )
@@ -38,8 +36,6 @@ from ansys.fluent.core.services.solution_variables_v1 import (
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 __all__ = (
-    "MonitorsService",
-    "MonitorsServiceV0",
     "SolutionVariableData",
     "SolutionVariableDataV0",
     "SolutionVariableService",
@@ -49,13 +45,11 @@ __all__ = (
 
 
 _service_cls_by_name_v0 = {
-    "monitors": MonitorsServiceV0,
     "svar": SolutionVariableServiceV0,
     "svar_data": SolutionVariableDataV0,
 }
 
 _service_cls_by_name = {
-    "monitors": MonitorsService,
     "svar": SolutionVariableService,
     "svar_data": SolutionVariableData,
 }
@@ -96,6 +90,7 @@ from ansys.fluent.core.services.field_data import (
     FieldDataV261,
 )
 from ansys.fluent.core.services.health_check import HealthCheck
+from ansys.fluent.core.services.monitor import Monitor
 from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
@@ -269,3 +264,8 @@ class ServiceFactory:
             self._service_factory.application_runtime,
             self._service_factory.scheme_interpreter,
         )
+
+    @cached_property
+    def monitor(self):
+        """Monitor service."""
+        return Monitor(self._service_factory.monitor)

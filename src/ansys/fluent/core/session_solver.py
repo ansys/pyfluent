@@ -36,8 +36,7 @@ from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services import MonitorsServiceV0, service_creator
-from ansys.fluent.core.services.monitor_v1 import MonitorsService
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData as SolutionVariableDataV0,
@@ -189,11 +188,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             fluent_connection._server_supports_v1
         )
 
-        monitors_service = service_creator(
-            "monitors", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel, fluent_connection._metadata, self._error_state
-        )
+        monitors_service = fluent_connection._service_factory.monitor
         #: Manage Fluent's solution monitors.
         _MonitorsManager = (
             MonitorsManager
