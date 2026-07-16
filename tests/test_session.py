@@ -698,8 +698,6 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(PyFluentDeprecationWarning):
-        solver.svar_data
 
     assert {
         "field_data",
@@ -1088,7 +1086,7 @@ def test_dir_for_session(new_meshing_session_wo_exit):
         "reduction",
     ]:
         # Deprecated methods are accessible but hidden in dir()
-        if attr in ["field_data", "field_info"]:
+        if attr in ["field_data", "field_info", "svar_data", "svar_info"]:
             assert getattr(solver, attr, None) is None
         else:
             assert getattr(solver, attr)

@@ -377,8 +377,8 @@ class SolutionVariableService(ServiceProtocol):
         solution_variables_info = None
         for zone_name in zone_names:
             request = solution_variable_pb2.GetSolutionVariableInfoRequest(
-                domainId=allowed_domain_names.valid_name(domain_name),
-                zoneId=allowed_zone_names.valid_name(zone_name),
+                domain_id=allowed_domain_names.valid_name(domain_name),
+                zone_id=allowed_zone_names.valid_name(zone_name),
             )
             response = self._stub.GetSolutionVariableInfo(
                 request, metadata=self._metadata
