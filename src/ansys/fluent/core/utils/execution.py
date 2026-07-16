@@ -175,14 +175,13 @@ def timeout_loop(
     if kwargs is None:
         kwargs = {}
 
-    if not callable(obj):
-        raise TypeError(
-            f"timeout_loop() expects a callable, got {type(obj).__name__} instead"
-        )
-
     time_elapsed = 0.0
     while time_elapsed <= timeout:
-        ret_obj = obj(*args, **kwargs)
+        try:
+            ret_obj = obj(*args, **kwargs)
+        except TypeError as ex:
+            raise TypeError(f"Error calling 'obj': {ex}") from ex
+
         if expected == "truthy":
             if ret_obj:
                 return ret_obj
@@ -191,6 +190,7 @@ def timeout_loop(
                 return ret_obj
         else:
             raise InvalidArgument("Specify 'expected' as either 'truthy' or 'falsy'.")
+
         time.sleep(idle_period)
         time_elapsed += idle_period
 
