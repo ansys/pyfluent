@@ -206,4 +206,17 @@ def __dir__():
     return sorted([s for s in all_symbols if not s.startswith("_")])
 
 
+# Build __all__ to include only imported symbols, excluding submodule names from _submodules
+# This ensures that `from ansys.fluent.core import *` only imports public symbols,
+# not submodules (which can still be accessed via lazy loading via __getattr__)
+_submodule_names = set(_submodules.keys())
+__all__ = sorted(
+    [
+        name
+        for name in dir()
+        if not name.startswith("_") and name not in _submodule_names
+    ]
+)
+
+
 __version__ = "0.41.dev0"
