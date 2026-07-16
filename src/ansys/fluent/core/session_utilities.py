@@ -1,7 +1,6 @@
-# pyright: reportNoOverloadImplementation=false
-
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -79,6 +78,31 @@ class SessionBase:
         "SolverAero": FluentMode.SOLVER_AERO,
         "SolverIcing": FluentMode.SOLVER_ICING,
     }
+
+    @classmethod
+    def _validate_mode_not_in_kwargs(
+        cls, kwargs: dict[str, Any], method_name: str
+    ) -> None:
+        """Validate that 'mode' is not in kwargs.
+
+        Parameters
+        ----------
+        kwargs : dict[str, Any]
+            Keyword arguments to validate
+        method_name : str
+            Name of calling method (e.g., 'from_install')
+
+        Raises
+        ------
+        ValueError
+            If 'mode' is present in kwargs
+        """
+        if "mode" in kwargs:
+            raise ValueError(
+                f"Cannot specify 'mode' in {cls.__name__}.{method_name}(). "
+                "The mode is determined by the session class. "
+                f"You are already using {cls.__name__}, which sets mode to {cls._session_mode[cls.__name__]}."
+            )
 
     @overload
     @classmethod
@@ -185,12 +209,7 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        if "mode" in kwargs:
-            raise ValueError(
-                f"Cannot specify 'mode' in {cls.__name__}.from_install(). "
-                "The mode is determined by the session class. "
-                f"You are already using {cls.__name__}, which sets mode to {cls._session_mode[cls.__name__]}."
-            )
+        cls._validate_mode_not_in_kwargs(kwargs, "from_install")
         launcher = StandaloneLauncher(
             **kwargs, dry_run=dry_run, mode=cls._session_mode[cls.__name__]
         )
@@ -301,12 +320,7 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        if "mode" in kwargs:
-            raise ValueError(
-                f"Cannot specify 'mode' in {cls.__name__}.from_container(). "
-                "The mode is determined by the session class. "
-                f"You are already using {cls.__name__}, which sets mode to {cls._session_mode[cls.__name__]}."
-            )
+        cls._validate_mode_not_in_kwargs(kwargs, "from_container")
 
         launcher = DockerLauncher(
             **kwargs, dry_run=dry_run, mode=cls._session_mode[cls.__name__]

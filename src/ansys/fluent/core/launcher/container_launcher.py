@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -87,11 +88,9 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
     use_podman_compose: bool | None
     """Whether to use Podman Compose to launch Fluent."""
     certificates_folder: str | None
-    """Path to the folder containing TLS certificates for Fluent's gRPC server."""
+    """Path to the folder containing TLS certificates for Fluent's gRPC server. When launching a remote Fluent instance you must set **either** this argument (or the ``ANSYS_GRPC_CERTIFICATES`` environment variable) **or** set ``insecure_mode=True`` (not recommended). ``certificates_folder`` and ``insecure_mode`` are mutually exclusive."""
     insecure_mode: bool
-    """If True, Fluent's gRPC server will be started in insecure mode without TLS.
-    This mode is not recommended. For more details on the implications
-    and usage of insecure mode, refer to the Fluent documentation.
+    """If True, Fluent's gRPC server will be started in insecure mode without TLS. Provide this only when ``certificates_folder``(or ``ANSYS_GRPC_CERTIFICATES`` environment variable) is not set; the two are mutually exclusive. This mode is not recommended. For more details on the implications and usage of insecure mode, refer to the Fluent documentation.
     """
 
 
@@ -202,16 +201,23 @@ class DockerLauncher:
         use_podman_compose: bool
             Whether to use Podman Compose to launch Fluent.
         certificates_folder : str, optional
-            Path to the folder containing TLS certificates for Fluent's gRPC server.
+            Path to the folder containing TLS certificates for Fluent's gRPC server. When launching a remote Fluent
+            instance you must set **either** this argument (or the ``ANSYS_GRPC_CERTIFICATES`` environment variable)
+            **or** set ``insecure_mode=True``.
+            ``certificates_folder`` and ``insecure_mode`` are mutually exclusive.
         insecure_mode : bool, optional
-            If True, Fluent's gRPC server will be started in insecure mode without TLS.
-            This mode is not recommended. For more details on the implications
-            and usage of insecure mode, refer to the Fluent documentation.
+            If True, Fluent's gRPC server is started in insecure mode without TLS. Provide only this when ``certificates_folder``
+            (or ``ANSYS_GRPC_CERTIFICATES``) is not set; the two are mutually exclusive. This mode is not recommended. For more
+            details on the implications and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------
         UnexpectedKeywordArgument
             If an unexpected keyword argument is provided.
+
+        ValueError
+            If neither ``certificates_folder`` nor ``insecure_mode`` is set, or if both ``certificates_folder`` and
+            ``insecure_mode`` are provided.
 
         Notes
         -----
@@ -335,7 +341,7 @@ class DockerLauncher:
 
         session = self.new_session(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
             launcher_args=self.argvals,

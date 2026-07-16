@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -604,7 +605,7 @@ def test_nested_alias(mixing_elbow_settings_session):
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = False"
+            "solver.settings.setup.models.turbulence.k_omega.k_omega_low_re_correction.enabled = False"
         ),
     ):
         solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction.enabled = (
@@ -614,7 +615,7 @@ def test_nested_alias(mixing_elbow_settings_session):
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = True"
+            "solver.settings.setup.models.turbulence.k_omega.k_omega_low_re_correction.enabled = True"
         ),
     ):
         solver.settings.setup.models.viscous.k_omega_options.kw_low_re_correction.enabled = (
@@ -624,7 +625,7 @@ def test_nested_alias(mixing_elbow_settings_session):
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = False"
+            "solver.settings.setup.models.turbulence.k_omega.k_omega_low_re_correction.enabled = False"
         ),
     ):
         solver.settings.setup.models.viscous.k_omega.kw_low_re_correction.enabled = (

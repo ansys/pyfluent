@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,9 +25,11 @@ import pytest
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_value_to_variant,
+)
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.services.datamodel_se import _convert_value_to_variant
 
 
 class Fake:
@@ -254,13 +257,13 @@ def display_names_as_keys_in_cache():
 def test_display_names_as_keys(
     display_names_as_keys_in_cache, watertight_workflow_session
 ):
-    cache = watertight_workflow_session._datamodel_service_se.cache
+    cache = watertight_workflow_session._datamodel_service_se._cache
     assert "TaskObject:Import Geometry" in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" not in cache.rules_str_to_cache["workflow"]
 
 
 def test_internal_names_as_keys(watertight_workflow_session):
-    cache = watertight_workflow_session._datamodel_service_se.cache
+    cache = watertight_workflow_session._datamodel_service_se._cache
     assert "TaskObject:Import Geometry" not in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" in cache.rules_str_to_cache["workflow"]
 

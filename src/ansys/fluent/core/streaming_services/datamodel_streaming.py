@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,10 +39,11 @@ class DatamodelStream(StreamingService):
 
     def __init__(self, service):
         """Initialize DatamodelStream."""
+        grpc_service = getattr(service, "_service", service)
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=DatamodelStream._process_streaming,
-            streaming_service=service,
+            streaming_service=grpc_service,
         )
 
     def _process_streaming(
