@@ -68,21 +68,21 @@ def asynchronous(f: Callable) -> Callable:
     return func
 
 
-def timeout_exec(obj, timeout, args=None, kwargs=None):
-    """Executes object with the timeout limit. Tries to return whatever the provided
-    object returns. If the object returns nothing, this function will return ``True``.
+def timeout_exec(fn: Callable[..., Any], timeout, args=None, kwargs=None):
+    """Executes callable with the timeout limit. Tries to return whatever the provided
+    callable returns. If the callable returns nothing, this function will return ``True``.
     If it times out, returns ``False``.
 
     Parameters
     ----------
-    obj : Any
-        Object to execute.
+    fn : Callable[..., Any]
+        Callable object (function, method, or lambda) to execute.
     timeout : float
         Time before cancelling execution and returning early.
     args : Any, optional
-        Arguments to be passed to the specified object.
+        Arguments to be passed to the specified callable.
     kwargs : Any, optional
-        Keyword arguments to be passed to the specified object.
+        Keyword arguments to be passed to the specified callable.
 
     Examples
     --------
@@ -99,10 +99,10 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
         kwargs = {}
 
     def _exec(*_args, **_kwargs):
-        if callable(obj):
-            return obj(*_args, **_kwargs)
+        if callable(fn):
+            return fn(*_args, **_kwargs)
         else:
-            return obj
+            return fn
 
     pool = multiprocessing.pool.ThreadPool(processes=1)
     async_result = pool.apply_async(_exec, args=args, kwds=kwargs)
@@ -118,41 +118,41 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
 
 
 def timeout_loop(
-    obj: Any,
+    fn: Callable[..., Any],
     timeout: float,
     args: Any | None = None,
     kwargs: Any | None = None,
     idle_period: float = 0.2,
     expected: str = "truthy",
 ) -> Any:
-    """Loops while specified object does not return expected response. Timeouts after
+    """Loops while specified callable does not return expected response. Timeouts after
     specified time has elapsed. Tries to return whatever is returned by the specified
-    object. If nothing is returned before timeout, returns the opposite of the expected
+    callable. If nothing is returned before timeout, returns the opposite of the expected
     value, i.e. ``True`` if ``expected == "falsy"`` and ``False`` if ``expected ==
     "truthy"``.
 
     Parameters
     ----------
-    obj : Any
+    fn : Callable[..., Any]
         Callable object (function, method, or lambda) to evaluate while looping if it
         does not return expected response. When the callable is invoked, it will be
         called repeatedly until the expected condition is met or timeout elapses.
     timeout : float
         Time before cancelling execution and returning early.
     args : Any, optional
-        Arguments to be passed to the specified object.
+        Arguments to be passed to the specified callable.
     kwargs : Any, optional
-        Keyword arguments to be passed to the specified object.
+        Keyword arguments to be passed to the specified callable.
     idle_period : float, optional
-        Time in seconds to wait between object evaluations, defaults to 0.2 seconds.
+        Time in seconds to wait between callable evaluations, defaults to 0.2 seconds.
     expected: str, optional
         Possible values are ``"truthy"`` or ``"falsy"``, indicating what type of return is expected.
-        By default, expects a ``"truthy"`` return from the specified object.
+        By default, expects a ``"truthy"`` return from the specified callable.
 
     Raises
     ------
     TypeError
-        If ``obj`` is not callable.
+        If ``fn`` is not callable.
     InvalidArgument
         If an unrecognized value is passed for ``expected``.
 
@@ -175,12 +175,14 @@ def timeout_loop(
     if kwargs is None:
         kwargs = {}
 
+    if not callable(fn):
+        raise TypeError(
+            f"timeout_loop() expects a callable, got {type(fn).__name__} instead"
+        )
+
     time_elapsed = 0.0
     while time_elapsed <= timeout:
-        try:
-            ret_obj = obj(*args, **kwargs)
-        except TypeError as ex:
-            raise TypeError(f"Error calling 'obj': {ex}") from ex
+        ret_obj = fn(*args, **kwargs)
 
         if expected == "truthy":
             if ret_obj:
