@@ -23,56 +23,6 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableData as SolutionVariableDataV0,
-)
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableService as SolutionVariableServiceV0,
-)
-from ansys.fluent.core.services.solution_variables_v1 import (
-    SolutionVariableData,
-    SolutionVariableService,
-)
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-
-__all__ = (
-    "SolutionVariableData",
-    "SolutionVariableDataV0",
-    "SolutionVariableService",
-    "SolutionVariableServiceV0",
-    "service_creator",
-)
-
-
-_service_cls_by_name_v0 = {
-    "svar": SolutionVariableServiceV0,
-    "svar_data": SolutionVariableDataV0,
-}
-
-_service_cls_by_name = {
-    "svar": SolutionVariableService,
-    "svar_data": SolutionVariableData,
-}
-
-
-# This class is swapped in Fluent Python Console
-class service_creator:
-    """A gRPC service creator."""
-
-    def __init__(self, service_name: str, supports_v1: bool | None = None):
-        """Initialize service_creator."""
-        if supports_v1:
-            self._service_cls = _service_cls_by_name[service_name]
-        else:
-            self._service_cls = _service_cls_by_name_v0[service_name]
-
-    def create(self, *args, **kwargs):
-        """Create a gRPC service."""
-        return self._service_cls(*args, **kwargs)
-
-
-"""Provides a module to create gRPC services."""
-
 from functools import cached_property
 
 from ansys.fluent.core.services.application_runtime import (
@@ -81,8 +31,6 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
-from ansys.fluent.core.services.batch_ops import BatchOps
-from ansys.fluent.core.services.datamodel_tui import TextInterface
 from ansys.fluent.core.services.events import Events, EventsV251, EventsV261
 from ansys.fluent.core.services.field_data import (
     FieldData,
@@ -90,16 +38,22 @@ from ansys.fluent.core.services.field_data import (
     FieldDataV261,
 )
 from ansys.fluent.core.services.health_check import HealthCheck
-from ansys.fluent.core.services.monitor import Monitor
+from ansys.fluent.core.services.monitors import Monitor
 from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData,
+    SolutionVariableInfo,
+)
+from ansys.fluent.core.services.text_interface import TextInterface
 from ansys.fluent.core.services.transcript import Transcript
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
     FieldDataStreamingV261,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class ServiceFactory:
@@ -269,3 +223,15 @@ class ServiceFactory:
     def monitor(self):
         """Monitor service."""
         return Monitor(self._service_factory.monitor)
+
+    @cached_property
+    def solution_variable_info(self):
+        """Solution variable info service."""
+        return SolutionVariableInfo(self._service_factory.solution_variable)
+
+    @cached_property
+    def solution_variable_data(self):
+        """Solution variable data service."""
+        return SolutionVariableData(
+            self._service_factory.solution_variable, self.solution_variable_info
+        )

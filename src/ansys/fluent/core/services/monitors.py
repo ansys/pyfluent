@@ -21,10 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the monitor gRPC service of Fluent."""
+"""High level monitor wrapper."""
 
 
-class Monitor:
+from ansys.fluent.core.services.abstract_monitors import AbstractMonitor
+
+
+class Monitor(AbstractMonitor):
     """Monitor backed by the Monitor gRPC service."""
 
     def __init__(self, service):
