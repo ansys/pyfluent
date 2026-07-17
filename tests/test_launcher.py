@@ -476,15 +476,65 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 
 
 def test_lightweight_case_journal_read_is_completed_before_sync_step():
+    """Test that when lightweight_mode is requested with journals, lightweight_mode is disabled."""
+    launcher = object.__new__(StandaloneLauncher)
+    launcher.argvals = {
+        "case_file_name": "a.cas.h5",
+        "case_data_file_name": None,
+        "mode": FluentMode.SOLVER,
+        "lightweight_mode": True,  # Will be disabled due to journal conflict
+        "journal_file_names": ["a.jou", "b.jou"],
+    }
+    # Strategy shows lightweight_mode disabled and journals handled post-connection
+    launcher._file_strategy = {
+        "use_cli_case": False,
+        "use_cli_journal": False,
+        "enable_lightweight": False,
+        "warning": "lightweight_mode ignored with journal_file_names",
+    }
+
+    calls = []
+
+    class _DummyFile:
+        def read(self, **kwargs):
+            calls.append(("read", kwargs))
+
+    class _DummySettings:
+        file = _DummyFile()
+
+    class _DummySession:
+        settings = _DummySettings()
+
+        def execute_tui(self, command):
+            calls.append(("execute_tui", command))
+
+    launcher._process_case_data_and_journals(_DummySession())
+
+    # With lightweight disabled and no CLI flags, case and journals are processed post-connection
+    assert calls == [
+        ("read", {"file_type": "case", "file_name": "a.cas.h5"}),
+        ("execute_tui", '/file/read-journal "a.jou"'),
+        ("execute_tui", '/file/read-journal "b.jou"'),
+    ]
+
+
+def test_lightweight_case_sync_with_no_journals():
+    """Test that lightweight mode works correctly when case is provided without journals."""
     launcher = object.__new__(StandaloneLauncher)
     launcher.argvals = {
         "case_file_name": "a.cas.h5",
         "case_data_file_name": None,
         "mode": FluentMode.SOLVER,
         "lightweight_mode": True,
-        "journal_file_names": ["a.jou", "b.jou"],
+        "journal_file_names": None,
     }
-    launcher._defer_journal_file_read = True
+    # Strategy shows lightweight mode enabled
+    launcher._file_strategy = {
+        "use_cli_case": False,
+        "use_cli_journal": False,
+        "enable_lightweight": True,
+        "warning": None,
+    }
 
     calls = []
 
@@ -492,18 +542,14 @@ def test_lightweight_case_journal_read_is_completed_before_sync_step():
         def read_case_lightweight(self, file_name, start_sync=True):
             calls.append(("read_case_lightweight", file_name, start_sync))
 
-        def execute_tui(self, command):
-            calls.append(("execute_tui", command))
-
         def start_case_lightweight_sync(self):
             calls.append(("start_case_lightweight_sync",))
 
     launcher._process_case_data_and_journals(_DummySession())
 
+    # With lightweight enabled, case is read and then sync is started
     assert calls == [
         ("read_case_lightweight", "a.cas.h5", False),
-        ("execute_tui", '/file/read-journal "a.jou"'),
-        ("execute_tui", '/file/read-journal "b.jou"'),
         ("start_case_lightweight_sync",),
     ]
 
@@ -517,7 +563,12 @@ def test_case_and_case_data_are_processed_before_journal_files():
         "lightweight_mode": False,
         "journal_file_names": ["a.jou", "b.jou"],
     }
-    launcher._defer_journal_file_read = True
+    launcher._file_strategy = {
+        "use_cli_case": False,
+        "use_cli_journal": False,
+        "enable_lightweight": False,
+        "warning": None,
+    }
 
     calls = []
 
@@ -746,6 +797,222 @@ def test_respect_driver_is_not_null_in_linux():
         graphics_driver=FluentLinuxGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
     )
     assert driver == FluentLinuxGraphicsDriver.OPENGL
+
+
+# Tests for new validation and strategy functions
+def test_validate_lightweight_with_journal_no_conflict():
+    """Test that no warning is issued when journals are provided without lightweight_mode."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _validate_lightweight_with_journal,
+    )
+
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        lightweight_mode=False,
+        journal_file_names=["test.jou"],
+    )
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_no_journal():
+    """Test that no warning is issued when lightweight_mode is provided without journals."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _validate_lightweight_with_journal,
+    )
+
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        lightweight_mode=True,
+        journal_file_names=None,
+    )
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_conflict():
+    """Test that warning is issued when both lightweight_mode and journals are provided."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _validate_lightweight_with_journal,
+    )
+
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        lightweight_mode=True,
+        journal_file_names=["test.jou"],
+    )
+    assert should_disable is True
+    assert warning_msg is not None
+    assert "lightweight_mode" in warning_msg.lower()
+
+
+def test_resolve_file_processing_strategy_no_files():
+    """Test strategy when no files are provided (F|F|F)."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _resolve_file_processing_strategy,
+    )
+
+    strategy = _resolve_file_processing_strategy(
+        case_file_name=None,
+        journal_file_names=None,
+        lightweight_mode=False,
+    )
+    assert strategy["use_cli_case"] is False
+    assert strategy["use_cli_journal"] is False
+    assert strategy["enable_lightweight"] is False
+    assert strategy["warning"] is None
+
+
+def test_resolve_file_processing_strategy_journal_only():
+    """Test strategy when only journals are provided (F|T|F)."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _resolve_file_processing_strategy,
+    )
+
+    strategy = _resolve_file_processing_strategy(
+        case_file_name=None,
+        journal_file_names=["test.jou"],
+        lightweight_mode=False,
+    )
+    assert strategy["use_cli_case"] is False
+    assert strategy["use_cli_journal"] is True
+    assert strategy["enable_lightweight"] is False
+    assert strategy["warning"] is None
+
+
+def test_resolve_file_processing_strategy_case_only():
+    """Test strategy when only case is provided without lightweight (T|F|F)."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _resolve_file_processing_strategy,
+    )
+
+    strategy = _resolve_file_processing_strategy(
+        case_file_name="test.cas.h5",
+        journal_file_names=None,
+        lightweight_mode=False,
+    )
+    assert strategy["use_cli_case"] is True
+    assert strategy["use_cli_journal"] is False
+    assert strategy["enable_lightweight"] is False
+    assert strategy["warning"] is None
+
+
+def test_resolve_file_processing_strategy_case_only_lightweight():
+    """Test strategy when case and lightweight are provided without journals (T|F|T)."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _resolve_file_processing_strategy,
+    )
+
+    strategy = _resolve_file_processing_strategy(
+        case_file_name="test.cas.h5",
+        journal_file_names=None,
+        lightweight_mode=True,
+    )
+    assert strategy["use_cli_case"] is False
+    assert strategy["use_cli_journal"] is False
+    assert strategy["enable_lightweight"] is True
+    assert strategy["warning"] is None
+
+
+def test_resolve_file_processing_strategy_case_and_journal():
+    """Test strategy when case and journals are provided (T|T|F)."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _resolve_file_processing_strategy,
+    )
+
+    strategy = _resolve_file_processing_strategy(
+        case_file_name="test.cas.h5",
+        journal_file_names=["test.jou"],
+        lightweight_mode=False,
+    )
+    assert strategy["use_cli_case"] is True
+    assert strategy["use_cli_journal"] is True
+    assert strategy["enable_lightweight"] is False
+    assert strategy["warning"] is None
+
+
+def test_resolve_file_processing_strategy_case_journal_lightweight_warning():
+    """Test strategy when all three are provided (T|T|T) - should warn and disable lightweight."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _resolve_file_processing_strategy,
+    )
+
+    strategy = _resolve_file_processing_strategy(
+        case_file_name="test.cas.h5",
+        journal_file_names=["test.jou"],
+        lightweight_mode=True,
+    )
+    assert strategy["use_cli_case"] is True
+    assert strategy["use_cli_journal"] is True
+    assert strategy["enable_lightweight"] is False
+    assert strategy["warning"] is not None
+    assert "lightweight_mode" in strategy["warning"].lower()
+
+
+def test_resolve_file_processing_strategy_journal_lightweight_warning():
+    """Test strategy when journals and lightweight are provided without case (F|T|T) - should warn."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _resolve_file_processing_strategy,
+    )
+
+    strategy = _resolve_file_processing_strategy(
+        case_file_name=None,
+        journal_file_names=["test.jou"],
+        lightweight_mode=True,
+    )
+    assert strategy["use_cli_case"] is False
+    assert strategy["use_cli_journal"] is True
+    assert strategy["enable_lightweight"] is False
+    assert strategy["warning"] is not None
+
+
+def test_build_case_data_arguments_case_only():
+    """Test building CLI arguments for case file only."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _build_case_data_arguments,
+    )
+
+    args = _build_case_data_arguments(
+        case_file_name="test.cas.h5",
+        case_data_file_name=None,
+    )
+    assert args == ' -case "test.cas.h5"'
+
+
+def test_build_case_data_arguments_data_only():
+    """Test building CLI arguments for data file only."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _build_case_data_arguments,
+    )
+
+    args = _build_case_data_arguments(
+        case_file_name=None,
+        case_data_file_name="test.dat.h5",
+    )
+    assert args == ' -data "test.dat.h5"'
+
+
+def test_build_case_data_arguments_both():
+    """Test building CLI arguments for both case and data files."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _build_case_data_arguments,
+    )
+
+    args = _build_case_data_arguments(
+        case_file_name="test.cas.h5",
+        case_data_file_name="test.dat.h5",
+    )
+    assert args == ' -case "test.cas.h5" -data "test.dat.h5"'
+
+
+def test_build_case_data_arguments_none():
+    """Test building CLI arguments when neither file is provided."""
+    from ansys.fluent.core.launcher.launcher_utils import (
+        _build_case_data_arguments,
+    )
+
+    args = _build_case_data_arguments(
+        case_file_name=None,
+        case_data_file_name=None,
+    )
+    assert args == ""
 
 
 @pytest.mark.standalone

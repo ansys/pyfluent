@@ -78,7 +78,6 @@ from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
-    LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
 )
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
@@ -88,8 +87,11 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
+    _build_case_data_arguments,
     _build_journal_argument,
     _get_subprocess_kwargs_for_fluent,
+    _resolve_file_processing_strategy,
+    _validate_lightweight_with_journal,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
@@ -576,11 +578,17 @@ class SlurmLauncher:
         argvals = {name: kwargs.get(name) for name in SlurmLauncherArgs.__annotations__}
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
-        if self._argvals.get("lightweight_mode") and self._argvals.get(
-            "journal_file_names"
-        ):
-            warn(LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL, UserWarning)
+
+        # Validate lightweight_mode + journal_file_names combination
+        # If incompatible, disable lightweight_mode and warn user
+        should_disable, warning_msg = _validate_lightweight_with_journal(
+            self._argvals.get("lightweight_mode"),
+            self._argvals.get("journal_file_names"),
+        )
+        if should_disable:
+            warn(warning_msg, UserWarning)
             self._argvals["lightweight_mode"] = False
+
         if config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self._argvals["ui_mode"] = UIMode(ui_mode)
@@ -614,9 +622,33 @@ class SlurmLauncher:
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         kwargs = _get_subprocess_kwargs_for_fluent(self._argvals["env"], self._argvals)
-        launch_cmd += _build_journal_argument(
-            self._argvals["topy"], self._argvals["journal_file_names"]
+
+        # Resolve file processing strategy: which files to pass via CLI vs post-connection
+        # Note: SLURM doesn't do post-connection file processing like standalone does
+        self._file_strategy = _resolve_file_processing_strategy(
+            self._argvals.get("case_file_name"),
+            self._argvals.get("journal_file_names"),
+            self._argvals.get("lightweight_mode"),
         )
+
+        # Add case/data files if strategy says to use CLI
+        if self._file_strategy["use_cli_case"]:
+            launch_cmd += _build_case_data_arguments(
+                self._argvals.get("case_file_name"),
+                self._argvals.get("case_data_file_name"),
+            )
+
+        # Add journal files if strategy says to use CLI
+        # Note: topy conversion always uses CLI (-i flag), so include it regardless of strategy
+        launch_cmd += _build_journal_argument(
+            self._argvals.get("topy"),
+            (
+                self._argvals.get("journal_file_names")
+                if self._file_strategy["use_cli_journal"] or self._argvals.get("topy")
+                else None
+            ),
+        )
+
         launch_cmd += ' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
         if self._argvals["insecure_mode"]:
             launch_cmd += " -grpc-allow-remote-host -grpc-insecure-mode"

@@ -50,9 +50,6 @@ from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.error_warning_messages import (
-    LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
-)
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
     UIMode,
@@ -61,10 +58,13 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
+    _build_case_data_arguments,
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
     _read_journals,
+    _resolve_file_processing_strategy,
+    _validate_lightweight_with_journal,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
@@ -230,14 +230,17 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
-        # lightweight_mode reads the case in a background session while a
-        # journal would run in the foreground session; there is no consistent
-        # ordering for that combination, so ignore lightweight_mode (issue #4265).
-        if self.argvals.get("lightweight_mode") and self.argvals.get(
-            "journal_file_names"
-        ):
-            warn(LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL, UserWarning)
+
+        # Validate lightweight_mode + journal_file_names combination
+        # If incompatible, disable lightweight_mode and warn user
+        should_disable, warning_msg = _validate_lightweight_with_journal(
+            self.argvals.get("lightweight_mode"),
+            self.argvals.get("journal_file_names"),
+        )
+        if should_disable:
+            warn(warning_msg, UserWarning)
             self.argvals["lightweight_mode"] = False
+
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
@@ -271,21 +274,30 @@ class StandaloneLauncher:
         )
         if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
-        # The case/case-data file must be read before the journal (issue #4265).
-        # The startup ``-i`` argument runs the journal before the post-connection
-        # case read, so when a case is requested we defer the journal and read it
-        # after the case in ``__call__``. ``topy`` conversion is a startup-only
-        # Fluent feature tied to ``-i``, so it keeps the original behavior.
-        self._defer_journal_file_read = bool(
-            self.argvals.get("case_file_name")
-            or self.argvals.get("case_data_file_name")
-        ) and not self.argvals.get("topy")
+
+        # Resolve file processing strategy: which files to pass via CLI vs post-connection
+        self._file_strategy = _resolve_file_processing_strategy(
+            self.argvals.get("case_file_name"),
+            self.argvals.get("journal_file_names"),
+            self.argvals.get("lightweight_mode"),
+        )
+
+        # Build launch string with CLI arguments
+        # Add case/data files if strategy says to use CLI
+        if self._file_strategy["use_cli_case"]:
+            self._launch_string += _build_case_data_arguments(
+                self.argvals.get("case_file_name"),
+                self.argvals.get("case_data_file_name"),
+            )
+
+        # Add journal files if strategy says to use CLI
+        # Note: topy conversion always uses CLI (-i flag), so include it regardless of strategy
         self._launch_string += _build_journal_argument(
             self.argvals.get("topy", []),
             (
-                None
-                if self._defer_journal_file_read
-                else self.argvals.get("journal_file_names")
+                self.argvals.get("journal_file_names")
+                if self._file_strategy["use_cli_journal"] or self.argvals.get("topy")
+                else None
             ),
         )
 
@@ -322,42 +334,72 @@ class StandaloneLauncher:
         """Process case, case-data, and journal files for the session.
 
         This method handles reading case/data/journal files after the session
-        is connected, ensuring correct processing order: case → case-data → journals.
-        For lightweight mode, synchronization is deferred until after journals are read.
+        is connected. However, if the file processing strategy indicates that
+        files are handled via Fluent's command-line flags (-case, -data, -i),
+        this method skips those files to avoid redundant processing.
+
+        Post-connection processing is always performed for lightweight mode, where
+        a background session must be launched and synchronized after case reading
+        (see issue #4265). For other cases, post-connection processing is skipped
+        if the files are already handled via CLI flags.
         """
-        # Read the case file first
-        if self.argvals.get("case_file_name"):
-            if FluentMode.is_meshing(self.argvals.get("mode")):
-                session.tui.file.read_case(self.argvals.get("case_file_name"))
-            elif self.argvals.get("lightweight_mode"):
-                # For lightweight mode, defer sync until after journals are read
+        # Lightweight mode always requires post-connection processing
+        # (background session launch and sync)
+        if self._file_strategy["enable_lightweight"]:
+            # For lightweight mode, always read the case post-connection
+            # (it triggers background session creation)
+            if self.argvals.get("case_file_name"):
                 session.read_case_lightweight(
                     self.argvals.get("case_file_name"),
                     start_sync=False,
                 )
+
+            # Read journals after case (if any)
+            if self.argvals.get("journal_file_names"):
+                _read_journals(session, self.argvals.get("journal_file_names"))
+
+            # Finalize lightweight sync
+            session.start_case_lightweight_sync()
+            return
+
+        # For non-lightweight mode, skip post-connection processing if files
+        # are already handled via CLI
+        if (
+            self._file_strategy["use_cli_case"]
+            and self._file_strategy["use_cli_journal"]
+        ):
+            # Both case and journal handled via CLI, nothing to do
+            return
+
+        # Mixed scenario: some files handled via CLI, some not
+        # Read case if not handled via CLI
+        if (
+            self.argvals.get("case_file_name")
+            and not self._file_strategy["use_cli_case"]
+        ):
+            if FluentMode.is_meshing(self.argvals.get("mode")):
+                session.tui.file.read_case(self.argvals.get("case_file_name"))
             else:
                 session.settings.file.read(
                     file_type="case",
                     file_name=self.argvals.get("case_file_name"),
                 )
 
-        # Read the case-data file second (only for non-meshing modes)
+        # Read case-data after case (only for non-meshing modes)
         if self.argvals.get("case_data_file_name"):
-            if not FluentMode.is_meshing(self.argvals.get("mode")):
-                session.settings.file.read(
-                    file_type="case-data",
-                    file_name=self.argvals.get("case_data_file_name"),
-                )
-            else:
+            if FluentMode.is_meshing(self.argvals.get("mode")):
                 raise RuntimeError("Case and data file cannot be read in meshing mode.")
+            session.settings.file.read(
+                file_type="case-data",
+                file_name=self.argvals.get("case_data_file_name"),
+            )
 
-        # Read journals after case and case-data files
-        if self.argvals.get("journal_file_names"):
+        # Read journals if not handled via CLI
+        if (
+            self.argvals.get("journal_file_names")
+            and not self._file_strategy["use_cli_journal"]
+        ):
             _read_journals(session, self.argvals.get("journal_file_names"))
-
-        # For lightweight mode, finalize sync after journals are read
-        if self.argvals.get("lightweight_mode"):
-            session.start_case_lightweight_sync()
 
     def __call__(
         self,
@@ -423,10 +465,15 @@ class StandaloneLauncher:
             # PyFluent is now connected: disable the idle-timeout guard.
             self._disable_idle_timeout_guard(session)
 
-            # Process case, case-data, and journal files in the correct order.
-            # (issue #4265). When no case is read, the journal is handled at
-            # startup via the ``-i`` argument instead.
-            if self._defer_journal_file_read:
+            # Process case, case-data, and journal files if needed (issue #4265).
+            # Some files may already be processed via CLI flags (-case, -data, -i),
+            # but lightweight mode always requires post-connection processing
+            # to launch the background session and sync.
+            if (
+                self.argvals.get("case_file_name")
+                or self.argvals.get("case_data_file_name")
+                or self.argvals.get("journal_file_names")
+            ):
                 self._process_case_data_and_journals(session)
 
             return session

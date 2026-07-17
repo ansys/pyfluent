@@ -256,3 +256,154 @@ def _read_journals(session, journal_file_names: None | str | list[str]) -> None:
         journal_file_names = [journal_file_names]
     for journal in journal_file_names:
         session.execute_tui(f'/file/read-journal "{journal}"')
+
+
+def _validate_lightweight_with_journal(
+    lightweight_mode: bool | None, journal_file_names: None | str | list[str]
+) -> tuple[bool, str | None]:
+    """Validate lightweight_mode and journal_file_names compatibility.
+
+    Parameters
+    ----------
+    lightweight_mode : bool | None
+        Whether lightweight mode is requested.
+    journal_file_names : str | list[str] | None
+        Path(s) to journal file(s).
+
+    Returns
+    -------
+    tuple[bool, str | None]
+        A tuple of (should_disable_lightweight, warning_message).
+        - should_disable_lightweight: True if lightweight_mode should be disabled
+        - warning_message: Warning message if incompatible combination detected, else None
+
+    Notes
+    -----
+    lightweight_mode with journal_file_names is not supported because there is no
+    consistent ordering for journals (run in foreground) vs. mesh loading (background).
+    See issue #4265.
+    """
+    if lightweight_mode and journal_file_names:
+        from ansys.fluent.core.launcher.error_warning_messages import (
+            LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
+        )
+
+        return True, LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL
+    return False, None
+
+
+def _resolve_file_processing_strategy(
+    case_file_name: str | None,
+    journal_file_names: None | str | list[str],
+    lightweight_mode: bool | None,
+) -> dict[str, Any]:
+    """Resolve file processing strategy based on case/journal/lightweight_mode combination.
+
+    Implements the truth table for deciding which files are passed via CLI flags vs.
+    post-connection processing, and whether lightweight mode is compatible.
+
+    Parameters
+    ----------
+    case_file_name : str | None
+        Case file name or path.
+    journal_file_names : str | list[str] | None
+        Journal file name(s) or path(s).
+    lightweight_mode : bool | None
+        Whether lightweight mode was requested.
+
+    Returns
+    -------
+    dict[str, Any]
+        Strategy dictionary with keys:
+        - 'use_cli_case': bool - Pass -case/-data to Fluent CLI
+        - 'use_cli_journal': bool - Pass -i to Fluent CLI
+        - 'enable_lightweight': bool - Launch background session for lightweight mode
+        - 'warning': str | None - Warning message for user, if any
+
+    Truth Table (case | journal | lightweight):
+    - F | F | F → No-op
+    - F | F | T → Warn & disable, no-op
+    - F | T | F → Pass -i to Fluent
+    - F | T | T → Warn & disable, pass -i
+    - T | F | F → Pass -case/-data to Fluent
+    - T | F | T → Keep fg/bg session (lightweight works without journal)
+    - T | T | F → Pass -case/-data -i to Fluent
+    - T | T | T → Warn & disable, pass -case/-data -i
+
+    Notes
+    -----
+    The only case where post-connection processing is needed is T|F|T (lightweight mode
+    with case file), which requires a background session launch that only happens
+    post-connection in the standalone launcher.
+    """
+    has_case = bool(case_file_name)
+    has_journal = bool(journal_file_names)
+
+    strategy: dict[str, Any] = {
+        "use_cli_case": False,
+        "use_cli_journal": False,
+        "enable_lightweight": False,
+        "warning": None,
+    }
+
+    # Check for incompatible lightweight_mode + journal combination
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        lightweight_mode, journal_file_names
+    )
+
+    if should_disable:
+        strategy["warning"] = warning_msg
+        lightweight_mode = False
+
+    # Apply truth table logic
+    if not has_case and not has_journal:
+        # F|F|* → No-op
+        pass
+    elif not has_case and has_journal:
+        # F|T|* → Pass -i to Fluent
+        strategy["use_cli_journal"] = True
+    elif has_case and not has_journal:
+        if lightweight_mode:
+            # T|F|T → Keep fg/bg session (post-connection processing needed)
+            strategy["enable_lightweight"] = True
+        else:
+            # T|F|F → Pass -case/-data to Fluent
+            strategy["use_cli_case"] = True
+    else:  # has_case and has_journal
+        # T|T|* → Pass both -case/-data and -i to Fluent
+        strategy["use_cli_case"] = True
+        strategy["use_cli_journal"] = True
+
+    return strategy
+
+
+def _build_case_data_arguments(
+    case_file_name: str | None = None,
+    case_data_file_name: str | None = None,
+) -> str:
+    """Build Fluent command-line arguments for case and data files.
+
+    Parameters
+    ----------
+    case_file_name : str | None
+        Name of the case file to pass via -case flag.
+    case_data_file_name : str | None
+        Name of the case data file to pass via -data flag.
+
+    Returns
+    -------
+    str
+        Formatted command-line arguments.
+        Examples:
+        - '' (empty string if neither provided)
+        - '-case "x.cas.h5"'
+        - '-case "x.cas.h5" -data "x.dat"'
+        - '-data "x.dat"'
+
+    """
+    args = ""
+    if case_file_name:
+        args += f' -case "{case_file_name}"'
+    if case_data_file_name:
+        args += f' -data "{case_data_file_name}"'
+    return args
