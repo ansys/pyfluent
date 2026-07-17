@@ -31,6 +31,7 @@ import keyword
 import logging
 from typing import Any
 
+from ansys.fluent.core.services.abstract_text_interface import AbstractTextInterface
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
 
 Path = list[str]
@@ -38,7 +39,7 @@ Path = list[str]
 logger: logging.Logger = logging.getLogger("pyfluent.tui")
 
 
-class TextInterface:
+class TextInterface(AbstractTextInterface):
     """Pure Python wrapper of text interface grpc service."""
 
     def __init__(

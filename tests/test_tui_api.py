@@ -28,7 +28,7 @@ import pytest
 
 from ansys.fluent.core import FluentVersion
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
+from ansys.fluent.core.services.text_interface import TUIMenu
 
 
 @pytest.mark.skip(reason=SKIP_UNKNOWN)

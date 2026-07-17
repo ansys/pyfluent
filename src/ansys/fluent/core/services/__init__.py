@@ -31,8 +31,6 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV252,
     ApplicationRuntimeV261,
 )
-from ansys.fluent.core.services.batch_ops import BatchOps
-from ansys.fluent.core.services.datamodel_tui import TextInterface
 from ansys.fluent.core.services.events import Events, EventsV251, EventsV261
 from ansys.fluent.core.services.field_data import (
     FieldData,
@@ -49,6 +47,7 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
+from ansys.fluent.core.services.text_interface import TextInterface
 from ansys.fluent.core.services.transcript import Transcript
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
