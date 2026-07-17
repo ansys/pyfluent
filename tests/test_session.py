@@ -647,7 +647,7 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     assert solver1.is_active()
     assert solver2.is_active()
     timeout_loop(
-        not health_check_service1.is_serving,
+        lambda: not health_check_service1.is_serving,
         timeout=60,
         idle_period=1,
     )
