@@ -54,11 +54,16 @@ def _check_transcript_for_error(session):
     cmd = """(%py-eval (format #f "open(r'~a').read()" (cx-get-session-transcript-filename)))"""
     transcript = session.scheme.eval(cmd)
     lines = transcript.splitlines()
+    status = False
+    error_lines = []
     for line in lines:
         if line.startswith("Error:"):
-            print(f"Error found in transcript: {line}")
-            return True
-    return False
+            status = True
+            error_lines.append(line)
+    print(f"Transcript contains {len(error_lines)} error lines:")
+    for line in error_lines:
+        print(line)
+    return status
 
 
 # Note: this test won't work with editable install of PyFluent because the PyFluent package files are not copied
