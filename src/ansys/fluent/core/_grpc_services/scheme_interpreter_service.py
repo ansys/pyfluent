@@ -228,5 +228,4 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer) -> Any:
             }
         else:
             return [_convert_scheme_pointer_to_py_value(item) for item in p.list.items]
-
     return None

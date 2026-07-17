@@ -24,7 +24,7 @@
 """High-level health check wrappers.
 
 This module owns the business-logic layer on top of the HealthCheck gRPC
-service.  The grpc service implementation lives in:
+service. The grpc service implementation lives in:
 
 * ``ansys.fluent.core._grpc_services.health_check_service`` (v1 proto API)
 * ``ansys.fluent.core._grpc_services.health_check_service_v0`` (v0 proto API)

@@ -282,7 +282,7 @@ class FluentConnectionProperties:
         return vars(self)
 
 
-def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
+def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> tuple[str, int]:
     if not ip:
         ip = config.launch_fluent_ip or "127.0.0.1"
     if not port:

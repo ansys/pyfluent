@@ -139,9 +139,9 @@ class PureMeshing(BaseSession):
 
         datamodel_service_se = self._datamodel_service_se
         self.datamodel_streams = {}
-        if datamodel_service_se.cache is not None:
+        if datamodel_service_se._cache is not None:
             for rules in PureMeshing._rules:
-                datamodel_service_se.cache.set_config(
+                datamodel_service_se._cache.set_config(
                     rules,
                     "name_key",
                     (
@@ -157,9 +157,9 @@ class PureMeshing(BaseSession):
                 )
                 stream.register_callback(
                     functools.partial(
-                        datamodel_service_se.cache.update_cache,
+                        datamodel_service_se._cache.update_cache,
                         rules=rules,
-                        version=datamodel_service_se.version,
+                        version=datamodel_service_se._version,
                     )
                 )
                 self.datamodel_streams[rules] = stream

@@ -27,8 +27,8 @@ from pathlib import Path
 
 import grpc
 
-from ansys.fluent.core.services.datamodel_se import (
-    DatamodelService,
+from ansys.fluent.core._grpc_service import ObjectModelService as DatamodelService
+from ansys.fluent.core.services.object_model import (
     PySimpleMenuGeneric,
 )
 from tests.run_stateengine_server import kill_server, run_server

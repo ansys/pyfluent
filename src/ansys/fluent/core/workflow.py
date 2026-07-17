@@ -36,7 +36,7 @@ import warnings
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
 )
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyArgumentsSingletonSubItem,
     PyCallableStateObject,
     PyCommand,
@@ -167,8 +167,8 @@ def _call_refresh_task_accessors(obj):
 
 
 def _convert_task_list_to_display_names(workflow_root, task_list):
-    if workflow_root.service.cache is not None:
-        workflow_state = workflow_root.service.cache.get_state(
+    if workflow_root.service._cache is not None:
+        workflow_state = workflow_root.service._cache.get_state(
             "workflow", workflow_root
         )
         return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]

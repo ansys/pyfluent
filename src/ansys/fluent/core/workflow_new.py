@@ -52,7 +52,7 @@ import inspect
 import re
 from typing import ValuesView
 
-from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 

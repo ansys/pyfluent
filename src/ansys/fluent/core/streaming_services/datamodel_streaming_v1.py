@@ -39,10 +39,11 @@ class DatamodelStream(StreamingService):
 
     def __init__(self, service):
         """Initialize DatamodelStream."""
+        grpc_service = getattr(service, "_service", service)
         super().__init__(
             stream_begin_method="StreamStateChanges",
             target=DatamodelStream._process_streaming,
-            streaming_service=service,
+            streaming_service=grpc_service,
         )
 
     def _process_streaming(

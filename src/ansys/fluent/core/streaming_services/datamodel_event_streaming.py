@@ -30,7 +30,9 @@ import threading
 from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_variant_to_value,
+)
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
@@ -43,13 +45,16 @@ class _BaseDatamodelEvents(StreamingService):
 
     def __init__(self, service):
         """Initialize DatamodelEvents."""
+        # After refactoring, `service` may be a high-level wrapper (ObjectModel/ObjectModelV261).
+        # `begin_streaming` lives on the underlying gRPC service, accessible via `_service`.
+        grpc_service = getattr(service, "_service", service)
         super().__init__(
             stream_begin_method="BeginEventStreaming",
             target=type(self)._process_streaming,
-            streaming_service=service,
+            streaming_service=grpc_service,
         )
         self._cbs = {}
-        service.event_streaming = self
+        grpc_service.event_streaming = self
         self._lock = threading.RLock()
 
     def register_callback(self, tag: str, cb: Callable):

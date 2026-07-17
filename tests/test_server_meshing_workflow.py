@@ -25,7 +25,7 @@ from conftest import SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
-from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.services.object_model import PyMenu
 
 
 @pytest.mark.nightly

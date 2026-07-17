@@ -24,6 +24,7 @@
 from concurrent import futures
 import os
 from pathlib import Path
+import platform
 import tempfile
 import time
 
@@ -430,7 +431,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
-    for attr in ("field_data", "field_info"):
+    for attr in ("field_data", "field_data_streaming"):
         assert attr in fields_dir
     assert session.is_active()
     server.stop(None)
@@ -481,7 +482,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
-    for attr in ("field_data", "field_info"):
+    for attr in ("field_data", "field_data_streaming"):
         assert attr in fields_dir
     assert session.is_active()
     server.stop(None)
@@ -697,14 +698,12 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(DeprecationWarning):
-        solver.field_data
     with pytest.warns(PyFluentDeprecationWarning):
         solver.svar_data
 
     assert {
         "field_data",
-        "field_info",
+        "_field_info",
         "field_data_streaming",
         "solution_variable_data",
         "solution_variable_info",
@@ -815,7 +814,7 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
         assert solver._settings_service.is_wildcard("yes*")
 
-        assert not solver._field_data_service.is_solution_data_available()
+        assert not solver.fields.field_data.is_data_valid()
     else:
         assert not solver.application_runtime.is_wildcard("no")
 
@@ -837,6 +836,30 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
 
     assert Path(solver_info.working_directory).parts[-1] == tmp_folder
+
+
+def test_application_runtime(new_solver_session):
+    solver = new_solver_session
+
+    assert solver.application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
+    assert (
+        solver.application_runtime.get_product_version() == solver.get_fluent_version()
+    )
+    assert solver.application_runtime.get_precision() == pyfluent.Precision.DOUBLE
+    assert solver.application_runtime.get_dimension() == pyfluent.Dimension.THREE
+    assert solver.application_runtime.get_processor_count() > 0
+    assert isinstance(solver.application_runtime.get_ui_mode(), pyfluent.UIMode)
+    if platform.system() == "Windows":
+        assert isinstance(
+            solver.application_runtime.get_graphics_driver(),
+            pyfluent.FluentWindowsGraphicsDriver,
+        )
+    else:
+        assert isinstance(
+            solver.application_runtime.get_graphics_driver(),
+            pyfluent.FluentLinuxGraphicsDriver,
+        )
+    assert solver.application_runtime.get_gpu_config() is False
 
 
 @pytest.mark.standalone
@@ -1037,10 +1060,12 @@ def test_dir_for_session(new_meshing_session_wo_exit):
         assert getattr(meshing, attr)
         assert attr in dir(meshing)
 
-    for attr in ["field_data", "field_info", "scheme_eval"]:
-        # Deprecated methods are accessible but hidden in dir()
-        assert getattr(meshing, attr)
+    for attr in ["field_data", "field_info"]:
+        # Deprecated methods are not accessible and hidden in dir()
+        assert getattr(meshing, attr, None) is None
         assert attr not in dir(meshing)
+    assert getattr(meshing, "scheme_eval")
+    assert "scheme_eval" not in dir(meshing)
 
     solver = meshing.switch_to_solver()
 
@@ -1063,7 +1088,10 @@ def test_dir_for_session(new_meshing_session_wo_exit):
         "reduction",
     ]:
         # Deprecated methods are accessible but hidden in dir()
-        assert getattr(solver, attr)
+        if attr in ["field_data", "field_info"]:
+            assert getattr(solver, attr, None) is None
+        else:
+            assert getattr(solver, attr)
         assert attr not in dir(solver)
 
     solver.enable_beta_features()

@@ -128,7 +128,7 @@ class _CacheImpl:
 def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str):
     """Check if a parameter is a dict type."""
     from ansys.fluent.core.module_config import config
-    from ansys.fluent.core.services.datamodel_se import (
+    from ansys.fluent.core.services.object_model import (
         PyDictionary,
         PyNamedObjectContainer,
         PyParameter,

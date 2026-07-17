@@ -37,7 +37,7 @@ from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyArgumentsSingletonSubItem,
     arg_class_by_type,
 )
@@ -499,7 +499,7 @@ class DataModelGenerator:
                 file.write("#\n")
                 file.write("# pylint: disable=line-too-long\n\n")
                 file.write(
-                    "from ansys.fluent.core.services.datamodel_se import PyMenu\n"
+                    "from ansys.fluent.core.services.object_model import PyMenu\n"
                 )
                 file.write("from typing import Any\n")
                 file.write("\n\n")
@@ -580,7 +580,7 @@ class DataModelGenerator:
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
                 f.write("#\n")
                 f.write("# pylint: disable=line-too-long\n\n")
-                f.write("from ansys.fluent.core.services.datamodel_se import (\n")
+                f.write("from ansys.fluent.core.services.object_model import (\n")
                 f.write("    PyMenu,\n")
                 f.write("    PyParameter,\n")
                 f.write("    PyTextual,\n")

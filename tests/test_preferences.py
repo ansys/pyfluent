@@ -23,7 +23,7 @@
 
 import pytest
 
-from ansys.fluent.core.services.datamodel_se import ReadOnlyObjectError
+from ansys.fluent.core.services.object_model_utilities import ReadOnlyObjectError
 
 
 def test_solver_preferences(new_solver_session):
