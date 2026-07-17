@@ -50,20 +50,18 @@ def _is_pyconsole_activated(session):
     return session.scheme.eval("(%cx-pyconsole-activated?)")
 
 
-def _check_transcript_for_error(session):
+def _transcript_has_errors(session):
     cmd = """(%py-eval (format #f "open(r'~a').read()" (cx-get-session-transcript-filename)))"""
     transcript = session.scheme.eval(cmd)
     lines = transcript.splitlines()
-    status = False
     error_lines = []
     for line in lines:
         if line.startswith("Error:"):
-            status = True
             error_lines.append(line)
     print(f"Transcript contains {len(error_lines)} error lines:")
     for line in error_lines:
         print(line)
-    return status
+    return len(error_lines) > 0
 
 
 # Note: this test won't work with editable install of PyFluent because the PyFluent package files are not copied
@@ -97,7 +95,7 @@ def test_pyconsole_launch():
     )
     assert solver_session is not None
     assert _is_pyconsole_activated(solver_session) is True
-    assert _check_transcript_for_error(solver_session) is False
+    assert _transcript_has_errors(solver_session) is False
 
     meshing_container_dict = pyfluent.launch_fluent(
         start_container=True,
@@ -112,4 +110,4 @@ def test_pyconsole_launch():
     )
     assert meshing_session is not None
     assert _is_pyconsole_activated(meshing_session) is True
-    assert _check_transcript_for_error(meshing_session) is False
+    assert _transcript_has_errors(meshing_session) is False
