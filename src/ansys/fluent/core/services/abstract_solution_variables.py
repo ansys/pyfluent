@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Abstract solution variable wrapper."""
+"""Abstract solution variables wrapper."""
 
 from abc import ABC, abstractmethod
 

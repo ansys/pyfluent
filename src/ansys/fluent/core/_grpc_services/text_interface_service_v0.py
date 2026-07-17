@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the test interface gRPC service of Fluent (v0 proto API)."""
+"""Wrapper over the text interface gRPC service of Fluent (v0 proto API)."""
 
 from typing import Any
 
@@ -39,7 +39,7 @@ from ansys.fluent.core.services.interceptors import (
 
 
 class TextInterfaceService(ServiceProtocol):
-    """Class wrapping the test interface gRPC service of Fluent (v0 proto API)."""
+    """Class wrapping the text interface gRPC service of Fluent (v0 proto API)."""
 
     def __init__(
         self,
