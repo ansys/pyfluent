@@ -21,15 +21,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High level transcript wrapper."""
+"""High level monitor wrapper."""
 
 
-class Transcript:
-    """Transcript backed by the Transcript gRPC service."""
+from ansys.fluent.core.services.abstract_monitors import AbstractMonitor
+
+
+class Monitor(AbstractMonitor):
+    """Monitor backed by the Monitor gRPC service."""
 
     def __init__(self, service):
-        """Initialize Transcript."""
+        """Initialize Monitor."""
         self.service = service
+
+    def get_monitors_info(self) -> dict:
+        """Get monitors information.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict
+            Dictionary containing the monitors information.
+        """
+        return self.service.get_monitors_info()
 
     def begin_streaming(self, request, started_evt, id, stream_begin_method):
         """Begin streaming from Fluent."""

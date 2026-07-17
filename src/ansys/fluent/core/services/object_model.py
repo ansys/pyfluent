@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over datamodel gRPC service of Fluent."""
+"""High level object model wrapper."""
 
 from collections.abc import Callable, Iterator, Sequence
 import functools

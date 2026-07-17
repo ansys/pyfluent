@@ -233,7 +233,7 @@ class ApplicationRuntimeService(ServiceProtocol):
             case "specific_gpu_ids":
                 return list(response.specific_gpu_ids.gpu_ids)
 
-    def start_python_journal(self, journal_name: str | None = None) -> int:
+    def start_python_journal(self, journal_name: str | None = None) -> str:
         """StartPythonJournal RPC."""
         request = application_runtime_pb2.StartPythonJournalRequest()
         if journal_name:
