@@ -56,6 +56,7 @@ def _check_transcript_for_error(session):
     lines = transcript.splitlines()
     for line in lines:
         if line.startswith("Error:"):
+            print(f"Error found in transcript: {line}")
             return True
     return False
 
