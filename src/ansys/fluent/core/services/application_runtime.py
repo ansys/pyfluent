@@ -142,7 +142,7 @@ class ApplicationRuntime(AbstractApplicationRuntime):
         """Get GPU config."""
         return self.service.get_gpu_config()
 
-    def start_python_journal(self, journal_name: str | None = None) -> int:
+    def start_python_journal(self, journal_name: str | None = None) -> str:
         """Start python journal."""
         return self.service.start_python_journal(journal_name=journal_name)
 
@@ -322,7 +322,7 @@ class ApplicationRuntimeV261V252:
                 f"Failed to parse malformed GPU ID string configuration: {config_str!r}"
             )
 
-    def start_python_journal(self, journal_name: str | None = None) -> int:
+    def start_python_journal(self, journal_name: str | None = None) -> str:
         """Start python journal."""
         return self.service.start_python_journal(journal_name=journal_name)
 
@@ -553,7 +553,7 @@ class ApplicationRuntimeOld:
                 f"Failed to parse malformed GPU ID string configuration: {config_str!r}"
             )
 
-    def start_python_journal(self, journal_name: str | None = None) -> int:
+    def start_python_journal(self, journal_name: str | None = None) -> str | None:
         """Start python journal."""
         if journal_name:
             self.scheme.exec([f'(api-start-python-journal "{journal_name}")'])
@@ -562,7 +562,7 @@ class ApplicationRuntimeOld:
             self.scheme.eval("(api-echo-python-port pyfluent-journal-str-port)")
             return "1"
 
-    def stop_python_journal(self, journal_id: str | None = None) -> str:
+    def stop_python_journal(self, journal_id: str | None = None) -> str | None:
         """Stop python journal."""
         if journal_id:
             self.scheme.eval("(api-unecho-python-port pyfluent-journal-str-port)")
@@ -572,6 +572,7 @@ class ApplicationRuntimeOld:
             return journal_str
         else:
             self.scheme.exec(["(api-stop-python-journal)"])
+            return ""
 
     def is_beta_enabled(self) -> bool:
         """Return whether beta features are enabled."""

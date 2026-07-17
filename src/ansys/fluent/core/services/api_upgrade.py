@@ -55,7 +55,7 @@ class ApiUpgradeAdvisor:
     @staticmethod
     def _start_python_journal(
         scheme_eval_service, journal_name: str | None = None
-    ) -> int:
+    ) -> str | None:
         """Start python journal - scheme based implementation."""
         if journal_name:
             scheme_eval_service.exec([f'(api-start-python-journal "{journal_name}")'])
@@ -79,6 +79,7 @@ class ApiUpgradeAdvisor:
             return journal_str
         else:
             scheme_eval_service.exec(["(api-stop-python-journal)"])
+            return ""
 
     def __enter__(self) -> _TApiUpgradeAdvisor:
         if self._can_advise():
