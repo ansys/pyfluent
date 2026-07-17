@@ -21,22 +21,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High level transcript wrapper."""
+"""Abstract monitor wrapper."""
+
+from abc import ABC, abstractmethod
 
 
-class Transcript:
-    """Transcript backed by the Transcript gRPC service."""
+class AbstractMonitor(ABC):
+    """Abstract base class for the health check."""
 
-    def __init__(self, service):
-        """Initialize Transcript."""
-        self.service = service
+    @abstractmethod
+    def get_monitors_info(self) -> dict:
+        """Get monitors information.
 
-    def begin_streaming(self, request, started_evt, id, stream_begin_method):
-        """Begin streaming from Fluent."""
-        return self.service.begin_streaming(
-            request, started_evt, id=id, stream_begin_method=stream_begin_method
-        )
+        Parameters
+        ----------
+        None
 
-    def end_streaming(self, id, stream_begin_method) -> None:
-        """End streaming from Fluent."""
-        self.service.end_streaming(id, stream_begin_method)
+        Returns
+        -------
+        dict
+            Dictionary containing the monitors information.
+        """
+        pass

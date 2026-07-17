@@ -29,6 +29,11 @@ import numpy as np
 import numpy.typing as npt
 
 from ansys.fluent.core.fields.live_field_data import override_help_text
+from ansys.fluent.core.services.abstract_solution_variables import (
+    AbstractData,
+    AbstractSolutionVariableData,
+    AbstractSolutionVariableInfo,
+)
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.variable_strategies import (
@@ -38,7 +43,7 @@ from ansys.fluent.core.variable_strategies import (
 _to_field_name_str = naming_strategy().to_string
 
 
-class Data:
+class Data(AbstractData):
     """Solution variable data."""
 
     def __init__(self, domain_name, zone_id_name_map, solution_variable_data):
@@ -68,7 +73,7 @@ class Data:
         return self._data.get(name, None)
 
 
-class SolutionVariableInfo:
+class SolutionVariableInfo(AbstractSolutionVariableInfo):
     """Provide access to Fluent SVARs and Zones information.
 
     Examples
@@ -286,7 +291,7 @@ class _SvarMethod:
         return self._svar_accessor(*args, **kwargs)
 
 
-class SolutionVariableData:
+class SolutionVariableData(AbstractSolutionVariableData):
     """Provides access to Fluent SVAR data on zones.
 
     Examples

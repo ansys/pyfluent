@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the events gRPC service of Fluent."""
+"""High level events wrapper."""
 
 from ansys.fluent.core.services.abstract_events import AbstractEvents
 from ansys.fluent.core.streaming_services.events_streaming import (

@@ -40,7 +40,7 @@ from ansys.fluent.core.services.field_data import (
     FieldDataV261,
 )
 from ansys.fluent.core.services.health_check import HealthCheck
-from ansys.fluent.core.services.monitor import Monitor
+from ansys.fluent.core.services.monitors import Monitor
 from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
