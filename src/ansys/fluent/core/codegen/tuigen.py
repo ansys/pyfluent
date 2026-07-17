@@ -304,7 +304,7 @@ class TUIGenerator:
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
-                "from ansys.fluent.core.services.datamodel_tui "
+                "from ansys.fluent.core.services.text_interface "
                 "import PyMenu, TUIMenu, TUIMethod\n\n\n"
             )
             self._main_menu.name = "main_menu"
