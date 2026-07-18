@@ -38,8 +38,6 @@ def test_solution_variables(new_solver_session):
 
     solution_variable_info = solver.fields.solution_variable_info
     solution_variable_data = solver.fields.solution_variable_data
-    assert solution_variable_info == solver.svar_info
-    assert solution_variable_data == solver.svar_data
 
     solver.file.read_case_data(file_name=import_file_name)
 
@@ -150,8 +148,6 @@ def test_solution_variables_single_precision(new_solver_session_sp):
 
     solution_variable_info = solver.fields.solution_variable_info
     solution_variable_data = solver.fields.solution_variable_data
-    assert solution_variable_info == solver.svar_info
-    assert solution_variable_data == solver.svar_data
 
     solver.file.read_case_data(file_name=import_file_name)
 

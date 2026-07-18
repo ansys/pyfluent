@@ -36,6 +36,13 @@ from ansys.fluent.core._grpc_services.application_runtime_service import (
 from ansys.fluent.core._grpc_services.application_runtime_service_v0 import (
     ApplicationRuntimeService as ApplicationRuntimeServiceV0,
 )
+from ansys.fluent.core._grpc_services.batch_ops_service_v0 import (
+    BatchOpsService as BatchOpsServiceV0,
+)
+from ansys.fluent.core._grpc_services.events_service import EventsService
+from ansys.fluent.core._grpc_services.events_service_v0 import (
+    EventsService as EventsServiceV0,
+)
 from ansys.fluent.core._grpc_services.field_data_service import FieldDataService
 from ansys.fluent.core._grpc_services.field_data_service_v0 import (
     FieldDataService as FieldDataServiceV0,
@@ -43,6 +50,10 @@ from ansys.fluent.core._grpc_services.field_data_service_v0 import (
 from ansys.fluent.core._grpc_services.health_check_service import HealthCheckService
 from ansys.fluent.core._grpc_services.health_check_service_v0 import (
     HealthCheckService as HealthCheckServiceV0,
+)
+from ansys.fluent.core._grpc_services.monitor_service import MonitorService
+from ansys.fluent.core._grpc_services.monitor_service_v0 import (
+    MonitorService as MonitorServiceV0,
 )
 from ansys.fluent.core._grpc_services.object_model_service import ObjectModelService
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
@@ -61,6 +72,20 @@ from ansys.fluent.core._grpc_services.scheme_interpreter_service_v0 import (
 from ansys.fluent.core._grpc_services.settings_service import SettingsService
 from ansys.fluent.core._grpc_services.settings_service_v0 import (
     SettingsService as SettingsServiceV0,
+)
+from ansys.fluent.core._grpc_services.solution_variable_service import (
+    SolutionVariableService,
+)
+from ansys.fluent.core._grpc_services.solution_variable_service_v0 import (
+    SolutionVariableService as SolutionVariableServiceV0,
+)
+from ansys.fluent.core._grpc_services.text_interface_service import TextInterfaceService
+from ansys.fluent.core._grpc_services.text_interface_service_v0 import (
+    TextInterfaceService as TextInterfaceServiceV0,
+)
+from ansys.fluent.core._grpc_services.transcript_service import TranscriptService
+from ansys.fluent.core._grpc_services.transcript_service_v0 import (
+    TranscriptService as TranscriptServiceV0,
 )
 
 
@@ -204,4 +229,54 @@ class GRPCServiceFactory:
             self._get_instantiated_grpc_service(ObjectModelService)
             if self._proto_version == "v1"
             else self._get_instantiated_grpc_service(ObjectModelServiceV0)
+        )
+
+    @cached_property
+    def events(self) -> EventsService | EventsServiceV0:
+        """gRPC stub for events operations."""
+        return (
+            self._get_instantiated_grpc_service(EventsService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(EventsServiceV0)
+        )
+
+    @cached_property
+    def batch_ops(self) -> BatchOpsServiceV0:
+        """gRPC stub for batch RPC operations (v0 only — no v1 implementation)."""
+        return self._get_instantiated_grpc_service(BatchOpsServiceV0)
+
+    @cached_property
+    def transcript(self) -> TranscriptService | TranscriptServiceV0:
+        """gRPC stub for transcript operations."""
+        return (
+            self._get_instantiated_grpc_service(TranscriptService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(TranscriptServiceV0)
+        )
+
+    @cached_property
+    def text_interface(self) -> TextInterfaceService | TextInterfaceServiceV0:
+        """gRPC stub for text interface operations."""
+        return (
+            self._get_instantiated_grpc_service(TextInterfaceService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(TextInterfaceServiceV0)
+        )
+
+    @cached_property
+    def monitor(self) -> MonitorService | MonitorServiceV0:
+        """gRPC stub for monitor operations."""
+        return (
+            self._get_instantiated_grpc_service(MonitorService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(MonitorServiceV0)
+        )
+
+    @cached_property
+    def solution_variable(self) -> SolutionVariableService | SolutionVariableServiceV0:
+        """gRPC stub for solution variable operations."""
+        return (
+            self._get_instantiated_grpc_service(SolutionVariableService)
+            if self._proto_version == "v1"
+            else self._get_instantiated_grpc_service(SolutionVariableServiceV0)
         )

@@ -43,7 +43,6 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
@@ -184,9 +183,7 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = service_creator(
-            "transcript", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
+        self._transcript_service = fluent_connection._service_factory.transcript
         self.transcript = (
             Transcript if fluent_connection._server_supports_v1 else TranscriptV0
         )(self._transcript_service)
@@ -197,15 +194,7 @@ class BaseSession:
 
         self.journal = Journal(self.application_runtime)
 
-        self._datamodel_service_tui = service_creator(
-            "tui", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self._error_state,
-            self.application_runtime,
-            self.scheme,
-        )
+        self._datamodel_service_tui = fluent_connection._service_factory.text_interface
 
         self._datamodel_service_se = fluent_connection._service_factory.object_model
         self._datamodel_service_se.file_transfer_service = file_transfer_service
@@ -217,14 +206,10 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = service_creator(
-            "batch_ops", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
+        self._batch_ops_service = fluent_connection._service_factory.batch_ops
 
         if event_type:
-            events_service = service_creator(
-                "events", supports_v1=fluent_connection._server_supports_v1
-            ).create(fluent_connection._channel, fluent_connection._metadata)
+            events_service = fluent_connection._service_factory.events
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
                     event_type,

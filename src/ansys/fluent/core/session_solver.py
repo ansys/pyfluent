@@ -36,23 +36,7 @@ from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services import MonitorsServiceV0, service_creator
-from ansys.fluent.core.services.monitor_v1 import MonitorsService
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableData as SolutionVariableDataV0,
-)
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableInfo as SolutionVariableInfoV0,
-)
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableService as SolutionVariableServiceV0,
-)
-from ansys.fluent.core.services.solution_variables_v1 import (
-    SolutionVariableData,
-    SolutionVariableInfo,
-    SolutionVariableService,
-)
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_shared import (
     _make_datamodel_module,
@@ -171,29 +155,16 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self._fluent_version = None
         self._bg_session_threads = []
         self._launcher_args = launcher_args
-        self._solution_variable_service = service_creator(
-            "svar", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
         self.fields.reduction = fluent_connection._service_factory.reduction
         self.fields.reduction.set_context(self)
-        if fluent_connection._server_supports_v1:
-            self.fields.solution_variable_info = SolutionVariableInfo(
-                self._solution_variable_service
-            )
-        else:
-            self.fields.solution_variable_info = SolutionVariableInfoV0(
-                self._solution_variable_service
-            )
-
-        self.fields.solution_variable_data = self._solution_variable_data(
-            fluent_connection._server_supports_v1
+        self.fields.solution_variable_info = (
+            fluent_connection._service_factory.solution_variable_info
+        )
+        self.fields.solution_variable_data = (
+            fluent_connection._service_factory.solution_variable_data
         )
 
-        monitors_service = service_creator(
-            "monitors", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel, fluent_connection._metadata, self._error_state
-        )
+        monitors_service = fluent_connection._service_factory.monitor
         #: Manage Fluent's solution monitors.
         _MonitorsManager = (
             MonitorsManager
@@ -222,14 +193,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             weakref.WeakMethod(self._stop_bg_sessions), at_start=True
         )
 
-    def _solution_variable_data(
-        self, supports_v1: bool
-    ) -> SolutionVariableDataV0 | SolutionVariableData:
-        """Return the SolutionVariableData handle."""
-        return service_creator("svar_data", supports_v1=supports_v1).create(
-            self._solution_variable_service, self.fields.solution_variable_info
-        )
-
     @property
     def settings(self) -> "settings_root.root":
         """Settings root handle."""
@@ -243,24 +206,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 scheme_eval=self.scheme.eval,
             )
         return cast("settings_root.root", self._settings)
-
-    @property
-    def svar_data(self):
-        """``SolutionVariableData`` handle."""
-        warnings.warn(
-            "svar_data is deprecated. Use fields.solution_variable_data instead.",
-            PyFluentDeprecationWarning,
-        )
-        return self.fields.solution_variable_data
-
-    @property
-    def svar_info(self):
-        """``SolutionVariableInfo`` handle."""
-        warnings.warn(
-            "svar_info is deprecated. Use fields.solution_variable_info instead.",
-            PyFluentDeprecationWarning,
-        )
-        return self.fields.solution_variable_info
 
     def _get_zones_info(self) -> list[ZoneInfo]:
         zones_info = []
