@@ -379,6 +379,4 @@ class StandaloneLauncher:
             raise LaunchFluentError(self._launch_cmd) from ex
         finally:
             if self.argvals.get("cleanup_on_exit", True):
-                server_info_file = Path(self._server_info_file_name)
-                if server_info_file.exists():
-                    server_info_file.unlink()
+                Path(self._server_info_file_name).unlink(missing_ok=True)

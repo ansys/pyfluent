@@ -610,9 +610,5 @@ def start_fluent_container(
         logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
         raise LaunchFluentError(launch_string) from ex
     finally:
-        if (
-            remove_server_info_file
-            and cleanup_on_exit
-            and host_server_info_file.exists()
-        ):
-            host_server_info_file.unlink()
+        if remove_server_info_file and cleanup_on_exit:
+            host_server_info_file.unlink(missing_ok=True)
