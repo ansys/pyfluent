@@ -233,7 +233,7 @@ class ApplicationRuntimeService(ServiceProtocol):
             case "specific_gpu_ids":
                 return list(response.specific_gpu_ids.gpu_ids)
 
-    def start_python_journal(self, journal_name: str | None = None) -> int:
+    def start_python_journal(self, journal_name: str | None = None) -> str:
         """StartPythonJournal RPC."""
         request = application_runtime_pb2.StartPythonJournalRequest()
         if journal_name:
@@ -270,3 +270,15 @@ class ApplicationRuntimeService(ServiceProtocol):
         request = application_runtime_pb2.SetWorkingDirectoryRequest()
         request.path = os.fspath(path)
         self._stub.SetWorkingDirectory(request, metadata=self._metadata)
+
+    def set_idle_timeout(self, timeout: int) -> None:
+        """Set the Fluent session idle timeout.
+
+        Parameters
+        ----------
+        timeout : int
+            Idle timeout duration in seconds. Pass 0 to disable the idle timeout.
+        """
+        request = application_runtime_pb2.SetIdleTimeoutRequest()
+        request.timeout.seconds = timeout
+        self._stub.SetIdleTimeout(request, metadata=self._metadata)
