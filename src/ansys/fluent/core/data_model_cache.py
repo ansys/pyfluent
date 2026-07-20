@@ -139,7 +139,10 @@ def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str)
         module = load_module(
             rules, config.codegen_outdir / f"datamodel_{version.number}" / f"{rules}.py"
         )
-    except FileNotFoundError:  # no codegen or during codegen
+    except (
+        ImportError,
+        FileNotFoundError,
+    ):  # no codegen, during codegen or outdated codegen
         return False
     cls = module.Root
     comps = rules_path.split("/")
