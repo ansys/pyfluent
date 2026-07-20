@@ -18,6 +18,7 @@ Axial Fan Performance Curve Workflow
 # This example demonstrates an end-to-end PyFluent workflow for simulating an axial fan and performing a parametric study to generate its performance curve.
 #
 # The workflow includes:
+#
 # * Importing a CFD mesh
 # * Defining input parameters for the parametric study
 # * Configuring the Fluent solver and physical models
@@ -36,9 +37,8 @@ Axial Fan Performance Curve Workflow
 # Solution Setup
 # ---------------
 #
-# %%
 # Import required libraries and download required files
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 import os
 
@@ -57,7 +57,7 @@ import_file_name = examples.download_file(
 
 # %%
 # Launch Fluent
-# ^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^
 # Launch Fluent in solution mode with double precision running on eight processors.
 
 solver = pyfluent.launch_fluent(
@@ -70,7 +70,7 @@ solver = pyfluent.launch_fluent(
 
 # %%
 # Read mesh file and perform mesh check
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Import the mesh and perform a mesh check.
 
 solver.settings.file.read_mesh(file_name=import_file_name)
@@ -78,7 +78,7 @@ solver.settings.mesh.check()
 
 # %%
 # Creat input parameters
-# ^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^
 # Create named expressions for the pressure outlet boundary condition and for the fan rotational speed, and set them as input parameters.
 # Pressure outlet value is set to 0.0 Pa (atmospheric gauge pressure) and rotational speed is set to 155.534 rad/s.
 
@@ -96,7 +96,7 @@ solver.settings.setup.named_expressions["rotational_speed"].input_parameter = Tr
 
 # %%
 # Solver setup
-# ^^^^^^^^^^^^^
+# ^^^^^^^^^^^^
 # Set the solver type to pressure-based, and analysis type to steady state, and activate gravity in the negative x-direction.
 
 # General: Solver Type: Pressure-Based
@@ -111,7 +111,7 @@ solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 
 
 # %%
 # Models: Turbulance/Viscous Model
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the turbulance/viscous model to SST k-omega model.
 # Activate curvature correction, production Kato-Launder, and production limiter options.
 
@@ -125,8 +125,8 @@ solver.settings.setup.models.viscous.options.production_limiter.enabled = True
 
 # %%
 # Cell Zones
-# ^^^^^^^^^^^
-# Activate the Multiple Reference Frame (MRF) model for the <code>'rotating-fan'</code> zone,
+# ^^^^^^^^^^
+# Activate the Multiple Reference Frame (MRF) model for the 'rotating-fan' zone,
 # specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter.
 # Keep the default setting for the remaining cell zones.
 
@@ -153,9 +153,9 @@ solver.settings.setup.cell_zone_conditions.fluid[
 
 # %%
 # Boundary conditions
-# ^^^^^^^^^^^^^^^^^^^^
-# Set the <code>'inlet'</code> boundary as pressure-inlet boundary condition type, and assign to it a pressure value of 0.0 Pa (atmospheric gauge pressure).
-# Set the <code>'pressure-outlet'</code> boundary as pressure-outlet boundary condition type, and assign to it the previously defined input parameter.
+# ^^^^^^^^^^^^^^^^^^^
+# Set the 'inlet' boundary as pressure-inlet boundary condition type, and assign to it a pressure value of 0.0 Pa (atmospheric gauge pressure).
+# Set the 'pressure-outlet' boundary as pressure-outlet boundary condition type, and assign to it the previously defined input parameter.
 # Keep the remaining boundaries as no-slip wall boundary condition type (default settings - no changes)
 
 boundary_conditions = solver.settings.setup.boundary_conditions
@@ -180,7 +180,7 @@ outlet.turbulence.turbulent_viscosity_ratio = 10
 
 # %%
 # Solution methods and controls
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the pressure-velocity coupling scheme and spatial discretization methods. Also, set the under-relaxation factors.
 
 # Solution methods
@@ -207,7 +207,7 @@ solver.settings.solution.controls.under_relaxation["turb-viscosity"] = 0.8
 
 # %%
 # Create report definitions and output parameters
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Create report definitions for computed quantities of interest including, inlet volume flow rate, total-to-static pressure difference, and torque.
 
 # Report definition: Inlet volume flow rate
@@ -306,18 +306,17 @@ solver.settings.file.write_case(file_name="axial_fan.cas.h5")
 
 # %%
 # Parametric study: Construct the fan performance curve
-# ------------------------------------------------------
+# -----------------------------------------------------
 #
-# %%
 # Initialize parametric study
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Initialize a parametric design point study from a Fluent session.
 
 solver.settings.parametric_studies.initialize(project_filename="project_axial_fan")
 
 # %%
 # Access and modify input parameters
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Access and modify the input parameters of the base design point.
 # Set the pressure at the outlet boundary to 25 Pa, and keep the fan's rotational speed at 155.534 rad/s.
 
@@ -331,7 +330,7 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 
 # %%
 # Add new design points
-# ^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^
 # Create four new design points and assign outlet pressure and rotational
 # speed to each one.
 # The fan's rotational speed is set constant in this study.
