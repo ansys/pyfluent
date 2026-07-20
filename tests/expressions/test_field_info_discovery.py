@@ -81,13 +81,34 @@ class _FakeSession:
         self.fields = _FakeFields(field_info)
 
 
+class _FakeFieldDataNaming:
+    """Maps field-data hyphen-cased names → VariableDescriptors.
+
+    Mirrors the interface of the real ``_naming_strategy_instance`` used by
+    :func:`~ansys.fluent.core.expressions._discovery._field_data_naming`.
+    Only the names present in the fake ``_FakeFieldInfo`` are registered;
+    everything else (e.g. ``"wall-y-plus"``) is intentionally absent so that
+    the active-field filter correctly excludes those descriptors.
+    """
+
+    _MAP = {
+        "absolute-pressure": V.ABSOLUTE_PRESSURE,
+        "temperature": V.TEMPERATURE,
+        "velocity": V.VELOCITY,
+    }
+
+    def to_variable_descriptor(self, name):
+        """Return the descriptor for ``name``, raising ``KeyError`` if unknown."""
+        return self._MAP[name]
+
+
 # --------------------------------------------------------------------------- #
 # Fixtures                                                                    #
 # --------------------------------------------------------------------------- #
 
 
 @pytest.fixture
-def session():
+def session(monkeypatch):
     settings = _FakeSettings(
         bcs=["inlet1", "outlet"],
         named_exprs=["dp"],
@@ -97,6 +118,10 @@ def session():
         surfaces=["inlet1", "outlet", "plane-1", "iso-surf-1", "interior--fluid"],
         scalars=["absolute-pressure", "temperature"],
         vectors=["velocity"],
+    )
+    monkeypatch.setattr(
+        "ansys.fluent.core.expressions._discovery._field_data_naming",
+        lambda: _FakeFieldDataNaming(),
     )
     return _FakeSession(settings, field_info)
 
@@ -167,8 +192,7 @@ def test_variables_filtered_by_active_fields(session):
     assert V.VELOCITY in vs
     # Something present in the static mapping but not active on this session
     # must be filtered out.
-    # TEMP COMMENT OUT
-    # assert V.WALL_Y_PLUS not in vs
+    assert V.WALL_Y_PLUS not in vs
 
 
 def test_variables_unfiltered_without_field_info():
@@ -183,13 +207,10 @@ def test_scalar_slot_variables_respects_field_info(session):
     inv = b.reductions.area_ave
     allowed = inv.expression.variables.allowed_values()
     assert V.ABSOLUTE_PRESSURE in allowed
-    # TEMP COMMENT OUT
-    # assert V.WALL_Y_PLUS not in allowed
+    assert V.WALL_Y_PLUS not in allowed
     # is_allowed follows the same rule.
     assert inv.expression.variables.is_allowed(V.ABSOLUTE_PRESSURE) is True
-
-    # TEMP COMMENT OUT
-    # assert inv.expression.variables.is_allowed(V.WALL_Y_PLUS) is False
+    assert inv.expression.variables.is_allowed(V.WALL_Y_PLUS) is False
 
 
 # --------------------------------------------------------------------------- #
