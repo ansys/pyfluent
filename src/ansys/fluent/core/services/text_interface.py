@@ -31,177 +31,138 @@ import keyword
 import logging
 from typing import Any
 
-from google.protobuf.json_format import MessageToDict
-import grpc
-
-from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
-from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
-from ansys.api.fluent.v0.variant_pb2 import Variant
-from ansys.fluent.core.services._protocols import ServiceProtocol
+from ansys.fluent.core.services.abstract_text_interface import AbstractTextInterface
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 Path = list[str]
 
 logger: logging.Logger = logging.getLogger("pyfluent.tui")
 
 
-class DatamodelServiceImpl:
-    """Class wrapping the TUI-based datamodel gRPC service of Fluent."""
-
-    def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
-    ) -> None:
-        """__init__ method of DatamodelServiceImpl class."""
-        self._channel = channel
-        self._fluent_error_state = fluent_error_state
-        intercept_channel = grpc.intercept_channel(
-            self._channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(self._fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
-        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
-        self._metadata = metadata
-
-    def get_attribute_value(
-        self, request: DataModelProtoModule.GetAttributeValueRequest
-    ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """GetAttributeValue RPC of DataModel service."""
-        return self._stub.GetAttributeValue(request, metadata=self._metadata)
-
-    def get_state(
-        self, request: DataModelProtoModule.GetStateRequest
-    ) -> DataModelProtoModule.GetStateResponse:
-        """GetState RPC of DataModel service."""
-        return self._stub.GetState(request, metadata=self._metadata)
-
-    def set_state(
-        self, request: DataModelProtoModule.SetStateRequest
-    ) -> DataModelProtoModule.SetStateResponse:
-        """SetState RPC of DataModel service."""
-        return self._stub.SetState(request, metadata=self._metadata)
-
-    def execute_command(
-        self, request: DataModelProtoModule.ExecuteCommandRequest
-    ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """ExecuteCommand RPC of DataModel service."""
-        return self._stub.ExecuteCommand(request, metadata=self._metadata)
-
-    def execute_query(
-        self, request: DataModelProtoModule.ExecuteQueryRequest
-    ) -> DataModelProtoModule.ExecuteQueryResponse:
-        """ExecuteQuery RPC of DataModel service."""
-        return self._stub.ExecuteQuery(request, metadata=self._metadata)
-
-    def get_static_info(self, request):
-        """GetStaticInfo RPC of DataModel service."""
-        return self._stub.GetStaticInfo(request, metadata=self._metadata)
-
-
-def _convert_value_to_gvalue(val: Any, gval: Variant) -> None:
-    """Convert Python datatype to Value type of google/protobuf/struct.proto."""
-    if isinstance(val, bool):
-        gval.bool_value = val
-    elif isinstance(val, int) or isinstance(val, float):
-        gval.number_value = val
-    elif isinstance(val, str):
-        gval.string_value = val
-    elif isinstance(val, list) or isinstance(val, tuple):
-        # set the one_of to list_value
-        gval.list_value.values.add()
-        gval.list_value.values.pop()
-        for item in val:
-            item_gval = gval.list_value.values.add()
-            _convert_value_to_gvalue(item, item_gval)
-    elif isinstance(val, dict):
-        for k, v in val.items():
-            _convert_value_to_gvalue(v, gval.struct_value.fields[k])
-
-
-def _convert_gvalue_to_value(gval: Variant) -> Any:
-    """Convert Value type of google/protobuf/struct.proto to Python datatype."""
-    if gval.HasField("bool_value"):
-        return gval.bool_value
-    elif gval.HasField("number_value"):
-        return gval.number_value
-    elif gval.HasField("string_value"):
-        return gval.string_value
-    elif gval.HasField("list_value"):
-        val = []
-        for item in gval.list_value.values:
-            val.append(_convert_gvalue_to_value(item))
-        return val
-    elif gval.HasField("struct_value"):
-        val = {}
-        for k, v in gval.struct_value.fields.items():
-            val[k] = _convert_gvalue_to_value(v)
-        return val
-
-
-class DatamodelService(ServiceProtocol):
-    """Pure Python wrapper of DatamodelServiceImpl."""
+class TextInterface(AbstractTextInterface):
+    """Pure Python wrapper of text interface grpc service."""
 
     def __init__(
         self,
-        channel: grpc.Channel,
-        metadata: list[tuple[str, str]],
-        fluent_error_state,
-        app_utilities,
-        scheme_eval,
+        service,
+        application_runtime_service,
+        scheme_interpreter_service,
     ) -> None:
         """__init__ method of DatamodelService class."""
-        self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
-        self._app_utilities = app_utilities
-        self._scheme_eval = scheme_eval
+        self.service = service
+        self._app_utilities = application_runtime_service
+        self._scheme_eval = scheme_interpreter_service
 
     def get_attribute_value(
         self, path: str, attribute: str, include_unavailable: bool
     ) -> Any:
-        """Get the attribute value."""
-        request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = path
-        request.attribute = DataModelProtoModule.Attribute.Value(attribute.upper())
-        if include_unavailable:
-            request.args["include_unavailable"] = 1
-        response = self._impl.get_attribute_value(request)
-        return _convert_gvalue_to_value(response.value)
+        """Get attribute value at a path.
+
+        Parameters
+        ----------
+        path : str
+            Path to the menu.
+        attribute : str
+            Attribute name.
+        include_unavailable : bool
+            Whether to query over static TUI metadata.
+
+        Returns
+        -------
+        Any
+            Attribute value (any Python datatype)
+        """
+        return self.service.get_attribute_value(path, attribute, include_unavailable)
 
     def execute_command(self, path: str, *args, **kwargs) -> Any:
-        """Execute the command."""
-        request = DataModelProtoModule.ExecuteCommandRequest()
-        request.path = path
-        if kwargs:
-            for k, v in kwargs.items():
-                _convert_value_to_gvalue(v, request.args.fields[k])
-        else:
-            _convert_value_to_gvalue(args, request.args.fields["tui_args"])
-        return self._impl.execute_command(request)
+        """Execute a command at a path with positional or keyword arguments.
+
+        Parameters
+        ----------
+        path : str
+            Path to the menu.
+        *args
+            Positional arguments of the command.
+        **kwargs
+            Keyword arguments of the command.
+
+        Returns
+        -------
+        Any
+            Command result (any Python datatype)
+        """
+        return self.service.execute_command(path, *args, **kwargs)
 
     def execute_query(self, path: str, *args, **kwargs) -> Any:
-        """Execute the query."""
-        request = DataModelProtoModule.ExecuteQueryRequest()
-        request.path = path
-        if kwargs:
-            for k, v in kwargs.items():
-                _convert_value_to_gvalue(v, request.args.fields[k])
-        else:
-            _convert_value_to_gvalue(args, request.args.fields["tui_args"])
-        return self._impl.execute_query(request)
+        """Execute a query at a path with positional or keyword arguments.
+
+        Parameters
+        ----------
+        path : str
+            Path to the menu.
+        *args
+            Positional arguments of the query.
+        **kwargs
+            Keyword arguments of the query.
+
+        Returns
+        -------
+        Any
+            Query result (any Python datatype)
+        """
+        return self.service.execute_query(path, *args, **kwargs)
 
     def get_static_info(self, path: str):
-        """Get static info."""
-        request = DataModelProtoModule.GetStaticInfoRequest()
-        request.path = path
-        response = self._impl.get_static_info(request)
-        # Note: MessageToDict's parameter names are different in different protobuf versions
-        return MessageToDict(response.info, True)
+        """Get static info at a path.
+
+        Parameters
+        ----------
+        path : str
+            Path to the menu.
+
+        Returns
+        -------
+        dict[str, Any]
+            Static info at the menu level.
+        """
+        return self.service.get_static_info(path)
+
+    def get_child_names(
+        self, path: str, include_unavailable: bool = False
+    ) -> list[str]:
+        """Get the names of child menus.
+
+        Parameters
+        ----------
+        path : str
+            Path to the menu.
+
+        include_unavailable : bool, optional
+            Whether to query over static TUI metadata. The default is ``False``.
+
+        Returns
+        -------
+        List[str]
+            Names of child menus.
+        """
+        return self.service.get_child_names(path, include_unavailable)
+
+    def get_doc_string(self, path: str, include_unavailable: bool = False) -> str:
+        """Get docstring for a menu.
+
+        Parameters
+        ----------
+        path : str
+            Path to the menu.
+
+        include_unavailable : bool, optional
+            Whether to query over static TUI metadata. The default is ``False``.
+
+        Returns
+        -------
+        str
+        """
+        return self.service.get_doc_string(path, include_unavailable)
 
 
 class PyMenu:
@@ -219,9 +180,7 @@ class PyMenu:
         Get docstring for a menu.
     """
 
-    def __init__(
-        self, service: DatamodelService, version, mode, path: Path | str
-    ) -> None:
+    def __init__(self, service, version, mode, path: Path | str) -> None:
         """__init__ method of PyMenu class."""
         self._service = service
         self._version = version
@@ -241,12 +200,7 @@ class PyMenu:
         List[str]
             Names of child menus.
         """
-        attribute = DataModelProtoModule.Attribute.Name(
-            DataModelProtoModule.Attribute.CHILD_NAMES
-        ).lower()
-        return self._service.get_attribute_value(
-            self._path, attribute, include_unavailable
-        )
+        return self._service.get_child_names(self._path, include_unavailable)
 
     def execute(self, *args, **kwargs) -> Any:
         """Execute a command or query at a path with positional or keyword arguments.
@@ -265,6 +219,7 @@ class PyMenu:
         """
         with ApiUpgradeAdvisor(
             self._service._app_utilities,
+            self._service._scheme_eval,
             self._version,
             self._mode,
         ):
@@ -285,12 +240,7 @@ class PyMenu:
         -------
         str
         """
-        attribute = DataModelProtoModule.Attribute.Name(
-            DataModelProtoModule.Attribute.HELP_STRING
-        ).lower()
-        return self._service.get_attribute_value(
-            self._path, attribute, include_unavailable
-        )
+        return self._service.get_doc_string(self._path, include_unavailable)
 
     def get_static_info(self) -> dict[str, Any]:
         """Get static info at menu level.

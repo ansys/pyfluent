@@ -431,7 +431,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
-    for attr in ("field_data", "field_info"):
+    for attr in ("field_data", "field_data_streaming"):
         assert attr in fields_dir
     assert session.is_active()
     server.stop(None)
@@ -482,7 +482,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     )
     # check a few dir elements
     fields_dir = dir(session.fields)
-    for attr in ("field_data", "field_info"):
+    for attr in ("field_data", "field_data_streaming"):
         assert attr in fields_dir
     assert session.is_active()
     server.stop(None)
@@ -647,7 +647,7 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     assert solver1.is_active()
     assert solver2.is_active()
     timeout_loop(
-        not health_check_service1.is_serving,
+        lambda: not health_check_service1.is_serving,
         timeout=60,
         idle_period=1,
     )
@@ -698,14 +698,10 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(DeprecationWarning):
-        solver.field_data
-    with pytest.warns(PyFluentDeprecationWarning):
-        solver.svar_data
 
     assert {
         "field_data",
-        "field_info",
+        "_field_info",
         "field_data_streaming",
         "solution_variable_data",
         "solution_variable_info",
@@ -816,7 +812,7 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
         assert solver._settings_service.is_wildcard("yes*")
 
-        assert not solver._field_data_service.is_solution_data_available()
+        assert not solver.fields.field_data.is_data_valid()
     else:
         assert not solver.application_runtime.is_wildcard("no")
 
@@ -1062,10 +1058,12 @@ def test_dir_for_session(new_meshing_session_wo_exit):
         assert getattr(meshing, attr)
         assert attr in dir(meshing)
 
-    for attr in ["field_data", "field_info", "scheme_eval"]:
-        # Deprecated methods are accessible but hidden in dir()
-        assert getattr(meshing, attr)
+    for attr in ["field_data", "field_info"]:
+        # Deprecated methods are not accessible and hidden in dir()
+        assert getattr(meshing, attr, None) is None
         assert attr not in dir(meshing)
+    assert getattr(meshing, "scheme_eval")
+    assert "scheme_eval" not in dir(meshing)
 
     solver = meshing.switch_to_solver()
 
@@ -1088,7 +1086,10 @@ def test_dir_for_session(new_meshing_session_wo_exit):
         "reduction",
     ]:
         # Deprecated methods are accessible but hidden in dir()
-        assert getattr(solver, attr)
+        if attr in ["field_data", "field_info", "svar_data", "svar_info"]:
+            assert getattr(solver, attr, None) is None
+        else:
+            assert getattr(solver, attr)
         assert attr not in dir(solver)
 
     solver.enable_beta_features()

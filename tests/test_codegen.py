@@ -108,7 +108,7 @@ def _get_expected_tui_api_output(mode):
 #
 # pylint: disable=line-too-long
 
-from ansys.fluent.core.services.datamodel_tui import PyMenu, TUIMenu, TUIMethod
+from ansys.fluent.core.services.text_interface import PyMenu, TUIMenu, TUIMethod
 
 
 
@@ -226,7 +226,7 @@ _expected_datamodel_api_output = '''#
 #
 # pylint: disable=line-too-long
 
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyMenu,
     PyParameter,
     PyTextual,
