@@ -439,4 +439,4 @@ plt.show()
 
 solver.exit()
 
-# sphinx_gallery_thumbnail_path = '/_static/axial_fan_performance_curve/problem_schematic.png'
+# sphinx_gallery_thumbnail_path = '_static/axial_fan_performance_curve/problem_schematic.png'
