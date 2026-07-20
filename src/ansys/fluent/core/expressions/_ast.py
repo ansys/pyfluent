@@ -21,9 +21,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Sequence
 
-from ansys.units.variable_descriptor import VariableDescriptor
-
 from ansys.fluent.core.variable_strategies import FluentExprNamingStrategy
+from ansys.units.variable_descriptor import VariableDescriptor
 
 from .errors import ExpressionBuildError
 
@@ -67,24 +66,54 @@ class Expr:
     # -- operator overloading (scalar arithmetic) -------------------------- #
     #   These live on the base so that any subclass whose kind is compatible
     #   with arithmetic just works.  A kind-check happens inside _binop.
-    def __add__(self, other):  return _binop(self, other, "+")
-    def __radd__(self, other): return _binop(other, self, "+")
-    def __sub__(self, other):  return _binop(self, other, "-")
-    def __rsub__(self, other): return _binop(other, self, "-")
-    def __mul__(self, other):  return _binop(self, other, "*")
-    def __rmul__(self, other): return _binop(other, self, "*")
-    def __truediv__(self, other):  return _binop(self, other, "/")
-    def __rtruediv__(self, other): return _binop(other, self, "/")
-    def __pow__(self, other):  return _binop(self, other, "**")
-    def __neg__(self):         return UnaryOp("-", _coerce(self))
+    def __add__(self, other):
+        return _binop(self, other, "+")
+
+    def __radd__(self, other):
+        return _binop(other, self, "+")
+
+    def __sub__(self, other):
+        return _binop(self, other, "-")
+
+    def __rsub__(self, other):
+        return _binop(other, self, "-")
+
+    def __mul__(self, other):
+        return _binop(self, other, "*")
+
+    def __rmul__(self, other):
+        return _binop(other, self, "*")
+
+    def __truediv__(self, other):
+        return _binop(self, other, "/")
+
+    def __rtruediv__(self, other):
+        return _binop(other, self, "/")
+
+    def __pow__(self, other):
+        return _binop(self, other, "**")
+
+    def __neg__(self):
+        return UnaryOp("-", _coerce(self))
 
     # -- comparisons produce BooleanExpr ----------------------------------- #
-    def __lt__(self, other): return _cmp(self, other, "<")
-    def __le__(self, other): return _cmp(self, other, "<=")
-    def __gt__(self, other): return _cmp(self, other, ">")
-    def __ge__(self, other): return _cmp(self, other, ">=")
-    def __eq__(self, other): return _cmp(self, other, "==")
-    def __ne__(self, other): return _cmp(self, other, "!=")
+    def __lt__(self, other):
+        return _cmp(self, other, "<")
+
+    def __le__(self, other):
+        return _cmp(self, other, "<=")
+
+    def __gt__(self, other):
+        return _cmp(self, other, ">")
+
+    def __ge__(self, other):
+        return _cmp(self, other, ">=")
+
+    def __eq__(self, other):
+        return _cmp(self, other, "==")
+
+    def __ne__(self, other):
+        return _cmp(self, other, "!=")
 
     # dataclasses set __hash__ to None when __eq__ is defined; we need nodes
     # hashable by identity so users can put them into sets during traversal.
@@ -97,14 +126,20 @@ class Expr:
 
 
 class ScalarExpr(Expr):
+    """Marker mixin for expression nodes that produce a scalar result."""
+
     kind = Kind.SCALAR
 
 
 class VectorExpr(Expr):
+    """Marker mixin for expression nodes that produce a vector result."""
+
     kind = Kind.VECTOR
 
 
 class BooleanExpr(Expr):
+    """Marker mixin for expression nodes that produce a boolean result."""
+
     kind = Kind.BOOLEAN
 
 
@@ -206,6 +241,8 @@ class LocationList(Expr):
 
 @dataclass(frozen=True, eq=False)
 class UnaryOp(ScalarExpr):
+    """A unary prefix operation, e.g. ``(-expr)``."""
+
     op: str
     operand: Expr
 
@@ -215,6 +252,8 @@ class UnaryOp(ScalarExpr):
 
 @dataclass(frozen=True, eq=False)
 class BinOp(ScalarExpr):
+    """A binary infix operation, e.g. ``(left + right)``."""
+
     op: str
     left: Expr
     right: Expr
@@ -225,6 +264,8 @@ class BinOp(ScalarExpr):
 
 @dataclass(frozen=True, eq=False)
 class Compare(BooleanExpr):
+    """A comparison expression that produces a boolean result, e.g. ``(a < b)``."""
+
     op: str
     left: Expr
     right: Expr
@@ -247,9 +288,11 @@ class Call(Expr):
     # dataclass-safe kind override
     @property  # type: ignore[override]
     def kind(self) -> Kind:  # noqa: D401
+        """Return kind of the call's return value."""
         return self.return_kind
 
     def __fluent_expr__(self) -> str:
+        """Render the call as ``name(arg1,arg2,...)``."""
         return f"{self.name}(" + ",".join(str(a) for a in self.args) + ")"
 
 
@@ -290,6 +333,13 @@ def _coerce(value) -> Expr:
 
 
 def _binop(a, b, op: str) -> BinOp:
+    """Build a :class:`BinOp` node, coercing operands and checking kinds.
+
+    Raises
+    ------
+    ExpressionBuildError
+        If either operand is not a scalar-compatible kind.
+    """
     ea, eb = _coerce(a), _coerce(b)
     for side, e in (("left", ea), ("right", eb)):
         if e.kind not in _SCALAR_KINDS:
@@ -308,7 +358,14 @@ def _cmp(a, b, op: str) -> Compare:
 
 
 def coerce_location_list(value) -> LocationList:
-    """Coerce a list/tuple of strings (or an existing LocationList) into one."""
+    """Coerce a list/tuple of strings (or an existing LocationList) into one.
+
+    Raises
+    ------
+    ExpressionBuildError
+        If ``value`` is a bare string or cannot be interpreted as a sequence of
+        location names.
+    """
     if isinstance(value, LocationList):
         return value
     if isinstance(value, str):
@@ -317,6 +374,4 @@ def coerce_location_list(value) -> LocationList:
         )
     if isinstance(value, Sequence):
         return LocationList(tuple(value))
-    raise ExpressionBuildError(
-        f"Cannot use {value!r} as a LocationList."
-    )
+    raise ExpressionBuildError(f"Cannot use {value!r} as a LocationList.")

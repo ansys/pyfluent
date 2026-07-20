@@ -9,10 +9,9 @@ No live Fluent session required.
 """
 
 import pytest
-from ansys.units import VariableCatalog as V
 
 from ansys.fluent.core.expressions import ExpressionBuilder
-
+from ansys.units import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
 # Fakes                                                                       #
@@ -99,9 +98,7 @@ def test_variables_listing_static(offline):
 
 def test_location_slot_allowed_values_online(online):
     inv = online.reductions.area_ave
-    assert inv.locations.allowed_values() == [
-        "inlet1", "inlet2", "outlet", "plane-1"
-    ]
+    assert inv.locations.allowed_values() == ["inlet1", "inlet2", "outlet", "plane-1"]
 
 
 def test_location_slot_is_allowed_online(online):

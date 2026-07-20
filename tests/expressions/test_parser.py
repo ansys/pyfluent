@@ -4,7 +4,6 @@
 """Tests for the Fluent expression parser and round-tripping."""
 
 import pytest
-from ansys.units import VariableCatalog as V
 
 from ansys.fluent.core.expressions import (
     ExpressionBuilder,
@@ -25,6 +24,7 @@ from ansys.fluent.core.expressions._ast import (
     UnaryOp,
     Variable,
 )
+from ansys.units import VariableCatalog as V
 
 
 @pytest.fixture
@@ -196,10 +196,9 @@ def test_round_trip_canonical(canonical):
 
 def test_round_trip_of_builder_output(b):
     # Whatever the builder produces should re-parse identically.
-    dp = (
-        b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"])
-        - b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["outlet"])
-    )
+    dp = b.reductions.area_ave(
+        expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
+    ) - b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["outlet"])
     s = str(dp)
     assert str(parse(s)) == s
 
@@ -218,9 +217,7 @@ def test_edit_parsed_tree(b):
     original = "AreaAve(AbsolutePressure,['inlet1'])"
     node = b.parse(original)
     # Replace with a subtraction against another reduction.
-    outlet = b.reductions.area_ave(
-        expression=V.ABSOLUTE_PRESSURE, locations=["outlet"]
-    )
+    outlet = b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["outlet"])
     edited = node - outlet
     assert str(edited) == (
         "(AreaAve(AbsolutePressure,['inlet1']) - "

@@ -7,13 +7,13 @@ Reductions, math functions, vector operations, and the ``IF`` conditional.
 """
 
 import pytest
-from ansys.units import VariableCatalog as V
 
 from ansys.fluent.core.expressions import (
     ExpressionBuilder,
     ExpressionBuildError,
     Weight,
 )
+from ansys.units import VariableCatalog as V
 
 
 @pytest.fixture
@@ -29,19 +29,19 @@ def b():
 @pytest.mark.parametrize(
     "py_name, fluent_name",
     [
-        ("area_ave",         "AreaAve"),
-        ("area_int",         "AreaInt"),
-        ("volume_ave",       "VolumeAve"),
-        ("volume_int",       "VolumeInt"),
-        ("mass_ave",         "MassAve"),
-        ("mass_int",         "MassInt"),
-        ("mass_flow_ave",    "MassFlowAve"),
-        ("mass_flow_int",    "MassFlowInt"),
-        ("mass_flow_ave_abs","MassFlowAveAbs"),
-        ("mass_flow_int_abs","MassFlowIntAbs"),
-        ("minimum",          "Minimum"),
-        ("maximum",          "Maximum"),
-        ("average",          "Average"),
+        ("area_ave", "AreaAve"),
+        ("area_int", "AreaInt"),
+        ("volume_ave", "VolumeAve"),
+        ("volume_int", "VolumeInt"),
+        ("mass_ave", "MassAve"),
+        ("mass_int", "MassInt"),
+        ("mass_flow_ave", "MassFlowAve"),
+        ("mass_flow_int", "MassFlowInt"),
+        ("mass_flow_ave_abs", "MassFlowAveAbs"),
+        ("mass_flow_int_abs", "MassFlowIntAbs"),
+        ("minimum", "Minimum"),
+        ("maximum", "Maximum"),
+        ("average", "Average"),
     ],
 )
 def test_expression_and_locations_reductions(b, py_name, fluent_name):
@@ -53,11 +53,11 @@ def test_expression_and_locations_reductions(b, py_name, fluent_name):
 @pytest.mark.parametrize(
     "py_name, fluent_name",
     [
-        ("area",          "Area"),
-        ("volume",        "Volume"),
-        ("count",         "Count"),
-        ("mass",          "Mass"),
-        ("mass_flow",     "MassFlow"),
+        ("area", "Area"),
+        ("volume", "Volume"),
+        ("count", "Count"),
+        ("mass", "Mass"),
+        ("mass_flow", "MassFlow"),
         ("mass_flow_abs", "MassFlowAbs"),
     ],
 )
@@ -74,6 +74,7 @@ def test_extent_only_reductions(b, py_name, fluent_name):
 
 def test_centroid_is_vector(b):
     from ansys.fluent.core.expressions import Kind
+
     node = b.reductions.centroid(locations=["inlet1"])
     assert str(node) == "Centroid(['inlet1'])"
     assert node.kind is Kind.VECTOR
@@ -81,6 +82,7 @@ def test_centroid_is_vector(b):
 
 def test_force_is_vector(b):
     from ansys.fluent.core.expressions import Kind
+
     node = b.reductions.force(locations=["wall"])
     assert node.kind is Kind.VECTOR
 
@@ -91,9 +93,7 @@ def test_force_is_vector(b):
 
 
 def test_sum_without_weight(b):
-    node = b.reductions.sum(
-        expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
-    )
+    node = b.reductions.sum(expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"])
     assert str(node) == "Sum(AbsolutePressure,['inlet1'])"
 
 
@@ -148,9 +148,9 @@ def test_math_binary_renders(b):
 
 def test_math_arity_enforced(b):
     with pytest.raises(ExpressionBuildError):
-        b.math.pow(2)          # missing exponent
+        b.math.pow(2)  # missing exponent
     with pytest.raises(ExpressionBuildError):
-        b.math.sqrt(1, 2)      # too many args
+        b.math.sqrt(1, 2)  # too many args
 
 
 # --------------------------------------------------------------------------- #
@@ -161,6 +161,7 @@ def test_math_arity_enforced(b):
 def test_make_vec(b):
     node = b.vector.make_vec(1, 2, 3)
     from ansys.fluent.core.expressions import Kind
+
     assert str(node) == "MakeVec(1,2,3)"
     assert node.kind is Kind.VECTOR
 
@@ -202,7 +203,7 @@ def test_if_basic(b):
 
 def test_if_requires_boolean_condition(b):
     with pytest.raises(ExpressionBuildError, match="boolean"):
-        b.conditional.if_(1, 2, 3)   # 1 is scalar, not boolean
+        b.conditional.if_(1, 2, 3)  # 1 is scalar, not boolean
 
 
 def test_if_in_reduction(b):
@@ -210,8 +211,7 @@ def test_if_in_reduction(b):
     inner = b.conditional.if_(v > 10, v, 0)
     node = b.reductions.area_ave(expression=inner, locations=["inlet1"])
     assert str(node) == (
-        "AreaAve(IF((VelocityMagnitude > 10),VelocityMagnitude,0),"
-        "['inlet1'])"
+        "AreaAve(IF((VelocityMagnitude > 10),VelocityMagnitude,0)," "['inlet1'])"
     )
 
 
@@ -222,13 +222,15 @@ def test_if_in_reduction(b):
 
 def test_registered_groups(b):
     from ansys.fluent.core.expressions._registry import REGISTRY
+
     assert set(REGISTRY.groups()) >= {"reductions", "math", "vector", "conditional"}
 
 
 def test_make_call_escape_hatch(b):
     # For anything not yet catalogued, users can still hand-roll a Call.
-    from ansys.fluent.core.expressions._registry import make_call
     from ansys.fluent.core.expressions import Kind
+    from ansys.fluent.core.expressions._registry import make_call
+
     node = make_call("Grad", b.variable(V.TEMPERATURE), returns=Kind.VECTOR)
     assert str(node) == "Grad(StaticTemperature)"
     assert node.kind is Kind.VECTOR

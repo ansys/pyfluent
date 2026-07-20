@@ -93,15 +93,19 @@ class _SigInvoker:
 
     @property
     def signature(self) -> Signature:
+        """The underlying :class:`~._registry.Signature` for this invoker."""
         return self._sig
 
     def params(self) -> list[str]:
+        """Return the parameter names for this signature."""
         return [p.name for p in self._sig.params]
 
     def __repr__(self):
         params = ", ".join(f"{p.name}: {p.kind.value}" for p in self._sig.params)
-        return (f"<{self._sig.py_name}({params}) "
-                f"-> {self._sig.returns.value} | fluent={self._sig.name!r}>")
+        return (
+            f"<{self._sig.py_name}({params}) "
+            f"-> {self._sig.returns.value} | fluent={self._sig.name!r}>"
+        )
 
 
 # --------------------------------------------------------------------------- #
@@ -220,4 +224,5 @@ class ExpressionBuilder:
         """
         # Local import to avoid a cycle at module load.
         from ._parser import parse as _parse
+
         return _parse(text)

@@ -21,9 +21,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from ansys.units.variable_descriptor import VariableDescriptor
-
 from ansys.fluent.core.variable_strategies import FluentExprNamingStrategy
+from ansys.units.variable_descriptor import VariableDescriptor
 
 _NAMING = FluentExprNamingStrategy()
 
@@ -34,6 +33,7 @@ def _field_data_naming():
         from ansys.fluent.core.field_data_interfaces import (
             _naming_strategy_instance,
         )
+
         return _naming_strategy_instance
     except Exception:
         return None
@@ -65,9 +65,11 @@ class Discovery:
     # ------------------------------------------------------------------ #
 
     def has_settings(self) -> bool:
+        """Return ``True`` if a settings tree is attached."""
         return self.settings is not None
 
     def has_field_info(self) -> bool:
+        """Return ``True`` if a ``FieldInfo`` handle is attached."""
         return self.field_info is not None
 
     # ------------------------------------------------------------------ #
@@ -132,9 +134,7 @@ class Discovery:
         """Fluent-side (expression) names of the descriptors from
         :meth:`variable_descriptors`.
         """
-        return [
-            _NAMING.to_string(d) for d in self.variable_descriptors()
-        ]
+        return [_NAMING.to_string(d) for d in self.variable_descriptors()]
 
     def is_variable_supported(self, descriptor: VariableDescriptor) -> bool:
         """Whether ``descriptor`` can be rendered *and* (if known) is active."""
@@ -221,4 +221,3 @@ class Discovery:
             return list(iter(node))
         except Exception:
             return []
-

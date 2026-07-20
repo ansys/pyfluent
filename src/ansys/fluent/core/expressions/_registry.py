@@ -35,7 +35,6 @@ from ._ast import (
 )
 from .errors import ExpressionBuildError
 
-
 # --------------------------------------------------------------------------- #
 # Weighting options (for Sum's ``Weight=`` keyword argument)                  #
 # --------------------------------------------------------------------------- #
@@ -87,12 +86,18 @@ class Param:
     allowed_literals: object | None = field(default=None, compare=False)
 
     def coerce(self, value) -> Expr | None:
+        """Validate and coerce ``value`` to an :class:`~._ast.Expr` for this parameter.
+
+        Raises
+        ------
+        ExpressionBuildError
+            If ``value`` is missing for a required parameter or fails kind/literal
+            validation.
+        """
         if value is None:
             if self.optional:
                 return None
-            raise ExpressionBuildError(
-                f"Missing required argument {self.name!r}."
-            )
+            raise ExpressionBuildError(f"Missing required argument {self.name!r}.")
 
         if self.allowed_literals is not None:
             token = self._validate_literal(value)
@@ -155,12 +160,13 @@ def _kind_compatible(actual: Kind, expected: Kind) -> bool:
 class Signature:
     """Describes a Fluent-side function callable from expressions."""
 
-    name: str            # Fluent-side name, e.g. "AreaAve"
-    py_name: str         # Python-side snake_case, e.g. "area_ave"
+    name: str  # Fluent-side name, e.g. "AreaAve"
+    py_name: str  # Python-side snake_case, e.g. "area_ave"
     params: tuple[Param, ...]
     returns: Kind = Kind.SCALAR
 
     def build(self, *args, **kwargs) -> Call:
+        """Bind arguments and return a :class:`~._ast.Call` node."""
         bound = self._bind(args, kwargs)
         rendered: list[Expr] = []
         for p, v in zip(self.params, bound):
@@ -210,13 +216,16 @@ class _Registry:
         self._by_group: dict[str, dict[str, Signature]] = {}
 
     def register(self, group: str, sig: Signature) -> Signature:
+        """Register ``sig`` under ``group`` and return it."""
         self._by_group.setdefault(group, {})[sig.py_name] = sig
         return sig
 
     def group(self, name: str) -> dict[str, Signature]:
+        """Return a copy of the signatures registered under ``name``."""
         return dict(self._by_group.get(name, {}))
 
     def groups(self) -> tuple[str, ...]:
+        """Return the names of all registered groups."""
         return tuple(self._by_group)
 
 
@@ -262,32 +271,32 @@ def _reg_reduction(
 
 
 # Scalar reductions: expression + locations.
-_reg_reduction("AreaAve",         "area_ave")
-_reg_reduction("AreaInt",         "area_int")
-_reg_reduction("VolumeAve",       "volume_ave")
-_reg_reduction("VolumeInt",       "volume_int")
-_reg_reduction("MassAve",         "mass_ave")
-_reg_reduction("MassInt",         "mass_int")
-_reg_reduction("MassFlowAve",     "mass_flow_ave")
-_reg_reduction("MassFlowInt",     "mass_flow_int")
-_reg_reduction("MassFlowAveAbs",  "mass_flow_ave_abs")
-_reg_reduction("MassFlowIntAbs",  "mass_flow_int_abs")
-_reg_reduction("Minimum",         "minimum")
-_reg_reduction("Maximum",         "maximum")
-_reg_reduction("Average",         "average")
-_reg_reduction("Sum",             "sum", with_weight=True)
+_reg_reduction("AreaAve", "area_ave")
+_reg_reduction("AreaInt", "area_int")
+_reg_reduction("VolumeAve", "volume_ave")
+_reg_reduction("VolumeInt", "volume_int")
+_reg_reduction("MassAve", "mass_ave")
+_reg_reduction("MassInt", "mass_int")
+_reg_reduction("MassFlowAve", "mass_flow_ave")
+_reg_reduction("MassFlowInt", "mass_flow_int")
+_reg_reduction("MassFlowAveAbs", "mass_flow_ave_abs")
+_reg_reduction("MassFlowIntAbs", "mass_flow_int_abs")
+_reg_reduction("Minimum", "minimum")
+_reg_reduction("Maximum", "maximum")
+_reg_reduction("Average", "average")
+_reg_reduction("Sum", "sum", with_weight=True)
 
 # Extent-only (no expression) reductions.
-_reg_reduction("Area",         "area",           with_expr=False)
-_reg_reduction("Volume",       "volume",         with_expr=False)
-_reg_reduction("Count",        "count",          with_expr=False)
-_reg_reduction("Mass",         "mass",           with_expr=False)
-_reg_reduction("MassFlow",     "mass_flow",      with_expr=False)
-_reg_reduction("MassFlowAbs",  "mass_flow_abs",  with_expr=False)
+_reg_reduction("Area", "area", with_expr=False)
+_reg_reduction("Volume", "volume", with_expr=False)
+_reg_reduction("Count", "count", with_expr=False)
+_reg_reduction("Mass", "mass", with_expr=False)
+_reg_reduction("MassFlow", "mass_flow", with_expr=False)
+_reg_reduction("MassFlowAbs", "mass_flow_abs", with_expr=False)
 
 # Vector reductions.
 _reg_reduction("Centroid", "centroid", with_expr=False, returns=Kind.VECTOR)
-_reg_reduction("Force",    "force",    with_expr=False, returns=Kind.VECTOR)
+_reg_reduction("Force", "force", with_expr=False, returns=Kind.VECTOR)
 
 
 # --------------------------------------------------------------------------- #
@@ -295,21 +304,43 @@ _reg_reduction("Force",    "force",    with_expr=False, returns=Kind.VECTOR)
 # --------------------------------------------------------------------------- #
 
 
-def _reg_math(fluent_name: str, py_name: str | None = None, arity: int = 1) -> Signature:
+def _reg_math(
+    fluent_name: str, py_name: str | None = None, arity: int = 1
+) -> Signature:
     py_name = py_name or fluent_name
     params = tuple(Param(f"x{i}", Kind.SCALAR) for i in range(arity))
     return REGISTRY.register(
         "math",
-        Signature(name=fluent_name, py_name=py_name, params=params, returns=Kind.SCALAR),
+        Signature(
+            name=fluent_name, py_name=py_name, params=params, returns=Kind.SCALAR
+        ),
     )
 
 
 # Unary scalar math.
 for _n in (
-    "sqrt", "abs", "fabs", "exp", "ln", "log10",
-    "sin", "cos", "tan", "asin", "acos", "atan",
-    "sinh", "cosh", "tanh", "asinh", "acosh", "atanh",
-    "ceil", "floor", "trunc", "sign",
+    "sqrt",
+    "abs",
+    "fabs",
+    "exp",
+    "ln",
+    "log10",
+    "sin",
+    "cos",
+    "tan",
+    "asin",
+    "acos",
+    "atan",
+    "sinh",
+    "cosh",
+    "tanh",
+    "asinh",
+    "acosh",
+    "atanh",
+    "ceil",
+    "floor",
+    "trunc",
+    "sign",
 ):
     _reg_math(_n, arity=1)
 
@@ -394,4 +425,5 @@ REGISTRY.register(
 
 
 def make_call(fluent_name: str, *args, returns: Kind = Kind.SCALAR) -> Call:
+    """Build a :class:`~._ast.Call` node for a Fluent function not in the registry."""
     return Call(fluent_name, tuple(_coerce(a) for a in args), return_kind=returns)

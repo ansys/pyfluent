@@ -36,16 +36,20 @@ class SlotAccessor:
 
     @property
     def name(self) -> str:
+        """Name of the parameter this slot represents."""
         return self._param.name
 
     @property
     def kind(self) -> Kind:
+        """Expected :class:`~._ast.Kind` for this slot."""
         return self._param.kind
 
     def allowed_values(self) -> list[Any]:  # pragma: no cover - abstract
+        """Return the list of values permitted for this slot."""
         raise NotImplementedError
 
     def is_allowed(self, value: Any) -> bool:
+        """Return ``True`` if ``value`` is a permitted value for this slot."""
         return value in self.allowed_values()
 
     def __repr__(self) -> str:
@@ -93,9 +97,11 @@ class _VariablesSubSlot:
         self._discovery = discovery
 
     def allowed_values(self) -> list[VariableDescriptor]:
+        """Return ``VariableDescriptor`` entries available in the current session."""
         return self._discovery.variable_descriptors()
 
     def is_allowed(self, value: Any) -> bool:
+        """Return ``True`` if ``value`` is a supported :class:`VariableDescriptor`."""
         if isinstance(value, VariableDescriptor):
             return self._discovery.is_variable_supported(value)
         return False
@@ -108,9 +114,11 @@ class _NamedExprSubSlot:
         self._discovery = discovery
 
     def allowed_values(self) -> list[str]:
+        """Return names of user-defined named expressions currently in scope."""
         return self._discovery.named_expression_names()
 
     def is_allowed(self, value: Any) -> bool:
+        """Return ``True`` if ``value`` is an in-scope named expression name."""
         if not isinstance(value, str):
             return False
         names = self.allowed_values()

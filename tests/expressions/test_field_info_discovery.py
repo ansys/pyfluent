@@ -10,10 +10,9 @@ Fluent connection.
 """
 
 import pytest
-from ansys.units import VariableCatalog as V
 
 from ansys.fluent.core.expressions import ExpressionBuilder
-
+from ansys.units import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
 # Fakes                                                                       #
@@ -130,7 +129,11 @@ def test_surface_names_prefer_field_info(session):
     # field_info list -- includes derived surfaces AND interior zones that
     # the settings walk would not have surfaced.
     assert b.surface_names() == [
-        "inlet1", "outlet", "plane-1", "iso-surf-1", "interior--fluid"
+        "inlet1",
+        "outlet",
+        "plane-1",
+        "iso-surf-1",
+        "interior--fluid",
     ]
 
 

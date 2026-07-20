@@ -7,9 +7,9 @@ These tests are pure-Python and do not require a live Fluent session.
 """
 
 import pytest
-from ansys.units import VariableCatalog as V
 
 from ansys.fluent.core.expressions import ExpressionBuilder, ExpressionBuildError
+from ansys.units import VariableCatalog as V
 
 
 @pytest.fixture
@@ -37,9 +37,11 @@ def test_variable_maps_via_naming_strategy(b):
 
 def test_variable_unmapped_raises():
     from ansys.fluent.core.expressions._ast import Variable
+
     # Fabricate a descriptor unknown to FluentExprNamingStrategy.
     class _Fake:
         pass
+
     with pytest.raises(ExpressionBuildError):
         Variable(_Fake())  # type: ignore[arg-type]
 
@@ -60,9 +62,7 @@ def test_locations_reject_bare_string(b):
 
 
 def test_area_ave_renders_like_fluent(b):
-    node = b.reductions.area_ave(
-        expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
-    )
+    node = b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"])
     assert str(node) == "AreaAve(AbsolutePressure,['inlet1'])"
 
 
@@ -98,12 +98,8 @@ def test_wrong_kind_for_location(b):
 
 
 def test_subtract_two_reductions(b):
-    inlet = b.reductions.area_ave(
-        expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
-    )
-    outlet = b.reductions.area_ave(
-        expression=V.ABSOLUTE_PRESSURE, locations=["outlet"]
-    )
+    inlet = b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"])
+    outlet = b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["outlet"])
     dp = inlet - outlet
     assert str(dp) == (
         "(AreaAve(AbsolutePressure,['inlet1']) - "
@@ -119,6 +115,7 @@ def test_scalar_arithmetic_with_python_numbers(b):
 
 def test_comparison_produces_boolean(b):
     from ansys.fluent.core.expressions import BooleanExpr
+
     v = b.variable(V.VELOCITY_MAGNITUDE)
     cond = v > 10
     assert isinstance(cond, BooleanExpr)

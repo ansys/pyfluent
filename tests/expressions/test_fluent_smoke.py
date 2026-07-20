@@ -13,9 +13,9 @@ evaluates the result.
 from typing import Any
 
 import pytest
-from ansys.units import VariableCatalog as V
 
 from ansys.fluent.core.expressions import ExpressionBuilder, parse
+from ansys.units import VariableCatalog as V
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -28,9 +28,7 @@ def test_expression_builder_area_ave_on_static_mixer(
     b = ExpressionBuilder(session=solver)
 
     # Build "AreaAve(AbsolutePressure, ['inlet1'])" with the Python builder.
-    expr = b.reductions.area_ave(
-        expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
-    )
+    expr = b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"])
     rendered = str(expr)
     assert rendered == "AreaAve(AbsolutePressure,['inlet1'])"
 

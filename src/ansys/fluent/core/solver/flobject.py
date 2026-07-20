@@ -142,7 +142,7 @@ def _matches_expression_definition_path(obj) -> bool:
     """Return True if ``obj`` sits at one of :data:`EXPRESSION_DEFINITION_PATHS`."""
     chain = _python_name_chain(obj)
     for suffix in EXPRESSION_DEFINITION_PATHS:
-        if len(suffix) <= len(chain) and tuple(chain[-len(suffix):]) == suffix:
+        if len(suffix) <= len(chain) and tuple(chain[-len(suffix) :]) == suffix:
             return True
     return False
 

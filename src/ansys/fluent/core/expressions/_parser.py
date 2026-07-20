@@ -41,10 +41,11 @@ Not (yet) supported: ``&&`` / ``||`` / ``!`` logical operators.
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
+import re
 
 from ._ast import (
+    _NAMING,
     BinOp,
     Call,
     Compare,
@@ -57,11 +58,9 @@ from ._ast import (
     RawName,
     UnaryOp,
     Variable,
-    _NAMING,
 )
 from ._registry import REGISTRY, Signature
 from .errors import ExpressionBuildError
-
 
 # --------------------------------------------------------------------------- #
 # Reverse lookup tables (built once at import time)                           #
@@ -101,17 +100,17 @@ class _Token:
 
 
 _TOKEN_SPEC = [
-    ("NUMBER",  r"\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|\.\d+(?:[eE][+-]?\d+)?"),
-    ("STRING",  r"'(?:[^'\\]|\\.)*'"),
-    ("IDENT",   r"[A-Za-z_][A-Za-z_0-9]*"),
-    ("OP",      r"\*\*|<=|>=|==|!=|&&|\|\||[+\-*/<>=!^]"),
-    ("LPAREN",  r"\("),
-    ("RPAREN",  r"\)"),
-    ("LBRACK",  r"\["),
-    ("RBRACK",  r"\]"),
-    ("COMMA",   r","),
-    ("DOT",     r"\."),
-    ("WS",      r"[ \t\r\n]+"),
+    ("NUMBER", r"\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|\.\d+(?:[eE][+-]?\d+)?"),
+    ("STRING", r"'(?:[^'\\]|\\.)*'"),
+    ("IDENT", r"[A-Za-z_][A-Za-z_0-9]*"),
+    ("OP", r"\*\*|<=|>=|==|!=|&&|\|\||[+\-*/<>=!^]"),
+    ("LPAREN", r"\("),
+    ("RPAREN", r"\)"),
+    ("LBRACK", r"\["),
+    ("RBRACK", r"\]"),
+    ("COMMA", r","),
+    ("DOT", r"\."),
+    ("WS", r"[ \t\r\n]+"),
 ]
 _MASTER_RE = re.compile("|".join(f"(?P<{k}>{p})" for k, p in _TOKEN_SPEC))
 
@@ -155,7 +154,11 @@ class _Parser:
 
     def _eat(self, kind: str, value: str | None = None) -> _Token:
         tok = self._peek()
-        if tok is None or tok.kind != kind or (value is not None and tok.value != value):
+        if (
+            tok is None
+            or tok.kind != kind
+            or (value is not None and tok.value != value)
+        ):
             expected = f"{kind}({value!r})" if value else kind
             got = f"{tok.kind}({tok.value!r})" if tok else "end-of-input"
             raise ExpressionBuildError(f"Expected {expected}, got {got}.")
@@ -172,6 +175,13 @@ class _Parser:
     # ---- entry point ---------------------------------------------------- #
 
     def parse(self) -> Expr:
+        """Parse the token stream and return the root expression node.
+
+        Raises
+        ------
+        ExpressionBuildError
+            If there are unexpected tokens after the end of the expression.
+        """
         expr = self._parse_compare()
         if self._i != len(self._tokens):
             tok = self._peek()
@@ -222,7 +232,7 @@ class _Parser:
             operand = self._parse_unary()
             if tok.value == "-":
                 return UnaryOp("-", operand)
-            return operand   # unary + is a no-op
+            return operand  # unary + is a no-op
         return self._parse_power()
 
     def _parse_power(self) -> Expr:
@@ -253,7 +263,11 @@ class _Parser:
         # Number, possibly followed by [units] to form a Quantity
         if tok.kind == "NUMBER":
             self._i += 1
-            value = float(tok.value) if any(c in tok.value for c in ".eE") else int(tok.value)
+            value = (
+                float(tok.value)
+                if any(c in tok.value for c in ".eE")
+                else int(tok.value)
+            )
             nxt = self._peek()
             if nxt and nxt.kind == "LBRACK":
                 units = self._parse_units_suffix()
@@ -307,7 +321,7 @@ class _Parser:
             elif tok.kind == "RBRACK":
                 depth -= 1
         # Everything between the opening and closing brackets in the source.
-        return self._text[lb.end:end_pos - 1].strip()
+        return self._text[lb.end : end_pos - 1].strip()
 
     def _parse_ident_or_call(self) -> Expr:
         parts = [self._eat("IDENT").value]
@@ -344,8 +358,11 @@ class _Parser:
         tok = self._peek()
         nxt = self._peek(1)
         if (
-            tok and tok.kind == "IDENT"
-            and nxt and nxt.kind == "OP" and nxt.value == "="
+            tok
+            and tok.kind == "IDENT"
+            and nxt
+            and nxt.kind == "OP"
+            and nxt.value == "="
         ):
             self._i += 2  # consume IDENT and '='
             value = self._parse_compare()

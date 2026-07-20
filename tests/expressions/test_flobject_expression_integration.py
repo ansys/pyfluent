@@ -14,7 +14,6 @@ Verifies -- without a live Fluent session -- that:
 """
 
 import pytest
-from ansys.units import VariableCatalog as V
 
 from ansys.fluent.core.expressions import ExpressionBuilder
 from ansys.fluent.core.solver.flobject import (
@@ -23,7 +22,7 @@ from ansys.fluent.core.solver.flobject import (
     _matches_expression_definition_path,
     _python_name_chain,
 )
-
+from ansys.units import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
 # Test doubles                                                                #
@@ -75,9 +74,7 @@ def test_default_expression_definition_paths():
 
 def test_python_name_chain_strips_indices():
     leaf = _make_leaf(["setup", "named_expressions", "[test_expr]", "definition"])
-    assert _python_name_chain(leaf) == [
-        "setup", "named_expressions", "definition"
-    ]
+    assert _python_name_chain(leaf) == ["setup", "named_expressions", "definition"]
 
 
 def test_matches_expression_definition_path_positive():
@@ -97,17 +94,13 @@ def test_matches_expression_definition_path_negative():
 
 @pytest.fixture
 def definition_leaf():
-    return _make_leaf(
-        ["setup", "named_expressions", "[test_expr_1]", "definition"]
-    )
+    return _make_leaf(["setup", "named_expressions", "[test_expr_1]", "definition"])
 
 
 @pytest.fixture
 def expr():
     b = ExpressionBuilder()
-    return b.reductions.area_ave(
-        expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
-    )
+    return b.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"])
 
 
 def test_expression_object_rendered_at_whitelisted_path(definition_leaf, expr):
