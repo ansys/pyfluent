@@ -49,6 +49,7 @@ from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
 from ansys.fluent.core.launcher.fluent_container import (
+    _cleanup_on_exit_to_preserve_info_file_converter,
     configure_container_dict,
     dict_to_str,
     start_fluent_container,
@@ -64,6 +65,7 @@ from ansys.fluent.core.launcher.process_launch_string import (
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -139,6 +141,12 @@ def _get_server_info_from_container(config_dict):
 class DockerLauncher:
     """Instantiates Fluent session in container mode."""
 
+    @deprecate_arguments(
+        old_args="cleanup_on_exit",
+        new_args="preserve_info_file",
+        version="0.42.0",
+        converter=_cleanup_on_exit_to_preserve_info_file_converter,
+    )
     def __init__(
         self,
         **kwargs: Unpack[ContainerArgs],
@@ -181,9 +189,9 @@ class DockerLauncher:
         dry_run : bool, optional
             If True, does not launch Fluent but prints configuration information instead. If dry running a
             container start, this method will return the configured ``container_dict``. Defaults to False.
-        cleanup_on_exit : bool
-            Determines whether to shut down the connected Fluent session upon exit or when calling
-            the session's `exit()` method. Defaults to True.
+        preserve_info_file : bool, optional
+            If True, the server-info file will be preserved for debugging. If False, the server-info file
+            will be deleted when the session exits. Defaults to False.
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
@@ -237,8 +245,8 @@ class DockerLauncher:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
-        if self.argvals.get("cleanup_on_exit") is None:
-            self.argvals["cleanup_on_exit"] = True
+        if self.argvals.get("preserve_info_file") is None:
+            self.argvals["preserve_info_file"] = False
         if self.argvals.get("start_transcript") is None:
             self.argvals["start_transcript"] = True
         if "start_watchdog" not in self.argvals:
@@ -300,7 +308,7 @@ class DockerLauncher:
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
                 compose_config=self._compose_config,
-                cleanup_on_exit=self.argvals["cleanup_on_exit"],
+                preserve_info_file=self.argvals["preserve_info_file"],
             )
 
             try:
@@ -318,7 +326,7 @@ class DockerLauncher:
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
                 compose_config=self._compose_config,
-                cleanup_on_exit=self.argvals["cleanup_on_exit"],
+                preserve_info_file=self.argvals["preserve_info_file"],
             )
 
         allow_remote_host = (
@@ -332,7 +340,7 @@ class DockerLauncher:
             certificates_folder=self.argvals["certificates_folder"],
             insecure_mode=self.argvals["insecure_mode"],
             file_transfer_service=self.file_transfer_service,
-            cleanup_on_exit=self.argvals["cleanup_on_exit"],
+            cleanup_on_exit=not self.argvals["preserve_info_file"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
             container=container,
@@ -354,7 +362,7 @@ class DockerLauncher:
         if not self._compose_config.is_compose:
             if (
                 self.argvals["start_watchdog"] is None
-                and self.argvals["cleanup_on_exit"]
+                and not self.argvals["preserve_info_file"]
             ):
                 self.argvals["start_watchdog"] = True
             if self.argvals["start_watchdog"]:

@@ -49,6 +49,9 @@ from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
+from ansys.fluent.core.launcher.fluent_container import (
+    _cleanup_on_exit_to_preserve_info_file_converter,
+)
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
     UIMode,
@@ -68,6 +71,7 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -133,6 +137,12 @@ logger = logging.getLogger("pyfluent.launcher")
 class StandaloneLauncher:
     """Instantiates Fluent session in standalone mode."""
 
+    @deprecate_arguments(
+        old_args="cleanup_on_exit",
+        new_args="preserve_info_file",
+        version="0.42.0",
+        converter=_cleanup_on_exit_to_preserve_info_file_converter,
+    )
     def __init__(
         self,
         **kwargs: Unpack[StandaloneArgs],
@@ -173,9 +183,9 @@ class StandaloneLauncher:
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         env : dict[str, str], optional
             A mapping for modifying environment variables in Fluent. Defaults to ``None``.
-        cleanup_on_exit : bool, optional
-            Determines whether to shut down the connected Fluent session when exiting PyFluent or calling
-            the session's `exit()` method. Defaults to True.
+        preserve_info_file : bool, optional
+            If True, the server-info file will be preserved for debugging.
+            If False, the server-info file will be deleted when the session exits. Defaults to False.
         dry_run : bool, optional
             If True, does not launch Fluent but prints configuration information instead. The `call()` method
             returns a tuple containing the launch string and server info file name. Defaults to False.
@@ -201,7 +211,7 @@ class StandaloneLauncher:
             A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
             a filename for the new Python journal.
         start_watchdog : bool, optional
-            When `cleanup_on_exit` is True, defaults to True; an independent watchdog process ensures that any local
+            When `preserve_info_file` is False (default cleanup enabled), defaults to True; an independent watchdog process ensures that any local
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any
             Service for uploading/downloading files to/from the server.
@@ -327,7 +337,7 @@ class StandaloneLauncher:
             session = self.new_session._create_from_server_info_file(
                 server_info_file_name=self._server_info_file_name,
                 file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
+                preserve_info_file=self.argvals.get("preserve_info_file", False),
                 start_transcript=self.argvals.get("start_transcript"),
                 launcher_args=self.argvals,
                 inside_container=False,
@@ -335,7 +345,7 @@ class StandaloneLauncher:
             session._process = process
             start_watchdog = _confirm_watchdog_start(
                 self.argvals.get("start_watchdog"),
-                self.argvals.get("cleanup_on_exit"),
+                not self.argvals.get("preserve_info_file", False),
                 session._fluent_connection,
             )
             if start_watchdog:
@@ -378,5 +388,6 @@ class StandaloneLauncher:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(self._launch_cmd) from ex
         finally:
-            if self.argvals.get("cleanup_on_exit", True):
+            # preserve_info_file defaults to False, meaning cleanup happens by default
+            if not self.argvals.get("preserve_info_file", False):
                 Path(self._server_info_file_name).unlink(missing_ok=True)

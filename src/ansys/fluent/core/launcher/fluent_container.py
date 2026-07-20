@@ -96,6 +96,32 @@ from ansys.fluent.core.utils.networking import get_free_port
 logger = logging.getLogger("pyfluent.launcher")
 
 
+def _cleanup_on_exit_to_preserve_info_file_converter(
+    kwargs: dict[str, Any],
+    old_args: list[str],
+    new_args: list[str],
+) -> dict[str, Any]:
+    """
+    Convert deprecated cleanup_on_exit to preserve_info_file with inverted logic.
+
+    cleanup_on_exit=True (clean up the file) → preserve_info_file=False (don't preserve)
+    cleanup_on_exit=False (keep the file) → preserve_info_file=True (preserve)
+    """
+    if "cleanup_on_exit" in kwargs:
+        cleanup_on_exit = kwargs.pop("cleanup_on_exit")
+        if "preserve_info_file" in kwargs:
+            warnings.warn(
+                "Both deprecated argument 'cleanup_on_exit' and new argument 'preserve_info_file' were provided. "
+                "Ignoring cleanup_on_exit.",
+                PyFluentDeprecationWarning,
+                stacklevel=3,
+            )
+        else:
+            # Invert the logic: cleanup_on_exit → preserve_info_file
+            kwargs["preserve_info_file"] = not cleanup_on_exit
+    return kwargs
+
+
 class FluentImageNameTagNotSpecified(ValueError):
     """Raised when Fluent image name or image tag is not specified."""
 
@@ -471,12 +497,18 @@ def configure_container_dict(
     )
 
 
+@deprecate_arguments(
+    old_args="cleanup_on_exit",
+    new_args="preserve_info_file",
+    version="0.42.0",
+    converter=_cleanup_on_exit_to_preserve_info_file_converter,
+)
 def start_fluent_container(
     args: list[str],
     container_dict: dict | None = None,
     start_timeout: int = 100,
     compose_config: ComposeConfig | None = None,
-    cleanup_on_exit: bool = True,
+    preserve_info_file: bool = False,
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
 
@@ -491,9 +523,9 @@ def start_fluent_container(
         seconds.
     compose_config : ComposeConfig, optional
         Configuration for Docker Compose, if using Docker Compose to launch the container.
-    cleanup_on_exit : bool, optional
-        If True, the server-info file will be deleted when the container starts.
-        If False, the server-info file will be preserved for debugging. Defaults to True.
+    preserve_info_file : bool, optional
+        If True, the server-info file will be preserved for debugging.
+        If False, the server-info file will be deleted when the container exits. Defaults to False.
 
     Returns
     -------
@@ -506,6 +538,8 @@ def start_fluent_container(
     ------
     TimeoutError
         If Fluent container launch reaches timeout.
+    ValueError
+        If ``remove_server_info_file`` and ``preserve_info_file`` have contradictory values.
 
     Notes
     -----
@@ -610,5 +644,14 @@ def start_fluent_container(
         logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
         raise LaunchFluentError(launch_string) from ex
     finally:
-        if remove_server_info_file and cleanup_on_exit:
+        # Validate that remove_server_info_file and cleanup_on_exit don't contradict.
+        # should_preserve is True if we want to keep the file
+        should_preserve = preserve_info_file or not remove_server_info_file
+        if remove_server_info_file and preserve_info_file:
+            raise ValueError(
+                "Contradictory file cleanup parameters: cannot both set remove_server_info_file=True "
+                "and preserve_info_file=True. Either remove the file or preserve it, not both."
+            )
+        # Delete file only if both flags agree not to preserve it.
+        if not should_preserve:
             host_server_info_file.unlink(missing_ok=True)
