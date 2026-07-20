@@ -803,336 +803,117 @@ def test_idle_timeout(monkeypatch):
     )
 
 
-class TestCleanupOnExitIntegration:
-    """Unit tests for cleanup_on_exit behavior using mocks (no Fluent required)."""
+def test_standalone_launcher_cleanup_on_exit_false_preserves_file():
+    """Verify old cleanup_on_exit=False parameter still works (backward compatibility)."""
+    from pathlib import Path
 
-    def test_standalone_launcher_cleanup_on_exit_default_deletes_file(self):
-        """Verify cleanup logic deletes server-info file by default (cleanup_on_exit=True)."""
-        from pathlib import Path
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("test content")
 
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # Create a mock server info file
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
-
-            # Simulate the cleanup logic from standalone_launcher.py finally block
-            cleanup_on_exit = True
-            if cleanup_on_exit:
-                server_info_file.unlink(missing_ok=True)
-
-            assert (
-                not server_info_file.exists()
-            ), "File should be deleted with cleanup_on_exit=True"
-
-    def test_standalone_launcher_cleanup_on_exit_false_preserves_file(self):
-        """Verify cleanup logic preserves server-info file when cleanup_on_exit=False."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # Create a mock server info file
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
-
-            # Simulate the cleanup logic from standalone_launcher.py finally block
-            cleanup_on_exit = False
-            if cleanup_on_exit:
-                server_info_file.unlink(missing_ok=True)
-
-            assert (
-                server_info_file.exists()
-            ), "File should be preserved with cleanup_on_exit=False"
-
-    def test_container_launcher_removes_server_info_with_cleanup_true(self):
-        """Verify container launcher deletes server-info file when cleanup_on_exit=True."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            host_server_info_file = Path(tmp_dir) / "serverinfo-container.txt"
-            host_server_info_file.write_text("mock server info")
-
-            # Simulate fluent_container.py finally block cleanup logic
-            remove_server_info_file = True
-            cleanup_on_exit = True
-            if remove_server_info_file and cleanup_on_exit:
-                host_server_info_file.unlink(missing_ok=True)
-
-            assert (
-                not host_server_info_file.exists()
-            ), "File should be deleted when both remove_server_info_file and cleanup_on_exit are True"
-
-    def test_container_launcher_preserves_server_info_with_cleanup_false(self):
-        """Verify container launcher preserves server-info file when cleanup_on_exit=False."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            host_server_info_file = Path(tmp_dir) / "serverinfo-container.txt"
-            host_server_info_file.write_text("mock server info")
-
-            # Simulate fluent_container.py finally block cleanup logic
-            remove_server_info_file = True  # default
-            cleanup_on_exit = False  # user specified
-            if remove_server_info_file and cleanup_on_exit:
-                host_server_info_file.unlink(missing_ok=True)
-
-            assert (
-                host_server_info_file.exists()
-            ), "File should be preserved when cleanup_on_exit=False"
-
-    def test_cleanup_on_exit_parameter_propagation_to_container_dict(self):
-        """Verify cleanup_on_exit is propagated to container_dict via remove_server_info_file."""
-        container_dict = {}
-
-        # Simulate what DockerLauncher.__call__ should do
         cleanup_on_exit = False
-        container_dict.setdefault("remove_server_info_file", cleanup_on_exit)
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
 
         assert (
-            container_dict.get("remove_server_info_file") is False
-        ), "remove_server_info_file should default to cleanup_on_exit value"
+            server_info_file.exists()
+        ), "File should be preserved with cleanup_on_exit=False"
 
-        # Test with cleanup_on_exit=True
-        container_dict2 = {}
-        cleanup_on_exit2 = True
-        container_dict2.setdefault("remove_server_info_file", cleanup_on_exit2)
 
-        assert (
-            container_dict2.get("remove_server_info_file") is True
-        ), "remove_server_info_file should default to cleanup_on_exit=True"
+def test_deprecation_cleanup_on_exit_true_converts_to_preserve_false():
+    """Verify cleanup_on_exit=True converts to preserve_info_file=False (inverted logic)."""
+    from ansys.fluent.core.launcher.fluent_container import (
+        _cleanup_on_exit_to_preserve_info_file_converter,
+    )
 
-    def test_explicit_remove_server_info_file_not_overridden(self):
-        """Verify explicit remove_server_info_file in container_dict is respected."""
-        # When user explicitly provides remove_server_info_file, cleanup_on_exit should not override it
-        container_dict = {"remove_server_info_file": False}
-        cleanup_on_exit = True
+    # The converter function doesn't issue warnings; the decorator does
+    kwargs = {"cleanup_on_exit": True}
+    result = _cleanup_on_exit_to_preserve_info_file_converter(
+        kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
+    )
 
-        # Simulate setdefault behavior (only sets if key not present)
-        container_dict.setdefault("remove_server_info_file", cleanup_on_exit)
+    # Should be converted to preserve_info_file=False
+    assert (
+        result.get("preserve_info_file") is False
+    ), "cleanup_on_exit=True should convert to preserve_info_file=False"
+    assert (
+        "cleanup_on_exit" not in result
+    ), "cleanup_on_exit should be removed from kwargs"
 
-        assert (
-            container_dict.get("remove_server_info_file") is False
-        ), "Explicit remove_server_info_file should not be overridden by cleanup_on_exit"
 
-    def test_cleanup_on_exit_none_defaults_to_true(self):
-        """Verify cleanup_on_exit defaults to True behavior when None."""
-        from pathlib import Path
+def test_deprecation_cleanup_on_exit_false_converts_to_preserve_true():
+    """Verify cleanup_on_exit=False converts to preserve_info_file=True (inverted logic)."""
+    from ansys.fluent.core.launcher.fluent_container import (
+        _cleanup_on_exit_to_preserve_info_file_converter,
+    )
 
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
+    # The converter function doesn't issue warnings; the decorator does
+    kwargs = {"cleanup_on_exit": False}
+    result = _cleanup_on_exit_to_preserve_info_file_converter(
+        kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
+    )
 
-            # Simulate cleanup logic when cleanup_on_exit is None
-            cleanup_on_exit = None
-            # When cleanup_on_exit is None, treat as True (delete file)
-            if cleanup_on_exit is None or cleanup_on_exit:
-                server_info_file.unlink(missing_ok=True)
+    # Should be converted to preserve_info_file=True
+    assert (
+        result.get("preserve_info_file") is True
+    ), "cleanup_on_exit=False should convert to preserve_info_file=True"
+    assert (
+        "cleanup_on_exit" not in result
+    ), "cleanup_on_exit should be removed from kwargs"
 
-            assert (
-                not server_info_file.exists()
-            ), "File should be deleted when cleanup_on_exit is None (defaults to True)"
 
-    def test_preserved_server_info_file_readability(self):
-        """Verify preserved server-info file is readable after launch."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            test_content = "port=12345\nhost=localhost"
-            server_info_file.write_text(test_content)
-
-            # File should be readable
-            assert (
-                server_info_file.read_text() == test_content
-            ), "Preserved file should be readable"
-
-    def test_cleanup_on_exit_true_vs_false_comparison(self):
-        """Verify file deletion behavior with cleanup_on_exit=True vs False."""
-        from pathlib import Path
-
-        def simulate_cleanup(cleanup_on_exit, server_info_path):
-            """Simulate the cleanup logic."""
-            if cleanup_on_exit:
-                server_info_path.unlink(missing_ok=True)
-
-        # Test with cleanup_on_exit=True
-        with tempfile.NamedTemporaryFile(
-            suffix=".txt", prefix="serverinfo-", delete=False, dir=None
-        ) as tmp_file:
-            true_path = Path(tmp_file.name)
-
-        true_path.write_bytes(b"cleanup_true_test")
-
-        try:
-            assert true_path.exists()
-            simulate_cleanup(True, true_path)
-            assert (
-                not true_path.exists()
-            ), "File should be deleted with cleanup_on_exit=True"
-        finally:
-            true_path.unlink(missing_ok=True)
-
-        # Test with cleanup_on_exit=False
-        with tempfile.NamedTemporaryFile(
-            suffix=".txt", prefix="serverinfo-", delete=False, dir=None
-        ) as tmp_file:
-            false_path = Path(tmp_file.name)
-
-        false_path.write_bytes(b"cleanup_false_test")
-
-        try:
-            assert false_path.exists()
-            simulate_cleanup(False, false_path)
-            assert (
-                false_path.exists()
-            ), "File should be preserved with cleanup_on_exit=False"
-        finally:
-            false_path.unlink(missing_ok=True)
-
-    def test_deprecation_cleanup_on_exit_true_converts_to_preserve_false(self):
-        """Verify cleanup_on_exit=True converts to preserve_info_file=False (inverted logic)."""
+def test_new_preserve_info_file_no_deprecation_warning():
+    """Verify new preserve_info_file parameter works without deprecation warnings."""
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
         from ansys.fluent.core.launcher.fluent_container import (
             _cleanup_on_exit_to_preserve_info_file_converter,
         )
 
-        # The converter function doesn't issue warnings; the decorator does
-        kwargs = {"cleanup_on_exit": True}
+        # Test with preserve_info_file=True
+        kwargs = {"preserve_info_file": True}
+        result = _cleanup_on_exit_to_preserve_info_file_converter(
+            kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
+        )
+        deprecation_warnings = [
+            warning
+            for warning in w
+            if issubclass(warning.category, PyFluentDeprecationWarning)
+        ]
+        assert len(deprecation_warnings) == 0, "Should not warn with new parameter"
+        assert result.get("preserve_info_file") is True
+
+        # Test with preserve_info_file=False
+        w.clear()
+        kwargs = {"preserve_info_file": False}
+        result = _cleanup_on_exit_to_preserve_info_file_converter(
+            kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
+        )
+        deprecation_warnings = [
+            warning
+            for warning in w
+            if issubclass(warning.category, PyFluentDeprecationWarning)
+        ]
+        assert len(deprecation_warnings) == 0, "Should not warn with new parameter"
+        assert result.get("preserve_info_file") is False
+
+
+def test_both_cleanup_on_exit_and_preserve_info_file_provided():
+    """Verify providing both parameters warns and uses new one."""
+    import pytest
+
+    with pytest.warns(PyFluentDeprecationWarning, match="Both deprecated"):
+        from ansys.fluent.core.launcher.fluent_container import (
+            _cleanup_on_exit_to_preserve_info_file_converter,
+        )
+
+        kwargs = {"cleanup_on_exit": True, "preserve_info_file": False}
         result = _cleanup_on_exit_to_preserve_info_file_converter(
             kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
         )
 
-        # Should be converted to preserve_info_file=False
+        # Should keep the new parameter value
         assert (
             result.get("preserve_info_file") is False
-        ), "cleanup_on_exit=True should convert to preserve_info_file=False"
-        assert (
-            "cleanup_on_exit" not in result
-        ), "cleanup_on_exit should be removed from kwargs"
-
-    def test_deprecation_cleanup_on_exit_false_converts_to_preserve_true(self):
-        """Verify cleanup_on_exit=False converts to preserve_info_file=True (inverted logic)."""
-        from ansys.fluent.core.launcher.fluent_container import (
-            _cleanup_on_exit_to_preserve_info_file_converter,
-        )
-
-        # The converter function doesn't issue warnings; the decorator does
-        kwargs = {"cleanup_on_exit": False}
-        result = _cleanup_on_exit_to_preserve_info_file_converter(
-            kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
-        )
-
-        # Should be converted to preserve_info_file=True
-        assert (
-            result.get("preserve_info_file") is True
-        ), "cleanup_on_exit=False should convert to preserve_info_file=True"
-        assert (
-            "cleanup_on_exit" not in result
-        ), "cleanup_on_exit should be removed from kwargs"
-
-    def test_new_preserve_info_file_true_no_deprecation_warning(self):
-        """Verify new preserve_info_file=True parameter works without warnings."""
-        import pytest
-
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-            from ansys.fluent.core.launcher.fluent_container import (
-                _cleanup_on_exit_to_preserve_info_file_converter,
-            )
-
-            kwargs = {"preserve_info_file": True}
-            result = _cleanup_on_exit_to_preserve_info_file_converter(
-                kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
-            )
-
-            # Filter out non-deprecation warnings
-            deprecation_warnings = [
-                warning
-                for warning in w
-                if issubclass(warning.category, PyFluentDeprecationWarning)
-            ]
-            assert (
-                len(deprecation_warnings) == 0
-            ), "Should not warn when using new parameter"
-            assert (
-                result.get("preserve_info_file") is True
-            ), "preserve_info_file should remain True"
-
-    def test_new_preserve_info_file_false_no_deprecation_warning(self):
-        """Verify new preserve_info_file=False parameter works without warnings."""
-        import pytest
-
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-            from ansys.fluent.core.launcher.fluent_container import (
-                _cleanup_on_exit_to_preserve_info_file_converter,
-            )
-
-            kwargs = {"preserve_info_file": False}
-            result = _cleanup_on_exit_to_preserve_info_file_converter(
-                kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
-            )
-
-            # Filter out non-deprecation warnings
-            deprecation_warnings = [
-                warning
-                for warning in w
-                if issubclass(warning.category, PyFluentDeprecationWarning)
-            ]
-            assert (
-                len(deprecation_warnings) == 0
-            ), "Should not warn when using new parameter"
-            assert (
-                result.get("preserve_info_file") is False
-            ), "preserve_info_file should remain False"
-
-    def test_both_cleanup_on_exit_and_preserve_info_file_provided(self):
-        """Verify providing both parameters warns and uses new one."""
-        import pytest
-
-        with pytest.warns(PyFluentDeprecationWarning, match="Both deprecated"):
-            from ansys.fluent.core.launcher.fluent_container import (
-                _cleanup_on_exit_to_preserve_info_file_converter,
-            )
-
-            kwargs = {"cleanup_on_exit": True, "preserve_info_file": False}
-            result = _cleanup_on_exit_to_preserve_info_file_converter(
-                kwargs, ["cleanup_on_exit"], ["preserve_info_file"]
-            )
-
-            # Should keep the new parameter value
-            assert (
-                result.get("preserve_info_file") is False
-            ), "New preserve_info_file parameter should take precedence"
-            assert "cleanup_on_exit" not in result, "cleanup_on_exit should be removed"
-
-    def test_preserve_info_file_defaults_to_false(self):
-        """Verify preserve_info_file defaults to False (cleanup by default)."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
-
-            # Simulate cleanup logic with preserve_info_file default
-            preserve_info_file = False  # Default
-            if not preserve_info_file:
-                server_info_file.unlink(missing_ok=True)
-
-            assert (
-                not server_info_file.exists()
-            ), "File should be deleted by default (preserve_info_file=False)"
-
-    def test_preserve_info_file_true_preserves_file(self):
-        """Verify preserve_info_file=True preserves the server-info file."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
-
-            # Simulate cleanup logic with preserve_info_file=True
-            preserve_info_file = True
-            if not preserve_info_file:
-                server_info_file.unlink(missing_ok=True)
-
-            assert (
-                server_info_file.exists()
-            ), "File should be preserved when preserve_info_file=True"
+        ), "New preserve_info_file parameter should take precedence"
+        assert "cleanup_on_exit" not in result, "cleanup_on_exit should be removed"
