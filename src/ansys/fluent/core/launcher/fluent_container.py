@@ -557,6 +557,7 @@ def start_fluent_container(
     container_vars = configure_container_dict(
         args,
         compose_config=compose_config,
+        remove_server_info_file=not preserve_info_file,  # Convert: preserve_info_file → remove_server_info_file
         **container_dict,
     )
 
