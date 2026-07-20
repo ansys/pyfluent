@@ -62,7 +62,7 @@ from ._ast import (
 from ._registry import REGISTRY, Signature
 from .errors import ExpressionBuildError
 
-# --------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------
 # Reverse lookup tables (built once at import time)                           #
 # --------------------------------------------------------------------------- #
 
