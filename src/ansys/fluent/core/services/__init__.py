@@ -41,6 +41,7 @@ from ansys.fluent.core.services.health_check import HealthCheck
 from ansys.fluent.core.services.monitors import Monitor
 from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
 from ansys.fluent.core.services.reduction import Reduction
+from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
 from ansys.fluent.core.services.solution_variables import (
@@ -70,11 +71,17 @@ class ServiceFactory:
     product_version : FluentVersion, optional
         Fluent product version.  Derived from ``service_factory.scheme_interpreter``
         when omitted.
+    rest_client : FluentRestClient, optional
+        REST client instance for REST-based services. When provided, REST services
+        will be available alongside gRPC services.
     """
 
-    def __init__(self, service_factory, product_version: FluentVersion = None):
+    def __init__(
+        self, service_factory, product_version: FluentVersion = None, rest_client=None
+    ):
         """Initialize ServiceFactory."""
         self._service_factory = service_factory
+        self._rest_client = rest_client
         self._product_version = product_version or FluentVersion(
             self.scheme_interpreter.version
         )
@@ -130,6 +137,16 @@ class ServiceFactory:
                     self._service_factory.settings,
                     self._service_factory.scheme_interpreter,
                 )
+
+    @cached_property
+    def rest_settings(self):
+        """REST-based solver settings service.
+
+        Returns ``None`` if REST client is not available.
+        """
+        if self._rest_client is not None:
+            return RestSettings(self._rest_client)
+        return None
 
     @cached_property
     def field_data(self):
