@@ -25,43 +25,7 @@
 
 from collections.abc import Callable
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModuleV0
-from ansys.api.fluent.v1 import field_data_pb2
 from ansys.fluent.core.streaming_services.streaming import StreamingService
-
-
-class FieldDataStreamingV261(StreamingService):
-    """Class wrapping the Field gRPC streaming service of Fluent.
-
-    Parameters
-    ----------
-    session_id : str
-        Session ID.
-    service : FieldDataService
-        FieldData streaming service.
-    """
-
-    def __init__(self, service, chunk_parser):
-        """Initialize FieldDataStreaming."""
-        super().__init__(
-            stream_begin_method="BeginFieldsStreaming",
-            target=type(self)._process_streaming,
-            streaming_service=service,
-        )
-        self._chunk_parser = chunk_parser
-
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
-        """Processes field data streaming."""
-        request = FieldDataProtoModuleV0.BeginFieldsStreamingRequest(*args, **kwargs)
-        self._chunk_parser(self).extract_fields(
-            self._streaming_service.begin_streaming(
-                request, started_evt, id=id, stream_begin_method=stream_begin_method
-            )
-        )
-
-    def callbacks(self) -> list[list[Callable | list | dict]]:
-        """Get list of callbacks along with arguments and keyword arguments."""
-        return self._service_callbacks.values()
 
 
 class FieldDataStreaming(StreamingService):
@@ -86,10 +50,13 @@ class FieldDataStreaming(StreamingService):
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes field data streaming."""
-        request = field_data_pb2.BeginFieldsStreamingRequest(*args, **kwargs)
         self._chunk_parser(self).extract_fields(
-            self._streaming_service.begin_streaming(
-                request, started_evt, id=id, stream_begin_method=stream_begin_method
+            self._streaming_service._process_streaming(
+                *args,
+                id=id,
+                stream_begin_method=stream_begin_method,
+                started_evt=started_evt,
+                **kwargs,
             )
         )
 

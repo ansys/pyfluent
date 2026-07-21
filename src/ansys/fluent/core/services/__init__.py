@@ -52,7 +52,6 @@ from ansys.fluent.core.services.transcript import Transcript
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
-    FieldDataStreamingV261,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -157,16 +156,10 @@ class ServiceFactory:
     @cached_property
     def field_data_streaming(self):
         """Field data service."""
-        if self._product_version >= FluentVersion.v271:
-            return FieldDataStreaming(
-                self._service_factory.field_data,
-                self._service_factory._chunk_parser,
-            )
-        else:
-            return FieldDataStreamingV261(
-                self._service_factory.field_data,
-                self._service_factory._chunk_parser,
-            )
+        return FieldDataStreaming(
+            self._service_factory.field_data,
+            self._service_factory._chunk_parser,
+        )
 
     def _get_events_manager(self, event_type, session_ref):
         """Get events manager."""

@@ -383,6 +383,13 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             elementss.append(response.elements)
         return elementss
 
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Processes field data streaming."""
+        request = field_data_pb2.BeginFieldsStreamingRequest(*args, **kwargs)
+        return self.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
+
 
 class _FetchFieldData:
 
