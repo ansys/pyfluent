@@ -26,7 +26,6 @@
 import os
 from pathlib import Path
 
-from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -47,8 +46,6 @@ class AppendToFile:
 
 class Transcript(StreamingService):
     """Encapsulates a Fluent Transcript streaming service."""
-
-    _proto_module = TranscriptModule
 
     def __init__(self, transcript_service):
         """__init__ method of Transcript class."""
@@ -99,9 +96,12 @@ class Transcript(StreamingService):
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Performs processes on transcript depending on the callback functions."""
-        request = self._proto_module.TranscriptRequest(*args, **kwargs)
-        responses = self._streaming_service.begin_streaming(
-            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        responses = self._streaming_service._process_streaming(
+            *args,
+            id=id,
+            stream_begin_method=stream_begin_method,
+            started_evt=started_evt,
+            **kwargs,
         )
         transcript = ""
         while True:

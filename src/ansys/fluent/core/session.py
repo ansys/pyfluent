@@ -35,7 +35,6 @@ import weakref
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.fields.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
@@ -50,10 +49,6 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 from ansys.fluent.core.streaming_services.datamodel_event_streaming_v1 import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.transcript_streaming import (
-    Transcript as TranscriptV0,
-)
-from ansys.fluent.core.streaming_services.transcript_streaming_v1 import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
@@ -179,10 +174,7 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = fluent_connection._service_factory.transcript
-        self.transcript = (
-            Transcript if fluent_connection._server_supports_v1 else TranscriptV0
-        )(self._transcript_service)
+        self.transcript = fluent_connection._service_factory.transcript_streaming
         if self._start_transcript:
             self.transcript.start()
 
@@ -502,7 +494,6 @@ class Fields:
         self.field_data = LiveFieldData(
             field_data, self._field_info, _session.scheme, get_zones_info
         )
-        field_data_streaming = fluent_connection._service_factory.field_data_streaming
-        self.field_data_streaming = FieldDataStreaming(
-            _session._fluent_connection._id, field_data_streaming
+        self.field_data_streaming = (
+            fluent_connection._service_factory.field_data_streaming
         )

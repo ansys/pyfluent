@@ -53,6 +53,9 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
 )
+from ansys.fluent.core.streaming_services.transcript_streaming import (
+    Transcript as TranscriptStreaming,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -207,6 +210,11 @@ class ServiceFactory:
     def transcript(self):
         """Transcript service."""
         return Transcript(self._service_factory.transcript)
+
+    @cached_property
+    def transcript_streaming(self):
+        """Transcript streaming service."""
+        return TranscriptStreaming(self._service_factory.transcript)
 
     @cached_property
     def batch_ops(self):
