@@ -90,7 +90,6 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_case_data_arguments,
     _build_journal_argument,
     _get_subprocess_kwargs_for_fluent,
-    _resolve_file_processing_strategy,
     _validate_lightweight_with_journal,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
@@ -630,31 +629,24 @@ class SlurmLauncher:
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         kwargs = _get_subprocess_kwargs_for_fluent(self._argvals["env"], self._argvals)
 
-        # Resolve file processing strategy: which files to pass via CLI vs post-connection
-        # Note: SLURM doesn't do post-connection file processing like standalone does
-        self._file_strategy = _resolve_file_processing_strategy(
+        # Add case/data files via CLI
+        launch_cmd += _build_case_data_arguments(
             self._argvals.get("case_file_name"),
-            self._argvals.get("journal_file_names"),
-            self._argvals.get("lightweight_mode"),
+            self._argvals.get("case_data_file_name"),
         )
 
-        # Add case/data files if strategy says to use CLI
-        if self._file_strategy["use_cli_case"]:
-            launch_cmd += _build_case_data_arguments(
-                self._argvals.get("case_file_name"),
-                self._argvals.get("case_data_file_name"),
+        # Add journal files via CLI unless lightweight_mode is enabled
+        if not self._argvals.get("lightweight_mode"):
+            launch_cmd += _build_journal_argument(
+                self._argvals.get("topy"),
+                self._argvals.get("journal_file_names"),
             )
-
-        # Add journal files if strategy says to use CLI
-        # Note: topy conversion always uses CLI (-i flag), so include it regardless of strategy
-        launch_cmd += _build_journal_argument(
-            self._argvals.get("topy"),
-            (
-                self._argvals.get("journal_file_names")
-                if self._file_strategy["use_cli_journal"] or self._argvals.get("topy")
-                else None
-            ),
-        )
+        else:
+            # Lightweight mode: only pass topy conversion if needed
+            launch_cmd += _build_journal_argument(
+                self._argvals.get("topy"),
+                None,
+            )
 
         launch_cmd += ' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
         if self._argvals["insecure_mode"]:
