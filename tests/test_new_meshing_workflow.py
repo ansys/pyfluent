@@ -24,7 +24,7 @@
 from collections.abc import Iterable
 import time
 
-from conftest import SKIP_UNKNOWN
+from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples
@@ -1250,6 +1250,8 @@ def test_loaded_workflow(new_meshing_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/5082
 def test_created_workflow(new_meshing_session):
     meshing = new_meshing_session
     created_workflow = meshing.create_workflow(legacy=True)
