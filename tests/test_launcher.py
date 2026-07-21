@@ -476,46 +476,33 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 
 
 def test_lightweight_case_journal_read_is_completed_before_sync_step():
-    """Test that when lightweight_mode is requested with journals, lightweight_mode is disabled."""
+    """Test that when lightweight_mode is disabled (journal conflict), nothing is processed post-connection.
+
+    With simplified implementation, case/data/journals are all passed via CLI.
+    When lightweight_mode is False, _process_case_data_and_journals does nothing.
+    """
     launcher = object.__new__(StandaloneLauncher)
     launcher.argvals = {
         "case_file_name": "a.cas.h5",
         "case_data_file_name": None,
         "mode": FluentMode.SOLVER,
-        "lightweight_mode": True,  # Will be disabled due to journal conflict
+        "lightweight_mode": False,  # Disabled due to journal conflict
         "journal_file_names": ["a.jou", "b.jou"],
-    }
-    # Strategy shows lightweight_mode disabled and journals handled post-connection
-    launcher._file_strategy = {
-        "use_cli_case": False,
-        "use_cli_journal": False,
-        "enable_lightweight": False,
-        "warning": "lightweight_mode ignored with journal_file_names",
     }
 
     calls = []
 
-    class _DummyFile:
-        def read(self, **kwargs):
-            calls.append(("read", kwargs))
-
-    class _DummySettings:
-        file = _DummyFile()
-
     class _DummySession:
-        settings = _DummySettings()
+        def read_case_lightweight(self, file_name, start_sync=True):
+            calls.append(("read_case_lightweight", file_name, start_sync))
 
-        def execute_tui(self, command):
-            calls.append(("execute_tui", command))
+        def start_case_lightweight_sync(self):
+            calls.append(("start_case_lightweight_sync",))
 
     launcher._process_case_data_and_journals(_DummySession())
 
-    # With lightweight disabled and no CLI flags, case and journals are processed post-connection
-    assert calls == [
-        ("read", {"file_type": "case", "file_name": "a.cas.h5"}),
-        ("execute_tui", '/file/read-journal "a.jou"'),
-        ("execute_tui", '/file/read-journal "b.jou"'),
-    ]
+    # With lightweight_mode=False, all files handled via CLI, nothing to do
+    assert calls == []
 
 
 def test_lightweight_case_sync_with_no_journals():
@@ -527,13 +514,6 @@ def test_lightweight_case_sync_with_no_journals():
         "mode": FluentMode.SOLVER,
         "lightweight_mode": True,
         "journal_file_names": None,
-    }
-    # Strategy shows lightweight mode enabled
-    launcher._file_strategy = {
-        "use_cli_case": False,
-        "use_cli_journal": False,
-        "enable_lightweight": True,
-        "warning": None,
     }
 
     calls = []
@@ -555,6 +535,11 @@ def test_lightweight_case_sync_with_no_journals():
 
 
 def test_case_and_case_data_are_processed_before_journal_files():
+    """Test that when non-lightweight mode, no post-connection processing occurs.
+
+    With simplified implementation, all files (case, data, journals) are passed via CLI
+    for non-lightweight mode. So _process_case_data_and_journals does nothing.
+    """
     launcher = object.__new__(StandaloneLauncher)
     launcher.argvals = {
         "case_file_name": "a.cas.h5",
@@ -563,36 +548,20 @@ def test_case_and_case_data_are_processed_before_journal_files():
         "lightweight_mode": False,
         "journal_file_names": ["a.jou", "b.jou"],
     }
-    launcher._file_strategy = {
-        "use_cli_case": False,
-        "use_cli_journal": False,
-        "enable_lightweight": False,
-        "warning": None,
-    }
 
     calls = []
 
-    class _DummyFile:
-        def read(self, **kwargs):
-            calls.append(("read", kwargs))
-
-    class _DummySettings:
-        file = _DummyFile()
-
     class _DummySession:
-        settings = _DummySettings()
+        def read_case_lightweight(self, file_name, start_sync=True):
+            calls.append(("read_case_lightweight", file_name, start_sync))
 
-        def execute_tui(self, command):
-            calls.append(("execute_tui", command))
+        def start_case_lightweight_sync(self):
+            calls.append(("start_case_lightweight_sync",))
 
     launcher._process_case_data_and_journals(_DummySession())
 
-    assert calls == [
-        ("read", {"file_type": "case", "file_name": "a.cas.h5"}),
-        ("read", {"file_type": "case-data", "file_name": "a.cas.h5"}),
-        ("execute_tui", '/file/read-journal "a.jou"'),
-        ("execute_tui", '/file/read-journal "b.jou"'),
-    ]
+    # With lightweight_mode=False, all files handled via CLI, nothing to do
+    assert calls == []
 
 
 def test_show_gui_raises_warning():
