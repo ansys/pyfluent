@@ -23,12 +23,13 @@
 
 """Wrapper over the events gRPC service of Fluent (v1 proto API)."""
 
+from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.api.fluent.v1 import events_pb2, events_pb2_grpc
 from ansys.fluent.core._grpc_services.streaming_service import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
 
 class EventsService(StreamingService, ServiceProtocol):
@@ -67,3 +68,71 @@ class EventsService(StreamingService, ServiceProtocol):
         request = events_pb2.CancelPauseSolveRequest()
         request.registration_id = registration_id
         self._stub.CancelPauseSolve(request, metadata=self._metadata)
+
+    def event_from_proto_field(self, field_name: str) -> str:
+        """Convert a v1 proto oneof field name to canonical event enum value."""
+        return _v1_reverse_events_map.get(field_name, field_name)
+
+    def _construct_event_info(
+        self,
+        response: events_pb2.BeginStreamingResponse,
+        event,
+        event_info_cls,
+    ):
+        proto_field = _v1_all_events_map.get(event.value, event.value)
+        event_info_msg = getattr(response, proto_field)
+        # Note: MessageToDict's parameter names are different in different protobuf versions
+        event_info_dict = MessageToDict(event_info_msg, True)
+        # Some event-info classes intentionally have no fields. Instantiate them without payload.
+        dataclass_fields = getattr(event_info_cls, "__dataclass_fields__", None)
+        if dataclass_fields is None or len(dataclass_fields) == 0:
+            return event_info_cls()
+        # v1 servers can emit empty payloads for some events; keep fallback v1-only
+        # to avoid changing backward-compatible v0 behavior.
+        if not event_info_dict:
+            return event_info_cls()
+        # Key names can be different, but their order is the same
+        return event_info_cls(*event_info_dict.values())
+
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Processes events streaming."""
+        request = events_pb2.BeginStreamingRequest(*args, **kwargs)
+        return self.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
+
+
+solver_events_map = {
+    "timestep_started": "timestep_started_event",
+    "timestep_ended": "timestep_ended_event",
+    "iteration_ended": "iteration_ended_event",
+    "calculations_started": "calculations_started_event",
+    "calculations_ended": "calculations_ended_event",
+    "calculations_paused": "calculations_paused_event",
+    "calculations_resumed": "calculations_resumed_event",
+    "about_to_load_case": "pre_read_case_event",
+    "case_loaded": "case_read_event",
+    "about_to_load_data": "pre_read_data_event",
+    "data_loaded": "data_read_event",
+    "about_to_initialize_solution": "pre_initialize_event",
+    "solution_initialized": "initialized_event",
+    "report_definition_updated": "report_definition_changed_event",
+    "report_plot_set_updated": "plot_set_changed_event",
+    "residual_plot_updated": "residual_plot_changed_event",
+    "settings_cleared": "clear_settings_done_event",
+    "solution_paused": "auto_pause_event",
+    "progress_updated": "progress_event",
+    "solver_time_estimate_updated": "solver_time_estimate_event",
+    "fatal_error": "error_event",
+}
+
+meshing_events_map = {
+    "about_to_load_case": "pre_read_case_event",
+    "case_loaded": "case_read_event",
+    "settings_cleared": "clear_settings_done_event",
+    "progress_updated": "progress_event",
+    "fatal_error": "error_event",
+}
+
+_v1_all_events_map = {**solver_events_map, **meshing_events_map}
+_v1_reverse_events_map = {v: k for k, v in _v1_all_events_map.items()}

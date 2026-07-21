@@ -50,10 +50,6 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 from ansys.fluent.core.streaming_services.datamodel_event_streaming_v1 import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.events_streaming import (
-    EventsManager as EventsManagerV0,
-)
-from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptV0,
 )
@@ -209,21 +205,10 @@ class BaseSession:
         self._batch_ops_service = fluent_connection._service_factory.batch_ops
 
         if event_type:
-            events_service = fluent_connection._service_factory.events
-            if fluent_connection._server_supports_v1:
-                self.events = EventsManager[event_type](
-                    event_type,
-                    events_service,
-                    self._error_state,
-                    weakref.proxy(self),
-                )
-            else:
-                self.events = EventsManagerV0[event_type](
-                    event_type,
-                    events_service,
-                    self._error_state,
-                    weakref.proxy(self),
-                )
+            self.events = fluent_connection._service_factory._get_events_manager(
+                event_type=event_type,
+                session_ref=weakref.proxy(self),
+            )
             self.events.start()
         else:
             self.events = None

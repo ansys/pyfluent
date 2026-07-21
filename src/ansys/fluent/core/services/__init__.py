@@ -49,6 +49,7 @@ from ansys.fluent.core.services.solution_variables import (
 )
 from ansys.fluent.core.services.text_interface import TextInterface
 from ansys.fluent.core.services.transcript import Transcript
+from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
     FieldDataStreamingV261,
@@ -166,6 +167,15 @@ class ServiceFactory:
                 self._service_factory.field_data,
                 self._service_factory._chunk_parser,
             )
+
+    def _get_events_manager(self, event_type, session_ref):
+        """Get events manager."""
+        return EventsManager[event_type](
+            event_type,
+            self.events,
+            self._service_factory._error_state,
+            session_ref,
+        )
 
     @cached_property
     def object_model(self):

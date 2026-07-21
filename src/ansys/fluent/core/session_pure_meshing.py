@@ -41,10 +41,7 @@ from ansys.fluent.core.streaming_services.datamodel_streaming import (
 from ansys.fluent.core.streaming_services.datamodel_streaming_v1 import (
     DatamodelStream,
 )
-from ansys.fluent.core.streaming_services.events_streaming import (
-    MeshingEvent as MeshingEventV0,
-)
-from ansys.fluent.core.streaming_services.events_streaming_v1 import MeshingEvent
+from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
 
 if TYPE_CHECKING:
@@ -118,16 +115,13 @@ class PureMeshing(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        _meshing_event = (
-            MeshingEvent if fluent_connection._server_supports_v1 else MeshingEventV0
-        )
         super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
-            event_type=_meshing_event,
+            event_type=MeshingEvent,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
