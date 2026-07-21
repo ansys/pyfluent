@@ -606,6 +606,9 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         """Parse v0 streaming response into canonical (state, deleted_paths) form."""
         return response.state, response.deletedpaths
 
+    _stream_begin_method = "BeginStreaming"
+    _streaming_rpc_path = "/grpcRemoting.DataModel/BeginStreaming"
+
     _event_stream_begin_method = "BeginEventStreaming"
     _event_streaming_rpc_path = "/grpcRemoting.DataModel/BeginEventStreaming"
 

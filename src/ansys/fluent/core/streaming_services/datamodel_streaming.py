@@ -38,7 +38,7 @@ class DatamodelStream(StreamingService):
         """Initialize DatamodelStream."""
         grpc_service = getattr(service, "_service", service)
         super().__init__(
-            stream_begin_method="BeginStreaming",
+            stream_begin_method=grpc_service._stream_begin_method,
             target=DatamodelStream._process_streaming,
             streaming_service=grpc_service,
         )
@@ -68,7 +68,7 @@ class DatamodelStream(StreamingService):
             try:
                 response = next(responses)
                 network_logger.debug(
-                    "GRPC_TRACE: RPC = /grpcRemoting.DataModel/BeginStreaming."
+                    f"GRPC_TRACE: RPC = {self._streaming_service._streaming_rpc_path}."
                 )
                 with self._lock:
                     self._streaming = True

@@ -617,6 +617,11 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         """Parse v1 streaming response into canonical (state, deleted_paths) form."""
         return response.state, response.deleted_paths
 
+    _stream_begin_method = "StreamStateChanges"
+    _streaming_rpc_path = (
+        "/ansys.api.fluent.v1.object_model.ObjectModel/StreamStateChanges"
+    )
+
     _event_stream_begin_method = "StreamEvents"
     _event_streaming_rpc_path = (
         "/ansys.api.fluent.v1.datamodel_se.DataModel/StreamEvents"

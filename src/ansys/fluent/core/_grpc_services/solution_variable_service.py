@@ -120,6 +120,10 @@ class ZonesInfo:
             self.zone_id = zone_info.zone_id
             self.zone_type = zone_info.zone_type
             self.thread_type = zone_info.thread_type
+            self.is_cell_thread: bool = (
+                zone_info.thread_type
+                == solution_variable_pb2.ThreadType.THREAD_TYPE_CELL
+            )
             self.partitions_info = [
                 self.PartitionsInfo(partition_info)
                 for partition_info in zone_info.partitions_info
