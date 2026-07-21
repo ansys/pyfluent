@@ -161,7 +161,7 @@ class ServiceFactory:
                     self._service_factory.scheme_interpreter,
                 )
 
-    @cached_property
+    @property
     def field_data_streaming(self):
         """Field data service."""
         return FieldDataStreaming(
@@ -226,7 +226,7 @@ class ServiceFactory:
         """Transcript service."""
         return Transcript(self._service_factory.transcript)
 
-    @cached_property
+    @property
     def transcript_streaming(self):
         """Transcript streaming service."""
         return TranscriptStreaming(self._service_factory.transcript)
