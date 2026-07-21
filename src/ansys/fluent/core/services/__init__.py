@@ -53,6 +53,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import (
     FieldDataStreaming,
 )
+from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptStreaming,
 )
@@ -234,6 +235,13 @@ class ServiceFactory:
     def monitor(self):
         """Monitor service."""
         return Monitor(self._service_factory.monitor)
+
+    def _get_monitors_manager(self, session_id):
+        """Get monitors manager."""
+        return MonitorsManager(
+            session_id,
+            self._service_factory.monitor,
+        )
 
     @cached_property
     def solution_variable_info(self):

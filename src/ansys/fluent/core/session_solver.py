@@ -52,10 +52,6 @@ from ansys.fluent.core.solver.flobject import (
     StateType,
 )
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
-from ansys.fluent.core.streaming_services.monitor_streaming import (
-    MonitorsManager as MonitorsManagerV0,
-)
-from ansys.fluent.core.streaming_services.monitor_streaming_v1 import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
@@ -158,14 +154,10 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             fluent_connection._service_factory.solution_variable_data
         )
 
-        monitors_service = fluent_connection._service_factory.monitor
         #: Manage Fluent's solution monitors.
-        _MonitorsManager = (
-            MonitorsManager
-            if fluent_connection._server_supports_v1
-            else MonitorsManagerV0
+        self.monitors = fluent_connection._service_factory._get_monitors_manager(
+            fluent_connection._id
         )
-        self.monitors = _MonitorsManager(fluent_connection._id, monitors_service)
         if not config.disable_monitor_refresh_on_init:
             self.events.register_callback(
                 (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),

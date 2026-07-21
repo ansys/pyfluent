@@ -27,7 +27,6 @@ import threading
 
 import numpy as np
 
-from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -199,28 +198,6 @@ class MonitorsManager(StreamingService):
                     callback, args, kwargs = callback_map
                     callback(*args, **kwargs)
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
-        """Begin monitors streaming."""
-        request = MonitorModule.StreamingRequest(*args, **kwargs)
-        responses = self._streaming_service.begin_streaming(
-            request, started_evt, id=id, stream_begin_method=stream_begin_method
-        )
-
-        while True:
-            try:
-                data_received = {}
-                response = next(responses)
-                x_axis_index = response.xaxisdata.xaxisindex
-                data_received["xvalues"] = x_axis_index
-                for y_axis_value in response.yaxisvalues:
-                    data_received[y_axis_value.name] = y_axis_value.value
-                with self._lock:
-                    self._streaming = True
-                    self._populate_dataframes(data_received, *args, **kwargs)
-
-            except StopIteration:
-                break
-
     def _update_dataframe(self):
         with self._lock:
             self._monitors_info = self._streaming_service.get_monitors_info()
@@ -234,3 +211,27 @@ class MonitorsManager(StreamingService):
                 df.set_index("xvalues", inplace=True)
                 self._data_frames[monitor_set_name]["df"] = df
                 self._data_frames[monitor_set_name]["monitors"] = monitors_name
+
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Begin monitors streaming."""
+        responses = self._streaming_service._process_streaming(
+            *args,
+            id=id,
+            stream_begin_method=stream_begin_method,
+            started_evt=started_evt,
+            **kwargs,
+        )
+        while True:
+            try:
+                data_received = {}
+                response = next(responses)
+                x_axis_index, y_data = self._streaming_service.parse_streaming_response(
+                    response
+                )
+                data_received["xvalues"] = x_axis_index
+                data_received.update(y_data)
+                with self._lock:
+                    self._streaming = True
+                    self._populate_dataframes(data_received, *args, **kwargs)
+            except StopIteration:
+                break
