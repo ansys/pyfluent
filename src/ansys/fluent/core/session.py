@@ -43,12 +43,6 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
-    DatamodelEvents as DatamodelEventsV0,
-)
-from ansys.fluent.core.streaming_services.datamodel_event_streaming_v1 import (
-    DatamodelEvents,
-)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
@@ -188,9 +182,7 @@ class BaseSession:
         self._datamodel_service_se.file_transfer_service = file_transfer_service
 
         self._datamodel_events = (
-            DatamodelEvents(self._datamodel_service_se)
-            if fluent_connection._server_supports_v1
-            else DatamodelEventsV0(self._datamodel_service_se)
+            fluent_connection._service_factory.object_model_events_streaming
         )
         self._datamodel_events.start()
 

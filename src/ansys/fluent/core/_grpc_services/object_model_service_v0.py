@@ -606,6 +606,51 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         """Parse v0 streaming response into canonical (state, deleted_paths) form."""
         return response.state, response.deletedpaths
 
+    _event_stream_begin_method = "BeginEventStreaming"
+    _event_streaming_rpc_path = "/grpcRemoting.DataModel/BeginEventStreaming"
+
+    def _process_event_streaming(self, id, started_evt, *args, **kwargs):
+        """Begin v0 event streaming."""
+        request = datamodel_se_pb2.EventRequest(*args, **kwargs)
+        return self.begin_streaming(
+            request,
+            started_evt,
+            id=id,
+            stream_begin_method=self._event_stream_begin_method,
+        )
+
+    def parse_event_response(self, response):
+        """Parse a v0 event streaming response into (event_type, cb_args) form."""
+        if response.HasField("createdEventResponse"):
+            return "created", (
+                response.createdEventResponse.childtype,
+                response.createdEventResponse.childname,
+            )
+        elif response.HasField("attributeChangedEventResponse"):
+            return "attribute_changed", (
+                _convert_variant_to_value(response.attributeChangedEventResponse.value),
+            )
+        elif response.HasField("commandAttributeChangedEventResponse"):
+            return "command_attribute_changed", (
+                _convert_variant_to_value(
+                    response.commandAttributeChangedEventResponse.value
+                ),
+            )
+        elif response.HasField("modifiedEventResponse"):
+            return "modified", (
+                _convert_variant_to_value(response.modifiedEventResponse.value),
+            )
+        elif response.HasField("affectedEventResponse"):
+            return "affected", ()
+        elif response.HasField("deletedEventResponse"):
+            return "deleted", ()
+        elif response.HasField("commandExecutedEventResponse"):
+            return "command_executed", (
+                response.commandExecutedEventResponse.command,
+                _convert_variant_to_value(response.commandExecutedEventResponse.args),
+            )
+        return None, ()
+
 
 def _convert_value_to_variant(val: ValueT, var: Variant) -> None:
     """Convert a Python data type to Fluent's variant type."""

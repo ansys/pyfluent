@@ -617,6 +617,57 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         """Parse v1 streaming response into canonical (state, deleted_paths) form."""
         return response.state, response.deleted_paths
 
+    _event_stream_begin_method = "StreamEvents"
+    _event_streaming_rpc_path = (
+        "/ansys.api.fluent.v1.datamodel_se.DataModel/StreamEvents"
+    )
+
+    def _process_event_streaming(self, id, started_evt, *args, **kwargs):
+        """Begin v1 event streaming."""
+        request = object_model_pb2.StreamEventsRequest()
+        return self.begin_streaming(
+            request,
+            started_evt,
+            id=id,
+            stream_begin_method=self._event_stream_begin_method,
+        )
+
+    def parse_event_response(self, response):
+        """Parse a v1 event streaming response into (event_type, cb_args) form."""
+        if response.HasField("created_event_response"):
+            return "created", (
+                response.created_event_response.child_type,
+                response.created_event_response.child_name,
+            )
+        elif response.HasField("attribute_changed_event_response"):
+            return "attribute_changed", (
+                _convert_variant_to_value(
+                    response.attribute_changed_event_response.value
+                ),
+            )
+        elif response.HasField("command_attribute_changed_event_response"):
+            return "command_attribute_changed", (
+                _convert_variant_to_value(
+                    response.command_attribute_changed_event_response.value
+                ),
+            )
+        elif response.HasField("modified_event_response"):
+            return "modified", (
+                _convert_variant_to_value(response.modified_event_response.value),
+            )
+        elif response.HasField("affected_event_response"):
+            return "affected", ()
+        elif response.HasField("deleted_event_response"):
+            return "deleted", ()
+        elif response.HasField("command_executed_event_response"):
+            return "command_executed", (
+                response.command_executed_event_response.command,
+                _convert_variant_to_value(
+                    response.command_executed_event_response.args
+                ),
+            )
+        return None, ()
+
 
 def _convert_value_to_variant(val: ValueT, var: Variant) -> None:
     """Convert a Python data type to Fluent's variant type (v1 proto)."""

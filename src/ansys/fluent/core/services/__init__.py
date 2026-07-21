@@ -49,6 +49,9 @@ from ansys.fluent.core.services.solution_variables import (
 )
 from ansys.fluent.core.services.text_interface import TextInterface
 from ansys.fluent.core.services.transcript import Transcript
+from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
+    DatamodelEvents,
+)
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import (
@@ -193,6 +196,11 @@ class ServiceFactory:
     def object_model_streaming(self):
         """Object model streaming service."""
         return DatamodelStream(self._service_factory.object_model)
+
+    @cached_property
+    def object_model_events_streaming(self):
+        """Object model events streaming service."""
+        return DatamodelEvents(self._service_factory.object_model)
 
     @cached_property
     def events(self):
