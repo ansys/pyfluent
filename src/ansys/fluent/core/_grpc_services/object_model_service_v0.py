@@ -578,6 +578,34 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
+    def _process_streaming(
+        self,
+        id,
+        stream_begin_method,
+        started_evt,
+        rules,
+        datamodel_return_state_changes,
+        no_commands_diff_state,
+        *args,
+        **kwargs,
+    ):
+        """Processes events streaming."""
+        data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
+        data_model_request.rules = rules
+        data_model_request.returnstatechanges = datamodel_return_state_changes
+        if no_commands_diff_state:
+            data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
+        return self.begin_streaming(
+            data_model_request,
+            started_evt,
+            id=id,
+            stream_begin_method=stream_begin_method,
+        )
+
+    def parse_streaming_response(self, response):
+        """Parse v0 streaming response into canonical (state, deleted_paths) form."""
+        return response.state, response.deletedpaths
+
 
 def _convert_value_to_variant(val: ValueT, var: Variant) -> None:
     """Convert a Python data type to Fluent's variant type."""

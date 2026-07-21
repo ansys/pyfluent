@@ -35,12 +35,6 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
-from ansys.fluent.core.streaming_services.datamodel_streaming import (
-    DatamodelStream as DatamodelStreamV0,
-)
-from ansys.fluent.core.streaming_services.datamodel_streaming_v1 import (
-    DatamodelStream,
-)
 from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
 
@@ -144,11 +138,7 @@ class PureMeshing(BaseSession):
                         else NameKey.INTERNAL
                     ),
                 )
-                stream = (
-                    DatamodelStream(datamodel_service_se)
-                    if fluent_connection._server_supports_v1
-                    else DatamodelStreamV0(datamodel_service_se)
-                )
+                stream = fluent_connection._service_factory.object_model_streaming
                 stream.register_callback(
                     functools.partial(
                         datamodel_service_se._cache.update_cache,
