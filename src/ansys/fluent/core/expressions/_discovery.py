@@ -19,12 +19,14 @@ Three concerns are served:
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from ansys.fluent.core.variable_strategies import FluentExprNamingStrategy
 from ansys.units.variable_descriptor import VariableDescriptor
 
 _NAMING = FluentExprNamingStrategy()
+_logger = logging.getLogger("pyfluent.expressions")
 
 
 def _field_data_naming():
@@ -89,8 +91,8 @@ class Discovery:
                 info = self.field_info.get_surfaces_info() or {}
                 if info:
                     return list(info.keys())
-            except Exception:
-                pass  # fall through to settings walk
+            except Exception as exc:  # fall through to settings walk
+                _logger.debug("get_surfaces_info() failed: %s", exc)
 
         if not self.has_settings():
             return []
@@ -188,7 +190,8 @@ class Discovery:
                 continue
             try:
                 info = fn() or {}
-            except Exception:
+            except Exception as exc:
+                _logger.debug("%s() failed: %s", getter, exc)
                 continue
             active_names.extend(info.keys())
 
@@ -196,7 +199,8 @@ class Discovery:
         for name in active_names:
             try:
                 d = fd_naming.to_variable_descriptor(name)
-            except Exception:
+            except Exception as exc:
+                _logger.debug("to_variable_descriptor(%r) failed: %s", name, exc)
                 d = None
             if d is not None:
                 descriptors.append(d)
@@ -214,10 +218,11 @@ class Discovery:
         if callable(getter):
             try:
                 return list(getter())
-            except Exception:
-                pass
+            except Exception as exc:
+                _logger.debug("get_object_names() failed at %s: %s", path, exc)
         # Fall back to iteration (NamedObject containers are iterable).
         try:
             return list(iter(node))
-        except Exception:
+        except Exception as exc:
+            _logger.debug("iter() failed at %s: %s", path, exc)
             return []
