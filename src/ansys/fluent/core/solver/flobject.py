@@ -42,7 +42,7 @@ Example
 from __future__ import annotations
 
 import collections
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
@@ -62,6 +62,7 @@ from typing import (
     Generic,
     Iterable,
     NewType,
+    Protocol,
     TypeVar,
     Union,
     _eval_type,
@@ -71,6 +72,9 @@ from typing import (
 import warnings
 import weakref
 
+from typing_extensions import override
+
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -813,24 +817,36 @@ class RealNumerical(Numerical):
         return get_si_unit_for_fluent_quantity(quantity)
 
 
+class SettingsBaseWithName(Protocol):  # pylint: disable=missing-class-docstring
+    __class__: type["SettingsBase"]  # pyright: ignore[reportIncompatibleMethodOverride]
+    name: Callable[[], str]
+
+
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(
+        self,
+        state: str | VariableDescriptor | SettingsBaseWithName | None = None,
+        **kwargs,
+    ):
         """Set the state of the object.
 
         Parameters
         ----------
         state
-            Either str or VariableDescriptor.
+            Either str, settings object with a ``name()`` method or VariableDescriptor.
         kwargs : Any
             Keyword arguments.
 
         Raises
         ------
         TypeError
-            If state is not a string.
+            If state is not an appropriate type.
         """
+        if isinstance(state, SettingsBase) and hasattr(state, "name"):
+            state = state.name()
+
         allowed_types = (str, VariableDescriptor)
 
         if not isinstance(state, allowed_types):
@@ -1088,6 +1104,12 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
+    @override
+    def set_state(self, state: PathType | None = None, **kwargs):
+        if state is not None:
+            state = os.fspath(state)
+        return super().set_state(state, **kwargs)
+
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
@@ -1097,6 +1119,15 @@ class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
+
+    @override
+    def set_state(self, state: Sequence[PathType] | None = None, **kwargs):
+        if state is not None:
+            if isinstance(state, (str, bytes)):
+                state = [os.fspath(state)]
+            else:
+                state = [os.fspath(path) for path in state]
+        return super().set_state(state, **kwargs)
 
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
@@ -1170,6 +1201,24 @@ class StringList(SettingsBase[StringListType], Textual):
     """A ``StringList`` object representing a string list setting."""
 
     _state_type = StringListType
+
+    @override
+    def set_state(
+        self,
+        state: Sequence[str | SettingsBaseWithName | VariableDescriptor] | None = None,
+        **kwargs,
+    ):
+        if isinstance(state, Sequence):
+            state = [
+                (
+                    entry.name()
+                    if isinstance(entry, SettingsBase) and hasattr(entry, "name")
+                    else entry
+                )
+                for entry in state
+            ]
+
+        return super().set_state(state, **kwargs)
 
 
 class BooleanList(SettingsBase[BoolListType], Property):
