@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,6 +37,7 @@ Examples
 """
 
 import logging
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -166,7 +168,7 @@ class StandaloneLauncher:
         journal_file_names : str or list of str, optional
             Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``.
         start_timeout : int, optional
-            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 60 seconds.
+            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 100 seconds.
         additional_arguments : str, optional
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         env : dict[str, str], optional
@@ -221,8 +223,6 @@ class StandaloneLauncher:
         if pyfluent.config.show_fluent_gui:
             kwargs["ui_mode"] = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 60
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
@@ -245,6 +245,12 @@ class StandaloneLauncher:
             self.argvals,
             server_info_file_name_for_server,
         )
+        if self.argvals.get("start_timeout") is None:
+            self.argvals["start_timeout"] = 100
+        # Negative start_timeout values are treated as "no timeout".
+        start_timeout = self.argvals.get("start_timeout")
+        if start_timeout >= 0:
+            self._launch_string += self._construct_timeout_arg(start_timeout)
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         self._kwargs = _get_subprocess_kwargs_for_fluent(
@@ -265,6 +271,24 @@ class StandaloneLauncher:
             else:
                 self._launch_cmd = self._launch_string
 
+    @staticmethod
+    def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
+        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
+        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
+        return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+
+    @staticmethod
+    def _disable_idle_timeout_guard(session):
+        try:
+            default_idle_timeout = session.preferences.General.IdleTimeout()
+        except RuntimeError:
+            # This exception is raised only while running codegen locally before the preferences root is available.
+            default_idle_timeout = 0
+        try:
+            session.application_runtime.set_idle_timeout(default_idle_timeout * 60)
+        except Exception as ex:
+            raise RuntimeError("Could not reset Idle Timeout") from ex
+
     def __call__(
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
@@ -278,7 +302,7 @@ class StandaloneLauncher:
             try:
                 _await_fluent_launch(
                     self._server_info_file_name,
-                    self.argvals.get("start_timeout", 60),
+                    self.argvals.get("start_timeout", 100),
                     self._sifile_last_mtime,
                     process.pid,
                 )
@@ -293,7 +317,7 @@ class StandaloneLauncher:
                     process = subprocess.Popen(launch_cmd, **self._kwargs)
                     _await_fluent_launch(
                         self._server_info_file_name,
-                        self.argvals.get("start_timeout", 60),
+                        self.argvals.get("start_timeout", 100),
                         self._sifile_last_mtime,
                         process.pid,
                     )
@@ -326,6 +350,8 @@ class StandaloneLauncher:
                         ip,
                         inside_container=False,
                     )
+            # PyFluent is now connected: disable the idle-timeout guard.
+            self._disable_idle_timeout_guard(session)
             if self.argvals.get("case_file_name"):
                 if FluentMode.is_meshing(self.argvals.get("mode")):
                     session.tui.file.read_case(self.argvals.get("case_file_name"))

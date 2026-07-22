@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,6 +30,7 @@ import weakref
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
+from ansys.fluent.core import ExposureLevel
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 from ansys.fluent.core.solver import flobject
@@ -617,6 +619,541 @@ def test_attrs():
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError):
         r.g_1.s_4.get_attr("allowed-values")
+
+
+def test_exposure_level_filtering(monkeypatch):
+    """Test that beta/alpha objects are hidden by default and revealed by activation."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class ExposureRoot(Group):
+        children = {
+            "stable-child": Real,
+            "beta-child": Real,
+            "alpha-child": Real,
+        }
+
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "children": {
+                    "stable-child": {"type": "real"},
+                    "beta-child": {"type": "real", "api_exposure_level": "beta"},
+                    "alpha-child": {"type": "real", "api_exposure_level": "alpha"},
+                },
+            }
+
+    class ExposureProxy(Proxy):
+        root = ExposureRoot
+
+    r = flobject.get_root(ExposureProxy(), version="271")
+
+    assert "set_exposure_level" in dir(r)
+
+    # Default state
+    assert "stable_child" in dir(r)
+    assert "beta_child" not in dir(r)
+    assert "alpha_child" not in dir(r)
+
+    with pytest.raises(AttributeError):
+        _ = r.beta_child
+    with pytest.raises(AttributeError):
+        _ = r.alpha_child
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    assert "beta_child" in dir(r)
+    assert "alpha_child" not in dir(r)
+    assert r.beta_child
+    with pytest.raises(AttributeError):
+        _ = r.alpha_child
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    assert "beta_child" in dir(r)
+    assert "alpha_child" in dir(r)
+    assert r.beta_child
+    assert r.alpha_child
+
+    # Again stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+    assert "beta_child" not in dir(r)
+    assert "alpha_child" not in dir(r)
+
+    # Class generation is unaffected
+    root_cls = type(r)
+    assert root_cls.__name__ == "root"
+    root_child_classes = root_cls._child_classes
+    assert "stable_child" in root_child_classes
+    assert "beta_child" in root_child_classes
+    assert "alpha_child" in root_child_classes
+    assert root_child_classes["stable_child"].exposure_level == ExposureLevel.STABLE
+    assert root_child_classes["beta_child"].exposure_level == ExposureLevel.BETA
+    assert root_child_classes["alpha_child"].exposure_level == ExposureLevel.ALPHA
+
+
+def test_exposure_level_filtering_named_object_commands(monkeypatch):
+    """Test that beta/alpha commands and queries on NamedObject and ListObject are filtered."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class ExposureNamedRoot(Group):
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "children": {
+                    "n-1": {
+                        "type": "named-object",
+                        "user_creatable": True,
+                        "object-type": {"type": "group"},
+                        "commands": {
+                            "stable-cmd": {"type": "command", "arguments": {}},
+                            "beta-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                            "alpha-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                    "l-1": {
+                        "type": "list-object",
+                        "object-type": {"type": "group"},
+                        "commands": {
+                            "stable-cmd": {"type": "command", "arguments": {}},
+                            "beta-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                        },
+                    },
+                },
+            }
+
+    class ExposureProxy(Proxy):
+        root = ExposureNamedRoot
+
+    r = flobject.get_root(ExposureProxy(), version="271")
+
+    # Default state
+    assert "stable_cmd" in dir(r.n_1)
+    assert "beta_cmd" not in dir(r.n_1)
+    assert "alpha_cmd" not in dir(r.n_1)
+    with pytest.raises(AttributeError):
+        _ = r.n_1.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.n_1.alpha_cmd
+
+    assert "stable_cmd" in dir(r.l_1)
+    assert "beta_cmd" not in dir(r.l_1)
+    with pytest.raises(AttributeError):
+        _ = r.l_1.beta_cmd
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    assert "beta_cmd" in dir(r.n_1)
+    assert "alpha_cmd" not in dir(r.n_1)
+    assert r.n_1.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.n_1.alpha_cmd
+    assert "beta_cmd" in dir(r.l_1)
+    assert r.l_1.beta_cmd
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    assert "alpha_cmd" in dir(r.n_1)
+    assert r.n_1.alpha_cmd
+    assert r.n_1.beta_cmd
+    assert r.l_1.beta_cmd
+
+
+def test_exposure_level_filtering_complete_hierarchy(monkeypatch):
+    """Test exposure-level filtering across a complete hierarchy."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class _StubCmd(Command):
+        """Stub command/query for proxy-side is_active() resolution."""
+
+        arguments = {}
+
+        def cb(self):
+            pass
+
+    class CompleteHierarchyRoot(Group):
+        class SomeNamedObj(NamedObject):
+            class NOType(Group):
+                children = {}
+
+            child_object_type = NOType
+
+        children = {
+            "stable-param": Real,
+            "beta-param": Real,
+            "alpha-param": Real,
+            "named-obj": SomeNamedObj,
+        }
+        commands = {
+            "stable-cmd": _StubCmd,
+            "beta-cmd": _StubCmd,
+            "alpha-cmd": _StubCmd,
+            "stable-qry": _StubCmd,
+            "beta-qry": _StubCmd,
+            "alpha-qry": _StubCmd,
+        }
+
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "children": {
+                    "stable-param": {"type": "real"},
+                    "beta-param": {"type": "real", "api_exposure_level": "beta"},
+                    "alpha-param": {"type": "real", "api_exposure_level": "alpha"},
+                    "named-obj": {
+                        "type": "named-object",
+                        "user_creatable": True,
+                        "object-type": {"type": "group"},
+                        "commands": {
+                            "stable-cmd": {"type": "command", "arguments": {}},
+                            "beta-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                            "alpha-cmd": {
+                                "type": "command",
+                                "arguments": {},
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                        "queries": {
+                            "stable-qry": {"type": "query", "arguments": {}},
+                            "beta-qry": {
+                                "type": "query",
+                                "arguments": {},
+                                "api_exposure_level": "beta",
+                            },
+                            "alpha-qry": {
+                                "type": "query",
+                                "arguments": {},
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                },
+                "commands": {
+                    "stable-cmd": {"type": "command", "arguments": {}},
+                    "beta-cmd": {
+                        "type": "command",
+                        "arguments": {},
+                        "api_exposure_level": "beta",
+                    },
+                    "alpha-cmd": {
+                        "type": "command",
+                        "arguments": {},
+                        "api_exposure_level": "alpha",
+                    },
+                },
+                "queries": {
+                    "stable-qry": {"type": "query", "arguments": {}},
+                    "beta-qry": {
+                        "type": "query",
+                        "arguments": {},
+                        "api_exposure_level": "beta",
+                    },
+                    "alpha-qry": {
+                        "type": "query",
+                        "arguments": {},
+                        "api_exposure_level": "alpha",
+                    },
+                },
+            }
+
+    class CompleteProxy(Proxy):
+        root = CompleteHierarchyRoot
+
+    r = flobject.get_root(CompleteProxy(), version="271")
+    no = r.named_obj
+
+    # Default state
+    assert "stable_param" in dir(r)
+    assert "beta_param" not in dir(r)
+    assert "alpha_param" not in dir(r)
+    with pytest.raises(AttributeError):
+        _ = r.beta_param
+    with pytest.raises(AttributeError):
+        _ = r.alpha_param
+
+    assert "stable_cmd" in dir(r)
+    assert "beta_cmd" not in dir(r)
+    assert "alpha_cmd" not in dir(r)
+    with pytest.raises(AttributeError):
+        _ = r.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.alpha_cmd
+
+    assert "stable_qry" in dir(r)
+    assert "beta_qry" not in dir(r)
+    assert "alpha_qry" not in dir(r)
+    with pytest.raises(AttributeError):
+        _ = r.beta_qry
+    with pytest.raises(AttributeError):
+        _ = r.alpha_qry
+
+    assert "stable_cmd" in dir(no)
+    assert "beta_cmd" not in dir(no)
+    assert "alpha_cmd" not in dir(no)
+    with pytest.raises(AttributeError):
+        _ = no.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = no.alpha_cmd
+
+    assert "stable_qry" in dir(no)
+    assert "beta_qry" not in dir(no)
+    assert "alpha_qry" not in dir(no)
+    with pytest.raises(AttributeError):
+        _ = no.beta_qry
+    with pytest.raises(AttributeError):
+        _ = no.alpha_qry
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+
+    assert "beta_param" in dir(r)
+    assert "alpha_param" not in dir(r)
+    assert r.beta_param
+    with pytest.raises(AttributeError):
+        _ = r.alpha_param
+
+    assert "beta_cmd" in dir(r)
+    assert "alpha_cmd" not in dir(r)
+    assert r.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = r.alpha_cmd
+
+    assert "beta_qry" in dir(r)
+    assert "alpha_qry" not in dir(r)
+    assert r.beta_qry
+    with pytest.raises(AttributeError):
+        _ = r.alpha_qry
+
+    assert "beta_cmd" in dir(no)
+    assert "alpha_cmd" not in dir(no)
+    assert no.beta_cmd
+    with pytest.raises(AttributeError):
+        _ = no.alpha_cmd
+
+    assert "beta_qry" in dir(no)
+    assert "alpha_qry" not in dir(no)
+    assert no.beta_qry
+    with pytest.raises(AttributeError):
+        _ = no.alpha_qry
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+
+    assert "beta_param" in dir(r)
+    assert "alpha_param" in dir(r)
+    assert "beta_cmd" in dir(r)
+    assert "alpha_cmd" in dir(r)
+    assert "beta_qry" in dir(r)
+    assert "alpha_qry" in dir(r)
+    assert r.beta_param
+    assert r.alpha_param
+    assert r.beta_cmd
+    assert r.alpha_cmd
+    assert r.beta_qry
+    assert r.alpha_qry
+
+    assert "beta_cmd" in dir(no)
+    assert "alpha_cmd" in dir(no)
+    assert "beta_qry" in dir(no)
+    assert "alpha_qry" in dir(no)
+    assert no.beta_cmd
+    assert no.alpha_cmd
+    assert no.beta_qry
+    assert no.alpha_qry
+
+    # Back to stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+
+    assert "beta_param" not in dir(r)
+    assert "alpha_param" not in dir(r)
+    assert "beta_cmd" not in dir(r)
+    assert "alpha_cmd" not in dir(r)
+    assert "beta_qry" not in dir(r)
+    assert "alpha_qry" not in dir(r)
+
+    assert "beta_cmd" not in dir(no)
+    assert "alpha_cmd" not in dir(no)
+    assert "beta_qry" not in dir(no)
+    assert "alpha_qry" not in dir(no)
+
+    assert "stable_param" in dir(r)
+    assert "stable_cmd" in dir(r)
+    assert "stable_qry" in dir(r)
+    assert "stable_cmd" in dir(no)
+    assert "stable_qry" in dir(no)
+    assert r.stable_param
+    assert r.stable_cmd
+    assert r.stable_qry
+    assert no.stable_cmd
+    assert no.stable_qry
+
+    assert "set_exposure_level" in dir(r)
+    assert "set_exposure_level" not in dir(no)
+    with pytest.raises(AttributeError):
+        no.set_exposure_level(ExposureLevel.BETA)
+
+    r.set_exposure_level(ExposureLevel.STABLE)
+
+    active_params = r.get_active_child_names()
+    assert "stable_param" in active_params
+    assert "beta_param" not in active_params
+    assert "alpha_param" not in active_params
+
+    active_cmds = r.get_active_command_names()
+    assert "stable_cmd" in active_cmds
+    assert "beta_cmd" not in active_cmds
+    assert "alpha_cmd" not in active_cmds
+
+    active_qrys = r.get_active_query_names()
+    assert "stable_qry" in active_qrys
+    assert "beta_qry" not in active_qrys
+    assert "alpha_qry" not in active_qrys
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    active_params = r.get_active_child_names()
+    assert "beta_param" in active_params
+    assert "alpha_param" not in active_params
+    active_cmds = r.get_active_command_names()
+    assert "beta_cmd" in active_cmds
+    assert "alpha_cmd" not in active_cmds
+    active_qrys = r.get_active_query_names()
+    assert "beta_qry" in active_qrys
+    assert "alpha_qry" not in active_qrys
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    active_params = r.get_active_child_names()
+    assert "beta_param" in active_params
+    assert "alpha_param" in active_params
+    active_cmds = r.get_active_command_names()
+    assert "beta_cmd" in active_cmds
+    assert "alpha_cmd" in active_cmds
+    active_qrys = r.get_active_query_names()
+    assert "beta_qry" in active_qrys
+    assert "alpha_qry" in active_qrys
+
+    # Back to stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+    active_params = r.get_active_child_names()
+    assert "beta_param" not in active_params
+    assert "alpha_param" not in active_params
+    active_cmds = r.get_active_command_names()
+    assert "beta_cmd" not in active_cmds
+    assert "alpha_cmd" not in active_cmds
+    active_qrys = r.get_active_query_names()
+    assert "beta_qry" not in active_qrys
+    assert "alpha_qry" not in active_qrys
+
+
+def test_exposure_level_filtering_command_arguments(monkeypatch):
+    """Test that beta/alpha command and query arguments are filtered by exposure level."""
+    from ansys.fluent.core.module_config import config
+
+    monkeypatch.setattr(config, "_use_runtime_python_classes", True, raising=False)
+
+    class ArgsRoot(Group):
+        @classmethod
+        def get_static_info(cls):
+            return {
+                "type": "group",
+                "commands": {
+                    "my-cmd": {
+                        "type": "command",
+                        "arguments": {
+                            "stable-arg": {"type": "real"},
+                            "beta-arg": {"type": "real", "api_exposure_level": "beta"},
+                            "alpha-arg": {
+                                "type": "real",
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                },
+                "queries": {
+                    "my-qry": {
+                        "type": "query",
+                        "arguments": {
+                            "stable-arg": {"type": "real"},
+                            "beta-arg": {"type": "real", "api_exposure_level": "beta"},
+                            "alpha-arg": {
+                                "type": "real",
+                                "api_exposure_level": "alpha",
+                            },
+                        },
+                    },
+                },
+            }
+
+    class ArgsProxy(Proxy):
+        root = ArgsRoot
+
+    r = flobject.get_root(ArgsProxy(), version="271")
+    cmd = r.my_cmd
+    qry = r.my_qry
+
+    for action in (cmd, qry):
+        # Default state
+        assert "stable_arg" in dir(action)
+        assert "beta_arg" not in dir(action)
+        assert "alpha_arg" not in dir(action)
+        with pytest.raises(AttributeError):
+            _ = action.beta_arg
+        with pytest.raises(AttributeError):
+            _ = action.alpha_arg
+
+    # Activate beta
+    r.set_exposure_level(ExposureLevel.BETA)
+    for action in (cmd, qry):
+        assert "beta_arg" in dir(action)
+        assert "alpha_arg" not in dir(action)
+        assert action.beta_arg
+        with pytest.raises(AttributeError):
+            _ = action.alpha_arg
+
+    # Activate alpha
+    r.set_exposure_level(ExposureLevel.ALPHA)
+    for action in (cmd, qry):
+        assert "beta_arg" in dir(action)
+        assert "alpha_arg" in dir(action)
+        assert action.beta_arg
+        assert action.alpha_arg
+
+    # Back to stable
+    r.set_exposure_level(ExposureLevel.STABLE)
+    for action in (cmd, qry):
+        assert "beta_arg" not in dir(action)
+        assert "alpha_arg" not in dir(action)
+        with pytest.raises(AttributeError):
+            _ = action.beta_arg
+        with pytest.raises(AttributeError):
+            _ = action.alpha_arg
+        assert "stable_arg" in dir(action)
+        assert action.stable_arg
 
 
 # The following test is commented out as codegen module is not packaged in the

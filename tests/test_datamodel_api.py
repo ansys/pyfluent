@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,7 +27,7 @@ from conftest import SKIP_INVESTIGATING
 import pytest
 from util import create_datamodel_root_in_server
 
-from ansys.fluent.core.services.datamodel_se import SubscribeEventError
+from ansys.fluent.core._grpc_services.object_model_service_v0 import SubscribeEventError
 from ansys.fluent.core.utils.execution import timeout_loop
 
 rule_str = (

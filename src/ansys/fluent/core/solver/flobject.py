@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -137,6 +138,64 @@ class ExposureLevel(Enum):
             }
             return order[self] < order[other]
         return NotImplemented
+
+
+def _is_hidden_by_exposure_level(child_cls, parent_obj) -> bool:
+    """Whether a child settings class should be hidden based on exposure level.
+
+    Parameters
+    ----------
+    child_cls : type
+        The child settings class to check.
+    parent_obj : Base
+        The parent object instance, used to traverse to the root for activation flags.
+
+    Returns
+    -------
+    bool
+        True if the child should be hidden from dir and attribute access; False otherwise.
+    """
+    return child_cls.exposure_level < getattr(
+        parent_obj._root, "_global_exposure_level", ExposureLevel.STABLE
+    )
+
+
+def _set_exposure_level(self, level: ExposureLevel) -> None:
+    """Set the minimum exposure level for accessible settings objects.
+
+    Parameters
+    ----------
+    level : ExposureLevel
+        The minimum exposure level to make accessible.
+        ``ExposureLevel.STABLE`` (default) hides all beta and alpha objects.
+        ``ExposureLevel.BETA`` also exposes beta objects.
+        ``ExposureLevel.ALPHA`` exposes all objects.
+    """
+    self._setattr("_global_exposure_level", level)
+
+
+def _get_hidden_names(names, child_classes, obj) -> set:
+    """Return names that should be hidden due to exposure level or deprecation."""
+    hidden = set()
+    for name in names:
+        child_cls = child_classes.get(name)
+        if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
+            hidden.add(name)
+        elif _is_deprecated(object.__getattribute__(obj, name)):
+            hidden.add(name)
+    return hidden
+
+
+def _raise_if_exposure_hidden(name, child_classes, obj) -> None:
+    """Raise AttributeError if name is hidden due to exposure level."""
+    child_cls = child_classes.get(name)
+    if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
+        raise AttributeError(
+            f"'{name}' is not available at the current exposure level. "
+            f"Call 'set_exposure_level(ExposureLevel.BETA)' or "
+            f"'set_exposure_level(ExposureLevel.ALPHA)' on the settings root "
+            f"to enable access to beta or alpha objects."
+        )
 
 
 class _InlineConstants:
@@ -1220,7 +1279,11 @@ class Group(SettingsBase[DictStateType]):
     def get_active_child_names(self):
         """Names of children that are currently active."""
         ret = []
+        child_classes = type(self)._child_classes
         for child_name in self.child_names:
+            child_cls = child_classes.get(child_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
             child = getattr(self, child_name)
             if child.is_active() and not _is_deprecated(child):
                 ret.append(child_name)
@@ -1229,7 +1292,11 @@ class Group(SettingsBase[DictStateType]):
     def get_active_command_names(self):
         """Names of commands that are currently active."""
         ret = []
+        child_classes = type(self)._child_classes
         for command_name in self.command_names:
+            child_cls = child_classes.get(command_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
             command = getattr(self, command_name)
             if command.is_active() and not _is_deprecated(command):
                 ret.append(command_name)
@@ -1238,7 +1305,11 @@ class Group(SettingsBase[DictStateType]):
     def get_active_query_names(self):
         """Names of queries that are currently active."""
         ret = []
+        child_classes = type(self)._child_classes
         for query_name in self.query_names:
+            child_cls = child_classes.get(query_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
             query = getattr(self, query_name)
             if query.is_active() and not _is_deprecated(query):
                 ret.append(query_name)
@@ -1246,13 +1317,12 @@ class Group(SettingsBase[DictStateType]):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        return dir_list - set(
-            [
-                child
-                for child in self.child_names + self.command_names + self.query_names
-                if _is_deprecated(getattr(self, child))
-            ]
+        hidden = _get_hidden_names(
+            self.child_names + self.command_names + self.query_names,
+            type(self)._child_classes,
+            self,
         )
+        return dir_list - hidden
 
     def __getattribute__(self, name):
         # Avoiding server queries for static attributes
@@ -1263,6 +1333,9 @@ class Group(SettingsBase[DictStateType]):
             and self.is_active() is False
         ):
             raise InactiveObjectError(self.python_path)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
+        )
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -1463,6 +1536,21 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     command_names = []
     query_names = []
     _child_aliases = {}
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        hidden = _get_hidden_names(
+            self.command_names + self.query_names, type(self)._child_classes, self
+        )
+        return dir_list - hidden
+
+    def __getattribute__(self, name):
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
+        )
+        return super().__getattribute__(name)
 
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
@@ -1721,6 +1809,21 @@ class ListObject(SettingsBase[ListStateType], Sequence[ChildTypeT]):
     query_names = []
     _child_aliases = {}
 
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        hidden = _get_hidden_names(
+            self.command_names + self.query_names, type(self)._child_classes, self
+        )
+        return dir_list - hidden
+
+    def __getattribute__(self, name):
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
+        )
+        return super().__getattribute__(name)
+
     def _update_objects(self):
         cls = self.__class__.child_object_type
         self._setattr(
@@ -1910,13 +2013,16 @@ class Action(Base):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        return dir_list - set(
-            [
-                child
-                for child in self.argument_names
-                if _is_deprecated(getattr(self, child))
-            ]
+        hidden = _get_hidden_names(self.argument_names, type(self)._child_classes, self)
+        return dir_list - hidden
+
+    def __getattribute__(self, name):
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
+        _raise_if_exposure_hidden(
+            name, super().__getattribute__("_child_classes"), self
         )
+        return super().__getattribute__(name)
 
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
@@ -2601,6 +2707,8 @@ def get_root(
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval
+    root._setattr("_global_exposure_level", ExposureLevel.STABLE)
+    root._setattr("set_exposure_level", types.MethodType(_set_exposure_level, root))
     root._setattr("_file_transfer_service", file_transfer_service)
     return root
 

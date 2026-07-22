@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,8 +23,10 @@
 
 """Provides a module for datamodel event streaming (v1 proto API)."""
 
-from ansys.api.fluent.v1 import datamodel_pb2 as DataModelProtoModule
-from ansys.fluent.core.services.datamodel_se_v1 import _convert_variant_to_value
+from ansys.api.fluent.v1 import object_model_pb2 as DataModelProtoModule
+from ansys.fluent.core._grpc_services.object_model_service import (
+    _convert_variant_to_value,
+)
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     _BaseDatamodelEvents,
 )

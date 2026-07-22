@@ -51,6 +51,75 @@ Accessing solver settings
   >>> results = solver_session.settings.results
 
 
+Exposure levels
+---------------
+
+Every solver settings object, command, query, and command/query argument has an
+assigned exposure level: alpha, beta, or stable. You can query an exposed settings
+object's assigned exposure level with the ``exposure_level`` attribute.
+
+.. code-block:: python
+
+  >>> solver_session.settings.setup.exposure_level
+  <ExposureLevel.STABLE: 'stable'>
+
+By default, only stable objects are exposed. Use ``settings.set_exposure_level()`` on
+the settings root to expose beta or alpha objects.
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core import ExposureLevel
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.STABLE)
+
+The available levels are:
+
+- ``ExposureLevel.STABLE``: Shows only stable objects.
+- ``ExposureLevel.BETA``: Shows stable and beta objects.
+- ``ExposureLevel.ALPHA``: Shows stable, beta, and alpha objects.
+
+.. note::
+  Exposure level settings are strictly session-based: they are not retained or
+  carried over from one session to the next, and each new session defaults to
+  exposing only stable items unless a different exposure level is explicitly
+  configured for that session.
+
+Show beta objects
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core import ExposureLevel
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
+
+After enabling beta exposure, beta settings objects, commands, queries, and
+command/query arguments become accessible.
+
+Show alpha objects
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+  >>> solver_session.settings.set_exposure_level(ExposureLevel.ALPHA)
+
+This also keeps beta objects visible.
+
+.. note::
+
+  - ``set_exposure_level()`` is available only on the settings root.
+
+  .. code-block:: python
+
+    >>> from ansys.fluent.core import ExposureLevel
+    >>> solver_session.settings.set_exposure_level(ExposureLevel.BETA)
+    >>> solver_session.settings.setup.set_exposure_level(ExposureLevel.BETA)
+    Traceback (most recent call last):
+    ...
+    AttributeError: ...
+
+  - If you try to access a hidden object before enabling the required exposure
+    level, an ``AttributeError`` is raised.
+
+
 Types of settings objects
 -------------------------
 

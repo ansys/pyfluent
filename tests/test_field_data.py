@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,11 +38,11 @@ from ansys.fluent.core import (
 )
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.field_data_interfaces import (
-    FieldUnavailable,
+from ansys.fluent.core.fields.field_data_interfaces import (
+    FieldUnavailableError,
     _Fields,
 )
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core.fields.live_field_data import (
     CellElementType,
     ZoneType,
 )
@@ -50,86 +51,6 @@ from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.units.variable_descriptor import VariableCatalog
 
 HOT_INLET_TEMPERATURE = 313.15
-
-
-def test_field_data_batches_deprecated_interface(new_solver_session) -> None:
-    solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.mesh.check()
-
-    solver.setup.models.energy.enabled = True
-    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
-    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
-
-    # Set up boundary conditions for CFD analysis
-    cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
-    cold_inlet.momentum.velocity = 0.4
-    cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-    cold_inlet.turbulence.turbulent_intensity = 0.05
-    cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
-    cold_inlet.thermal.t = 293.15
-
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-    hot_inlet.momentum.velocity = 1.2
-    hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-    hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
-    hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
-
-    solver.solution.monitor.residual.options.plot = False
-
-    # Initialize flow field
-    solver.solution.initialization.hybrid_initialize()
-
-    iterate = solver.solution.run_calculation.iterate
-    iterate.get_attr("arguments")
-    iterate(iter_count=10)
-
-    # Get field data object
-    field_data = solver.fields.field_data
-
-    batch = field_data.new_batch()
-
-    hot_inlet_surf_id = solver.fields.field_data.get_surface_ids(["hot-inlet"])[0]
-    batch.add_surfaces_request(
-        surfaces=[1, hot_inlet_surf_id],
-        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
-    )
-    batch.add_surfaces_request(
-        surfaces=[3],
-        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
-    )
-    batch.add_scalar_fields_request(
-        surfaces=[1, "cold-inlet", "hot-inlet"],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=True,
-    )
-    batch.add_scalar_fields_request(
-        surfaces=[2],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=False,
-    )
-    batch.add_pathlines_fields_request(
-        surfaces=[1, "hot-inlet"],
-        field_name="temperature",
-        provide_particle_time_field=True,
-    )
-
-    data = batch.get_fields()
-
-    assert len(data) == 4  # 2 sets of scalar data and 1 of surface and pathlines data.
-
-    # multiple surface *names* batches
-    batch2 = field_data.new_batch()
-    fields_request = batch2.add_scalar_fields_request
-    surface_names = field_data.surfaces.allowed_values()
-    fields_request(surfaces=surface_names, field_name="temperature")
-    data2 = batch2.get_fields()
-    assert data2
 
 
 def test_field_data_batches(new_solver_session) -> None:
@@ -349,118 +270,6 @@ def test_field_data_attributes(new_solver_session) -> None:
     assert not field_data.surfaces.validate(["hot-inlet", "inlet"])
 
 
-def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
-    solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
-
-    field_data = solver.fields.field_data
-
-    assert [] == field_data.scalar_fields.allowed_values()
-
-    solver.file.read(file_type="case", file_name=import_file_name)
-
-    allowed_args_no_init = field_data.scalar_fields.allowed_values()
-    assert len(allowed_args_no_init) != 0
-
-    assert not field_data.is_data_valid()
-
-    solver.solution.initialization.hybrid_initialize()
-
-    assert field_data.is_data_valid()
-
-    # Absolute Pressure data over the cold-inlet (surface_id=3)
-    abs_press_data = field_data.get_scalar_field_data(
-        field_name="absolute-pressure", surfaces=["cold-inlet"]
-    )
-
-    assert abs_press_data["cold-inlet"].shape == (241,)
-    assert abs_press_data["cold-inlet"][120] == 101325.0
-
-    vertices_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
-    )
-    assert vertices_data["cold-inlet"][SurfaceDataType.Vertices].shape == (241, 3)
-    assert (
-        round(float(vertices_data["cold-inlet"][SurfaceDataType.Vertices][5][0]), 2)
-        == -0.2
-    )
-
-    vertices_and_faces_centroid_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
-        surfaces=["hot-inlet", "cold-inlet"],
-    )
-    assert list(vertices_and_faces_centroid_data["cold-inlet"].keys()) == [
-        SurfaceDataType.Vertices,
-        SurfaceDataType.FacesCentroid,
-    ]
-    assert vertices_and_faces_centroid_data["hot-inlet"][
-        SurfaceDataType.Vertices
-    ].shape == (79, 3)
-    assert list(vertices_and_faces_centroid_data.keys()) == [
-        "hot-inlet",
-        "cold-inlet",
-    ]
-    assert (
-        round(
-            float(
-                vertices_and_faces_centroid_data["cold-inlet"][
-                    SurfaceDataType.FacesCentroid
-                ][5][1]
-            ),
-            2,
-        )
-        == -0.18
-    )
-    assert (
-        round(
-            float(
-                vertices_and_faces_centroid_data["hot-inlet"][
-                    SurfaceDataType.FacesCentroid
-                ][5][1]
-            ),
-            2,
-        )
-        == -0.23
-    )
-
-    faces_normal_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5]
-    )
-    assert faces_normal_data[3][SurfaceDataType.FacesNormal].shape == (152, 3)
-    assert faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
-
-    faces_connectivity_data_deprecated = field_data.get_surface_data(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
-    )
-    assert list(
-        faces_connectivity_data_deprecated["cold-inlet"][
-            SurfaceDataType.FacesConnectivity
-        ][5]
-    ) == [12, 13, 17, 16]
-
-    velocity_vector_data = field_data.get_vector_field_data(
-        field_name="velocity", surfaces=["cold-inlet"]
-    )
-
-    assert velocity_vector_data["cold-inlet"].shape == (152, 3)
-
-    path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity-magnitude", surfaces=["cold-inlet", "hot-inlet"]
-    )
-
-    assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
-    assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
-    assert path_lines_data["cold-inlet"]["velocity-magnitude"].shape == (76152,)
-
-    assert path_lines_data["hot-inlet"]["vertices"].shape == (27555, 3)
-    assert len(path_lines_data["hot-inlet"]["lines"]) == 27500
-    assert path_lines_data["hot-inlet"]["velocity-magnitude"].shape == (27555,)
-
-    assert list(path_lines_data["cold-inlet"]["lines"][100]) == [100, 101]
-
-
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -675,29 +484,29 @@ def test_field_data_errors(new_solver_session) -> None:
     )
 
     with pytest.raises(DisallowedValuesError):
-        solver.fields.field_data.get_scalar_field_data(
-            field_name="y-face-area", surfaces=[0]
+        solver.fields.field_data.get_field_data(
+            ScalarFieldDataRequest(field_name="y-face-area", surfaces=[0])
         )
 
     with pytest.raises(DisallowedValuesError):
-        solver.fields.field_data.get_scalar_field_data(
-            field_name="partition-neighbors", surfaces=[0]
+        solver.fields.field_data.get_field_data(
+            ScalarFieldDataRequest(field_name="partition-neighbors", surfaces=[0])
         )
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
-    with pytest.raises(FieldUnavailable):
-        solver.fields.field_data.get_scalar_field_data(
-            field_name="density", surfaces=[0]
+    with pytest.raises(FieldUnavailableError):
+        solver.fields.field_data.get_field_data(
+            ScalarFieldDataRequest(field_name="density", surfaces=[0])
         )
 
-    y_face_area = solver.fields.field_data.get_scalar_field_data(
-        field_name="y-face-area", surfaces=[0]
+    y_face_area = solver.fields.field_data.get_field_data(
+        ScalarFieldDataRequest(field_name="y-face-area", surfaces=[0])
     )
     assert y_face_area and isinstance(y_face_area, dict)
 
-    partition_neighbors = solver.fields.field_data.get_scalar_field_data(
-        field_name="partition-neighbors", surfaces=[0]
+    partition_neighbors = solver.fields.field_data.get_field_data(
+        ScalarFieldDataRequest(field_name="partition-neighbors", surfaces=[0])
     )
     assert partition_neighbors and isinstance(partition_neighbors, dict)
 
@@ -708,13 +517,13 @@ def test_field_data_errors(new_solver_session) -> None:
     assert solver.fields.field_data
 
     with pytest.raises(DisallowedValuesError):
-        solver.fields.field_data.get_scalar_field_data(
-            field_name="density", surfaces=["bob"]
+        solver.fields.field_data.get_field_data(
+            ScalarFieldDataRequest(field_name="density", surfaces=["bob"])
         )
 
     with pytest.raises(DisallowedValuesError):
-        solver.fields.field_data.get_scalar_field_data(
-            field_name="xdensity", surfaces=[0]
+        solver.fields.field_data.get_field_data(
+            ScalarFieldDataRequest(field_name="xdensity", surfaces=[0])
         )
 
 
@@ -1006,3 +815,46 @@ def test_field_data_objects_3d_with_location_objects_overall(
     assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
 
     assert list(path_lines_data["cold-inlet"].lines[100]) == [100, 101]
+
+
+def test_field_data_exceptions_using_variable_catalog(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+
+    field_data = solver.fields.field_data
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.solution.initialization.hybrid_initialize()
+    assert field_data.is_data_valid()
+
+    with pytest.raises(TypeError):
+        scalar_data_request = ScalarFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY, surfaces=["cold-inlet"]
+        )
+    scalar_data_request = ScalarFieldDataRequest(
+        field_name=VariableCatalog.ABSOLUTE_PRESSURE, surfaces=["cold-inlet"]
+    )
+    assert scalar_data_request
+
+    with pytest.raises(TypeError):
+        vector_data_request = VectorFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY_MAGNITUDE, surfaces=["cold-inlet"]
+        )
+    vector_data_request = VectorFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY, surfaces=["cold-inlet"]
+    )
+    assert vector_data_request
+
+    with pytest.raises(TypeError):
+        path_lines_data_request = PathlinesFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY,
+            surfaces=["cold-inlet", "hot-inlet"],
+            flatten_connectivity=True,
+        )
+    path_lines_data_request = PathlinesFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY_MAGNITUDE,
+        surfaces=["cold-inlet", "hot-inlet"],
+        flatten_connectivity=True,
+    )
+    assert path_lines_data_request

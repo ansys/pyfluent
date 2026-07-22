@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core import examples
+from ansys.fluent.core import VectorFieldDataRequest, examples
 from ansys.fluent.core.utils.execution import timeout_loop
 
 
@@ -96,7 +97,7 @@ def test_empty_vector_field_data_2339(new_solver_session):
 
     assert [
         a[0]
-        for a in solver.fields.field_data.get_vector_field_data(
-            field_name="velocity", surfaces=[1]
+        for a in solver.fields.field_data.get_field_data(
+            VectorFieldDataRequest(field_name="velocity", surfaces=[1])
         )[1]
     ][:5]

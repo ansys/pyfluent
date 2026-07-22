@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,7 +27,7 @@ import logging
 
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import warning_for_fluent_dev_version
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
+from ansys.fluent.core.services.text_interface import TUIMenu
 from ansys.fluent.core.utils import load_module
 
 _CODEGEN_MSG_TUI = (

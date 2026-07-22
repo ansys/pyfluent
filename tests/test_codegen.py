@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,8 +33,8 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen.api_tree import get_api_tree_file_name
 from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
-from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
@@ -107,7 +108,7 @@ def _get_expected_tui_api_output(mode):
 #
 # pylint: disable=line-too-long
 
-from ansys.fluent.core.services.datamodel_tui import PyMenu, TUIMenu, TUIMethod
+from ansys.fluent.core.services.text_interface import PyMenu, TUIMenu, TUIMethod
 
 
 
@@ -225,7 +226,7 @@ _expected_datamodel_api_output = '''#
 #
 # pylint: disable=line-too-long
 
-from ansys.fluent.core.services.datamodel_se import (
+from ansys.fluent.core.services.object_model import (
     PyMenu,
     PyParameter,
     PyTextual,

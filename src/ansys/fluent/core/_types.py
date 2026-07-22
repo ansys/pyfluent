@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,7 +20,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 
 """Common type aliases for PyFluent.
 
@@ -84,7 +84,7 @@ class LauncherArgsBase(TypedDict, total=False):
     """
     start_timeout: int
     """Maximum allowable time in seconds for connecting to the Fluent
-    server. The default is ``60`` if Fluent is launched outside a Slurm environment,
+    server. The default is ``100`` if Fluent is launched outside a Slurm environment,
     no timeout if Fluent is launched within a Slurm environment.
     """
     additional_arguments: str

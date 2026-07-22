@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -127,7 +128,7 @@ class _CacheImpl:
 def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str):
     """Check if a parameter is a dict type."""
     from ansys.fluent.core.module_config import config
-    from ansys.fluent.core.services.datamodel_se import (
+    from ansys.fluent.core.services.object_model import (
         PyDictionary,
         PyNamedObjectContainer,
         PyParameter,
@@ -138,7 +139,10 @@ def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str)
         module = load_module(
             rules, config.codegen_outdir / f"datamodel_{version.number}" / f"{rules}.py"
         )
-    except FileNotFoundError:  # no codegen or during codegen
+    except (
+        ImportError,
+        FileNotFoundError,
+    ):  # no codegen, during codegen or outdated codegen
         return False
     cls = module.Root
     comps = rules_path.split("/")

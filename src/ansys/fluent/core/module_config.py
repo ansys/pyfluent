@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,6 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 """Configuration variables for PyFluent."""
 from collections.abc import Callable
 import inspect
@@ -73,9 +75,9 @@ class _ConfigDescriptor(Generic[TConfig]):
 
 def _get_default_examples_path(instance: "Config") -> str:
     """Get the default examples path."""
-    parent_path = Path.home() / "Downloads"
-    parent_path.mkdir(exist_ok=True)
-    return str(parent_path / "ansys_fluent_core_examples")
+    default_path = Path.home() / "Downloads" / "ansys_fluent_core_examples"
+    default_path.mkdir(parents=True, exist_ok=True)
+    return str(default_path)
 
 
 class Config:
@@ -175,9 +177,9 @@ class Config:
         "WATCHDOG_EXCEPTION_ON_ERROR",
     )
 
-    #: Health check timeout in seconds, defaults to 60 seconds.
+    #: Health check timeout in seconds, defaults to 100 seconds.
     check_health_timeout = _ConfigDescriptor["Config"](
-        lambda instance: 60, "CHECK_HEALTH_TIMEOUT"
+        lambda instance: 100, "CHECK_HEALTH_TIMEOUT"
     )
 
     #: Whether to skip health check, defaults to True.
@@ -263,9 +265,9 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
     )
 
-    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 60 seconds.
+    #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_FLUENT_LAUNCH_TIMEOUT`` environment variable or 100 seconds.
     launch_fluent_timeout = _ConfigDescriptor["Config"](
-        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 60))
+        lambda instance: int(instance._env.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", 100))
     )
 
     #: Whether to show the Fluent GUI when launching the server, defaults to the value of ``PYFLUENT_SHOW_SERVER_GUI`` environment variable.

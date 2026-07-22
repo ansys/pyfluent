@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,11 +39,11 @@ import argparse
 import logging
 import os
 from pathlib import Path
-import pickle
 import platform
 import shutil
 import string
 import subprocess
+import tempfile
 from typing import Any
 import uuid
 
@@ -53,7 +54,7 @@ from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
-from ansys.fluent.core.services.datamodel_tui import (
+from ansys.fluent.core.services.text_interface import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
@@ -91,11 +92,10 @@ def _get_tui_docdir(mode: str):
     )
 
 
-_XML_HELP_FILE = (Path(__file__) / ".." / "data" / "fluent_gui_help.xml").resolve()
 _XML_HELPSTRINGS = {}
 
 
-def _copy_tui_help_xml_file(version: str):
+def _copy_tui_help_xml_file(version: str, xml_help_file: Path):
     if pyfluent.config.launch_fluent_container:
         image_tag = pyfluent.config.fluent_image_tag
         image_name = f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
@@ -107,7 +107,7 @@ def _copy_tui_help_xml_file(version: str):
         )
         xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
         subprocess.run(
-            f"docker cp {container_name}:{xml_source} {str(_XML_HELP_FILE)}",
+            f"docker cp {container_name}:{xml_source} {str(xml_help_file)}",
             shell=is_linux,
         )
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
@@ -127,18 +127,15 @@ def _copy_tui_help_xml_file(version: str):
                 / "fluent_gui_help.xml"
             )
             if xml_source.exists():
-                shutil.copy(str(xml_source), _XML_HELP_FILE)
+                shutil.copy(str(xml_source), str(xml_help_file))
             else:
                 logger.warning("fluent_gui_help.xml is not found.")
         except FileNotFoundError:
             logger.warning("fluent_gui_help.xml is not found.")
 
 
-def _populate_xml_helpstrings():
-    if not Path(_XML_HELP_FILE).exists():
-        return
-
-    tree = parse(_XML_HELP_FILE)
+def _populate_xml_helpstrings(xml_help_file: Path):
+    tree = parse(xml_help_file)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
@@ -156,7 +153,6 @@ def _populate_xml_helpstrings():
         else:
             v = "".join(node.find("p").itertext())
             _XML_HELPSTRINGS[k] = v
-    _XML_HELP_FILE.unlink(missing_ok=True)
 
 
 def _is_valid_tui_menu_name(name):
@@ -186,15 +182,6 @@ class _TUIMenu:
     def get_command_path(self, command: str) -> str:
         """Get the full path to a command."""
         return convert_path_to_grpc_path(self.path + [command])
-
-
-class _RenameModuleUnpickler(pickle.Unpickler):
-    def find_class(self, module, name):
-        renamed_module = module
-        if module == "tuigen":
-            renamed_module = "ansys.fluent.core.codegen.tuigen"
-
-        return super().find_class(renamed_module, name)
 
 
 class TUIGenerator:
@@ -307,7 +294,7 @@ class TUIGenerator:
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
-                "from ansys.fluent.core.services.datamodel_tui "
+                "from ansys.fluent.core.services.text_interface "
                 "import PyMenu, TUIMenu, TUIMethod\n\n\n"
             )
             self._main_menu.name = "main_menu"
@@ -323,8 +310,13 @@ def generate(version, static_infos: dict, verbose: bool = False):
         and StaticInfoType.TUI_SOLVER not in static_infos
     ):
         return api_tree
-    _copy_tui_help_xml_file(version)
-    _populate_xml_helpstrings()
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        xml_help_file = Path(temp_dir) / f"fluent_gui_help_{version}.xml"
+        _copy_tui_help_xml_file(version, xml_help_file)
+        if xml_help_file.exists():
+            _populate_xml_helpstrings(xml_help_file)
+
     if StaticInfoType.TUI_MESHING in static_infos:
         api_tree["<meshing_session>"] = TUIGenerator(
             "meshing", version, static_infos, verbose

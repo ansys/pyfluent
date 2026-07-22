@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -175,7 +176,7 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.is_active(),
+        session1.is_active,
         5.0,
         expected="truthy",
     )
@@ -201,7 +202,7 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.is_active(),
+        session1.is_active,
         5.0,
         expected="falsy",
     )

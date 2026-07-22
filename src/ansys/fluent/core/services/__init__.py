@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,178 +23,215 @@
 
 """Provides a module to create gRPC services."""
 
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesService as AppUtilitiesServiceV0,
+from functools import cached_property
+
+from ansys.fluent.core.services.application_runtime import (
+    ApplicationRuntime,
+    ApplicationRuntimeOld,
+    ApplicationRuntimeV252,
+    ApplicationRuntimeV261,
 )
-from ansys.fluent.core.services.app_utilities import AppUtilities as AppUtilitiesV0
-from ansys.fluent.core.services.app_utilities_v1 import (
-    AppUtilities,
-    AppUtilitiesService,
-)
-from ansys.fluent.core.services.batch_ops import BatchOps, BatchOpsService
-from ansys.fluent.core.services.datamodel_se import (
-    DatamodelService as DatamodelService_SE_V0,
-)
-from ansys.fluent.core.services.datamodel_se_v1 import (
-    DatamodelService as DatamodelService_SE,
-)
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI_V0,
-)
-from ansys.fluent.core.services.datamodel_tui_v1 import (
-    DatamodelService as DatamodelService_TUI,
-)
-from ansys.fluent.core.services.deprecated_field_data import (
-    DeprecatedFieldData as DeprecatedFieldDataV0,
-)
-from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
-from ansys.fluent.core.services.events import EventsService as EventsServiceV0
-from ansys.fluent.core.services.events_v1 import EventsService
+from ansys.fluent.core.services.events import Events, EventsV251, EventsV261
 from ansys.fluent.core.services.field_data import (
-    ZoneInfo,
+    FieldData,
+    FieldDataV251,
+    FieldDataV261,
 )
-from ansys.fluent.core.services.field_data import FieldDataService as FieldDataServiceV0
-from ansys.fluent.core.services.field_data import LiveFieldData as LiveFieldDataV0
-from ansys.fluent.core.services.field_data import _FieldInfo as _FieldInfoV0
-from ansys.fluent.core.services.field_data_v1 import (
-    FieldDataService,
-    LiveFieldData,
-    _FieldInfo,
-)
-from ansys.fluent.core.services.health_check import (
-    HealthCheckService as HealthCheckServiceV0,
-)
-from ansys.fluent.core.services.health_check_v1 import HealthCheckService
-from ansys.fluent.core.services.monitor import MonitorsService as MonitorsServiceV0
-from ansys.fluent.core.services.monitor_v1 import MonitorsService as MonitorsService
-from ansys.fluent.core.services.reduction import Reduction as ReductionV0
-from ansys.fluent.core.services.reduction_v1 import Reduction
-from ansys.fluent.core.services.scheme_eval import (
-    SchemeEvalService as SchemeEvalServiceV0,
-)
-from ansys.fluent.core.services.scheme_eval import SchemeEval as SchemeEvalV0
-from ansys.fluent.core.services.scheme_eval_v1 import SchemeEval, SchemeEvalService
-from ansys.fluent.core.services.settings import SettingsService as SettingsServiceV0
-from ansys.fluent.core.services.settings_v1 import SettingsService
+from ansys.fluent.core.services.health_check import HealthCheck
+from ansys.fluent.core.services.monitors import Monitor
+from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
+from ansys.fluent.core.services.reduction import Reduction
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
+from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
 from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableData as SolutionVariableDataV0,
-)
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableService as SolutionVariableServiceV0,
-)
-from ansys.fluent.core.services.solution_variables_v1 import (
     SolutionVariableData,
-    SolutionVariableService,
+    SolutionVariableInfo,
 )
-from ansys.fluent.core.services.transcript import (
-    TranscriptService as TranscriptServiceV0,
-)
-from ansys.fluent.core.services.transcript_v1 import TranscriptService
+from ansys.fluent.core.services.text_interface import TextInterface
+from ansys.fluent.core.services.transcript import Transcript
 from ansys.fluent.core.streaming_services.field_data_streaming import (
-    FieldDataStreaming as FieldDataStreamingV0,
-)
-from ansys.fluent.core.streaming_services.field_data_streaming_v1 import (
     FieldDataStreaming,
+    FieldDataStreamingV261,
 )
-
-__all__ = (
-    "AppUtilities",
-    "AppUtilitiesV0",
-    "AppUtilitiesService",
-    "AppUtilitiesServiceV0",
-    "BatchOpsService",
-    "BatchOps",
-    "DatamodelService_SE",
-    "DatamodelService_SE_V0",
-    "DatamodelService_TUI",
-    "DatamodelService_TUI_V0",
-    "DeprecatedFieldData",
-    "DeprecatedFieldDataV0",
-    "EventsService",
-    "EventsServiceV0",
-    "FieldDataService",
-    "FieldDataServiceV0",
-    "FieldDataStreaming",
-    "FieldDataStreamingV0",
-    "HealthCheckService",
-    "HealthCheckServiceV0",
-    "LiveFieldData",
-    "LiveFieldDataV0",
-    "MonitorsService",
-    "MonitorsServiceV0",
-    "Reduction",
-    "ReductionV0",
-    "SchemeEval",
-    "SchemeEvalService",
-    "SchemeEvalServiceV0",
-    "SchemeEvalV0",
-    "SettingsService",
-    "SettingsServiceV0",
-    "SolutionVariableData",
-    "SolutionVariableDataV0",
-    "SolutionVariableService",
-    "SolutionVariableServiceV0",
-    "TranscriptService",
-    "TranscriptServiceV0",
-    "_FieldInfo",
-    "_FieldInfoV0",
-    "ZoneInfo",
-    "service_creator",
-)
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-_service_cls_by_name_v0 = {
-    "app_utilities": AppUtilitiesV0,
-    "health_check": HealthCheckServiceV0,
-    "datamodel": DatamodelService_SE_V0,
-    "tui": DatamodelService_TUI_V0,
-    "settings": SettingsServiceV0,
-    "scheme_eval": SchemeEvalV0,
-    "events": EventsServiceV0,
-    "field_data": LiveFieldDataV0,
-    "field_data_old": DeprecatedFieldData,
-    "field_info": _FieldInfoV0,
-    "monitors": MonitorsServiceV0,
-    "reduction": ReductionV0,
-    "svar": SolutionVariableServiceV0,
-    "svar_data": SolutionVariableDataV0,
-    "transcript": TranscriptServiceV0,
-    "batch_ops": BatchOpsService,
-    "field_data_streaming": FieldDataStreamingV0,
-}
+class ServiceFactory:
+    """Wraps raw gRPC stubs from ``GRPCServiceFactory`` in version-appropriate high-level service objects.
 
-_service_cls_by_name = {
-    "app_utilities": AppUtilities,
-    "health_check": HealthCheckService,
-    "datamodel": DatamodelService_SE,
-    "tui": DatamodelService_TUI,
-    "settings": SettingsService,
-    "scheme_eval": SchemeEval,
-    "events": EventsService,
-    "field_data": LiveFieldData,
-    "field_data_old": DeprecatedFieldData,
-    "field_info": _FieldInfo,
-    "monitors": MonitorsService,
-    "reduction": Reduction,
-    "svar": SolutionVariableService,
-    "svar_data": SolutionVariableData,
-    "transcript": TranscriptService,
-    "batch_ops": BatchOpsService,
-    "field_data_streaming": FieldDataStreaming,
-}
+    Reads the connected server's ``product_version`` once and uses it to
+    select the correct concrete wrapper (e.g. ``Settings`` vs ``SettingsV261``)
+    for every service property.  All properties are ``cached_property``.
 
+    Parameters
+    ----------
+    service_factory : GRPCServiceFactory
+        Source of the underlying raw gRPC stubs.
+    product_version : FluentVersion, optional
+        Fluent product version.  Derived from ``service_factory.scheme_interpreter``
+        when omitted.
+    """
 
-# This class is swapped in Fluent Python Console
-class service_creator:
-    """A gRPC service creator."""
+    def __init__(self, service_factory, product_version: FluentVersion = None):
+        """Initialize ServiceFactory."""
+        self._service_factory = service_factory
+        self._product_version = product_version or FluentVersion(
+            self.scheme_interpreter.version
+        )
 
-    def __init__(self, service_name: str, supports_v1: bool | None = None):
-        """Initialize service_creator."""
-        if supports_v1:
-            self._service_cls = _service_cls_by_name[service_name]
+    @cached_property
+    def scheme_interpreter(self) -> SchemeInterpreter:
+        """Scheme expression evaluator."""
+        return SchemeInterpreter(self._service_factory.scheme_interpreter)
+
+    @cached_property
+    def application_runtime(self):
+        """Application runtime, version and session lifecycle service."""
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return ApplicationRuntime(self._service_factory.application_runtime)
+            case FluentVersion.v261:
+                return ApplicationRuntimeV261(
+                    self._service_factory.application_runtime,
+                    self._service_factory.scheme_interpreter,
+                )
+            case FluentVersion.v252:
+                return ApplicationRuntimeV252(
+                    self._service_factory.application_runtime,
+                    self._service_factory.scheme_interpreter,
+                )
+            case _:
+                return ApplicationRuntimeOld(self._service_factory.scheme_interpreter)
+
+    @cached_property
+    def health_check(self):
+        """Server health and readiness service."""
+        return HealthCheck(self._service_factory.health_check)
+
+    @cached_property
+    def reduction(self):
+        """Data-reduction service (forces, moments, etc.)."""
+        return Reduction(self._service_factory.reduction)
+
+    @cached_property
+    def settings(self):
+        """Solver settings service."""
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return Settings(self._service_factory.settings)
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return SettingsV261(
+                    self._service_factory.settings,
+                    self._service_factory.application_runtime,
+                    self._service_factory.scheme_interpreter,
+                )
+            case _:
+                return SettingsV251(
+                    self._service_factory.settings,
+                    self._service_factory.scheme_interpreter,
+                )
+
+    @cached_property
+    def field_data(self):
+        """Field data service."""
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return FieldData(
+                    self._service_factory.field_data,
+                    self._service_factory._chunk_parser(),
+                )
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return FieldDataV261(
+                    self._service_factory.field_data,
+                    self._service_factory._chunk_parser(),
+                    self._service_factory.application_runtime,
+                )
+            case _:
+                return FieldDataV251(
+                    self._service_factory.field_data,
+                    self._service_factory._chunk_parser(),
+                    self._service_factory.scheme_interpreter,
+                )
+
+    @cached_property
+    def field_data_streaming(self):
+        """Field data service."""
+        if self._product_version >= FluentVersion.v271:
+            return FieldDataStreaming(
+                self._service_factory.field_data,
+                self._service_factory._chunk_parser,
+            )
         else:
-            self._service_cls = _service_cls_by_name_v0[service_name]
+            return FieldDataStreamingV261(
+                self._service_factory.field_data,
+                self._service_factory._chunk_parser,
+            )
 
-    def create(self, *args, **kwargs):
-        """Create a gRPC service."""
-        return self._service_cls(*args, **kwargs)
+    @cached_property
+    def object_model(self):
+        """Object model service."""
+        if self._product_version >= FluentVersion.v271:
+            return ObjectModel(
+                self._service_factory.object_model,
+                self._service_factory.scheme_interpreter,
+            )
+        else:
+            return ObjectModelV261(
+                self._service_factory.object_model,
+                self._service_factory.scheme_interpreter,
+            )
+
+    @cached_property
+    def events(self):
+        """Events service."""
+        match self._product_version:
+            case v if v >= FluentVersion.v271:
+                return Events(
+                    self._service_factory.events,
+                )
+            case v if v >= FluentVersion.v252 and v < FluentVersion.v271:
+                return EventsV261(
+                    self._service_factory.events,
+                    self._service_factory.application_runtime,
+                )
+            case _:
+                return EventsV251(
+                    self._service_factory.events,
+                    self._service_factory.scheme_interpreter,
+                )
+
+    @cached_property
+    def transcript(self):
+        """Transcript service."""
+        return Transcript(self._service_factory.transcript)
+
+    @cached_property
+    def batch_ops(self):
+        """Batch operations service."""
+        return self._service_factory.batch_ops
+
+    @cached_property
+    def text_interface(self):
+        """Text interface service."""
+        return TextInterface(
+            self._service_factory.text_interface,
+            self._service_factory.application_runtime,
+            self._service_factory.scheme_interpreter,
+        )
+
+    @cached_property
+    def monitor(self):
+        """Monitor service."""
+        return Monitor(self._service_factory.monitor)
+
+    @cached_property
+    def solution_variable_info(self):
+        """Solution variable info service."""
+        return SolutionVariableInfo(self._service_factory.solution_variable)
+
+    @cached_property
+    def solution_variable_data(self):
+        """Solution variable data service."""
+        return SolutionVariableData(
+            self._service_factory.solution_variable, self.solution_variable_info
+        )

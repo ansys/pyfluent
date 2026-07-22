@@ -5,9 +5,9 @@ from time import time
 
 from ansys.fluent.core import FluentMode, FluentVersion, config, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen.api_tree import generate_api_data
 from ansys.fluent.core.codegen.print_fluent_version import print_fluent_version
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.search import _generate_api_data
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 if __name__ == "__main__":
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     t1 = time()
     print(f"\nTime to fetch static info: {t1 - t0:.2f} seconds")
     config.codegen_outdir.mkdir(parents=True, exist_ok=True)
-    print_fluent_version(solver._app_utilities)
+    print_fluent_version(solver.application_runtime)
     solver.exit()
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."
@@ -79,4 +79,4 @@ if __name__ == "__main__":
     allapigen.generate(version, static_infos, args.verbose)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
-    _generate_api_data(version=version)
+    generate_api_data(version=version)

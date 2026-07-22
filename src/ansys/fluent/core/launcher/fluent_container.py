@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -473,7 +474,7 @@ def configure_container_dict(
 def start_fluent_container(
     args: list[str],
     container_dict: dict | None = None,
-    start_timeout: int = 60,
+    start_timeout: int = 100,
     compose_config: ComposeConfig | None = None,
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
@@ -485,7 +486,7 @@ def start_fluent_container(
     container_dict : dict, optional
         Dictionary with Docker container configuration.
     start_timeout : int, optional
-        Timeout in seconds for the container to start. If not specified, it defaults to 60
+        Timeout in seconds for the container to start. If not specified, it defaults to 100
         seconds.
     compose_config : ComposeConfig, optional
         Configuration for Docker Compose, if using Docker Compose to launch the container.

@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,7 +33,7 @@ from ansys.fluent.core.logger import *
 
 # isort: on
 
-from ansys.fluent.core.field_data_interfaces import *
+from ansys.fluent.core.fields.field_data_interfaces import *
 from ansys.fluent.core.get_build_details import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
@@ -43,6 +44,7 @@ from ansys.fluent.core.services.batch_ops import *
 from ansys.fluent.core.session import *
 from ansys.fluent.core.session import BaseSession as Fluent
 from ansys.fluent.core.session_utilities import *
+from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
 from ansys.fluent.core.streaming_services.events_streaming import *
 from ansys.fluent.core.streaming_services.events_streaming_v1 import *
 from ansys.fluent.core.utils import *
@@ -50,7 +52,7 @@ from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
-__version__ = "0.40.dev0"
+__version__ = "0.41.dev1"
 
 _VERSION_INFO = None
 """

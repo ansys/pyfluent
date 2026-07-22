@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,8 +27,8 @@ from pathlib import Path
 
 import grpc
 
-from ansys.fluent.core.services.datamodel_se import (
-    DatamodelService,
+from ansys.fluent.core._grpc_service import ObjectModelService as DatamodelService
+from ansys.fluent.core.services.object_model import (
     PySimpleMenuGeneric,
 )
 from tests.run_stateengine_server import kill_server, run_server

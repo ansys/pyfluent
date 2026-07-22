@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,40 +35,15 @@ import weakref
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.fields.field_data_streaming import FieldDataStreaming
+from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.services import (
-    BatchOpsService,
-    DatamodelService_SE,
-    DatamodelService_SE_V0,
-    DatamodelService_TUI,
-    DatamodelService_TUI_V0,
-    DeprecatedFieldData,
-    DeprecatedFieldDataV0,
-    EventsService,
-    EventsServiceV0,
-    FieldDataService,
-    FieldDataServiceV0,
-    FieldDataStreamingV0,
-    LiveFieldData,
-    LiveFieldDataV0,
-    SchemeEval,
-    SettingsService,
-    SettingsServiceV0,
-    SolutionVariableData,
-    SolutionVariableService,
-    TranscriptService,
-    TranscriptServiceV0,
-    ZoneInfo,
-    _FieldInfo,
-    _FieldInfoV0,
-    service_creator,
-)
-from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents as DatamodelEventsV0,
 )
@@ -78,9 +54,6 @@ from ansys.fluent.core.streaming_services.events_streaming import (
     EventsManager as EventsManagerV0,
 )
 from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
-from ansys.fluent.core.streaming_services.field_data_streaming import (
-    FieldDataStreaming,
-)
 from ansys.fluent.core.streaming_services.transcript_streaming import (
     Transcript as TranscriptV0,
 )
@@ -117,28 +90,6 @@ def _parse_server_info_file(file_name: str):
         return ip, port, password
 
 
-class _IsDataValid:
-    def __init__(self, scheme_eval):
-        self._scheme_eval = scheme_eval
-
-    def __bool__(self):
-        return self()
-
-    def __call__(self):
-        return self._scheme_eval.scheme_eval("(data-valid?)")
-
-
-class _AppUtilitiesFactory:
-    """AppUtilities factory."""
-
-    @staticmethod
-    def _create_app_utilities(scheme_eval, fluent_connection):
-        if FluentVersion(scheme_eval.version) < FluentVersion.v252:
-            return AppUtilitiesOld(scheme_eval)
-        else:
-            return fluent_connection._connection_interface._app_utilities
-
-
 class BaseSession:
     """Encapsulates a Fluent session.
 
@@ -146,8 +97,8 @@ class BaseSession:
 
     Attributes
     ----------
-    scheme: SchemeEval
-        Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+    scheme: SchemeInterpreter
+        Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
 
     Methods
     -------
@@ -164,7 +115,7 @@ class BaseSession:
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
@@ -177,8 +128,8 @@ class BaseSession:
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
-        scheme_eval: SchemeEval
-            Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+        scheme_eval: SchemeInterpreter
+            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
@@ -215,7 +166,7 @@ class BaseSession:
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
@@ -232,40 +183,21 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = service_creator(
-            "transcript", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
+        self._transcript_service = fluent_connection._service_factory.transcript
         self.transcript = (
             Transcript if fluent_connection._server_supports_v1 else TranscriptV0
         )(self._transcript_service)
         if self._start_transcript:
             self.transcript.start()
 
-        self._app_utilities = _AppUtilitiesFactory._create_app_utilities(
-            self.scheme, self._fluent_connection
-        )
+        self.application_runtime = self._fluent_connection.application_runtime
 
-        self.journal = Journal(self._app_utilities)
+        self.journal = Journal(self.application_runtime)
 
-        self._datamodel_service_tui = service_creator(
-            "tui", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self._error_state,
-            self._app_utilities,
-            self.scheme,
-        )
+        self._datamodel_service_tui = fluent_connection._service_factory.text_interface
 
-        self._datamodel_service_se = service_creator(
-            "datamodel", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self.get_fluent_version(),
-            self._error_state,
-            self._file_transfer_service,
-        )
+        self._datamodel_service_se = fluent_connection._service_factory.object_model
+        self._datamodel_service_se.file_transfer_service = file_transfer_service
 
         self._datamodel_events = (
             DatamodelEvents(self._datamodel_service_se)
@@ -274,21 +206,16 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = service_creator(
-            "batch_ops", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
+        self._batch_ops_service = fluent_connection._service_factory.batch_ops
 
         if event_type:
-            events_service = service_creator(
-                "events", supports_v1=fluent_connection._server_supports_v1
-            ).create(fluent_connection._channel, fluent_connection._metadata)
+            events_service = fluent_connection._service_factory.events
             if fluent_connection._server_supports_v1:
                 self.events = EventsManager[event_type](
                     event_type,
                     events_service,
                     self._error_state,
                     weakref.proxy(self),
-                    server_supports_v1=True,
                 )
             else:
                 self.events = EventsManagerV0[event_type](
@@ -296,34 +223,18 @@ class BaseSession:
                     events_service,
                     self._error_state,
                     weakref.proxy(self),
-                    server_supports_v1=False,
                 )
             self.events.start()
         else:
             self.events = None
 
-        if fluent_connection._server_supports_v1:
-            self._field_data_service = self._fluent_connection.create_grpc_service(
-                FieldDataService, self._error_state
-            )
-        else:
-            self._field_data_service = self._fluent_connection.create_grpc_service(
-                FieldDataServiceV0, self._error_state
-            )
-
         self.fields = Fields(
-            self, get_zones_info, fluent_connection._server_supports_v1
+            _session=self,
+            get_zones_info=get_zones_info,
+            fluent_connection=fluent_connection,
         )
 
-        self._settings_service = service_creator(
-            "settings", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel,
-            fluent_connection._metadata,
-            self._app_utilities,
-            self.scheme,
-            self._error_state,
-        )
+        self._settings_service = fluent_connection._service_factory.settings
 
         self._health_check = fluent_connection._health_check
         self.connection_properties = fluent_connection.connection_properties
@@ -361,26 +272,6 @@ class BaseSession:
     def health_check(self):
         """Provides access to Health Check service."""
         return self._health_check
-
-    @property
-    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
-    def field_info(self):
-        """Provides access to Fluent field information."""
-        return self.fields.field_info
-
-    @property
-    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_data``.")
-    def field_data(self):
-        """Fluent field data on surfaces."""
-        return self.fields.field_data
-
-    @property
-    @deprecated(
-        version="0.20.dev9", reason="Use ``session.fields.field_data_streaming``."
-    )
-    def field_data_streaming(self):
-        """Field gRPC streaming service of Fluent."""
-        return self.fields.field_data_streaming
 
     @property
     def id(self) -> str:
@@ -447,7 +338,7 @@ class BaseSession:
         )
         session = cls(
             fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            scheme_eval=fluent_connection.scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
@@ -470,15 +361,15 @@ class BaseSession:
         if compose_config and compose_config.is_compose:
             container.stop()
 
-    def wait_process_finished(self, wait: float | int | bool = 60):
+    def wait_process_finished(self, wait: float | int | bool = 100):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
-        are still running when wait limit (default 60 seconds) is reached. Immediately
+        are still running when wait limit (default 100 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------
         wait : float, int or bool, optional
-            How long to wait for processes to finish before returning, by default 60 seconds.
+            How long to wait for processes to finish before returning, by default 100 seconds.
             Can also be set to ``True``, which will result in waiting indefinitely.
 
         Raises
@@ -576,7 +467,7 @@ class BaseSession:
         path : os.PathLike[str | bytes] | str | bytes
             Path of the directory to change.
         """
-        self._app_utilities.set_working_directory(os.fspath(path))
+        self.application_runtime.set_working_directory(os.fspath(path))
 
     def __enter__(self):
         return self
@@ -596,9 +487,6 @@ class BaseSession:
                 or name in {"is_active", "wait_process_finished"}
             ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
-            "field_data",
-            "field_info",
-            "field_data_streaming",
             "start_journal",
             "stop_journal",
             "scheme_eval",
@@ -607,11 +495,11 @@ class BaseSession:
 
     def enable_beta_features(self):
         """Enable access to Fluent beta-features"""
-        self._app_utilities.enable_beta()
+        self.application_runtime.enable_beta()
 
     @property
     def _is_beta_enabled(self):
-        return self._app_utilities.is_beta_enabled()
+        return self.application_runtime.is_beta_enabled()
 
 
 class Fields:
@@ -620,40 +508,16 @@ class Fields:
     def __init__(
         self,
         _session: BaseSession,
+        fluent_connection: FluentConnection,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
-        server_supports_v1: bool = False,
     ):
         """Initialize Fields."""
-        self._is_solution_data_valid = (
-            _session._app_utilities.is_solution_data_available
+        field_data = fluent_connection._service_factory.field_data
+        self._field_info = _FieldInfo(field_data)
+        self.field_data = LiveFieldData(
+            field_data, self._field_info, _session.scheme, get_zones_info
         )
-        self._field_info = service_creator(
-            "field_info", supports_v1=server_supports_v1
-        ).create(
-            _session._field_data_service,
-            self._is_solution_data_valid,
+        field_data_streaming = fluent_connection._service_factory.field_data_streaming
+        self.field_data_streaming = FieldDataStreaming(
+            _session._fluent_connection._id, field_data_streaming
         )
-        self.field_data = service_creator(
-            "field_data", supports_v1=server_supports_v1
-        ).create(
-            _session._field_data_service,
-            self._field_info,
-            self._is_solution_data_valid,
-            _session.scheme,
-            get_zones_info,
-        )
-        self.field_data_streaming = service_creator(
-            "field_data_streaming", supports_v1=server_supports_v1
-        ).create(_session._fluent_connection._id, _session._field_data_service)
-        self.field_data_old = service_creator("field_data_old").create(
-            _session._field_data_service,
-            self._field_info,
-            self._is_solution_data_valid,
-            _session.scheme,
-        )
-
-    @property
-    @deprecated(version="0.34.0", reason="Use relevant ``field_data`` methods..")
-    def field_info(self):
-        """Field Information."""
-        return self._field_info

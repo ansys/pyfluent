@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,28 +33,10 @@ from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
 from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services import MonitorsServiceV0, SchemeEval, service_creator
-from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
-from ansys.fluent.core.services.monitor_v1 import MonitorsService
-from ansys.fluent.core.services.reduction import Reduction as ReductionV0
-from ansys.fluent.core.services.reduction import ReductionService as ReductionServiceV0
-from ansys.fluent.core.services.reduction_v1 import Reduction, ReductionService
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableData as SolutionVariableDataV0,
-)
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableInfo as SolutionVariableInfoV0,
-)
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableService as SolutionVariableServiceV0,
-)
-from ansys.fluent.core.services.solution_variables_v1 import (
-    SolutionVariableData,
-    SolutionVariableInfo,
-    SolutionVariableService,
-)
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_shared import (
     _make_datamodel_module,
@@ -119,7 +102,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     def __init__(
         self,
         fluent_connection,
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
@@ -130,8 +113,8 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
-        scheme_eval: SchemeEval
-            Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+        scheme_eval: SchemeInterpreter
+            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
@@ -160,7 +143,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     def _build_from_fluent_connection(
         self,
         fluent_connection: "FluentConnection",
-        scheme_eval: SchemeEval,
+        scheme_eval: SchemeInterpreter,
         file_transfer_service: Any | None = None,
         launcher_args: dict[str, Any] | None = None,
     ):
@@ -172,35 +155,16 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self._fluent_version = None
         self._bg_session_threads = []
         self._launcher_args = launcher_args
-        self._solution_variable_service = service_creator(
-            "svar", supports_v1=fluent_connection._server_supports_v1
-        ).create(fluent_connection._channel, fluent_connection._metadata)
-        if fluent_connection._server_supports_v1:
-            self._reduction_service = fluent_connection.create_grpc_service(
-                ReductionService, self._error_state
-            )
-            self.fields.reduction = Reduction(self._reduction_service, self)
-            self.fields.solution_variable_info = SolutionVariableInfo(
-                self._solution_variable_service
-            )
-        else:
-            self._reduction_service = fluent_connection.create_grpc_service(
-                ReductionServiceV0, self._error_state
-            )
-            self.fields.reduction = ReductionV0(self._reduction_service, self)
-            self.fields.solution_variable_info = SolutionVariableInfoV0(
-                self._solution_variable_service
-            )
-
-        self.fields.solution_variable_data = self._solution_variable_data(
-            fluent_connection._server_supports_v1
+        self.fields.reduction = fluent_connection._service_factory.reduction
+        self.fields.reduction.set_context(self)
+        self.fields.solution_variable_info = (
+            fluent_connection._service_factory.solution_variable_info
+        )
+        self.fields.solution_variable_data = (
+            fluent_connection._service_factory.solution_variable_data
         )
 
-        monitors_service = service_creator(
-            "monitors", supports_v1=fluent_connection._server_supports_v1
-        ).create(
-            fluent_connection._channel, fluent_connection._metadata, self._error_state
-        )
+        monitors_service = fluent_connection._service_factory.monitor
         #: Manage Fluent's solution monitors.
         _MonitorsManager = (
             MonitorsManager
@@ -229,14 +193,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             weakref.WeakMethod(self._stop_bg_sessions), at_start=True
         )
 
-    def _solution_variable_data(
-        self, supports_v1: bool
-    ) -> SolutionVariableDataV0 | SolutionVariableData:
-        """Return the SolutionVariableData handle."""
-        return service_creator("svar_data", supports_v1=supports_v1).create(
-            self._solution_variable_service, self.fields.solution_variable_info
-        )
-
     @property
     def settings(self) -> "settings_root.root":
         """Settings root handle."""
@@ -250,24 +206,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 scheme_eval=self.scheme.eval,
             )
         return cast("settings_root.root", self._settings)
-
-    @property
-    def svar_data(self):
-        """``SolutionVariableData`` handle."""
-        warnings.warn(
-            "svar_data is deprecated. Use fields.solution_variable_data instead.",
-            PyFluentDeprecationWarning,
-        )
-        return self.fields.solution_variable_data
-
-    @property
-    def svar_info(self):
-        """``SolutionVariableInfo`` handle."""
-        warnings.warn(
-            "svar_info is deprecated. Use fields.solution_variable_info instead.",
-            PyFluentDeprecationWarning,
-        )
-        return self.fields.solution_variable_info
 
     def _get_zones_info(self) -> list[ZoneInfo]:
         zones_info = []
@@ -363,7 +301,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         state = self.settings.get_state()
         super()._build_from_fluent_connection(
             bg_session._fluent_connection,
-            bg_session._fluent_connection._connection_interface.scheme_eval,
+            bg_session._fluent_connection.scheme_eval,
             event_type=(
                 SolverEvent
                 if bg_session._fluent_connection._server_supports_v1
@@ -373,7 +311,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         )
         self._build_from_fluent_connection(
             bg_session._fluent_connection,
-            bg_session._fluent_connection._connection_interface.scheme_eval,
+            bg_session._fluent_connection.scheme_eval,
             launcher_args=launcher_args,
         )
         # TODO temporary fix till set_state at settings root is fixed

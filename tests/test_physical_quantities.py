@@ -1,5 +1,6 @@
-# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
+#
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -185,3 +186,37 @@ def test_quantity_dimensions_subscription():
     assert vel.name == "velocity"
     assert vel.dimension["TIME"] == -1.0
     assert vel.dimension["LENGTH"] == 1.0
+
+
+def test_field_data_exceptions_using_variable_catalog():
+    case_file_name = examples.download_file(
+        "mixing_elbow_mul_ph.cas.h5",
+        "pyfluent/file_session",
+        return_without_path=False,
+    )
+    data_file_name = examples.download_file(
+        "mixing_elbow_mul_ph.dat.h5",
+        "pyfluent/file_session",
+        return_without_path=False,
+    )
+    file_session = FileSession()
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
+
+    with pytest.raises(TypeError):
+        scalar_data_request = ScalarFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY, surfaces=["wall"]
+        )
+    scalar_data_request = ScalarFieldDataRequest(
+        field_name=VariableCatalog.TEMPERATURE, surfaces=["wall"]
+    )
+    assert scalar_data_request
+
+    with pytest.raises(TypeError):
+        vector_data_request = VectorFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY_MAGNITUDE, surfaces=["wall"]
+        )
+    vector_data_request = VectorFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY, surfaces=["wall"]
+    )
+    assert vector_data_request
