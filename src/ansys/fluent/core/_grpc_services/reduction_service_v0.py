@@ -24,8 +24,6 @@
 
 from typing import Any
 
-import grpc
-
 from ansys.api.fluent.v0 import reduction_pb2, reduction_pb2_grpc
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_variant_to_value,
@@ -35,12 +33,6 @@ from ansys.fluent.core._grpc_services.reduction_service import (
     _locns,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 from ansys.fluent.core.solver.function.reduction import Weight
 from ansys.fluent.core.variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
@@ -53,16 +45,11 @@ class ReductionService(ServiceProtocol):
     """Reduction gRPC service wrapper (v0 proto API)."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
     ):
         """Initialize ReductionService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = reduction_pb2_grpc.ReductionStub(intercept_channel)
         self._metadata = metadata
         self._to_str = naming_strategy().to_string

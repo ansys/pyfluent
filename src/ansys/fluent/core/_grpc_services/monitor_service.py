@@ -24,16 +24,10 @@
 """Wrapper over the monitor gRPC service of Fluent (v1 proto API)."""
 
 from google.protobuf.json_format import MessageToDict
-import grpc
 
 from ansys.api.fluent.v1 import monitor_pb2, monitor_pb2_grpc
 from ansys.fluent.core._grpc_services.streaming_service import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    TracingInterceptor,
-)
 
 # v1 MessageToDict produces camelCase keys for the renamed snake_case fields
 # (x_label → xLabel, y_label → yLabel, unit_info → unitInfo). Callers of
@@ -70,14 +64,8 @@ class MonitorService(
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the monitor gRPC service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
+    def __init__(self, intercept_channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of MonitorService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = monitor_pb2_grpc.MonitorStub(intercept_channel)
         self._metadata = metadata
         super().__init__(

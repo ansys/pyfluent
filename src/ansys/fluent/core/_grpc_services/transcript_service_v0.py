@@ -36,14 +36,15 @@ class TranscriptService(
     """Class wrapping the transcript gRPC service of Fluent."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
     ) -> None:
         """__init__ method of TranscriptService class."""
         super().__init__(
             stub=transcript_pb2_grpc.TranscriptStub(channel),
             metadata=metadata,
         )
-        del fluent_error_state  # unused in v0
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes events streaming."""

@@ -26,6 +26,7 @@ from enum import Enum
 from functools import cached_property
 
 from google.protobuf.descriptor_pool import DescriptorPool
+import grpc
 from grpc_reflection.v1alpha.proto_reflection_descriptor_database import (
     ProtoReflectionDescriptorDatabase,
 )
@@ -88,6 +89,12 @@ from ansys.fluent.core._grpc_services.transcript_service import TranscriptServic
 from ansys.fluent.core._grpc_services.transcript_service_v0 import (
     TranscriptService as TranscriptServiceV0,
 )
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    GrpcErrorInterceptor,
+    TracingInterceptor,
+)
 
 
 class ProtoVersion(Enum):
@@ -132,21 +139,9 @@ class GRPCServiceFactory:
 
     def __init__(self, channel, metadata, error_state=None):
         """Initialize GRPCServiceFactory."""
+        self._channel = channel
+        self._metadata = metadata
         self._error_state = error_state
-        self._service_kwargs = {
-            "channel": channel,
-            "metadata": metadata,
-            "fluent_error_state": error_state,
-        }
-        self._instantiated_services = {}
-
-    def _get_instantiated_grpc_service(self, grpc_service_class):
-        """Lazily instantiate and cache a gRPC service stub."""
-        if grpc_service_class not in self._instantiated_services:
-            self._instantiated_services[grpc_service_class] = grpc_service_class(
-                **self._service_kwargs
-            )
-        return self._instantiated_services[grpc_service_class]
 
     @cached_property
     def scheme_interpreter(self):
@@ -196,7 +191,13 @@ class GRPCServiceFactory:
     @cached_property
     def batch_ops(self) -> BatchOpsServiceV0:
         """gRPC stub for batch RPC operations (v0 only — no v1 implementation)."""
-        return self._get_instantiated_grpc_service(BatchOpsServiceV0)
+        return BatchOpsServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def transcript(self):
@@ -225,32 +226,86 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     @cached_property
     def scheme_interpreter(self) -> SchemeInterpreterService:
         """gRPC stub for Scheme expression evaluation."""
-        return self._get_instantiated_grpc_service(SchemeInterpreterService)
+        return SchemeInterpreterService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def application_runtime(self) -> ApplicationRuntimeService:
         """gRPC stub for application runtime and product version queries."""
-        return self._get_instantiated_grpc_service(ApplicationRuntimeService)
+        return ApplicationRuntimeService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def health_check(self) -> HealthCheckService:
         """gRPC stub for server health/readiness checks."""
-        return self._get_instantiated_grpc_service(HealthCheckService)
+        return HealthCheckService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def reduction(self) -> ReductionService:
         """gRPC stub for data-reduction operations (forces, moments, etc.)."""
-        return self._get_instantiated_grpc_service(ReductionService)
+        return ReductionService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def settings(self) -> SettingsService:
         """gRPC stub for reading and writing solver settings."""
-        return self._get_instantiated_grpc_service(SettingsService)
+        return SettingsService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def field_data(self) -> FieldDataService:
         """gRPC stub for field data operations."""
-        return self._get_instantiated_grpc_service(FieldDataService)
+        return FieldDataService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def _chunk_parser(self) -> type[ChunkParser]:
@@ -260,32 +315,71 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     @cached_property
     def object_model(self) -> ObjectModelService:
         """gRPC stub for object model operations."""
-        return self._get_instantiated_grpc_service(ObjectModelService)
+        return ObjectModelService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def events(self) -> EventsService:
         """gRPC stub for events operations."""
-        return self._get_instantiated_grpc_service(EventsService)
+        return EventsService(
+            channel=self._channel,
+            metadata=self._metadata,
+        )
 
     @cached_property
     def transcript(self) -> TranscriptService:
         """gRPC stub for transcript operations."""
-        return self._get_instantiated_grpc_service(TranscriptService)
+        return TranscriptService(
+            channel=self._channel,
+            metadata=self._metadata,
+        )
 
     @cached_property
     def text_interface(self) -> TextInterfaceService:
         """gRPC stub for text interface operations."""
-        return self._get_instantiated_grpc_service(TextInterfaceService)
+        return TextInterfaceService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def monitor(self) -> MonitorService:
         """gRPC stub for monitor operations."""
-        return self._get_instantiated_grpc_service(MonitorService)
+        return MonitorService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def solution_variable(self) -> SolutionVariableService:
         """gRPC stub for solution variable operations."""
-        return self._get_instantiated_grpc_service(SolutionVariableService)
+        return SolutionVariableService(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                TracingInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
 
 class GRPCServiceFactoryV0(GRPCServiceFactory):
@@ -294,32 +388,86 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     @cached_property
     def scheme_interpreter(self) -> SchemeInterpreterServiceV0:
         """gRPC stub for Scheme expression evaluation."""
-        return self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
+        return SchemeInterpreterServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def application_runtime(self) -> ApplicationRuntimeServiceV0:
         """gRPC stub for application runtime and product version queries."""
-        return self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0)
+        return ApplicationRuntimeServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def health_check(self) -> HealthCheckServiceV0:
         """gRPC stub for server health/readiness checks."""
-        return self._get_instantiated_grpc_service(HealthCheckServiceV0)
+        return HealthCheckServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def reduction(self) -> ReductionServiceV0:
         """gRPC stub for data-reduction operations (forces, moments, etc.)."""
-        return self._get_instantiated_grpc_service(ReductionServiceV0)
+        return ReductionServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def settings(self) -> SettingsServiceV0:
         """gRPC stub for reading and writing solver settings."""
-        return self._get_instantiated_grpc_service(SettingsServiceV0)
+        return SettingsServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def field_data(self) -> FieldDataServiceV0:
         """gRPC stub for field data operations."""
-        return self._get_instantiated_grpc_service(FieldDataServiceV0)
+        return FieldDataServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def _chunk_parser(self) -> type[ChunkParserV0]:
@@ -329,32 +477,71 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     @cached_property
     def object_model(self) -> ObjectModelServiceV0:
         """gRPC stub for object model operations."""
-        return self._get_instantiated_grpc_service(ObjectModelServiceV0)
+        return ObjectModelServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def events(self) -> EventsServiceV0:
         """gRPC stub for events operations."""
-        return self._get_instantiated_grpc_service(EventsServiceV0)
+        return EventsServiceV0(
+            channel=self._channel,
+            metadata=self._metadata,
+        )
 
     @cached_property
     def transcript(self) -> TranscriptServiceV0:
         """gRPC stub for transcript operations."""
-        return self._get_instantiated_grpc_service(TranscriptServiceV0)
+        return TranscriptServiceV0(
+            channel=self._channel,
+            metadata=self._metadata,
+        )
 
     @cached_property
     def text_interface(self) -> TextInterfaceServiceV0:
         """gRPC stub for text interface operations."""
-        return self._get_instantiated_grpc_service(TextInterfaceServiceV0)
+        return TextInterfaceServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def monitor(self) -> MonitorServiceV0:
         """gRPC stub for monitor operations."""
-        return self._get_instantiated_grpc_service(MonitorServiceV0)
+        return MonitorServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                ErrorStateInterceptor(self._error_state),
+                TracingInterceptor(),
+                BatchInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
     @cached_property
     def solution_variable(self) -> SolutionVariableServiceV0:
         """gRPC stub for solution variable operations."""
-        return self._get_instantiated_grpc_service(SolutionVariableServiceV0)
+        return SolutionVariableServiceV0(
+            intercept_channel=grpc.intercept_channel(
+                self._channel,
+                GrpcErrorInterceptor(),
+                TracingInterceptor(),
+            ),
+            metadata=self._metadata,
+        )
 
 
 def create_grpc_service_factory(

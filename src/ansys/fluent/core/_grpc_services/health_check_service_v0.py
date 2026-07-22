@@ -31,12 +31,6 @@ from grpc_health.v1 import health_pb2, health_pb2_grpc
 
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 logger: logging.Logger = logging.getLogger("pyfluent.general")
 
@@ -51,19 +45,14 @@ class HealthCheckService(ServiceProtocol):
         NOT_SERVING: int = 2
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
     ) -> None:
         """Initialize HealthCheckService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = health_pb2_grpc.HealthStub(intercept_channel)
         self._metadata = metadata
-        self._channel = channel
+        self._channel = intercept_channel
 
     def _create_health_check_request(self):
         """Create a health-check request. Override in subclasses for different proto modules."""

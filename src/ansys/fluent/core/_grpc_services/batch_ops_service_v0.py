@@ -28,12 +28,9 @@ import logging
 import sys
 from types import ModuleType
 
-import grpc
-
 import ansys.api.fluent.v0 as api
 from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import GrpcErrorInterceptor
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
@@ -46,16 +43,10 @@ class BatchOpsService(ServiceProtocol):
 
     def __init__(
         self,
-        channel: grpc.Channel,
+        intercept_channel,
         metadata: list[tuple[str, str]],
-        fluent_error_state=None,
     ) -> None:
         """__init__ method of BatchOpsService class."""
-        del fluent_error_state  # unused
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-        )
         self._stub = batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
         self._metadata = metadata
         self._proto_files: list[ModuleType] | None = None

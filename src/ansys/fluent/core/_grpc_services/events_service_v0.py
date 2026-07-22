@@ -41,14 +41,15 @@ class EventsService(
     """Class wrapping the events gRPC service of Fluent."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
     ):
         """__init__ method of EventsService class."""
         super().__init__(
             stub=events_pb2_grpc.EventsStub(channel),
             metadata=metadata,
         )
-        del fluent_error_state  # unused in v0
 
     def event_from_proto_field(self, field_name: str) -> str:
         """Convert a v0 proto oneof field name to canonical event enum value."""

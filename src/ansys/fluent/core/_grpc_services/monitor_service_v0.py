@@ -41,14 +41,12 @@ class MonitorService(
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the monitor gRPC service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
+    def __init__(
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
+    ) -> None:
         """__init__ method of MonitorService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = monitor_pb2_grpc.MonitorStub(intercept_channel)
         self._metadata = metadata
         super().__init__(

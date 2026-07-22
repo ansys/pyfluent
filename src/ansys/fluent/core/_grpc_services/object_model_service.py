@@ -38,12 +38,6 @@ from ansys.fluent.core.services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 from ansys.fluent.core.services.object_model_utilities import (
     convert_path_to_se_path,
     convert_se_path_to_path,
@@ -193,18 +187,10 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def __init__(
         self,
-        channel: grpc.Channel,
+        intercept_channel,
         metadata: list[tuple[str, str]],
-        fluent_error_state,
     ) -> None:
         """__init__ method of DatamodelService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         super().__init__(
             stub=object_model_pb2_grpc.ObjectModelStub(intercept_channel),
             metadata=metadata,
