@@ -142,6 +142,13 @@ class GRPCServiceFactory:
         self._channel = channel
         self._metadata = metadata
         self._error_state = error_state
+        self._intercept_channel = grpc.intercept_channel(
+            self._channel,
+            GrpcErrorInterceptor(),
+            ErrorStateInterceptor(self._error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
+        )
 
     @cached_property
     def scheme_interpreter(self):
@@ -227,13 +234,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def scheme_interpreter(self) -> SchemeInterpreterService:
         """gRPC stub for Scheme expression evaluation."""
         return SchemeInterpreterService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -241,13 +242,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def application_runtime(self) -> ApplicationRuntimeService:
         """gRPC stub for application runtime and product version queries."""
         return ApplicationRuntimeService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -255,13 +250,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def health_check(self) -> HealthCheckService:
         """gRPC stub for server health/readiness checks."""
         return HealthCheckService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -269,13 +258,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def reduction(self) -> ReductionService:
         """gRPC stub for data-reduction operations (forces, moments, etc.)."""
         return ReductionService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -283,13 +266,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def settings(self) -> SettingsService:
         """gRPC stub for reading and writing solver settings."""
         return SettingsService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -297,13 +274,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def field_data(self) -> FieldDataService:
         """gRPC stub for field data operations."""
         return FieldDataService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -316,13 +287,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def object_model(self) -> ObjectModelService:
         """gRPC stub for object model operations."""
         return ObjectModelService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -346,13 +311,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def text_interface(self) -> TextInterfaceService:
         """gRPC stub for text interface operations."""
         return TextInterfaceService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -360,12 +319,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def monitor(self) -> MonitorService:
         """gRPC stub for monitor operations."""
         return MonitorService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -373,11 +327,7 @@ class GRPCServiceFactoryV1(GRPCServiceFactory):
     def solution_variable(self) -> SolutionVariableService:
         """gRPC stub for solution variable operations."""
         return SolutionVariableService(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                TracingInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -389,13 +339,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def scheme_interpreter(self) -> SchemeInterpreterServiceV0:
         """gRPC stub for Scheme expression evaluation."""
         return SchemeInterpreterServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -403,13 +347,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def application_runtime(self) -> ApplicationRuntimeServiceV0:
         """gRPC stub for application runtime and product version queries."""
         return ApplicationRuntimeServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -417,13 +355,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def health_check(self) -> HealthCheckServiceV0:
         """gRPC stub for server health/readiness checks."""
         return HealthCheckServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -431,13 +363,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def reduction(self) -> ReductionServiceV0:
         """gRPC stub for data-reduction operations (forces, moments, etc.)."""
         return ReductionServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -445,13 +371,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def settings(self) -> SettingsServiceV0:
         """gRPC stub for reading and writing solver settings."""
         return SettingsServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -459,13 +379,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def field_data(self) -> FieldDataServiceV0:
         """gRPC stub for field data operations."""
         return FieldDataServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -478,13 +392,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def object_model(self) -> ObjectModelServiceV0:
         """gRPC stub for object model operations."""
         return ObjectModelServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -508,13 +416,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def text_interface(self) -> TextInterfaceServiceV0:
         """gRPC stub for text interface operations."""
         return TextInterfaceServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -522,12 +424,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def monitor(self) -> MonitorServiceV0:
         """gRPC stub for monitor operations."""
         return MonitorServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                ErrorStateInterceptor(self._error_state),
-                TracingInterceptor(),
-                BatchInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
@@ -535,11 +432,7 @@ class GRPCServiceFactoryV0(GRPCServiceFactory):
     def solution_variable(self) -> SolutionVariableServiceV0:
         """gRPC stub for solution variable operations."""
         return SolutionVariableServiceV0(
-            intercept_channel=grpc.intercept_channel(
-                self._channel,
-                GrpcErrorInterceptor(),
-                TracingInterceptor(),
-            ),
+            intercept_channel=self._intercept_channel,
             metadata=self._metadata,
         )
 
