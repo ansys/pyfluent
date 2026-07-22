@@ -22,6 +22,7 @@
 
 """Low-level gRPC service stubs and factory for Fluent server communication."""
 
+from enum import Enum
 from functools import cached_property
 
 from google.protobuf.descriptor_pool import DescriptorPool
@@ -89,6 +90,13 @@ from ansys.fluent.core._grpc_services.transcript_service_v0 import (
 )
 
 
+class ProtoVersion(Enum):
+    """Enum for gRPC proto versions."""
+
+    V0 = "v0"
+    V1 = "v1"
+
+
 def _server_supports_v1(channel) -> bool:
     try:
         reflection_db = ProtoReflectionDescriptorDatabase(channel)
@@ -106,11 +114,11 @@ def _server_supports_v1(channel) -> bool:
 
 
 class GRPCServiceFactory:
-    """Lazily instantiates and caches raw gRPC service stubs for a Fluent server.
+    """Abstract base factory for raw gRPC service stubs.
 
-    Selects between v1 and v0 proto stubs based on what the server advertises
-    via gRPC reflection.  Each property returns the underlying gRPC stub object
-    directly — higher-level wrapping is left to callers.
+    Concrete subclasses select the right stub class for a particular proto
+    version.  Each property returns a lazily-instantiated stub object directly;
+    higher-level wrapping is left to callers.
 
     Parameters
     ----------
@@ -120,39 +128,20 @@ class GRPCServiceFactory:
         gRPC call metadata (e.g. authentication credentials).
     error_state : object, optional
         Shared error-state object forwarded to interceptors.
-    proto_version : str, optional
-        Override proto version (``"v1"`` or ``"v0"``).  Auto-detected from
-        the server when omitted.
     """
 
-    def __init__(
-        self,
-        channel,
-        metadata,
-        error_state=None,
-        proto_version=None,
-    ):
+    def __init__(self, channel, metadata, error_state=None):
         """Initialize GRPCServiceFactory."""
-        self._channel = channel
-        self._metadata = metadata
         self._error_state = error_state
         self._service_kwargs = {
-            "channel": self._channel,
-            "metadata": self._metadata,
-            "fluent_error_state": self._error_state,
+            "channel": channel,
+            "metadata": metadata,
+            "fluent_error_state": error_state,
         }
         self._instantiated_services = {}
-        self._proto_version = proto_version or self._detect_proto_version()
-
-    def _detect_proto_version(self) -> str:
-        """Determines the version using fallback detection logic."""
-        if _server_supports_v1(channel=self._channel):
-            return "v1"
-        else:
-            return "v0"
 
     def _get_instantiated_grpc_service(self, grpc_service_class):
-        """Generic lookup method that instantiates services lazily and caches them."""
+        """Lazily instantiate and cache a gRPC service stub."""
         if grpc_service_class not in self._instantiated_services:
             self._instantiated_services[grpc_service_class] = grpc_service_class(
                 **self._service_kwargs
@@ -160,85 +149,49 @@ class GRPCServiceFactory:
         return self._instantiated_services[grpc_service_class]
 
     @cached_property
-    def scheme_interpreter(
-        self,
-    ) -> SchemeInterpreterService | SchemeInterpreterServiceV0:
+    def scheme_interpreter(self):
         """gRPC stub for Scheme expression evaluation."""
-        return (
-            self._get_instantiated_grpc_service(SchemeInterpreterService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def application_runtime(
-        self,
-    ) -> ApplicationRuntimeService | ApplicationRuntimeServiceV0:
+    def application_runtime(self):
         """gRPC stub for application runtime and product version queries."""
-        return (
-            self._get_instantiated_grpc_service(ApplicationRuntimeService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def health_check(self) -> HealthCheckService | HealthCheckServiceV0:
+    def health_check(self):
         """gRPC stub for server health/readiness checks."""
-        return (
-            self._get_instantiated_grpc_service(HealthCheckService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(HealthCheckServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def reduction(self) -> ReductionService | ReductionServiceV0:
+    def reduction(self):
         """gRPC stub for data-reduction operations (forces, moments, etc.)."""
-        return (
-            self._get_instantiated_grpc_service(ReductionService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(ReductionServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def settings(self) -> SettingsService | SettingsServiceV0:
+    def settings(self):
         """gRPC stub for reading and writing solver settings."""
-        return (
-            self._get_instantiated_grpc_service(SettingsService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(SettingsServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def field_data(self) -> FieldDataService | FieldDataServiceV0:
+    def field_data(self):
         """gRPC stub for field data operations."""
-        return (
-            self._get_instantiated_grpc_service(FieldDataService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(FieldDataServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def _chunk_parser(self) -> ChunkParser | ChunkParserV0:
-        """Chunk parser for field data operations."""
-        return ChunkParser if self._proto_version == "v1" else ChunkParserV0
+    def _chunk_parser(self):
+        """Chunk parser class for field data operations."""
+        raise NotImplementedError
 
     @cached_property
-    def object_model(self) -> ObjectModelService | ObjectModelServiceV0:
+    def object_model(self):
         """gRPC stub for object model operations."""
-        return (
-            self._get_instantiated_grpc_service(ObjectModelService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(ObjectModelServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def events(self) -> EventsService | EventsServiceV0:
+    def events(self):
         """gRPC stub for events operations."""
-        return (
-            self._get_instantiated_grpc_service(EventsService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(EventsServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
     def batch_ops(self) -> BatchOpsServiceV0:
@@ -246,37 +199,186 @@ class GRPCServiceFactory:
         return self._get_instantiated_grpc_service(BatchOpsServiceV0)
 
     @cached_property
-    def transcript(self) -> TranscriptService | TranscriptServiceV0:
+    def transcript(self):
         """gRPC stub for transcript operations."""
-        return (
-            self._get_instantiated_grpc_service(TranscriptService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(TranscriptServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def text_interface(self) -> TextInterfaceService | TextInterfaceServiceV0:
+    def text_interface(self):
         """gRPC stub for text interface operations."""
-        return (
-            self._get_instantiated_grpc_service(TextInterfaceService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(TextInterfaceServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def monitor(self) -> MonitorService | MonitorServiceV0:
+    def monitor(self):
         """gRPC stub for monitor operations."""
-        return (
-            self._get_instantiated_grpc_service(MonitorService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(MonitorServiceV0)
-        )
+        raise NotImplementedError
 
     @cached_property
-    def solution_variable(self) -> SolutionVariableService | SolutionVariableServiceV0:
+    def solution_variable(self):
         """gRPC stub for solution variable operations."""
-        return (
-            self._get_instantiated_grpc_service(SolutionVariableService)
-            if self._proto_version == "v1"
-            else self._get_instantiated_grpc_service(SolutionVariableServiceV0)
-        )
+        raise NotImplementedError
+
+
+class GRPCServiceFactoryV1(GRPCServiceFactory):
+    """Factory for v1 proto (Fluent >= 27R1) gRPC service stubs."""
+
+    @cached_property
+    def scheme_interpreter(self) -> SchemeInterpreterService:
+        """gRPC stub for Scheme expression evaluation."""
+        return self._get_instantiated_grpc_service(SchemeInterpreterService)
+
+    @cached_property
+    def application_runtime(self) -> ApplicationRuntimeService:
+        """gRPC stub for application runtime and product version queries."""
+        return self._get_instantiated_grpc_service(ApplicationRuntimeService)
+
+    @cached_property
+    def health_check(self) -> HealthCheckService:
+        """gRPC stub for server health/readiness checks."""
+        return self._get_instantiated_grpc_service(HealthCheckService)
+
+    @cached_property
+    def reduction(self) -> ReductionService:
+        """gRPC stub for data-reduction operations (forces, moments, etc.)."""
+        return self._get_instantiated_grpc_service(ReductionService)
+
+    @cached_property
+    def settings(self) -> SettingsService:
+        """gRPC stub for reading and writing solver settings."""
+        return self._get_instantiated_grpc_service(SettingsService)
+
+    @cached_property
+    def field_data(self) -> FieldDataService:
+        """gRPC stub for field data operations."""
+        return self._get_instantiated_grpc_service(FieldDataService)
+
+    @cached_property
+    def _chunk_parser(self) -> type[ChunkParser]:
+        """Chunk parser class for field data operations."""
+        return ChunkParser
+
+    @cached_property
+    def object_model(self) -> ObjectModelService:
+        """gRPC stub for object model operations."""
+        return self._get_instantiated_grpc_service(ObjectModelService)
+
+    @cached_property
+    def events(self) -> EventsService:
+        """gRPC stub for events operations."""
+        return self._get_instantiated_grpc_service(EventsService)
+
+    @cached_property
+    def transcript(self) -> TranscriptService:
+        """gRPC stub for transcript operations."""
+        return self._get_instantiated_grpc_service(TranscriptService)
+
+    @cached_property
+    def text_interface(self) -> TextInterfaceService:
+        """gRPC stub for text interface operations."""
+        return self._get_instantiated_grpc_service(TextInterfaceService)
+
+    @cached_property
+    def monitor(self) -> MonitorService:
+        """gRPC stub for monitor operations."""
+        return self._get_instantiated_grpc_service(MonitorService)
+
+    @cached_property
+    def solution_variable(self) -> SolutionVariableService:
+        """gRPC stub for solution variable operations."""
+        return self._get_instantiated_grpc_service(SolutionVariableService)
+
+
+class GRPCServiceFactoryV0(GRPCServiceFactory):
+    """Factory for v0 proto (Fluent < 27R1) gRPC service stubs."""
+
+    @cached_property
+    def scheme_interpreter(self) -> SchemeInterpreterServiceV0:
+        """gRPC stub for Scheme expression evaluation."""
+        return self._get_instantiated_grpc_service(SchemeInterpreterServiceV0)
+
+    @cached_property
+    def application_runtime(self) -> ApplicationRuntimeServiceV0:
+        """gRPC stub for application runtime and product version queries."""
+        return self._get_instantiated_grpc_service(ApplicationRuntimeServiceV0)
+
+    @cached_property
+    def health_check(self) -> HealthCheckServiceV0:
+        """gRPC stub for server health/readiness checks."""
+        return self._get_instantiated_grpc_service(HealthCheckServiceV0)
+
+    @cached_property
+    def reduction(self) -> ReductionServiceV0:
+        """gRPC stub for data-reduction operations (forces, moments, etc.)."""
+        return self._get_instantiated_grpc_service(ReductionServiceV0)
+
+    @cached_property
+    def settings(self) -> SettingsServiceV0:
+        """gRPC stub for reading and writing solver settings."""
+        return self._get_instantiated_grpc_service(SettingsServiceV0)
+
+    @cached_property
+    def field_data(self) -> FieldDataServiceV0:
+        """gRPC stub for field data operations."""
+        return self._get_instantiated_grpc_service(FieldDataServiceV0)
+
+    @cached_property
+    def _chunk_parser(self) -> type[ChunkParserV0]:
+        """Chunk parser class for field data operations."""
+        return ChunkParserV0
+
+    @cached_property
+    def object_model(self) -> ObjectModelServiceV0:
+        """gRPC stub for object model operations."""
+        return self._get_instantiated_grpc_service(ObjectModelServiceV0)
+
+    @cached_property
+    def events(self) -> EventsServiceV0:
+        """gRPC stub for events operations."""
+        return self._get_instantiated_grpc_service(EventsServiceV0)
+
+    @cached_property
+    def transcript(self) -> TranscriptServiceV0:
+        """gRPC stub for transcript operations."""
+        return self._get_instantiated_grpc_service(TranscriptServiceV0)
+
+    @cached_property
+    def text_interface(self) -> TextInterfaceServiceV0:
+        """gRPC stub for text interface operations."""
+        return self._get_instantiated_grpc_service(TextInterfaceServiceV0)
+
+    @cached_property
+    def monitor(self) -> MonitorServiceV0:
+        """gRPC stub for monitor operations."""
+        return self._get_instantiated_grpc_service(MonitorServiceV0)
+
+    @cached_property
+    def solution_variable(self) -> SolutionVariableServiceV0:
+        """gRPC stub for solution variable operations."""
+        return self._get_instantiated_grpc_service(SolutionVariableServiceV0)
+
+
+def create_grpc_service_factory(
+    channel,
+    metadata,
+    error_state=None,
+    proto_version: ProtoVersion | str = None,
+) -> GRPCServiceFactory:
+    """Return the correct :class:`GRPCServiceFactory` subclass for *channel*.
+
+    Parameters
+    ----------
+    channel : grpc.Channel
+        Active gRPC channel to the Fluent server.
+    metadata : list[tuple[str, str]]
+        gRPC call metadata.
+    error_state : object, optional
+        Shared error-state object forwarded to interceptors.
+    proto_version : ProtoVersion | str, optional
+        ``ProtoVersion.V1``/``"v1"`` or ``ProtoVersion.V0``/``"v0"``.
+        Auto-detected via gRPC reflection when omitted.
+    """
+    version = proto_version or (
+        ProtoVersion.V1 if _server_supports_v1(channel) else ProtoVersion.V0
+    )
+    cls = GRPCServiceFactoryV1 if version == ProtoVersion.V1 else GRPCServiceFactoryV0
+    return cls(channel, metadata, error_state)

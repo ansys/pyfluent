@@ -44,7 +44,7 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
-from ansys.fluent.core._grpc_services import GRPCServiceFactory
+from ansys.fluent.core._grpc_services import create_grpc_service_factory
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -54,7 +54,7 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
-from ansys.fluent.core.services import ServiceFactory
+from ansys.fluent.core.services import create_service_factory
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
@@ -561,8 +561,8 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self._service_factory = ServiceFactory(
-            service_factory=GRPCServiceFactory(
+        self._service_factory = create_service_factory(
+            service_factory=create_grpc_service_factory(
                 channel=self._channel,
                 metadata=self._metadata,
                 error_state=self._error_state,
