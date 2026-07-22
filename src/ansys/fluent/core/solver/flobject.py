@@ -895,8 +895,12 @@ class Textual(Property):
         """
         # Expression-object support: convert an Expr-like input to its
         # Fluent-side string form when this leaf is a recognised
-        # expression-definition slot.
-        if _matches_expression_definition_path(self):
+        # expression-definition slot.  Duck-type check first: it's a cheap
+        # getattr that short-circuits the parent-walk in the path match for
+        # the ~all case where ``state`` is a plain value.
+        if hasattr(state, "__fluent_expr__") and _matches_expression_definition_path(
+            self
+        ):
             rendered = _try_render_expression(state)
             if rendered is not None:
                 return self.base_set_state(state=rendered, **kwargs)
