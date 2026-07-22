@@ -365,7 +365,11 @@ def create_service_factory(
         when omitted.
     """
     version = product_version or FluentVersion(
-        service_factory.scheme_interpreter.version
+        ".".join(
+            service_factory.scheme_interpreter.string_eval("(cx-version)")
+            .strip("()")
+            .split()
+        )
     )
     if version >= FluentVersion.v271:
         return ServiceFactoryV271(service_factory)
