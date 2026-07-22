@@ -42,7 +42,7 @@ Example
 from __future__ import annotations
 
 import collections
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
@@ -67,6 +67,7 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
+    overload,
 )
 import warnings
 import weakref
@@ -1476,7 +1477,7 @@ class NamedObjectWildcardPath(WildcardPath):
         self[name].set_state(value)
 
 
-ChildTypeT = TypeVar("ChildTypeT")
+ChildTypeT = TypeVar("ChildTypeT", bound="SettingsBase")
 
 
 class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
@@ -1757,7 +1758,7 @@ def _rename(obj: NamedObject | _Alias, new: str, old: str):
     obj._create_child_object(new)
 
 
-class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
+class ListObject(SettingsBase[ListStateType], Sequence[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
 
@@ -1846,10 +1847,18 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         """
         return self.flproxy.get_list_size(self.path)
 
-    def __getitem__(self, index: int) -> ChildTypeT:
+    @overload
+    def __getitem__(self, index: int) -> ChildTypeT: ...
+
+    @overload
+    def __getitem__(self, index: slice) -> list[ChildTypeT]: ...
+
+    def __getitem__(self, index: int | slice) -> ChildTypeT | list[ChildTypeT]:
         size = self.get_size()
-        if index >= size:
-            raise IndexError(index)
+        if isinstance(index, int):
+            if index >= size:
+                raise IndexError(index)
+
         if len(self._objects) != size:
             self._update_objects()
         return self._objects[index]
