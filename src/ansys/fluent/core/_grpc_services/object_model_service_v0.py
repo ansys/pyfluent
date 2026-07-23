@@ -32,7 +32,6 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_se_pb2, datamodel_se_pb2_grpc
 from ansys.api.fluent.v0.variant_pb2 import Variant
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
 from ansys.fluent.core.services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
@@ -41,6 +40,7 @@ from ansys.fluent.core.services.object_model_utilities import (
     convert_path_to_se_path,
     convert_se_path_to_path,
 )
+from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.object_model_v0")
@@ -182,7 +182,7 @@ class UnsubscribeEventError(RuntimeError):
 class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     CommandArgumentsCleanupMixin, StreamingService, ServiceProtocol
 ):
-    """Pure Python wrapper of DatamodelServiceImpl."""
+    """Class wrapping the datamodel gRPC service of Fluent (v0 proto API)."""
 
     def __init__(
         self,

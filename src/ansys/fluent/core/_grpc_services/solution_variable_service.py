@@ -169,7 +169,7 @@ class ZonesInfo:
 
 
 class SolutionVariableService(ServiceProtocol):
-    """SVAR service of Fluent."""
+    """Class wrapping the solution variable gRPC service of Fluent (v1 proto API)."""
 
     def __init__(self, intercept_channel, metadata):
         """__init__ method of SVAR service class."""

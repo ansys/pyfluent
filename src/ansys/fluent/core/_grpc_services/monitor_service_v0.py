@@ -24,22 +24,16 @@
 """Wrapper over the monitor gRPC service of Fluent (v0 proto API)."""
 
 from google.protobuf.json_format import MessageToDict
-import grpc
 
 from ansys.api.fluent.v0 import monitor_pb2, monitor_pb2_grpc
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    TracingInterceptor,
-)
+from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class MonitorService(
     StreamingService, ServiceProtocol
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
-    """Class wrapping the monitor gRPC service of Fluent."""
+    """Class wrapping the monitor gRPC service of Fluent (v0 proto API)."""
 
     def __init__(
         self,

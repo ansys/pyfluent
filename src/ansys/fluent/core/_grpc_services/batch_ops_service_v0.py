@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Batch RPC service (v0 proto API)."""
+"""Wrapper over the batch operations gRPC service of Fluent (v0 proto API)."""
 
 import inspect
 import logging
@@ -36,7 +36,7 @@ network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
 class BatchOpsService(ServiceProtocol):
-    """Class wrapping the batch RPC service of Fluent (v0 proto API)."""
+    """Class wrapping the batch operations service of Fluent (v0 proto API)."""
 
     _api_module = api
     _proto_module = batch_ops_pb2
