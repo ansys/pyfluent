@@ -27,8 +27,8 @@ import logging
 import sys
 
 import grpc
-from grpc_health.v1 import health_pb2, health_pb2_grpc
 
+from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
 

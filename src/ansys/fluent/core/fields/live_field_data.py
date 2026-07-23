@@ -32,7 +32,6 @@ import weakref
 
 import numpy as np
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldDataSource,
@@ -97,74 +96,6 @@ class _FieldInfo(BaseFieldInfo):
 
     def _get_surfaces_info(self) -> dict[str, dict]:
         return self._field_data.get_surfaces_info()
-
-
-class _FetchFieldData:
-    @staticmethod
-    def _surface_data(
-        data_types: list[SurfaceDataType] | list[str],
-        surface_ids: list[int],
-        overset_mesh: bool | None = False,
-    ):
-        return [
-            FieldDataProtoModule.SurfaceRequest(
-                surfaceId=surface_id,
-                oversetMesh=overset_mesh,
-                provideFaces=SurfaceDataType.FacesConnectivity in data_types,
-                provideVertices=SurfaceDataType.Vertices in data_types,
-                provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
-                provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
-            )
-            for surface_id in surface_ids
-        ]
-
-    @staticmethod
-    def _scalar_data(
-        field_name: str,
-        surface_ids: list[int],
-        node_value: bool,
-        boundary_value: bool,
-    ):
-        return [
-            FieldDataProtoModule.ScalarFieldRequest(
-                surfaceId=surface_id,
-                scalarFieldName=field_name,
-                dataLocation=(
-                    FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements
-                ),
-                provideBoundaryValues=boundary_value,
-            )
-            for surface_id in surface_ids
-        ]
-
-    @staticmethod
-    def _vector_data(
-        field_name: str,
-        surface_ids: list[int],
-    ):
-        return [
-            FieldDataProtoModule.VectorFieldRequest(
-                surfaceId=surface_id, vectorFieldName=field_name
-            )
-            for surface_id in surface_ids
-        ]
-
-    @staticmethod
-    def _pathlines_data(
-        field_name: str,
-        surface_ids: list[int],
-        **kwargs,
-    ):
-        return [
-            FieldDataProtoModule.PathlinesFieldRequest(
-                surfaceId=surface_id,
-                field=field_name,
-                **kwargs,
-            )
-            for surface_id in surface_ids
-        ]
 
 
 class BaseFieldData:
@@ -337,7 +268,6 @@ class Batch(FieldBatch):
         self._allowed_scalar_field_names = allowed_scalar_field_names
         self._allowed_vector_field_names = allowed_vector_field_names
 
-        self._fetched_data = _FetchFieldData()
         self._pathline_field_data = []
         self._cache_requests = []
 
