@@ -523,6 +523,7 @@ def start_fluent_container(
     container_vars = configure_container_dict(
         args,
         compose_config=compose_config,
+        remove_server_info_file=cleanup_on_exit,
         **container_dict,
     )
 
