@@ -67,7 +67,6 @@ from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -380,8 +379,8 @@ def launch_fluent(
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str]]
-        Session object or configuration dictionary if ``dry_run = True`` for docker or a tuple of
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str] | dict[str, Any]]
+        Session object or configuration ``dict[str, Any]`` if ``dry_run = True`` for docker or a tuple of
         (fluent executable path, startup arguments) if ``dry_run = True`` for standalone launch.
 
     Raises
