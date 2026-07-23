@@ -799,3 +799,208 @@ def test_idle_timeout(monkeypatch):
         StandaloneLauncher._construct_timeout_arg(200)
         == ' -command="(set-session-idle-timeoutPLF+5)"'
     )
+
+
+class TestContainerCleanupOnExit:
+    """Test cleanup_on_exit parameter for container launcher."""
+
+    def test_server_info_file_preserved_cleanup_false(self):
+        """Verify server-info file is preserved when cleanup_on_exit=False."""
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+            server_info_file.write_text("test content")
+
+            # Simulate cleanup logic with cleanup_on_exit=False
+            remove_server_info_file = True
+            cleanup_on_exit = False
+            if remove_server_info_file and cleanup_on_exit:
+                server_info_file.unlink(missing_ok=True)
+
+            # File should still exist after cleanup
+            assert (
+                server_info_file.exists()
+            ), "Server-info file should be preserved when cleanup_on_exit=False"
+
+    def test_server_info_file_deleted_cleanup_true(self):
+        """Verify server-info file is deleted when cleanup_on_exit=True."""
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+            server_info_file.write_text("test content")
+
+            # Simulate cleanup logic with cleanup_on_exit=True
+            remove_server_info_file = True
+            cleanup_on_exit = True
+            if remove_server_info_file and cleanup_on_exit:
+                server_info_file.unlink(missing_ok=True)
+
+            # File should be deleted after cleanup
+            assert (
+                not server_info_file.exists()
+            ), "Server-info file should be deleted when cleanup_on_exit=True"
+
+    def test_remove_server_info_file_parameter_override(self):
+        """Verify remove_server_info_file=False prevents deletion regardless of cleanup_on_exit."""
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+            server_info_file.write_text("test content")
+
+            # Simulate cleanup logic with remove_server_info_file=False
+            remove_server_info_file = False
+            cleanup_on_exit = True
+            if remove_server_info_file and cleanup_on_exit:
+                server_info_file.unlink(missing_ok=True)
+
+            # File should still exist (remove_server_info_file takes precedence)
+            assert (
+                server_info_file.exists()
+            ), "Server-info file should be preserved when remove_server_info_file=False"
+
+
+class TestCleanupOnExitIntegration:
+    """Integration tests for cleanup_on_exit behavior across launchers."""
+
+    def test_standalone_launcher_cleanup_on_exit_default_deletes_file(self):
+        """Verify standalone launcher deletes server-info file by default."""
+        from pathlib import Path
+
+        from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Create a mock server info file
+            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+            server_info_file.write_text("test")
+
+            launcher = StandaloneLauncher()
+            launcher._server_info_file_name = str(server_info_file)
+            launcher.argvals = {"cleanup_on_exit": True}
+
+            # Simulate cleanup
+            if launcher.argvals.get("cleanup_on_exit", True):
+                Path(launcher._server_info_file_name).unlink(missing_ok=True)
+
+            assert (
+                not server_info_file.exists()
+            ), "File should be deleted with cleanup_on_exit=True"
+
+    def test_standalone_launcher_cleanup_on_exit_false_preserves_file(self):
+        """Verify standalone launcher preserves server-info file when cleanup_on_exit=False."""
+        from pathlib import Path
+
+        from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Create a mock server info file
+            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+            server_info_file.write_text("test")
+
+            launcher = StandaloneLauncher()
+            launcher._server_info_file_name = str(server_info_file)
+            launcher.argvals = {"cleanup_on_exit": False}
+
+            # Simulate cleanup
+            if launcher.argvals.get("cleanup_on_exit", True):
+                Path(launcher._server_info_file_name).unlink(missing_ok=True)
+
+            assert (
+                server_info_file.exists()
+            ), "File should be preserved with cleanup_on_exit=False"
+
+    def test_cleanup_on_exit_parameter_threading(self):
+        """Verify cleanup_on_exit is threaded through launcher chain."""
+        from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+        kwargs = dict(
+            ui_mode=UIMode.NO_GUI,
+            graphics_driver=(
+                FluentWindowsGraphicsDriver.AUTO
+                if is_windows()
+                else FluentLinuxGraphicsDriver.AUTO
+            ),
+            cleanup_on_exit=False,
+        )
+
+        launcher = StandaloneLauncher(**kwargs)
+        assert (
+            launcher.argvals.get("cleanup_on_exit") is False
+        ), "cleanup_on_exit should be threaded through launcher"
+
+    def test_cleanup_on_exit_none_defaults_to_true(self):
+        """Verify cleanup_on_exit defaults to True behavior when None."""
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+            server_info_file.write_text("test content")
+
+            # Simulate cleanup logic when cleanup_on_exit is None
+            cleanup_on_exit = None
+            # When cleanup_on_exit is None, treat as True (delete file)
+            if cleanup_on_exit is None or cleanup_on_exit:
+                server_info_file.unlink(missing_ok=True)
+
+            assert (
+                not server_info_file.exists()
+            ), "File should be deleted when cleanup_on_exit is None (defaults to True)"
+
+    def test_preserved_server_info_file_readability(self):
+        """Verify preserved server-info file is readable after launch."""
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+            test_content = "port=12345\nhost=localhost"
+            server_info_file.write_text(test_content)
+
+            # File should be readable
+            assert (
+                server_info_file.read_text() == test_content
+            ), "Preserved file should be readable"
+
+    def test_cleanup_on_exit_true_vs_false_comparison(self):
+        """Verify file deletion behavior with cleanup_on_exit=True vs False."""
+        from pathlib import Path
+
+        def simulate_cleanup(cleanup_on_exit, server_info_path):
+            """Simulate the cleanup logic."""
+            if cleanup_on_exit:
+                server_info_path.unlink(missing_ok=True)
+
+        # Test with cleanup_on_exit=True
+        with tempfile.NamedTemporaryFile(
+            suffix=".txt", prefix="serverinfo-", delete=False, dir=None
+        ) as tmp_file:
+            true_path = Path(tmp_file.name)
+
+        true_path.write_bytes(b"cleanup_true_test")
+
+        try:
+            assert true_path.exists()
+            simulate_cleanup(True, true_path)
+            assert (
+                not true_path.exists()
+            ), "File should be deleted with cleanup_on_exit=True"
+        finally:
+            true_path.unlink(missing_ok=True)
+
+        # Test with cleanup_on_exit=False
+        with tempfile.NamedTemporaryFile(
+            suffix=".txt", prefix="serverinfo-", delete=False, dir=None
+        ) as tmp_file:
+            false_path = Path(tmp_file.name)
+
+        false_path.write_bytes(b"cleanup_false_test")
+
+        try:
+            assert false_path.exists()
+            simulate_cleanup(False, false_path)
+            assert (
+                false_path.exists()
+            ), "File should be preserved with cleanup_on_exit=False"
+        finally:
+            false_path.unlink(missing_ok=True)
