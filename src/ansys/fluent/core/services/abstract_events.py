@@ -25,19 +25,14 @@
 
 from abc import ABC, abstractmethod
 
-from ansys.fluent.core.streaming_services.events_streaming import (
-    SolverEvent as SolverEventV0,
-)
-from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
 
 class AbstractEvents(ABC):
     """Abstract base class for the events."""
 
     @abstractmethod
-    def register_pause_on_solution_events(
-        self, solution_event: SolverEvent | SolverEventV0
-    ) -> int:
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
         pass
 

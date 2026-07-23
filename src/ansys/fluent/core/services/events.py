@@ -24,10 +24,7 @@
 """High level events wrapper."""
 
 from ansys.fluent.core.services.abstract_events import AbstractEvents
-from ansys.fluent.core.streaming_services.events_streaming import (
-    SolverEvent as SolverEventV0,
-)
-from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
 
 class Events(AbstractEvents):
@@ -37,9 +34,7 @@ class Events(AbstractEvents):
         """Initialize Events."""
         self.service = service
 
-    def register_pause_on_solution_events(
-        self, solution_event: SolverEvent | SolverEventV0
-    ) -> int:
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
         return self.service.register_pause_on_solution_events(solution_event)
 
@@ -50,6 +45,23 @@ class Events(AbstractEvents):
     def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
         self.service.unregister_pause_on_solution_events(registration_id)
+
+    def event_from_proto_field(self, field_name: str) -> str:
+        """Convert a proto oneof field name to canonical event enum value."""
+        return self.service.event_from_proto_field(field_name)
+
+    def _construct_event_info(self, response, event, event_info_cls):
+        return self.service._construct_event_info(response, event, event_info_cls)
+
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Delegate streaming request creation to the gRPC service."""
+        return self.service._process_streaming(
+            *args,
+            id=id,
+            stream_begin_method=stream_begin_method,
+            started_evt=started_evt,
+            **kwargs,
+        )
 
     def begin_streaming(self, request, started_evt, id, stream_begin_method):
         """Begin streaming from Fluent."""
@@ -70,9 +82,7 @@ class EventsV261(AbstractEvents):
         self.service = service
         self.application_runtime_service = application_runtime_service
 
-    def register_pause_on_solution_events(
-        self, solution_event: SolverEvent | SolverEventV0
-    ) -> int:
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
         return self.application_runtime_service.register_pause_on_solution_events(
             solution_event
@@ -86,6 +96,23 @@ class EventsV261(AbstractEvents):
         """Unregister pause on solution events."""
         self.application_runtime_service.unregister_pause_on_solution_events(
             registration_id
+        )
+
+    def _construct_event_info(self, response, event, event_info_cls):
+        return self.service._construct_event_info(response, event, event_info_cls)
+
+    def event_from_proto_field(self, field_name: str) -> str:
+        """Convert a proto oneof field name to canonical event enum value."""
+        return self.service.event_from_proto_field(field_name)
+
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Delegate streaming request creation to the gRPC service."""
+        return self.service._process_streaming(
+            *args,
+            id=id,
+            stream_begin_method=stream_begin_method,
+            started_evt=started_evt,
+            **kwargs,
         )
 
     def begin_streaming(self, request, started_evt, id, stream_begin_method):
@@ -107,9 +134,7 @@ class EventsV251(AbstractEvents):
         self.service = service
         self.scheme_interpreter_service = scheme_interpreter_service
 
-    def register_pause_on_solution_events(
-        self, solution_event: SolverEvent | SolverEventV0
-    ) -> int:
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
         unique_id: int = self.scheme_interpreter_service.eval(
             f"""
@@ -152,6 +177,23 @@ class EventsV251(AbstractEvents):
         """Unregister pause on solution events."""
         self.scheme_interpreter_service.eval(
             f"(cancel-solution-monitor 'pyfluent-{registration_id})"
+        )
+
+    def _construct_event_info(self, response, event, event_info_cls):
+        return self.service._construct_event_info(response, event, event_info_cls)
+
+    def event_from_proto_field(self, field_name: str) -> str:
+        """Convert a proto oneof field name to canonical event enum value."""
+        return self.service.event_from_proto_field(field_name)
+
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Delegate streaming request creation to the gRPC service."""
+        return self.service._process_streaming(
+            *args,
+            id=id,
+            stream_begin_method=stream_begin_method,
+            started_evt=started_evt,
+            **kwargs,
         )
 
     def begin_streaming(self, request, started_evt, id, stream_begin_method):

@@ -25,7 +25,6 @@
 import math
 from typing import Any, Sequence
 
-import grpc
 import numpy as np
 import numpy.typing as npt
 
@@ -36,10 +35,6 @@ from ansys.api.fluent.v1 import (
 )
 from ansys.fluent.core._grpc_services.field_data_service import _FieldDataConstants
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 class SolutionVariables:
@@ -120,6 +115,10 @@ class ZonesInfo:
             self.zone_id = zone_info.zone_id
             self.zone_type = zone_info.zone_type
             self.thread_type = zone_info.thread_type
+            self.is_cell_thread: bool = (
+                zone_info.thread_type
+                == solution_variable_pb2.ThreadType.THREAD_TYPE_CELL
+            )
             self.partitions_info = [
                 self.PartitionsInfo(partition_info)
                 for partition_info in zone_info.partitions_info
@@ -172,16 +171,11 @@ class ZonesInfo:
 class SolutionVariableService(ServiceProtocol):
     """SVAR service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
+    def __init__(self, intercept_channel, metadata):
         """__init__ method of SVAR service class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            TracingInterceptor(),
-        )
+
         self._stub = solution_variable_pb2_grpc.SolutionVariableStub(intercept_channel)
         self._metadata = metadata
-        del fluent_error_state  # unused variable
 
     def get_data(
         self,

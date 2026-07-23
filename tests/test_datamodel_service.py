@@ -51,10 +51,7 @@ from ansys.fluent.core.services.object_model import (
     convert_path_to_se_path,
 )
 from ansys.fluent.core.streaming_services.datamodel_streaming import (
-    DatamodelStream as DatamodelStreamV0,
-)
-from ansys.fluent.core.streaming_services.datamodel_streaming_v1 import (
-    DatamodelStream as DatamodelStreamV1,
+    DatamodelStream,
 )
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -347,11 +344,6 @@ def test_datamodel_streaming_full_diff_state(
 ):
     meshing = new_meshing_session
     datamodel_service_se = meshing._datamodel_service_se
-    DatamodelStream = (
-        DatamodelStreamV1
-        if meshing._fluent_connection._server_supports_v1
-        else DatamodelStreamV0
-    )
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=False)
 
@@ -378,11 +370,6 @@ def test_datamodel_streaming_no_commands_diff_state(
 ):
     meshing = new_meshing_session
     datamodel_service_se = meshing._datamodel_service_se
-    DatamodelStream = (
-        DatamodelStreamV1
-        if meshing._fluent_connection._server_supports_v1
-        else DatamodelStreamV0
-    )
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=True)
 

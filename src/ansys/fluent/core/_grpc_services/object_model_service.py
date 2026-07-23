@@ -38,12 +38,6 @@ from ansys.fluent.core.services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 from ansys.fluent.core.services.object_model_utilities import (
     convert_path_to_se_path,
     convert_se_path_to_path,
@@ -193,18 +187,10 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def __init__(
         self,
-        channel: grpc.Channel,
+        intercept_channel,
         metadata: list[tuple[str, str]],
-        fluent_error_state,
     ) -> None:
         """__init__ method of DatamodelService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         super().__init__(
             stub=object_model_pb2_grpc.ObjectModelStub(intercept_channel),
             metadata=metadata,
@@ -588,6 +574,90 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
+
+    def _process_streaming(
+        self,
+        id,
+        stream_begin_method,
+        started_evt,
+        rules,
+        datamodel_return_state_changes,
+        no_commands_diff_state,
+        *args,
+        **kwargs,
+    ):
+        """Processes events streaming."""
+        data_model_request = object_model_pb2.StreamStateChangesRequest(*args, **kwargs)
+        data_model_request.rules = rules
+        data_model_request.return_state_changes = datamodel_return_state_changes
+        if no_commands_diff_state:
+            data_model_request.diff_state = object_model_pb2.DIFF_STATE_NOCOMMANDS
+        return self.begin_streaming(
+            data_model_request,
+            started_evt,
+            id=id,
+            stream_begin_method=stream_begin_method,
+        )
+
+    def parse_streaming_response(self, response):
+        """Parse v1 streaming response into canonical (state, deleted_paths) form."""
+        return response.state, response.deleted_paths
+
+    _stream_begin_method = "StreamStateChanges"
+    _streaming_rpc_path = (
+        "/ansys.api.fluent.v1.object_model.ObjectModel/StreamStateChanges"
+    )
+
+    _event_stream_begin_method = "StreamEvents"
+    _event_streaming_rpc_path = (
+        "/ansys.api.fluent.v1.datamodel_se.DataModel/StreamEvents"
+    )
+
+    def _process_event_streaming(self, id, started_evt, *args, **kwargs):
+        """Begin v1 event streaming."""
+        request = object_model_pb2.StreamEventsRequest()
+        return self.begin_streaming(
+            request,
+            started_evt,
+            id=id,
+            stream_begin_method=self._event_stream_begin_method,
+        )
+
+    def parse_event_response(self, response):
+        """Parse a v1 event streaming response into (event_type, cb_args) form."""
+        if response.HasField("created_event_response"):
+            return "created", (
+                response.created_event_response.child_type,
+                response.created_event_response.child_name,
+            )
+        elif response.HasField("attribute_changed_event_response"):
+            return "attribute_changed", (
+                _convert_variant_to_value(
+                    response.attribute_changed_event_response.value
+                ),
+            )
+        elif response.HasField("command_attribute_changed_event_response"):
+            return "command_attribute_changed", (
+                _convert_variant_to_value(
+                    response.command_attribute_changed_event_response.value
+                ),
+            )
+        elif response.HasField("modified_event_response"):
+            return "modified", (
+                _convert_variant_to_value(response.modified_event_response.value),
+            )
+        elif response.HasField("affected_event_response"):
+            return "affected", ()
+        elif response.HasField("deleted_event_response"):
+            return "deleted", ()
+        elif response.HasField("command_executed_event_response"):
+            return "command_executed", (
+                response.command_executed_event_response.command,
+                _convert_variant_to_value(
+                    response.command_executed_event_response.args
+                ),
+            )
+        return None, ()
 
 
 def _convert_value_to_variant(val: ValueT, var: Variant) -> None:

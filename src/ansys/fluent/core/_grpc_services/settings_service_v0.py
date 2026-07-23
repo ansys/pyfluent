@@ -25,16 +25,8 @@
 import collections.abc
 from typing import Any
 
-import grpc
-
 from ansys.api.fluent.v0 import settings_pb2, settings_pb2_grpc
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 def _get_request_instance_for_path(request_class, path: str) -> Any:
@@ -48,16 +40,11 @@ class SettingsService(ServiceProtocol):
     """Settings gRPC service wrapper (v0 proto API)."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
     ) -> None:
         """Initialize SettingsService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = settings_pb2_grpc.SettingsStub(intercept_channel)
         self._metadata = metadata
 

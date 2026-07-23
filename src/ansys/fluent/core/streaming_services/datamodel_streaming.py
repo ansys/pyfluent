@@ -25,9 +25,6 @@
 
 import logging
 
-from google.protobuf.json_format import MessageToDict
-
-from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
@@ -41,7 +38,7 @@ class DatamodelStream(StreamingService):
         """Initialize DatamodelStream."""
         grpc_service = getattr(service, "_service", service)
         super().__init__(
-            stream_begin_method="BeginStreaming",
+            stream_begin_method=grpc_service._stream_begin_method,
             target=DatamodelStream._process_streaming,
             streaming_service=grpc_service,
         )
@@ -57,28 +54,28 @@ class DatamodelStream(StreamingService):
         **kwargs,
     ):
         """Processes datamodel events."""
-        data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
-        data_model_request.rules = rules
-        data_model_request.returnstatechanges = config.datamodel_return_state_changes
-        if no_commands_diff_state:
-            data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
-        responses = self._streaming_service.begin_streaming(
-            data_model_request,
-            started_evt,
+        responses = self._streaming_service._process_streaming(
+            *args,
             id=id,
             stream_begin_method=stream_begin_method,
+            started_evt=started_evt,
+            rules=rules,
+            datamodel_return_state_changes=config.datamodel_return_state_changes,
+            no_commands_diff_state=no_commands_diff_state,
+            **kwargs,
         )
         while True:
             try:
-                response: datamodel_se_pb2.DataModelResponse = next(responses)
+                response = next(responses)
                 network_logger.debug(
-                    f"GRPC_TRACE: RPC = /grpcRemoting.DataModel/BeginStreaming, response = {MessageToDict(response)}"
+                    f"GRPC_TRACE: RPC = {self._streaming_service._streaming_rpc_path}."
                 )
                 with self._lock:
                     self._streaming = True
                     for _, cb_list in self._service_callbacks.items():
-                        state = response.state if hasattr(response, "state") else None
-                        deleted_paths = getattr(response, "deletedpaths", None)
+                        state, deleted_paths = (
+                            self._streaming_service.parse_streaming_response(response)
+                        )
                         cb_list[0](state=state, deleted_paths=deleted_paths)
             except StopIteration:
                 break

@@ -37,12 +37,6 @@ from ansys.fluent.core.services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 from ansys.fluent.core.services.object_model_utilities import (
     convert_path_to_se_path,
     convert_se_path_to_path,
@@ -192,18 +186,10 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def __init__(
         self,
-        channel: grpc.Channel,
+        intercept_channel,
         metadata: list[tuple[str, str]],
-        fluent_error_state,
     ) -> None:
         """__init__ method of DatamodelService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         super().__init__(
             stub=datamodel_se_pb2_grpc.DataModelStub(intercept_channel),
             metadata=metadata,
@@ -577,6 +563,82 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
+
+    def _process_streaming(
+        self,
+        id,
+        stream_begin_method,
+        started_evt,
+        rules,
+        datamodel_return_state_changes,
+        no_commands_diff_state,
+        *args,
+        **kwargs,
+    ):
+        """Processes events streaming."""
+        data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
+        data_model_request.rules = rules
+        data_model_request.returnstatechanges = datamodel_return_state_changes
+        if no_commands_diff_state:
+            data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
+        return self.begin_streaming(
+            data_model_request,
+            started_evt,
+            id=id,
+            stream_begin_method=stream_begin_method,
+        )
+
+    def parse_streaming_response(self, response):
+        """Parse v0 streaming response into canonical (state, deleted_paths) form."""
+        return response.state, response.deletedpaths
+
+    _stream_begin_method = "BeginStreaming"
+    _streaming_rpc_path = "/grpcRemoting.DataModel/BeginStreaming"
+
+    _event_stream_begin_method = "BeginEventStreaming"
+    _event_streaming_rpc_path = "/grpcRemoting.DataModel/BeginEventStreaming"
+
+    def _process_event_streaming(self, id, started_evt, *args, **kwargs):
+        """Begin v0 event streaming."""
+        request = datamodel_se_pb2.EventRequest(*args, **kwargs)
+        return self.begin_streaming(
+            request,
+            started_evt,
+            id=id,
+            stream_begin_method=self._event_stream_begin_method,
+        )
+
+    def parse_event_response(self, response):
+        """Parse a v0 event streaming response into (event_type, cb_args) form."""
+        if response.HasField("createdEventResponse"):
+            return "created", (
+                response.createdEventResponse.childtype,
+                response.createdEventResponse.childname,
+            )
+        elif response.HasField("attributeChangedEventResponse"):
+            return "attribute_changed", (
+                _convert_variant_to_value(response.attributeChangedEventResponse.value),
+            )
+        elif response.HasField("commandAttributeChangedEventResponse"):
+            return "command_attribute_changed", (
+                _convert_variant_to_value(
+                    response.commandAttributeChangedEventResponse.value
+                ),
+            )
+        elif response.HasField("modifiedEventResponse"):
+            return "modified", (
+                _convert_variant_to_value(response.modifiedEventResponse.value),
+            )
+        elif response.HasField("affectedEventResponse"):
+            return "affected", ()
+        elif response.HasField("deletedEventResponse"):
+            return "deleted", ()
+        elif response.HasField("commandExecutedEventResponse"):
+            return "command_executed", (
+                response.commandExecutedEventResponse.command,
+                _convert_variant_to_value(response.commandExecutedEventResponse.args),
+            )
+        return None, ()
 
 
 def _convert_value_to_variant(val: ValueT, var: Variant) -> None:

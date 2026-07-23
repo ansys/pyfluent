@@ -24,16 +24,10 @@
 """Wrapper over the monitor gRPC service of Fluent (v1 proto API)."""
 
 from google.protobuf.json_format import MessageToDict
-import grpc
 
 from ansys.api.fluent.v1 import monitor_pb2, monitor_pb2_grpc
 from ansys.fluent.core._grpc_services.streaming_service import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    TracingInterceptor,
-)
 
 # v1 MessageToDict produces camelCase keys for the renamed snake_case fields
 # (x_label → xLabel, y_label → yLabel, unit_info → unitInfo). Callers of
@@ -70,14 +64,8 @@ class MonitorService(
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the monitor gRPC service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
+    def __init__(self, intercept_channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of MonitorService class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = monitor_pb2_grpc.MonitorStub(intercept_channel)
         self._metadata = metadata
         super().__init__(
@@ -94,3 +82,16 @@ class MonitorService(
             monitor_info = _normalize_monitor_set_dict_keys(MessageToDict(monitor_set))
             monitors_info[monitor_set.name] = monitor_info
         return monitors_info
+
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Processes events streaming."""
+        request = monitor_pb2.StreamingRequest(*args, **kwargs)
+        return self.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
+
+    def parse_streaming_response(self, response):
+        """Parse v1 streaming response into canonical (x_index, y_data) form."""
+        x_axis_index = response.x_axis_data.x_axis_index
+        y_data = {y.name: y.value for y in response.y_axis_values}
+        return x_axis_index, y_data

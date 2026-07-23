@@ -35,7 +35,6 @@ import weakref
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.fields.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
@@ -44,20 +43,6 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
-    DatamodelEvents as DatamodelEventsV0,
-)
-from ansys.fluent.core.streaming_services.datamodel_event_streaming_v1 import (
-    DatamodelEvents,
-)
-from ansys.fluent.core.streaming_services.events_streaming import (
-    EventsManager as EventsManagerV0,
-)
-from ansys.fluent.core.streaming_services.events_streaming_v1 import EventsManager
-from ansys.fluent.core.streaming_services.transcript_streaming import (
-    Transcript as TranscriptV0,
-)
-from ansys.fluent.core.streaming_services.transcript_streaming_v1 import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
@@ -183,10 +168,7 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = fluent_connection._service_factory.transcript
-        self.transcript = (
-            Transcript if fluent_connection._server_supports_v1 else TranscriptV0
-        )(self._transcript_service)
+        self.transcript = fluent_connection._service_factory.transcript_streaming
         if self._start_transcript:
             self.transcript.start()
 
@@ -200,30 +182,17 @@ class BaseSession:
         self._datamodel_service_se.file_transfer_service = file_transfer_service
 
         self._datamodel_events = (
-            DatamodelEvents(self._datamodel_service_se)
-            if fluent_connection._server_supports_v1
-            else DatamodelEventsV0(self._datamodel_service_se)
+            fluent_connection._service_factory.object_model_events_streaming
         )
         self._datamodel_events.start()
 
         self._batch_ops_service = fluent_connection._service_factory.batch_ops
 
         if event_type:
-            events_service = fluent_connection._service_factory.events
-            if fluent_connection._server_supports_v1:
-                self.events = EventsManager[event_type](
-                    event_type,
-                    events_service,
-                    self._error_state,
-                    weakref.proxy(self),
-                )
-            else:
-                self.events = EventsManagerV0[event_type](
-                    event_type,
-                    events_service,
-                    self._error_state,
-                    weakref.proxy(self),
-                )
+            self.events = fluent_connection._service_factory._get_events_manager(
+                event_type=event_type,
+                session_ref=weakref.proxy(self),
+            )
             self.events.start()
         else:
             self.events = None
@@ -517,7 +486,6 @@ class Fields:
         self.field_data = LiveFieldData(
             field_data, self._field_info, _session.scheme, get_zones_info
         )
-        field_data_streaming = fluent_connection._service_factory.field_data_streaming
-        self.field_data_streaming = FieldDataStreaming(
-            _session._fluent_connection._id, field_data_streaming
+        self.field_data_streaming = (
+            fluent_connection._service_factory.field_data_streaming
         )
