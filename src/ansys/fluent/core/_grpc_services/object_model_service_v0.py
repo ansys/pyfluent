@@ -32,7 +32,7 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_se_pb2, datamodel_se_pb2_grpc
 from ansys.api.fluent.v0.variant_pb2 import Variant
-from ansys.fluent.core.services._command_arguments_mixin import (
+from ansys.fluent.core._grpc_services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
 from ansys.fluent.core.services._protocols import ServiceProtocol
