@@ -110,8 +110,8 @@ solver.settings.setup.general.operating_conditions.gravity.enable = True
 solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 0, 0]
 
 # %%
-# Models: Turbulance/Viscous Model
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Turbulance/Viscous Model
+# ^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the turbulance/viscous model to SST k-omega model.
 # Activate curvature correction, production Kato-Launder, and production limiter options.
 
@@ -399,7 +399,6 @@ solver.settings.file.parametric_project.save()
 # ^^^^^^^^^^^^^^^^^^^^^^^^^
 # Export the design point table to a CSV file.
 
-# parametric_table_save_path = os.path.join(working_directory, 'design_point_table_study.csv')
 solver.settings.parametric_studies.export_design_table(
     filepath="../../../design_point_table_study.csv"
 )
