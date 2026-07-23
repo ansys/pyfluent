@@ -1,0 +1,21 @@
+:orphan:
+
+.. _allow_profile:
+
+allow_profile
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.allow_profile
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==========================
+
+Parent                                                            Summary
+
+============================================   ==========================
+:ref:`add_rom_parameter <add_rom_parameter>`       Add parameter command.
+
+============================================   ==========================
+

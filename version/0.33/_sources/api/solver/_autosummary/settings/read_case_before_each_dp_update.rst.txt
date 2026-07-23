@@ -1,0 +1,21 @@
+:orphan:
+
+.. _read_case_before_each_dp_update:
+
+read_case_before_each_dp_update
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.read_case_before_each_dp_update
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`parametric_studies_child <parametric_studies_child>`       'child_object_type' of parametric_studies.
+
+==========================================================   ==============================================
+

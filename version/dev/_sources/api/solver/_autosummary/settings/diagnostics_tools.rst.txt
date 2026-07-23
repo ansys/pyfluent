@@ -1,0 +1,59 @@
+:orphan:
+
+.. _diagnostics_tools:
+
+diagnostics_tools
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.diagnostics_tools
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ==========================================================================
+
+Attribute                                                                                                                         Summary
+
+============================================================   ==========================================================================
+:ref:`diagnostics_verbosity <diagnostics_verbosity>`                     Verbosity level for diagnostics reporting (0=normal, 1=verbose).
+
+:ref:`inspector <inspector>`                                                                                  Inspect mesh and case data.
+
+:ref:`global_extrema_tracker <global_extrema_tracker>`         Monitor global maximum and minimum field extrema values during simulation.
+
+:ref:`divergence_tracker <divergence_tracker>`                                   Stop simulation after a divergence incident is detected.
+
+:ref:`diagnostics_visualization <diagnostics_visualization>`                Enable visualization of stabilization tool diagnostic fields.
+
+============================================================   ==========================================================================
+
+.. rubric:: Methods
+
+========================================================================   ========================================================================
+
+Method                                                                                                                                      Summary
+
+========================================================================   ========================================================================
+:ref:`clear_divergence_tracker_files <clear_divergence_tracker_files>`                                      Clear divergence tracker history files.
+
+:ref:`mark_cells_neighbor_by_id <mark_cells_neighbor_by_id>`                                       Mark neighboring cells of the provided cell IDs.
+
+:ref:`mark_cell_neighbors_by_register <mark_cell_neighbors_by_register>`     Mark neighboring cells based on the provided id or name of a register.
+
+:ref:`report_cell_info_by_id <report_cell_info_by_id>`                                         Report cells information based on provided cell IDs.
+
+:ref:`report_cell_info_by_register <report_cell_info_by_register>`         Report cells information based on the provided id or name of a register.
+
+========================================================================   ========================================================================
+
+.. rubric:: Included in:
+
+================================================   =========================================================================
+
+Parent                                                                                                               Summary
+
+================================================   =========================================================================
+:ref:`stabilization_tools <stabilization_tools>`   Solver stabilization tools for robust convergence on poor quality meshes.
+
+================================================   =========================================================================
+

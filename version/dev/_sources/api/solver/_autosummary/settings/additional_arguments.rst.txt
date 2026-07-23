@@ -1,0 +1,23 @@
+:orphan:
+
+.. _additional_arguments:
+
+additional_arguments
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.additional_arguments
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`job_settings <job_settings>`       Remote Job Settings.
+
+:ref:`job_settings_1 <job_settings_1>`   Remote Job Settings.
+
+======================================   ====================
+

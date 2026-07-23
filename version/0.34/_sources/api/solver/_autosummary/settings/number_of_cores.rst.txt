@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_of_cores:
+
+number_of_cores
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.number_of_cores
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

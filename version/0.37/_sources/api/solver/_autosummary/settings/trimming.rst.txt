@@ -1,0 +1,42 @@
+:orphan:
+
+.. _trimming:
+
+trimming
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.trimming
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==================================================================================
+
+Attribute                                                                                                                 Summary
+
+============================================   ==================================================================================
+:ref:`trim_option <trim_option>`                                                                                Trimming Option:.
+
+:ref:`update_frequency <update_frequency>`         Trimming Update Frequency N (VBM will trim the rotor after each N iterations).
+
+:ref:`damping_factor <damping_factor>`                                               Trimming damping factor (relaxation factor).
+
+:ref:`thrust_coef <thrust_coef>`                                                         Desired thrust coefficient of the rotor.
+
+:ref:`roll_moment_coef <roll_moment_coef>`                                          Desired roll-moment coefficient of the rotor.
+
+:ref:`pitch_moment_coef <pitch_moment_coef>`                                       Desired pitch-moment coefficient of the rotor.
+
+============================================   ==================================================================================
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`rotor_child <rotor_child>`       'child_object_type' of rotor.
+
+================================   =================================
+

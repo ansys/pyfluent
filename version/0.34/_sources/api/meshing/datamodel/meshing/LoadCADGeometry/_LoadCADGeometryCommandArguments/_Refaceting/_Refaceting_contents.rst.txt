@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_LoadCADGeometry__LoadCADGeometryCommandArguments__Refaceting:
+
+_Refaceting
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.LoadCADGeometry._LoadCADGeometryCommandArguments._Refaceting
+   :members: _CustomDeviation, _CustomNormalAngle, _Deviation, _FacetMaxEdgeLength, _FacetResolution, _MaxEdgeLength, _MaxEdgeLengthFactor, _NormalAngle, _Refacet
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

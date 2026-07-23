@@ -1,0 +1,21 @@
+:orphan:
+
+.. _prefix_2:
+
+prefix
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.prefix_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =======================================
+
+Parent                                                                     Summary
+
+========================================   =======================================
+:ref:`result_graphics <result_graphics>`   Options for generated graphics objects.
+
+========================================   =======================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _user_db_name_1:
+
+user_db_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.user_db_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =============================
+
+Parent                                                                 Summary
+
+==============================================   =============================
+:ref:`copy_materials <copy_materials>`           Copy materials from database.
+
+:ref:`copy_from_database <copy_from_database>`   Copy materials from database.
+
+==============================================   =============================
+

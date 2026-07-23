@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_23:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_23
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==================================================================================
+
+Parent                                                                                                                    Summary
+
+============================================   ==================================================================================
+:ref:`set_forced_motion <set_forced_motion>`   Include forcing in EOM for periodic displacements (only available in Solved mode).
+
+============================================   ==================================================================================
+

@@ -1,0 +1,47 @@
+:orphan:
+
+.. _gap_regions:
+
+gap_regions
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gap_regions
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`gap_regions_child <gap_regions_child>`
+
+
+.. rubric:: Included in:
+
+============================   ===================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                     Summary
+
+============================   ===================================================================================================================================================================================
+:ref:`gap_model <gap_model>`   Configure the gap model for simulation of narrow passages. The gap model applies special interpolation and flow-blocking or flow-modeling treatments inside identified gap regions.
+
+============================   ===================================================================================================================================================================================
+

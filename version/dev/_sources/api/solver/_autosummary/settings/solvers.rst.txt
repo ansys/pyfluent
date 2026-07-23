@@ -1,0 +1,47 @@
+:orphan:
+
+.. _solvers:
+
+solvers
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.solvers
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ===============================================
+
+Attribute                                                                                  Summary
+
+================================================   ===============================================
+:ref:`flow_iterations <flow_iterations>`              Number of iterations to run the flow solver.
+
+:ref:`adjoint_iterations <adjoint_iterations_1>`   Number of iterations to run the adjoint solver.
+
+================================================   ===============================================
+
+.. rubric:: Methods
+
+================================   ==========================================================
+
+Method                                                                                Summary
+
+================================   ==========================================================
+:ref:`run_flow <run_flow>`            Run flow solver for the specified number of iterations.
+
+:ref:`run_adjoint <run_adjoint>`   Run adjoint solver for the specified number of iterations.
+
+================================   ==========================================================
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`automation <automation>`   Run sensitivity-analysis reports and result graphics.
+
+==============================   =====================================================
+

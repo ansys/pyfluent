@@ -1,0 +1,34 @@
+:orphan:
+
+.. _heat_exchanger_macro_report:
+
+heat_exchanger_macro_report
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.heat_exchanger_macro_report
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ==========================================================
+
+Argument                                                                                  Summary
+
+====================================   ==========================================================
+:ref:`write_to_file <write_to_file>`   Specifies whether to write the per-macro report to a file.
+
+:ref:`file_name <file_name_13>`                 Path to the output file for the per-macro report.
+
+====================================   ==========================================================
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`cores_child <cores_child>`   'child_object_type' of cores.
+
+================================   =============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sensitivity_plot:
+
+sensitivity_plot
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sensitivity_plot
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`options_25 <options_25>`   Sensitivity analysis report options.
+
+==============================   ====================================
+

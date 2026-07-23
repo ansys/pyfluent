@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_1:
+
+x
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.x_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================
+
+Parent                                                                                       Summary
+
+======================================================   ===========================================
+:ref:`pass_to_pass_direction <pass_to_pass_direction>`   The direction vector for pass-to-pass flow.
+
+======================================================   ===========================================
+

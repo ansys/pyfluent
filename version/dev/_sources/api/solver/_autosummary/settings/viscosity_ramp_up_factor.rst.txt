@@ -1,0 +1,21 @@
+:orphan:
+
+.. _viscosity_ramp_up_factor:
+
+viscosity_ramp_up_factor
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.viscosity_ramp_up_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================================   ================================================================================
+
+Parent                                                                                                                                                            Summary
+
+======================================================================================   ================================================================================
+:ref:`flow_blocking_stabilization_parameters <flow_blocking_stabilization_parameters>`   Adjust stabilization settings for the sponge layer used for blocked gap regions.
+
+======================================================================================   ================================================================================
+

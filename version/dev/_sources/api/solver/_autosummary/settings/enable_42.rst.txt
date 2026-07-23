@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_42:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_42
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`inspector <inspector>`   Inspect mesh and case data.
+
+============================   ===========================
+

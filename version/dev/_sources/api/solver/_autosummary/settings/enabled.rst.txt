@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================================
+
+Parent                                                                                     Summary
+
+============================================   ===================================================
+:ref:`boil_adv_settings <boil_adv_settings>`   Semi Mechanistic Model advanced boiling parameters.
+
+============================================   ===================================================
+

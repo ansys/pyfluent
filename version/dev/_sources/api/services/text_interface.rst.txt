@@ -1,0 +1,12 @@
+.. _ref_text_interface:
+
+Text interface
+==============
+
+.. automodule:: ansys.fluent.core.services.text_interface
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__
+    :autosummary:

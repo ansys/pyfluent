@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surf_base_name:
+
+surf_base_name
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.surf_base_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =====================
+
+Parent                                                     Summary
+
+==========================================   =====================
+:ref:`external_surface <external_surface>`       External Surface.
+
+==========================================   =====================
+

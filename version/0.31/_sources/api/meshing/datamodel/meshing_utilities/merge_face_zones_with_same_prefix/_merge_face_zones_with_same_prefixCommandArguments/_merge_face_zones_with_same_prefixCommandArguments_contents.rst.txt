@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_merge_face_zones_with_same_prefix__merge_face_zones_with_same_prefixCommandArguments:
+
+_merge_face_zones_with_same_prefixCommandArguments
+==================================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing_utilities.Root.merge_face_zones_with_same_prefix._merge_face_zones_with_same_prefixCommandArguments
+   :members: _prefix
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

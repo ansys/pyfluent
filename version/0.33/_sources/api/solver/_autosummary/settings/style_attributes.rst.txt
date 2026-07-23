@@ -1,0 +1,66 @@
+:orphan:
+
+.. _style_attributes:
+
+style_attributes
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.style_attributes
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==============================================
+
+Attribute                                                                             Summary
+
+============================================   ==============================================
+:ref:`style <style_2>`                                                                 Style.
+
+:ref:`line_width <line_width_1>`                                                  Line Width.
+
+:ref:`space_factor <space_factor>`                                            Spacing Factor.
+
+:ref:`scale <scale_6>`                                                                 Scale.
+
+:ref:`width <width_1>`                                                                 Width.
+
+:ref:`marker_size <marker_size_2>`                                               Marker Size.
+
+:ref:`sphere_size <sphere_size_1>`                                           Sphere Diameter.
+
+:ref:`sphere_detail_lod <sphere_detail_lod>`                                   Sphere Detail.
+
+:ref:`constant <constant_1>`                       If Constant Diameter or Variable Diameter.
+
+:ref:`diameter <diameter_3>`                                                 Sphere Diameter.
+
+:ref:`size_by <size_by>`                                      Size by field for Sphere Style.
+
+:ref:`sphere_scale <sphere_scale>`                                              Sphere Scale.
+
+:ref:`sphere_lod <sphere_lod_1>`                                               Sphere Detail.
+
+:ref:`field <field_6>`                                    Twist By Field variable for Ribbon.
+
+:ref:`scale_factor <scale_factor>`                                              Scale Factor.
+
+:ref:`range_sphere <range_sphere>`                          Specifies Range for Sphere Style.
+
+:ref:`range_ribbon <range_ribbon>`                          Specifies Range for Ribbon Style.
+
+============================================   ==============================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`pathline_child <pathline_child>`                         'child_object_type' of pathline.
+
+:ref:`particle_track_child <particle_track_child>`       'child_object_type' of particle_track.
+
+==================================================   ==========================================
+

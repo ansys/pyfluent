@@ -1,0 +1,40 @@
+:orphan:
+
+.. _copy_materials:
+
+copy_materials
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.copy_materials
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   =================================================================================================
+
+Argument                                                                                                                               Summary
+
+==========================================   =================================================================================================
+:ref:`database_type <database_type>`                                                                                        Material database.
+
+:ref:`user_db_name <user_db_name_1>`                                                                               User-defined database name.
+
+:ref:`material_type <material_type>`                                                                      Material type to copy from database.
+
+:ref:`copy_by_formula <copy_by_formula_1>`   Deprecated placeholder kept for backward compatibility with the legacy `form?` argument; ignored.
+
+:ref:`material_names <material_names>`                                                               The material names to copy from database.
+
+==========================================   =================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ===================================================================
+
+Parent                                                                                   Summary
+
+==========================   ===================================================================
+:ref:`database <database>`   Backward-compatibility namespace for legacy database command paths.
+
+==========================   ===================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pressure_reconstruction_generic:
+
+pressure_reconstruction_generic
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pressure_reconstruction_generic
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================================================
+
+Parent                                                                                   Summary
+
+==========================================   ===================================================
+:ref:`gradient_options <gradient_options>`   Expert options for gradient reconstruction schemes.
+
+==========================================   ===================================================
+

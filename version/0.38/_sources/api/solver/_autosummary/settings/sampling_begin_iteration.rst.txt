@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sampling_begin_iteration:
+
+sampling_begin_iteration
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.sampling_begin_iteration
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ==============================
+
+Parent                                      Summary
+
+==================   ==============================
+:ref:`dsmc <dsmc>`       Enable/disable dsmc model.
+
+==================   ==============================
+

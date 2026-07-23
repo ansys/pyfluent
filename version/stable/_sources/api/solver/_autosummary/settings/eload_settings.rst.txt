@@ -1,0 +1,54 @@
+:orphan:
+
+.. _eload_settings:
+
+eload_settings
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.eload_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =======================================
+
+Attribute                                                                          Summary
+
+================================================   =======================================
+:ref:`nominal_capacity <nominal_capacity>`                       Battery nominal capacity.
+
+:ref:`eload_type <eload_type>`                                                 Eload type.
+
+:ref:`crate_value <crate_value>`                                       System c-rate type.
+
+:ref:`current_value <current_value>`                                 System current value.
+
+:ref:`voltage_value <voltage_value>`                                 System voltage value.
+
+:ref:`power_value <power_value>`                                       System power value.
+
+:ref:`external_resistance <external_resistance>`                  System resistance value.
+
+:ref:`profile_type <profile_type>`                                     Eload profile type.
+
+:ref:`profile_file <profile_file>`                                      Profile file name.
+
+:ref:`udf_profile_name <udf_profile_name>`                               Profile udf name.
+
+:ref:`fast_charging_table <fast_charging_table>`                      Fast charging table.
+
+:ref:`monitor_names <monitor_names_1>`                 Pick temperature report definition.
+
+================================================   =======================================
+
+.. rubric:: Included in:
+
+========================================   ================================
+
+Parent                                                              Summary
+
+========================================   ================================
+:ref:`eload_condition <eload_condition>`       Up electric load conditions.
+
+========================================   ================================
+

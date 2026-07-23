@@ -1,0 +1,21 @@
+:orphan:
+
+.. _farfield_effect:
+
+farfield_effect
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.farfield_effect
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`options_25 <options_25>`   Sensitivity analysis report options.
+
+==============================   ====================================
+

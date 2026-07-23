@@ -1,0 +1,13 @@
+.. _ref_solver_workflow:
+
+Solver workflow
+===============
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :glob:
+
+    datamodel/solver_workflow/*/*_contents
+
+Please follow the tree to access the APIs under this section.

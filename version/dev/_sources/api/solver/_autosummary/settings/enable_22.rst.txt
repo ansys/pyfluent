@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_22:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_22
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==================================================================================================
+
+Parent                                                                                                                                                Summary
+
+========================================================   ==================================================================================================
+:ref:`set_fast_mesh_smoothing <set_fast_mesh_smoothing>`   Enable/disable fast mesh smoothing for periodic displacements (only available in Prescribed mode).
+
+========================================================   ==================================================================================================
+

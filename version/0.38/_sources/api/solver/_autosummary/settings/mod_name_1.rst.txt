@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mod_name_1:
+
+mod_name
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mod_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===============================================
+
+Parent                                                                 Summary
+
+============================   ===============================================
+:ref:`disable_1 <disable_1>`       Disable a single defined case modification.
+
+============================   ===============================================
+

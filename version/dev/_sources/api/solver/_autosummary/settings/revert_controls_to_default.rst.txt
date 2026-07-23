@@ -1,0 +1,21 @@
+:orphan:
+
+.. _revert_controls_to_default:
+
+revert_controls_to_default
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.revert_controls_to_default
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`advanced_options <advanced_options>`   Advanced and expert controls for the gap model.
+
+==========================================   ===============================================
+

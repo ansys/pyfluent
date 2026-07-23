@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_velocity_1:
+
+x_velocity
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.x_velocity_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ========================================================================
+
+Parent                                                                                        Summary
+
+==========================   ========================================================================
+:ref:`gap_flow <gap_flow>`   Prescribed gap velocity components for the Gap Flow reduced-order model.
+
+==========================   ========================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _k_omega_low_re_correction:
+
+k_omega_low_re_correction
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.k_omega_low_re_correction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==========================
+
+Parent                                        Summary
+
+========================   ==========================
+:ref:`k_omega <k_omega>`       K-omega model options.
+
+========================   ==========================
+

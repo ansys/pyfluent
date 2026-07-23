@@ -1,0 +1,43 @@
+:orphan:
+
+.. _inlet_specification:
+
+inlet_specification
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inlet_specification
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ======================================
+
+Parent                                                                                  Summary
+
+======================================================   ======================================
+:ref:`inlet_vent_child <inlet_vent_child>`                   'child_object_type' of inlet_vent.
+
+:ref:`phase_9_child <phase_9_child>`                              'child_object_type' of phase.
+
+:ref:`intake_fan_child <intake_fan_child>`                   'child_object_type' of intake_fan.
+
+:ref:`phase_10_child <phase_10_child>`                            'child_object_type' of phase.
+
+:ref:`pressure_inlet_child <pressure_inlet_child>`       'child_object_type' of pressure_inlet.
+
+:ref:`phase_22_child <phase_22_child>`                            'child_object_type' of phase.
+
+:ref:`inlet_vent_1_child <inlet_vent_1_child>`               'child_object_type' of inlet_vent.
+
+:ref:`phase_33_child <phase_33_child>`                            'child_object_type' of phase.
+
+:ref:`intake_fan_1_child <intake_fan_1_child>`               'child_object_type' of intake_fan.
+
+:ref:`phase_34_child <phase_34_child>`                            'child_object_type' of phase.
+
+:ref:`pressure_inlet_1_child <pressure_inlet_1_child>`   'child_object_type' of pressure_inlet.
+
+:ref:`phase_46_child <phase_46_child>`                            'child_object_type' of phase.
+
+======================================================   ======================================
+

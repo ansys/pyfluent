@@ -1,0 +1,25 @@
+:orphan:
+
+.. _surface_4:
+
+surface
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.surface_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==============================================================================
+
+Parent                                                                                                                    Summary
+
+================================================   ==============================================================================
+:ref:`surface_cells_child <surface_cells_child>`                                            'child_object_type' of surface_cells.
+
+:ref:`circum_avg_axial <circum_avg_axial>`             Compute iso-axial band surfaces and plot data vs axial coordinate on them.
+
+:ref:`circum_avg_radial <circum_avg_radial>`                    Compute iso-radial band surfaces and plot data vs radius on them.
+
+================================================   ==============================================================================
+

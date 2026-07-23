@@ -1,0 +1,23 @@
+:orphan:
+
+.. _spring_stiffness:
+
+spring_stiffness
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.spring_stiffness
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`one_dof_translation <one_dof_translation>`       'one_dof_translation' child.
+
+:ref:`one_dof_rotation <one_dof_rotation>`                'one_dof_rotation' child.
+
+================================================   ================================
+

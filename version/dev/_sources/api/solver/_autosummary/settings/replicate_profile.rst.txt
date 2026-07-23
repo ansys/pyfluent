@@ -1,0 +1,52 @@
+:orphan:
+
+.. _replicate_profile:
+
+replicate_profile
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.replicate_profile
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ============================================
+
+Attribute                                                                             Summary
+
+==============================================   ============================================
+:ref:`profile_name <profile_name_1>`               Name of the original profile to replicate.
+
+:ref:`new_profile_name <new_profile_name>`       Base name for the newly replicated profiles.
+
+:ref:`number_of_fields <number_of_fields>`                            Count of field entries.
+
+:ref:`use_auto_fill <use_auto_fill>`                         Auto fill for profile replicate.
+
+:ref:`copy_to_360 <copy_to_360>`                               Replicate to full 360 degrees.
+
+:ref:`number_of_copies <number_of_copies>`                                  Number of copies.
+
+:ref:`sectors_in_360 <sectors_in_360>`                                  Total sectors in 360.
+
+:ref:`sectors_in_profile <sectors_in_profile>`                            Sectors in profile.
+
+:ref:`include_sector_tag <include_sector_tag>`                            Include sector tag.
+
+:ref:`rotation_axis <rotation_axis_1>`                                  Rotation axis vector.
+
+:ref:`field_entries <field_entries>`                   List of field entries for replication.
+
+==============================================   ============================================
+
+.. rubric:: Included in:
+
+==========================   =======================
+
+Parent                                       Summary
+
+==========================   =======================
+:ref:`profiles <profiles>`   Profile display object.
+
+==========================   =======================
+

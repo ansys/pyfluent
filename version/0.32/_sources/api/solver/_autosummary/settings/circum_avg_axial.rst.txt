@@ -1,0 +1,42 @@
+:orphan:
+
+.. _circum_avg_axial:
+
+circum_avg_axial
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.circum_avg_axial
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   ================================================================
+
+Argument                                                                                              Summary
+
+==========================================   ================================================================
+:ref:`field <field_2>`                                                                    The field variable.
+
+:ref:`surface <surface_4>`                                                                           Surface.
+
+:ref:`number_of_bands <number_of_bands_2>`       The number of divisions of the field variable to be plotted.
+
+:ref:`method <method_15>`                                              The method you want to use to compute.
+
+:ref:`file_name <file_name_21>`                                        Type in the desired file name to save.
+
+:ref:`order_point <order_point>`                                     Specifies whether to reorder the points.
+
+==========================================   ================================================================
+
+.. rubric:: Included in:
+
+======================   =======================================================================================================================
+
+Parent                                                                                                                                   Summary
+
+======================   =======================================================================================================================
+:ref:`plot_4 <plot_4>`       Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+======================   =======================================================================================================================
+

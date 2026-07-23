@@ -1,0 +1,23 @@
+:orphan:
+
+.. _zones_6:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zones_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ================================================================
+
+Parent                                                                                              Summary
+
+========================================   ================================================================
+:ref:`data_sets_child <data_sets_child>`                                  'child_object_type' of data_sets.
+
+:ref:`histogram <histogram>`               Provides access to create new and edit existing histogram plots.
+
+========================================   ================================================================
+

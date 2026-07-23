@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_5:
+
+x
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.x_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ====================
+
+Parent                                      Summary
+
+============================   ====================
+:ref:`gravity_1 <gravity_1>`       'gravity' child.
+
+============================   ====================
+

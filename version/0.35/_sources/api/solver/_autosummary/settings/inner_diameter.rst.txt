@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inner_diameter:
+
+inner_diameter
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.inner_diameter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

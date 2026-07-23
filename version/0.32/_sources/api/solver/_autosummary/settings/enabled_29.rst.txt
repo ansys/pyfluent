@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_29:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ================================
+
+Parent                                                              Summary
+
+========================================   ================================
+:ref:`cell_clustering <cell_clustering>`       Cell clustering information.
+
+========================================   ================================
+

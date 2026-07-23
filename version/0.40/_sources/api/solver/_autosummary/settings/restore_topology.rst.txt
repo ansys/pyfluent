@@ -1,0 +1,32 @@
+:orphan:
+
+.. _restore_topology:
+
+restore_topology
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.restore_topology
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   ===========================
+
+Argument                                   Summary
+
+====================   ===========================
+:ref:`state <state>`       Physics topology state.
+
+====================   ===========================
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`physics_1 <physics_1>`       UTL physics definitions.
+
+============================   ============================
+

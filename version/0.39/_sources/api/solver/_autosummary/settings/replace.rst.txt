@@ -1,0 +1,34 @@
+:orphan:
+
+.. _replace:
+
+replace
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.replace
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   ===========================================================================
+
+Argument                                                                                                Summary
+
+=================================   ===========================================================================
+:ref:`file_name <file_name_1_20>`              Specifies the mesh file to use when replacing the existing mesh.
+
+:ref:`zones <zones>`                    Enable/disable data interpolation across zones when replacing the mesh.
+
+=================================   ===========================================================================
+
+.. rubric:: Included in:
+
+==================   ==========================================================================================================
+
+Parent                                                                                                                  Summary
+
+==================   ==========================================================================================================
+:ref:`mesh <mesh>`       Provides access to mesh operations such as generation, transformation, repair, import/export and more.
+
+==================   ==========================================================================================================
+

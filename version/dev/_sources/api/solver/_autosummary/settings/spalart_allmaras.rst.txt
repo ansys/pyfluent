@@ -1,0 +1,34 @@
+:orphan:
+
+.. _spalart_allmaras:
+
+spalart_allmaras
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.spalart_allmaras
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   =====================================================================
+
+Attribute                                                                                            Summary
+
+====================================   =====================================================================
+:ref:`production <production>`         Enable/disable strain/vorticity production in Spalart-Allmaras model.
+
+:ref:`coefficients <coefficients_2>`                                    Spalart-Allmaras model coefficients.
+
+====================================   =====================================================================
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`turbulence <turbulence>`   Viscous object.
+
+==============================   ===============
+

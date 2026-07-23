@@ -1,0 +1,47 @@
+:orphan:
+
+.. _contact_resistance_locations:
+
+contact_resistance_locations
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.contact_resistance_locations
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   ==========================================
+
+Method                                                                            Summary
+
+============================================   ==========================================
+:ref:`create <create_3>`                           Create Resistances for physics region.
+
+:ref:`delete <delete>`                                           Delete selected objects.
+
+:ref:`rename <rename>`                                                 Rename the object.
+
+:ref:`list_1 <list_1>`                                     List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`        List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                             Create a copy of the object.
+
+============================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`contact_resistance_locations_child <contact_resistance_locations_child>`
+
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`advanced_models <advanced_models>`       Advanced model options.
+
+========================================   ===========================
+

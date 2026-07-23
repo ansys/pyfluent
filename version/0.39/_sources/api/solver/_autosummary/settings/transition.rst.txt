@@ -1,0 +1,60 @@
+:orphan:
+
+.. _transition:
+
+transition
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.transition
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   ===============================================================================
+
+Attribute                                                                                                                                                    Summary
+
+==================================================================================   ===============================================================================
+:ref:`crossflow_transition <crossflow_transition>`                                       Enable/disable crossflow transition for the intermittency transition model.
+
+:ref:`critical_reynolds_number_correlation <critical_reynolds_number_correlation>`                                The critical Reynolds number correlation function.
+
+:ref:`clambda_scale <clambda_scale>`                                                                       The algebraic transition model coefficient CLAMBDA_SCALE.
+
+:ref:`capg_hightu <capg_hightu>`                                                                             The algebraic transition model coefficient CAPG_HIGHTU.
+
+:ref:`cfpg_hightu <cfpg_hightu>`                                                                             The algebraic transition model coefficient CFPG_HIGHTU.
+
+:ref:`capg_lowtu <capg_lowtu>`                                                                                The algebraic transition model coefficient CAPG_LOWTU.
+
+:ref:`cfpg_lowtu <cfpg_lowtu>`                                                                                The algebraic transition model coefficient CFPG_LOWTU.
+
+:ref:`ctu_hightu <ctu_hightu>`                                                                                The algebraic transition model coefficient CTU_HIGHTU.
+
+:ref:`ctu_lowtu <ctu_lowtu>`                                                                                   The algebraic transition model coefficient CTU_LOWTU.
+
+:ref:`rec_max <rec_max>`                                                                                         The algebraic transition model coefficient REC_MAX.
+
+:ref:`rec_c1 <rec_c1>`                                                                                            The algebraic transition model coefficient REC_C1.
+
+:ref:`rec_c2 <rec_c2>`                                                                                            The algebraic transition model coefficient REC_C2.
+
+:ref:`cbubble_c1 <cbubble_c1>`                                                                                The algebraic transition model coefficient CBUBBLE_C1.
+
+:ref:`cbubble_c2 <cbubble_c2>`                                                                                The algebraic transition model coefficient CBUBBLE_C2.
+
+:ref:`rv1_switch <rv1_switch>`                                                                                The algebraic transition model coefficient RV1_SWITCH.
+
+==================================================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+========================   ===================
+
+Parent                                 Summary
+
+========================   ===================
+:ref:`viscous <viscous>`       Viscous object.
+
+========================   ===================
+

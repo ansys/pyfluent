@@ -1,0 +1,70 @@
+:orphan:
+
+.. _combusting_particle_child:
+
+combusting_particle_child
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.combusting_particle_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ======================================================
+
+Attribute                                                                                                               Summary
+
+======================================================================   ======================================================
+:ref:`name <name_8>`                                                                                             Material name.
+
+:ref:`chemical_formula <chemical_formula>`                                                           Material chemical formula.
+
+:ref:`density <density_7>`                                                                          Material property: density.
+
+:ref:`specific_heat <specific_heat_3>`                                                        Material property: specific-heat.
+
+:ref:`thermal_conductivity <thermal_conductivity_4>`                                   Material property: thermal-conductivity.
+
+:ref:`latent_heat <latent_heat_1>`                                                              Material property: latent-heat.
+
+:ref:`volatile_fraction <volatile_fraction>`                                              Material property: volatile-fraction.
+
+:ref:`combustible_fraction <combustible_fraction>`                                     Material property: combustible-fraction.
+
+:ref:`swelling_coefficient <swelling_coefficient>`                                     Material property: swelling-coefficient.
+
+:ref:`burn_stoichiometry <burn_stoichiometry>`                                           Material property: burn-stoichiometry.
+
+:ref:`binary_diffusivity <binary_diffusivity_2>`                                         Material property: binary-diffusivity.
+
+:ref:`diffusivity_reference_pressure <diffusivity_reference_pressure>`       Material property: diffusivity-reference-pressure.
+
+:ref:`vaporization_temperature <vaporization_temperature>`                         Material property: vaporization-temperature.
+
+:ref:`thermophoretic_co <thermophoretic_co>`                                              Material property: thermophoretic-co.
+
+:ref:`burn_hreact <burn_hreact>`                                                                Material property: burn-hreact.
+
+:ref:`burn_hreact_fraction <burn_hreact_fraction>`                                     Material property: burn-hreact-fraction.
+
+:ref:`devolatilization_model <devolatilization_model>`                               Material property: devolatilization-model.
+
+:ref:`combustion_model <combustion_model>`                                                 Material property: combustion-model.
+
+:ref:`scattering_factor <scattering_factor_1>`                                            Material property: scattering-factor.
+
+:ref:`emissivity <emissivity_1>`                                                                 Material property: emissivity.
+
+======================================================================   ======================================================
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`combusting_particle <combusting_particle>`       'combusting_particle' child.
+
+================================================   ================================
+

@@ -1,0 +1,48 @@
+:orphan:
+
+.. _zonal_models:
+
+zonal_models
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.zonal_models
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ======================================
+
+Attribute                                                                                 Summary
+
+========================================================   ======================================
+:ref:`zonal_models <zonal_models_1>`                                                Zonal Models.
+
+:ref:`zonal_flow <zonal_flow>`                                                        Zonal Flow.
+
+:ref:`zonal_flow_spec <zonal_flow_spec>`                       Pressure-Velocity Coupling Scheme.
+
+:ref:`zonal_pseudo_time_spec <zonal_pseudo_time_spec>`                        Pseudo Time Method.
+
+:ref:`zonal_time_advancement <zonal_time_advancement>`                    Zonal Time Advancement.
+
+:ref:`zonal_physical_dt_ratio <zonal_physical_dt_ratio>`             Time Step Coarsening Factor.
+
+========================================================   ======================================
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`fluid_1_child <fluid_1_child>`       'child_object_type' of fluid.
+
+:ref:`phase_child <phase_child>`           'child_object_type' of phase.
+
+:ref:`fluid_2_child <fluid_2_child>`       'child_object_type' of fluid.
+
+:ref:`phase_2_child <phase_2_child>`       'child_object_type' of phase.
+
+====================================   =================================
+

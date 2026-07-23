@@ -1,0 +1,34 @@
+:orphan:
+
+.. _result_graphics:
+
+result_graphics
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.result_graphics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =======================================================
+
+Attribute                                                                        Summary
+
+==============================   =======================================================
+:ref:`prefix <prefix_2>`                Prefix used for generated graphics object names.
+
+:ref:`overwrite <overwrite_1>`   Overwrite existing graphics objects when names collide.
+
+==============================   =======================================================
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`automation <automation>`   Run sensitivity-analysis reports and result graphics.
+
+==============================   =====================================================
+

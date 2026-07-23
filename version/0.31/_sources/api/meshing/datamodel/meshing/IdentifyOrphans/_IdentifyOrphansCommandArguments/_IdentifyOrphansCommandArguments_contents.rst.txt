@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_IdentifyOrphans__IdentifyOrphansCommandArguments:
+
+_IdentifyOrphansCommandArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.IdentifyOrphans._IdentifyOrphansCommandArguments
+   :members: _CheckOversetInterfaceIntersection, _DonorPriorityMethod, _EnableGridPriority, _NumberOfOrphans, _ObjectSelectionList, _OldRegionNameList, _OldRegionSizeList, _OverlapBoundaries, _RegionNameList, _RegionSizeList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,42 @@
+:orphan:
+
+.. _swirl_child:
+
+swirl_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.swirl_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =============================
+
+Attribute                                                Summary
+
+================================   =============================
+:ref:`name <name_5>`                         Name of the object.
+
+:ref:`fluid_zones <fluid_zones>`           Fluid zone name list.
+
+:ref:`location <location_3>`                         The object.
+
+:ref:`center <center_3>`               Rotation center location.
+
+:ref:`axis <axis_10>`                    Rotation axis location.
+
+:ref:`normalized <normalized>`                 Normalized swirl.
+
+================================   =============================
+
+.. rubric:: Included in:
+
+====================   =================================
+
+Parent                                           Summary
+
+====================   =================================
+:ref:`swirl <swirl>`       Swirl observable definitions.
+
+====================   =================================
+

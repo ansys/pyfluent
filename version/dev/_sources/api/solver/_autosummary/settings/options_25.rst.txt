@@ -1,0 +1,42 @@
+:orphan:
+
+.. _options_25:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.options_25
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   ========================================================
+
+Attribute                                                                                                         Summary
+
+==============================================================   ========================================================
+:ref:`sensitivity_plot <sensitivity_plot>`                                            Generate surface sensitivity plots.
+
+:ref:`boundary_report <boundary_report>`                                            Generate boundary sensitivity report.
+
+:ref:`farfield_effect <farfield_effect>`                                   Evaluate farfield-distance sensitivity effect.
+
+:ref:`flow_residual_error <flow_residual_error>`                 Estimate and plot observable error due to flow residual.
+
+:ref:`mesh_size_error <mesh_size_error>`                                      Plot goal-based mesh size error estimation.
+
+:ref:`geko_parameter_sensitivity <geko_parameter_sensitivity>`          Generate GEKO model parameter sensitivity report.
+
+==============================================================   ========================================================
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`automation <automation>`   Run sensitivity-analysis reports and result graphics.
+
+==============================   =====================================================
+

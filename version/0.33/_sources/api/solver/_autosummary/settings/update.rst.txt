@@ -1,0 +1,21 @@
+:orphan:
+
+.. _update:
+
+update
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.update
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================================================
+
+Parent                                                                      Summary
+
+================================   ================================================
+:ref:`tolerance_2 <tolerance_2>`       Specification of mapped interface tolerance.
+
+================================   ================================================
+

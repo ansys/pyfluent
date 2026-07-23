@@ -1,0 +1,34 @@
+:orphan:
+
+.. _vaporization_limiting_factors:
+
+vaporization_limiting_factors
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.vaporization_limiting_factors
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================   ===========================================================================================================
+
+Attribute                                                                                                                Summary
+
+==================   ===========================================================================================================
+:ref:`mass <mass>`       The fractional change of particle mass above which coupled heat and mass transfer solution is enforced.
+
+:ref:`heat <heat>`       The fractional change of particle heat above which coupled heat and mass transfer solution is enforced.
+
+==================   ===========================================================================================================
+
+.. rubric:: Included in:
+
+==============================================   =======================================================================================================================================
+
+Parent                                                                                                                                                                           Summary
+
+==============================================   =======================================================================================================================================
+:ref:`heat_mass_exchange <heat_mass_exchange>`       Settings controlling the modelling and numerical solution of heat and mass exchange between the particles and the continuous phase.
+
+==============================================   =======================================================================================================================================
+

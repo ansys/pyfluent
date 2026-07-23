@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iteration_sampling_type:
+
+iteration_sampling_type
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.iteration_sampling_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

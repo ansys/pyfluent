@@ -1,0 +1,49 @@
+:orphan:
+
+.. _porosity_models:
+
+porosity_models
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.porosity_models
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   =================================================
+
+Method                                                                                 Summary
+
+==========================================   =================================================
+:ref:`create <create>`                       Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+:ref:`read_from_file <read_from_file>`             Read core porosity models from a .hxc file.
+
+==========================================   =================================================
+
+.. rubric:: Named object type
+
+:ref:`porosity_models_child <porosity_models_child>`
+
+
+.. rubric:: Included in:
+
+================================================   ==========================
+
+Parent                                                                Summary
+
+================================================   ==========================
+:ref:`core_porosity_model <core_porosity_model>`   Core porosity model group.
+
+================================================   ==========================
+

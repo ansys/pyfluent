@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_forced_motion:
+
+set_forced_motion
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_forced_motion
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=========================   ================================
+
+Argument                                             Summary
+
+=========================   ================================
+:ref:`enable <enable_23>`   Enable or disable forced motion.
+
+=========================   ================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

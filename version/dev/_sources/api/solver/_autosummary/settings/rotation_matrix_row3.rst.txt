@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rotation_matrix_row3:
+
+rotation_matrix_row3
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rotation_matrix_row3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==================================================
+
+Parent                                                                              Summary
+
+======================================   ==================================================
+:ref:`orient_profile <orient_profile>`   User-configurable settings for orienting profiles.
+
+======================================   ==================================================
+

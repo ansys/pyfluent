@@ -1,0 +1,34 @@
+:orphan:
+
+.. _postprocessing:
+
+postprocessing
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.postprocessing
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==================================
+
+Attribute                                                 Summary
+
+============================   ==================================
+:ref:`options <options_24>`    The postprocessing options object.
+
+:ref:`reporting <reporting>`            Adjoint reporting object.
+
+============================   ==================================
+
+.. rubric:: Included in:
+
+==================================================   ============================
+
+Parent                                                                    Summary
+
+==================================================   ============================
+:ref:`sensitivity_analysis <sensitivity_analysis>`   Sensitivity analysis object.
+
+==================================================   ============================
+

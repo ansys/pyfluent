@@ -1,0 +1,23 @@
+:orphan:
+
+.. _file_name_12:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==========================================================
+
+Parent                                                                                    Summary
+
+====================================   ==========================================================
+:ref:`write_table <write_table>`                Write heat transfer table to a .tab or .txt file.
+
+:ref:`write_table_1 <write_table_1>`   Write velocity-effectiveness table to a .tab or .txt file.
+
+====================================   ==========================================================
+

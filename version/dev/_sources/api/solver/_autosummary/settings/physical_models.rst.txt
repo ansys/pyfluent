@@ -1,0 +1,50 @@
+:orphan:
+
+.. _physical_models:
+
+physical_models
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.physical_models
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================================   ====================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                                                       Summary
+
+================================================================================================   ====================================================================================================================================================================================================================
+:ref:`particle_radiation_enabled <particle_radiation_enabled>`                                                                                                                                                                                           Enables interaction between particles and the radiation model.
+
+:ref:`particle_forces <particle_forces>`                                                           Configures and enables forces acting on particles. Force models are critical in flows with strong gradients, ~%shear, buoyancy, or temperature differences where secondary forces significantly affect trajectories.
+
+:ref:`erosion_accretion_enabled <erosion_accretion_enabled>`                                                                                                                                                                                      Enables modeling of wall erosion or accretion due to particle impact.
+
+:ref:`erosion_accretion_rate_accumulation_enabled <erosion_accretion_rate_accumulation_enabled>`                                                                                                                                                 Accumulates erosion and accretion rates over multiple tracking passes.
+
+:ref:`pressure_dependent_boiling <pressure_dependent_boiling>`                                                                                                                                                                                               For pressure-dependent boiling, the boiling temperature is
+
+:ref:`temperature_dependent_latent_heat <temperature_dependent_latent_heat>`                                                                                                                                                                   This option includes the droplet temperature effects on the latent heat,
+
+:ref:`twoway_turb_coupl_enabled <twoway_turb_coupl_enabled>`                                                                                                                                                                                           Enables modulation of carrier-phase turbulence due to particles.
+
+:ref:`secondary_breakup_enabled <secondary_breakup_enabled>`                                                                                                                    Enables droplet breakup due to aerodynamic forces. Essential in high Weber-number flows where aerodynamic forces can fragment droplets.
+
+:ref:`volume_displacement <volume_displacement>`                                                                                      Configures fluid displacement effects due to particle volume. Relevant for dense particle loading where particle volume fraction affects fluid continuity and momentum equations.
+
+:ref:`wall_film <wall_film>`                                                                                                                                                                                                      Controls physical modeling and numerical treatment of the Lagrangian thin-film model.
+
+================================================================================================   ====================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   =============================================================================================================
+
+Parent                                                                                                                                         Summary
+
+======================================   =============================================================================================================
+:ref:`discrete_phase <discrete_phase>`   Configures the Discrete Phase Model (DPM) to track particles, droplets, or bubbles in a Lagrangian framework.
+
+======================================   =============================================================================================================
+

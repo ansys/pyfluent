@@ -1,0 +1,61 @@
+:orphan:
+
+.. _gap_model:
+
+gap_model
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gap_model
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ==============================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                           Summary
+
+==========================================   ==============================================================================================================================================================================================================================
+:ref:`enable <enable_25>`                    Enable the gap model (narrow-gap model) for pressure-based segregated solver cases. The gap model provides special treatment for narrow passages in the mesh that are too thin to resolve accurately with the standard solver.
+
+:ref:`gap_regions <gap_regions>`                                                                                                                Collection of defined gap regions. Each gap region defines a narrow passage for which the solver applies special treatment.
+
+:ref:`advanced_options <advanced_options>`                                                                                                                                                                                  Advanced and expert controls for the gap model.
+
+==========================================   ==============================================================================================================================================================================================================================
+
+.. rubric:: Methods
+
+================================================   ========================================================================================================================================================================================================================================
+
+Method                                                                                                                                                                                                                                                                              Summary
+
+================================================   ========================================================================================================================================================================================================================================
+:ref:`create <create_13>`                                                                                                                                                               Create a new gap region. From PyConsole supply gap_region_name, face_zone_ids, threshold, and type.
+
+:ref:`edit <edit>`                                 Edit the settings of an existing gap region. From PyConsole, supply gap_region_name and any subset of new_name, face_zone_ids, threshold, type; fields at their sentinel (empty string, empty list, or 0.0) retain their current values.
+
+:ref:`delete <delete_4>`                                                                                                                                                                                                                                Delete a single gap region by name.
+
+:ref:`delete_all <delete_all_2>`                                                                                                                                                                                                                    Delete all of the existing gap objects.
+
+:ref:`list_gap_regions <list_gap_regions>`                                                                                                                                                                                               List all defined gap regions and their properties.
+
+:ref:`list_gap_face_zones <list_gap_face_zones>`                                                                                                                                                                              List the face zones that can be used for gap region creation.
+
+:ref:`list_gap_cell_zones <list_gap_cell_zones>`                                                                                                                                                        List the cell zones that can be used as excluded cell zones in gap region creation.
+
+:ref:`render_gap_regions <render_gap_regions>`                                                                                                                                                 Recompute gap region marks and update the gap model solution information for postprocessing.
+
+================================================   ========================================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+====================   ==============================================================================================================================
+
+Parent                                                                                                                                        Summary
+
+====================   ==============================================================================================================================
+:ref:`setup <setup>`   Provides access to all primary setup options including general settings, models, boundary conditions and solver configuration.
+
+====================   ==============================================================================================================================
+

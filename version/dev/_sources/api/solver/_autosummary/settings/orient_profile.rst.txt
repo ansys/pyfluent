@@ -1,0 +1,46 @@
+:orphan:
+
+.. _orient_profile:
+
+orient_profile
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.orient_profile
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =========================================
+
+Attribute                                                                              Summary
+
+==================================================   =========================================
+:ref:`profile_name <profile_name_2>`                   Name of the original profile to orient.
+
+:ref:`new_profile_name <new_profile_name_1>`         Base name for the newly oriented profile.
+
+:ref:`number_of_fields <number_of_fields>`                             Count of field entries.
+
+:ref:`direction_vector <direction_vector_1>`                 Direction vector for orientation.
+
+:ref:`rotation_matrix_row1 <rotation_matrix_row1>`               First row of rotation matrix.
+
+:ref:`rotation_matrix_row2 <rotation_matrix_row2>`              Second row of rotation matrix.
+
+:ref:`rotation_matrix_row3 <rotation_matrix_row3>`               Third row of rotation matrix.
+
+:ref:`field_entries <field_entries_1>`                           List of orient field entries.
+
+==================================================   =========================================
+
+.. rubric:: Included in:
+
+==========================   =======================
+
+Parent                                       Summary
+
+==========================   =======================
+:ref:`profiles <profiles>`   Profile display object.
+
+==========================   =======================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _stabilization_mode:
+
+stabilization_mode
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.stabilization_mode
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================================================
+
+Parent                                                                                                               Summary
+
+================================================   =========================================================================
+:ref:`stabilization_tools <stabilization_tools>`   Solver stabilization tools for robust convergence on poor quality meshes.
+
+================================================   =========================================================================
+

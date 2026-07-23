@@ -1,0 +1,61 @@
+:orphan:
+
+.. _reactions_1_child:
+
+reactions_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reactions_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===================================================
+
+Attribute                                                                          Summary
+
+====================================   ===================================================
+:ref:`name <name_5>`                                                   Name of the object.
+
+:ref:`butler_volmer <butler_volmer>`   Butler-Volmer kinetic parameters for this reaction.
+
+:ref:`nernst <nernst>`                       Nernst equation parameters for this reaction.
+
+====================================   ===================================================
+
+.. rubric:: Methods
+
+========================================   ======================================================
+
+Method                                                                                    Summary
+
+========================================   ======================================================
+:ref:`add_reactant <add_reactant>`                       Add a reactant species to this reaction.
+
+:ref:`add_product <add_product>`                          Add a product species to this reaction.
+
+:ref:`delete_reactant <delete_reactant>`           Delete a reactant from this reaction by index.
+
+:ref:`delete_product <delete_product>`              Delete a product from this reaction by index.
+
+:ref:`list_reactants <list_reactants>`                      List all reactants for this reaction.
+
+:ref:`list_products <list_products>`                         List all products for this reaction.
+
+:ref:`set_reactant <set_reactant>`         Modify an existing reactant in this reaction by index.
+
+:ref:`set_product <set_product>`            Modify an existing product in this reaction by index.
+
+========================================   ======================================================
+
+.. rubric:: Included in:
+
+================================   ==============================================================================================================
+
+Parent                                                                                                                                    Summary
+
+================================   ==============================================================================================================
+:ref:`reactions_1 <reactions_1>`   Manage electrochemistry reactions. Each reaction has reactants, products, Butler-Volmer and Nernst parameters.
+
+================================   ==============================================================================================================
+

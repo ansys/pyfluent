@@ -1,0 +1,36 @@
+:orphan:
+
+.. _dx:
+
+dx
+==
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.dx
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =====================================
+
+Argument                                                                 Summary
+
+========================================   =====================================
+:ref:`file_name <file_name_1>`                  The desired file name to export.
+
+:ref:`surfaces <surfaces_1>`                                            Surface.
+
+:ref:`tecplot_scalars <tecplot_scalars>`       The list of quantities to export.
+
+========================================   =====================================
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`export <export>`       Export files.
+
+======================   =================
+

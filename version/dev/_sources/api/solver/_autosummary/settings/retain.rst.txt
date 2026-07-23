@@ -1,0 +1,21 @@
+:orphan:
+
+.. _retain:
+
+retain
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.retain
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`inspector <inspector>`   Inspect mesh and case data.
+
+============================   ===========================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _outlier:
+
+outlier
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.outlier
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==================================================================================
+
+Attribute                                                                                                                 Summary
+
+============================================   ==================================================================================
+:ref:`outlier_method <outlier_method>`         Statistical outlier detection method: 0=Off, 1=IQR, 2=STD, 3=Quality Based, 4=MAD.
+
+:ref:`iqr_constant <iqr_constant>`                                           Constant multiplier for IQR-based outlier detection.
+
+:ref:`std_constant <std_constant>`                            Constant multiplier for standard deviation-based outlier detection.
+
+:ref:`mad_constant <mad_constant>`                                           Constant multiplier for MAD-based outlier detection.
+
+:ref:`controlled_limits <controlled_limits>`                        Enable controlled-limits outlier filtering during inspection.
+
+============================================   ==================================================================================
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`inspector <inspector>`   Inspect mesh and case data.
+
+============================   ===========================
+

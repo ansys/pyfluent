@@ -1,0 +1,55 @@
+:orphan:
+
+.. _gap_regions_child:
+
+gap_regions_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gap_regions_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =============================================================================================================================================
+
+Attribute                                                                                                                                                                                      Summary
+
+======================================================   =============================================================================================================================================
+:ref:`name <name_33>`                                                                                                                                                         Name of this gap region.
+
+:ref:`type <type_16>`                                                                                                              Specifies whether this gap will block or model the flow through it.
+
+:ref:`proximity_threshold <proximity_threshold_1>`       Maximum gap width for detecting and marking gap cells. Cells closer than this value to the opposing face zone are included in the gap region.
+
+:ref:`face_zone_ids <face_zone_ids>`                                                                                           Face zones that form the gap. At least two face zones must be selected.
+
+:ref:`excluded_cell_zone_ids <excluded_cell_zone_ids>`                                                                                                  Cell zones excluded from gap region detection.
+
+:ref:`flow_blocking <flow_blocking>`                                         Developer settings for the flow-blocking treatment (interpolation, viscous resistance, and boundary condition treatment).
+
+:ref:`flow_modeling <flow_modeling>`                                                                                                          Detailed settings for the selected flow-modeling method.
+
+======================================================   =============================================================================================================================================
+
+.. rubric:: Methods
+
+========================   =======================
+
+Method                                     Summary
+
+========================   =======================
+:ref:`delete <delete_5>`   Delete this gap region.
+
+========================   =======================
+
+.. rubric:: Included in:
+
+================================   ===========================================================================================================================
+
+Parent                                                                                                                                                 Summary
+
+================================   ===========================================================================================================================
+:ref:`gap_regions <gap_regions>`   Collection of defined gap regions. Each gap region defines a narrow passage for which the solver applies special treatment.
+
+================================   ===========================================================================================================================
+

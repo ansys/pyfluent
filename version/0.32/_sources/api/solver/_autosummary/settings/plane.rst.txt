@@ -1,0 +1,36 @@
+:orphan:
+
+.. _plane:
+
+plane
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.plane
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   =============================================================================================
+
+Attribute                                                                                                        Summary
+
+========================   =============================================================================================
+:ref:`point <point>`                                                                             The point on the plane.
+
+:ref:`normal <normal>`                                                                          The normal of the plane.
+
+:ref:`compute <compute>`       Compute the normal and point for a plane by entering the name / ID of a planar face zone.
+
+========================   =============================================================================================
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`primitive <primitive>`       'primitive' child.
+
+============================   ======================
+

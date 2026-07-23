@@ -1,0 +1,21 @@
+:orphan:
+
+.. _phase_id:
+
+phase_id
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_id
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================================
+
+Parent                                                                                    Summary
+
+==========================================   ====================================================
+:ref:`input_parameters <input_parameters>`       Input parameters in water chemistry calculation.
+
+==========================================   ====================================================
+

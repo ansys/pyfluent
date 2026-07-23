@@ -1,0 +1,34 @@
+:orphan:
+
+.. _nernst:
+
+nernst
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.nernst
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ================================================
+
+Attribute                                                                 Summary
+
+==============================   ================================================
+:ref:`ueq <ueq>`                                    Nernst equilibrium potential.
+
+:ref:`n_electron <n_electron>`   Number of electrons transferred in the reaction.
+
+==============================   ================================================
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`reactions_1_child <reactions_1_child>`   'child_object_type' of reactions.
+
+============================================   =================================
+

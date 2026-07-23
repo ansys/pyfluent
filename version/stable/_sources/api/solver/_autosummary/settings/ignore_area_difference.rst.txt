@@ -1,0 +1,27 @@
+:orphan:
+
+.. _ignore_area_difference:
+
+ignore_area_difference
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ignore_area_difference
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ============================================================================================================
+
+Parent                                                                                                                                                                        Summary
+
+======================================================================   ============================================================================================================
+:ref:`create_9 <create_9>`                                                                                                                                    Create mesh interfaces.
+
+:ref:`create_many_to_many_interfaces <create_many_to_many_interfaces>`                                                                                        Create mesh interfaces.
+
+:ref:`create_8 <create_8>`                                                                                                                                   Create a mesh interface.
+
+:ref:`create_manually <create_manually>`                                     Create one-to-one interfaces between two groups of boundary zones even if they do not currently overlap.
+
+======================================================================   ============================================================================================================
+

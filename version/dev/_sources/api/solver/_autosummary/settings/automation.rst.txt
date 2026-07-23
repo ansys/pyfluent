@@ -1,0 +1,51 @@
+:orphan:
+
+.. _automation:
+
+automation
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.automation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ==================================================
+
+Attribute                                                                             Summary
+
+========================================   ==================================================
+:ref:`observable <observable_2>`           Observable used when running sensitivity analysis.
+
+:ref:`solvers <solvers>`                            Required solvers before running analysis.
+
+:ref:`result_graphics <result_graphics>`              Options for generated graphics objects.
+
+:ref:`options <options_25>`                              Sensitivity analysis report options.
+
+========================================   ==================================================
+
+.. rubric:: Methods
+
+================================================================   ============================================================
+
+Method                                                                                                                  Summary
+
+================================================================   ============================================================
+:ref:`run_analysis <run_analysis>`                                        Run sensitivity analysis for the selected observable.
+
+:ref:`run_simulation_and_analysis <run_simulation_and_analysis>`   Run flow and adjoint solvers, then run sensitivity analysis.
+
+================================================================   ============================================================
+
+.. rubric:: Included in:
+
+==================================================   ============================
+
+Parent                                                                    Summary
+
+==================================================   ============================
+:ref:`sensitivity_analysis <sensitivity_analysis>`   Sensitivity analysis object.
+
+==================================================   ============================
+

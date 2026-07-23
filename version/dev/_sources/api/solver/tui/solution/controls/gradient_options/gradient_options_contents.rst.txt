@@ -1,0 +1,19 @@
+.. _ref_solver_tui_solution_controls_gradient_options:
+
+Gradient options
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.controls.gradient_options
+   :members: pressure_reconstruction_generic
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   green_gauss_node_based/green_gauss_node_based_contents
+   least_squares/least_squares_contents

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _profile_name_2:
+
+profile_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.profile_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==================================================
+
+Parent                                                                              Summary
+
+======================================   ==================================================
+:ref:`orient_profile <orient_profile>`   User-configurable settings for orienting profiles.
+
+======================================   ==================================================
+

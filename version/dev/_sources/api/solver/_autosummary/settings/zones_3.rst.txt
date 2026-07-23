@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zones_3:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zones_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==================================================
+
+Parent                                                                                        Summary
+
+================================================   ==================================================
+:ref:`add_local_tolerance <add_local_tolerance>`   Set one-to-one local tolerance for selected zones.
+
+================================================   ==================================================
+

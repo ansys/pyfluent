@@ -1,0 +1,23 @@
+:orphan:
+
+.. _value_42:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_42
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`objectives_2_child <objectives_2_child>`      'child_object_type' of objectives.
+
+:ref:`definitions_3_child <definitions_3_child>`   'child_object_type' of definitions.
+
+================================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_bounded_variant:
+
+use_bounded_variant
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.use_bounded_variant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`bounded_formulation <bounded_formulation>`   Bounded second-order formulation options.
+
+================================================   =========================================
+

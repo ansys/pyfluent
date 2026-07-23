@@ -1,0 +1,40 @@
+:orphan:
+
+.. _add_product:
+
+add_product
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.add_product
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ============================================
+
+Argument                                                                              Summary
+
+==============================================   ============================================
+:ref:`phase <phase_1>`                                         Phase of this product species.
+
+:ref:`species <species_5>`                                     Species name for this product.
+
+:ref:`stoich_coeff <stoich_coeff_1>`             Stoichiometric coefficient for this product.
+
+:ref:`rate_exponent <rate_exponent_1>`                        Rate exponent for this product.
+
+:ref:`ref_concentration <ref_concentration_1>`      Reference concentration for this product.
+
+==============================================   ============================================
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`reactions_1_child <reactions_1_child>`   'child_object_type' of reactions.
+
+============================================   =================================
+

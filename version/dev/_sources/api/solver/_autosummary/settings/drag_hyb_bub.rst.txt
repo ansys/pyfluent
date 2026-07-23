@@ -1,0 +1,21 @@
+:orphan:
+
+.. _drag_hyb_bub:
+
+drag_hyb_bub
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.drag_hyb_bub
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`drag_child <drag_child>`   'child_object_type' of drag.
+
+==============================   ============================
+

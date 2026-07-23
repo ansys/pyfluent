@@ -1,0 +1,21 @@
+:orphan:
+
+.. _species_name:
+
+species_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.species_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =============================
+
+Parent                                                                     Summary
+
+==================================================   =============================
+:ref:`fgm_scalar_transport <fgm_scalar_transport>`       Use FGM Scalar Transport.
+
+==================================================   =============================
+

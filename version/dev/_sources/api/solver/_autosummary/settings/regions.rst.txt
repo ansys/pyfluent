@@ -1,0 +1,53 @@
+:orphan:
+
+.. _regions:
+
+regions
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.regions
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ===============================================================================
+
+Method                                                                                                               Summary
+
+==========================================   ===============================================================================
+:ref:`create <create>`                                                     Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                                              Delete selected objects.
+
+:ref:`rename <rename>`                                                                                    Rename the object.
+
+:ref:`list <list_1>`                                                                          List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`                                             List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                                                Create a copy of the object.
+
+:ref:`create_surface <create_surface_1>`                Create wrapped solid region surfaces for the selected solid regions.
+
+:ref:`display <display_3>`                             Display wrapped solid region surfaces for the selected solid regions.
+
+:ref:`recreate <recreate>`                   Recreate solid regions using either one region per part or one region per body.
+
+==========================================   ===============================================================================
+
+.. rubric:: Named object type
+
+:ref:`regions_child <regions_child>`
+
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`wrapped_solid_child <wrapped_solid_child>`   'child_object_type' of wrapped_solid.
+
+================================================   =====================================
+

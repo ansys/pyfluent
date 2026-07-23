@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cw3:
+
+cw3
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cw3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`coefficients_2 <coefficients_2>`   Spalart-Allmaras model coefficients.
+
+======================================   ====================================
+

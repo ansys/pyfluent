@@ -1,0 +1,21 @@
+:orphan:
+
+.. _create_mixture_and_reaction:
+
+create_mixture_and_reaction
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_mixture_and_reaction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`water_corrosion_pre <water_corrosion_pre>`       Water corrosion preprocessing tool.
+
+================================================   =======================================
+

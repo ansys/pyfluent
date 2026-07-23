@@ -1,0 +1,21 @@
+:orphan:
+
+.. _modeling_gap_layers:
+
+modeling_gap_layers
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.modeling_gap_layers
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================================
+
+Parent                                                                              Summary
+
+==============================================   ==========================================
+:ref:`extend_gap_regions <extend_gap_regions>`   Extend gap regions for better convergence.
+
+==============================================   ==========================================
+

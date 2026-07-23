@@ -1,0 +1,21 @@
+:orphan:
+
+.. _geko_parameter_sensitivity:
+
+geko_parameter_sensitivity
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.geko_parameter_sensitivity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`options_25 <options_25>`   Sensitivity analysis report options.
+
+==============================   ====================================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _boil_adv_settings:
+
+boil_adv_settings
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.boil_adv_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================   ==================================================================
+
+Attribute                                                                                                                                     Summary
+
+================================================================================   ==================================================================
+:ref:`enabled <enabled>`                                                           Enable/disable Semi Mechanistic Model advanced boiling parameters.
+
+:ref:`mt_evap_cond_sbm_boil_method <mt_evap_cond_sbm_boil_method>`                                                   Semi Mechanistic Boiling method.
+
+:ref:`mt_evap_cond_sbm_power_coeff <mt_evap_cond_sbm_power_coeff>`                                                  Power law superposition constant.
+
+:ref:`mt_evap_cond_sbm_sphf_par <mt_evap_cond_sbm_sphf_par>`                                                  Single phase heat flux parameter group.
+
+:ref:`mt_evap_cond_sbm_ref_quant <mt_evap_cond_sbm_ref_quant>`                                                              Boiling model ref quants.
+
+:ref:`mt_evap_cond_sbm_nuchf_par <mt_evap_cond_sbm_nuchf_par>`                                           Nucleate boiling model reference quantities.
+
+:ref:`mt_evap_cond_sbm_boil_model_exp_opt <mt_evap_cond_sbm_boil_model_exp_opt>`                                        Boiling model expert options.
+
+================================================================================   ==================================================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`   Evaporation condensation group.
+
+==============================================   ===============================
+

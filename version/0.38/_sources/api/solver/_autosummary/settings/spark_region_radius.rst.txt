@@ -1,0 +1,21 @@
+:orphan:
+
+.. _spark_region_radius:
+
+spark_region_radius
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.spark_region_radius
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================================================================================
+
+Parent                                                                                                                                  Summary
+
+========================================   ====================================================================================================
+:ref:`flame_indicator <flame_indicator>`       Define cell registers and adaption settings suitable for a flame adaptive refinement simulation.
+
+========================================   ====================================================================================================
+

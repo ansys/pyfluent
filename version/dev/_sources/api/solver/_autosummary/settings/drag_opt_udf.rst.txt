@@ -1,0 +1,21 @@
+:orphan:
+
+.. _drag_opt_udf:
+
+drag_opt_udf
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.drag_opt_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`drag_child <drag_child>`   'child_object_type' of drag.
+
+==============================   ============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_corrections:
+
+max_corrections
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.max_corrections
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`nita_controls_child <nita_controls_child>`   'child_object_type' of nita_controls.
+
+================================================   =====================================
+

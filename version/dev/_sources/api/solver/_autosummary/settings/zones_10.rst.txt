@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zones_10:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zones_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =================
+
+Parent                                                 Summary
+
+==========================================   =================
+:ref:`external_surface <external_surface>`   External Surface.
+
+==========================================   =================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_43:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_43
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ==========================================================================
+
+Parent                                                                                                                      Summary
+
+======================================================   ==========================================================================
+:ref:`global_extrema_tracker <global_extrema_tracker>`   Monitor global maximum and minimum field extrema values during simulation.
+
+======================================================   ==========================================================================
+

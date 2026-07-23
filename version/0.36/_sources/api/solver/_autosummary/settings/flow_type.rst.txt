@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_type:
+
+flow_type
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.flow_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ======================================================
+
+Parent                                                                                        Summary
+
+============================================   ======================================================
+:ref:`solution_steering <solution_steering>`       Enable solution steering for density-based solver.
+
+============================================   ======================================================
+

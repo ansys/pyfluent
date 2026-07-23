@@ -1,0 +1,32 @@
+:orphan:
+
+.. _hsf_file:
+
+hsf_file
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.hsf_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   ==================
+
+Argument                                       Summary
+
+=================================   ==================
+:ref:`file_name <file_name_1_38>`       HSF file name.
+
+=================================   ==================
+
+.. rubric:: Included in:
+
+==============================   ========================================================
+
+Parent                                                                            Summary
+
+==============================   ========================================================
+:ref:`display_12 <display_12>`       Show selected graphics objects in the active window.
+
+==============================   ========================================================
+

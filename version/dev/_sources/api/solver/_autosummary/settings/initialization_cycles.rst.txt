@@ -1,0 +1,23 @@
+:orphan:
+
+.. _initialization_cycles:
+
+initialization_cycles
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.initialization_cycles
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                              Summary
+
+======================================   ==================================================================================================================================================================================================================================
+:ref:`graphics <graphics>`                                                                                             Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+:ref:`extra_settings <extra_settings>`   Apply extra settings for graphics spectral content (relaxation, initialization cycles, harmonics, frequency selection algorithm). Equivalent to ti-define-extra-settings. Recreates spectral content if critical settings changed.
+
+======================================   ==================================================================================================================================================================================================================================
+

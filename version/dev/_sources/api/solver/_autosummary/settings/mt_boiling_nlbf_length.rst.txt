@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_boiling_nlbf_length:
+
+mt_boiling_nlbf_length
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_nlbf_length
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================================
+
+Parent                                                                                  Summary
+
+========================================   ====================================================
+:ref:`mt_boiling_nlbf <mt_boiling_nlbf>`   Non-local boundary field model settings for boiling.
+
+========================================   ====================================================
+

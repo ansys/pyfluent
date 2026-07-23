@@ -1,0 +1,21 @@
+:orphan:
+
+.. _create_update_rgp_material:
+
+create_update_rgp_material
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_update_rgp_material
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==============
+
+Parent                                        Summary
+
+====================================   ==============
+:ref:`read_rgp_file <read_rgp_file>`   Read RGP file.
+
+====================================   ==============
+

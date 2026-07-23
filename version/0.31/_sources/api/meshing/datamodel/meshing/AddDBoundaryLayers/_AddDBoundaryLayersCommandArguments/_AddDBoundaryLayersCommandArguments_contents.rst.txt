@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_AddDBoundaryLayers__AddDBoundaryLayersCommandArguments:
+
+_Add2DBoundaryLayersCommandArguments
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.Add2DBoundaryLayers._Add2DBoundaryLayersCommandArguments
+   :members: _AddChild, _Addin, _BLControlName, _EdgeLabelList, _EdgeZoneList, _FaceLabelList, _FirstAspectRatio, _FirstLayerHeight, _GrowOn, _LastAspectRatio, _MaxLayerHeight, _NumberOfLayers, _OffsetMethodType, _Rate, _TransitionRatio
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _ShellBLAdvancedOptions/_ShellBLAdvancedOptions_contents

@@ -1,0 +1,47 @@
+:orphan:
+
+.. _interface_child:
+
+interface_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.interface_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ======================================
+
+Attribute                                                       Summary
+
+==============================   ======================================
+:ref:`name <name_4>`                                Name of the object.
+
+:ref:`locations <locations_2>`                     Input location name.
+
+:ref:`settings <settings_6>`         Domain name to define settings on.
+
+==============================   ======================================
+
+.. rubric:: Methods
+
+======================   ===============================================
+
+Method                                                           Summary
+
+======================   ===============================================
+:ref:`split <split_1>`       Input boundary and location names to split.
+
+======================   ===============================================
+
+.. rubric:: Included in:
+
+============================   ================
+
+Parent                                  Summary
+
+============================   ================
+:ref:`interface <interface>`       Thread-type.
+
+============================   ================
+

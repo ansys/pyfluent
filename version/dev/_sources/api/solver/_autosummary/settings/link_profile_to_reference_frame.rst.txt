@@ -1,0 +1,34 @@
+:orphan:
+
+.. _link_profile_to_reference_frame:
+
+link_profile_to_reference_frame
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.link_profile_to_reference_frame
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   =====================
+
+Argument                                                           Summary
+
+==================================================   =====================
+:ref:`profile_name <profile_name_3>`                         Profile name.
+
+:ref:`reference_frame_name <reference_frame_name>`   Reference Frame name.
+
+==================================================   =====================
+
+.. rubric:: Included in:
+
+==========================   =======================
+
+Parent                                       Summary
+
+==========================   =======================
+:ref:`profiles <profiles>`   Profile display object.
+
+==========================   =======================
+

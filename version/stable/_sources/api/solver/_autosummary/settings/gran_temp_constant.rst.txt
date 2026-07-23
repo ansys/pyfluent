@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gran_temp_constant:
+
+gran_temp_constant
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.gran_temp_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`granular_props <granular_props>`       Granular phase properties.
+
+======================================   ==============================
+

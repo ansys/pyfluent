@@ -1,0 +1,40 @@
+:orphan:
+
+.. _distorted_mesh_handling:
+
+distorted_mesh_handling
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.distorted_mesh_handling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =============================================================================
+
+Attribute                                                                                                              Summary
+
+==============================================   =============================================================================
+:ref:`enable <enable_41>`                        Enable/disable distorted mesh handling for highly skewed or degenerate cells.
+
+:ref:`grad_disc <grad_disc>`                                                 Enable gradient approximation in distorted cells.
+
+:ref:`sided_metrics <sided_metrics>`                                    Use two-sided face centroid calculation at interfaces.
+
+:ref:`consistent_metrics <consistent_metrics>`                                    Enable alternative face metrics formulation.
+
+:ref:`metrics_verbosity <metrics_verbosity>`                Verbosity level for distorted mesh handling (0=normal, 1=verbose).
+
+==============================================   =============================================================================
+
+.. rubric:: Included in:
+
+================================================   =========================================================================
+
+Parent                                                                                                               Summary
+
+================================================   =========================================================================
+:ref:`stabilization_tools <stabilization_tools>`   Solver stabilization tools for robust convergence on poor quality meshes.
+
+================================================   =========================================================================
+

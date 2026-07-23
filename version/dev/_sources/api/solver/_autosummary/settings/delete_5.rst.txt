@@ -1,0 +1,21 @@
+:orphan:
+
+.. _delete_5:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`gap_regions_child <gap_regions_child>`   'child_object_type' of gap_regions.
+
+============================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _disable_reconstruction:
+
+disable_reconstruction
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.disable_reconstruction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =========================
+
+Parent                                             Summary
+
+==============================   =========================
+:ref:`controls_1 <controls_1>`   Solution controls object.
+
+==============================   =========================
+

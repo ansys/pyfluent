@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AddBoundaryLayersForPartReplacement__AddBoundaryLayersForPartReplacementCommandArguments__FaceScope:
+
+_FaceScope
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.AddBoundaryLayersForPartReplacement._AddBoundaryLayersForPartReplacementCommandArguments._FaceScope
+   :members: _FaceScopeMeshObject, _GrowOn, _RegionsType, _TopologyList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

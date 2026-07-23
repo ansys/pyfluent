@@ -1,0 +1,34 @@
+:orphan:
+
+.. _phase_43_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.phase_43_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================================
+
+Attribute                                                                Summary
+
+============================   =================================================
+:ref:`periodic <periodic_1>`   Periodic boundary condition settings for threads.
+
+:ref:`geometry <geometry_9>`             Geometry settings for periodic threads.
+
+============================   =================================================
+
+.. rubric:: Included in:
+
+==========================   =============================================================
+
+Parent                                                                             Summary
+
+==========================   =============================================================
+:ref:`phase_43 <phase_43>`   Provides an object description for phase-specific conditions.
+
+==========================   =============================================================
+

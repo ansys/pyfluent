@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_cav_p_vap_ptl_tabular_sat_press:
+
+mt_cav_p_vap_ptl_tabular_sat_press
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_cav_p_vap_ptl_tabular_sat_press
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`mt_cav_prop <mt_cav_prop>`       Cavitation properties group.
+
+================================   ================================
+

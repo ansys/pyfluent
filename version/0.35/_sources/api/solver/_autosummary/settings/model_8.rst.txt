@@ -1,0 +1,21 @@
+:orphan:
+
+.. _model_8:
+
+model
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.model_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==========================================
+
+Parent                                                                        Summary
+
+========================================   ==========================================
+:ref:`film_separation <film_separation>`       Wall film separation model parameters.
+
+========================================   ==========================================
+

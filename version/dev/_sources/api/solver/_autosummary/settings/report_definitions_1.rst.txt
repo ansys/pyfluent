@@ -1,0 +1,51 @@
+:orphan:
+
+.. _report_definitions_1:
+
+report_definitions
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.report_definitions_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   ===============================================
+
+Method                                                                                 Summary
+
+============================================   ===============================================
+:ref:`create <create_22>`                      Create output parameter from report definition.
+
+:ref:`delete <delete>`                                                Delete selected objects.
+
+:ref:`rename <rename>`                                                      Rename the object.
+
+:ref:`list <list_1>`                                            List the names of the objects.
+
+:ref:`list_properties <list_properties_1>`               List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                  Create a copy of the object.
+
+:ref:`print_to_console <print_to_console_1>`                 Print parameter value to console.
+
+:ref:`write_to_file <write_to_file_11>`                         Write parameter value to file.
+
+============================================   ===============================================
+
+.. rubric:: Named object type
+
+:ref:`report_definitions_1_child <report_definitions_1_child>`
+
+
+.. rubric:: Included in:
+
+============================================   =============================
+
+Parent                                                               Summary
+
+============================================   =============================
+:ref:`output_parameters <output_parameters>`   The output-parameters object.
+
+============================================   =============================
+

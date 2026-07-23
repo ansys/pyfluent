@@ -1,0 +1,40 @@
+:orphan:
+
+.. _heat_transfer_list_child:
+
+heat_transfer_list_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.heat_transfer_list_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===================================
+
+Attribute                                                                              Summary
+
+========================================================   ===================================
+:ref:`ht_method <ht_method>`                                   Heat transfer method selection.
+
+:ref:`ht_constant_htc <ht_constant_htc>`                   Constant heat transfer coefficient.
+
+:ref:`ht_nusselt <ht_nusselt>`                                                 Nusselt number.
+
+:ref:`ht_udf <ht_udf>`                                                      Heat transfer udf.
+
+:ref:`ht_two_resistance_group <ht_two_resistance_group>`   Two resistance heat transfer model.
+
+========================================================   ===================================
+
+.. rubric:: Included in:
+
+==============================================   =============================================
+
+Parent                                                                                 Summary
+
+==============================================   =============================================
+:ref:`heat_transfer_list <heat_transfer_list>`   Heat transfer list: one entry per phase pair.
+
+==============================================   =============================================
+

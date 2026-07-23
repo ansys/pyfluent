@@ -1,0 +1,29 @@
+:orphan:
+
+.. _turbulence_3:
+
+turbulence
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.turbulence_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ============================================
+
+Parent                                                                                            Summary
+
+==========================================================   ============================================
+:ref:`settings_9 <settings_9>`                                         Domain name to define settings on.
+
+:ref:`phase_11_child <phase_11_child>`                                      'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_1_child <mass_flow_outlet_1_child>`       'child_object_type' of mass_flow_outlet.
+
+:ref:`mass_flow_outlet_2_child <mass_flow_outlet_2_child>`       'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_36_child <phase_36_child>`                                      'child_object_type' of phase.
+
+==========================================================   ============================================
+

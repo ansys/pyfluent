@@ -1,0 +1,40 @@
+:orphan:
+
+.. _add_reactant:
+
+add_reactant
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.add_reactant
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   =============================================
+
+Argument                                                                             Summary
+
+============================================   =============================================
+:ref:`phase <phase>`                                         Phase of this reactant species.
+
+:ref:`species <species_4>`                                   Species name for this reactant.
+
+:ref:`stoich_coeff <stoich_coeff>`             Stoichiometric coefficient for this reactant.
+
+:ref:`rate_exponent <rate_exponent>`                        Rate exponent for this reactant.
+
+:ref:`ref_concentration <ref_concentration>`      Reference concentration for this reactant.
+
+============================================   =============================================
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`reactions_1_child <reactions_1_child>`   'child_object_type' of reactions.
+
+============================================   =================================
+

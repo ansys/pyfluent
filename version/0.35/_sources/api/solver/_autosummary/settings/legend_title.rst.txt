@@ -1,0 +1,21 @@
+:orphan:
+
+.. _legend_title:
+
+legend_title
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.legend_title
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================================
+
+Parent                                                    Summary
+
+============================   ==================================
+:ref:`file_list <file_list>`       Plot data from multiple files.
+
+============================   ==================================
+

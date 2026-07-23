@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_64:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_64
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =======================
+
+Parent                                                       Summary
+
+==========================================   =======================
+:ref:`passage_number_1 <passage_number_1>`   'passage_number' child.
+
+==========================================   =======================
+

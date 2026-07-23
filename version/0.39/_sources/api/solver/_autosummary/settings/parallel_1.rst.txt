@@ -1,0 +1,36 @@
+:orphan:
+
+.. _parallel_1:
+
+parallel
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parallel_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ===============================================================
+
+Attribute                                                                           Summary
+
+=========================   ===============================================================
+:ref:`option <option_29>`                                   A parallel scheme used for DPM.
+
+:ref:`hybrid <hybrid>`                                                         Main object.
+
+:ref:`expert <expert_3>`        Expert settings controlling parallel DPM particle tracking.
+
+=========================   ===============================================================
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`discrete_phase <discrete_phase>`       Toplevel object.
+
+======================================   ====================
+

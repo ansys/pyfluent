@@ -1,0 +1,21 @@
+:orphan:
+
+.. _relative_zone:
+
+relative_zone
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.relative_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`relative_motion <relative_motion>`       'relative_motion' child.
+
+========================================   ============================
+

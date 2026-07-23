@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_46:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_46
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ================================================================================
+
+Parent                                                                                                                              Summary
+
+========================================================   ================================================================================
+:ref:`divergence_prevention_1 <divergence_prevention_1>`   Adjust numerical settings automatically when a divergence pattern is identified.
+
+========================================================   ================================================================================
+

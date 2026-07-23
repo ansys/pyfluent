@@ -1,0 +1,42 @@
+:orphan:
+
+.. _radial_settings:
+
+radial_settings
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.radial_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ===============================================================================================
+
+Attribute                                                                                                                                  Summary
+
+================================================   ===============================================================================================
+:ref:`relative_tolerance <relative_tolerance_3>`                    The relative convergence tolerance for mesh smoothing (Radial Basis Function).
+
+:ref:`verbosity <verbosity_12>`                                                          The verbosity for mesh smoothing (Radial Basis Function).
+
+:ref:`local_smoothing <local_smoothing>`                                                           Enable local smoothing (Radial Basis Function).
+
+:ref:`smooth_from_ref <smooth_from_ref>`                                                                 Enable smoothing from reference position.
+
+:ref:`number_local_layers <number_local_layers>`                                     Number of layers for local smoothing (Radial Basis Function).
+
+:ref:`smooth_bl_with_adj <smooth_bl_with_adj>`         Enable smoothing of boundary layers solely on adjacent zone motion (Radial Basis Function).
+
+================================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`smoothing_1 <smoothing_1>`       'smoothing' child.
+
+================================   ======================
+

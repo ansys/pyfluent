@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_species_henry_options:
+
+mt_species_henry_options
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_species_henry_options
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   =================================================
+
+Parent                                                                                                       Summary
+
+================================================================   =================================================
+:ref:`mt_species_model_parameters <mt_species_model_parameters>`       Species mass transfer model parameters group.
+
+================================================================   =================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _overwrite_1:
+
+overwrite
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.overwrite_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =======================================
+
+Parent                                                                     Summary
+
+========================================   =======================================
+:ref:`result_graphics <result_graphics>`   Options for generated graphics objects.
+
+========================================   =======================================
+

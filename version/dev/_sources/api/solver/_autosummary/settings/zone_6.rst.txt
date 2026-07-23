@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zone_6:
+
+zone
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zone_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==========================
+
+Parent                                                            Summary
+
+============================================   ==========================
+:ref:`interpolated_data <interpolated_data>`   Display interpolated data.
+
+============================================   ==========================
+

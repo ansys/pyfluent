@@ -1,0 +1,53 @@
+:orphan:
+
+.. _network_end_2_child:
+
+network_end_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.network_end_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   =============================================================
+
+Attribute                                                                                    Summary
+
+====================================   =============================================================
+:ref:`name <name_5>`                                                             Name of the object.
+
+:ref:`phase <phase_40>`                Provides an object description for phase-specific conditions.
+
+:ref:`adjacent_zone <adjacent_zone>`             Displays the adjacent cell zone for this face zone.
+
+:ref:`shadow_zone <shadow_zone_1>`              Displays the coupled shadow zone for this wall zone.
+
+:ref:`network_end <network_end_1>`         Allows to change network-end model variables or settings.
+
+====================================   =============================================================
+
+.. rubric:: Methods
+
+======================================   ==================================================================================================================
+
+Method                                                                                                                                              Summary
+
+======================================   ==================================================================================================================
+:ref:`display <display_2>`               Show the selected zone surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                    Create surface for selected zone.
+
+======================================   ==================================================================================================================
+
+.. rubric:: Included in:
+
+====================================   =======================================
+
+Parent                                                                 Summary
+
+====================================   =======================================
+:ref:`network_end_2 <network_end_2>`   Settings for boundary-condition object.
+
+====================================   =======================================
+

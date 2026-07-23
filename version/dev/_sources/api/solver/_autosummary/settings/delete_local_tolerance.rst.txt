@@ -1,0 +1,34 @@
+:orphan:
+
+.. _delete_local_tolerance:
+
+delete_local_tolerance
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_local_tolerance
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ===============================================
+
+Argument                                                                   Summary
+
+================================   ===============================================
+:ref:`delete_all <delete_all_1>`   Enable delete all or selected local tolerances.
+
+:ref:`zones <zones_4>`                         Zones for deleting local tolerance.
+
+================================   ===============================================
+
+.. rubric:: Included in:
+
+==================================   ====================
+
+Parent                                            Summary
+
+==================================   ====================
+:ref:`auto_options <auto_options>`   Auto-options object.
+
+==================================   ====================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _transient_parameters_specify:
+
+transient_parameters_specify
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.transient_parameters_specify
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =============================
+
+Parent                                               Summary
+
+============================   =============================
+:ref:`transient <transient>`       Flexible numerics object.
+
+============================   =============================
+

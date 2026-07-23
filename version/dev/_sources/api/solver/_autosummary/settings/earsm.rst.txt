@@ -1,0 +1,44 @@
+:orphan:
+
+.. _earsm:
+
+earsm
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.earsm
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   =================================
+
+Attribute                                            Summary
+
+========================   =================================
+:ref:`cmu <cmu>`                  The model coefficient Cmu.
+
+:ref:`a1 <a1_1>`                The WJ-EARSM coefficient A1.
+
+:ref:`a3 <a3>`                  The WJ-EARSM coefficient A3.
+
+:ref:`a4 <a4>`                  The WJ-EARSM coefficient A4.
+
+:ref:`c1prime <c1prime>`   The WJ-EARSM coefficient C1prime.
+
+:ref:`neq <neq>`               The WJ-EARSM coefficient Neq.
+
+:ref:`cdiff <cdiff>`         The WJ-EARSM coefficient Cdiff.
+
+========================   =================================
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`turbulence <turbulence>`   Viscous object.
+
+==============================   ===============
+

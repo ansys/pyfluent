@@ -1,0 +1,34 @@
+:orphan:
+
+.. _read_matrix_data_file:
+
+read_matrix_data_file
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.read_matrix_data_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ===========================================
+
+Argument                                                                     Summary
+
+======================================   ===========================================
+:ref:`file_name <file_name_1_7>`                      Filename for matrix data file.
+
+:ref:`component_name <component_name>`   The component name to store matrix data in.
+
+======================================   ===========================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================
+
+Parent                                                                  Summary
+
+==============================================   ==============================
+:ref:`table_file_manager <table_file_manager>`   The table file manager object.
+
+==============================================   ==============================
+

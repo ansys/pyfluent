@@ -1,0 +1,36 @@
+:orphan:
+
+.. _radiation_boundary_coupling:
+
+radiation_boundary_coupling
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.radiation_boundary_coupling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================================   =======================================================
+
+Attribute                                                                                                                                        Summary
+
+==============================================================================================   =======================================================
+:ref:`activate_radiation_boundary_coupling_model <activate_radiation_boundary_coupling_model>`   Activate/Deactivate of Radiation BC Coupling Variables.
+
+:ref:`specify_boundary_zones_to_activate <specify_boundary_zones_to_activate>`                                     Activate Radiation BC Coupling zones.
+
+:ref:`specify_boundary_zones_to_deactivate <specify_boundary_zones_to_deactivate>`                               Deactivate Radiation BC Coupling zones.
+
+==============================================================================================   =======================================================
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`system_coupling <system_coupling>`   The system coupling model object.
+
+========================================   =================================
+

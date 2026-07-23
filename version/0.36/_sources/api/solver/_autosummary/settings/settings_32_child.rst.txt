@@ -1,0 +1,40 @@
+:orphan:
+
+.. _settings_32_child:
+
+settings_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_32_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =============================================================
+
+Attribute                                                                            Summary
+
+============================   =============================================================
+:ref:`active <active_3>`           Provide whether to enable or disable this row of options.
+
+:ref:`x_center <x_center_1>`                  Provide x-coordinate for clip sphere's center.
+
+:ref:`y_center <y_center_1>`                  Provide y-coordinate for clip sphere's center.
+
+:ref:`z_center <z_center_1>`                  Provide z coordinate for clip sphere's center.
+
+:ref:`radius <radius_7>`                                     Provide radius for clip sphere.
+
+============================   =============================================================
+
+.. rubric:: Included in:
+
+================================   ======================================
+
+Parent                                                            Summary
+
+================================   ======================================
+:ref:`settings_32 <settings_32>`       Provide clip sphere(s) attributes.
+
+================================   ======================================
+
