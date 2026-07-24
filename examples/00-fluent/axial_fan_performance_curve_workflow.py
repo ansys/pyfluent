@@ -110,7 +110,7 @@ solver.settings.setup.general.operating_conditions.gravity.enable = True
 solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 0, 0]
 
 # %%
-# Turbulence/Viscous Model
+# Turbulence/Viscous model
 # ^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the turbulence/viscous model to SST k-omega model.
 # Activate curvature correction, production Kato-Launder, and production limiter options.
@@ -124,7 +124,7 @@ solver.settings.setup.models.viscous.options.production_kato_launder_enabled = T
 solver.settings.setup.models.viscous.options.production_limiter.enabled = True
 
 # %%
-# Cell Zones
+# Cell zones
 # ^^^^^^^^^^
 # Activate the Multiple Reference Frame (MRF) model for the 'rotating-fan' zone,
 # specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter.
@@ -290,7 +290,7 @@ solver.settings.solution.report_definitions.moment["torque"].output_parameter = 
 
 # %%
 # Set the number of iterations for the calculation and enable convergence condition check
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the number of solution iterations to 2500, and enable the convergence condition check.
 
 solver.settings.solution.run_calculation.parameters.iter_count = 2500
@@ -299,13 +299,13 @@ solver.settings.solution.monitor.residual.options.criterion_type = "absolute"
 
 # %%
 # Save case file
-# ^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^
 # Write the case with all settings in place.
 
 solver.settings.file.write_case(file_name="axial_fan.cas.h5")
 
 # %%
-# Parametric study: Construct the fan performance curve
+# Parametric Study: Construct the Fan Performance Curve
 # -----------------------------------------------------
 #
 # Initialize parametric study
@@ -377,26 +377,26 @@ solver.settings.parametric_studies["axial_fan-Solve"].design_points[
 
 # %%
 # Save the current parametric project
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 solver.settings.file.parametric_project.save()
 
 # %%
 # Update all design points
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^
 # Update all design points by running the CFD simulation for every design point.
 
 solver.settings.parametric_studies["axial_fan-Solve"].design_points.update_all()
 
 # %%
 # Save current parametric project
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 solver.settings.file.parametric_project.save()
 
 # %%
 # Export the design table
-# ^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^
 # Export the design point table to a CSV file.
 
 solver.settings.parametric_studies.export_design_table(
@@ -405,7 +405,7 @@ solver.settings.parametric_studies.export_design_table(
 
 # %%
 # Plotting fan performance curve
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Plot the computed total-to-static pressure rise versus the inlet volume flow rate.
 
 # Load the design point study results data from the CSV file
@@ -433,7 +433,7 @@ plt.show()
 
 # %%
 # Close Fluent
-# ^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^
 # Close Fluent session.
 
 solver.exit()
