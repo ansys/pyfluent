@@ -21,21 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Fields module for managing Fluent field data, reduction and solution variables data."""
+"""High-level user-facing API for retrieving field data from Fluent surfaces and zones."""
 
 
-from ansys.fluent.core.fields.live_field_data import Batch as FieldDataBatch
-from ansys.fluent.core.fields.live_field_data import LiveFieldData as FieldData
-from ansys.fluent.core.fields.reduction import Reduction
-from ansys.fluent.core.fields.solution_variables import (
+from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
 
-__all__ = [
-    "FieldData",
-    "FieldDataBatch",
-    "Reduction",
-    "SolutionVariableInfo",
-    "SolutionVariableData",
-]
+__all__ = ["SolutionVariableInfo", "SolutionVariableData"]
