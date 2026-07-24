@@ -110,7 +110,7 @@ solver.settings.setup.general.operating_conditions.gravity.enable = True
 solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 0, 0]
 
 # %%
-# Models: Turbulance/Viscous Model
+# Models: Turbulence/Viscous Model
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the turbulance/viscous model to SST k-omega model.
 # Activate curvature correction, production Kato-Launder, and production limiter options.
