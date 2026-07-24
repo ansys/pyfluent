@@ -64,7 +64,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
-# Failing for 24.1 but passes for 24.2 and 25.1
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")

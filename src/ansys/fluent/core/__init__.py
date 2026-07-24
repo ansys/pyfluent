@@ -52,67 +52,6 @@ from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
-# Build __all__ dynamically to include all public symbols from wildcard imports
-# while excluding internal implementation details and modules reserved for lazy loading
-_import_exclude = {
-    "os",
-    "pydoc",
-    "warnings",
-    "importlib",
-    "sys",
-    "Path",
-    "pformat",
-    "PurePosixPath",
-    "logging",
-    "TYPE_CHECKING",
-}
-
-# Collect all public symbols from wildcard imports (not starting with _)
-__all__ = sorted(
-    [
-        name
-        for name in globals().keys()
-        if not name.startswith("_") and name not in _import_exclude
-    ]
-)
-
-# Note: Submodules (docker, launcher, services, etc.) are available via lazy loading (__getattr__)
-# but are NOT included in __all__ to prevent eager loading of all submodules
-
-# Submodules for lazy loading - avoid circular imports
-_submodules = {
-    "docker": "ansys.fluent.core.docker",
-    "examples": "ansys.fluent.core.examples",
-    "exceptions": "ansys.fluent.core.exceptions",
-    "field_data_interfaces": "ansys.fluent.core.fields.field_data_interfaces",
-    "filereader": "ansys.fluent.core.filereader",
-    "fluent_connection": "ansys.fluent.core.fluent_connection",
-    "generated": "ansys.fluent.core.generated",
-    "journaling": "ansys.fluent.core.journaling",
-    "launcher": "ansys.fluent.core.launcher",
-    "module_config": "ansys.fluent.core.module_config",
-    "parametric": "ansys.fluent.core.parametric",
-    "pyfluent_warnings": "ansys.fluent.core.pyfluent_warnings",
-    "rpvars": "ansys.fluent.core.rpvars",
-    "scheduler": "ansys.fluent.core.scheduler",
-    "search": "ansys.fluent.core.search",
-    "services": "ansys.fluent.core.services",
-    "session": "ansys.fluent.core.session",
-    "session_base_meshing": "ansys.fluent.core.session_base_meshing",
-    "session_meshing": "ansys.fluent.core.session_meshing",
-    "session_pure_meshing": "ansys.fluent.core.session_pure_meshing",
-    "session_shared": "ansys.fluent.core.session_shared",
-    "session_solver": "ansys.fluent.core.session_solver",
-    "session_solver_aero": "ansys.fluent.core.session_solver_aero",
-    "session_solver_icing": "ansys.fluent.core.session_solver_icing",
-    "session_utilities": "ansys.fluent.core.session_utilities",
-    "solver": "ansys.fluent.core.solver",
-    "streaming_services": "ansys.fluent.core.streaming_services",
-    "system_coupling": "ansys.fluent.core.system_coupling",
-    "utils": "ansys.fluent.core.utils",
-    "variable_strategies": "ansys.fluent.core.variable_strategies",
-    "workflow": "ansys.fluent.core.workflow",
-}
 __version__ = "0.41.dev1"
 
 _VERSION_INFO = None
@@ -183,58 +122,17 @@ _config_by_deprecated_name = {
     "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",  # nosec B105: Not a password
 }
 
+from typing import TYPE_CHECKING as _TYPE_CHECKING  # noqa: E402
 
-def __getattr__(name: str):
-    """Handle lazy module loading and deprecated config variable access."""
-    # Try lazy module loading first
-    if name in _submodules:
-        module_name = _submodules[name]
-        import importlib
+if not _TYPE_CHECKING:
 
-        mod = importlib.import_module(module_name)
-        globals()[name] = mod
-        return mod
-
-    # Try deprecated config variable access
-    if name in _config_by_deprecated_name:
-        import warnings as _warnings_module
-
-        config_name = _config_by_deprecated_name[name]
-        _warnings_module.warn(
-            f"'{name}' is deprecated, use 'config.{config_name}' instead.",
-            category=PyFluentDeprecationWarning,
-        )
-        return getattr(config, config_name)
-
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-
-
-def __dir__():
-    """Return list of public symbols including lazy-loaded submodules."""
-    # Get all symbols currently in globals (from wildcard imports)
-    module_symbols = set(globals().keys())
-
-    # Add submodule names (even if not yet loaded, they can be accessed via __getattr__)
-    all_symbols = module_symbols | set(_submodules.keys())
-
-    # Explicitly add version_info if not already present
-    all_symbols.add("version_info")
-
-    # Return sorted list of public symbols (exclude private ones)
-    return sorted([s for s in all_symbols if not s.startswith("_")])
-
-
-# Build __all__ to include only imported symbols, excluding submodule names from _submodules
-# This ensures that `from ansys.fluent.core import *` only imports public symbols,
-# not submodules (which can still be accessed via lazy loading via __getattr__)
-_submodule_names = set(_submodules.keys())
-__all__ = sorted(
-    [
-        name
-        for name in dir()
-        if not name.startswith("_") and name not in _submodule_names
-    ]
-)
-
-
-__version__ = "0.41.dev0"
+    def __getattr__(name: str) -> str:
+        """Get the value of a deprecated configuration variable."""
+        if name in _config_by_deprecated_name:
+            config_name = _config_by_deprecated_name[name]
+            _warnings.warn(
+                f"'{name}' is deprecated, use 'config.{config_name}' instead.",
+                category=PyFluentDeprecationWarning,
+            )
+            return getattr(config, config_name)
+        raise AttributeError(f"module '{__name__}' has no attribute '{name}'")

@@ -23,24 +23,16 @@
 
 """Wrappers over SVAR gRPC service of Fluent."""
 
-from collections.abc import Sequence
-import math
 from typing import Any
-import warnings
 
-import grpc
 import numpy as np
 import numpy.typing as npt
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
-from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
 from ansys.fluent.core.fields.live_field_data import override_help_text
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    GrpcErrorInterceptor,
-    TracingInterceptor,
+from ansys.fluent.core.services.abstract_solution_variables import (
+    AbstractData,
+    AbstractSolutionVariableData,
+    AbstractSolutionVariableInfo,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
@@ -51,67 +43,37 @@ from ansys.fluent.core.variable_strategies import (
 _to_field_name_str = naming_strategy().to_string
 
 
-class _FieldDataConstants:
-    """Defines constants for Fluent field data."""
+class Data(AbstractData):
+    """Solution variable data."""
 
-    # data mapping
-    proto_field_type_to_np_data_type = {
-        FieldDataProtoModule.FieldType.INT_ARRAY: np.int32,
-        FieldDataProtoModule.FieldType.LONG_ARRAY: np.int64,
-        FieldDataProtoModule.FieldType.FLOAT_ARRAY: np.float32,
-        FieldDataProtoModule.FieldType.DOUBLE_ARRAY: np.float64,
-    }
-    np_data_type_to_proto_field_type = {
-        np.int32: FieldDataProtoModule.FieldType.INT_ARRAY,
-        np.int64: FieldDataProtoModule.FieldType.LONG_ARRAY,
-        np.float32: FieldDataProtoModule.FieldType.FLOAT_ARRAY,
-        np.float64: FieldDataProtoModule.FieldType.DOUBLE_ARRAY,
-    }
-    chunk_size = 256 * 1024
-    bytes_stream = True
-    payloadTags = {
-        FieldDataProtoModule.PayloadTag.OVERSET_MESH: 1,
-        FieldDataProtoModule.PayloadTag.ELEMENT_LOCATION: 2,
-        FieldDataProtoModule.PayloadTag.NODE_LOCATION: 4,
-        FieldDataProtoModule.PayloadTag.BOUNDARY_VALUES: 8,
-    }
+    def __init__(self, domain_name, zone_id_name_map, solution_variable_data):
+        """Initialize Data."""
+        self._domain_name = domain_name
+        self._data = {
+            zone_id_name_map[zone_id]: zone_data
+            for zone_id, zone_data in solution_variable_data.items()
+        }
 
+    @property
+    def domain(self):
+        """Domain name."""
+        return self._domain_name
 
-class SolutionVariableService(ServiceProtocol):
-    """SVAR service of Fluent."""
+    @property
+    def zone_names(self):
+        """Zone names."""
+        return list(self._data.keys())
 
-    def __init__(self, channel: grpc.Channel, metadata):
-        """__init__ method of SVAR service class."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            TracingInterceptor(),
-        )
-        self._stub = self._create_stub(intercept_channel)
-        self._metadata = metadata
+    @property
+    def data(self):
+        """Solution variable data."""
+        return self._data
 
-    def _create_stub(self, intercept_channel):
-        """Create the gRPC stub. Override in subclasses to use a different proto version."""
-        return SvarGrpcModule.svarStub(intercept_channel)
-
-    def get_data(self, request):
-        """GetSvarData RPC of SVAR service."""
-        return self._stub.GetSvarData(request, metadata=self._metadata)
-
-    def set_data(self, request):
-        """SetSvarData RPC of SVAR service."""
-        return self._stub.SetSvarData(request, metadata=self._metadata)
-
-    def get_variables_info(self, request):
-        """GetSvarsInfo RPC of SVAR service."""
-        return self._stub.GetSvarsInfo(request, metadata=self._metadata)
-
-    def get_zones_info(self, request):
-        """GetZonesInfo RPC of SVAR service."""
-        return self._stub.GetZonesInfo(request, metadata=self._metadata)
+    def __getitem__(self, name):
+        return self._data.get(name, None)
 
 
-class SolutionVariableInfo:
+class SolutionVariableInfo(AbstractSolutionVariableInfo):
     """Provide access to Fluent SVARs and Zones information.
 
     Examples
@@ -131,160 +93,16 @@ class SolutionVariableInfo:
     >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
     """
 
-    class SolutionVariables:
-        """Class containing information for multiple solution variables."""
-
-        class SolutionVariable:
-            """Class containing information for single solution variable."""
-
-            def __init__(self, solution_variable_info: SvarProtoModule.SvarInfo):
-                """Initialize SolutionVariable."""
-                self.name = solution_variable_info.name
-                self.dimension = solution_variable_info.dimension
-                self.field_type = _FieldDataConstants.proto_field_type_to_np_data_type[
-                    solution_variable_info.fieldType
-                ]
-
-            def __repr__(self):
-                return f"name:{self.name} dimension:{self.dimension} field_type:{self.field_type}"
-
-        def __init__(self, solution_variables_info: Sequence[SvarProtoModule.SvarInfo]):
-            """Initialize SolutionVariables."""
-            self._solution_variables_info: dict[
-                str, "SolutionVariableInfo.SolutionVariables.SolutionVariable"
-            ] = {
-                solution_variable_info.name: SolutionVariableInfo.SolutionVariables.SolutionVariable(
-                    solution_variable_info
-                )
-                for solution_variable_info in solution_variables_info
-            }
-
-        def _filter(self, solution_variables_info):
-            self._solution_variables_info = {
-                k: v
-                for k, v in self._solution_variables_info.items()
-                if k
-                in [
-                    solution_variable_info.name
-                    for solution_variable_info in solution_variables_info
-                ]
-            }
-
-        def __getitem__(
-            self, name: str
-        ) -> "SolutionVariableInfo.SolutionVariables.SolutionVariable":
-            return self._solution_variables_info[name]
-
-        def get(
-            self, name: str
-        ) -> "SolutionVariableInfo.SolutionVariables.SolutionVariable | None":
-            """Get name from solution variables"""
-            return self._solution_variables_info.get(name)
-
-        @property
-        def solution_variables(self) -> list[str]:
-            """Solution variables."""
-            return list(self._solution_variables_info.keys())
-
-        @property
-        def svars(self) -> list[str]:
-            """Solution variables."""
-            warnings.warn(
-                "svars is deprecated, use solution_variables instead",
-                PyFluentDeprecationWarning,
-            )
-            return self.solution_variables
-
-    class ZonesInfo:
-        """Class containing information for multiple zones."""
-
-        class ZoneInfo:
-            """Class containing information for single zone."""
-
-            class PartitionsInfo:
-                """Class containing information for partitions."""
-
-                def __init__(self, partition_info):
-                    """Initialize PartitionsInfo."""
-                    self.count = partition_info.count
-                    self.start_index = (
-                        partition_info.startIndex if self.count > 0 else 0
-                    )
-                    self.end_index = partition_info.endIndex if self.count > 0 else 0
-
-            def __init__(self, zone_info):
-                """Initialize ZoneInfo."""
-                self.name = zone_info.name
-                self.zone_id = zone_info.zoneId
-                self.zone_type = zone_info.zoneType
-                self.thread_type = zone_info.threadType
-                self.partitions_info = [
-                    self.PartitionsInfo(partition_info)
-                    for partition_info in zone_info.partitionsInfo
-                ]
-
-            @property
-            def count(self) -> int:
-                """Get zone count."""
-                return sum(
-                    [partition_info.count for partition_info in self.partitions_info]
-                )
-
-            def __repr__(self):
-                partition_str = ""
-                for i, partition_info in enumerate(self.partitions_info):
-                    partition_str += f"\n\t{i}. {partition_info.count}[{partition_info.start_index}:{partition_info.end_index}]"
-                return f"name:{self.name} count: {self.count} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.thread_type == SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}{partition_str}"
-
-        def __init__(self, zones_info, domains_info):
-            """Initialize ZonesInfo."""
-            self._zones_info: dict[str, "SolutionVariableInfo.ZonesInfo.ZoneInfo"] = {
-                zone_info.name: self.ZoneInfo(zone_info) for zone_info in zones_info
-            }
-            self._domains_info: dict[str, int] = {
-                domain_info.name: domain_info.domainId for domain_info in domains_info
-            }
-
-        def __getitem__(self, name: str) -> "SolutionVariableInfo.ZonesInfo.ZoneInfo":
-            return self._zones_info[name]
-
-        def get(self, name: str) -> "SolutionVariableInfo.ZonesInfo.ZoneInfo | None":
-            """Get name from zones info"""
-            return self._zones_info.get(name)
-
-        @property
-        def zones(self):
-            """Get zone names."""
-            warnings.warn(
-                "'zones' is deprecated, use 'zone_names' instead",
-                PyFluentDeprecationWarning,
-            )
-            return self.zone_names
-
-        @property
-        def zone_names(self) -> list[str]:
-            """Get zone names."""
-            return list(self._zones_info.keys())
-
-        @property
-        def domains(self) -> list[str]:
-            """Get domain names."""
-            return list(self._domains_info.keys())
-
-        def domain_id(self, domain_name) -> int:
-            """Get domain id."""
-            return self._domains_info.get(domain_name, None)
-
     def __init__(
         self,
-        service: SolutionVariableService,
+        service,
     ):
         """Initialize SolutionVariableInfo."""
         self._service = service
 
     def get_variables_info(
         self, zone_names: list[str], domain_name: str | None = "mixture"
-    ) -> SolutionVariables:
+    ):
         """Get SVARs info for zones in the domain.
 
         Parameters
@@ -300,34 +118,14 @@ class SolutionVariableInfo:
             Object containing information for SVARs which are common for list of zone names.
         """
 
-        allowed_zone_names = _AllowedZoneNames(self)
-        allowed_domain_names = _AllowedDomainNames(self)
-        solution_variables_info = None
-        for zone_name in zone_names:
-            request = SvarProtoModule.GetSvarsInfoRequest(
-                domainId=allowed_domain_names.valid_name(domain_name),
-                zoneId=allowed_zone_names.valid_name(zone_name),
-            )
-            response = self._service.get_variables_info(request)
-            if solution_variables_info is None:
-                solution_variables_info = SolutionVariableInfo.SolutionVariables(
-                    response.svarsInfo
-                )
-            else:
-                solution_variables_info._filter(response.svarsInfo)
-        return solution_variables_info
-
-    def get_svars_info(
-        self, zone_names: list[str], domain_name: str | None = "mixture"
-    ) -> SolutionVariables:
-        """Get solution variables info."""
-        warnings.warn(
-            "get_svars_info is deprecated, use get_variables_info instead",
-            PyFluentDeprecationWarning,
+        return self._service.get_variables_info(
+            zone_names=zone_names,
+            domain_name=domain_name,
+            allowed_zone_names=_AllowedZoneNames(self),
+            allowed_domain_names=_AllowedDomainNames(self),
         )
-        return self.get_variables_info(zone_names=zone_names, domain_name=domain_name)
 
-    def get_zones_info(self) -> ZonesInfo:
+    def get_zones_info(self):
         """Get Zones info.
 
         Parameters
@@ -339,9 +137,7 @@ class SolutionVariableInfo:
         SolutionVariableInfo.ZonesInfo
             Object containing information for all zones.
         """
-        request = SvarProtoModule.GetZonesInfoRequest()
-        response = self._service.get_zones_info(request)
-        return SolutionVariableInfo.ZonesInfo(response.zonesInfo, response.domainsInfo)
+        return self._service.get_zones_info()
 
 
 class InvalidSolutionVariableNameError(ValueError):
@@ -495,60 +291,7 @@ class _SvarMethod:
         return self._svar_accessor(*args, **kwargs)
 
 
-def extract_svars(solution_variables_data):
-    """Extracts SVAR data via a server call."""
-
-    def _extract_svar(
-        field_datatype: npt.DTypeLike, field_size: int, solution_variables_data
-    ) -> npt.NDArray[np.float64] | None:
-        field_arr = np.empty(field_size, dtype=field_datatype)
-        field_datatype_item_size = np.dtype(field_datatype).itemsize
-        index = 0
-        for solution_variable_data in solution_variables_data:
-            chunk = solution_variable_data.payload
-            if chunk.bytePayload:
-                count = min(
-                    len(chunk.bytePayload) // field_datatype_item_size,
-                    field_size - index,
-                )
-                field_arr[index : index + count] = np.frombuffer(
-                    chunk.bytePayload, field_datatype, count=count
-                )
-                index += count
-                if index == field_size:
-                    return field_arr
-            else:
-                payload: Sequence[float] = (
-                    chunk.floatPayload.payload
-                    or chunk.intPayload.payload
-                    or chunk.doublePayload.payload
-                    or chunk.longPayload.payload
-                )
-                count = len(payload)
-                field_arr[index : index + count] = np.fromiter(
-                    payload, dtype=field_datatype
-                )
-                index += count
-                if index == field_size:
-                    return field_arr
-
-    zones_svar_data = dict[Any, npt.NDArray[Any] | None]()
-    for array in solution_variables_data:
-        if array.WhichOneof("array") == "payloadInfo":
-            zones_svar_data[array.payloadInfo.zone] = _extract_svar(
-                _FieldDataConstants.proto_field_type_to_np_data_type[
-                    array.payloadInfo.fieldType
-                ],
-                array.payloadInfo.fieldSize,
-                solution_variables_data,
-            )
-        elif array.WhichOneof("array") == "header":
-            continue
-
-    return zones_svar_data
-
-
-class SolutionVariableData:
+class SolutionVariableData(AbstractSolutionVariableData):
     """Provides access to Fluent SVAR data on zones.
 
     Examples
@@ -574,47 +317,9 @@ class SolutionVariableData:
     >>> solution_variable_data.set_data(variable_name="SV_T", domain_name="mixture", zone_names_to_data=zone_names_to_data)
     """
 
-    class Data:
-        """Solution variable data."""
-
-        def __init__(self, domain_name, zone_id_name_map, solution_variable_data):
-            """Initialize Data."""
-            self._domain_name = domain_name
-            self._data = {
-                zone_id_name_map[zone_id]: zone_data
-                for zone_id, zone_data in solution_variable_data.items()
-            }
-
-        @property
-        def domain(self):
-            """Domain name."""
-            return self._domain_name
-
-        @property
-        def zones(self):
-            """Zone names."""
-            warnings.warn(
-                "'zones' is deprecated, use 'zone_names' instead",
-                PyFluentDeprecationWarning,
-            )
-            return self.zone_names
-
-        @property
-        def zone_names(self):
-            """Zone names."""
-            return list(self._data.keys())
-
-        @property
-        def data(self):
-            """Solution variable data."""
-            return self._data
-
-        def __getitem__(self, name):
-            return self._data.get(name, None)
-
     def __init__(
         self,
-        service: SolutionVariableService,
+        service,
         solution_variable_info: SolutionVariableInfo,
     ):
         """Initialize SolutionVariableData."""
@@ -638,11 +343,6 @@ class SolutionVariableData:
             self._solution_variable_info
         )
 
-    @deprecate_arguments(
-        old_args="solution_variable_name",
-        new_args="variable_name",
-        version="v0.35.1",
-    )
     def create_empty_array(
         self,
         variable_name: str,
@@ -672,11 +372,6 @@ class SolutionVariableData:
                     dtype=solution_variables_info[variable_name].field_type,
                 )
 
-    @deprecate_arguments(
-        old_args="solution_variable_name",
-        new_args="variable_name",
-        version="v0.35.1",
-    )
     def get_data(
         self,
         variable_name: str,
@@ -696,59 +391,24 @@ class SolutionVariableData:
 
         Returns
         -------
-        SolutionVariableData.Data
+        Data
             Object containing SVAR data.
         """
         self._update_solution_variable_info()
-        svars_request = SvarProtoModule.GetSvarDataRequest(
-            provideBytesStream=_FieldDataConstants.bytes_stream,
-            chunkSize=_FieldDataConstants.chunk_size,
-        )
-        svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
-        svars_request.name = self._allowed_solution_variable_names.valid_name(
-            variable_name,
-            zone_names,
-            domain_name,
-        )
-        zone_id_name_map = {}
-        for zone_name in zone_names:
-            zone_id = self._allowed_zone_names.valid_name(zone_name)
-            zone_id_name_map[zone_id] = zone_name
-            svars_request.zones.append(zone_id)
-
-        return SolutionVariableData.Data(
-            domain_name,
-            zone_id_name_map,
-            extract_svars(self._service.get_data(svars_request)),
-        )
-
-    @deprecate_arguments(
-        old_args="solution_variable_name",
-        new_args="variable_name",
-        version="v0.35.1",
-    )
-    def get_svar_data(
-        self,
-        variable_name: str,
-        zone_names: list[str],
-        domain_name: str | None = "mixture",
-    ) -> Data:
-        """Get solution variable data."""
-        warnings.warn(
-            "get_svar_data is deprecated, use get_data instead",
-            PyFluentDeprecationWarning,
-        )
-        return self.get_data(
+        zone_id_name_map, svar_data = self._service.get_data(
             variable_name=variable_name,
             zone_names=zone_names,
             domain_name=domain_name,
+            allowed_solution_variable_names=self._allowed_solution_variable_names,
+            allowed_domain_names=self._allowed_domain_names,
+            allowed_zone_names=self._allowed_zone_names,
+        )
+        return Data(
+            domain_name,
+            zone_id_name_map,
+            svar_data,
         )
 
-    @deprecate_arguments(
-        old_args="solution_variable_name",
-        new_args="variable_name",
-        version="v0.35.1",
-    )
     def set_data(
         self,
         variable_name: str,
@@ -771,106 +431,11 @@ class SolutionVariableData:
         None
         """
         self._update_solution_variable_info()
-        variable_name = self._allowed_solution_variable_names.valid_name(
-            variable_name,
-            list(zone_names_to_data.keys()),
-            domain_name,
-        )
-        domain_id = self._allowed_domain_names.valid_name(domain_name)
-        zone_ids_to_svar_data = {
-            self._allowed_zone_names.valid_name(zone_name): solution_variable_data
-            for zone_name, solution_variable_data in zone_names_to_data.items()
-        }
-
-        def generate_set_data_requests():
-            set_data_requests = []
-
-            set_data_requests.append(
-                SvarProtoModule.SetSvarDataRequest(
-                    header=SvarProtoModule.SvarHeader(
-                        name=variable_name, domainId=domain_id
-                    )
-                )
-            )
-
-            for zone_id, solution_variable_data in zone_ids_to_svar_data.items():
-                max_array_size = (
-                    _FieldDataConstants.chunk_size
-                    / np.dtype(solution_variable_data.dtype).itemsize
-                )
-                solution_variable_data_list = np.array_split(
-                    solution_variable_data,
-                    math.ceil(solution_variable_data.size / max_array_size),
-                )
-                set_data_requests.append(
-                    SvarProtoModule.SetSvarDataRequest(
-                        payloadInfo=SvarProtoModule.Info(
-                            fieldType=_FieldDataConstants.np_data_type_to_proto_field_type[
-                                solution_variable_data.dtype.type
-                            ],
-                            fieldSize=solution_variable_data.size,
-                            zone=zone_id,
-                        )
-                    )
-                )
-                set_data_requests += [
-                    SvarProtoModule.SetSvarDataRequest(
-                        payload=(
-                            SvarProtoModule.Payload(
-                                floatPayload=FieldDataProtoModule.FloatPayload(
-                                    payload=solution_variable_data
-                                )
-                            )
-                            if solution_variable_data.dtype.type == np.float32
-                            else (
-                                SvarProtoModule.Payload(
-                                    doublePayload=FieldDataProtoModule.DoublePayload(
-                                        payload=solution_variable_data
-                                    )
-                                )
-                                if solution_variable_data.dtype.type == np.float64
-                                else (
-                                    SvarProtoModule.Payload(
-                                        intPayload=FieldDataProtoModule.IntPayload(
-                                            payload=solution_variable_data
-                                        )
-                                    )
-                                    if solution_variable_data.dtype.type == np.int32
-                                    else SvarProtoModule.Payload(
-                                        longPayload=FieldDataProtoModule.LongPayload(
-                                            payload=solution_variable_data
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    for solution_variable_data in solution_variable_data_list
-                    if solution_variable_data.size > 0
-                ]
-
-            yield from set_data_requests
-
-        self._service.set_data(generate_set_data_requests())
-
-    @deprecate_arguments(
-        old_args="solution_variable_name",
-        new_args="variable_name",
-        version="v0.35.1",
-    )
-    def set_svar_data(
-        self,
-        variable_name: str,
-        zone_names_to_svar_data: dict[str, npt.NDArray[Any]],
-        domain_name: str | None = "mixture",
-    ) -> None:
-        """Set solution variable data."""
-        warnings.warn(
-            "set_svar_data is deprecated, use set_data instead",
-            PyFluentDeprecationWarning,
-        )
-        return self.set_data(
+        self._service.set_data(
             variable_name=variable_name,
-            zone_names_to_data=zone_names_to_svar_data,
+            zone_names_to_data=zone_names_to_data,
             domain_name=domain_name,
+            allowed_solution_variable_names=self._allowed_solution_variable_names,
+            allowed_domain_names=self._allowed_domain_names,
+            allowed_zone_names=self._allowed_zone_names,
         )

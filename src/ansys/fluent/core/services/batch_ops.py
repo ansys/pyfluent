@@ -23,51 +23,15 @@
 
 """Batch RPC service."""
 
-import inspect
 import logging
-import sys
-from types import ModuleType
 from typing import TypeVar
 import weakref
-
-from google.protobuf.message import Message
-import grpc
-
-import ansys.api.fluent.v0 as api
-from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
-from ansys.fluent.core.services._protocols import ServiceProtocol
 
 __all__ = ("BatchOps",)
 
 _TBatchOps = TypeVar("_TBatchOps", bound="BatchOps")
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
-
-
-class BatchOpsService(ServiceProtocol):
-    """Class wrapping methods in batch RPC service."""
-
-    def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:
-        """__init__ method of BatchOpsService class."""
-
-        from ansys.fluent.core.services.interceptors import GrpcErrorInterceptor
-
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-        )
-        self._stub = self._create_stub(intercept_channel)
-        self._metadata = metadata
-
-    def _create_stub(self, intercept_channel):
-        """Create the gRPC stub. Override in subclasses to use a different proto version."""
-        return batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
-
-    def execute(
-        self, request: batch_ops_pb2.ExecuteRequest
-    ) -> batch_ops_pb2.ExecuteResponse:
-        """Execute RPC of BatchOps service."""
-        return self._stub.Execute(request, metadata=self._metadata)
 
 
 class BatchOps:
@@ -99,10 +63,6 @@ class BatchOps:
     access the ``mesh-1`` mesh object which has not been created yet.
     """
 
-    _proto_files: list[ModuleType] | None = None
-    _api_module = api
-    _proto_module = batch_ops_pb2
-
     def _instance():
         return None
 
@@ -122,86 +82,31 @@ class BatchOps:
 
         def __init__(
             self,
-            owner_cls: type["BatchOps"],
             package: str,
             service: str,
             method: str,
             request_body: bytes,
         ) -> None:
             """__init__ method of Op class."""
-            self._request = owner_cls._proto_module.ExecuteRequest(
-                package=package,
-                service=service,
-                method=method,
-                request_body=request_body,
-            )
-            if not owner_cls._proto_files:
-                owner_proto_files = [
-                    x[1]
-                    for x in inspect.getmembers(owner_cls._api_module, inspect.ismodule)
-                    if hasattr(x[1], "DESCRIPTOR")
-                ]
-                loaded_proto_files = [
-                    module
-                    for name, module in sys.modules.items()
-                    if name.endswith("_pb2") and hasattr(module, "DESCRIPTOR")
-                ]
-                owner_cls._proto_files = owner_proto_files + [
-                    module
-                    for module in loaded_proto_files
-                    if module not in owner_proto_files
-                ]
+            self._package = package
+            self._service_name = service
+            self._method = method
+            self._request_body = request_body
             self._supported = False
             self.response_cls = None
-            for file in owner_cls._proto_files:
-                file_desc = file.DESCRIPTOR
-                if file_desc.package == package:
-                    service_desc = file_desc.services_by_name.get(service)
-                    if service_desc:
-                        # TODO Add custom option in .proto files to identify getters
-                        if not method.startswith("Get") and not method.startswith(
-                            "get"
-                        ):
-                            method_desc = service_desc.methods_by_name.get(method)
-                            if (
-                                method_desc
-                                and not method_desc.client_streaming
-                                and not method_desc.server_streaming
-                            ):
-                                self._supported = True
-                                response_cls_name = method_desc.output_type.name
-                                # TODO Get the response_cls from message_factory
-                                try:
-                                    self.response_cls = getattr(file, response_cls_name)
-                                    break
-                                except AttributeError:
-                                    pass
-            if self._supported:
-                self._request = owner_cls._proto_module.ExecuteRequest(
-                    package=package,
-                    service=service,
-                    method=method,
-                    request_body=request_body,
-                )
-                self._status = None
-                self._result = None
+            self._status = None
+            self._result = None
             self.queued = False
 
-        def update_result(self, status: batch_ops_pb2.ExecuteStatus, data: str) -> None:
+        def update_result(self, status, result) -> None:
             """Update results after the batch operation is executed."""
-            obj = self.response_cls()
-            try:
-                obj.ParseFromString(data)
-            except Exception as ex:
-                # It will log any exception coming from grpc layer during parsing of data.
-                network_logger.warning(ex)
             self._status = status
-            self._result = obj
+            self._result = result
 
     def __new__(cls, session) -> _TBatchOps:
         if cls.instance() is None:
             instance = super().__new__(cls)
-            instance._service: BatchOpsService = session._batch_ops_service
+            instance._service = session._batch_ops_service
             instance._ops: list[BatchOps.Op] = []
             instance.batching = False
             cls._instance = weakref.ref(instance)
@@ -218,12 +123,11 @@ class BatchOps:
         network_logger.debug("Executing batch operations")
         self.batching = False
         if not exc_type:
-            requests = (x._request for x in self._ops)
-            responses = self._service.execute(requests)
-            for i, response in enumerate(responses):
-                self._ops[i].update_result(response.status, response.response_body)
+            results = self._service.execute(self._ops)
+            for op, (status, result) in zip(self._ops, results):
+                op.update_result(status, result)
 
-    def add_op(self, package: str, service: str, method: str, request: Message) -> Op:
+    def add_op(self, package: str, service: str, method: str, request) -> Op:
         """Queue a single batch operation. Only the non-getter operations will be
         queued.
 
@@ -244,12 +148,9 @@ class BatchOps:
             BatchOps.Op object with a queued attribute which is true if the operation
             has been queued.
         """
-        op = self.__class__.Op(
-            self.__class__,
-            package,
-            service,
-            method,
-            request.SerializeToString(),
+        op = self.__class__.Op(package, service, method, request.SerializeToString())
+        op._supported, op.response_cls = self._service.get_op_metadata(
+            package, service, method
         )
         if op._supported:
             network_logger.debug(

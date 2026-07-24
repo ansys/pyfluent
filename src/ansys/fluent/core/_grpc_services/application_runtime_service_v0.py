@@ -114,7 +114,7 @@ class ApplicationRuntimeService(ServiceProtocol):
             case app_utilities_pb2.APP_MODE_SOLVER_AERO:
                 return "solver_aero"
 
-    def start_python_journal(self, journal_name: str | None = None) -> int:
+    def start_python_journal(self, journal_name: str | None = None) -> str:
         """StartPythonJournal RPC."""
         request = app_utilities_pb2.StartPythonJournalRequest()
         if journal_name:

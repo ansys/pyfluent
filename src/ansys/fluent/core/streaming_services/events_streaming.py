@@ -411,6 +411,7 @@ class EventsManager(Generic[TEvent]):
         # can also be done in other streaming services
         self._session = session
         self._sync_event_ids = {}
+        self._service = session_events_service
 
     def _construct_event_info(
         self, response: EventsProtoModule.BeginStreamingResponse, event: TEvent
@@ -599,7 +600,7 @@ class EventsManager(Generic[TEvent]):
                     del callbacks_map[callback_id]
             sync_event_id = self._sync_event_ids.pop(callback_id, None)
             if sync_event_id:
-                self._session.application_runtime.unregister_pause_on_solution_events(
+                self._service.unregister_pause_on_solution_events(
                     registration_id=sync_event_id
                 )
 
@@ -617,10 +618,8 @@ class EventsManager(Generic[TEvent]):
         callback_id: str,
         callback: Callable,
     ) -> tuple[TEvent, Callable]:
-        unique_id: int = (
-            self._session.application_runtime.register_pause_on_solution_events(
-                solution_event=event_type
-            )
+        unique_id: int = self._service.register_pause_on_solution_events(
+            solution_event=event_type
         )
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
@@ -641,9 +640,7 @@ class EventsManager(Generic[TEvent]):
                         exc_info=True,
                     )
                 finally:
-                    session.application_runtime.resume_on_solution_event(
-                        registration_id=unique_id
-                    )
+                    self._service.resume_on_solution_event(registration_id=unique_id)
 
         self._sync_event_ids[callback_id] = unique_id
         return self._event_type.SOLUTION_PAUSED, on_pause
