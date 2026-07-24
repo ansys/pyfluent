@@ -20,7 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over FieldData gRPC service of Fluent."""
+"""High-level user-facing API for retrieving field data from Fluent surfaces.
+
+This module provides the primary interface for querying scalar fields, vector fields,
+surface data, and pathlines from Ansys Fluent simulations. It wraps the low-level
+FieldData gRPC service and exposes intuitive classes for both real-time and batched
+field data retrieval.
+
+Key classes:
+    - :class:`LiveFieldData`: Primary entry point for accessing field data live from
+      a running Fluent session. Supports individual queries and batch operations.
+    - :class:`Batch`: Accumulates multiple field data requests and retrieves them
+      efficiently in a single server round-trip via :meth:`Batch.get_response`.
+    - :class:`BatchFieldData`: Read-only container for field data returned from a
+      batch request.
+    - :class:`Mesh`: Represents the computational mesh (nodes and elements) for a
+      Fluent zone, returned by :meth:`LiveFieldData.get_mesh`.
+"""
 
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
@@ -32,7 +48,6 @@ import weakref
 
 import numpy as np
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldDataSource,
@@ -99,76 +114,14 @@ class _FieldInfo(BaseFieldInfo):
         return self._field_data.get_surfaces_info()
 
 
-class _FetchFieldData:
-    @staticmethod
-    def _surface_data(
-        data_types: list[SurfaceDataType] | list[str],
-        surface_ids: list[int],
-        overset_mesh: bool | None = False,
-    ):
-        return [
-            FieldDataProtoModule.SurfaceRequest(
-                surfaceId=surface_id,
-                oversetMesh=overset_mesh,
-                provideFaces=SurfaceDataType.FacesConnectivity in data_types,
-                provideVertices=SurfaceDataType.Vertices in data_types,
-                provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
-                provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
-            )
-            for surface_id in surface_ids
-        ]
-
-    @staticmethod
-    def _scalar_data(
-        field_name: str,
-        surface_ids: list[int],
-        node_value: bool,
-        boundary_value: bool,
-    ):
-        return [
-            FieldDataProtoModule.ScalarFieldRequest(
-                surfaceId=surface_id,
-                scalarFieldName=field_name,
-                dataLocation=(
-                    FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements
-                ),
-                provideBoundaryValues=boundary_value,
-            )
-            for surface_id in surface_ids
-        ]
-
-    @staticmethod
-    def _vector_data(
-        field_name: str,
-        surface_ids: list[int],
-    ):
-        return [
-            FieldDataProtoModule.VectorFieldRequest(
-                surfaceId=surface_id, vectorFieldName=field_name
-            )
-            for surface_id in surface_ids
-        ]
-
-    @staticmethod
-    def _pathlines_data(
-        field_name: str,
-        surface_ids: list[int],
-        **kwargs,
-    ):
-        return [
-            FieldDataProtoModule.PathlinesFieldRequest(
-                surfaceId=surface_id,
-                field=field_name,
-                **kwargs,
-            )
-            for surface_id in surface_ids
-        ]
-
-
 class BaseFieldData:
-    """The base field data interface."""
+    """Base class providing shared field data retrieval logic.
+
+    Provides common functionality for extracting scalar fields, surface geometry,
+    vector fields, and pathlines from pre-fetched Fluent field data. This class is
+    not intended to be used directly; use :class:`LiveFieldData` for live session
+    access or :class:`BatchFieldData` for data returned from a batch request.
+    """
 
     def __init__(
         self,
@@ -177,7 +130,19 @@ class BaseFieldData:
         allowed_surface_names,
         allowed_scalar_field_names,
     ):
-        """__init__ method of BaseFieldData class."""
+        """Initialize the field data container.
+
+        Parameters
+        ----------
+        data : dict
+            Raw field data keyed by request descriptor tuples.
+        field_info : _FieldInfo
+            Object used to query metadata about available fields and surfaces.
+        allowed_surface_names : _AllowedSurfaceNames
+            Validator for surface name inputs.
+        allowed_scalar_field_names : _AllowedScalarFieldNames
+            Validator for scalar field name inputs.
+        """
         self.data = data
         self._field_info = field_info
         self._allowed_surface_names = allowed_surface_names
@@ -186,7 +151,23 @@ class BaseFieldData:
         self._deprecated_flag = False
 
     def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
-        """Get a list of surface ids based on surfaces provided as inputs."""
+        """Resolve surface names or IDs to a list of integer surface IDs.
+
+        Parameters
+        ----------
+        surfaces : list[str | int]
+            Surface names (str) or surface IDs (int) to resolve.
+
+        Returns
+        -------
+        list[int]
+            Corresponding list of integer surface IDs recognized by Fluent.
+
+        Raises
+        ------
+        DisallowedValuesError
+            If a surface name or ID is not found among the allowed surfaces.
+        """
         return _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -259,19 +240,35 @@ class BaseFieldData:
             | PathlinesFieldDataRequest
         ),
     ) -> dict[int | str, dict | np.ndarray]:
-        """Get the surface, scalar, vector or path-lines field data on a surface.
+        """Retrieve field data for a surface, scalar, vector, or pathlines request.
+
+        Dispatches the request to the appropriate internal handler based on the
+        type of *obj* and returns field data keyed by surface ID or surface name.
+
+        Parameters
+        ----------
+        obj : SurfaceFieldDataRequest | ScalarFieldDataRequest | VectorFieldDataRequest | PathlinesFieldDataRequest
+            A request object describing the field type, field name, and target
+            surfaces. Construct the appropriate request type from
+            :mod:`ansys.fluent.core.fields.field_data_interfaces`.
 
         Returns
         -------
-        Dict[int | str, Dict | np.array]
-            Field data for the requested surface. If field data is unavailable for the surface,
-            an empty array is returned and a warning is issued. Users should always check
-            the array size before using the data.
+        dict[int | str, dict | np.ndarray]
+            Field data keyed by surface ID (int) or surface name (str), depending
+            on how surfaces were specified in the request. If field data is
+            unavailable for a surface, an empty array is returned and a warning is
+            issued. Always check the array size before using the data.
 
-            Example:
-                data = get_field_data(field_data_request)[surface_id]
-                if data.size == 0:
-                    # Handle missing data
+        Examples
+        --------
+        >>> data = field_data.get_field_data(
+        ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
+        ... )
+        >>> pressure_array = data["wall"]
+        >>> if pressure_array.size == 0:
+        ...     # Handle missing data
+        ...     pass
         """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
@@ -284,7 +281,23 @@ class BaseFieldData:
 
 
 class BatchFieldData(BaseFieldData, BaseFieldDataSource):
-    """Provides access to Fluent field data on surfaces collected via batches."""
+    """Read-only container for Fluent field data retrieved via a batch request.
+
+    Returned by :meth:`Batch.get_response`, this object holds all field data
+    collected during a batch session. Use :meth:`get_field_data` (inherited from
+    :class:`BaseFieldData`) to extract individual field arrays keyed by surface.
+
+    Examples
+    --------
+    >>> batch = field_data.new_batch()
+    >>> batch.add_requests(
+    ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
+    ... )
+    >>> result: BatchFieldData = batch.get_response()
+    >>> pressure = result.get_field_data(
+    ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
+    ... )
+    """
 
     def __init__(
         self,
@@ -293,7 +306,19 @@ class BatchFieldData(BaseFieldData, BaseFieldDataSource):
         allowed_surface_names,
         allowed_scalar_field_names,
     ):
-        """__init__ method of BatchFieldData class."""
+        """Initialize a BatchFieldData container.
+
+        Parameters
+        ----------
+        data : dict
+            Extracted field data keyed by request descriptor tuples.
+        field_info : _FieldInfo
+            Object used to query metadata about available fields and surfaces.
+        allowed_surface_names : _AllowedSurfaceNames
+            Validator for surface name inputs.
+        allowed_scalar_field_names : _AllowedScalarFieldNames
+            Validator for scalar field name inputs.
+        """
         super().__init__(
             data, field_info, allowed_surface_names, allowed_scalar_field_names
         )
@@ -318,7 +343,22 @@ class TransactionFieldData(BatchFieldData):
 
 
 class Batch(FieldBatch):
-    """Populates Fluent field data on surfaces."""
+    """Accumulates field data requests and retrieves them in a single batch call.
+
+    Use this class to efficiently request multiple field quantities simultaneously,
+    reducing the number of server round-trips. Create an instance through
+    :meth:`LiveFieldData.new_batch`, add requests with :meth:`add_requests`, then
+    call :meth:`get_response` to retrieve all data at once.
+
+    Examples
+    --------
+    >>> batch = field_data.new_batch()
+    >>> batch.add_requests(
+    ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"]),
+    ...     VectorFieldDataRequest(field_name="velocity", surfaces=["wall"]),
+    ... )
+    >>> result = batch.get_response()
+    """
 
     def __init__(
         self,
@@ -329,7 +369,23 @@ class Batch(FieldBatch):
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
-        """__init__ method of Batch class."""
+        """Initialize a Batch instance.
+
+        Parameters
+        ----------
+        field_data : object
+            Low-level field data service proxy connected to a running Fluent session.
+        field_info : _FieldInfo
+            Object used to query metadata about available fields and surfaces.
+        allowed_surface_ids : _AllowedSurfaceIDs
+            Validator for surface ID inputs.
+        allowed_surface_names : _AllowedSurfaceNames
+            Validator for surface name inputs.
+        allowed_scalar_field_names : _AllowedScalarFieldNames
+            Validator for scalar field name inputs.
+        allowed_vector_field_names : _AllowedVectorFieldNames
+            Validator for vector field name inputs.
+        """
         self._field_data = field_data
         self._field_info = field_info
 
@@ -337,12 +393,27 @@ class Batch(FieldBatch):
         self._allowed_scalar_field_names = allowed_scalar_field_names
         self._allowed_vector_field_names = allowed_vector_field_names
 
-        self._fetched_data = _FetchFieldData()
         self._pathline_field_data = []
         self._cache_requests = []
 
     def get_surface_ids(self, surfaces: list[str | int]) -> list[int]:
-        """Get a list of surface ids based on surfaces provided as inputs."""
+        """Resolve surface names or IDs to a list of integer surface IDs.
+
+        Parameters
+        ----------
+        surfaces : list[str | int]
+            Surface names (str) or surface IDs (int) to resolve.
+
+        Returns
+        -------
+        list[int]
+            Corresponding list of integer surface IDs recognized by Fluent.
+
+        Raises
+        ------
+        DisallowedValuesError
+            If a surface name or ID is not found among the allowed surfaces.
+        """
         return _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -428,11 +499,40 @@ class Batch(FieldBatch):
         | VectorFieldDataRequest
         | PathlinesFieldDataRequest,
     ):
-        """
-        Add field data requests for surfaces, scalars, vectors, or pathlines.
+        """Add one or more field data requests to the batch queue.
 
-        This method allows users to specify multiple field data requests, which will
-        later be processed when retrieving responses.
+        Accepts requests for surface geometry, scalar fields, vector fields, or
+        pathlines. All requested surfaces are resolved to integer IDs. Duplicate
+        requests are ignored with a warning. This method returns ``self`` to
+        support method chaining.
+
+        Parameters
+        ----------
+        obj : SurfaceFieldDataRequest | ScalarFieldDataRequest | VectorFieldDataRequest | PathlinesFieldDataRequest
+            The first (required) field data request.
+        *args : SurfaceFieldDataRequest | ScalarFieldDataRequest | VectorFieldDataRequest | PathlinesFieldDataRequest
+            Additional optional field data requests.
+
+        Returns
+        -------
+        Batch
+            Returns ``self`` to allow method chaining with :meth:`get_response`.
+
+        Raises
+        ------
+        ValueError
+            If two pathlines requests share the same ``field_name``.
+
+        Examples
+        --------
+        >>> result = (
+        ...     field_data.new_batch()
+        ...     .add_requests(
+        ...         ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"]),
+        ...         VectorFieldDataRequest(field_name="velocity", surfaces=["wall"]),
+        ...     )
+        ...     .get_response()
+        ... )
         """
         for req in (obj,) + args:
             req = req._replace(surfaces=self.get_surface_ids(req.surfaces))
@@ -478,15 +578,29 @@ class Batch(FieldBatch):
         return self
 
     def get_response(self) -> BatchFieldData:
-        """Get data for previously added requests.
+        """Send all queued requests to Fluent and return the retrieved field data.
+
+        Executes all requests added via :meth:`add_requests` in a single server
+        call. Returns a :class:`BatchFieldData` object; use its
+        :meth:`~BatchFieldData.get_field_data` method to access individual field
+        arrays by surface.
 
         Returns
         -------
-        Dict[int, Dict[int, Dict[str, npt.NDArray[Any]]]]
-            Data is returned as dictionary of dictionaries in the following structure:
-            tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.array]
+        BatchFieldData
+            Container holding the retrieved field data for all requested surfaces
+            and field types.
 
-            The tag is a tuple.
+        Examples
+        --------
+        >>> batch = field_data.new_batch()
+        >>> batch.add_requests(
+        ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
+        ... )
+        >>> result = batch.get_response()
+        >>> pressure = result.get_field_data(
+        ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
+        ... )
         """
         return BatchFieldData(
             self._field_data.extract_fields(self._field_data.get_batched_fields()),
@@ -552,7 +666,7 @@ ROOT_DOMAIN_ID = 1
 
 
 class ZoneType(Enum):
-    """Zone types for mesh."""
+    """Enumeration of zone types that classify mesh zones in the Fluent solver."""
 
     CELL = 1
     FACE = 2
@@ -560,16 +674,16 @@ class ZoneType(Enum):
 
 @dataclass
 class ZoneInfo:
-    """Zone information for mesh.
+    """Metadata describing a mesh zone in the Fluent solver.
 
     Attributes
     ----------
     _id : int
-        Zone ID.
+        Integer zone ID assigned by the Fluent solver.
     name : str
-        Name of the zone.
+        Name of the zone as defined in the Fluent case.
     zone_type : ZoneType
-        Type of the zone for mesh.
+        Whether the zone is a cell zone or a face zone.
     """
 
     _id: int
@@ -579,16 +693,18 @@ class ZoneInfo:
 
 @dataclass
 class Node:
-    """Node class for mesh.
+    """A single mesh node with its spatial coordinates.
 
     Attributes
     ----------
+    _id : int
+        Integer node ID assigned by the Fluent solver.
     x : float
-        x-coordinate of the node.
+        X-coordinate of the node in the solver's length unit.
     y : float
-        y-coordinate of the node.
+        Y-coordinate of the node in the solver's length unit.
     z : float
-        z-coordinate of the node.
+        Z-coordinate of the node in the solver's length unit.
     """
 
     _id: int
@@ -598,7 +714,11 @@ class Node:
 
 
 class CellElementType(Enum):
-    """Element types for a cell element."""
+    """Enumeration of cell element topologies supported by the Fluent mesh.
+
+    Each member corresponds to a standard finite-volume cell shape. The number of
+    nodes and faces for each type is noted in the member comments.
+    """
 
     # 3 nodes, 3 faces
     TRIANGLE = 1
@@ -628,12 +748,17 @@ class CellElementType(Enum):
 
 @dataclass
 class Facet:
-    """Facet class within a mesh element.
+    """A face of a polyhedral mesh element, defined by its node indices.
+
+    Used only for :attr:`CellElementType.POLYHEDRON` elements; standard
+    element types store connectivity directly on :class:`Element` via
+    ``node_indices``.
 
     Attributes
     ----------
     node_indices : list[int]
-        0-based node indices of the facet.
+        Zero-based indices into the :attr:`Mesh.nodes` array for the nodes
+        that form this facet.
     """
 
     node_indices: list[int]
@@ -641,16 +766,24 @@ class Facet:
 
 @dataclass
 class Element:
-    """Element class for mesh.
+    """A single mesh cell containing topology and connectivity information.
+
+    For standard element types (e.g. hexahedron, tetrahedron), connectivity is
+    stored in ``node_indices``. For polyhedral elements, connectivity is stored
+    as a list of :class:`Facet` objects in ``facets``.
 
     Attributes
     ----------
+    _id : int
+        Integer element ID assigned by the Fluent solver.
     element_type : CellElementType
-        Element type of the element.
+        Shape of the element; see :class:`CellElementType`.
     node_indices : list[int]
-        0-based node indices of the element. Populated for standard elements.
+        Zero-based indices into :attr:`Mesh.nodes` for standard elements.
+        Empty for polyhedral elements.
     facets : list[Facet]
-        List of facets of the element. Populated for polyhedral elements.
+        Faces of the element for :attr:`CellElementType.POLYHEDRON` elements.
+        Empty for standard elements.
     """
 
     _id: int
@@ -661,14 +794,20 @@ class Element:
 
 @dataclass
 class Mesh:
-    """Mesh class for Fluent field data.
+    """Computational mesh for a Fluent zone, containing nodes and elements.
+
+    Returned by :meth:`LiveFieldData.get_mesh`. The ``nodes`` array provides
+    spatial coordinates indexed from 0, and the ``elements`` array stores
+    connectivity referencing those node indices.
 
     Attributes
     ----------
     nodes : list[Node]
-        List of nodes in the mesh.
+        Ordered list of :class:`Node` objects; element connectivity uses
+        zero-based indices into this list.
     elements : list[Element]
-        List of elements in the mesh.
+        List of :class:`Element` objects describing cell topology and
+        connectivity.
     """
 
     nodes: list[Node]
@@ -676,7 +815,36 @@ class Mesh:
 
 
 class LiveFieldData(BaseFieldData, FieldDataSource):
-    """Provides access to Fluent field data on surfaces."""
+    """Primary high-level interface for accessing field data from a live Fluent session.
+
+    This is the main user-facing entry point for querying field quantities from a
+    running Fluent solver. It supports retrieving scalar fields, vector fields,
+    surface geometry data, and pathlines for one or more surfaces. Mesh topology
+    for cell zones is accessible via :meth:`get_mesh`.
+
+    For retrieving multiple field quantities at once, use :meth:`new_batch` to
+    create a :class:`Batch` that collects all requests and sends them to Fluent
+    in a single round-trip.
+
+    Attributes
+    ----------
+    surfaces : _SurfaceNames
+        Lists all surface names available in the current Fluent session.
+    surface_ids : _SurfaceIds
+        Lists all surface IDs available in the current Fluent session.
+    scalar_fields : _ScalarFields
+        Lists available scalar field names (e.g., ``"pressure"``,
+        ``"temperature"``).
+    vector_fields : _VectorFields
+        Lists available vector field names (e.g., ``"velocity"``).
+
+    Examples
+    --------
+    >>> field_data = solver.fields.field_data
+    >>> pressure = field_data.get_field_data(
+    ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
+    ... )
+    """
 
     def __init__(
         self,
@@ -685,7 +853,22 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         scheme_interpreter,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
-        """__init__ method of FieldData class."""
+        """Initialize a LiveFieldData instance.
+
+        Parameters
+        ----------
+        field_data : object
+            Low-level field data service proxy connected to a running Fluent session.
+        field_info : object
+            Low-level field info service proxy for querying available fields and
+            surfaces.
+        scheme_interpreter : object
+            Interface to the Fluent Scheme interpreter, used for evaluating
+            expressions such as precision queries.
+        get_zones_info : weakref.WeakMethod, optional
+            Weak reference to a callable that returns a list of :class:`ZoneInfo`
+            objects. Required for mesh retrieval via :meth:`get_mesh`.
+        """
         self._field_data = field_data
         self._field_info = field_info
         self.is_data_valid = field_data.is_data_valid
@@ -722,7 +905,26 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self._returned_data = _ReturnFieldData()
 
     def new_batch(self):
-        """Create a new field batch."""
+        """Create a new :class:`Batch` for queuing multiple field data requests.
+
+        Use a batch to accumulate several field data requests (scalar, vector,
+        surface geometry, or pathlines) and retrieve them all from Fluent in a
+        single efficient server call via :meth:`Batch.get_response`.
+
+        Returns
+        -------
+        Batch
+            A new :class:`Batch` instance bound to this session.
+
+        Examples
+        --------
+        >>> batch = field_data.new_batch()
+        >>> batch.add_requests(
+        ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"]),
+        ...     VectorFieldDataRequest(field_name="velocity", surfaces=["wall"]),
+        ... )
+        >>> result = batch.get_response()
+        """
         return Batch(
             self._field_data,
             self._field_info,
@@ -857,24 +1059,35 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         )
 
     def get_mesh(self, zone: str | int) -> Mesh:
-        """Get mesh for a zone.
+        """Retrieve the computational mesh for a Fluent cell zone.
+
+        Fetches node coordinates and element connectivity from the Fluent solver
+        for the specified zone and returns them as a :class:`Mesh` object. Only
+        cell zones are currently supported; face zones raise
+        :exc:`NotImplementedError`.
 
         Parameters
         ----------
         zone : str | int
-            Zone name or id. Currently, only cell zones are supported.
+            Name or integer ID of the zone to retrieve. Must be a cell zone.
 
         Returns
         -------
         Mesh
-            Mesh object containing nodes and elements.
+            :class:`Mesh` containing all :class:`Node` coordinates and
+            :class:`Element` connectivity for the zone.
 
         Raises
         ------
         ValueError
-            If the zone is not found.
+            If *zone* does not match any known zone name or ID.
         NotImplementedError
-            If a face zone is provided.
+            If *zone* refers to a face zone.
+
+        Examples
+        --------
+        >>> mesh = field_data.get_mesh("fluid")
+        >>> print(f"Nodes: {len(mesh.nodes)}, Elements: {len(mesh.elements)}")
         """
         zone_info = None
         for zone_info in self.get_zones_info():

@@ -26,14 +26,14 @@
 import grpc
 
 from ansys.api.fluent.v0 import transcript_pb2, transcript_pb2_grpc
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 
 class TranscriptService(
     StreamingService, ServiceProtocol
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
-    """Class wrapping the transcript gRPC service of Fluent."""
+    """Class wrapping the transcript gRPC service of Fluent (v0 proto API)."""
 
     def __init__(
         self,

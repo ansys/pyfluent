@@ -25,7 +25,7 @@
 import numpy as np
 
 from ansys.api.fluent.v1 import field_data_pb2, field_data_pb2_grpc
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 

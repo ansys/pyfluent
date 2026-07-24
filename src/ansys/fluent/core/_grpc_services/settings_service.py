@@ -37,7 +37,7 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
 
 
 class SettingsService(ServiceProtocol):
-    """Settings gRPC service wrapper (v1 proto API)."""
+    """Class wrapping the settings gRPC service of Fluent (v1 proto API)."""
 
     def __init__(self, intercept_channel, metadata: list[tuple[str, str]]) -> None:
         """Initialize SettingsService."""

@@ -21,7 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High level object model wrapper."""
+"""High-level object model wrappers.
+
+This module owns the business-logic layer on top of the ObjectModel gRPC
+service. The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.object_model_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.object_model_service_v0`` (v0 proto API)
+
+Class hierarchy
+---------------
+``ObjectModelBase``
+    Shared wrapper behavior for state access, updates, commands, and event
+    subscriptions.
+
+``ObjectModelV261(ObjectModelBase)``
+    Implementation for Fluent versions up to 26R1.
+
+``ObjectModel(ObjectModelBase)``
+    Implementation for Fluent versions 27R1 and later.
+"""
 
 from collections.abc import Callable, Iterator, Sequence
 import functools

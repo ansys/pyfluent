@@ -21,7 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High level transcript wrapper."""
+"""High-level transcript wrappers.
+
+This module owns the business-logic layer on top of the Transcript gRPC
+service. The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.transcript_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.transcript_service_v0`` (v0 proto API)
+"""
 
 
 class Transcript:

@@ -21,25 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Abstract monitors wrapper."""
-
-from abc import ABC, abstractmethod
+"""High-level user-facing API for retrieving field data from Fluent surfaces and zones."""
 
 
-class AbstractMonitor(ABC):
-    """Abstract base class for the health check."""
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData,
+    SolutionVariableInfo,
+)
 
-    @abstractmethod
-    def get_monitors_info(self) -> dict:
-        """Get monitors information.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        dict
-            Dictionary containing the monitors information.
-        """
-        pass
+__all__ = ["SolutionVariableInfo", "SolutionVariableData"]
