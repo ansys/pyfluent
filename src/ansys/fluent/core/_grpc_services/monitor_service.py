@@ -26,8 +26,8 @@
 from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v1 import monitor_pb2, monitor_pb2_grpc
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 # v1 MessageToDict produces camelCase keys for the renamed snake_case fields
 # (x_label → xLabel, y_label → yLabel, unit_info → unitInfo). Callers of

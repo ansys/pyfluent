@@ -36,12 +36,12 @@ from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core._grpc_services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.object_model_utilities import (
     convert_path_to_se_path,
     convert_se_path_to_path,
 )
-from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.object_model_v1")

@@ -25,8 +25,8 @@
 
 
 from ansys.api.fluent.v1 import transcript_pb2, transcript_pb2_grpc
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class TranscriptService(
