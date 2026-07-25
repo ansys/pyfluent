@@ -295,6 +295,7 @@ class StandaloneLauncher:
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
+        cleanup_on_exit = self.argvals.get("cleanup_on_exit", True)
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
@@ -327,7 +328,7 @@ class StandaloneLauncher:
             session = self.new_session._create_from_server_info_file(
                 server_info_file_name=self._server_info_file_name,
                 file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals.get("cleanup_on_exit", True),
+                cleanup_on_exit=cleanup_on_exit,
                 start_transcript=self.argvals.get("start_transcript"),
                 launcher_args=self.argvals,
                 inside_container=False,
@@ -335,7 +336,7 @@ class StandaloneLauncher:
             session._process = process
             start_watchdog = _confirm_watchdog_start(
                 self.argvals.get("start_watchdog"),
-                self.argvals.get("cleanup_on_exit", True),
+                cleanup_on_exit,
                 session._fluent_connection,
             )
             if start_watchdog:
@@ -379,5 +380,5 @@ class StandaloneLauncher:
             raise LaunchFluentError(self._launch_cmd) from ex
         finally:
             # Delete server-info file if cleanup_on_exit=True (default)
-            if self.argvals.get("cleanup_on_exit", True):
+            if cleanup_on_exit:
                 Path(self._server_info_file_name).unlink(missing_ok=True)
