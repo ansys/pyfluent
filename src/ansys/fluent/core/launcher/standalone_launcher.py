@@ -49,9 +49,6 @@ from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.fluent_container import (
-    _cleanup_on_exit_to_preserve_info_file_converter,
-)
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
     UIMode,
@@ -71,7 +68,6 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -137,12 +133,6 @@ logger = logging.getLogger("pyfluent.launcher")
 class StandaloneLauncher:
     """Instantiates Fluent session in standalone mode."""
 
-    @deprecate_arguments(
-        old_args="cleanup_on_exit",
-        new_args="preserve_info_file",
-        version="0.42.0",
-        converter=_cleanup_on_exit_to_preserve_info_file_converter,
-    )
     def __init__(
         self,
         **kwargs: Unpack[StandaloneArgs],

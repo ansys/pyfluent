@@ -49,7 +49,6 @@ from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
 from ansys.fluent.core.launcher.fluent_container import (
-    _cleanup_on_exit_to_preserve_info_file_converter,
     configure_container_dict,
     dict_to_str,
     start_fluent_container,
@@ -65,7 +64,6 @@ from ansys.fluent.core.launcher.process_launch_string import (
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
-from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
@@ -141,12 +139,6 @@ def _get_server_info_from_container(config_dict):
 class DockerLauncher:
     """Instantiates Fluent session in container mode."""
 
-    @deprecate_arguments(
-        old_args="cleanup_on_exit",
-        new_args="preserve_info_file",
-        version="0.42.0",
-        converter=_cleanup_on_exit_to_preserve_info_file_converter,
-    )
     def __init__(
         self,
         **kwargs: Unpack[ContainerArgs],
@@ -245,8 +237,8 @@ class DockerLauncher:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
-        if self.argvals.get("preserve_info_file") is None:
-            self.argvals["preserve_info_file"] = False
+        if self.argvals.get("cleanup_on_exit") is None:
+            self.argvals["cleanup_on_exit"] = True
         if self.argvals.get("start_transcript") is None:
             self.argvals["start_transcript"] = True
         if "start_watchdog" not in self.argvals:
@@ -308,7 +300,7 @@ class DockerLauncher:
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
                 compose_config=self._compose_config,
-                preserve_info_file=self.argvals["preserve_info_file"],
+                cleanup_on_exit=self.argvals["cleanup_on_exit"],
             )
 
             try:
@@ -326,7 +318,7 @@ class DockerLauncher:
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
                 compose_config=self._compose_config,
-                preserve_info_file=self.argvals["preserve_info_file"],
+                cleanup_on_exit=self.argvals["cleanup_on_exit"],
             )
 
         allow_remote_host = (
@@ -340,7 +332,7 @@ class DockerLauncher:
             certificates_folder=self.argvals["certificates_folder"],
             insecure_mode=self.argvals["insecure_mode"],
             file_transfer_service=self.file_transfer_service,
-            cleanup_on_exit=not self.argvals["preserve_info_file"],
+            cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
             container=container,
@@ -362,7 +354,7 @@ class DockerLauncher:
         if not self._compose_config.is_compose:
             if (
                 self.argvals["start_watchdog"] is None
-                and not self.argvals["preserve_info_file"]
+                and self.argvals["cleanup_on_exit"]
             ):
                 self.argvals["start_watchdog"] = True
             if self.argvals["start_watchdog"]:
