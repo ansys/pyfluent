@@ -181,9 +181,9 @@ class DockerLauncher:
         dry_run : bool, optional
             If True, does not launch Fluent but prints configuration information instead. If dry running a
             container start, this method will return the configured ``container_dict``. Defaults to False.
-        preserve_info_file : bool, optional
-            If True, the server-info file will be preserved for debugging. If False, the server-info file
-            will be deleted when the session exits. Defaults to False.
+        cleanup_on_exit : bool, optional
+            If True (default), the server-info file will be deleted when the session exits.
+            If False, the server-info file will be preserved for debugging. Defaults to True.
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.

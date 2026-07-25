@@ -173,9 +173,9 @@ class StandaloneLauncher:
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         env : dict[str, str], optional
             A mapping for modifying environment variables in Fluent. Defaults to ``None``.
-        preserve_info_file : bool, optional
-            If True, the server-info file will be preserved for debugging.
-            If False, the server-info file will be deleted when the session exits. Defaults to False.
+        cleanup_on_exit : bool, optional
+            If True (default), the server-info file will be deleted when the session exits.
+            If False, the server-info file will be preserved for debugging. Defaults to True.
         dry_run : bool, optional
             If True, does not launch Fluent but prints configuration information instead. The `call()` method
             returns a tuple containing the launch string and server info file name. Defaults to False.
@@ -201,7 +201,7 @@ class StandaloneLauncher:
             A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
             a filename for the new Python journal.
         start_watchdog : bool, optional
-            When `preserve_info_file` is False (default cleanup enabled), defaults to True; an independent watchdog process ensures that any local
+            When `cleanup_on_exit` is True (default cleanup enabled), defaults to True; an independent watchdog process ensures that any local
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any
             Service for uploading/downloading files to/from the server.
@@ -327,7 +327,7 @@ class StandaloneLauncher:
             session = self.new_session._create_from_server_info_file(
                 server_info_file_name=self._server_info_file_name,
                 file_transfer_service=self.file_transfer_service,
-                preserve_info_file=self.argvals.get("preserve_info_file", False),
+                cleanup_on_exit=self.argvals.get("cleanup_on_exit", True),
                 start_transcript=self.argvals.get("start_transcript"),
                 launcher_args=self.argvals,
                 inside_container=False,
@@ -335,7 +335,7 @@ class StandaloneLauncher:
             session._process = process
             start_watchdog = _confirm_watchdog_start(
                 self.argvals.get("start_watchdog"),
-                not self.argvals.get("preserve_info_file", False),
+                self.argvals.get("cleanup_on_exit", True),
                 session._fluent_connection,
             )
             if start_watchdog:
@@ -378,6 +378,6 @@ class StandaloneLauncher:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(self._launch_cmd) from ex
         finally:
-            # preserve_info_file defaults to False, meaning cleanup happens by default
-            if not self.argvals.get("preserve_info_file", False):
+            # Delete server-info file if cleanup_on_exit=True (default)
+            if self.argvals.get("cleanup_on_exit", True):
                 Path(self._server_info_file_name).unlink(missing_ok=True)
