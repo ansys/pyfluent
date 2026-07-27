@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the application runtime gRPC service of Fluent (v0 proto API)."""
+"""Wrapper over the application utilities gRPC service of Fluent (v0 proto API)."""
 
 import os
 

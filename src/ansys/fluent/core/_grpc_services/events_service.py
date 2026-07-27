@@ -26,7 +26,7 @@
 from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v1 import events_pb2, events_pb2_grpc
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 

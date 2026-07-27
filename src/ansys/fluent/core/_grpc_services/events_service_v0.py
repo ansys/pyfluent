@@ -29,7 +29,7 @@ from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.api.fluent.v0 import events_pb2, events_pb2_grpc
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 network_logger = logging.getLogger("pyfluent.networking")
@@ -38,7 +38,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 class EventsService(
     StreamingService, ServiceProtocol
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
-    """Class wrapping the events gRPC service of Fluent."""
+    """Class wrapping the events gRPC service of Fluent (v0 proto API)."""
 
     def __init__(
         self,

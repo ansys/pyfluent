@@ -33,10 +33,10 @@ import grpc
 
 from ansys.api.fluent.v1 import object_model_pb2, object_model_pb2_grpc
 from ansys.api.fluent.v1.variant_pb2 import Variant
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
-from ansys.fluent.core.services._command_arguments_mixin import (
+from ansys.fluent.core._grpc_services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.object_model_utilities import (
     convert_path_to_se_path,
@@ -183,14 +183,14 @@ class UnsubscribeEventError(RuntimeError):
 class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     CommandArgumentsCleanupMixin, StreamingService, ServiceProtocol
 ):
-    """Pure Python wrapper of DatamodelServiceImpl."""
+    """Class wrapping the object model gRPC service of Fluent (v1 proto API)."""
 
     def __init__(
         self,
         intercept_channel,
         metadata: list[tuple[str, str]],
     ) -> None:
-        """__init__ method of DatamodelService class."""
+        """__init__ method of ObjectModelService class."""
         super().__init__(
             stub=object_model_pb2_grpc.ObjectModelStub(intercept_channel),
             metadata=metadata,

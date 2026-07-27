@@ -26,7 +26,7 @@
 from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v1 import monitor_pb2, monitor_pb2_grpc
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 # v1 MessageToDict produces camelCase keys for the renamed snake_case fields
@@ -62,7 +62,7 @@ def _normalize_monitor_set_dict_keys(data: dict) -> dict:
 class MonitorService(
     StreamingService, ServiceProtocol
 ):  # pyright: ignore[reportUnsafeMultipleInheritance]
-    """Class wrapping the monitor gRPC service of Fluent."""
+    """Class wrapping the monitor gRPC service of Fluent (v1 proto API)."""
 
     def __init__(self, intercept_channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of MonitorService class."""

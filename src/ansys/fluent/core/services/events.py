@@ -21,7 +21,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High level events wrapper."""
+"""High-level events wrappers.
+
+This module owns the business-logic layer on top of the Events gRPC
+service. The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.events_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.events_service_v0`` (v0 proto API)
+
+Class hierarchy
+---------------
+``Events``
+    gRPC-based implementation (v1 proto API).
+
+``EventsV261``
+    Hybrid implementation for 26R1: event streaming over gRPC and
+    pause/resume registration delegated to application runtime.
+
+``EventsV251``
+    Hybrid implementation for 25R1: event streaming over gRPC and
+    pause/resume registration delegated to Scheme.
+"""
 
 from ansys.fluent.core.services.abstract_events import AbstractEvents
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
