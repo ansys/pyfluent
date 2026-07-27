@@ -50,8 +50,8 @@ from ansys.fluent.core import examples
 
 # Download the example mesh file
 import_file_name = examples.download_file(
-    "axial_fan.msh",
-    "pyfluent/axial_fan_perfrormance_curve",
+    "axial_fan.msh.h5",
+    "pyfluent/axial_fan_performance_curve",
     save_path=os.getcwd(),
 )
 
@@ -110,7 +110,7 @@ solver.settings.setup.general.operating_conditions.gravity.enable = True
 solver.settings.setup.general.operating_conditions.gravity.components = [-9.81, 0, 0]
 
 # %%
-# Models: Turbulance/Viscous Model
+# Models: Turbulance/Viscous model
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the turbulance/viscous model to SST k-omega model.
 # Activate curvature correction, production Kato-Launder, and production limiter options.
@@ -124,7 +124,7 @@ solver.settings.setup.models.viscous.options.production_kato_launder_enabled = T
 solver.settings.setup.models.viscous.options.production_limiter.enabled = True
 
 # %%
-# Cell Zones
+# Cell zones
 # ^^^^^^^^^^^
 # Activate the Multiple Reference Frame (MRF) model for the <code>'rotating-fan'</code> zone,
 # specify the Y-axis as axis of rotation, and set the rotational speed using the previously defined input parameter.
@@ -289,8 +289,8 @@ solver.settings.solution.report_definitions.moment["torque"].create_report_plot 
 solver.settings.solution.report_definitions.moment["torque"].output_parameter = True
 
 # %%
-# Set the number of iterations for the calculation and enable convergence condition check
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Set the number of iterations for the calculation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the number of solution iterations to 2500, and enable the convergence condition check.
 
 solver.settings.solution.run_calculation.parameters.iter_count = 2500
@@ -305,12 +305,11 @@ solver.settings.solution.monitor.residual.options.criterion_type = "absolute"
 solver.settings.file.write_case(file_name="axial_fan.cas.h5")
 
 # %%
-# Parametric study: Construct the fan performance curve
-# ------------------------------------------------------
+# Parametric Study: Construct the Fan Performance Curve
+# -----------------------------------------------------
 #
-# %%
 # Initialize parametric study
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Initialize a parametric design point study from a Fluent session.
 
 solver.settings.parametric_studies.initialize(project_filename="project_axial_fan")
