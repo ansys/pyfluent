@@ -24,6 +24,7 @@
 """Module for Field data streaming."""
 
 from collections.abc import Callable
+from typing import Any
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModuleV0
 from ansys.api.fluent.v1 import field_data_pb2
@@ -93,6 +94,6 @@ class FieldDataStreaming(StreamingService):
             )
         )
 
-    def callbacks(self) -> list[list[Callable | list | dict]]:
+    def callbacks(self) -> list[Any]:
         """Get list of callbacks along with arguments and keyword arguments."""
-        return self._service_callbacks.values()
+        return list(self._service_callbacks.values())

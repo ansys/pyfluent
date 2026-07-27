@@ -368,7 +368,7 @@ def _get_channel(
                 )
 
 
-T = TypeVar("T", bound=type)
+T = TypeVar("T")
 E = TypeVar("E")
 
 
