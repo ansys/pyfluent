@@ -138,14 +138,16 @@ class ServiceFactory:
                     self._service_factory.scheme_interpreter,
                 )
 
-    @cached_property
+    @property
     def rest_settings(self):
         """REST-based solver settings service.
 
         Returns ``None`` if REST client is not available.
         """
         if self._rest_client is not None:
-            return RestSettings(self._rest_client)
+            if not hasattr(self, "_rest_settings_cache"):
+                self._rest_settings_cache = RestSettings(self._rest_client)
+            return self._rest_settings_cache
         return None
 
     @cached_property
