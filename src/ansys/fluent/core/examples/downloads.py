@@ -121,7 +121,7 @@ def download_file(
             timeout=timeout,
             max_retries=max_retries,
         )
-    except ValueError as ex:
+    except Exception as ex:
         raise RemoteFileNotFoundError(
             f"{file_name} does not exist in the {directory} directory of the Ansys example data repository."
         ) from ex
