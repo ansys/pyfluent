@@ -23,18 +23,12 @@
 
 """Functions to download sample datasets from the Ansys example data repository."""
 
-import logging
 import os
 from pathlib import Path
-import re
-import shutil
-import zipfile
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
-
-logger = logging.getLogger("pyfluent.networking")
+from ansys.tools.common.example_download import download_manager
 
 
 class RemoteFileNotFoundError(FileNotFoundError):
@@ -45,84 +39,12 @@ class RemoteFileNotFoundError(FileNotFoundError):
         super().__init__(f"{url} does not exist.")
 
 
-def delete_downloads():
-    """Delete all downloaded examples from the default examples folder to free space or
-    update the files.
-
-    Notes
-    -----
-    The default examples path is given by ``pyfluent.config.examples_path``.
-    """
-    shutil.rmtree(pyfluent.config.examples_path)
-    os.makedirs(pyfluent.config.examples_path)
-
-
-def _decompress(file_name: str) -> None:
-    """Decompress zipped file."""
-    zip_ref = zipfile.ZipFile(file_name, "r")
-    zip_ref.extractall(pyfluent.config.examples_path)
-    return zip_ref.close()
-
-
-def _get_file_url(file_name: str, directory: str | None = None) -> str:
-    """Get file URL."""
-    if directory:
-        return f"https://github.com/ansys/example-data/raw/main/{directory}/{file_name}"
-    return f"https://github.com/ansys/example-data/raw/main/{file_name}"
-
-
-def _retrieve_file(
-    url: str,
-    file_name: str,
-    save_path: "PathType | None" = None,
-    return_without_path: bool | None = False,
-) -> str:
-    """Download specified file from specified URL."""
-    file_name = os.path.basename(file_name)
-    if save_path is None:
-        save_path = pyfluent.config.container_mount_source or os.getcwd()
-    else:
-        save_path = os.path.abspath(save_path)
-    local_path = os.path.join(save_path, file_name)
-    local_path_no_zip = re.sub(".zip$", "", local_path)
-    file_name_no_zip = re.sub(".zip$", "", file_name)
-    # First check if file has already been downloaded
-    logger.info(f"Checking if {local_path_no_zip} already exists...")
-    if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        logger.info("File already exists.")
-        if return_without_path:
-            return file_name_no_zip
-        else:
-            return local_path_no_zip
-
-    logger.info("File does not exist. Downloading specified file...")
-
-    # Check if save path exists
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-
-    # Download file
-    logger.info(f'Downloading URL: "{url}"')
-    content = get_url_content(url)
-    with open(local_path, "wb") as f:
-        f.write(content)
-
-    if local_path.endswith(".zip"):
-        _decompress(local_path)
-        local_path = local_path_no_zip
-        file_name = file_name_no_zip
-    logger.info("Download successful.")
-    if return_without_path:
-        return file_name
-    else:
-        return local_path
-
-
 def download_file(
     file_name: str,
     directory: str | None = None,
     save_path: "PathType | None" = None,
     return_without_path: bool | None = None,
+    **kwargs,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 
@@ -143,6 +65,8 @@ def download_file(
         Assuming the Fluent inside the container has its working directory set to the path that was mounted from
         the host, and that the example files are being made available by the host through this same path,
         only the file name is required for Fluent to find and open the file.
+    **kwargs : dict, optional
+        Additional keyword arguments passed to the download manager.
 
     Raises
     ------
@@ -182,10 +106,18 @@ def download_file(
             else:
                 return_without_path = True
 
-    url = _get_file_url(file_name, directory)
-    if not check_url_exists(url):
-        raise RemoteFileNotFoundError(url)
-    return _retrieve_file(url, file_name, save_path, return_without_path)
+    try:
+        local_path = download_manager.download_file(
+            file_name, directory, destination=save_path, **kwargs
+        )
+    except ValueError as ex:
+        raise RemoteFileNotFoundError(
+            f"{file_name} does not exist in the {directory} directory of the Ansys example data repository."
+        ) from ex
+
+    if return_without_path:
+        return Path(local_path).name
+    return local_path
 
 
 def path(file_name: str):
