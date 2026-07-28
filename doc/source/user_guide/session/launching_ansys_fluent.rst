@@ -91,24 +91,13 @@ Use this method when:
 
    import ansys.fluent.core as pyfluent
 
-   # Launch to retrieve credentials
-   solver = pyfluent.Solver.from_install()
-   print(solver.health_check.check_health())
+   # Connect to the session using the server info file
+   solver = pyfluent.Solver.from_connection(server_info_file_name="server.txt")
 
-   ip = solver.connection_properties.ip
-   password = solver.connection_properties.password
-   port = solver.connection_properties.port
-
-   # Connect to the session
-   solver_connected = pyfluent.Solver.from_connection(ip=ip, password=password, port=port)
-   print(solver_connected.health_check.check_health())
-
-   solver.exit()
-   solver_connected.exit()
 
 .. note::
 
-    PyFluent offers two Python interfaces for meshing:
+    **Meshing interfaces**: PyFluent offers two Python interfaces for meshing:
 
     - ``Meshing``: meshing interface with an additional method to switch to solver mode.
     - ``PureMeshing``: meshing interface without any solver switching features.
