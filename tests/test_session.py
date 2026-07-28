@@ -168,9 +168,11 @@ class MockHealthServicerV1(health_pb2_grpc_v1.HealthServicer):
 
 
 def test_download_file():
-    with pytest.raises(examples.RemoteFileNotFoundError):
+    with pytest.raises(RuntimeError):
         examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
+            "mixing_elbow.cas.h5",
+            "pyfluent/examples/DOE-ML-Mixing-Elbow",
+            force=True,
         )
 
 

@@ -31,10 +31,6 @@ from ansys.fluent.core._types import PathType
 from ansys.tools.common.example_download import download_manager
 
 
-class RemoteFileNotFoundError(FileNotFoundError):
-    """Raised on an attempt to download a non-existent remote file."""
-
-
 def download_file(
     file_name: str,
     directory: str | None = None,
@@ -70,11 +66,6 @@ def download_file(
     max_retries: int, optional
         Maximum number of retry attempts for failed downloads. The default is 3.
 
-    Raises
-    ------
-    RemoteFileNotFoundError
-        If remote file does not exist.
-
     Returns
     -------
     str
@@ -108,17 +99,14 @@ def download_file(
             else:
                 return_without_path = True
 
-    try:
-        local_path = download_manager.download_file(
-            file_name,
-            directory,
-            destination=save_path,
-            force=force,
-            timeout=timeout,
-            max_retries=max_retries,
-        )
-    except Exception as ex:
-        raise RemoteFileNotFoundError from ex
+    local_path = download_manager.download_file(
+        file_name,
+        directory,
+        destination=save_path,
+        force=force,
+        timeout=timeout,
+        max_retries=max_retries,
+    )
 
     if return_without_path:
         return Path(local_path).name
