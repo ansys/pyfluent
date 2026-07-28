@@ -44,7 +44,9 @@ def download_file(
     directory: str | None = None,
     save_path: "PathType | None" = None,
     return_without_path: bool | None = None,
-    **kwargs,
+    force: bool = False,
+    timeout: float = 60,
+    max_retries: int = 3,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 
@@ -65,8 +67,12 @@ def download_file(
         Assuming the Fluent inside the container has its working directory set to the path that was mounted from
         the host, and that the example files are being made available by the host through this same path,
         only the file name is required for Fluent to find and open the file.
-    **kwargs : dict, optional
-        Additional keyword arguments passed to the download manager.
+    force : bool, optional
+        Whether to always download the example file. The default is False, in which case if the example file is cached, it is reused.
+    timeout : float, optional
+        Timeout in seconds for the download operation. The default is 60 seconds.
+    max_retries: int, optional
+        Maximum number of retry attempts for failed downloads. The default is 3.
 
     Raises
     ------
@@ -108,7 +114,12 @@ def download_file(
 
     try:
         local_path = download_manager.download_file(
-            file_name, directory, destination=save_path, **kwargs
+            file_name,
+            directory,
+            destination=save_path,
+            force=force,
+            timeout=timeout,
+            max_retries=max_retries,
         )
     except ValueError as ex:
         raise RemoteFileNotFoundError(
