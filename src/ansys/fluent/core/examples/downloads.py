@@ -34,10 +34,6 @@ from ansys.tools.common.example_download import download_manager
 class RemoteFileNotFoundError(FileNotFoundError):
     """Raised on an attempt to download a non-existent remote file."""
 
-    def __init__(self, url):
-        """Initializes RemoteFileNotFoundError."""
-        super().__init__(f"{url} does not exist.")
-
 
 def download_file(
     file_name: str,
@@ -122,9 +118,7 @@ def download_file(
             max_retries=max_retries,
         )
     except Exception as ex:
-        raise RemoteFileNotFoundError(
-            f"{file_name} does not exist in the {directory} directory of the Ansys example data repository."
-        ) from ex
+        raise RemoteFileNotFoundError from ex
 
     if return_without_path:
         return Path(local_path).name
