@@ -29,8 +29,6 @@ from typing import TYPE_CHECKING, Any, cast
 import warnings
 import weakref
 
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModuleV0
-from ansys.api.fluent.v1 import solution_variable_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
@@ -51,14 +49,7 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-from ansys.fluent.core.streaming_services.events_streaming import (
-    SolverEvent as SolverEventV0,
-)
-from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
-from ansys.fluent.core.streaming_services.monitor_streaming import (
-    MonitorsManager as MonitorsManagerV0,
-)
-from ansys.fluent.core.streaming_services.monitor_streaming_v1 import MonitorsManager
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
@@ -123,16 +114,13 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        _solver_event = (
-            SolverEvent if fluent_connection._server_supports_v1 else SolverEventV0
-        )
         super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
-            event_type=_solver_event,
+            event_type=SolverEvent,
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._settings = None
@@ -164,26 +152,15 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             fluent_connection._service_factory.solution_variable_data
         )
 
-        monitors_service = fluent_connection._service_factory.monitor
         #: Manage Fluent's solution monitors.
-        _MonitorsManager = (
-            MonitorsManager
-            if fluent_connection._server_supports_v1
-            else MonitorsManagerV0
+        self.monitors = fluent_connection._service_factory._get_monitors_manager(
+            fluent_connection._id
         )
-        self.monitors = _MonitorsManager(fluent_connection._id, monitors_service)
-        if fluent_connection._server_supports_v1:
-            if not config.disable_monitor_refresh_on_init:
-                self.events.register_callback(
-                    (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
-                    self.monitors.refresh,
-                )
-        else:
-            if not config.disable_monitor_refresh_on_init:
-                self.events.register_callback(
-                    (SolverEventV0.SOLUTION_INITIALIZED, SolverEventV0.DATA_LOADED),
-                    self.monitors.refresh,
-                )
+        if not config.disable_monitor_refresh_on_init:
+            self.events.register_callback(
+                (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
+                self.monitors.refresh,
+            )
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
 
@@ -208,28 +185,14 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         return cast("settings_root.root", self._settings)
 
     def _get_zones_info(self) -> list[ZoneInfo]:
-        zones_info = []
-        # v0 ThreadType: CELL_THREAD=0, FACE_THREAD=1
-        # v1 ThreadType: THREAD_TYPE_CELL=1, THREAD_TYPE_FACE=2
-        # WARNING: v0 FACE_THREAD and v1 THREAD_TYPE_CELL share the numeric value 1.
-        # Never compare thread_type values from both proto versions in the same
-        # expression — pick one constant based on the active API version.
-        cell_thread_type = (
-            SvarProtoModule.ThreadType.THREAD_TYPE_CELL
-            if self._fluent_connection._server_supports_v1
-            else SvarProtoModuleV0.ThreadType.CELL_THREAD
-        )
-        for (
-            zone_info
-        ) in self.fields.solution_variable_info.get_zones_info()._zones_info.values():
-            is_cell_thread = zone_info.thread_type == cell_thread_type
-            zone_type = ZoneType.CELL if is_cell_thread else ZoneType.FACE
-            zones_info.append(
-                ZoneInfo(
-                    _id=zone_info.zone_id, name=zone_info.name, zone_type=zone_type
-                )
+        return [
+            ZoneInfo(
+                _id=zone_info.zone_id,
+                name=zone_info.name,
+                zone_type=ZoneType.CELL if zone_info.is_cell_thread else ZoneType.FACE,
             )
-        return zones_info
+            for zone_info in self.fields.solution_variable_info.get_zones_info()._zones_info.values()
+        ]
 
     @property
     def reduction(self):
@@ -302,11 +265,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         super()._build_from_fluent_connection(
             bg_session._fluent_connection,
             bg_session._fluent_connection.scheme_eval,
-            event_type=(
-                SolverEvent
-                if bg_session._fluent_connection._server_supports_v1
-                else SolverEventV0
-            ),
+            event_type=SolverEvent,
             launcher_args=launcher_args,
         )
         self._build_from_fluent_connection(

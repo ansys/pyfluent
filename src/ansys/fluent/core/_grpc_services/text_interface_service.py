@@ -25,17 +25,10 @@
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
-import grpc
 
 from ansys.api.fluent.v1 import text_interface_pb2, text_interface_pb2_grpc
 from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 class TextInterfaceService(ServiceProtocol):
@@ -43,20 +36,10 @@ class TextInterfaceService(ServiceProtocol):
 
     def __init__(
         self,
-        channel: grpc.Channel,
+        intercept_channel,
         metadata: list[tuple[str, str]],
-        fluent_error_state,
     ) -> None:
         """__init__ method of TextInterfaceService class."""
-        self._channel = channel
-        self._fluent_error_state = fluent_error_state
-        intercept_channel = grpc.intercept_channel(
-            self._channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(self._fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = text_interface_pb2_grpc.TextInterfaceStub(intercept_channel)
         self._metadata = metadata
 

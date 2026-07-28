@@ -21,7 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High level monitor wrapper."""
+"""High-level monitor wrappers.
+
+This module owns the business-logic layer on top of the Monitor gRPC
+service. The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.monitor_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.monitor_service_v0`` (v0 proto API)
+"""
 
 
 from ansys.fluent.core.services.abstract_monitors import AbstractMonitor
