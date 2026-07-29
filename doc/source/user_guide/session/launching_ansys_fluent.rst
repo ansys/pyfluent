@@ -92,8 +92,8 @@ Before connecting, you must launch Fluent externally with the gRPC server enable
 
 1. **Command line with server info file**:
 
-   - **Linux/WSL**: ``ansys_inc/v252/fluent/bin/fluent 3ddp -sifile=server.txt``
-   - **Windows**: ``ANSYS Inc\v252\fluent\ntbin\win64\fluent.exe 3ddp -sifile=server.txt``
+   - **Linux/WSL**: ``ansys_inc/v261/fluent/bin/fluent 3ddp -sifile=server.txt``
+   - **Windows**: ``ANSYS Inc\v261\fluent\ntbin\win64\fluent.exe 3ddp -sifile=server.txt``
 
 2. **Within Fluent GUI**: Execute ``File`` → ``Applications`` → ``Server`` → ``Start...`` in solution mode.
 
