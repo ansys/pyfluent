@@ -67,7 +67,8 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     data_model_cache
     exceptions
     file_session
-    field_data_interfaces
+    fields/fields_contents
+    fields/field_data_interfaces
     fluent_connection
     journaling
     logger
@@ -152,19 +153,19 @@ hierarchy = {
     "scheduler": ["load_machines", "machine_list"],
     "services": [
         "api_upgrade",
+        "application_runtime",
         "batch_ops",
-        "datamodel_se",
+        "object_model",
         "text_interface",
         "events",
         "field_data",
         "health_check",
         "interceptors",
-        "monitor",
+        "monitors",
         "reduction",
-        "scheme_eval",
+        "scheme_interpreter",
         "settings",
         "solution_variables",
-        "streaming",
         "transcript",
     ],
     "solver": [
@@ -198,11 +199,16 @@ hierarchy = {
         "networking",
         "setup_for_fluent",
     ],
+    "fields": [
+        "live_field_data",
+        "reduction",
+        "solution_variables",
+    ],
     "other": [
         "module_config",
         "exceptions",
         "file_session",
-        "field_data_interfaces",
+        "fields/field_data_interfaces",
         "fluent_connection",
         "journaling",
         "logger",
