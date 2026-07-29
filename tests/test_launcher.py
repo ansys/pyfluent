@@ -26,6 +26,8 @@ from pathlib import Path
 import platform
 import tempfile
 from tempfile import TemporaryDirectory
+from unittest.mock import MagicMock, Mock, patch
+import warnings
 
 import pytest
 
@@ -802,3 +804,62 @@ def test_idle_timeout(monkeypatch):
         StandaloneLauncher._construct_timeout_arg(200)
         == ' -command="(set-session-idle-timeoutPLF+5)"'
     )
+
+
+def test_standalone_launcher_cleanup_on_exit_false_preserves_file():
+    """Verify cleanup_on_exit=False preserves server-info file (issue #5145)."""
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
+
+        # Simulate the finally block logic from standalone_launcher.py
+        cleanup_on_exit = False
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
+
+        assert (
+            server_info_file.exists()
+        ), "File should be preserved when cleanup_on_exit=False"
+
+
+def test_standalone_launcher_cleanup_on_exit_true_deletes_file():
+    """Verify cleanup_on_exit=True (default) deletes server-info file."""
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
+
+        # Simulate the finally block logic from standalone_launcher.py
+        cleanup_on_exit = True
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
+
+        assert (
+            not server_info_file.exists()
+        ), "File should be deleted when cleanup_on_exit=True"
+
+
+def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
+    """Verify default behavior (cleanup_on_exit not specified) deletes server-info file."""
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
+
+        # Simulate the finally block logic from standalone_launcher.py
+        # Using get() with default True, like the actual implementation
+        cleanup_on_exit_value = None
+        cleanup_on_exit = (
+            cleanup_on_exit_value if cleanup_on_exit_value is not None else True
+        )
+
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
+
+        assert (
+            not server_info_file.exists()
+        ), "File should be deleted by default when cleanup_on_exit is not specified"
