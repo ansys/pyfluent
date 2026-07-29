@@ -36,9 +36,6 @@ from typing import Any
 import warnings
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.error_warning_messages import (
-    LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
-)
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
@@ -244,52 +241,3 @@ def _build_journal_argument(
         return fluent_jou_arg
 
     return _impl(topy, journal_file_names)
-
-
-def _validate_lightweight_with_journal(
-    lightweight_mode: bool | None, journal_file_names: None | str | list[str]
-) -> tuple[bool, str | None]:
-    """Validate lightweight mode compatibility with journal files.
-
-    Parameters
-    ----------
-    lightweight_mode : bool | None
-        Whether lightweight mode is enabled.
-    journal_file_names : None | str | list[str]
-        Journal file(s) to be executed.
-
-    Returns
-    -------
-    tuple[bool, str | None]
-        (should_disable: bool, warning_msg: str | None) where should_disable=True if
-        lightweight_mode should be disabled, and warning_msg is the user-facing warning.
-    """
-    if lightweight_mode and journal_file_names:
-        return (True, LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL)
-    return (False, None)
-
-
-def _build_case_data_arguments(
-    case_file_name: None | str, case_data_file_name: None | str
-) -> str:
-    """Build Fluent commandline case and data file arguments.
-
-    Parameters
-    ----------
-    case_file_name : None | str
-        Path to case file (may contain spaces).
-    case_data_file_name : None | str
-        Path to case data file (may contain spaces).
-
-    Returns
-    -------
-    str
-        Command-line argument string, e.g., ' -case "file.cas" -data "file.dat"'
-        or ' -case "file.cas"' or empty string if no files provided.
-    """
-    case_data_arg = ""
-    if case_file_name:
-        case_data_arg += f' -case "{case_file_name}"'
-    if case_data_file_name:
-        case_data_arg += f' -data "{case_data_file_name}"'
-    return case_data_arg

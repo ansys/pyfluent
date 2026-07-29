@@ -300,7 +300,6 @@ class DockerLauncher:
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
                 compose_config=self._compose_config,
-                cleanup_on_exit=self.argvals["cleanup_on_exit"],
             )
 
             try:
@@ -318,7 +317,6 @@ class DockerLauncher:
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
                 compose_config=self._compose_config,
-                cleanup_on_exit=self.argvals["cleanup_on_exit"],
             )
 
         allow_remote_host = (

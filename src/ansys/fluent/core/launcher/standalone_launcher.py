@@ -42,7 +42,6 @@ import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
-from warnings import warn
 
 from typing_extensions import Unpack
 
@@ -58,11 +57,9 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
-    _build_case_data_arguments,
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
-    _validate_lightweight_with_journal,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
@@ -228,17 +225,6 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
-
-        # Validate lightweight_mode + journal_file_names combination
-        # If incompatible, disable lightweight_mode and warn user
-        should_disable, warning_msg = _validate_lightweight_with_journal(
-            self.argvals.get("lightweight_mode"),
-            self.argvals.get("journal_file_names"),
-        )
-        if should_disable:
-            warn(warning_msg, UserWarning)
-            self.argvals["lightweight_mode"] = False
-
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
@@ -272,25 +258,9 @@ class StandaloneLauncher:
         )
         if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
-
-        # Always pass case/data/journals via CLI, but skip journals if lightweight_mode
-        self._launch_string += _build_case_data_arguments(
-            self.argvals.get("case_file_name"),
-            self.argvals.get("case_data_file_name"),
+        self._launch_string += _build_journal_argument(
+            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
         )
-
-        # Always pass journals via CLI unless lightweight_mode is enabled
-        if not self.argvals.get("lightweight_mode"):
-            self._launch_string += _build_journal_argument(
-                self.argvals.get("topy", []),
-                self.argvals.get("journal_file_names"),
-            )
-        else:
-            # Lightweight mode: only pass topy conversion if needed
-            self._launch_string += _build_journal_argument(
-                self.argvals.get("topy", []),
-                None,
-            )
 
         if is_windows():
             self._launch_cmd = self._launch_string
@@ -318,25 +288,6 @@ class StandaloneLauncher:
             session.application_runtime.set_idle_timeout(default_idle_timeout * 60)
         except Exception as ex:
             raise RuntimeError("Could not reset Idle Timeout") from ex
-
-    def _process_case_data_and_journals(self, session) -> None:
-        """Process case files for lightweight mode sessions.
-
-        For lightweight mode, read case post-connection to enable background
-        session orchestration. For normal mode, case/data/journals are already
-        handled via CLI flags during Fluent startup.
-        """
-        if not self.argvals.get("lightweight_mode"):
-            # Non-lightweight: files handled via CLI, nothing to do
-            return
-
-        # Lightweight mode: read case post-connection for background orchestration
-        if self.argvals.get("case_file_name"):
-            session.read_case_lightweight(
-                self.argvals.get("case_file_name"),
-                start_sync=False,
-            )
-            session.start_case_lightweight_sync()
 
     def __call__(
         self,
@@ -401,17 +352,26 @@ class StandaloneLauncher:
                     )
             # PyFluent is now connected: disable the idle-timeout guard.
             self._disable_idle_timeout_guard(session)
-
-            # Process case, case-data, and journal files if needed (issue #4265).
-            # Some files may already be processed via CLI flags (-case, -data, -i),
-            # but lightweight mode always requires post-connection processing
-            # to launch the background session and sync.
-            if (
-                self.argvals.get("case_file_name")
-                or self.argvals.get("case_data_file_name")
-                or self.argvals.get("journal_file_names")
-            ):
-                self._process_case_data_and_journals(session)
+            if self.argvals.get("case_file_name"):
+                if FluentMode.is_meshing(self.argvals.get("mode")):
+                    session.tui.file.read_case(self.argvals.get("case_file_name"))
+                elif self.argvals.get("lightweight_mode"):
+                    session.read_case_lightweight(self.argvals.get("case_file_name"))
+                else:
+                    session.settings.file.read(
+                        file_type="case",
+                        file_name=self.argvals.get("case_file_name"),
+                    )
+            if self.argvals.get("case_data_file_name"):
+                if not FluentMode.is_meshing(self.argvals.get("mode")):
+                    session.settings.file.read(
+                        file_type="case-data",
+                        file_name=self.argvals.get("case_data_file_name"),
+                    )
+                else:
+                    raise RuntimeError(
+                        "Case and data file cannot be read in meshing mode."
+                    )
 
             return session
         except Exception as ex:
