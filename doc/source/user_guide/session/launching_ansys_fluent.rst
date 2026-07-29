@@ -88,22 +88,12 @@ Use this method when:
 
 **Prerequisites**
 
-Before connecting, you must launch Fluent externally with the gRPC server enabled. You can do this in several ways:
-
-1. **Command line with server info file**:
-
-   - **Linux/WSL**: ``ansys_inc/v261/fluent/bin/fluent 3ddp -sifile=server.txt``
-   - **Windows**: ``ANSYS Inc\v261\fluent\ntbin\win64\fluent.exe 3ddp -sifile=server.txt``
-
-2. **Within Fluent GUI**: Execute ``File`` → ``Applications`` → ``Server`` → ``Start...`` in solution mode.
-
-3. **Via TUI command**: Execute ``server/start-server`` in solution mode.
+Before connecting, you must launch Fluent externally with the gRPC server enabled.
 
 After starting the gRPC server, Fluent writes connection information to the server info file. The file contains the IP address, port, and password needed for connection.
+The recommended approach is to connect using the server info file path, which encapsulates all connection information.
 
 **Example:**
-
-The recommended approach is to connect using the server info file path, which encapsulates all connection information:
 
 .. code-block:: python
 
@@ -112,23 +102,10 @@ The recommended approach is to connect using the server info file path, which en
    # Connect to the session using the server info file
    solver = pyfluent.Solver.from_connection(server_info_file_name="server.txt")
 
-.. note::
-
-    **Health check behavior**: When ``from_connection()`` or ``connect_to_fluent()`` returns successfully, 
-    the connection to Fluent is already verified as healthy. A health check is performed automatically 
-    during connection initialization. Calling ``check_health()`` afterward is optional and not required 
-    to verify connection status.
 
 .. note::
 
-    **Multiple connections to the same Fluent instance**: If you create multiple session objects 
-    connected to the same Fluent instance, calling ``exit()`` on one session only closes that 
-    session's connection. Other session objects remain connected until they explicitly call ``exit()``. 
-    To cleanly close Fluent when using multiple connections, call ``exit()`` on all session objects.
-
-.. note::
-
-    **Meshing interfaces**: PyFluent offers two Python interfaces for meshing:
+    PyFluent offers two Python interfaces for meshing:
 
     - ``Meshing``: meshing interface with an additional method to switch to solver mode.
     - ``PureMeshing``: meshing interface without any solver switching features.
