@@ -208,7 +208,7 @@ hierarchy = {
         "module_config",
         "exceptions",
         "file_session",
-        "fields/field_data_interfaces",
+        "fields.field_data_interfaces",
         "fluent_connection",
         "journaling",
         "logger",
@@ -295,7 +295,7 @@ solver_workflows_toctree_display_names = {
 # Optional display-name overrides for toctree node/page titles.
 # Keys should match generated node names (for example: meshing_utilities).
 NODE_DISPLAY_NAMES = {
-    # "meshing_utilities": "Meshing Utilities",
+    "fields.field_data_interfaces": "Field Data Interfaces",
 }
 
 
