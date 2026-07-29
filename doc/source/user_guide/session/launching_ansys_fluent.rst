@@ -79,13 +79,31 @@ Connect to an existing session
 ------------------------------
 
 The :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
+You can also use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>` function for a more direct approach.
 
 Use this method when:
 
 - Fluent was launched externally or earlier.
 - You need to connect from a different process or system.
 
+**Prerequisites**
+
+Before connecting, you must launch Fluent externally with the gRPC server enabled. You can do this in several ways:
+
+1. **Command line with server info file**:
+
+   - **Linux/WSL**: ``ansys_inc/v252/fluent/bin/fluent 3ddp -sifile=server.txt``
+   - **Windows**: ``ANSYS Inc\v252\fluent\ntbin\win64\fluent.exe 3ddp -sifile=server.txt``
+
+2. **Within Fluent GUI**: Execute ``File`` → ``Applications`` → ``Server`` → ``Start...`` in solution mode.
+
+3. **Via TUI command**: Execute ``server/start-server`` in solution mode.
+
+After starting the gRPC server, Fluent writes connection information to the server info file. The file contains the IP address, port, and password needed for connection.
+
 **Example:**
+
+The recommended approach is to connect using the server info file path, which encapsulates all connection information:
 
 .. code-block:: python
 
@@ -94,6 +112,19 @@ Use this method when:
    # Connect to the session using the server info file
    solver = pyfluent.Solver.from_connection(server_info_file_name="server.txt")
 
+.. note::
+
+    **Health check behavior**: When ``from_connection()`` or ``connect_to_fluent()`` returns successfully, 
+    the connection to Fluent is already verified as healthy. A health check is performed automatically 
+    during connection initialization. Calling ``check_health()`` afterward is optional and not required 
+    to verify connection status.
+
+.. note::
+
+    **Multiple connections to the same Fluent instance**: If you create multiple session objects 
+    connected to the same Fluent instance, calling ``exit()`` on one session only closes that 
+    session's connection. Other session objects remain connected until they explicitly call ``exit()``. 
+    To cleanly close Fluent when using multiple connections, call ``exit()`` on all session objects.
 
 .. note::
 
