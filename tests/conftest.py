@@ -275,14 +275,18 @@ def pytest_sessionfinish(session, exitstatus):
 
 @pytest.fixture
 def mixing_elbow_geometry_filename():
-    return download_file(
+    from ansys.tools.common.example_download import download_manager
+
+    return download_manager.download_file(
         file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
     )
 
 
 @pytest.fixture
 def exhaust_system_geometry_filename():
-    return download_file(
+    from ansys.tools.common.example_download import download_manager
+
+    return download_manager.download_file(
         file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
     )
 
@@ -403,7 +407,11 @@ def new_solver_session_2d():
 @pytest.fixture
 def static_mixer_settings_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer"
+    )
     solver.file.read(
         file_type="case",
         file_name=case_name,
@@ -415,7 +423,11 @@ def static_mixer_settings_session(new_solver_session):
 @pytest.fixture
 def static_mixer_case_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer"
+    )
     solver.file.read(file_type="case", file_name=case_name)
     return solver
 
@@ -423,7 +435,9 @@ def static_mixer_case_session(new_solver_session):
 @pytest.fixture
 def static_mixer_params_unitless_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file(
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
         "Static_Mixer_Parameters_unitless.cas.h5", "pyfluent/static_mixer"
     )
     solver.settings.file.read(file_type="case", file_name=case_name)
@@ -433,7 +447,11 @@ def static_mixer_params_unitless_session(new_solver_session):
 @pytest.fixture
 def mixing_elbow_settings_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
     solver.settings.file.read(
         file_type="case",
         file_name=case_name,
@@ -445,7 +463,11 @@ def mixing_elbow_settings_session(new_solver_session):
 @pytest.fixture
 def mixing_elbow_case_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
     solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
@@ -453,7 +475,11 @@ def mixing_elbow_case_session(new_solver_session):
 @pytest.fixture
 def mixing_elbow_case_session_t4(new_solver_session_t4):
     solver = new_solver_session_t4
-    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
     solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
@@ -461,8 +487,12 @@ def mixing_elbow_case_session_t4(new_solver_session_t4):
 @pytest.fixture
 def mixing_elbow_case_data_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    download_manager.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(file_type="case-data", file_name=case_name)
     return solver
 
@@ -470,8 +500,12 @@ def mixing_elbow_case_data_session(new_solver_session):
 @pytest.fixture
 def mixing_elbow_param_case_data_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
-    download_file("elbow_param.dat.h5", "pyfluent/mixing_elbow")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
+        "elbow_param.cas.h5", "pyfluent/mixing_elbow"
+    )
+    download_manager.download_file("elbow_param.dat.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(file_type="case-data", file_name=case_name)
     return solver
 
@@ -479,7 +513,9 @@ def mixing_elbow_param_case_data_session(new_solver_session):
 @pytest.fixture
 def disk_settings_session(new_solver_session_2d):
     solver = new_solver_session_2d
-    case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file("disk.cas.h5", "pyfluent/rotating_disk")
     solver.file.read(
         file_type="case",
         file_name=case_name,
@@ -491,7 +527,9 @@ def disk_settings_session(new_solver_session_2d):
 @pytest.fixture
 def disk_case_session(new_solver_session_2d):
     solver = new_solver_session_2d
-    case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file("disk.cas.h5", "pyfluent/rotating_disk")
     solver.file.read(file_type="case", file_name=case_name)
     return solver
 
@@ -499,7 +537,9 @@ def disk_case_session(new_solver_session_2d):
 @pytest.fixture
 def periodic_rot_settings_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file(
+    from ansys.tools.common.example_download import download_manager
+
+    case_name = download_manager.download_file(
         "periodic_rot.cas.h5",
         "pyfluent/periodic_rot",
     )
