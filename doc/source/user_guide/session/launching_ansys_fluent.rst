@@ -79,7 +79,6 @@ Connect to an existing session
 ------------------------------
 
 The :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
-You can also use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>` function for a more direct approach.
 
 Use this method when:
 
@@ -90,8 +89,11 @@ Use this method when:
 
 Before connecting, you must launch Fluent externally with the gRPC server enabled.
 
-After starting the gRPC server, Fluent writes connection information to the server info file. The file contains the IP address, port, and password needed for connection.
-The recommended approach is to connect using the server info file path, which encapsulates all connection information.
+.. note::
+
+    After starting the gRPC server, Fluent writes connection information to the server info file. The file contains the IP address, port, and password needed for connection.
+    
+    The recommended approach is to connect using the server info file path, which encapsulates all connection information.
 
 **Example:**
 
