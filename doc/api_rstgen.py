@@ -68,7 +68,6 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     exceptions
     file_session
     fields/fields_contents
-    fields/field_data_interfaces
     fluent_connection
     journaling
     logger
@@ -200,6 +199,7 @@ hierarchy = {
         "setup_for_fluent",
     ],
     "fields": [
+        "field_data_interfaces",
         "live_field_data",
         "reduction",
         "solution_variables",
@@ -208,7 +208,6 @@ hierarchy = {
         "module_config",
         "exceptions",
         "file_session",
-        "fields.field_data_interfaces",
         "fluent_connection",
         "journaling",
         "logger",
@@ -295,7 +294,7 @@ solver_workflows_toctree_display_names = {
 # Optional display-name overrides for toctree node/page titles.
 # Keys should match generated node names (for example: meshing_utilities).
 NODE_DISPLAY_NAMES = {
-    "fields.field_data_interfaces": "Field Data Interfaces",
+    # "key": "value",
 }
 
 
