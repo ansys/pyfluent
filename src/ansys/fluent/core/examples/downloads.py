@@ -92,15 +92,24 @@ def download_file(
     >>> file_name
     'bracket.iges'
     """
-    del return_without_path  # unused parameter, kept for backward compatibility
+    if return_without_path is None:
+        if pyfluent.config.launch_fluent_container:
+            if pyfluent.config.use_file_transfer_service:
+                return_without_path = False
+            else:
+                return_without_path = True
+
     local_path = download_manager.download_file(
         file_name,
         directory,
         destination=save_path,
-        force=force,
+        force=True,
         timeout=timeout,
         max_retries=max_retries,
     )
+
+    if return_without_path:
+        return Path(local_path).name
     return local_path
 
 
