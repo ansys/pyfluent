@@ -54,7 +54,7 @@ from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
-from ansys.fluent.core.services.datamodel_tui import (
+from ansys.fluent.core.services.text_interface import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
@@ -294,7 +294,7 @@ class TUIGenerator:
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
-                "from ansys.fluent.core.services.datamodel_tui "
+                "from ansys.fluent.core.services.text_interface "
                 "import PyMenu, TUIMenu, TUIMethod\n\n\n"
             )
             self._main_menu.name = "main_menu"

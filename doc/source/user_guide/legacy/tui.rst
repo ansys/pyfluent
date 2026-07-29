@@ -48,14 +48,14 @@ To see the documentation for the viscous model menu options, you can run:
    >>> help(solver_session.tui.define.models.viscous)
    Help on viscous in module ansys.fluent.core.generated.solver.tui_241 object:
 
-   class viscous(ansys.fluent.core.services.datamodel_tui.TUIMenu)
+   class viscous(ansys.fluent.core.services.text_interface.TUIMenu)
     |  viscous(service, version, mode, path)
     |
     |  Enters the viscous model menu.
     |
     |  Method resolution order:
     |      viscous
-    |      ansys.fluent.core.services.datamodel_tui.TUIMenu
+    |      ansys.fluent.core.services.text_interface.TUIMenu
     |      builtins.object
     |
     |  Methods defined here:

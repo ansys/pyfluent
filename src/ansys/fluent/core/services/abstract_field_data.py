@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Abstract reduction wrapper."""
+"""Abstract field data wrapper."""
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any

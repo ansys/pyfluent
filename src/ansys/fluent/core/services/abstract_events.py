@@ -21,23 +21,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the transcript gRPC service of Fluent (v1 proto API).
+"""Abstract events wrapper."""
 
-All shared logic lives in transcript.py (v0). This module keeps only
-v1-specific stub binding required for compatibility.
-"""
+from abc import ABC, abstractmethod
 
-import grpc
-
-from ansys.api.fluent.v1 import transcript_pb2_grpc as TranscriptGrpcModule
-from ansys.fluent.core.services.transcript import (
-    TranscriptService as _TranscriptServiceV0,
+from ansys.fluent.core.streaming_services.events_streaming import (
+    SolverEvent as SolverEventV0,
 )
+from ansys.fluent.core.streaming_services.events_streaming_v1 import SolverEvent
 
 
-class TranscriptService(_TranscriptServiceV0):
-    """Class wrapping the transcript gRPC service of Fluent (v1 proto API)."""
+class AbstractEvents(ABC):
+    """Abstract base class for the events."""
 
-    def _create_stub(self, channel: grpc.Channel):
-        """Create the v1 gRPC stub."""
-        return TranscriptGrpcModule.TranscriptStub(channel)
+    @abstractmethod
+    def register_pause_on_solution_events(
+        self, solution_event: SolverEvent | SolverEventV0
+    ) -> int:
+        """Register pause on solution events."""
+        pass
+
+    @abstractmethod
+    def resume_on_solution_event(self, registration_id: int) -> None:
+        """Resume on solution event."""
+        pass
+
+    @abstractmethod
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
+        """Unregister pause on solution events."""
+        pass

@@ -154,7 +154,7 @@ hierarchy = {
         "api_upgrade",
         "batch_ops",
         "datamodel_se",
-        "datamodel_tui",
+        "text_interface",
         "events",
         "field_data",
         "health_check",
