@@ -151,7 +151,6 @@ hierarchy = {
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
-        "api_upgrade",
         "application_runtime",
         "batch_ops",
         "object_model",
@@ -293,8 +292,7 @@ solver_workflows_toctree_display_names = {
 
 # Optional display-name overrides for toctree node/page titles.
 # Keys should match generated node names (for example: meshing_utilities).
-NODE_DISPLAY_NAMES = {
-}
+NODE_DISPLAY_NAMES = {}
 
 
 def _get_display_name(node_name: str) -> str:
