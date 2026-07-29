@@ -85,26 +85,25 @@ Use this method when:
 - Fluent was launched externally or earlier.
 - You need to connect from a different process or system.
 
+**Prerequisites**
+
+Before connecting, you must launch Fluent externally with the gRPC server enabled.
+
+.. note::
+
+    After starting the gRPC server, Fluent writes connection information to the server info file. The file contains the IP address, port, and password needed for connection.
+    
+    The recommended approach is to connect using the server info file path, which encapsulates all connection information.
+
 **Example:**
 
 .. code-block:: python
 
    import ansys.fluent.core as pyfluent
 
-   # Launch to retrieve credentials
-   solver = pyfluent.Solver.from_install()
-   print(solver.health_check.check_health())
+   # Connect to the session using the server info file
+   solver = pyfluent.Solver.from_connection(server_info_file_name=<server-info-file>)
 
-   ip = solver.connection_properties.ip
-   password = solver.connection_properties.password
-   port = solver.connection_properties.port
-
-   # Connect to the session
-   solver_connected = pyfluent.Solver.from_connection(ip=ip, password=password, port=port)
-   print(solver_connected.health_check.check_health())
-
-   solver.exit()
-   solver_connected.exit()
 
 .. note::
 

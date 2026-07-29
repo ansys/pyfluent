@@ -21,19 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module for transcript streaming (v1 proto API).
+"""High-level user-facing API for retrieving field data from Fluent surfaces and zones."""
 
-All shared logic lives in transcript_streaming.py (v0). This module keeps only
-v1-specific proto binding required for compatibility.
-"""
 
-from ansys.api.fluent.v1 import transcript_pb2 as TranscriptModule
-from ansys.fluent.core.streaming_services.transcript_streaming import (
-    Transcript as _TranscriptV0,
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData,
+    SolutionVariableInfo,
 )
 
-
-class Transcript(_TranscriptV0):
-    """Encapsulates a Fluent Transcript streaming service (v1 proto API)."""
-
-    _proto_module = TranscriptModule
+__all__ = ["SolutionVariableInfo", "SolutionVariableData"]
