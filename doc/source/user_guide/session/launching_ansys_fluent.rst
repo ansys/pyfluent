@@ -102,7 +102,7 @@ Before connecting, you must launch Fluent externally with the gRPC server enable
    import ansys.fluent.core as pyfluent
 
    # Connect to the session using the server info file
-   solver = pyfluent.Solver.from_connection(server_info_file_name="server.txt")
+   solver = pyfluent.Solver.from_connection(server_info_file_name=<server-info-file>)
 
 
 .. note::
