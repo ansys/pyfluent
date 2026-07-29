@@ -68,7 +68,6 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     exceptions
     file_session
     fields/fields_contents
-    fields/field_data_interfaces
     fluent_connection
     journaling
     logger
