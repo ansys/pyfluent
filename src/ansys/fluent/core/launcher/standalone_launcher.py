@@ -42,6 +42,7 @@ import os
 from pathlib import Path
 import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
+import warnings
 
 from typing_extensions import Unpack
 
@@ -57,9 +58,11 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
+    _build_case_data_arguments,
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
+    _validate_lightweight_with_journal,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
@@ -225,6 +228,16 @@ class StandaloneLauncher:
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
+
+        # Validate lightweight_mode + journal_file_names combination
+        should_disable, warning_msg = _validate_lightweight_with_journal(
+            self.argvals.get("lightweight_mode"),
+            self.argvals.get("journal_file_names"),
+        )
+        if should_disable:
+            warnings.warn(warning_msg, UserWarning)
+            self.argvals["lightweight_mode"] = False
+
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
@@ -258,6 +271,22 @@ class StandaloneLauncher:
         )
         if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
+
+        # For lightweight_mode with case file, defer case reading to post-connection
+        # to support background session orchestration. Otherwise pass via CLI.
+        if self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name"):
+            # Don't add case via CLI for lightweight mode
+            self._launch_string += _build_case_data_arguments(
+                None,  # Defer case reading for lightweight mode
+                self.argvals.get("case_data_file_name"),
+            )
+        else:
+            # Pass both case and data via CLI in all other cases
+            self._launch_string += _build_case_data_arguments(
+                self.argvals.get("case_file_name"),
+                self.argvals.get("case_data_file_name"),
+            )
+
         self._launch_string += _build_journal_argument(
             self.argvals.get("topy", []), self.argvals.get("journal_file_names")
         )
@@ -352,26 +381,13 @@ class StandaloneLauncher:
                     )
             # PyFluent is now connected: disable the idle-timeout guard.
             self._disable_idle_timeout_guard(session)
-            if self.argvals.get("case_file_name"):
-                if FluentMode.is_meshing(self.argvals.get("mode")):
-                    session.tui.file.read_case(self.argvals.get("case_file_name"))
-                elif self.argvals.get("lightweight_mode"):
-                    session.read_case_lightweight(self.argvals.get("case_file_name"))
-                else:
-                    session.settings.file.read(
-                        file_type="case",
-                        file_name=self.argvals.get("case_file_name"),
-                    )
-            if self.argvals.get("case_data_file_name"):
-                if not FluentMode.is_meshing(self.argvals.get("mode")):
-                    session.settings.file.read(
-                        file_type="case-data",
-                        file_name=self.argvals.get("case_data_file_name"),
-                    )
-                else:
-                    raise RuntimeError(
-                        "Case and data file cannot be read in meshing mode."
-                    )
+
+            # For lightweight_mode with case file, read case post-connection
+            # to support background session orchestration
+            if self.argvals.get("lightweight_mode") and self.argvals.get(
+                "case_file_name"
+            ):
+                session.read_case_lightweight(self.argvals.get("case_file_name"))
 
             return session
         except Exception as ex:

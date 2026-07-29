@@ -51,7 +51,9 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     ComposeConfig,
+    _build_case_data_arguments,
     _build_journal_argument,
+    _validate_lightweight_with_journal,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -248,11 +250,13 @@ def test_case_data_load():
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
     )
-    download_file(
+    data_name = download_file(
         "mixing_elbow.dat.h5",
         "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_data_file_name=case_name)
+    session = pyfluent.launch_fluent(
+        case_file_name=case_name, case_data_file_name=data_name
+    )
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
@@ -472,6 +476,47 @@ def test_fluent_launchers():
 def test_build_journal_argument(topy, journal_file_names, result, raises):
     with raises:
         assert _build_journal_argument(topy, journal_file_names) == result
+
+
+@pytest.mark.parametrize(
+    "lightweight_mode,journal_file_names,should_disable,has_warning",
+    [
+        (False, None, False, False),
+        (False, "a.jou", False, False),
+        (False, ["a.jou", "b.jou"], False, False),
+        (True, None, False, False),
+        (True, "a.jou", True, True),
+        (True, ["a.jou", "b.jou"], True, True),
+        (None, None, False, False),
+        (None, "a.jou", False, False),
+    ],
+)
+def test_validate_lightweight_with_journal(
+    lightweight_mode, journal_file_names, should_disable, has_warning
+):
+    should_disable_result, warning_msg = _validate_lightweight_with_journal(
+        lightweight_mode, journal_file_names
+    )
+    assert should_disable_result == should_disable
+    if has_warning:
+        assert warning_msg is not None
+    else:
+        assert warning_msg is None
+
+
+@pytest.mark.parametrize(
+    "case_file_name,case_data_file_name,result",
+    [
+        (None, None, ""),
+        ("case.cas", None, ' -case "case.cas"'),
+        (None, "data.dat", ' -data "data.dat"'),
+        ("case.cas", "data.dat", ' -case "case.cas" -data "data.dat"'),
+        (Path("case.cas"), None, ' -case "case.cas"'),
+        (Path("case.cas"), Path("data.dat"), ' -case "case.cas" -data "data.dat"'),
+    ],
+)
+def test_build_case_data_arguments(case_file_name, case_data_file_name, result):
+    assert _build_case_data_arguments(case_file_name, case_data_file_name) == result
 
 
 def test_show_gui_raises_warning():
