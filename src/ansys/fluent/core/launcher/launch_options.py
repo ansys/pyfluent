@@ -388,7 +388,7 @@ def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     return FluentVersion.get_latest_installed()
 
 
-def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int):
+def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | None):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
@@ -398,7 +398,7 @@ def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int):
     dimension : int, optional
         Geometric dimensionality of the Fluent simulation.
     """
-    if Dimension(dimension) == Dimension.TWO and gpu:
+    if dimension is not None and Dimension(dimension) == Dimension.TWO and gpu:
         raise exceptions.GPUSolverSupportError()
 
 

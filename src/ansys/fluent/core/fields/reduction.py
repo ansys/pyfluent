@@ -21,27 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Abstract events wrapper."""
-
-from abc import ABC, abstractmethod
-
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+"""High-level user-facing API for retrieving reduction data from Fluent."""
 
 
-class AbstractEvents(ABC):
-    """Abstract base class for the events."""
+from ansys.fluent.core.services.reduction import Reduction
 
-    @abstractmethod
-    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
-        """Register pause on solution events."""
-        pass
-
-    @abstractmethod
-    def resume_on_solution_event(self, registration_id: int) -> None:
-        """Resume on solution event."""
-        pass
-
-    @abstractmethod
-    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
-        """Unregister pause on solution events."""
-        pass
+__all__ = ["Reduction"]
