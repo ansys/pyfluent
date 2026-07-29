@@ -213,7 +213,7 @@ class SettingsService(ServiceProtocol):
         if info.help:
             ret["help"] = info.help
         if info.has_allowed_values:
-            ret["has-allowed-values"] = info.has_allowed_values
+            ret["has_allowed_values"] = info.has_allowed_values
         if info.include_child_named_objects:
             ret["include_child_named_objects"] = info.include_child_named_objects
         if info.list_size:
@@ -234,7 +234,7 @@ class SettingsService(ServiceProtocol):
 
         # 2. Embedded Message Types (Require HasField check)
         if info.HasField("object_type"):
-            ret["object-type"] = self._extract_static_info(info.object_type)
+            ret["object_type"] = self._extract_static_info(info.object_type)
 
         # 3. Repeated SchemaMap Fields (Nested Schemas)
         if info.children:
