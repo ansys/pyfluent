@@ -102,8 +102,8 @@ def download_file(
     local_path = download_manager.download_file(
         file_name,
         directory,
-        destination=save_path,
-        force=True,
+        destination=Path.cwd() if save_path == "." else save_path,
+        force=force,
         timeout=timeout,
         max_retries=max_retries,
     )
