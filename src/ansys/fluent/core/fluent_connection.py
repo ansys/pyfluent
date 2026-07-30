@@ -54,6 +54,7 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
+from ansys.fluent.core.rest import FluentRestClient
 from ansys.fluent.core.services import ServiceFactory
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
@@ -472,6 +473,9 @@ class FluentConnection:
         inside_container: bool | None = None,
         container: ContainerT | None = None,
         compose_config: ComposeConfig | None = None,
+        use_rest: bool = False,
+        rest_url: str | None = None,
+        rest_auth_token: str | None = None,
     ):
         """Initialize a Session.
 
@@ -523,6 +527,13 @@ class FluentConnection:
             If True, Fluent's gRPC server will be connected in insecure mode without TLS.
             This mode is not recommended. For more details on the implications
             and usage of insecure mode, refer to the Fluent documentation.
+        use_rest : bool, optional
+            If True, connect via REST transport instead of gRPC. Defaults to False.
+            When True, rest_url and rest_auth_token must be provided.
+        rest_url : str, optional
+            REST server URL (e.g., "http://127.0.0.1:5000"). Required if use_rest is True.
+        rest_auth_token : str, optional
+            Authentication token for REST server. Required if use_rest is True.
 
         Raises
         ------
@@ -536,6 +547,21 @@ class FluentConnection:
         self._slurm_job_id = None
         self.finalizer_cbs = []
         self._uds_fullpath = None
+
+        # REST transport configuration
+        self._use_rest = use_rest
+        self._rest_url = rest_url
+        self._rest_auth_token = rest_auth_token
+        self._rest_client = None
+
+        # Validate and initialize REST if requested
+        if use_rest:
+            if not rest_url or not rest_auth_token:
+                raise ValueError(
+                    "Both 'rest_url' and 'rest_auth_token' must be provided when use_rest=True"
+                )
+            self._init_rest_connection()
+
         if channel is not None:
             self._channel = channel
         else:
@@ -569,6 +595,7 @@ class FluentConnection:
                 metadata=self._metadata,
                 error_state=self._error_state,
             ),
+            rest_client=self._rest_client,
         )
 
         self._health_check = self._service_factory.health_check
@@ -661,11 +688,47 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
+    def _init_rest_connection(self):
+        """Initialize REST client connection.
+
+        Raises
+        ------
+        RuntimeError
+            If REST connection fails.
+        """
+        try:
+            logger.info(f"Initializing REST connection to {self._rest_url}")
+            self._rest_client = FluentRestClient.connect(
+                url=self._rest_url,
+                auth_token=self._rest_auth_token,
+            )
+            logger.info("REST connection established successfully")
+        except Exception as e:
+            logger.warning(
+                f"Failed to initialize REST connection to {self._rest_url}: {e}. "
+                "Session may be unavailable for REST operations."
+            )
+            self._use_rest = False
+            self._rest_client = None
+            raise RuntimeError(
+                f"Failed to initialize REST connection to {self._rest_url}: {e}"
+            ) from e
+
     @property
     @deprecated(version="0.32", reason="No longer required at this level.")
     def health_check(self):
         """Provides access to Health Check service."""
         return self._health_check
+
+    @property
+    def is_using_rest(self) -> bool:
+        """Return True if this connection uses REST transport, False if gRPC."""
+        return self._use_rest and self._rest_client is not None
+
+    @property
+    def rest_client(self):
+        """Return the REST client if available, otherwise None."""
+        return self._rest_client if self._use_rest else None
 
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
