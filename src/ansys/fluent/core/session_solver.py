@@ -36,6 +36,7 @@ from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_shared import (
@@ -136,6 +137,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._settings = None
+        self._rest_settings = None
         self._build_from_fluent_connection(
             fluent_connection, scheme_eval, launcher_args=launcher_args
         )
@@ -195,7 +197,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def settings(self) -> "settings_root.root":
-        """Settings root handle."""
+        """Settings root handle (gRPC transport)."""
         if self._settings is None:
             #: Root settings object.
             self._settings = flobject.get_root(
@@ -206,6 +208,30 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 scheme_eval=self.scheme.eval,
             )
         return cast("settings_root.root", self._settings)
+
+    @property
+    def rest_settings(self) -> "settings_root.root":
+        """Settings root handle (REST transport).
+
+        Returns the settings object for REST transport if available.
+        Only accessible when solver is connected via REST transport.
+        Returns None if not using REST transport.
+        """
+        rest_client = self._fluent_connection._service_factory._rest_client
+        if rest_client is None:
+            return None
+
+        if self._rest_settings is None:
+            #: Root settings object for REST.
+            rest_settings_service = RestSettings(rest_client)
+            self._rest_settings = flobject.get_root(
+                flproxy=rest_settings_service,
+                version=self._version,
+                interrupt=Solver._interrupt,
+                file_transfer_service=self._file_transfer_service,
+                scheme_eval=self.scheme.eval,
+            )
+        return cast("settings_root.root", self._rest_settings)
 
     def _get_zones_info(self) -> list[ZoneInfo]:
         zones_info = []

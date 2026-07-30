@@ -362,6 +362,9 @@ def launch_fluent(
     use_podman_compose: bool = False,
     certificates_folder: str | None = None,
     insecure_mode: bool = False,
+    use_rest: bool = False,
+    rest_url: str | None = None,
+    rest_auth_token: str | None = None,
 ) -> (
     Meshing
     | PureMeshing
@@ -435,6 +438,16 @@ def launch_fluent(
         warn(
             INSECURE_MODE_PROVIDED_IN_STANDALONE,
             UserWarning,
+        )
+
+    # REST transport validation
+    if use_rest and (not rest_url or not rest_auth_token):
+        raise ValueError(
+            "When use_rest=True, both 'rest_url' and 'rest_auth_token' must be provided."
+        )
+    if not use_rest and (rest_url is not None or rest_auth_token is not None):
+        raise ValueError(
+            "REST parameters (rest_url, rest_auth_token) can only be used when use_rest=True."
         )
 
     if config.start_watchdog is False:
@@ -539,6 +552,9 @@ def launch_fluent(
                 topy=topy,
                 start_watchdog=start_watchdog,
                 file_transfer_service=file_transfer_service,
+                use_rest=use_rest,
+                rest_url=rest_url,
+                rest_auth_token=rest_auth_token,
             )
         case _:
             assert_never(fluent_launch_mode)
@@ -602,6 +618,16 @@ def connect_to_fluent(
         If True, Fluent's gRPC server will be connected in insecure mode without TLS.
         This mode is not recommended. For more details on the implications
         and usage of insecure mode, refer to the Fluent documentation.
+    use_rest : bool, optional
+        If True, connect to Fluent via REST transport instead of gRPC.
+        When True, rest_url and rest_auth_token must be provided. Defaults to False.
+    rest_url : str, optional
+        REST server URL (e.g., "http://127.0.0.1:5000").
+        Required if use_rest is True. Can also be set via
+        ``PYFLUENT_REST_SERVER_URL`` environment variable.
+    rest_auth_token : str, optional
+        Authentication token for REST server.
+        Required if use_rest is True. Can also be set via ``PYFLUENT_REST_AUTH_TOKEN`` environment variable.
     start_watchdog: bool, optional
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure

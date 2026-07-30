@@ -62,22 +62,41 @@ class ServiceFactory:
 
     Reads the connected server's ``product_version`` once and uses it to
     select the correct concrete wrapper (e.g. ``Settings`` vs ``SettingsV261``)
-    for every service property.  All properties are ``cached_property``.
+    for every service property. All properties are ``cached_property``.
+
+    For REST transport, use the `rest_settings` property instead. For gRPC,
+    use the `settings` property. Choose explicitly based on your transport.
 
     Parameters
     ----------
     service_factory : GRPCServiceFactory
         Source of the underlying raw gRPC stubs.
     product_version : FluentVersion, optional
-        Fluent product version.  Derived from ``service_factory.scheme_interpreter``
+        Fluent product version. Derived from ``service_factory.scheme_interpreter``
         when omitted.
     rest_client : FluentRestClient, optional
-        REST client instance for REST-based services. When provided, REST services
-        will be available alongside gRPC services.
+        REST client instance for REST-based settings via rest_settings property.
+
+    Examples
+    --------
+    **gRPC Transport (Default)**:
+    >>> solver = pyfluent.launch_fluent()
+    >>> solver.settings.setup.models.viscous.model = "k-epsilon"  # Uses gRPC
+
+    **REST Transport**:
+    >>> solver = pyfluent.launch_fluent(
+    ...     use_rest=True,
+    ...     rest_url="http://127.0.0.1:5000",
+    ...     rest_auth_token="token"
+    ... )
+    >>> solver.rest_settings.setup.models.viscous.model = "laminar"  # Uses REST
     """
 
     def __init__(
-        self, service_factory, product_version: FluentVersion = None, rest_client=None
+        self,
+        service_factory,
+        product_version: FluentVersion = None,
+        rest_client=None,
     ):
         """Initialize ServiceFactory."""
         self._service_factory = service_factory
@@ -137,18 +156,6 @@ class ServiceFactory:
                     self._service_factory.settings,
                     self._service_factory.scheme_interpreter,
                 )
-
-    @property
-    def rest_settings(self):
-        """REST-based solver settings service.
-
-        Returns ``None`` if REST client is not available.
-        """
-        if self._rest_client is not None:
-            if not hasattr(self, "_rest_settings_cache"):
-                self._rest_settings_cache = RestSettings(self._rest_client)
-            return self._rest_settings_cache
-        return None
 
     @cached_property
     def field_data(self):

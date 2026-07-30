@@ -334,6 +334,28 @@ class Config:
     #: Whether to use Slurm from the current machine if it is available, defaults to True.
     use_slurm_from_current_machine = _ConfigDescriptor["Config"](lambda instance: True)
 
+    #: Whether to enable REST transport for the connected Fluent session, defaults to the value of ``PYFLUENT_REST_SERVER_ENABLED`` environment variable.
+    rest_server_enabled = _ConfigDescriptor["Config"](
+        lambda instance: instance._env.get("PYFLUENT_REST_SERVER_ENABLED") == "1"
+    )
+
+    #: REST server URL for connecting via REST transport (e.g., "http://127.0.0.1:5000"), defaults to the value of ``PYFLUENT_REST_SERVER_URL`` environment variable.
+    rest_server_url = _ConfigDescriptor["Config"](
+        lambda instance: instance._env.get("PYFLUENT_REST_SERVER_URL")
+    )
+
+    #: REST authentication token for connecting via REST transport, defaults to the value of ``PYFLUENT_REST_AUTH_TOKEN`` environment variable.
+    rest_auth_token = _ConfigDescriptor["Config"](
+        lambda instance: instance._env.get("PYFLUENT_REST_AUTH_TOKEN")
+    )
+
+    #: REST connection timeout in seconds, defaults to 30 seconds.
+    rest_connection_timeout = _ConfigDescriptor["Config"](
+        lambda instance: float(
+            instance._env.get("PYFLUENT_REST_CONNECTION_TIMEOUT", 30.0)
+        )
+    )
+
     def __init__(self):
         """__init__ method of Config class."""
         # Read the environment variable once when pyfluent is imported

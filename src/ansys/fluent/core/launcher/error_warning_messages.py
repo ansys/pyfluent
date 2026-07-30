@@ -63,3 +63,16 @@ INSECURE_MODE_WARNING = (
     "This mode is not recommended. For more details on the implications "
     "and usage of insecure mode, refer to the Fluent documentation."
 )
+
+REST_PARAMETERS_INCOMPLETE = (
+    "When use_rest=True, both 'rest_url' and 'rest_auth_token' must be provided."
+)
+
+REST_PARAMETERS_CONFLICTING = (
+    "REST parameters (rest_url, rest_auth_token) can only be used when use_rest=True."
+)
+
+REST_CONNECTION_FAILED_WARNING = (
+    "Failed to establish REST connection to {url}. "
+    "The session will use gRPC transport instead. Error: {error}"
+)

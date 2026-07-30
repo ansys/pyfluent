@@ -103,6 +103,12 @@ class StandaloneArgsWithoutDryRunMode(
     """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
     a filename for the new Python journal.
     """
+    use_rest: bool
+    """If True, connect via REST transport instead of gRPC. Defaults to False."""
+    rest_url: str | None
+    """REST server URL. Required if use_rest is True."""
+    rest_auth_token: str | None
+    """REST authentication token. Required if use_rest is True."""
 
 
 class StandaloneArgsWithoutDryRun(
@@ -220,6 +226,9 @@ class StandaloneLauncher:
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = kwargs.get("file_transfer_service")
+        self.use_rest = kwargs.get("use_rest", False)
+        self.rest_url = kwargs.get("rest_url")
+        self.rest_auth_token = kwargs.get("rest_auth_token")
         if pyfluent.config.show_fluent_gui:
             kwargs["ui_mode"] = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
@@ -296,6 +305,30 @@ class StandaloneLauncher:
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
         try:
+            # REST transport: skip gRPC server-info waiting
+            if self.use_rest:
+                logger.info("Connecting to Fluent with REST transport")
+                from ansys.fluent.core.fluent_connection import FluentConnection
+
+                fluent_connection = FluentConnection(
+                    use_rest=True,
+                    rest_url=self.rest_url,
+                    rest_auth_token=self.rest_auth_token,
+                    cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
+                    file_transfer_service=self.file_transfer_service,
+                )
+                session = self.new_session._create_from_server_info_file(
+                    server_info_file_name=None,
+                    file_transfer_service=self.file_transfer_service,
+                    cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
+                    start_transcript=self.argvals.get("start_transcript"),
+                    launcher_args=self.argvals,
+                    inside_container=False,
+                    fluent_connection=fluent_connection,
+                )
+                return session
+
+            # gRPC transport: existing flow
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
