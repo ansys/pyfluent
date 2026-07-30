@@ -168,22 +168,16 @@ class LaunchFluentArgsNoContainer(LauncherArgsBase, TypedDict, total=False):
     """
 
     case_file_name: str | None
-    """If provided, the case file at ``case_file_name`` is read into the Fluent session via the ``-case`` CLI flag.
-    """
+    """If provided, the case file at ``case_file_name`` is read into the Fluent session."""
     case_data_file_name: str | None
-    """If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session via
-    the ``-data`` CLI flag.
-    """
+    """If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session."""
     lightweight_mode: bool | None
     """Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
     current Fluent solver session. The mesh is read into a background Fluent solver session which will
     replace the current Fluent solver session once the mesh read is complete and the lightweight settings
     made by the user in the current Fluent solver session have been applied in the background Fluent
     solver session. This is all orchestrated by PyFluent and requires no special usage.
-
-    **Behavior Rules**: Lightweight mode only works when ``case_file_name`` is provided WITHOUT ``journal_file_names``.
-    If both are provided, lightweight mode will be disabled automatically and a warning will be issued.
-    The default is ``False``.
+    This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
     """
     py: bool | None
     """If True, Fluent will run in Python mode. Default is None."""
