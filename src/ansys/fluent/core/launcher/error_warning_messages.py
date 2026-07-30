@@ -65,3 +65,5 @@ INSECURE_MODE_WARNING = (
 )
 
 LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL = "``lightweight_mode`` will be ignored because ``journal_file_names`` has been provided."
+
+LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA = "``lightweight_mode`` will be ignored because ``case_data_file_name`` has been provided."

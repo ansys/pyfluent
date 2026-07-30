@@ -62,6 +62,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
+    _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
 )
@@ -238,6 +239,15 @@ class StandaloneLauncher:
             warnings.warn(warning_msg, UserWarning)
             self.argvals["lightweight_mode"] = False
 
+        # Validate lightweight_mode + case_data_file_name combination
+        should_disable, warning_msg = _validate_lightweight_with_case_data(
+            self.argvals.get("lightweight_mode"),
+            self.argvals.get("case_data_file_name"),
+        )
+        if should_disable:
+            warnings.warn(warning_msg, UserWarning)
+            self.argvals["lightweight_mode"] = False
+
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
@@ -274,11 +284,13 @@ class StandaloneLauncher:
 
         # For lightweight_mode with case file, defer case reading to post-connection
         # to support background session orchestration. Otherwise pass via CLI.
+        # Note: case_data_file_name + lightweight_mode is not supported and is
+        # already disabled with a warning during argvals validation above.
         if self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name"):
             # Don't add case via CLI for lightweight mode
             self._launch_string += _build_case_data_arguments(
                 None,  # Defer case reading for lightweight mode
-                self.argvals.get("case_data_file_name"),
+                None,  # case_data_file_name is not supported with lightweight_mode
             )
         else:
             # Pass both case and data via CLI in all other cases

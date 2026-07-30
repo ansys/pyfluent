@@ -271,6 +271,34 @@ def _validate_lightweight_with_journal(
     return (False, None)
 
 
+def _validate_lightweight_with_case_data(
+    lightweight_mode: bool | None, case_data_file_name: None | str
+) -> tuple[bool, str | None]:
+    """Validate that lightweight_mode and case_data_file_name are not both provided.
+
+    Parameters
+    ----------
+    lightweight_mode : bool | None
+        Lightweight mode flag.
+    case_data_file_name : None | str
+        Case-data file name.
+
+    Returns
+    -------
+    tuple[bool, str | None]
+        A tuple where:
+        - First element (bool): True if lightweight_mode should be disabled, False otherwise.
+        - Second element (str | None): Warning message if lightweight_mode should be disabled, None otherwise.
+    """
+    from ansys.fluent.core.launcher.error_warning_messages import (
+        LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA,
+    )
+
+    if lightweight_mode and case_data_file_name:
+        return (True, LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA)
+    return (False, None)
+
+
 def _build_case_data_arguments(
     case_file_name: None | str, case_data_file_name: None | str
 ) -> str:
