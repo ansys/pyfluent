@@ -289,8 +289,8 @@ solver.settings.solution.report_definitions.moment["torque"].create_report_plot 
 solver.settings.solution.report_definitions.moment["torque"].output_parameter = True
 
 # %%
-# Set the number of iterations for the calculation and enable convergence condition check
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# Set the number of iterations for the calculation
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Set the number of solution iterations to 2500, and enable the convergence condition check.
 
 solver.settings.solution.run_calculation.parameters.iter_count = 2500

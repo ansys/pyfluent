@@ -24,33 +24,21 @@
 
 import os
 
-import grpc
-
 from ansys.api.fluent.v1 import application_runtime_pb2, application_runtime_pb2_grpc
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 class ApplicationRuntimeService(ServiceProtocol):
     """ApplicationRuntime gRPC service wrapper (v1 proto API)."""
 
     def __init__(  # pyright: ignore[reportMissingSuperCall]
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
     ):
         """Initialize ApplicationRuntimeService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
+
         self._stub = application_runtime_pb2_grpc.ApplicationRuntimeStub(
             intercept_channel
         )

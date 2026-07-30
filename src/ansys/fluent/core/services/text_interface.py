@@ -21,10 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over TUI-based datamodel gRPC service of Fluent.
+"""High-level text-interface wrappers.
 
-This module contains the shared TUI runtime/menu logic reused by the v1
-adapter module, which overrides only v1 proto/stub/request differences.
+This module owns the business-logic layer on top of the TextInterface gRPC
+service. The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.text_interface_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.text_interface_service_v0`` (v0 proto API)
+
+Alongside the service wrapper, this module provides Pythonic runtime menu and
+command adapters used to navigate and execute TUI commands.
 """
 
 import keyword
