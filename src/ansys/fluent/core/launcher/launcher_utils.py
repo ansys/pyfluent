@@ -296,5 +296,5 @@ def _build_case_data_arguments(
     if case_data_file_name:
         # Convert Path to str if necessary
         case_data_file_name = str(case_data_file_name)
-        fluent_case_data_arg += f' -data "{case_data_file_name}"'
+        fluent_case_data_arg += f' -case "{case_data_file_name}" -data'
     return fluent_case_data_arg
