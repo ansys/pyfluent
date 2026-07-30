@@ -295,6 +295,10 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
+        use_rest: bool = False,
+        rest_url: str | None = None,
+        rest_auth_token: str | None = None,
+        fluent_connection: Any | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -310,6 +314,14 @@ class BaseSession:
             The default is ``True``, in which case the Fluent
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
+        use_rest : bool, optional
+            If True, connect via REST transport instead of gRPC. Defaults to False.
+        rest_url : str, optional
+            REST server URL. Required if use_rest is True.
+        rest_auth_token : str, optional
+            REST authentication token. Required if use_rest is True.
+        fluent_connection : FluentConnection, optional
+            Pre-initialized FluentConnection instance to use instead of creating a new one.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``.
@@ -321,21 +333,32 @@ class BaseSession:
         Session
             Session instance
         """
-        values = _parse_server_info_file(server_info_file_name)
-        if len(values) == 2:
-            address, password = values
-            ip, port = None, None
-        else:
-            ip, port, password = values
-            address = None
-        fluent_connection = FluentConnection(
-            ip=ip,
-            port=port,
-            password=password,
-            address=address,
-            file_transfer_service=file_transfer_service,
-            **connection_kwargs,
+        values = (
+            _parse_server_info_file(server_info_file_name)
+            if server_info_file_name
+            else (None, None)
         )
+        if fluent_connection is None:
+            if values and len(values) == 2:
+                address, password = values
+                ip, port = None, None
+            elif values and len(values) == 3:
+                ip, port, password = values
+                address = None
+            else:
+                ip, port, password = None, None, None
+                address = None
+            fluent_connection = FluentConnection(
+                ip=ip,
+                port=port,
+                password=password,
+                address=address,
+                file_transfer_service=file_transfer_service,
+                use_rest=use_rest,
+                rest_url=rest_url,
+                rest_auth_token=rest_auth_token,
+                **connection_kwargs,
+            )
         session = cls(
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection.scheme_eval,
