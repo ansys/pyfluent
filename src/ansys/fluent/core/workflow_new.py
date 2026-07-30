@@ -624,6 +624,9 @@ class Workflow:
                 )
             ) from ex
 
+    def __dir__(self) -> list[str]:
+        return super().__dir__() + self.task_names()
+
     def __call__(self):
         """Get workflow state when called as a function."""
         return self._workflow_state()
