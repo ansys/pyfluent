@@ -264,7 +264,6 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
-        fluent_connection: FluentConnection | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -280,9 +279,6 @@ class BaseSession:
             The default is ``True``, in which case the Fluent
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
-        fluent_connection : FluentConnection, optional
-            Pre-initialized FluentConnection instance. If provided,
-            server_info_file_name is ignored.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``.
@@ -294,22 +290,21 @@ class BaseSession:
         Session
             Session instance
         """
-        if fluent_connection is None:
-            values = _parse_server_info_file(server_info_file_name)
-            if len(values) == 2:
-                address, password = values
-                ip, port = None, None
-            else:
-                ip, port, password = values
-                address = None
-            fluent_connection = FluentConnection(
-                ip=ip,
-                port=port,
-                password=password,
-                address=address,
-                file_transfer_service=file_transfer_service,
-                **connection_kwargs,
-            )
+        values = _parse_server_info_file(server_info_file_name)
+        if len(values) == 2:
+            address, password = values
+            ip, port = None, None
+        else:
+            ip, port, password = values
+            address = None
+        fluent_connection = FluentConnection(
+            ip=ip,
+            port=port,
+            password=password,
+            address=address,
+            file_transfer_service=file_transfer_service,
+            **connection_kwargs,
+        )
         session = cls(
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection.scheme_eval,
