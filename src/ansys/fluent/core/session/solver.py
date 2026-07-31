@@ -78,6 +78,7 @@ if TYPE_CHECKING:
     )
     import ansys.fluent.core.generated.solver.settings_261 as settings_root
     from ansys.fluent.core.generated.solver.tui_261 import main_menu
+    from ansys.fluent.core.session_http_solver import HttpSolver  # <-- add this
 
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -170,7 +171,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._settings = None
-        self._rest_settings = None
         self._build_from_fluent_connection(
             fluent_connection, scheme_eval, launcher_args=launcher_args
         )
@@ -180,29 +180,24 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         cls,
         rest_url: str,
         rest_auth_token: str,
-        file_transfer_service: Any | None = None,
-        start_transcript: bool = True,
-        launcher_args: dict[str, Any] | None = None,
-    ) -> "Solver":
-        """Create a Solver connected via REST (HTTP) transport.
+    ) -> "HttpSolver":
+        """Create a solver session connected via REST (HTTP) transport.
+
+        Returns an :class:`~ansys.fluent.core.session_http_solver.HttpSolver`
+        instance — a standalone REST-backed session that is independent of the
+        gRPC infrastructure.
 
         Parameters
         ----------
         rest_url : str
-            REST server URL (e.g., "http://127.0.0.1:5000").
+            REST server URL (e.g., ``"http://127.0.0.1:5000"``).
         rest_auth_token : str
             Authentication token for the REST server.
-        file_transfer_service : Any, optional
-            File transfer service for file operations.
-        start_transcript : bool, optional
-            Whether to start transcript. Defaults to True.
-        launcher_args : dict, optional
-            Additional launcher arguments.
 
         Returns
         -------
-        Solver
-            A new Solver instance connected via REST transport.
+        HttpSolver
+            A new solver session connected via REST transport.
 
         Examples
         --------
@@ -210,25 +205,16 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         ...     rest_url="http://127.0.0.1:5000",
         ...     rest_auth_token="my-token"
         ... )
+        >>> solver.settings.setup.models.energy.enabled()
         """
-        from ansys.fluent.core.fluent_connection import FluentConnection
+        from ansys.fluent.core.rest.client import FluentRestClient
+        from ansys.fluent.core.session_http_solver import HttpSolver
 
-        fluent_connection = FluentConnection(
-            use_rest=True,
-            rest_url=rest_url,
-            rest_auth_token=rest_auth_token,
-            file_transfer_service=file_transfer_service,
+        rest_client = FluentRestClient.connect(
+            url=rest_url,
+            auth_token=rest_auth_token,
         )
-
-        session = BaseSession._create_from_server_info_file(
-            server_info_file_name=None,
-            file_transfer_service=file_transfer_service,
-            start_transcript=start_transcript,
-            launcher_args=launcher_args,
-            fluent_connection=fluent_connection,
-        )
-
-        return session
+        return HttpSolver(rest_client)
 
     def _build_from_fluent_connection(
         self,
@@ -286,30 +272,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 scheme_eval=self.scheme.eval,
             )
         return cast("settings_root.root", self._settings)
-
-    @property
-    def rest_settings(self) -> "settings_root.root":
-        """Settings root handle (REST transport).
-
-        Returns the settings object for REST transport if available.
-        Only accessible when solver is connected via REST transport.
-        Returns None if not using REST transport.
-        """
-        rest_client = self._fluent_connection._service_factory._rest_client
-        if rest_client is None:
-            return None
-
-        if self._rest_settings is None:
-            #: Root settings object for REST.
-            rest_settings_service = RestSettings(rest_client)
-            self._rest_settings = flobject.get_root(
-                flproxy=rest_settings_service,
-                version=self._version,
-                interrupt=Solver._interrupt,
-                file_transfer_service=self._file_transfer_service,
-                scheme_eval=self.scheme.eval,
-            )
-        return cast("settings_root.root", self._rest_settings)
 
     def _get_zones_info(self) -> list[ZoneInfo]:
         return [
