@@ -47,6 +47,7 @@ import warnings
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
+from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
@@ -230,6 +231,12 @@ class StandaloneLauncher:
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
 
+        # case_data_file_name is not supported in meshing mode.
+        if FluentMode.is_meshing(self.argvals.get("mode")) and self.argvals.get(
+            "case_data_file_name"
+        ):
+            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
+
         # Validate lightweight_mode + journal_file_names combination
         should_disable, warning_msg = _validate_lightweight_with_journal(
             self.argvals.get("lightweight_mode"),
@@ -284,16 +291,11 @@ class StandaloneLauncher:
 
         # For lightweight_mode with case file, defer case reading to post-connection
         # to support background session orchestration. Otherwise pass via CLI.
-        # Note: case_data_file_name + lightweight_mode is not supported and is
-        # already disabled with a warning during argvals validation above.
-        if self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name"):
-            # Don't add case via CLI for lightweight mode
-            self._launch_string += _build_case_data_arguments(
-                None,  # Defer case reading for lightweight mode
-                None,  # case_data_file_name is not supported with lightweight_mode
-            )
-        else:
-            # Pass both case and data via CLI in all other cases
+        # Note: case_data_file_name + lightweight_mode is already disabled with a
+        # warning during argvals validation above, so we don't need to guard for it here.
+        if not (
+            self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name")
+        ):
             self._launch_string += _build_case_data_arguments(
                 self.argvals.get("case_file_name"),
                 self.argvals.get("case_data_file_name"),

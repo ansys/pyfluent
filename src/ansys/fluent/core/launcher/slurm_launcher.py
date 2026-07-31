@@ -586,6 +586,12 @@ class SlurmLauncher:
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
 
+        # case_data_file_name is not supported in meshing mode.
+        if FluentMode.is_meshing(self._argvals.get("mode")) and self._argvals.get(
+            "case_data_file_name"
+        ):
+            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
+
         # Validate lightweight_mode + journal_file_names combination
         # If incompatible, disable lightweight_mode and warn user
         should_disable, warning_msg = _validate_lightweight_with_journal(

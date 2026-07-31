@@ -36,6 +36,9 @@ from typing import Any
 import warnings
 
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.launcher.error_warning_messages import (
+    LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
+)
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
@@ -262,10 +265,6 @@ def _validate_lightweight_with_journal(
         - First element (bool): True if lightweight_mode should be disabled, False otherwise.
         - Second element (str | None): Warning message if lightweight_mode should be disabled, None otherwise.
     """
-    from ansys.fluent.core.launcher.error_warning_messages import (
-        LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
-    )
-
     if lightweight_mode and journal_file_names:
         return (True, LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL)
     return (False, None)
@@ -309,20 +308,27 @@ def _build_case_data_arguments(
     case_file_name : None | str
         Path to the case file.
     case_data_file_name : None | str
-        Path to the case-data file.
+        Path to the case-data file. Must be provided together with
+        ``case_file_name``; a data file on its own is not a valid Fluent CLI
+        input.
 
     Returns
     -------
     str
         Fluent's case/data arguments string.
+
+    Raises
+    ------
+    InvalidArgument
+        If ``case_data_file_name`` is provided without ``case_file_name``.
     """
+    if case_data_file_name and not case_file_name:
+        raise InvalidArgument(
+            "'case_data_file_name' requires 'case_file_name' to also be provided."
+        )
     fluent_case_data_arg = ""
     if case_file_name:
-        # Convert Path to str if necessary
-        case_file_name = str(case_file_name)
-        fluent_case_data_arg += f' -case "{case_file_name}"'
+        fluent_case_data_arg += f' -case "{str(case_file_name)}"'
     if case_data_file_name:
-        # Convert Path to str if necessary
-        case_data_file_name = str(case_data_file_name)
-        fluent_case_data_arg += f' -case "{case_data_file_name}" -data'
+        fluent_case_data_arg += f' -data "{str(case_data_file_name)}"'
     return fluent_case_data_arg
