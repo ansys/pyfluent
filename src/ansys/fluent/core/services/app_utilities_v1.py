@@ -78,6 +78,12 @@ class AppUtilitiesService(_AppUtilitiesServiceV0):
         """IsDataAvailable RPC of FieldData service (v1)."""
         return self._field_data_stub.IsDataAvailable(request, metadata=self._metadata)
 
+    def get_app_mode(
+        self, request: AppUtilitiesProtoModule.GetModeRequest
+    ) -> AppUtilitiesProtoModule.GetModeResponse:
+        """Get app mode RPC of AppUtilities service."""
+        return self._stub.GetMode(request, metadata=self._metadata)
+
     def pause_solve_for(
         self, request: EventsProtoModule.PauseSolveForRequest
     ) -> EventsProtoModule.PauseSolveForResponse:
@@ -116,18 +122,18 @@ class AppUtilities(_AppUtilitiesV0):
         """
         import ansys.fluent.core as pyfluent
 
-        request = AppUtilitiesProtoModule.GetAppModeRequest()
+        request = AppUtilitiesProtoModule.GetModeRequest()
         response = self.service.get_app_mode(request)
-        match response.app_mode:
-            case AppUtilitiesProtoModule.APP_MODE_UNSPECIFIED:
+        match response.mode:
+            case AppUtilitiesProtoModule.MODE_UNSPECIFIED:
                 raise ValueError("Unknown app mode.")
-            case AppUtilitiesProtoModule.APP_MODE_MESHING:
+            case AppUtilitiesProtoModule.MODE_MESHING:
                 return pyfluent.FluentMode.MESHING
-            case AppUtilitiesProtoModule.APP_MODE_SOLVER:
+            case AppUtilitiesProtoModule.MODE_SOLVER:
                 return pyfluent.FluentMode.SOLVER
-            case AppUtilitiesProtoModule.APP_MODE_SOLVER_ICING:
+            case AppUtilitiesProtoModule.MODE_SOLVER_ICING:
                 return pyfluent.FluentMode.SOLVER_ICING
-            case AppUtilitiesProtoModule.APP_MODE_SOLVER_AERO:
+            case AppUtilitiesProtoModule.MODE_SOLVER_AERO:
                 return pyfluent.FluentMode.SOLVER_AERO
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
