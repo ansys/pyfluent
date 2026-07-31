@@ -337,6 +337,7 @@ class StandaloneLauncher:
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
         try:
+            # gRPC transport: existing flow
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 

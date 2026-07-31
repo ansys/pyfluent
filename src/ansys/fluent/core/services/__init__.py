@@ -79,9 +79,10 @@ class ServiceFactory:
         Source of the underlying raw gRPC service objects.
     """
 
-    def __init__(self, service_factory):
+    def __init__(self, service_factory, rest_client=None):
         """Initialize ServiceFactory."""
         self._service_factory = service_factory
+        self._rest_client = rest_client
 
     # ------------------------------------------------------------------
     # Version-agnostic services (concrete in base)
@@ -352,7 +353,7 @@ class ServiceFactoryLegacy(ServiceFactory):
 
 
 def create_service_factory(
-    service_factory, product_version: FluentVersion = None
+    service_factory, product_version: FluentVersion = None, rest_client=None
 ) -> ServiceFactory:
     """Return the correct :class:`ServiceFactory` subclass for *service_factory*.
 
@@ -363,6 +364,8 @@ def create_service_factory(
     product_version : FluentVersion, optional
         Fluent product version.  Derived from ``service_factory.scheme_interpreter``
         when omitted.
+    rest_client : optional
+        REST client instance for REST transport.
     """
     version = product_version or FluentVersion(
         ".".join(
@@ -372,7 +375,7 @@ def create_service_factory(
         )
     )
     if version >= FluentVersion.v271:
-        return ServiceFactoryV271(service_factory)
+        return ServiceFactoryV271(service_factory, rest_client=rest_client)
     elif version >= FluentVersion.v252:
         return ServiceFactoryV261(service_factory, version)
     else:
