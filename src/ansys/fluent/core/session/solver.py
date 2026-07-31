@@ -78,7 +78,7 @@ if TYPE_CHECKING:
     )
     import ansys.fluent.core.generated.solver.settings_261 as settings_root
     from ansys.fluent.core.generated.solver.tui_261 import main_menu
-    from ansys.fluent.core.session_http_solver import HttpSolver  # <-- add this
+    from ansys.fluent.core.session_http_solver import HttpSolver
 
 
 tui_logger = logging.getLogger("pyfluent.tui")
