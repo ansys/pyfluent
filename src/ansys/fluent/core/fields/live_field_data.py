@@ -38,15 +38,19 @@ Key classes:
       Fluent zone, returned by :meth:`LiveFieldData.get_mesh`.
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
 import time
+from typing import TYPE_CHECKING
 import warnings
 import weakref
 
-import numpy as np
+if TYPE_CHECKING:
+    import numpy as np
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.field_data_interfaces import (
@@ -1120,6 +1124,8 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         logger.info(f"Elements data received in {time.time() - start_time} seconds")
         logger.info("Constructing nodes structure in PyFluent")
         start_time = time.time()
+        import numpy as np
+
         node_count = sum(len(nodes) for nodes in nested_nodes)
         nodes = np.empty(node_count, dtype=Node)
         node_index_by_id = {}

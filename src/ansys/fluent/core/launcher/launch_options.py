@@ -38,14 +38,12 @@ if TYPE_CHECKING:
 
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.exceptions import DisallowedValuesError
-import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.error_warning_messages import (
     BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
 )
 from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-import ansys.platform.instancemanagement as pypim
 
 __all__ = (
     "FluentMode",
@@ -291,6 +289,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         Fluent launch mode.
     """
     from ansys.fluent.core.module_config import config
+    import ansys.platform.instancemanagement as pypim
 
     if pypim.is_configured():
         fluent_launch_mode = LaunchMode.PIM
@@ -350,6 +349,8 @@ def _get_running_session_mode(
         try:
             session_mode = fluent_connection._connection_interface.get_mode()
         except Exception as ex:
+            import ansys.fluent.core.launcher.error_handler as exceptions
+
             raise exceptions.InvalidPassword() from ex
     return session_mode.get_fluent_value()
 
@@ -399,6 +400,8 @@ def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | Non
         Geometric dimensionality of the Fluent simulation.
     """
     if dimension is not None and Dimension(dimension) == Dimension.TWO and gpu:
+        import ansys.fluent.core.launcher.error_handler as exceptions
+
         raise exceptions.GPUSolverSupportError()
 
 
