@@ -44,6 +44,9 @@ from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.solver import flobject
 
+# REST API is only available from Fluent 27.1 onward.
+_DEFAULT_VERSION = "271"
+
 
 class HttpSolver:
     """Standalone solver session backed by the Fluent REST API.
@@ -58,11 +61,17 @@ class HttpSolver:
     rest_client : FluentRestClient
         A connected REST client instance (see
         :meth:`FluentRestClient.connect`).
+    version : str, optional
+        Fluent version string (e.g. ``"271"``).  Defaults to ``"271"``
+        since the REST API is only available from Fluent 27.1 onward.
     """
 
-    def __init__(self, rest_client: FluentRestClient) -> None:
+    def __init__(
+        self, rest_client: FluentRestClient, version: str = _DEFAULT_VERSION
+    ) -> None:
         self._rest_client = rest_client
         self._rest_settings_service = RestSettings(rest_client)
+        self._version = version
         self._settings = None
 
     @property
@@ -71,7 +80,7 @@ class HttpSolver:
         if self._settings is None:
             self._settings = flobject.get_root(
                 flproxy=self._rest_settings_service,
-                version="",
+                version=self._version,
             )
         return self._settings
 

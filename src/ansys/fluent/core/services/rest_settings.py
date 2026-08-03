@@ -124,14 +124,12 @@ class RestSettings(AbstractSettings):
     def is_interactive_mode(self) -> bool:
         """Checks whether commands can be executed interactively.
 
-        Raises
+        Returns
         ------
-        NotImplementedError
-            This method is not applicable to REST transport.
+        bool
+            Always False for REST transport (REST is stateless and non-interactive).
         """
-        raise NotImplementedError(
-            "Interactive mode is not supported for REST transport."
-        )
+        return False
 
     @_trace
     def is_wildcard(self, input: str | None = None) -> bool:
