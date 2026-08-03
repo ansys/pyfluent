@@ -258,7 +258,7 @@ class SettingsService(ServiceProtocol):
                 for child in info.arguments
             }
 
-        # 4. Repeated StringsPair Fields (Aliases)
+        # 4. Repeated StringPair Fields (Aliases)
         if info.child_aliases:
             ret["child_aliases"] = {x.key: x.value for x in info.child_aliases}
         if info.command_aliases:
