@@ -2681,7 +2681,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                     k,
                 )
 
-        allowed_values = info.get("allowed_values", [])
+        allowed_values = info.get("allowed_values") or info.get("allowed-values", [])
         if allowed_values:
             for allowed_value in allowed_values:
                 setattr(
@@ -2691,7 +2691,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 )
             cls._allowed_values = allowed_values
 
-        has_migration_adapter = info.get("has_migration_adapter", False)
+        has_migration_adapter = info.get("has_migration_adapter") or info.get(
+            "has-migration-adapter?", False
+        )
         if has_migration_adapter:
             cls._has_migration_adapter = True
 
