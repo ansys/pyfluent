@@ -206,7 +206,7 @@ class SettingsService(ServiceProtocol):
         for key, value in sorted(info.attrs.items()):
             ret[key] = self._get_state_from_value(value)
         if info.has_allowed_values:
-            ret["has-allowed-values"] = info.has_allowed_values
+            ret["has_allowed_values"] = info.has_allowed_values
         if info.children:
             ret["children"] = {
                 child.name: self._extract_static_info(child.value)
@@ -228,7 +228,7 @@ class SettingsService(ServiceProtocol):
                 for child in info.arguments
             }
         if info.HasField("object_type"):
-            ret["object-type"] = self._extract_static_info(info.object_type)
+            ret["object_type"] = self._extract_static_info(info.object_type)
         if info.help:
             ret["help"] = info.help
         try:

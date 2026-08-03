@@ -2647,9 +2647,13 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
-        return_type = info.get("return_type")
-        if return_type:
-            cls.return_type = return_type
+        if version == "":
+            # This is kept for backwards compatibility.
+            cls.return_type = "object"
+        else:
+            return_type = info.get("return_type")
+            if return_type:
+                cls.return_type = return_type
 
         object_type = info.get("object_type", False)
         if object_type:
