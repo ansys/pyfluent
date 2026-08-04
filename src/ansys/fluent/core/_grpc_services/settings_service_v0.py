@@ -45,6 +45,10 @@ _V0_ATTRS_KEY_MAP: dict[str, str] = {
     "api-exposure-level": "api_exposure_level",
     "file-purpose": "file_purpose",
     "return-type": "return_type",
+    "child-aliases": "child_aliases",
+    "command-aliases": "command_aliases",
+    "query-aliases": "query_aliases",
+    "arguments-aliases": "arguments_aliases",
 }
 
 
@@ -174,6 +178,10 @@ class SettingsService(ServiceProtocol):
                 "api-exposure-level",
                 "file-purpose",
                 "return-type",
+                "child-aliases",
+                "command-aliases",
+                "query-aliases",
+                "arguments-aliases",
             ]
         )
         response = self._stub.GetStaticInfo(request, metadata=self._metadata)
