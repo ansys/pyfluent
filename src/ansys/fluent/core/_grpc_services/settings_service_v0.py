@@ -239,7 +239,10 @@ class SettingsService(ServiceProtocol):
         # Map v0 optional-attrs (hyphenated / question-mark keys) to the
         # v1-compatible underscore keys expected by flobject.get_cls().
         for key, value in info.attrs.items():
-            mapped_key = _V0_ATTRS_KEY_MAP.get(key)
+            if key in _V0_ATTRS_KEY_MAP.values():
+                mapped_key = key
+            else:
+                mapped_key = _V0_ATTRS_KEY_MAP.get(key)
             if mapped_key is not None:
                 ret[mapped_key] = self._get_state_from_value(value)
 
