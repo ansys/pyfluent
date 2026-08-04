@@ -534,7 +534,6 @@ class FluentConnection:
         self._slurm_job_id = None
         self.finalizer_cbs = []
         self._uds_fullpath = None
-
         if channel is not None:
             self._channel = channel
         else:

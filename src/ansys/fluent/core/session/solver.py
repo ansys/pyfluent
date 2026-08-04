@@ -176,10 +176,10 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         )
 
     @classmethod
-    def from_http_connection(
+    def from_http(
         cls,
-        rest_url: str,
-        rest_auth_token: str,
+        url: str,
+        auth_token: str,
     ) -> "HttpSolver":
         """Create a solver session connected via REST (HTTP) transport.
 
@@ -189,9 +189,9 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
         Parameters
         ----------
-        rest_url : str
+        url : str
             REST server URL (e.g., ``"http://127.0.0.1:5000"``).
-        rest_auth_token : str
+        auth_token : str
             Authentication token for the REST server.
 
         Returns
@@ -201,9 +201,9 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
         Examples
         --------
-        >>> solver = Solver.from_http_connection(
-        ...     rest_url="http://127.0.0.1:5000",
-        ...     rest_auth_token="my-token"
+        >>> solver = Solver.from_http(
+        ...     url="http://127.0.0.1:5000",
+        ...     auth_token="my-token"
         ... )
         >>> solver.settings.setup.models.energy.enabled()
         """
@@ -211,8 +211,8 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         from ansys.fluent.core.session_http_solver import HttpSolver
 
         rest_client = FluentRestClient.connect(
-            url=rest_url,
-            auth_token=rest_auth_token,
+            url=url,
+            auth_token=auth_token,
         )
         return HttpSolver(rest_client)
 
