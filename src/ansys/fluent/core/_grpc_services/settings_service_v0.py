@@ -36,6 +36,18 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
     return request
 
 
+# Mapping from v0 optional-attrs keys (hyphenated / question-mark suffixed) to the
+# v1-compatible underscore keys that flobject.py consumes via ``info.get(...)``.
+_V0_ATTRS_KEY_MAP: dict[str, str] = {
+    "allowed-values": "allowed_values",
+    "has-migration-adapter?": "has_migration_adapter",
+    "deprecated-version": "deprecated_version",
+    "api-exposure-level": "api_exposure_level",
+    "file-purpose": "file_purpose",
+    "return-type": "return_type",
+}
+
+
 class SettingsService(ServiceProtocol):
     """Class wrapping the settings gRPC service of Fluent (v0 proto API)."""
 
@@ -151,7 +163,19 @@ class SettingsService(ServiceProtocol):
         """
         request = settings_pb2.GetStaticInfoRequest()
         request.root = "fluent"
-        request.optional_attrs.extend(["allowed-values", "has-migration-adapter?"])
+        # Request the full set of optional attrs so that v0 servers which support
+        # them can return the data; servers that do not support a given attr simply
+        # omit it from the response attrs map.
+        request.optional_attrs.extend(
+            [
+                "allowed-values",
+                "has-migration-adapter?",
+                "deprecated-version",
+                "api-exposure-level",
+                "file-purpose",
+                "return-type",
+            ]
+        )
         response = self._stub.GetStaticInfo(request, metadata=self._metadata)
         # The RPC calls no longer raise an exception. Force an exception if
         # type is empty
@@ -203,8 +227,14 @@ class SettingsService(ServiceProtocol):
     def _extract_static_info(self, info) -> dict[str, Any]:
         ret = {}
         ret["type"] = info.type
-        for key, value in sorted(info.attrs.items()):
-            ret[key] = self._get_state_from_value(value)
+
+        # Map v0 optional-attrs (hyphenated / question-mark keys) to the
+        # v1-compatible underscore keys expected by flobject.get_cls().
+        for key, value in info.attrs.items():
+            mapped_key = _V0_ATTRS_KEY_MAP.get(key)
+            if mapped_key is not None:
+                ret[mapped_key] = self._get_state_from_value(value)
+
         if info.has_allowed_values:
             ret["has_allowed_values"] = info.has_allowed_values
         if info.children:
