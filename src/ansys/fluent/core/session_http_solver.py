@@ -34,7 +34,7 @@ Usage::
     >>> from ansys.fluent.core.rest.client import FluentRestClient
     >>>
     >>> client = FluentRestClient.connect(
-    ...     url="http://127.0.0.1:5000", auth_token="my-token"
+    ...     url="http://127.0.0.1:5000", token="my-token"
     ... )
     >>> solver = HttpSolver(client)
     >>> solver.settings.setup.models.energy.enabled()

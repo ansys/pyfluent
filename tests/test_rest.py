@@ -162,7 +162,7 @@ def _client(**kwargs) -> FluentRestClient:
 
 def _http_strategy(**kwargs) -> HttpRequestStrategy:
     """Return an ``HttpRequestStrategy`` with sensible test defaults."""
-    kwargs.setdefault("auth_token", "tok123")
+    kwargs.setdefault("token", "tok123")
     kwargs.setdefault("retry_delay", 0)  # keep retry tests fast
     return HttpRequestStrategy(_BASE_URL, **kwargs)
 
@@ -215,8 +215,8 @@ class TestHttpRequestStrategyInit:
         strategy = HttpRequestStrategy("http://localhost:5000/")
         assert strategy._base_url == "http://localhost:5000"
 
-    def test_init_with_auth_token(self):
-        strategy = HttpRequestStrategy("http://localhost:5000", auth_token="secret")
+    def test_init_with_token(self):
+        strategy = HttpRequestStrategy("http://localhost:5000", token="secret")
         expected = hashlib.sha256(b"secret").hexdigest()
         assert strategy._headers["Authorization"] == "Bearer " + expected
 
@@ -312,7 +312,7 @@ class TestHttpRequestStrategyAuth:
     @patch("ansys.fluent.core.rest.transport.urllib.request.urlopen")
     def test_auth_header_attached_to_requests(self, mock_urlopen):
         mock_urlopen.return_value = _make_response(True)
-        strategy = HttpRequestStrategy(_BASE_URL, auth_token="abc")
+        strategy = HttpRequestStrategy(_BASE_URL, token="abc")
         strategy.request("POST", "api/fluent_1/get_var", body={"path": "setup/x"})
         req = mock_urlopen.call_args[0][0]
         expected = hashlib.sha256(b"abc").hexdigest()
@@ -606,7 +606,7 @@ class TestHttpRequestStrategyTransport:
     def test_get_retry_exhaustion(self, mock_urlopen):
         mock_urlopen.side_effect = _make_http_error(503)
         strategy = HttpRequestStrategy(
-            _BASE_URL, auth_token="t", max_retries=2, retry_delay=0
+            _BASE_URL, token="t", max_retries=2, retry_delay=0
         )
         with pytest.raises(FluentRestError) as exc_info:
             strategy.request("GET", "api/fluent_1/test")
@@ -633,24 +633,24 @@ class TestConnectToWebserver:
     """FluentRestClient.connect factory returns a properly configured client."""
 
     def test_returns_fluent_rest_client(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert isinstance(client, FluentRestClient)
 
     def test_strategy_is_http_request_strategy(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert isinstance(client._strategy, HttpRequestStrategy)
 
     def test_strategy_stores_base_url(self):
-        client = connect_to_webserver(url="http://host:1234/", auth_token="secret")
+        client = connect_to_webserver(url="http://host:1234/", token="secret")
         assert client._strategy._base_url == "http://host:1234"
 
     def test_strategy_builds_auth_header(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        client = connect_to_webserver(url=_BASE_URL, token="secret")
         expected = hashlib.sha256(b"secret").hexdigest()
         assert client._strategy._headers["Authorization"] == "Bearer " + expected
 
     def test_defaults_to_solver_component(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert client._api_base == "api/fluent_1"
 
     def test_positional_arguments(self):
@@ -659,7 +659,7 @@ class TestConnectToWebserver:
         assert isinstance(client._strategy, HttpRequestStrategy)
 
     def test_satisfies_request_strategy_protocol(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+        client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert isinstance(client._strategy, RequestStrategy)
 
     def test_reexport_is_same_as_classmethod(self):

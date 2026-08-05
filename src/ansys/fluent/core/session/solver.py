@@ -179,7 +179,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     def from_http(
         cls,
         url: str,
-        auth_token: str,
+        token: str,
     ) -> "HttpSolver":
         """Create a solver session connected via REST (HTTP) transport.
 
@@ -191,7 +191,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         ----------
         url : str
             REST server URL (e.g., ``"http://127.0.0.1:5000"``).
-        auth_token : str
+        token : str
             Authentication token for the REST server.
 
         Returns
@@ -203,7 +203,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         --------
         >>> solver = Solver.from_http(
         ...     url="http://127.0.0.1:5000",
-        ...     auth_token="my-token"
+        ...     token="my-token"
         ... )
         >>> solver.settings.setup.models.energy.enabled()
         """
@@ -212,7 +212,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
         rest_client = FluentRestClient.connect(
             url=url,
-            auth_token=auth_token,
+            token=token,
         )
         return HttpSolver(rest_client)
 
