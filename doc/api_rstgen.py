@@ -331,8 +331,8 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     if "root" in file:
                         # Keep legacy references working while preserving the specific page anchor.
                         rst.write(".. _ref_root:\n\n")
-                        rst.write("Settings\n")
-                        rst.write(f'{"="*(len("Settings"))}\n\n')
+                        rst.write("settings\n")
+                        rst.write(f'{"="*(len("settings"))}\n\n')
                         rst.write(
                             "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
                         )
