@@ -9,7 +9,6 @@ from doc_utils import (
     meshing_workflow_bridge_content,
     solver_workflows_bridge_content,
 )
-from doc_utils import get_display_name as _format_display_name
 
 from ansys.fluent.core import FluentVersion
 
@@ -290,20 +289,6 @@ solver_workflows_toctree_display_names = {
 }
 
 
-# Optional display-name overrides for toctree node/page titles.
-# Keys should match generated node names (for example: meshing_utilities).
-NODE_DISPLAY_NAMES = {}
-
-
-def _get_display_name(node_name: str) -> str:
-    """Return display name for a node with fallback formatting.
-
-    If no override exists, fallback converts underscores to spaces and
-    capitalizes only the first character.
-    """
-    return _format_display_name(node_name, NODE_DISPLAY_NAMES)
-
-
 def _write_common_rst_members(rst_file):
     rst_file.write("    :members:\n")
     rst_file.write("    :show-inheritance:\n")
@@ -328,7 +313,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     rst.write(":orphan:\n\n")
                 rst.write(f".. _ref_{file}:\n\n")
                 if file in wrapper_toctree_patterns:
-                    title = _get_display_name(file)
+                    title = file
                     rst.write(f"{title}\n")
                     rst.write(f'{"="*(len(title))}\n\n')
                     rst.write(".. toctree::\n")
@@ -346,8 +331,8 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     if "root" in file:
                         # Keep legacy references working while preserving the specific page anchor.
                         rst.write(".. _ref_root:\n\n")
-                        rst.write("Settings\n")
-                        rst.write(f'{"="*(len("Settings"))}\n\n')
+                        rst.write("settings\n")
+                        rst.write(f'{"="*(len("settings"))}\n\n')
                         rst.write(
                             "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
                         )
@@ -359,7 +344,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         )
                     else:
                         temp_file_name = file.removesuffix("_new")
-                        title = _get_display_name(temp_file_name)
+                        title = temp_file_name
                         rst.write(f"{title}\n")
                         rst.write(f'{"="*(len(title))}\n\n')
                         rst.write(
@@ -367,7 +352,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         )
                 else:
                     temp_file_name = file.removesuffix("_new")
-                    title = _get_display_name(temp_file_name)
+                    title = temp_file_name
                     rst.write(f"{title}\n")
                     rst.write(f'{"="*(len(title))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
@@ -398,7 +383,7 @@ def _generate_api_index_rst_files():
             folder_index = _get_file_path(folder, f"{folder}_contents")
             with open(folder_index, "w", encoding="utf8") as index:
                 index.write(f".. _ref_{folder}:\n\n")
-                folder_title = _get_display_name(folder)
+                folder_title = folder
                 index.write(f"{folder_title}\n")
                 index.write(f'{"="*(len(folder_title))}\n\n')
                 if folder not in ["legacy", "solver_workflows"]:
