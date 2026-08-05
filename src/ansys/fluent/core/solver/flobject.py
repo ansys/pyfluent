@@ -2524,15 +2524,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
-        include_child_named_objects = info.get(
-            "include-child-named-objects?", False
-        ) or info.get("include_child_named_objects", False)
-        user_creatable = info.get("user-creatable?", False) or info.get(
-            "user_creatable", False
-        )
-
-        if version == "222":
-            user_creatable = True
+        include_child_named_objects = info.get("include_child_named_objects", False)
+        user_creatable = info.get("user_creatable", False)
 
         bases = (base,)
         if include_child_named_objects:
@@ -2544,7 +2537,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 bases = bases + (CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
-        elif info.get("has-allowed-values"):
+        elif info.get("has_allowed_values"):
             bases += (AllowedValuesMixin,)
         elif info.get("file_purpose") == "input":
             bases += (_InputFile,)
@@ -2654,26 +2647,25 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
-        if version < "242":
+        if version == "":
+            # This is kept for backwards compatibility.
             cls.return_type = "object"
         else:
-            return_type = info.get("return-type") or info.get("return_type")
+            return_type = info.get("return_type")
             if return_type:
                 cls.return_type = return_type
 
-        object_type = info.get("object-type", False) or info.get("object_type", False)
+        object_type = info.get("object_type", False)
         if object_type:
             cls.child_object_type, _ = get_cls(
                 "child-object-type", object_type, cls, version=version
             )
             cls.child_object_type.get_name = lambda self: self._name
 
-        child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
-        command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
-        query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        arguments_aliases = info.get("arguments-aliases") or info.get(
-            "arguments_aliases", {}
-        )
+        child_aliases = info.get("child_aliases", {})
+        command_aliases = info.get("command_aliases", {})
+        query_aliases = info.get("query_aliases", {})
+        arguments_aliases = info.get("arguments_aliases", {})
         if child_aliases or command_aliases or query_aliases or arguments_aliases:
             cls._child_aliases = {}
             # No need to differentiate in the Python implementation
@@ -2689,7 +2681,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                     k,
                 )
 
-        allowed_values = info.get("allowed-values") or info.get("allowed_values", [])
+        allowed_values = info.get("allowed_values", [])
         if allowed_values:
             for allowed_value in allowed_values:
                 setattr(
@@ -2699,7 +2691,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 )
             cls._allowed_values = allowed_values
 
-        has_migration_adapter = info.get("has-migration-adapter?", False)
+        has_migration_adapter = info.get("has_migration_adapter", False)
         if has_migration_adapter:
             cls._has_migration_adapter = True
 
