@@ -241,7 +241,10 @@ class SettingsService(ServiceProtocol):
         # Use sorted() to guarantee deterministic insertion order so that
         # repeated calls produce an identical dict (required for hash stability).
         for key, value in sorted(info.attrs.items()):
-            mapped_key = _V0_ATTRS_KEY_MAP.get(key)
+            if key in _V0_ATTRS_KEY_MAP.values():
+                mapped_key = key
+            else:
+                mapped_key = _V0_ATTRS_KEY_MAP.get(key)
             if mapped_key is not None:
                 ret[mapped_key] = self._get_state_from_value(value)
 

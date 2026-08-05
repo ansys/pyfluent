@@ -2647,7 +2647,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
-        if version < "242":
+        if version == "":
             # This is kept for backwards compatibility.
             cls.return_type = "object"
         else:
