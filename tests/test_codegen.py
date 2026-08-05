@@ -461,7 +461,7 @@ def _get_group_settings_static_info(name, children, commands, queries):
 def _get_named_object_settings_static_info(name, object_type, children):
     return {
         name: {
-            "object-type": object_type,
+            "object_type": object_type,
             "children": children,
             "type": "named-object",
             "help": f"{name} help",
@@ -532,7 +532,7 @@ from ansys.fluent.core.solver.flobject import (
     _FlStringConstant,
 )
 
-SHASH = "855b05953087d440471b35817227cb48708938415a9d3cc7eaa5ae71fb305d19"
+SHASH = "b05d3c10ad4ac8aacf91abd5ea572d9bf93115cffc9ee5c33bfc7a3b9dcd2dea"
 
 class P3(Integer):
     """
