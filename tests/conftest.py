@@ -373,6 +373,33 @@ def new_solver_session():
 
 
 @pytest.fixture
+def new_solver_session_rest():
+    """Create a REST-based solver session connected to a live Fluent 27.1+ server.
+
+    Requires FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables to be set.
+    Skips the test if either is unset (REST server not available).
+
+    Marked with @pytest.mark.rest_server to gate tests requiring a live server.
+    """
+    import os
+
+    from ansys.fluent.core.session_solver import Solver
+
+    rest_url = os.environ.get("FLUENT_REST_URL")
+    rest_token = os.environ.get("FLUENT_REST_TOKEN")
+
+    if not rest_url or not rest_token:
+        pytest.skip(
+            "REST live server not configured. "
+            "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
+        )
+
+    solver = Solver.from_http(url=rest_url, token=rest_token)
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture
 def new_solver_session_wo_exit():
     solver = create_session()
     yield solver
@@ -508,6 +535,56 @@ def periodic_rot_settings_session(new_solver_session):
         file_name=case_name,
         lightweight_setup=True,
     )
+    return solver
+
+
+# ============================================================================
+# REST-based fixtures (for HttpSolver via REST transport)
+# ============================================================================
+
+
+@pytest.fixture
+def mixing_elbow_settings_session_rest(new_solver_session_rest):
+    """REST-based mixing elbow case with lightweight setup.
+
+    Requires live Fluent REST server (FLUENT_REST_URL, FLUENT_REST_TOKEN).
+    Uses solver.settings.file.read() for REST compatibility.
+    """
+    solver = new_solver_session_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_session_rest(new_solver_session_rest):
+    """REST-based mixing elbow case with full mesh (no lightweight setup).
+
+    Requires live Fluent REST server (FLUENT_REST_URL, FLUENT_REST_TOKEN).
+    Uses solver.settings.file.read() for REST compatibility.
+    """
+    solver = new_solver_session_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_data_session_rest(new_solver_session_rest):
+    """REST-based mixing elbow case with case and data files.
+
+    Requires live Fluent REST server (FLUENT_REST_URL, FLUENT_REST_TOKEN).
+    Downloads both .cas.h5 and .dat.h5 files, reads as case-data.
+    Uses solver.settings.file.read() for REST compatibility.
+    """
+    solver = new_solver_session_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case-data", file_name=case_name)
     return solver
 
 
