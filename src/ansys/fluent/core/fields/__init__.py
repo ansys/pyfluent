@@ -21,4 +21,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module containing Fields objects."""
+"""Fields module for managing Fluent field data, reduction and solution variables data."""
+
+
+from ansys.fluent.core.fields.live_field_data import Batch as FieldDataBatch
+from ansys.fluent.core.fields.live_field_data import LiveFieldData as FieldData
+from ansys.fluent.core.fields.reduction import Reduction
+from ansys.fluent.core.fields.solution_variables import (
+    SolutionVariableData,
+    SolutionVariableInfo,
+)
+
+__all__ = [
+    "FieldData",
+    "FieldDataBatch",
+    "Reduction",
+    "SolutionVariableInfo",
+    "SolutionVariableData",
+]

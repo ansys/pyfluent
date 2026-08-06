@@ -21,7 +21,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrappers over SVAR gRPC service of Fluent."""
+"""High-level solution-variable wrappers.
+
+This module owns the business-logic layer on top of the SolutionVariable
+gRPC service. The grpc service implementation lives in:
+
+* ``ansys.fluent.core._grpc_services.solution_variable_service`` (v1 proto API)
+* ``ansys.fluent.core._grpc_services.solution_variable_service_v0`` (v0 proto API)
+
+The public API is centered around:
+
+* ``SolutionVariableInfo`` for zone and SVAR metadata access.
+* ``SolutionVariableData`` for reading and writing SVAR data arrays.
+"""
 
 from typing import Any
 

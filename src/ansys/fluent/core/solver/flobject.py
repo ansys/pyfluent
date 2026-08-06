@@ -103,6 +103,64 @@ _static_class_attributes = [
 ]
 
 
+# --------------------------------------------------------------------------- #
+# Expression-object support                                                   #
+# --------------------------------------------------------------------------- #
+#
+# Settings leaves whose python-name path (stripped of NamedObject indices)
+# ends with one of these tuples will accept "expression objects" -- any
+# Python value implementing ``__fluent_expr__() -> str`` -- and convert them
+# to their Fluent-side string form before storing.
+#
+# Today the only entry targets ``setup.named_expressions[<name>].definition``,
+# but keeping this as a module-level constant lets future consumers plug in
+# additional paths (or migrate to a fully attribute-driven mechanism) without
+# touching :class:`Textual`.
+EXPRESSION_DEFINITION_PATHS: list[tuple[str, ...]] = [
+    ("setup", "named_expressions", "definition"),
+]
+
+
+def _python_name_chain(obj) -> list[str]:
+    """Return the python-name chain from root to ``obj``, excluding indices.
+
+    NamedObject index segments (``"[foo]"``) are dropped so the chain
+    represents structural position only.
+    """
+    names: list[str] = []
+    node = obj
+    while node is not None:
+        name = getattr(node, "python_name", None)
+        if name and not name.startswith("["):
+            names.append(name)
+        node = getattr(node, "_parent", None)
+    names.reverse()
+    return names
+
+
+def _matches_expression_definition_path(obj) -> bool:
+    """Return True if ``obj`` sits at one of :data:`EXPRESSION_DEFINITION_PATHS`."""
+    chain = _python_name_chain(obj)
+    for suffix in EXPRESSION_DEFINITION_PATHS:
+        if len(suffix) <= len(chain) and tuple(chain[-len(suffix) :]) == suffix:
+            return True
+    return False
+
+
+def _try_render_expression(state):
+    """If ``state`` looks like an expression object, return its rendered string.
+
+    Duck-typed on ``__fluent_expr__``.  Returns ``None`` when ``state`` is not
+    an expression object, so callers can fall through to their existing logic.
+    """
+    render = getattr(state, "__fluent_expr__", None)
+    if callable(render):
+        rendered = render()
+        if isinstance(rendered, str):
+            return rendered
+    return None
+
+
 class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
@@ -822,7 +880,11 @@ class Textual(Property):
         Parameters
         ----------
         state
-            Either str or VariableDescriptor.
+            Either str, VariableDescriptor, or -- at whitelisted paths
+            (see :data:`EXPRESSION_DEFINITION_PATHS`) -- any object
+            implementing ``__fluent_expr__() -> str`` (e.g. an
+            :class:`~ansys.fluent.core.expressions.Expr` produced by the
+            expression builder).
         kwargs : Any
             Keyword arguments.
 
@@ -831,6 +893,18 @@ class Textual(Property):
         TypeError
             If state is not a string.
         """
+        # Expression-object support: convert an Expr-like input to its
+        # Fluent-side string form when this leaf is a recognised
+        # expression-definition slot.  Duck-type check first: it's a cheap
+        # getattr that short-circuits the parent-walk in the path match for
+        # the ~all case where ``state`` is a plain value.
+        if hasattr(state, "__fluent_expr__") and _matches_expression_definition_path(
+            self
+        ):
+            rendered = _try_render_expression(state)
+            if rendered is not None:
+                return self.base_set_state(state=rendered, **kwargs)
+
         allowed_types = (str, VariableDescriptor)
 
         if not isinstance(state, allowed_types):

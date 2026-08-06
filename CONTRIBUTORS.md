@@ -39,6 +39,7 @@
 * [mcgoldba](https://github.com/mcgoldba)
 * [Mohammed Abdul Razzaq](https://github.com/MohammedAnsys)
 * [Muhammed Adedigba](https://github.com/moe-ad)
+* [Mustafa Kaddoura](https://github.com/Mustafa-Kaddoura)
 * [Oleg Chernukhin](https://github.com/ochernuk)
 * [Patrick Lagace](https://github.com/lagacep-ans)
 * [Pierre Lulé](https://github.com/plule-ansys)

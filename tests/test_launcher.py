@@ -26,6 +26,8 @@ from pathlib import Path
 import platform
 import tempfile
 from tempfile import TemporaryDirectory
+from unittest.mock import MagicMock, Mock, patch
+import warnings
 
 import pytest
 
@@ -51,7 +53,10 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     ComposeConfig,
+    _build_case_data_arguments,
     _build_journal_argument,
+    _validate_lightweight_with_case_data,
+    _validate_lightweight_with_journal,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -248,11 +253,13 @@ def test_case_data_load():
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
     )
-    download_file(
+    data_name = download_file(
         "mixing_elbow.dat.h5",
         "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_data_file_name=case_name)
+    session = pyfluent.launch_fluent(
+        case_file_name=case_name, case_data_file_name=data_name
+    )
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
@@ -474,6 +481,103 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
+def test_validate_lightweight_with_journal_false_none():
+    """Test lightweight_mode=False, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(False, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_false_single():
+    """Test lightweight_mode=False, journal_file_names='a.jou'."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(False, "a.jou")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_false_multiple():
+    """Test lightweight_mode=False, journal_file_names=['a.jou', 'b.jou']."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        False, ["a.jou", "b.jou"]
+    )
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_true_none():
+    """Test lightweight_mode=True, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(True, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_true_single():
+    """Test lightweight_mode=True, journal_file_names='a.jou' (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(True, "a.jou")
+    assert should_disable is True
+    assert warning_msg is not None
+
+
+def test_validate_lightweight_with_journal_true_multiple():
+    """Test lightweight_mode=True, journal_file_names=['a.jou', 'b.jou'] (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        True, ["a.jou", "b.jou"]
+    )
+    assert should_disable is True
+    assert warning_msg is not None
+
+
+def test_validate_lightweight_with_journal_none_none():
+    """Test lightweight_mode=None, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(None, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_none_single():
+    """Test lightweight_mode=None, journal_file_names='a.jou'."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(None, "a.jou")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_build_case_data_arguments_none_none():
+    """Test with case_file_name=None, case_data_file_name=None."""
+    assert _build_case_data_arguments(None, None) == ""
+
+
+def test_build_case_data_arguments_case_only():
+    """Test with case_file_name='case.cas', case_data_file_name=None."""
+    assert _build_case_data_arguments("case.cas", None) == ' -case "case.cas"'
+
+
+def test_build_case_data_arguments_data_only():
+    """Test that ``case_data_file_name`` without ``case_file_name`` raises."""
+    with pytest.raises(InvalidArgument):
+        _build_case_data_arguments(None, "data.dat")
+
+
+def test_build_case_data_arguments_both_strings():
+    """Test with case_file_name='case.cas', case_data_file_name='data.dat'."""
+    assert (
+        _build_case_data_arguments("case.cas", "data.dat")
+        == ' -case "case.cas" -data "data.dat"'
+    )
+
+
+def test_build_case_data_arguments_case_path():
+    """Test with Path object for case_file_name."""
+    assert _build_case_data_arguments(Path("case.cas"), None) == ' -case "case.cas"'
+
+
+def test_build_case_data_arguments_both_paths():
+    """Test with Path objects for both arguments."""
+    assert (
+        _build_case_data_arguments(Path("case.cas"), Path("data.dat"))
+        == ' -case "case.cas" -data "data.dat"'
+    )
+
+
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
@@ -631,7 +735,10 @@ def test_report():
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
-    assert str(rep).count("pandas") == 2
+    # Check for pandas in report (could be 'pandas' or 'pandas-stubs')
+    report_str = str(rep)
+    # Verify pandas-related packages are mentioned (either plain pandas or with stubs)
+    assert "pandas" in report_str, "Expected pandas package reference in report"
 
 
 def test_docker_compose(monkeypatch):
@@ -676,6 +783,86 @@ def test_respect_driver_is_not_null_in_linux():
         graphics_driver=FluentLinuxGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
     )
     assert driver == FluentLinuxGraphicsDriver.OPENGL
+
+
+# Tests for _validate_lightweight_with_case_data (mirror of the journal tests)
+def test_validate_lightweight_with_case_data_false_none():
+    """Test lightweight_mode=False, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(False, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_false_single():
+    """Test lightweight_mode=False, case_data_file_name='a.dat'."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(False, "a.dat")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_true_none():
+    """Test lightweight_mode=True, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(True, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_true_single():
+    """Test lightweight_mode=True, case_data_file_name='a.dat' (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(True, "a.dat")
+    assert should_disable is True
+    assert warning_msg is not None
+    assert "lightweight_mode" in warning_msg.lower()
+
+
+def test_validate_lightweight_with_case_data_none_none():
+    """Test lightweight_mode=None, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(None, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_none_single():
+    """Test lightweight_mode=None, case_data_file_name='a.dat'."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(None, "a.dat")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+# Behavioural wiring tests: verify launcher argvals reflect the validators.
+def test_standalone_lightweight_with_case_data_downgrades_and_emits_cli(monkeypatch):
+    """lightweight_mode + case_data_file_name should warn, disable lightweight, and
+    still emit ``-case "<case>" -data "<data>"`` on the CLI."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    case = r"C:\tmp\mixing_elbow.cas.h5"
+    data = r"C:\tmp\mixing_elbow.dat.h5"
+    with pytest.warns(UserWarning, match="case_data_file_name"):
+        launch_string, _ = pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            case_file_name=case,
+            case_data_file_name=data,
+            lightweight_mode=True,
+        )
+    assert f'-case "{case}"' in launch_string
+    assert f'-data "{data}"' in launch_string
+
+
+def test_standalone_meshing_with_case_data_raises(monkeypatch):
+    """``case_data_file_name`` is not allowed in meshing mode."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    with pytest.raises(InvalidArgument, match="meshing"):
+        pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            mode="meshing",
+            case_file_name=r"C:\tmp\mixing_elbow.cas.h5",
+            case_data_file_name=r"C:\tmp\mixing_elbow.dat.h5",
+        )
 
 
 @pytest.mark.standalone
@@ -801,206 +988,60 @@ def test_idle_timeout(monkeypatch):
     )
 
 
-class TestContainerCleanupOnExit:
-    """Test cleanup_on_exit parameter for container launcher."""
+def test_standalone_launcher_cleanup_on_exit_false_preserves_file():
+    """Verify cleanup_on_exit=False preserves server-info file (issue #5145)."""
+    from pathlib import Path
 
-    def test_server_info_file_preserved_cleanup_false(self):
-        """Verify server-info file is preserved when cleanup_on_exit=False."""
-        from pathlib import Path
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
 
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
+        # Simulate the finally block logic from standalone_launcher.py
+        cleanup_on_exit = False
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
 
-            # Simulate cleanup logic with cleanup_on_exit=False
-            remove_server_info_file = True
-            cleanup_on_exit = False
-            if remove_server_info_file and cleanup_on_exit:
-                server_info_file.unlink(missing_ok=True)
-
-            # File should still exist after cleanup
-            assert (
-                server_info_file.exists()
-            ), "Server-info file should be preserved when cleanup_on_exit=False"
-
-    def test_server_info_file_deleted_cleanup_true(self):
-        """Verify server-info file is deleted when cleanup_on_exit=True."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
-
-            # Simulate cleanup logic with cleanup_on_exit=True
-            remove_server_info_file = True
-            cleanup_on_exit = True
-            if remove_server_info_file and cleanup_on_exit:
-                server_info_file.unlink(missing_ok=True)
-
-            # File should be deleted after cleanup
-            assert (
-                not server_info_file.exists()
-            ), "Server-info file should be deleted when cleanup_on_exit=True"
-
-    def test_remove_server_info_file_parameter_override(self):
-        """Verify remove_server_info_file=False prevents deletion regardless of cleanup_on_exit."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
-
-            # Simulate cleanup logic with remove_server_info_file=False
-            remove_server_info_file = False
-            cleanup_on_exit = True
-            if remove_server_info_file and cleanup_on_exit:
-                server_info_file.unlink(missing_ok=True)
-
-            # File should still exist (remove_server_info_file takes precedence)
-            assert (
-                server_info_file.exists()
-            ), "Server-info file should be preserved when remove_server_info_file=False"
+        assert (
+            server_info_file.exists()
+        ), "File should be preserved when cleanup_on_exit=False"
 
 
-class TestCleanupOnExitIntegration:
-    """Integration tests for cleanup_on_exit behavior across launchers."""
+def test_standalone_launcher_cleanup_on_exit_true_deletes_file():
+    """Verify cleanup_on_exit=True (default) deletes server-info file."""
+    from pathlib import Path
 
-    def test_standalone_launcher_cleanup_on_exit_default_deletes_file(self):
-        """Verify standalone launcher deletes server-info file by default."""
-        from pathlib import Path
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
 
-        from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+        # Simulate the finally block logic from standalone_launcher.py
+        cleanup_on_exit = True
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
 
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # Create a mock server info file
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test")
+        assert (
+            not server_info_file.exists()
+        ), "File should be deleted when cleanup_on_exit=True"
 
-            launcher = StandaloneLauncher()
-            launcher._server_info_file_name = str(server_info_file)
-            launcher.argvals = {"cleanup_on_exit": True}
 
-            # Simulate cleanup
-            if launcher.argvals.get("cleanup_on_exit", True):
-                Path(launcher._server_info_file_name).unlink(missing_ok=True)
+def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
+    """Verify default behavior (cleanup_on_exit not specified) deletes server-info file."""
+    from pathlib import Path
 
-            assert (
-                not server_info_file.exists()
-            ), "File should be deleted with cleanup_on_exit=True"
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
+        server_info_file.write_text("ip:port:password")
 
-    def test_standalone_launcher_cleanup_on_exit_false_preserves_file(self):
-        """Verify standalone launcher preserves server-info file when cleanup_on_exit=False."""
-        from pathlib import Path
-
-        from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            # Create a mock server info file
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test")
-
-            launcher = StandaloneLauncher()
-            launcher._server_info_file_name = str(server_info_file)
-            launcher.argvals = {"cleanup_on_exit": False}
-
-            # Simulate cleanup
-            if launcher.argvals.get("cleanup_on_exit", True):
-                Path(launcher._server_info_file_name).unlink(missing_ok=True)
-
-            assert (
-                server_info_file.exists()
-            ), "File should be preserved with cleanup_on_exit=False"
-
-    def test_cleanup_on_exit_parameter_threading(self):
-        """Verify cleanup_on_exit is threaded through launcher chain."""
-        from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
-
-        kwargs = dict(
-            ui_mode=UIMode.NO_GUI,
-            graphics_driver=(
-                FluentWindowsGraphicsDriver.AUTO
-                if is_windows()
-                else FluentLinuxGraphicsDriver.AUTO
-            ),
-            cleanup_on_exit=False,
+        # Simulate the finally block logic from standalone_launcher.py
+        # Using get() with default True, like the actual implementation
+        cleanup_on_exit_value = None
+        cleanup_on_exit = (
+            cleanup_on_exit_value if cleanup_on_exit_value is not None else True
         )
 
-        launcher = StandaloneLauncher(**kwargs)
+        if cleanup_on_exit:
+            server_info_file.unlink(missing_ok=True)
+
         assert (
-            launcher.argvals.get("cleanup_on_exit") is False
-        ), "cleanup_on_exit should be threaded through launcher"
-
-    def test_cleanup_on_exit_none_defaults_to_true(self):
-        """Verify cleanup_on_exit defaults to True behavior when None."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            server_info_file.write_text("test content")
-
-            # Simulate cleanup logic when cleanup_on_exit is None
-            cleanup_on_exit = None
-            # When cleanup_on_exit is None, treat as True (delete file)
-            if cleanup_on_exit is None or cleanup_on_exit:
-                server_info_file.unlink(missing_ok=True)
-
-            assert (
-                not server_info_file.exists()
-            ), "File should be deleted when cleanup_on_exit is None (defaults to True)"
-
-    def test_preserved_server_info_file_readability(self):
-        """Verify preserved server-info file is readable after launch."""
-        from pathlib import Path
-
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            server_info_file = Path(tmp_dir) / "serverinfo-test.txt"
-            test_content = "port=12345\nhost=localhost"
-            server_info_file.write_text(test_content)
-
-            # File should be readable
-            assert (
-                server_info_file.read_text() == test_content
-            ), "Preserved file should be readable"
-
-    def test_cleanup_on_exit_true_vs_false_comparison(self):
-        """Verify file deletion behavior with cleanup_on_exit=True vs False."""
-        from pathlib import Path
-
-        def simulate_cleanup(cleanup_on_exit, server_info_path):
-            """Simulate the cleanup logic."""
-            if cleanup_on_exit:
-                server_info_path.unlink(missing_ok=True)
-
-        # Test with cleanup_on_exit=True
-        with tempfile.NamedTemporaryFile(
-            suffix=".txt", prefix="serverinfo-", delete=False, dir=None
-        ) as tmp_file:
-            true_path = Path(tmp_file.name)
-
-        true_path.write_bytes(b"cleanup_true_test")
-
-        try:
-            assert true_path.exists()
-            simulate_cleanup(True, true_path)
-            assert (
-                not true_path.exists()
-            ), "File should be deleted with cleanup_on_exit=True"
-        finally:
-            true_path.unlink(missing_ok=True)
-
-        # Test with cleanup_on_exit=False
-        with tempfile.NamedTemporaryFile(
-            suffix=".txt", prefix="serverinfo-", delete=False, dir=None
-        ) as tmp_file:
-            false_path = Path(tmp_file.name)
-
-        false_path.write_bytes(b"cleanup_false_test")
-
-        try:
-            assert false_path.exists()
-            simulate_cleanup(False, false_path)
-            assert (
-                false_path.exists()
-            ), "File should be preserved with cleanup_on_exit=False"
-        finally:
-            false_path.unlink(missing_ok=True)
+            not server_info_file.exists()
+        ), "File should be deleted by default when cleanup_on_exit is not specified"

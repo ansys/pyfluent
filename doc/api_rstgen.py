@@ -67,7 +67,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     data_model_cache
     exceptions
     file_session
-    field_data_interfaces
+    fields/fields_contents
     fluent_connection
     journaling
     logger
@@ -151,20 +151,19 @@ hierarchy = {
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
-        "api_upgrade",
+        "application_runtime",
         "batch_ops",
-        "datamodel_se",
+        "object_model",
         "text_interface",
         "events",
         "field_data",
         "health_check",
         "interceptors",
-        "monitor",
+        "monitors",
         "reduction",
-        "scheme_eval",
+        "scheme_interpreter",
         "settings",
         "solution_variables",
-        "streaming",
         "transcript",
     ],
     "solver": [
@@ -198,11 +197,16 @@ hierarchy = {
         "networking",
         "setup_for_fluent",
     ],
+    "fields": [
+        "field_data_interfaces",
+        "live_field_data",
+        "reduction",
+        "solution_variables",
+    ],
     "other": [
         "module_config",
         "exceptions",
         "file_session",
-        "field_data_interfaces",
         "fluent_connection",
         "journaling",
         "logger",
@@ -288,9 +292,7 @@ solver_workflows_toctree_display_names = {
 
 # Optional display-name overrides for toctree node/page titles.
 # Keys should match generated node names (for example: meshing_utilities).
-NODE_DISPLAY_NAMES = {
-    # "meshing_utilities": "Meshing Utilities",
-}
+NODE_DISPLAY_NAMES = {}
 
 
 def _get_display_name(node_name: str) -> str:

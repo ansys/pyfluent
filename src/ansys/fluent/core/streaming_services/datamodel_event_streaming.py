@@ -29,202 +29,67 @@ import threading
 
 from google.protobuf.json_format import MessageToDict
 
-from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.fluent.core._grpc_services.object_model_service_v0 import (
-    _convert_variant_to_value,
-)
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
-class _BaseDatamodelEvents(StreamingService):
-    """Shared datamodel event streaming implementation."""
+class DatamodelEvents(StreamingService):
+    """Encapsulates a datamodel events streaming service (version-agnostic).
 
-    _streaming_rpc_path = "/grpcRemoting.DataModel/BeginEventStreaming"
+    All proto-specific logic (request construction, response field access, and
+    variant conversion) lives in the gRPC service layer via
+    ``_process_event_streaming`` and ``parse_event_response``.
+    """
 
     def __init__(self, service):
         """Initialize DatamodelEvents."""
-        # After refactoring, `service` may be a high-level wrapper (ObjectModel/ObjectModelV261).
-        # `begin_streaming` lives on the underlying gRPC service, accessible via `_service`.
+        # `service` may be a high-level wrapper (ObjectModel / ObjectModelV261).
+        # The underlying gRPC service is accessible via ``_service``.
         grpc_service = getattr(service, "_service", service)
         super().__init__(
-            stream_begin_method="BeginEventStreaming",
-            target=type(self)._process_streaming,
+            stream_begin_method=grpc_service._event_stream_begin_method,
+            target=DatamodelEvents._process_streaming,
             streaming_service=grpc_service,
         )
-        self._cbs = {}
+        self._cbs: dict[str, Callable] = {}
         grpc_service.event_streaming = self
         self._lock = threading.RLock()
 
-    def register_callback(self, tag: str, cb: Callable):
-        """Register a callback."""
+    def register_callback(self, tag: str, cb: Callable) -> None:
+        """Register a callback for a subscription tag."""
         with self._lock:
             self._cbs[tag] = cb
 
-    def unregister_callback(self, tag: str):
-        """Unregister a callback."""
+    def unregister_callback(self, tag: str) -> None:
+        """Unregister the callback for a subscription tag."""
         with self._lock:
             self._cbs.pop(tag, None)
 
-    def _make_request(self, *args, **kwargs):
-        raise NotImplementedError()
-
-    def _get_response_callback(self, response):
-        return self._cbs.get(response.tag, None)
-
-    def _dispatch_response(self, cb: Callable, response) -> None:
-        if self._has_created_event_response(response):
-            cb(
-                self._get_created_event_child_type(response),
-                self._get_created_event_child_name(response),
-            )
-        elif self._has_attribute_changed_event_response(response):
-            cb(
-                self._convert_variant_to_value(
-                    self._get_attribute_changed_value(response)
-                )
-            )
-        elif self._has_command_attribute_changed_event_response(response):
-            cb(
-                self._convert_variant_to_value(
-                    self._get_command_attribute_changed_value(response)
-                )
-            )
-        elif self._has_modified_event_response(response):
-            cb(self._convert_variant_to_value(self._get_modified_event_value(response)))
-        elif self._has_affected_event_response(response):
-            cb()
-        elif self._has_deleted_event_response(response):
-            cb()
-        elif self._has_command_executed_event_response(response):
-            cb(
-                self._get_command_executed_command(response),
-                self._convert_variant_to_value(
-                    self._get_command_executed_args(response)
-                ),
-            )
-
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
-        """Processes datamodel events."""
+        """Process incoming datamodel event responses."""
         from ansys.fluent.core.module_config import config
 
-        request = self._make_request(*args, **kwargs)
-        responses = self._streaming_service.begin_streaming(
-            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        responses = self._streaming_service._process_event_streaming(
+            *args, id=id, started_evt=started_evt, **kwargs
         )
         while True:
             try:
                 response = next(responses)
                 if not config.hide_log_secrets:
                     network_logger.debug(
-                        f"GRPC_TRACE: RPC = {self._streaming_rpc_path}, response = {MessageToDict(response)}"
+                        f"GRPC_TRACE: RPC = "
+                        f"{self._streaming_service._event_streaming_rpc_path}, "
+                        f"response = {MessageToDict(response)}"
                     )
                 with self._lock:
                     self._streaming = True
-                    cb = self._get_response_callback(response)
+                    cb = self._cbs.get(response.tag, None)
                     if cb:
-                        self._dispatch_response(cb, response)
+                        event_type, cb_args = (
+                            self._streaming_service.parse_event_response(response)
+                        )
+                        if event_type is not None:
+                            cb(*cb_args)
             except StopIteration:
                 break
-
-    def _has_created_event_response(self, response) -> bool:
-        raise NotImplementedError()
-
-    def _get_created_event_child_type(self, response) -> str:
-        raise NotImplementedError()
-
-    def _get_created_event_child_name(self, response) -> str:
-        raise NotImplementedError()
-
-    def _has_attribute_changed_event_response(self, response) -> bool:
-        raise NotImplementedError()
-
-    def _get_attribute_changed_value(self, response):
-        raise NotImplementedError()
-
-    def _has_command_attribute_changed_event_response(self, response) -> bool:
-        raise NotImplementedError()
-
-    def _get_command_attribute_changed_value(self, response):
-        raise NotImplementedError()
-
-    def _has_modified_event_response(self, response) -> bool:
-        raise NotImplementedError()
-
-    def _get_modified_event_value(self, response):
-        raise NotImplementedError()
-
-    def _has_affected_event_response(self, response) -> bool:
-        raise NotImplementedError()
-
-    def _has_deleted_event_response(self, response) -> bool:
-        raise NotImplementedError()
-
-    def _has_command_executed_event_response(self, response) -> bool:
-        raise NotImplementedError()
-
-    def _get_command_executed_command(self, response) -> str:
-        raise NotImplementedError()
-
-    def _get_command_executed_args(self, response):
-        raise NotImplementedError()
-
-    def _convert_variant_to_value(self, value):
-        raise NotImplementedError()
-
-
-class DatamodelEvents(_BaseDatamodelEvents):
-    """Encapsulates a datamodel events streaming service."""
-
-    def __init__(self, service):
-        """Initialize DatamodelEvents."""
-        super().__init__(service)
-
-    def _make_request(self, *args, **kwargs):
-        return DataModelProtoModule.EventRequest(*args, **kwargs)
-
-    def _has_created_event_response(self, response) -> bool:
-        return response.HasField("createdEventResponse")
-
-    def _get_created_event_child_type(self, response) -> str:
-        return response.createdEventResponse.childtype
-
-    def _get_created_event_child_name(self, response) -> str:
-        return response.createdEventResponse.childname
-
-    def _has_attribute_changed_event_response(self, response) -> bool:
-        return response.HasField("attributeChangedEventResponse")
-
-    def _get_attribute_changed_value(self, response):
-        return response.attributeChangedEventResponse.value
-
-    def _has_command_attribute_changed_event_response(self, response) -> bool:
-        return response.HasField("commandAttributeChangedEventResponse")
-
-    def _get_command_attribute_changed_value(self, response):
-        return response.commandAttributeChangedEventResponse.value
-
-    def _has_modified_event_response(self, response) -> bool:
-        return response.HasField("modifiedEventResponse")
-
-    def _get_modified_event_value(self, response):
-        return response.modifiedEventResponse.value
-
-    def _has_affected_event_response(self, response) -> bool:
-        return response.HasField("affectedEventResponse")
-
-    def _has_deleted_event_response(self, response) -> bool:
-        return response.HasField("deletedEventResponse")
-
-    def _has_command_executed_event_response(self, response) -> bool:
-        return response.HasField("commandExecutedEventResponse")
-
-    def _get_command_executed_command(self, response) -> str:
-        return response.commandExecutedEventResponse.command
-
-    def _get_command_executed_args(self, response):
-        return response.commandExecutedEventResponse.args
-
-    def _convert_variant_to_value(self, value):
-        return _convert_variant_to_value(value)

@@ -45,6 +45,7 @@ from ansys.api.fluent.v1 import health_pb2_grpc as health_pb2_grpc_v1
 from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_grpc
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
+from ansys.fluent.core._grpc_services import _server_supports_v1
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
@@ -563,7 +564,7 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
 def test_server_supports_v1_by_version(session_fixture_name, request):
     fluent_session = request.getfixturevalue(session_fixture_name)
     expected = fluent_session.get_fluent_version() >= FluentVersion.v271
-    assert fluent_session._fluent_connection._server_supports_v1 is expected
+    assert _server_supports_v1(fluent_session._fluent_connection._channel) is expected
 
 
 @pytest.mark.standalone
