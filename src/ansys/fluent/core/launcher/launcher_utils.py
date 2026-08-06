@@ -37,6 +37,7 @@ import warnings
 
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
+    LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA,
     LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
@@ -289,10 +290,6 @@ def _validate_lightweight_with_case_data(
         - First element (bool): True if lightweight_mode should be disabled, False otherwise.
         - Second element (str | None): Warning message if lightweight_mode should be disabled, None otherwise.
     """
-    from ansys.fluent.core.launcher.error_warning_messages import (
-        LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA,
-    )
-
     if lightweight_mode and case_data_file_name:
         return (True, LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA)
     return (False, None)
