@@ -291,16 +291,9 @@ class StandaloneLauncher:
 
         # For lightweight_mode with case file, defer case reading to post-connection
         # to support background session orchestration. Otherwise pass via CLI.
-        # Note: case_data_file_name + lightweight_mode is not supported and is
-        # already disabled with a warning during argvals validation above.
-        if self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name"):
-            # Don't add case via CLI for lightweight mode
-            self._launch_string += _build_case_data_arguments(
-                None,  # Defer case reading for lightweight mode
-                None,  # case_data_file_name is not supported with lightweight_mode
-            )
-        else:
-            # Pass both case and data via CLI in all other cases
+        if not (
+            self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name")
+        ):
             self._launch_string += _build_case_data_arguments(
                 self.argvals.get("case_file_name"),
                 self.argvals.get("case_data_file_name"),
