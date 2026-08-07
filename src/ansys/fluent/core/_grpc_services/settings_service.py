@@ -206,11 +206,37 @@ class SettingsService(ServiceProtocol):
 
     def _extract_static_info(self, info) -> dict[str, Any]:
         ret = {}
-        ret["type"] = info.type
-        for key, value in sorted(info.attrs.items()):
-            ret[key] = self._get_state_from_value(value)
+
+        # 1. Basic Primitive Fields (Strings, Ints, Bools)
+        if info.type:
+            ret["type"] = info.type
+        if info.help:
+            ret["help"] = info.help
         if info.has_allowed_values:
-            ret["has-allowed-values"] = info.has_allowed_values
+            ret["has_allowed_values"] = info.has_allowed_values
+        if info.include_child_named_objects:
+            ret["include_child_named_objects"] = info.include_child_named_objects
+        if info.list_size:
+            ret["list_size"] = info.list_size
+
+        # user_creatable is a boolean; check directly as it exists in the schema
+        if info.user_creatable:
+            ret["user_creatable"] = info.user_creatable
+
+        if info.return_type:
+            ret["return_type"] = info.return_type
+        if info.deprecated_version:
+            ret["deprecated_version"] = info.deprecated_version
+        if info.api_exposure_level:
+            ret["api_exposure_level"] = info.api_exposure_level
+        if info.file_purpose:
+            ret["file_purpose"] = info.file_purpose
+
+        # 2. Embedded Message Types (Require HasField check)
+        if info.HasField("object_type"):
+            ret["object_type"] = self._extract_static_info(info.object_type)
+
+        # 3. Repeated SchemaMap Fields (Nested Schemas)
         if info.children:
             ret["children"] = {
                 child.name: self._extract_static_info(child.value)
@@ -221,7 +247,7 @@ class SettingsService(ServiceProtocol):
                 child.name: self._extract_static_info(child.value)
                 for child in info.commands
             }
-        if hasattr(info, "queries") and info.queries:
+        if info.queries:
             ret["queries"] = {
                 child.name: self._extract_static_info(child.value)
                 for child in info.queries
@@ -231,26 +257,24 @@ class SettingsService(ServiceProtocol):
                 child.name: self._extract_static_info(child.value)
                 for child in info.arguments
             }
-        if info.HasField("object_type"):
-            ret["object-type"] = self._extract_static_info(info.object_type)
-        if info.help:
-            ret["help"] = info.help
-        try:
-            if info.include_child_named_objects:
-                ret["include_child_named_objects"] = info.include_child_named_objects
-        except AttributeError:
-            pass
 
-        try:
-            if info.list_size:
-                ret["list_size"] = info.list_size
-        except AttributeError:
-            pass
+        # 4. Repeated StringPair Fields (Aliases)
+        if info.child_aliases:
+            ret["child_aliases"] = {x.key: x.value for x in info.child_aliases}
+        if info.command_aliases:
+            ret["command_aliases"] = {x.key: x.value for x in info.command_aliases}
+        if info.query_aliases:
+            ret["query_aliases"] = {x.key: x.value for x in info.query_aliases}
+        if info.arguments_aliases:
+            ret["arguments_aliases"] = {x.key: x.value for x in info.arguments_aliases}
 
-        try:
-            if info.user_creatable:
-                ret["user_creatable"] = info.user_creatable
-        except AttributeError:
-            ret["user_creatable"] = True
+        # 5. Optional Attributes Message
+        if info.HasField("optional_attrs"):
+            opt = info.optional_attrs
+            # allowed_values is a repeated string
+            if opt.allowed_values:
+                ret["allowed_values"] = list(opt.allowed_values)
+            if opt.has_migration_adapter:
+                ret["has_migration_adapter"] = opt.has_migration_adapter
 
         return ret

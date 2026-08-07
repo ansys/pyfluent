@@ -216,6 +216,10 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         )
         return self.get_fields(fields_request)
 
+    def reset_batched_fields_request(self) -> None:
+        """Reset the batched fields request to an empty state."""
+        self._batched_fields_request = get_fields_request()
+
     def _add_pathlines_fields_request(
         self,
         field_name: str,
