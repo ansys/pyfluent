@@ -40,6 +40,8 @@ Usage::
     >>> solver.settings.setup.models.energy.enabled()
 """
 
+from typing import Any
+
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.solver import flobject
@@ -99,3 +101,123 @@ class HttpSolver:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.exit()
         return False
+
+    # ------------------------------------------------------------------
+    # REST CRUD Operations for Named Objects
+    # ------------------------------------------------------------------
+
+    def create_named_object(
+        self, path: str, name: str, properties: dict[str, Any] | None = None
+    ) -> Any:
+        """Create a named object via REST endpoint.
+
+        This method enables direct creation of named objects (e.g., boundary
+        conditions, report definitions) via the REST API.
+
+        Parameters
+        ----------
+        path : str
+            DataModel path where the object will be created (e.g.,
+            ``"setup/boundary_conditions/velocity_inlet"``).
+        name : str
+            Name for the created object (e.g., ``"inlet_1"``).
+        properties : dict[str, Any], optional
+            Properties to set on the created object. Defaults to ``None``.
+
+        Returns
+        -------
+        Any
+            Server response containing details of the created object.
+
+        Raises
+        ------
+        FluentRestError
+            If creation fails (e.g., object already exists, invalid path).
+
+        Examples
+        --------
+        >>> solver.create_named_object(
+        ...     path="setup/boundary_conditions/velocity_inlet",
+        ...     name="inlet_1",
+        ...     properties={"momentum": {"velocity": 1.0}}
+        ... )
+        """
+        return self._rest_client.create(path, name, properties)
+
+    def delete_named_object(self, path: str, name: str) -> None:
+        """Delete a named object via REST endpoint.
+
+        Parameters
+        ----------
+        path : str
+            DataModel path containing the object (e.g.,
+            ``"setup/boundary_conditions/velocity_inlet"``).
+        name : str
+            Name of the object to delete (e.g., ``"inlet_1"``).
+
+        Raises
+        ------
+        FluentRestError
+            If deletion fails (e.g., object not found, invalid path).
+
+        Examples
+        --------
+        >>> solver.delete_named_object(
+        ...     path="setup/boundary_conditions/velocity_inlet",
+        ...     name="inlet_1"
+        ... )
+        """
+        return self._rest_client.delete(path, name)
+
+    def rename_named_object(self, path: str, old_name: str, new_name: str) -> None:
+        """Rename a named object via REST endpoint.
+
+        Parameters
+        ----------
+        path : str
+            DataModel path containing the object (e.g.,
+            ``"setup/boundary_conditions/velocity_inlet"``).
+        old_name : str
+            Current name of the object (e.g., ``"inlet_1"``).
+        new_name : str
+            New name for the object (e.g., ``"inlet_renamed"``).
+
+        Raises
+        ------
+        FluentRestError
+            If rename fails (e.g., object not found, new name already exists).
+
+        Examples
+        --------
+        >>> solver.rename_named_object(
+        ...     path="setup/boundary_conditions/velocity_inlet",
+        ...     old_name="inlet_1",
+        ...     new_name="inlet_renamed"
+        ... )
+        """
+        return self._rest_client.rename(path, new_name, old_name)
+
+    def delete_all_child_objects(self, path: str, obj_type: str) -> None:
+        """Delete all child objects of a given type via REST endpoint.
+
+        Parameters
+        ----------
+        path : str
+            Parent DataModel path.
+        obj_type : str
+            Type of child objects to delete (e.g., ``"velocity_inlet"``)
+            relative to *path*.
+
+        Raises
+        ------
+        FluentRestError
+            If deletion fails.
+
+        Examples
+        --------
+        >>> solver.delete_all_child_objects(
+        ...     path="setup/boundary_conditions",
+        ...     obj_type="velocity_inlet"
+        ... )
+        """
+        return self._rest_client.delete_all_child_objects(path, obj_type)

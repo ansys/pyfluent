@@ -215,8 +215,13 @@ class FluentRestClient:
             Name for the created object. If provided, it is merged into the
             request body. Defaults to ``""``.
         properties : dict[str, Any] | None, optional
-            Properties to set on creation. These are merged with the ``name``
-            parameter in the request body. Defaults to ``None``.
+            Properties to set on creation. Sent as nested JSON, matching the
+            server's own GET/PUT response shape (e.g.
+            ``{"momentum": {"velocity": 1.0}}``). Live-server evidence
+            confirmed the server rejects a flattened, slash-joined form
+            (``{"momentum/velocity": 1.0}``) with
+            ``HTTP 500: invalid map<K, T> key`` - it expects genuine nested
+            maps, not path-style keys. Defaults to ``None``.
 
         Returns
         -------
@@ -228,7 +233,9 @@ class FluentRestClient:
         FluentRestError
             If the request fails.
         """
-        body = dict(properties) if properties else {}
+        body = {}
+        if properties:
+            body.update(properties)
         if name:
             body["name"] = name
         return self._strategy.request("POST", f"{self._api_base}/{path}", body=body)
