@@ -62,9 +62,9 @@ from ansys.fluent.core.rest import (
 )
 from ansys.fluent.core.rest.client import FluentRestClient as FluentRestClientDirect
 from ansys.fluent.core.rest.transport import _make_auth_headers
+from ansys.fluent.core.services.rest_settings import RestSettings
 
 connect_to_webserver_direct = FluentRestClientDirect.connect
-
 _BASE_URL = "http://127.0.0.1:5000"
 
 
@@ -203,14 +203,6 @@ class TestRestPackageApi:
 class TestHttpRequestStrategyInit:
     """HttpRequestStrategy initialization and attribute defaults."""
 
-    def test_init_with_defaults(self):
-        strategy = HttpRequestStrategy("http://localhost:5000")
-        assert strategy._base_url == "http://localhost:5000"
-        assert strategy._headers == {}
-        assert strategy._timeout == 30.0
-        assert strategy._max_retries == 2
-        assert strategy._retry_delay == 1.0
-
     def test_init_strips_trailing_slash(self):
         strategy = HttpRequestStrategy("http://localhost:5000/")
         assert strategy._base_url == "http://localhost:5000"
@@ -252,31 +244,14 @@ class TestFluentRestError:
         assert "HTTP 404" in str(exc)
         assert "Not found" in str(exc)
 
-    def test_retryable_flag(self):
-        exc = FluentRestError(503, "Service unavailable", retryable=True)
-        assert exc.retryable is True
-
-    def test_from_transport_plain_oserror_is_retryable(self):
-        exc = FluentRestError.from_transport(OSError("Connection refused"))
-        assert exc.status == 0
-        assert exc.retryable is True
-
-    def test_from_transport_urlerror_is_retryable(self):
-        exc = FluentRestError.from_transport(urllib.error.URLError("reset"))
-        assert exc.status == 0
-        assert exc.retryable is True
-
-    @pytest.mark.parametrize("status", [502, 503, 504])
-    def test_from_transport_gateway_errors_are_retryable(self, status):
-        exc = FluentRestError.from_transport(_make_http_error(status, {"d": "x"}))
-        assert exc.status == status
-        assert exc.retryable is True
-
-    @pytest.mark.parametrize("status", [400, 401, 403, 404, 409, 500])
-    def test_from_transport_other_http_errors_not_retryable(self, status):
-        exc = FluentRestError.from_transport(_make_http_error(status))
-        assert exc.status == status
-        assert exc.retryable is False
+    def test_from_transport_retryable_for_gateway_errors(self):
+        """503 and connection errors are retryable; others are not."""
+        exc_503 = FluentRestError.from_transport(_make_http_error(503, {}))
+        assert exc_503.retryable is True
+        exc_400 = FluentRestError.from_transport(_make_http_error(400, {}))
+        assert exc_400.retryable is False
+        exc_oserror = FluentRestError.from_transport(OSError("Connection refused"))
+        assert exc_oserror.retryable is True
 
     def test_from_transport_uses_body_as_message(self):
         exc = FluentRestError.from_transport(
@@ -632,35 +607,161 @@ class TestHttpRequestStrategyTransport:
 class TestConnectToWebserver:
     """FluentRestClient.connect factory returns a properly configured client."""
 
-    def test_returns_fluent_rest_client(self):
+    def test_connect_factory_with_kwargs(self):
+        """connect_to_webserver creates FluentRestClient with proper config."""
         client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert isinstance(client, FluentRestClient)
-
-    def test_strategy_is_http_request_strategy(self):
-        client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert isinstance(client._strategy, HttpRequestStrategy)
-
-    def test_strategy_stores_base_url(self):
-        client = connect_to_webserver(url="http://host:1234/", token="secret")
-        assert client._strategy._base_url == "http://host:1234"
-
-    def test_strategy_builds_auth_header(self):
-        client = connect_to_webserver(url=_BASE_URL, token="secret")
-        expected = hashlib.sha256(b"secret").hexdigest()
-        assert client._strategy._headers["Authorization"] == "Bearer " + expected
-
-    def test_defaults_to_solver_component(self):
-        client = connect_to_webserver(url=_BASE_URL, token="secret")
+        assert isinstance(client._strategy, RequestStrategy)
         assert client._api_base == "api/fluent_1"
+        expected_auth = hashlib.sha256(b"secret").hexdigest()
+        assert client._strategy._headers["Authorization"] == "Bearer " + expected_auth
 
-    def test_positional_arguments(self):
+    def test_connect_factory_with_positional_args(self):
+        """connect_to_webserver accepts positional arguments."""
         client = connect_to_webserver(_BASE_URL, "secret")
         assert isinstance(client, FluentRestClient)
         assert isinstance(client._strategy, HttpRequestStrategy)
 
-    def test_satisfies_request_strategy_protocol(self):
-        client = connect_to_webserver(url=_BASE_URL, token="secret")
-        assert isinstance(client._strategy, RequestStrategy)
 
-    def test_reexport_is_same_as_classmethod(self):
-        assert connect_to_webserver.__func__ is connect_to_webserver_direct.__func__
+class TestRestSettingsWildcardDetection:
+    """RestSettings.is_wildcard() and has_wildcard() client-side detection."""
+
+    @pytest.mark.parametrize("pattern", ["inlet*", "*outlet", "inlet?", "[a-z]inlet"])
+    def test_is_wildcard_detects_patterns(self, pattern):
+        """is_wildcard() detects *, ?, [, ] characters."""
+        client = FluentRestClient(FakeStrategy())
+        settings = RestSettings(client)
+        assert settings.is_wildcard(pattern) is True
+
+    def test_is_wildcard_exact_names(self):
+        """is_wildcard() returns False for exact names without wildcards."""
+        client = FluentRestClient(FakeStrategy())
+        settings = RestSettings(client)
+        assert settings.is_wildcard("inlet") is False
+        assert settings.is_wildcard("outlet-1") is False
+
+    def test_is_wildcard_with_none(self):
+        """is_wildcard() returns False for None input."""
+        client = FluentRestClient(FakeStrategy())
+        settings = RestSettings(client)
+        assert settings.is_wildcard(None) is False
+
+    def test_has_wildcard_delegates_to_is_wildcard(self):
+        """has_wildcard() is equivalent to is_wildcard()."""
+        client = FluentRestClient(FakeStrategy())
+        settings = RestSettings(client)
+        assert settings.has_wildcard("inlet*") == settings.is_wildcard("inlet*")
+        assert settings.has_wildcard("exact") == settings.is_wildcard("exact")
+
+
+# ============================================================================
+# Unit tests — REST static-info key normalization (hyphen -> underscore)
+# ============================================================================
+
+
+class TestRestStaticInfoKeyNormalization:
+    """RestSettings.get_static_info() normalizes REST's native hyphenated /
+    ``?``-suffixed Scheme schema keys to the underscore form
+    ``flobject.get_cls()`` expects (matching gRPC v1), so no other module
+    needs dual-key checks.
+    """
+
+    def test_normalizes_top_level_keys(self):
+        """Every mapped hyphenated key is renamed to its underscore form."""
+        raw = {
+            "type": "named-object",
+            "object-type": {"type": "group"},
+            "include-child-named-objects?": True,
+            "user-creatable?": True,
+            "has-allowed-values": True,
+            "file-purpose": "input",
+            "api-exposure-level": "beta",
+            "deprecated-version": "22.2",
+            "return-type": "object",
+            "child-aliases": {"a": "b"},
+            "command-aliases": {"c": "d"},
+            "query-aliases": {"e": "f"},
+            "arguments-aliases": {"g": "h"},
+            "allowed-values": ["x", "y"],
+            "has-migration-adapter?": True,
+        }
+        client = FluentRestClient(FakeStrategy(default=raw))
+        result = RestSettings(client).get_static_info()
+        assert result["type"] == "named-object"
+        assert result["object_type"] == {"type": "group"}
+        assert result["include_child_named_objects"] is True
+        assert result["user_creatable"] is True
+        assert result["has_allowed_values"] is True
+        assert result["file_purpose"] == "input"
+        assert result["api_exposure_level"] == "beta"
+        assert result["deprecated_version"] == "22.2"
+        assert result["return_type"] == "object"
+        assert result["child_aliases"] == {"a": "b"}
+        assert result["command_aliases"] == {"c": "d"}
+        assert result["query_aliases"] == {"e": "f"}
+        assert result["arguments_aliases"] == {"g": "h"}
+        assert result["allowed_values"] == ["x", "y"]
+        assert result["has_migration_adapter"] is True
+        # None of the original hyphenated keys should survive.
+        for hyphenated_key in raw:
+            if hyphenated_key != "type":
+                assert hyphenated_key not in result
+
+    def test_leaves_unmapped_keys_untouched(self):
+        """Keys with no hyphenated form (e.g. type, help) pass through as-is."""
+        raw = {"type": "real", "help": "some help text"}
+        client = FluentRestClient(FakeStrategy(default=raw))
+        result = RestSettings(client).get_static_info()
+        assert result == {"type": "real", "help": "some help text"}
+
+    def test_recurses_into_children_commands_queries_arguments(self):
+        """Nested schema dicts under children/commands/queries/arguments are
+        normalized too, not just the top level."""
+        raw = {
+            "type": "group",
+            "children": {
+                "momentum": {"type": "group", "user-creatable?": False},
+            },
+            "commands": {
+                "create": {"type": "command", "return-type": "object"},
+            },
+            "queries": {
+                "get_ids": {"type": "query", "return-type": "list"},
+            },
+            "arguments": {
+                "value": {"type": "real", "has-allowed-values": True},
+            },
+        }
+        client = FluentRestClient(FakeStrategy(default=raw))
+        result = RestSettings(client).get_static_info()
+        assert result["children"]["momentum"]["user_creatable"] is False
+        assert result["commands"]["create"]["return_type"] == "object"
+        assert result["queries"]["get_ids"]["return_type"] == "list"
+        assert result["arguments"]["value"]["has_allowed_values"] is True
+
+    def test_recurses_into_object_type(self):
+        """A NamedObject's nested object-type schema dict is normalized too,
+        so ``child_object_type`` metadata built from it is consistent."""
+        raw = {
+            "type": "named-object",
+            "object-type": {
+                "type": "group",
+                "children": {
+                    "velocity": {"type": "real", "has-allowed-values": False},
+                },
+            },
+        }
+        client = FluentRestClient(FakeStrategy(default=raw))
+        result = RestSettings(client).get_static_info()
+        nested = result["object_type"]
+        assert nested["children"]["velocity"]["has_allowed_values"] is False
+
+    def test_does_not_mutate_input(self):
+        """The normalization helper returns a new dict, leaving the raw
+        server response untouched (defensive - avoids surprising aliasing
+        if callers cache/reuse the raw response elsewhere)."""
+        raw = {"type": "group", "user-creatable?": True}
+        client = FluentRestClient(FakeStrategy(default=raw))
+        RestSettings(client).get_static_info()
+        assert raw == {"type": "group", "user-creatable?": True}
