@@ -70,6 +70,7 @@ import shutil
 import subprocess
 import time
 from typing import Any, Generic, TypedDict
+from warnings import warn
 
 from typing_extensions import TypeVar, Unpack
 
@@ -86,8 +87,11 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
+    _build_case_data_arguments,
     _build_journal_argument,
     _get_subprocess_kwargs_for_fluent,
+    _validate_lightweight_with_case_data,
+    _validate_lightweight_with_journal,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
@@ -581,6 +585,33 @@ class SlurmLauncher:
         argvals = {name: kwargs.get(name) for name in SlurmLauncherArgs.__annotations__}
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
+
+        # case_data_file_name is not supported in meshing mode.
+        if FluentMode.is_meshing(self._argvals.get("mode")) and self._argvals.get(
+            "case_data_file_name"
+        ):
+            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
+
+        # Validate lightweight_mode + journal_file_names combination
+        # If incompatible, disable lightweight_mode and warn user
+        should_disable, warning_msg = _validate_lightweight_with_journal(
+            self._argvals.get("lightweight_mode"),
+            self._argvals.get("journal_file_names"),
+        )
+        if should_disable:
+            warn(warning_msg, UserWarning)
+            self._argvals["lightweight_mode"] = False
+
+        # Validate lightweight_mode + case_data_file_name combination
+        # If incompatible, disable lightweight_mode and warn user
+        should_disable, warning_msg = _validate_lightweight_with_case_data(
+            self._argvals.get("lightweight_mode"),
+            self._argvals.get("case_data_file_name"),
+        )
+        if should_disable:
+            warn(warning_msg, UserWarning)
+            self._argvals["lightweight_mode"] = False
+
         if config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self._argvals["ui_mode"] = UIMode(ui_mode)
@@ -614,6 +645,12 @@ class SlurmLauncher:
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         kwargs = _get_subprocess_kwargs_for_fluent(self._argvals["env"], self._argvals)
+
+        # Add case/data files via CLI
+        launch_cmd += _build_case_data_arguments(
+            self._argvals.get("case_file_name"),
+            self._argvals.get("case_data_file_name"),
+        )
         launch_cmd += _build_journal_argument(
             self._argvals["topy"], self._argvals["journal_file_names"]
         )

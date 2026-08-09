@@ -53,7 +53,10 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     ComposeConfig,
+    _build_case_data_arguments,
     _build_journal_argument,
+    _validate_lightweight_with_case_data,
+    _validate_lightweight_with_journal,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -250,11 +253,13 @@ def test_case_data_load():
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
     )
-    download_file(
+    data_name = download_file(
         "mixing_elbow.dat.h5",
         "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_data_file_name=case_name)
+    session = pyfluent.launch_fluent(
+        case_file_name=case_name, case_data_file_name=data_name
+    )
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
@@ -476,6 +481,103 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
+def test_validate_lightweight_with_journal_false_none():
+    """Test lightweight_mode=False, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(False, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_false_single():
+    """Test lightweight_mode=False, journal_file_names='a.jou'."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(False, "a.jou")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_false_multiple():
+    """Test lightweight_mode=False, journal_file_names=['a.jou', 'b.jou']."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        False, ["a.jou", "b.jou"]
+    )
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_true_none():
+    """Test lightweight_mode=True, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(True, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_true_single():
+    """Test lightweight_mode=True, journal_file_names='a.jou' (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(True, "a.jou")
+    assert should_disable is True
+    assert warning_msg is not None
+
+
+def test_validate_lightweight_with_journal_true_multiple():
+    """Test lightweight_mode=True, journal_file_names=['a.jou', 'b.jou'] (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(
+        True, ["a.jou", "b.jou"]
+    )
+    assert should_disable is True
+    assert warning_msg is not None
+
+
+def test_validate_lightweight_with_journal_none_none():
+    """Test lightweight_mode=None, journal_file_names=None."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(None, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_journal_none_single():
+    """Test lightweight_mode=None, journal_file_names='a.jou'."""
+    should_disable, warning_msg = _validate_lightweight_with_journal(None, "a.jou")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_build_case_data_arguments_none_none():
+    """Test with case_file_name=None, case_data_file_name=None."""
+    assert _build_case_data_arguments(None, None) == ""
+
+
+def test_build_case_data_arguments_case_only():
+    """Test with case_file_name='case.cas', case_data_file_name=None."""
+    assert _build_case_data_arguments("case.cas", None) == ' -case "case.cas"'
+
+
+def test_build_case_data_arguments_data_only():
+    """Test that ``case_data_file_name`` without ``case_file_name`` raises."""
+    with pytest.raises(InvalidArgument):
+        _build_case_data_arguments(None, "data.dat")
+
+
+def test_build_case_data_arguments_both_strings():
+    """Test with case_file_name='case.cas', case_data_file_name='data.dat'."""
+    assert (
+        _build_case_data_arguments("case.cas", "data.dat")
+        == ' -case "case.cas" -data "data.dat"'
+    )
+
+
+def test_build_case_data_arguments_case_path():
+    """Test with Path object for case_file_name."""
+    assert _build_case_data_arguments(Path("case.cas"), None) == ' -case "case.cas"'
+
+
+def test_build_case_data_arguments_both_paths():
+    """Test with Path objects for both arguments."""
+    assert (
+        _build_case_data_arguments(Path("case.cas"), Path("data.dat"))
+        == ' -case "case.cas" -data "data.dat"'
+    )
+
+
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
@@ -681,6 +783,86 @@ def test_respect_driver_is_not_null_in_linux():
         graphics_driver=FluentLinuxGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
     )
     assert driver == FluentLinuxGraphicsDriver.OPENGL
+
+
+# Tests for _validate_lightweight_with_case_data (mirror of the journal tests)
+def test_validate_lightweight_with_case_data_false_none():
+    """Test lightweight_mode=False, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(False, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_false_single():
+    """Test lightweight_mode=False, case_data_file_name='a.dat'."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(False, "a.dat")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_true_none():
+    """Test lightweight_mode=True, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(True, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_true_single():
+    """Test lightweight_mode=True, case_data_file_name='a.dat' (conflict detected)."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(True, "a.dat")
+    assert should_disable is True
+    assert warning_msg is not None
+    assert "lightweight_mode" in warning_msg.lower()
+
+
+def test_validate_lightweight_with_case_data_none_none():
+    """Test lightweight_mode=None, case_data_file_name=None."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(None, None)
+    assert should_disable is False
+    assert warning_msg is None
+
+
+def test_validate_lightweight_with_case_data_none_single():
+    """Test lightweight_mode=None, case_data_file_name='a.dat'."""
+    should_disable, warning_msg = _validate_lightweight_with_case_data(None, "a.dat")
+    assert should_disable is False
+    assert warning_msg is None
+
+
+# Behavioural wiring tests: verify launcher argvals reflect the validators.
+def test_standalone_lightweight_with_case_data_downgrades_and_emits_cli(monkeypatch):
+    """lightweight_mode + case_data_file_name should warn, disable lightweight, and
+    still emit ``-case "<case>" -data "<data>"`` on the CLI."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    case = r"C:\tmp\mixing_elbow.cas.h5"
+    data = r"C:\tmp\mixing_elbow.dat.h5"
+    with pytest.warns(UserWarning, match="case_data_file_name"):
+        launch_string, _ = pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            case_file_name=case,
+            case_data_file_name=data,
+            lightweight_mode=True,
+        )
+    assert f'-case "{case}"' in launch_string
+    assert f'-data "{data}"' in launch_string
+
+
+def test_standalone_meshing_with_case_data_raises(monkeypatch):
+    """``case_data_file_name`` is not allowed in meshing mode."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    with pytest.raises(InvalidArgument, match="meshing"):
+        pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            mode="meshing",
+            case_file_name=r"C:\tmp\mixing_elbow.cas.h5",
+            case_data_file_name=r"C:\tmp\mixing_elbow.dat.h5",
+        )
 
 
 @pytest.mark.standalone
