@@ -22,6 +22,7 @@
 # SOFTWARE.
 
 from collections import UserList
+import os
 import warnings
 
 from conftest import SKIP_INVESTIGATING
@@ -54,6 +55,50 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 def _is_rest(session_fixture_name: str) -> bool:
     """Check if session fixture is REST-based (contains 'rest' in name)."""
     return "rest" in session_fixture_name
+
+
+# This run targets a live REST server when both env vars are configured (same
+# check used by conftest.py's new_solver_session_rest fixture). Used below to
+# decide, per test, which transport this run is actually exercising.
+_REST_ACTIVE = bool(os.environ.get("FLUENT_REST_URL")) and bool(
+    os.environ.get("FLUENT_REST_TOKEN")
+)
+
+
+@pytest.fixture(autouse=True)
+def _skip_wrong_transport(request):
+    """Skip a test when it doesn't match the transport active for this run.
+
+    - If FLUENT_REST_URL/FLUENT_REST_TOKEN are set, this run targets a live
+      REST server, so gRPC-only tests/params (which assume a local/launchable
+      Fluent install) are skipped instead of erroring out trying to launch one.
+    - Otherwise (default), this run targets local/launched Fluent via gRPC, so
+      REST-only params are skipped (this mirrors, as a fast pre-launch check,
+      what new_solver_session_rest already enforces via its own env-var check).
+
+    Autouse fixtures run before explicitly-requested same-scope fixtures, so
+    this executes before new_solver_session/new_solver_session_rest and
+    prevents a wasted Fluent launch or REST connection attempt.
+    """
+    callspec = getattr(request.node, "callspec", None)
+    session_fixture_name = (
+        callspec.params.get("session_fixture_name") if callspec else None
+    )
+    if session_fixture_name is not None:
+        is_rest_test = _is_rest(session_fixture_name)
+    else:
+        is_rest_test = any("rest" in name for name in request.fixturenames)
+
+    if is_rest_test and not _REST_ACTIVE:
+        pytest.skip(
+            "REST server not configured for this run "
+            "(FLUENT_REST_URL/FLUENT_REST_TOKEN not set); skipping REST test."
+        )
+    if not is_rest_test and _REST_ACTIVE:
+        pytest.skip(
+            "REST-only run active (FLUENT_REST_URL/FLUENT_REST_TOKEN set); "
+            "skipping gRPC-only test."
+        )
 
 
 def _contains_key_or_name(obj, key: str) -> bool:

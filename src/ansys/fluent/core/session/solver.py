@@ -260,7 +260,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def settings(self) -> "settings_root.root":
-        """Settings root handle (gRPC transport)."""
+        """Settings root handle."""
         if self._settings is None:
             #: Root settings object.
             self._settings = flobject.get_root(
