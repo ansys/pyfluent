@@ -539,8 +539,21 @@ def test_list_object():
         {"il_1": None, "bl_1": None},
         {"il_1": [1, 2], "bl_1": None},
     ]
+
+    assert r.l_1[0:1][0].il_1() is None
+    assert r.l_1[1:2][0].il_1() == [1, 2]
+
     r.l_1 = [{"il_1": [3], "bl_1": [True, False]}]
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
+
+    r.l_1 = [
+        {"il_1": [1], "bl_1": None},
+        {"il_1": None, "bl_1": None},
+        {"il_1": [2], "bl_1": None},
+        {"il_1": None, "bl_1": None},
+        {"il_1": [3], "bl_1": None},
+    ]
+    assert [inner.il_1() for inner in r.l_1[::2]] == [[1], [2], [3]]
 
 
 def test_list_object_set_state_with_quantity_values():
