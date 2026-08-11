@@ -9,6 +9,211 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.41.0 <https://github.com/ansys/pyfluent/releases/tag/v0.41.0>`_ - August 06, 2026
+====================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Connection over rest
+          - `#5015 <https://github.com/ansys/pyfluent/pull/5015>`_
+
+        * - Rest layered
+          - `#5220 <https://github.com/ansys/pyfluent/pull/5220>`_
+
+        * - Add features to ApplicationRuntime.
+          - `#5243 <https://github.com/ansys/pyfluent/pull/5243>`_
+
+        * - Expr builder
+          - `#5252 <https://github.com/ansys/pyfluent/pull/5252>`_
+
+        * - Strongly typed settings schema.
+          - `#5287 <https://github.com/ansys/pyfluent/pull/5287>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Boolean to Allowed Strings [skip tests]
+          - `#5213 <https://github.com/ansys/pyfluent/pull/5213>`_
+
+        * - Fluent's idle timeout setup.
+          - `#5254 <https://github.com/ansys/pyfluent/pull/5254>`_
+
+        * - Typing of some application runtime methods.
+          - `#5255 <https://github.com/ansys/pyfluent/pull/5255>`_
+
+        * - Settings nested alias test.
+          - `#5258 <https://github.com/ansys/pyfluent/pull/5258>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Updated the session file [skip tests]
+          - `#5005 <https://github.com/ansys/pyfluent/pull/5005>`_
+
+        * - Docstrings fix 4920
+          - `#5230 <https://github.com/ansys/pyfluent/pull/5230>`_
+
+        * - Example axial fan performance curve using fluent parametric [skip tests]
+          - `#5238 <https://github.com/ansys/pyfluent/pull/5238>`_
+
+        * - Update script formatting [skip tests]
+          - `#5273 <https://github.com/ansys/pyfluent/pull/5273>`_
+
+        * - Minor Update axial_fan_performance_curve_workflow.py [skip tests]
+          - `#5275 <https://github.com/ansys/pyfluent/pull/5275>`_
+
+        * - Minor Updates - axial_fan_performance_curve_workflow.py [skip tests]
+          - `#5283 <https://github.com/ansys/pyfluent/pull/5283>`_
+
+        * - Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#5285 <https://github.com/ansys/pyfluent/pull/5285>`_
+
+        * - Update docs w.r.t. grpc refactorings [skip tests]
+          - `#5288 <https://github.com/ansys/pyfluent/pull/5288>`_
+
+        * - Connect to fluent user guide [skip tests]
+          - `#5290 <https://github.com/ansys/pyfluent/pull/5290>`_
+
+        * - Update thumbnail and fix typos in Axial Fan Performance Curve Workflow [skip tests]
+          - `#5292 <https://github.com/ansys/pyfluent/pull/5292>`_
+
+        * - Update .vale.ini configuration to fix doc-style
+          - `#5299 <https://github.com/ansys/pyfluent/pull/5299>`_
+
+        * - Update api reference [skip tests]
+          - `#5303 <https://github.com/ansys/pyfluent/pull/5303>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump the dependencies group with 4 updates
+          - `#5224 <https://github.com/ansys/pyfluent/pull/5224>`_
+
+        * - Bump the actions group with 7 updates
+          - `#5225 <https://github.com/ansys/pyfluent/pull/5225>`_
+
+        * - Bump version to v0.41.dev1
+          - `#5239 <https://github.com/ansys/pyfluent/pull/5239>`_
+
+        * - Bump the dependencies group with 3 updates
+          - `#5301 <https://github.com/ansys/pyfluent/pull/5301>`_
+
+        * - Bump the actions group with 18 updates
+          - `#5302 <https://github.com/ansys/pyfluent/pull/5302>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Restructure some grpc services.
+          - `#5192 <https://github.com/ansys/pyfluent/pull/5192>`_
+
+        * - Update CHANGELOG for v0.40.0
+          - `#5216 <https://github.com/ansys/pyfluent/pull/5216>`_
+
+        * - Refactor Field Data.
+          - `#5222 <https://github.com/ansys/pyfluent/pull/5222>`_
+
+        * - Update CHANGELOG for v0.40.1
+          - `#5223 <https://github.com/ansys/pyfluent/pull/5223>`_
+
+        * - Restructure object model.
+          - `#5232 <https://github.com/ansys/pyfluent/pull/5232>`_
+
+        * - Pin test dependencies relevant to docs and tests.
+          - `#5235 <https://github.com/ansys/pyfluent/pull/5235>`_
+
+        * - Remove unused code and data
+          - `#5237 <https://github.com/ansys/pyfluent/pull/5237>`_
+
+        * - Update license header via upgrading pre-commit hook.
+          - `#5240 <https://github.com/ansys/pyfluent/pull/5240>`_
+
+        * - Update omw to 2.0 from 1.4 for nltk.
+          - `#5241 <https://github.com/ansys/pyfluent/pull/5241>`_
+
+        * - Remove temporary upper limit on grpc for PyFluent.
+          - `#5244 <https://github.com/ansys/pyfluent/pull/5244>`_
+
+        * - Update CHANGELOG for v0.40.2
+          - `#5259 <https://github.com/ansys/pyfluent/pull/5259>`_
+
+        * - Restructure some more grpc services.
+          - `#5260 <https://github.com/ansys/pyfluent/pull/5260>`_
+
+        * - Refactor Batch Ops service.
+          - `#5262 <https://github.com/ansys/pyfluent/pull/5262>`_
+
+        * - Update monitors service.
+          - `#5264 <https://github.com/ansys/pyfluent/pull/5264>`_
+
+        * - Update solution variable
+          - `#5265 <https://github.com/ansys/pyfluent/pull/5265>`_
+
+        * - Update CHANGELOG for v0.40.3
+          - `#5295 <https://github.com/ansys/pyfluent/pull/5295>`_
+
+        * - Update missing or outdated files
+          - `#5300 <https://github.com/ansys/pyfluent/pull/5300>`_
+
+        * - Upgrade vulnerability check version.
+          - `#5304 <https://github.com/ansys/pyfluent/pull/5304>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Miscellaneous copilot suggestions on bulk type checking
+          - `#5214 <https://github.com/ansys/pyfluent/pull/5214>`_
+
+        * - Avoid deleting server-info file
+          - `#5242 <https://github.com/ansys/pyfluent/pull/5242>`_
+
+        * - Timeout loop/ test_exit_fluent
+          - `#5261 <https://github.com/ansys/pyfluent/pull/5261>`_
+
+        * - Re-design streaming services.
+          - `#5276 <https://github.com/ansys/pyfluent/pull/5276>`_
+
+        * - Clean up grpc services layer
+          - `#5281 <https://github.com/ansys/pyfluent/pull/5281>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Catch errors from transcript within the PyConsole test
+          - `#5270 <https://github.com/ansys/pyfluent/pull/5270>`_
+
+
 `0.40.3 <https://github.com/ansys/pyfluent/releases/tag/v0.40.3>`_ - July 31, 2026
 ==================================================================================
 

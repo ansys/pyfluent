@@ -305,7 +305,9 @@ class FieldDataBase(AbstractFieldData):
 
     def get_batched_fields(self) -> dict[Any, dict[str, npt.NDArray[Any]]]:
         """Get the batched fields from the service."""
-        return self._service.get_fields(self._service._batched_fields_request)
+        result = self._service.get_fields(self._service._batched_fields_request)
+        self._service.reset_batched_fields_request()
+        return result
 
 
 class FieldDataV261(FieldDataBase):
