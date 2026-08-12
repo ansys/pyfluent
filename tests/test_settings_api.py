@@ -1031,11 +1031,11 @@ def test_named_object_create_via_setitem(session_fixture_name, request):
         solver.create_named_object(
             "solution/report_definitions/surface",
             "test_surface",
-            properties={"surface_names": ["inlet"]},
+            properties={"surface_names": ["cold-inlet"]},
         )
     else:
         solver.settings.solution.report_definitions.surface["test_surface"] = {
-            "surface_names": ["inlet"]
+            "surface_names": ["cold-inlet"]
         }
     # Verify it exists
     assert (
@@ -1067,11 +1067,11 @@ def test_named_object_delete_via_delitem(session_fixture_name, request):
         solver.create_named_object(
             "solution/report_definitions/surface",
             "deleteme",
-            properties={"surface_names": ["inlet"]},
+            properties={"surface_names": ["cold-inlet"]},
         )
     else:
         solver.settings.solution.report_definitions.surface["deleteme"] = {
-            "surface_names": ["inlet"]
+            "surface_names": ["cold-inlet"]
         }
     assert (
         "deleteme"
@@ -1141,8 +1141,8 @@ def test_named_object_rename_command(session_fixture_name, request):
         )
     else:
         # gRPC: call rename method on the object
-        solver.settings.setup.boundary_conditions.velocity_inlet.rename_object(
-            from_="cold-inlet", to="renamed_inlet"
+        solver.settings.setup.boundary_conditions.velocity_inlet.rename(
+            new="renamed_inlet", old="cold-inlet"
         )
     obj_names = (
         solver.settings.setup.boundary_conditions.velocity_inlet.get_object_names()
