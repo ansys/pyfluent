@@ -1628,6 +1628,25 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
         if not ret:
+            if not hasattr(self.__class__, "child_object_type"):
+                # child_object_type is only set (in get_cls()) when the schema
+                # dict for this class contains an "object_type" key. If it's
+                # missing, the settings schema returned by flproxy.get_static_info()
+                # does not describe this NamedObject's children at all - this is
+                # a schema gap upstream (server response or schema-parsing layer),
+                # not something safely guessable here. Silently substituting the
+                # wrong class would produce objects missing all their real
+                # children (e.g. "momentum", "range"), causing confusing
+                # AttributeErrors far away from the real cause - so fail loudly
+                # and specifically instead.
+                raise RuntimeError(
+                    f"Cannot create child object {cname!r} at path "
+                    f"{getattr(self, 'path', '<unknown>')!r}: the schema class "
+                    f"{self.__class__.__name__!r} has no 'child_object_type' "
+                    "metadata. This means flproxy.get_static_info() did not "
+                    "include an 'object_type' entry for this NamedObject - "
+                    "check the raw schema response for this path."
+                )
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = _create_child(cls, cname, self)
         ret._setattr("_python_name", f'["{cname}"]')
@@ -2661,6 +2680,20 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 "child-object-type", object_type, cls, version=version
             )
             cls.child_object_type.get_name = lambda self: self._name
+        elif obj_type == "named-object":
+            # Diagnostic: this NamedObject's schema entry has no
+            # "object_type", so cls.child_object_type will never be set and
+            # any attempt to create/access a child of this collection will
+            # fail loudly later (see NamedObject._create_child_object).
+            # Logged here - at the exact point the schema was parsed - so the
+            # raw keys the server actually sent for this class are visible,
+            # rather than guessing at the cause far away from this call.
+            settings_logger.debug(
+                "get_cls(%r): named-object schema has no 'object_type'; "
+                "raw info keys=%s",
+                name,
+                sorted(info.keys()),
+            )
 
         child_aliases = info.get("child_aliases", {})
         command_aliases = info.get("command_aliases", {})
