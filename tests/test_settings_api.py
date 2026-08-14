@@ -195,8 +195,8 @@ class GrpcSettingsAdapter(SettingsTestAdapter):
         }
 
     def search_in_attrs_result(self, result, key: str) -> bool:
-        # gRPC: direct dict key search
-        return key in result.get("group_children", {})
+        # gRPC: search recursively through nested attrs/group_children structure
+        return _contains_key_or_name(result, key)
 
 
 class RestSettingsAdapter(SettingsTestAdapter):
