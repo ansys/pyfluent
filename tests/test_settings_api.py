@@ -101,6 +101,166 @@ def _skip_wrong_transport(request):
         )
 
 
+# ============================================================================
+# Transport adapter infrastructure (abstract factory pattern)
+# ============================================================================
+from abc import ABC, abstractmethod
+
+
+class SettingsTestAdapter(ABC):
+    """Abstract adapter for transport-specific settings API operations.
+
+    Isolates gRPC vs REST differences so test bodies remain uniform,
+    delegating to concrete adapters for transport-specific details.
+    """
+
+    def __init__(self, solver):
+        self.solver = solver
+
+    @abstractmethod
+    def create_named_object(self, path: str, name: str, properties=None) -> None:
+        """Create a named object (e.g., iso_clip, surface)."""
+        pass
+
+    @abstractmethod
+    def delete_named_object(self, path: str, name: str) -> None:
+        """Delete a named object."""
+        pass
+
+    @abstractmethod
+    def rename_named_object(self, collection_path: str, old: str, new: str) -> None:
+        """Rename a named object."""
+        pass
+
+    @abstractmethod
+    def create_contour(self, name: str):
+        """Create a contour object; returns the contour object."""
+        pass
+
+    @abstractmethod
+    def get_range_config_for_contour(self, base_dict: dict) -> dict:
+        """Return transport-specific contour range config dict."""
+        pass
+
+    @abstractmethod
+    def search_in_attrs_result(self, result, key: str) -> bool:
+        """Check if key is found in get_attrs result (transport-specific shape)."""
+        pass
+
+
+class GrpcSettingsAdapter(SettingsTestAdapter):
+    """Adapter for gRPC transport; uses settings API directly."""
+
+    def create_named_object(self, path: str, name: str, properties=None) -> None:
+        # For gRPC, navigate to the collection and direct assignment
+        # path is like "results/surfaces/iso_clip" -> solver.settings.results.surfaces.iso_clip
+        parts = path.split("/")
+        obj = self.solver.settings
+        for part in parts:
+            obj = getattr(obj, part)
+        obj[name] = properties if properties else {}
+
+    def delete_named_object(self, path: str, name: str) -> None:
+        # Navigate to collection and use del
+        parts = path.split("/")
+        obj = self.solver.settings
+        for part in parts:
+            obj = getattr(obj, part)
+        del obj[name]
+
+    def rename_named_object(self, collection_path: str, old: str, new: str) -> None:
+        # Navigate to collection and call .rename()
+        parts = collection_path.split("/")
+        obj = self.solver.settings
+        for part in parts:
+            obj = getattr(obj, part)
+        obj.rename(new=new, old=old)
+
+    def create_contour(self, name: str):
+        # gRPC: use .create() method on contour collection
+        return self.solver.settings.results.graphics.contour.create(name)
+
+    def get_range_config_for_contour(self, base_dict: dict) -> dict:
+        # gRPC uses "range_option" (singular) with nested structure
+        return {
+            **base_dict,
+            "range_option": {
+                "option": "auto-range-off",
+                "auto_range_off": {
+                    "maximum": 400.0,
+                    "minimum": 300,
+                    "clip_to_range": False,
+                },
+            },
+        }
+
+    def search_in_attrs_result(self, result, key: str) -> bool:
+        # gRPC: direct dict key search
+        return key in result.get("group_children", {})
+
+
+class RestSettingsAdapter(SettingsTestAdapter):
+    """Adapter for REST transport; uses REST client methods."""
+
+    def create_named_object(self, path: str, name: str, properties=None) -> None:
+        # REST: use solver.create_named_object()
+        self.solver.create_named_object(path, name, properties=properties)
+
+    def delete_named_object(self, path: str, name: str) -> None:
+        # REST: use solver.delete_named_object()
+        self.solver.delete_named_object(path, name)
+
+    def rename_named_object(self, collection_path: str, old: str, new: str) -> None:
+        # REST: use solver.rename_named_object()
+        self.solver.rename_named_object(collection_path, old, new)
+
+    def create_contour(self, name: str):
+        # REST: create via endpoint, then retrieve from settings
+        self.solver.create_named_object("results/graphics/contour", name)
+        return self.solver.settings.results.graphics.contour[name]
+
+    def get_range_config_for_contour(self, base_dict: dict) -> dict:
+        # REST uses "range_options" (plural) with flat structure
+        return {
+            **base_dict,
+            "range_options": {
+                "auto_range": False,
+                "maximum": 400.0,
+                "minimum": 300,
+                "clip_to_range": False,
+            },
+        }
+
+    def search_in_attrs_result(self, result, key: str) -> bool:
+        # REST: use recursive _contains_key_or_name() search
+        return _contains_key_or_name(result, key)
+
+
+class SettingsTestAdapterFactory:
+    """Factory to create the appropriate transport adapter."""
+
+    @staticmethod
+    def create(session_fixture_name: str, solver) -> SettingsTestAdapter:
+        """Create adapter based on transport type.
+
+        Parameters
+        ----------
+        session_fixture_name : str
+            Parametrized fixture name (e.g., "new_solver_session" or "new_solver_session_rest")
+        solver : Solver
+            The solver session instance.
+
+        Returns
+        -------
+        SettingsTestAdapter
+            Concrete adapter for the transport used in this test.
+        """
+        if _is_rest(session_fixture_name):
+            return RestSettingsAdapter(solver)
+        else:
+            return GrpcSettingsAdapter(solver)
+
+
 def _contains_key_or_name(obj, key: str) -> bool:
     """Recursively search dicts/lists for a matching dict key or ``"name"`` entry.
 
@@ -469,13 +629,10 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
 def test_deprecated_settings_with_settings_api_aliases(session_fixture_name, request):
     """Test deprecated settings API aliases."""
     solver = request.getfixturevalue(session_fixture_name)
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
 
-    # Create iso_clip object (REST needs explicit create_named_object call)
-    if _is_rest(session_fixture_name):
-        solver.create_named_object("results/surfaces/iso_clip", "clip-1")
-    else:
-        # gRPC: direct assignment creates object
-        solver.settings.results.surfaces.iso_clip["clip-1"] = {}
+    # Create iso_clip object
+    adapter.create_named_object("results/surfaces/iso_clip", "clip-1")
 
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
@@ -491,67 +648,30 @@ def test_deprecated_settings_with_settings_api_aliases(session_fixture_name, req
     }
     solver.settings.results.graphics.contour["temperature"] = {}
 
-    # gRPC uses "range_option" (singular) alias; REST uses "range_options" (plural)
-    if _is_rest(session_fixture_name):
-        range_config = {
-            "field": "temperature",
-            "surfaces_list": "wall*",
-            "color_map": {
-                "visible": True,
-                "size": 100,
-                "color": "field-velocity",
-                "log_scale": False,
-                "format": "%0.1f",
-                "user_skip": 9,
-                "show_all": True,
-                "position": 1,
-                "font_name": "Helvetica",
-                "font_automatic": True,
-                "font_size": 0.032,
-                "length": 0.54,
-                "width": 6,
-                "bground_transparent": True,
-                "bground_color": "#CCD3E2",
-                "title_elements": "Variable and Object Name",
-            },
-            "range_options": {
-                "auto_range": False,
-                "maximum": 400.0,
-                "minimum": 300,
-                "clip_to_range": False,
-            },
-        }
-    else:
-        range_config = {
-            "field": "temperature",
-            "surfaces_list": "wall*",
-            "color_map": {
-                "visible": True,
-                "size": 100,
-                "color": "field-velocity",
-                "log_scale": False,
-                "format": "%0.1f",
-                "user_skip": 9,
-                "show_all": True,
-                "position": 1,
-                "font_name": "Helvetica",
-                "font_automatic": True,
-                "font_size": 0.032,
-                "length": 0.54,
-                "width": 6,
-                "bground_transparent": True,
-                "bground_color": "#CCD3E2",
-                "title_elements": "Variable and Object Name",
-            },
-            "range_option": {
-                "option": "auto-range-off",
-                "auto_range_off": {
-                    "maximum": 400.0,
-                    "minimum": 300,
-                    "clip_to_range": False,
-                },
-            },
-        }
+    # Build range config using adapter (encapsulates transport-specific shape)
+    base_config = {
+        "field": "temperature",
+        "surfaces_list": "wall*",
+        "color_map": {
+            "visible": True,
+            "size": 100,
+            "color": "field-velocity",
+            "log_scale": False,
+            "format": "%0.1f",
+            "user_skip": 9,
+            "show_all": True,
+            "position": 1,
+            "font_name": "Helvetica",
+            "font_automatic": True,
+            "font_size": 0.032,
+            "length": 0.54,
+            "width": 6,
+            "bground_transparent": True,
+            "bground_color": "#CCD3E2",
+            "title_elements": "Variable and Object Name",
+        },
+    }
+    range_config = adapter.get_range_config_for_contour(base_config)
 
     solver.settings.results.graphics.contour["temperature"] = range_config
     assert solver.settings.results.graphics.contour["temperature"].range_options() == {
@@ -583,21 +703,15 @@ def test_deprecated_settings_with_settings_api_aliases(session_fixture_name, req
 def test_command_return_type(session_fixture_name, request):
     """Test command return types."""
     solver = request.getfixturevalue(session_fixture_name)
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     assert solver.file.read_case_data(file_name=case_path) is None
-    if _is_rest(session_fixture_name):
-        # REST endpoint for object creation
-        solver.create_named_object(
-            "solution/report_definitions/surface",
-            "surface-1",
-            properties={"surface_names": ["cold-inlet"]},
-        )
-    else:
-        # gRPC direct assignment
-        solver.solution.report_definitions.surface["surface-1"] = dict(
-            surface_names=["cold-inlet"]
-        )
+    adapter.create_named_object(
+        "solution/report_definitions/surface",
+        "surface-1",
+        properties={"surface_names": ["cold-inlet"]},
+    )
     ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
     assert ret is not None
 
@@ -1026,17 +1140,13 @@ def test_named_object_commands(mixing_elbow_settings_session):
 def test_named_object_create_via_setitem(session_fixture_name, request):
     """Test creating a named object via direct assignment or REST endpoint."""
     solver = request.getfixturevalue(session_fixture_name)
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
     # Create a new surface in report_definitions
-    if _is_rest(session_fixture_name):
-        solver.create_named_object(
-            "solution/report_definitions/surface",
-            "test_surface",
-            properties={"surface_names": ["cold-inlet"]},
-        )
-    else:
-        solver.settings.solution.report_definitions.surface["test_surface"] = {
-            "surface_names": ["cold-inlet"]
-        }
+    adapter.create_named_object(
+        "solution/report_definitions/surface",
+        "test_surface",
+        properties={"surface_names": ["cold-inlet"]},
+    )
     # Verify it exists
     assert (
         "test_surface"
@@ -1062,26 +1172,19 @@ def test_named_object_create_via_setitem(session_fixture_name, request):
 def test_named_object_delete_via_delitem(session_fixture_name, request):
     """Test deleting a named object via direct deletion or REST endpoint."""
     solver = request.getfixturevalue(session_fixture_name)
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
     # Create via endpoint then delete
-    if _is_rest(session_fixture_name):
-        solver.create_named_object(
-            "solution/report_definitions/surface",
-            "deleteme",
-            properties={"surface_names": ["cold-inlet"]},
-        )
-    else:
-        solver.settings.solution.report_definitions.surface["deleteme"] = {
-            "surface_names": ["cold-inlet"]
-        }
+    adapter.create_named_object(
+        "solution/report_definitions/surface",
+        "deleteme",
+        properties={"surface_names": ["cold-inlet"]},
+    )
     assert (
         "deleteme"
         in solver.settings.solution.report_definitions.surface.get_object_names()
     )
-    # Delete via endpoint or direct del
-    if _is_rest(session_fixture_name):
-        solver.delete_named_object("solution/report_definitions/surface", "deleteme")
-    else:
-        del solver.settings.solution.report_definitions.surface["deleteme"]
+    # Delete via adapter
+    adapter.delete_named_object("solution/report_definitions/surface", "deleteme")
     # Verify it's gone
     assert (
         "deleteme"
@@ -1135,15 +1238,10 @@ def test_named_object_rename_command(session_fixture_name, request):
     Uses ``cold-inlet`` (an existing boundary condition).
     """
     solver = request.getfixturevalue(session_fixture_name)
-    if _is_rest(session_fixture_name):
-        solver.rename_named_object(
-            "setup/boundary_conditions/velocity_inlet", "cold-inlet", "renamed_inlet"
-        )
-    else:
-        # gRPC: call rename method on the object
-        solver.settings.setup.boundary_conditions.velocity_inlet.rename(
-            new="renamed_inlet", old="cold-inlet"
-        )
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
+    adapter.rename_named_object(
+        "setup/boundary_conditions/velocity_inlet", "cold-inlet", "renamed_inlet"
+    )
     obj_names = (
         solver.settings.setup.boundary_conditions.velocity_inlet.get_object_names()
     )
@@ -1167,18 +1265,14 @@ def test_named_object_make_a_copy_command(session_fixture_name, request):
     Uses ``report_definitions.surface`` (a virtual, user-creatable collection).
     """
     solver = request.getfixturevalue(session_fixture_name)
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
     # Create a source object to copy
-    if _is_rest(session_fixture_name):
-        solver.create_named_object(
-            "solution/report_definitions/surface",
-            "surface-1",
-            properties={"surface_names": ["cold-inlet"]},
-        )
-    else:
-        solver.settings.solution.report_definitions.surface["surface-1"] = {
-            "surface_names": ["cold-inlet"]
-        }
-    # Make a copy via command
+    adapter.create_named_object(
+        "solution/report_definitions/surface",
+        "surface-1",
+        properties={"surface_names": ["cold-inlet"]},
+    )
+    # Make a copy via command (same for both transports)
     solver.settings.solution.report_definitions.surface.make_a_copy(
         from_="surface-1", to="copy_of_surface_1"
     )
@@ -1242,12 +1336,9 @@ def test_set_state_via_call(mixing_elbow_settings_session):
 def test_read_only_command_execution(session_fixture_name, request):
     """Test read-only command execution."""
     solver = request.getfixturevalue(session_fixture_name)
-    # gRPC: create via .create(), REST: create via REST endpoint then retrieve
-    if _is_rest(session_fixture_name):
-        solver.create_named_object("results/graphics/contour", "test_contour")
-        contour = solver.settings.results.graphics.contour["test_contour"]
-    else:
-        contour = solver.settings.results.graphics.contour.create()
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
+    # Create contour via adapter (transport-agnostic)
+    contour = adapter.create_contour("test_contour")
 
     assert contour.display.is_active() is False
     with pytest.raises(InactiveObjectError):
@@ -1301,6 +1392,7 @@ def test_copy_accepts_sequence_types(session_fixture_name, request):
 def test_action_behavior(session_fixture_name, request):
     """Test action behavior (commands with parameters)."""
     solver = request.getfixturevalue(session_fixture_name)
+    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
     with pytest.raises(AttributeError, match="command/query object"):
         solver.settings.solution.run_calculation.iterate.get_state()
     assert isinstance(
@@ -1311,10 +1403,7 @@ def test_action_behavior(session_fixture_name, request):
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True
     )
-    # gRPC response has group_children; REST response shape is different
-    if _is_rest(session_fixture_name):
-        assert _contains_key_or_name(
-            result, "active?"
-        ), f"'active?' not found in: {result!r}"
-    else:
-        assert "iter-count" in result["group_children"]
+    # Use adapter for transport-specific result search
+    assert adapter.search_in_attrs_result(
+        result, "active?"
+    ), f"'active?' not found in: {result!r}"
