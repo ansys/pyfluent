@@ -49,14 +49,10 @@ _REST_STATIC_INFO_CONTAINER_KEYS = ("children", "commands", "queries", "argument
 
 
 def _normalize_static_info_keys(info: dict[str, Any]) -> dict[str, Any]:
-    """Recursively translate REST's hyphenated schema keys to underscore form.
+    """Recursively rename REST's hyphenated schema keys to underscore form.
 
-    Returns a new dict equivalent to *info* but with every key found in
-    :data:`_REST_STATIC_INFO_KEY_MAP` renamed to its underscore form, applied
-    recursively through ``children``/``commands``/``queries``/``arguments``
-    (each a mapping of name -> nested schema dict) and ``object_type`` (a
-    single nested schema dict). Keys not present in the map (e.g. ``type``,
-    ``help``) are left untouched. Does not mutate *info*.
+    Applied through ``children``/``commands``/``queries``/``arguments`` and
+    ``object_type``. Unmapped keys are left untouched. Does not mutate *info*.
     """
     if not isinstance(info, dict):
         return info
@@ -80,29 +76,11 @@ def _normalize_static_info_keys(info: dict[str, Any]) -> dict[str, Any]:
 def _apply_schema_corrections(
     info: dict[str, Any], name: str | None = None
 ) -> dict[str, Any]:
-    """Apply client-side corrections to REST schema to handle server gaps.
+    """Patch known gaps in the server's static-info schema (normalized keys).
 
-    Some fields/aliases are missing from the server's static-info schema
-    even though they appear in live object state and wire responses. This
-    function patches the schema to include these known missing aliases.
-
-    Parameters
-    ----------
-    info : dict[str, Any]
-        Normalized schema dictionary (keys already converted to underscore
-        form).
-    name : str | None, optional
-        The object's own name, e.g. ``"contour"``. This is only available
-        from the parent's ``children`` mapping key - it is NOT the same as
-        the ``type`` field (which is a structural type like ``"group"`` or
-        ``"named-object"``, shared by many unrelated objects). Threaded
-        through recursion so the ``missing_aliases`` lookup below can key
-        off the real object name instead of the structural type.
-
-    Returns
-    -------
-    dict[str, Any]
-        Schema with corrections applied.
+    *name* is the object's own name (from the parent's ``children`` key, not
+    the structural ``type`` field), threaded through recursion for future
+    name-keyed corrections.
     """
     if not isinstance(info, dict):
         return info
@@ -131,8 +109,6 @@ class RestSettings(AbstractSettings):
     This class provides high-level settings operations by delegating to a
     FluentRestClient instance. It is used for accessing and modifying Fluent
     settings over HTTP/REST transport.
-
-    Available from Fluent 27.1 onward (v1 proto API).
 
     Parameters
     ----------
@@ -211,22 +187,11 @@ class RestSettings(AbstractSettings):
     def get_static_info(self) -> dict[str, Any]:
         """Get static-info for settings.
 
-        Requests the full schema (``full=True``) from the server. The
-        settings class tree is built once from this response at session
-        startup (see ``flobject.get_root()``), so anything missing here
-        (e.g. nested children like ``momentum``/``range``, or a
-        NamedObject's ``object_type``) is permanently missing from every
-        object built for the life of the session. The abbreviated
-        (``full=False``) schema was observed to omit exactly this kind of
-        nested detail, causing spurious ``AttributeError``s far away from
-        this call - request the full schema unconditionally.
-
-        The raw REST response uses Fluent's native hyphenated/``?``-suffixed
-        Scheme key names (e.g. ``object-type``, ``user-creatable?``); these
-        are normalized to the underscore form ``flobject.get_cls()`` expects
-        (matching gRPC) via :func:`_normalize_static_info_keys` before being
-        returned, so no other module needs to know about this REST-specific
-        wire format.
+        Always requests the full schema (``full=True``); the abbreviated form
+        omits nested details (e.g. ``momentum``/``range`` children, a
+        NamedObject's ``object_type``) needed to build the settings class
+        tree. Keys are normalized from REST's hyphenated/``?``-suffixed form
+        to the underscore form ``flobject.get_cls()`` expects (matching gRPC).
 
         Raises
         ------
@@ -254,17 +219,6 @@ class RestSettings(AbstractSettings):
         -------
         Any
             Command result (may be None).
-
-        Notes
-        -----
-        List-type arguments (e.g. ``report_defs=["surface-1"]``) must be
-        sent as flat lists. Live-server evidence confirmed that wrapping
-        each item in an extra list (``[["surface-1"]]``, under the
-        mistaken assumption that the server wants Scheme "alist"/pair
-        format here) breaks the server's ``symbol->string`` call with
-        ``HTTP 500: wta(1st) to symbol->string`` - the server expects a
-        plain list of strings/symbols for this kind of argument, not a
-        list of one-item lists.
         """
         return self.service.execute_cmd(path, command, **kwds)
 

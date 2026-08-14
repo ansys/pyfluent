@@ -204,20 +204,20 @@ class TestHttpRequestStrategyInit:
     """HttpRequestStrategy initialization and attribute defaults."""
 
     def test_init_strips_trailing_slash(self):
-        strategy = HttpRequestStrategy("http://localhost:5000/")
-        assert strategy._base_url == "http://localhost:5000"
+        strategy = HttpRequestStrategy(_BASE_URL + "/")
+        assert strategy._base_url == _BASE_URL
 
     def test_init_with_token(self):
-        strategy = HttpRequestStrategy("http://localhost:5000", token="secret")
+        strategy = HttpRequestStrategy(_BASE_URL, token="secret")
         expected = hashlib.sha256(b"secret").hexdigest()
         assert strategy._headers["Authorization"] == "Bearer " + expected
 
     def test_init_with_custom_timeout(self):
-        strategy = HttpRequestStrategy("http://localhost:5000", timeout=60.0)
+        strategy = HttpRequestStrategy(_BASE_URL, timeout=60.0)
         assert strategy._timeout == 60.0
 
     def test_init_with_custom_max_retries(self):
-        strategy = HttpRequestStrategy("http://localhost:5000", max_retries=5)
+        strategy = HttpRequestStrategy(_BASE_URL, max_retries=5)
         assert strategy._max_retries == 5
 
     def test_client_default_component(self):
