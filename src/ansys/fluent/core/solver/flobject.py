@@ -1620,8 +1620,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 raise RuntimeError(
                     f"Cannot create child object {cname!r} at path "
                     f"{getattr(self, 'path', '<unknown>')!r}: the schema class "
-                    f"{self.__class__.__name__!r} has no 'child_object_type' "
-                    f"attribute defined."
+                    f"{self.__class__.__name__!r} has no 'child_object_type' attribute defined."
                 )
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = _create_child(cls, cname, self)

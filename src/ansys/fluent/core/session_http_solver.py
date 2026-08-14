@@ -133,14 +133,6 @@ class HttpSolver:
         ------
         FluentRestError
             If creation fails (e.g., object already exists, invalid path).
-
-        Examples
-        --------
-        >>> solver.create_named_object(
-        ...     path="setup/boundary_conditions/velocity_inlet",
-        ...     name="inlet_1",
-        ...     properties={"momentum": {"velocity": 1.0}}
-        ... )
         """
         return self._rest_client.create(path, name, properties)
 
@@ -159,13 +151,6 @@ class HttpSolver:
         ------
         FluentRestError
             If deletion fails (e.g., object not found, invalid path).
-
-        Examples
-        --------
-        >>> solver.delete_named_object(
-        ...     path="setup/boundary_conditions/velocity_inlet",
-        ...     name="inlet_1"
-        ... )
         """
         return self._rest_client.delete(path, name)
 
@@ -186,14 +171,6 @@ class HttpSolver:
         ------
         FluentRestError
             If rename fails (e.g., object not found, new name already exists).
-
-        Examples
-        --------
-        >>> solver.rename_named_object(
-        ...     path="setup/boundary_conditions/velocity_inlet",
-        ...     old_name="inlet_1",
-        ...     new_name="inlet_renamed"
-        ... )
         """
         return self._rest_client.rename(path, new_name, old_name)
 
@@ -212,12 +189,5 @@ class HttpSolver:
         ------
         FluentRestError
             If deletion fails.
-
-        Examples
-        --------
-        >>> solver.delete_all_child_objects(
-        ...     path="setup/boundary_conditions",
-        ...     obj_type="velocity_inlet"
-        ... )
         """
         return self._rest_client.delete_all_child_objects(path, obj_type)
