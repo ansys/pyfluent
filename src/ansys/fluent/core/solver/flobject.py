@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+﻿# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -2490,138 +2490,188 @@ class _FlStringConstant:
 _bases_by_class = {}
 
 
+def _resolve_base_class(name: str, obj_type: str):
+    """Resolve the base class for a settings API node."""
+    base = _baseTypes.get(obj_type)
+    if obj_type == "command" and name in ["create", "rename", "delete", "resize"]:
+        base = CommandWithPositionalArgs
+    if base is None:
+        settings_logger.warning(
+            f"Unable to find base class for '{name}' "
+            f"(type = '{obj_type}'). "
+            f"Falling back to String."
+        )
+        base = String
+    return base
+
+
+def _set_generated_docstring(dct: dict, info: dict, obj_type: str, parent, pname: str):
+    """Set the generated docstring for a runtime settings class."""
+    helpinfo = info.get("help")
+    if helpinfo:
+        dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
+    elif parent is None:
+        dct["__doc__"] = "'root' object."
+    elif obj_type == "command":
+        dct["__doc__"] = f"'{pname.strip('_')}' command."
+    elif obj_type == "query":
+        dct["__doc__"] = f"'{pname.strip('_')}' query."
+    else:
+        dct["__doc__"] = f"'{pname.strip('_')}' child."
+
+
+def _augment_generated_bases(
+    base,
+    info: dict,
+    obj_type: str,
+    version: str | None,
+    include_child_named_objects: bool,
+    user_creatable: bool,
+) -> tuple[type, ...]:
+    """Compute mixin-augmented bases for the generated class."""
+    bases = (base,)
+    if include_child_named_objects:
+        bases = bases + (_ChildNamedObjectAccessorMixin,)
+    if obj_type == "named-object" and user_creatable:
+        if version < "251":
+            bases = bases + (CreatableNamedObjectMixinOld,)
+        else:
+            bases = bases + (CreatableNamedObjectMixin,)
+    elif obj_type == "named-object":
+        bases = bases + (_NonCreatableNamedObjectMixin,)
+    elif info.get("has_allowed_values"):
+        bases += (AllowedValuesMixin,)
+    elif info.get("file_purpose") == "input":
+        bases += (_InputFile,)
+    elif info.get("file_purpose") == "output":
+        bases += (_OutputFile,)
+    elif info.get("file_purpose") == "inout":
+        bases += (_InOutFile,)
+    return bases
+
+
+def _resolve_generated_names(
+    pname: str,
+    bases: tuple[type, ...],
+    file_purpose: str | None,
+    parent_taboo: set | None,
+) -> tuple[str, str]:
+    """Resolve generated class name and parent attribute name."""
+    original_pname = pname
+    i = 1
+    if parent_taboo:
+        while pname in parent_taboo:
+            pname = f"{original_pname}_{i}"
+            i += 1
+    parent_attr_name = pname
+    if file_purpose:  # not generalizing for performance
+        while pname in _bases_by_class and _bases_by_class[pname] != bases:
+            pname = f"{original_pname}_{i}"
+            i += 1
+        _bases_by_class[pname] = bases
+    if parent_taboo:
+        parent_taboo.add(pname)
+    return pname, parent_attr_name
+
+
+def _set_generated_exposure_level(cls, parent, info: dict):
+    """Set class exposure level based on static info and parent level."""
+    if parent is None:
+        cls.exposure_level = ExposureLevel.STABLE
+        return
+    exposure_level_str = info.get("api_exposure_level")
+    if exposure_level_str is None:
+        cls.exposure_level = parent.exposure_level
+    else:
+        cls.exposure_level = min(
+            ExposureLevel(exposure_level_str), parent.exposure_level
+        )
+
+
+def _set_generated_deprecated_version(cls, info: dict):
+    """Set deprecation metadata for generated class."""
+    deprecated_version = info.get("deprecated_version", None)
+    if deprecated_version and float(deprecated_version) >= 22.2:
+        cls._deprecated_version = deprecated_version
+    else:
+        cls._deprecated_version = ""
+
+
+def _get_generation_taboo(cls, version: str | None) -> set[str]:
+    """Get taboo names used while generating descendants of ``cls``."""
+    taboo = set(dir(cls))
+    if version and version >= "261":
+        taboo -= {"list", "list_properties"}
+    taboo |= {
+        "child_names",
+        "command_names",
+        "query_names",
+        "argument_names",
+        "child_object_type",
+    }
+    return taboo
+
+
+def _process_generated_children(info_dict, names, cls, taboo, version, doc_parts=None):
+    """Generate child classes and register them on ``cls``."""
+    for cname, cinfo in info_dict.items():
+        ccls, parent_attr_name = get_cls(
+            cname, cinfo, cls, version=version, parent_taboo=taboo
+        )
+
+        if doc_parts is not None:
+            th = ccls._state_type
+            th = th.__name__ if hasattr(th, "__name__") else str(th)
+            doc_parts.append(f"    {ccls.__name__} : {th}\n")
+            doc_parts.append(f"        {ccls.__doc__}\n")
+
+        names.append(parent_attr_name)
+        taboo.add(ccls.__name__)
+        cls._child_classes[parent_attr_name] = ccls
+
+
 # pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None, parent_taboo=None):
     """Create a class for the object identified by "path"."""
     try:
-        if name == "":
-            pname = "root"
-        else:
-            pname = to_python_name(name)
+        pname = "root" if name == "" else to_python_name(name)
         obj_type = info["type"]
-        base = _baseTypes.get(obj_type)
-        if obj_type == "command" and name in ["create", "rename", "delete", "resize"]:
-            base = CommandWithPositionalArgs
-        if base is None:
-            settings_logger.warning(
-                f"Unable to find base class for '{name}' "
-                f"(type = '{obj_type}'). "
-                f"Falling back to String."
-            )
-            base = String
+        base = _resolve_base_class(name, obj_type)
         dct = {"fluent_name": name, "_version": version}
-        helpinfo = info.get("help")
-        if helpinfo:
-            dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
-        else:
-            if parent is None:
-                dct["__doc__"] = "'root' object."
-            else:
-                if obj_type == "command":
-                    dct["__doc__"] = f"'{pname.strip('_')}' command."
-                elif obj_type == "query":
-                    dct["__doc__"] = f"'{pname.strip('_')}' query."
-                else:
-                    dct["__doc__"] = f"'{pname.strip('_')}' child."
+        _set_generated_docstring(dct, info, obj_type, parent, pname)
 
         include_child_named_objects = info.get("include_child_named_objects", False)
         user_creatable = info.get("user_creatable", False)
 
-        bases = (base,)
-        if include_child_named_objects:
-            bases = bases + (_ChildNamedObjectAccessorMixin,)
-        if obj_type == "named-object" and user_creatable:
-            if version < "251":
-                bases = bases + (CreatableNamedObjectMixinOld,)
-            else:
-                bases = bases + (CreatableNamedObjectMixin,)
-        elif obj_type == "named-object":
-            bases = bases + (_NonCreatableNamedObjectMixin,)
-        elif info.get("has_allowed_values"):
-            bases += (AllowedValuesMixin,)
-        elif info.get("file_purpose") == "input":
-            bases += (_InputFile,)
-        elif info.get("file_purpose") == "output":
-            bases += (_OutputFile,)
-        elif info.get("file_purpose") == "inout":
-            bases += (_InOutFile,)
+        bases = _augment_generated_bases(
+            base,
+            info,
+            obj_type,
+            version,
+            include_child_named_objects,
+            user_creatable,
+        )
 
-        original_pname = pname
-        i = 1
-        if parent_taboo:
-            while pname in parent_taboo:
-                pname = f"{original_pname}_{i}"
-                i += 1
-        parent_attr_name = pname
-        if info.get("file_purpose"):  # not generalizing for performance
-            while pname in _bases_by_class and _bases_by_class[pname] != bases:
-                pname = f"{original_pname}_{i}"
-                i += 1
-            _bases_by_class[pname] = bases
-        if parent_taboo:
-            parent_taboo.add(pname)
+        pname, parent_attr_name = _resolve_generated_names(
+            pname,
+            bases,
+            info.get("file_purpose"),
+            parent_taboo,
+        )
 
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
-        # If root, set it explicitly to stable
-        if parent is None:
-            cls.exposure_level = ExposureLevel.STABLE
-        else:
-            exposure_level_str = info.get("api_exposure_level")
-            if exposure_level_str is None:
-                cls.exposure_level = parent.exposure_level
-            else:
-                cls.exposure_level = min(
-                    ExposureLevel(exposure_level_str), parent.exposure_level
-                )
+        _set_generated_exposure_level(cls, parent, info)
+        _set_generated_deprecated_version(cls, info)
 
-        deprecated_version = info.get("deprecated_version", None)
-        if deprecated_version and float(deprecated_version) >= 22.2:
-            cls._deprecated_version = deprecated_version
-        else:
-            cls._deprecated_version = ""
-
-        taboo = set(dir(cls))
-        if version and version >= "261":
-            taboo -= {"list", "list_properties"}
-        taboo |= set(
-            [
-                "child_names",
-                "command_names",
-                "query_names",
-                "argument_names",
-                "child_object_type",
-            ]
-        )
-
-        doc = ""
-
-        def _process_cls_names(info_dict, names, write_doc=False):
-            nonlocal taboo
-            nonlocal cls
-
-            for cname, cinfo in info_dict.items():
-                ccls, parent_attr_name = get_cls(
-                    cname, cinfo, cls, version=version, parent_taboo=taboo
-                )
-
-                if write_doc:
-                    nonlocal doc
-                    th = ccls._state_type
-                    th = th.__name__ if hasattr(th, "__name__") else str(th)
-                    doc += f"    {ccls.__name__} : {th}\n"
-                    doc += f"        {ccls.__doc__}\n"
-
-                names.append(parent_attr_name)
-                taboo.add(ccls.__name__)
-                cls._child_classes[parent_attr_name] = ccls
+        taboo = _get_generation_taboo(cls, version)
 
         children = info.get("children")
         if children:
             taboo.add("child_names")
             cls.child_names = []
-            _process_cls_names(children, cls.child_names)
+            _process_generated_children(children, cls.child_names, cls, taboo, version)
 
         commands = info.get("commands")
         if commands:
@@ -2630,22 +2680,28 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             commands.pop("create", None)
         if commands:
             cls.command_names = []
-            _process_cls_names(commands, cls.command_names)
+            _process_generated_children(
+                commands, cls.command_names, cls, taboo, version
+            )
 
         queries = info.get("queries")
         if queries:
             cls.query_names = []
-            _process_cls_names(queries, cls.query_names)
+            _process_generated_children(queries, cls.query_names, cls, taboo, version)
 
         arguments = info.get("arguments")
         if arguments:
-            doc = cls.__doc__
-            doc += "\n\n"
-            doc += "Parameters\n"
-            doc += "----------\n"
+            doc_parts = [cls.__doc__, "\n\n", "Parameters\n", "----------\n"]
             cls.argument_names = []
-            _process_cls_names(arguments, cls.argument_names, write_doc=True)
-            cls.__doc__ = doc
+            _process_generated_children(
+                arguments,
+                cls.argument_names,
+                cls,
+                taboo,
+                version,
+                doc_parts=doc_parts,
+            )
+            cls.__doc__ = "".join(doc_parts)
 
         if version == "":
             # This is kept for backwards compatibility.
