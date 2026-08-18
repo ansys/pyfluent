@@ -193,7 +193,7 @@ class RPVars:
         Parameters
         ----------
         name : str
-            Name of the rpvar to create.
+            Name of the rpvar to create. Must not exceed `62` characters.
         value : Any
             Initial value for the rpvar.
         var_type : RPVarType | type | None
