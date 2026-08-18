@@ -223,17 +223,11 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
-        ui_mode = kwargs.get("ui_mode")
-        if pyfluent.config.show_fluent_gui:
-            ui_mode = UIMode.GUI
-        elif ui_mode is None and is_windows():
-            # Keep hidden GUI as default only for standalone launch on Windows.
-            ui_mode = UIMode.HIDDEN_GUI
-        kwargs["ui_mode"] = ui_mode
-
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = kwargs.get("file_transfer_service")
-        self.argvals["ui_mode"] = UIMode(ui_mode)
+        if pyfluent.config.show_fluent_gui:
+            kwargs["ui_mode"] = UIMode.GUI
+        self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
         if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
 

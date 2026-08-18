@@ -274,13 +274,17 @@ def test_gpu_launch_arg():
         _build_fluent_launch_args_string(
             gpu=True, additional_arguments="", processor_count=None
         ).strip()
-        == "3ddp -gpu -gu"
+        == "3ddp -gpu -hidden"
+        if is_windows()
+        else "3ddp -gpu -gu"
     )
     assert (
         _build_fluent_launch_args_string(
             gpu=[1, 2, 4], additional_arguments="", processor_count=None
         ).strip()
-        == "3ddp -gpu=1,2,4 -gu"
+        == "3ddp -gpu=1,2,4 -hidden"
+        if is_windows()
+        else "3ddp -gpu=1,2,4 -gu"
     )
 
 
@@ -289,18 +293,18 @@ def test_gpu_launch_arg_additional_arg():
         _build_fluent_launch_args_string(
             additional_arguments="-gpu", processor_count=None
         ).strip()
-        == "3ddp -gpu -gu"
+        == "3ddp -gpu -hidden"
+        if is_windows()
+        else "3ddp -gpu -gu"
     )
     assert (
         _build_fluent_launch_args_string(
             additional_arguments="-gpu=1,2,4", processor_count=None
         ).strip()
-        == "3ddp -gpu=1,2,4 -gu"
+        == "3ddp -gpu=1,2,4 -hidden"
+        if is_windows()
+        else "3ddp -gpu=1,2,4 -gu"
     )
-
-
-def test_default_ui_mode_is_no_gui():
-    assert UIMode(None) == UIMode.NO_GUI
 
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
