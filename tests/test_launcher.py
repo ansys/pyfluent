@@ -274,17 +274,13 @@ def test_gpu_launch_arg():
         _build_fluent_launch_args_string(
             gpu=True, additional_arguments="", processor_count=None
         ).strip()
-        == "3ddp -gpu -hidden"
-        if is_windows()
-        else "3ddp -gpu -gu"
+        == "3ddp -gpu -gu"
     )
     assert (
         _build_fluent_launch_args_string(
             gpu=[1, 2, 4], additional_arguments="", processor_count=None
         ).strip()
-        == "3ddp -gpu=1,2,4 -hidden"
-        if is_windows()
-        else "3ddp -gpu=1,2,4 -gu"
+        == "3ddp -gpu=1,2,4 -gu"
     )
 
 
@@ -293,18 +289,18 @@ def test_gpu_launch_arg_additional_arg():
         _build_fluent_launch_args_string(
             additional_arguments="-gpu", processor_count=None
         ).strip()
-        == "3ddp -gpu -hidden"
-        if is_windows()
-        else "3ddp -gpu -gu"
+        == "3ddp -gpu -gu"
     )
     assert (
         _build_fluent_launch_args_string(
             additional_arguments="-gpu=1,2,4", processor_count=None
         ).strip()
-        == "3ddp -gpu=1,2,4 -hidden"
-        if is_windows()
-        else "3ddp -gpu=1,2,4 -gu"
+        == "3ddp -gpu=1,2,4 -gu"
     )
+
+
+def test_default_ui_mode_is_no_gui():
+    assert UIMode(None) == UIMode.NO_GUI
 
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
@@ -686,6 +682,17 @@ def test_standalone_launcher_dry_run(monkeypatch):
         fluent_launch_string
         == f'{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm -command="(set-session-idle-timeoutPLF+3)"'
     )
+
+
+def test_standalone_launcher_dry_run_default_ui_mode(monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+    )
+    expected_ui_arg = "-hidden" if is_windows() else "-gu"
+    assert expected_ui_arg in fluent_launch_string
 
 
 def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
