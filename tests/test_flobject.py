@@ -727,6 +727,80 @@ def test_get_cls_argument_docstring_uses_real_newlines():
     assert "\\n" not in cls.__doc__
 
 
+def test_create_generated_class_returns_context():
+    cls, parent_attr_name, taboo, user_creatable = flobject._create_generated_class(
+        "",
+        {"type": "group", "help": "root"},
+        parent=None,
+        version="271",
+        parent_taboo=None,
+    )
+
+    assert cls.__name__ == "root"
+    assert parent_attr_name == "root"
+    assert user_creatable is False
+    assert cls.exposure_level == ExposureLevel.STABLE
+    assert "command_names" in taboo
+
+
+def test_set_generated_return_type_helper():
+    legacy_cls = type("legacy", (), {})
+    flobject._set_generated_return_type(legacy_cls, {"return_type": "real"}, "")
+    assert legacy_cls.return_type == "object"
+
+    current_cls = type("current", (), {})
+    flobject._set_generated_return_type(current_cls, {"return_type": "real"}, "271")
+    assert current_cls.return_type == "real"
+
+    no_return_cls = type("no_return", (), {})
+    flobject._set_generated_return_type(no_return_cls, {}, "271")
+    assert not hasattr(no_return_cls, "return_type")
+
+
+def test_set_generated_child_object_type_helper():
+    parent_cls = type(
+        "parent",
+        (),
+        {"exposure_level": ExposureLevel.STABLE, "fluent_name": "parent"},
+    )
+    flobject._set_generated_child_object_type(
+        parent_cls,
+        {"object_type": {"type": "group"}},
+        "271",
+    )
+
+    assert issubclass(parent_cls.child_object_type, flobject.Group)
+    child = parent_cls.child_object_type("child-name")
+    assert child.get_name() == "child-name"
+
+
+def test_register_generated_commands_section_filters_exit_and_create():
+    cls = type(
+        "test_parent",
+        (),
+        {"_child_classes": {}, "exposure_level": ExposureLevel.STABLE},
+    )
+    info = {
+        "commands": {
+            "create": {"type": "command"},
+            "delete": {"type": "command"},
+            "exit": {"type": "command"},
+        }
+    }
+
+    flobject._register_generated_commands_section(
+        cls,
+        info,
+        taboo=set(),
+        version="271",
+        user_creatable=False,
+    )
+
+    assert "delete" in cls.command_names
+    assert "create" not in cls.command_names
+    assert "exit" not in cls.command_names
+
+
 def test_exposure_level_filtering(monkeypatch):
     """Test that beta/alpha objects are hidden by default and revealed by activation."""
     from ansys.fluent.core.module_config import config
