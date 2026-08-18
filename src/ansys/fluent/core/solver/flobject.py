@@ -2533,7 +2533,7 @@ def _augment_generated_bases(
     if include_child_named_objects:
         bases = bases + (_ChildNamedObjectAccessorMixin,)
     if obj_type == "named-object" and user_creatable:
-        if version < "251":
+        if version is not None and version < "251":
             bases = bases + (CreatableNamedObjectMixinOld,)
         else:
             bases = bases + (CreatableNamedObjectMixin,)
