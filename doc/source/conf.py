@@ -20,8 +20,10 @@ copyright = f"(c) {datetime.now().year} ANSYS, Inc. All rights reserved"
 author = "ANSYS Inc."
 cname = os.getenv("DOCUMENTATION_CNAME", "nocname.com")
 
-# The short X.Y version
-release = version = __version__
+# Full release string (e.g. "0.42.dev0")
+release = __version__
+# Short X.Y version used in HTML meta / |version| substitutions
+version = ".".join(__version__.split(".")[:2])
 
 # -- General configuration ---------------------------------------------------
 extensions = [
