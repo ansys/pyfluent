@@ -132,7 +132,6 @@ def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
 
 
 @pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_event_subscription(new_meshing_session):
     session = new_meshing_session
     session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
