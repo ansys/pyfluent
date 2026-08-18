@@ -2576,6 +2576,7 @@ def _resolve_generated_names(
 
 def _set_generated_exposure_level(cls, parent, info: dict):
     """Set class exposure level based on static info and parent level."""
+    # If root, set it explicitly to stable
     if parent is None:
         cls.exposure_level = ExposureLevel.STABLE
         return
