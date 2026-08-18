@@ -209,7 +209,7 @@ class RPVars:
         RuntimeError
             If 'make-new-rpvar' returns #f for a reason other than the variable name already matching an existing entry.
         ValueError
-            If the rpvar name exceeds Fluent's length limit.
+            If the rpvar name exceeds Fluent's length limit of 62.
         """
         if len(name) > self._MAX_NEW_RPVAR_NAME_LENGTH:
             raise ValueError(
