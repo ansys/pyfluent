@@ -401,7 +401,6 @@ jobs:
       - name: Print 24.2 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_242.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 25.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -419,7 +418,6 @@ jobs:
       - name: Print 25.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_251.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 25.2 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -437,7 +435,6 @@ jobs:
       - name: Print 25.2 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_252.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_252 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 26.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -454,7 +451,6 @@ jobs:
       - name: Print 26.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_261.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 27.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -471,7 +467,6 @@ jobs:
       - name: Print 27.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_271.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Upload generated API files
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

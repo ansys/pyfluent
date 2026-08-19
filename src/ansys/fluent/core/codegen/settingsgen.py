@@ -384,7 +384,6 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     start_time = time.time()
     api_tree = {}
     sinfo = static_infos.get(StaticInfoType.SETTINGS)
-    shash = _gethash(sinfo)
     if not sinfo:
         return {"<solver_session>": api_tree}
     output_dir = (pyfluent.config.codegen_outdir / "solver").resolve()
@@ -419,7 +418,6 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
         f_stub.write("from typing import Any, Final\n\n")
-        f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
         _write_data(name, name, data, f, f_stub)
