@@ -25,8 +25,7 @@
 from typing import Any
 
 from ansys.fluent.core.rest.client import FluentRestClient
-from ansys.fluent.core.services.abstract_settings import AbstractSettings
-from ansys.fluent.core.services.settings import _trace
+from ansys.fluent.core.services.settings import BaseSettings, _trace
 
 _REST_STATIC_INFO_KEY_MAP: dict[str, str] = {
     "object-type": "object_type",
@@ -73,37 +72,7 @@ def _normalize_static_info_keys(info: dict[str, Any]) -> dict[str, Any]:
     return normalized
 
 
-def _apply_schema_corrections(
-    info: dict[str, Any], name: str | None = None
-) -> dict[str, Any]:
-    """Patch known gaps in the server's static-info schema (normalized keys).
-
-    *name* is the object's own name (from the parent's ``children`` key, not
-    the structural ``type`` field), threaded through recursion for future
-    name-keyed corrections.
-    """
-    if not isinstance(info, dict):
-        return info
-
-    # Recursively apply corrections to nested structures, passing the child's
-    # own name (the "children" dict key) down so it's available at the next
-    # recursion level.
-    corrected = dict(info)
-    for container_key in _REST_STATIC_INFO_CONTAINER_KEYS:
-        container = corrected.get(container_key)
-        if isinstance(container, dict):
-            corrected[container_key] = {
-                child_name: _apply_schema_corrections(child, name=child_name)
-                for child_name, child in container.items()
-            }
-    object_type = corrected.get("object_type")
-    if isinstance(object_type, dict):
-        corrected["object_type"] = _apply_schema_corrections(object_type, name=name)
-
-    return corrected
-
-
-class RestSettings(AbstractSettings):
+class RestSettings(BaseSettings):
     """REST-based settings service wrapper.
 
     This class provides high-level settings operations by delegating to a
@@ -124,22 +93,7 @@ class RestSettings(AbstractSettings):
         rest_client : FluentRestClient
             The REST client instance.
         """
-        self.service = rest_client
-
-    @_trace
-    def set_var(self, path: str, value: Any) -> None:
-        """Set the value for the given path."""
-        self.service.set_var(path, value)
-
-    @_trace
-    def get_var(self, path: str) -> Any:
-        """Get the value for the given path."""
-        return self.service.get_var(path)
-
-    @_trace
-    def rename(self, path: str, new: str, old: str) -> None:
-        """Rename the object at the given path."""
-        self.service.rename(path, new, old)
+        super().__init__(rest_client)
 
     @_trace
     def create(
@@ -164,26 +118,6 @@ class RestSettings(AbstractSettings):
         return self.service.create(path, name, properties)
 
     @_trace
-    def delete(self, path: str, name: str) -> None:
-        """Delete the object with the given name at the given path."""
-        self.service.delete(path, name)
-
-    @_trace
-    def get_object_names(self, path: str) -> list[str]:
-        """Get a list of named objects."""
-        return self.service.get_object_names(path)
-
-    @_trace
-    def get_list_size(self, path: str) -> int:
-        """Get the number of elements in a list object."""
-        return self.service.get_list_size(path)
-
-    @_trace
-    def resize_list_object(self, path: str, size: int) -> None:
-        """Resize a list object."""
-        self.service.resize_list_object(path, size)
-
-    @_trace
     def get_static_info(self) -> dict[str, Any]:
         """Get static-info for settings.
 
@@ -198,39 +132,7 @@ class RestSettings(AbstractSettings):
         RuntimeError
             If type is empty.
         """
-        return _apply_schema_corrections(
-            _normalize_static_info_keys(self.service.get_static_info(full=True))
-        )
-
-    @_trace
-    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute a given command with the provided keyword arguments.
-
-        Parameters
-        ----------
-        path : str
-            DataModel path for the command.
-        command : str
-            Command name to execute.
-        **kwds : dict
-            Command arguments, passed through to the server unchanged.
-
-        Returns
-        -------
-        Any
-            Command result (may be None).
-        """
-        return self.service.execute_cmd(path, command, **kwds)
-
-    @_trace
-    def execute_query(self, path: str, query: str, **kwds) -> Any:
-        """Execute a given query with the provided keyword arguments."""
-        return self.service.execute_query(path, query, **kwds)
-
-    @_trace
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
-        """Return values of given attributes."""
-        return self.service.get_attrs(path, attrs, recursive)
+        return _normalize_static_info_keys(self.service.get_static_info(full=True))
 
     @_trace
     def is_interactive_mode(self) -> bool:

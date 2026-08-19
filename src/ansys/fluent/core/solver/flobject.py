@@ -1628,12 +1628,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
         if not ret:
-            if not hasattr(self.__class__, "child_object_type"):
-                raise RuntimeError(
-                    f"Cannot create child object {cname!r} at path "
-                    f"{getattr(self, 'path', '<unknown>')!r}: the schema class "
-                    f"{self.__class__.__name__!r} has no 'child_object_type' attribute defined."
-                )
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = _create_child(cls, cname, self)
         ret._setattr("_python_name", f'["{cname}"]')
@@ -2667,13 +2661,6 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 "child-object-type", object_type, cls, version=version
             )
             cls.child_object_type.get_name = lambda self: self._name
-        elif object_type == "named-object":
-            settings_logger.debug(
-                "get_cls(%r): named-object schema has no 'object_type'; "
-                "raw info keys=%s",
-                name,
-                sorted(info.keys()),
-            )
 
         child_aliases = info.get("child_aliases", {})
         command_aliases = info.get("command_aliases", {})

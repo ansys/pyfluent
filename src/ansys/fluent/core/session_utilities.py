@@ -27,6 +27,9 @@ from typing import TYPE_CHECKING, Any, Literal, overload
 
 from typing_extensions import Unpack, override
 
+if TYPE_CHECKING:
+    from ansys.fluent.core.session_http_solver import HttpSolver
+
 from ansys.fluent.core import (
     session_meshing,
     session_pure_meshing,
@@ -647,6 +650,47 @@ class Solver(SessionBase):
             cls,
             **kwargs: Unpack[PIMArgsWithoutMode],
         ) -> session_solver.Solver: ...
+
+        @classmethod
+        def from_http(
+            cls,
+            url: str,
+            token: str,
+        ) -> "HttpSolver":
+            """Create a solver session connected via REST (HTTP) transport.
+
+            Returns an :class:`~ansys.fluent.core.session_http_solver.HttpSolver`
+            instance — a standalone REST-backed session that is independent of the
+            gRPC infrastructure.
+
+            Parameters
+            ----------
+            url : str
+                REST server URL (e.g., ``"http://127.0.0.1:5000"``).
+            token : str
+                Authentication token for the REST server.
+
+            Returns
+            -------
+            HttpSolver
+                A new solver session connected via REST transport.
+
+            Examples
+            --------
+            >>> solver = Solver.from_http(
+            ...     url="http://127.0.0.1:5000",
+            ...     token="my-token"
+            ... )
+            >>> solver.settings.setup.models.energy.enabled()
+            """
+            from ansys.fluent.core.rest.client import FluentRestClient
+            from ansys.fluent.core.session_http_solver import HttpSolver
+
+            rest_client = FluentRestClient.connect(
+                url=url,
+                token=token,
+            )
+            return HttpSolver(rest_client)
 
 
 class SolverAero(SessionBase):
