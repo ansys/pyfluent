@@ -417,13 +417,12 @@ def configure_container_dict(
 
     Returns
     -------
-    fluent_image : str
     container_dict : dict
-    timeout : int
+    timeout : int | None
     port : int
     host_server_info_file : Path
-    container_server_info_file: str
-    remove_server_info_file: bool
+    container_server_info_file : PurePosixPath
+    remove_server_info_file : bool
 
     Raises
     ------
