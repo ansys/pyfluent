@@ -25,7 +25,7 @@ from conftest import SKIP_INVESTIGATING
 import pytest
 
 from ansys.fluent.core.examples import download_file, path
-from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
+from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.rpvars import RPVars, RPVarType
 
 
@@ -92,7 +92,7 @@ def test_get_all_rp_vars(new_solver_session) -> None:
     assert len(all_vars) == pytest.approx(9000, 20)
 
     # CaseFile comparison, note that the PyFluent work dir is not necessarily the same as the Fluent work dir
-    case = CaseReader(case_file_name=path(case_path))
+    case = CaseFile(case_file_name=path(case_path))
     case_vars = case.rp_vars()
     assert len(case_vars) == pytest.approx(9000, 450)
 

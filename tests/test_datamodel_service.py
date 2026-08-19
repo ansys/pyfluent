@@ -37,11 +37,13 @@ from ansys.fluent.core._grpc_services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
 from ansys.fluent.core._grpc_services.object_model_service import (
-    _convert_variant_to_value as _convert_variant_to_value_v1,
+    _convert_variant_to_value,
 )
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_value_to_variant,
-    _convert_variant_to_value,
+)
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_variant_to_value as _convert_variant_to_value_v0,
 )
 from ansys.fluent.core.services.object_model import (
     PyArguments,
@@ -79,7 +81,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 def test_convert_value_to_variant_to_value(value, expected):
     variant = Variant()
     _convert_value_to_variant(value, variant)
-    assert expected == _convert_variant_to_value(variant)
+    assert expected == _convert_variant_to_value_v0(variant)
 
 
 def test_pyarguments_registers_and_releases_command_arguments():
@@ -352,9 +354,9 @@ def test_datamodel_streaming_full_diff_state(
     def cb(state, deleted_paths):
         if state:
             if meshing.get_fluent_version() < FluentVersion.v271:
-                state = _convert_variant_to_value(state)
+                state = _convert_variant_to_value_v0(state)
             else:
-                state = _convert_variant_to_value_v1(state)
+                state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []
@@ -381,9 +383,9 @@ def test_datamodel_streaming_no_commands_diff_state(
     def cb(state, deleted_paths):
         if state:
             if meshing.get_fluent_version() < FluentVersion.v271:
-                state = _convert_variant_to_value(state)
+                state = _convert_variant_to_value_v0(state)
             else:
-                state = _convert_variant_to_value_v1(state)
+                state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []
