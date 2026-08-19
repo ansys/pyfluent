@@ -187,15 +187,12 @@ def _resolve_mount_target(mount_target, container_dict, inferred_mount_target):
     if not mount_target:
         if "working_dir" in container_dict:
             mount_target = container_dict["working_dir"]
-        else:
-            mount_target = config.container_mount_target
+        elif inferred_mount_target is not None:
+            mount_target = inferred_mount_target
 
     if "working_dir" in container_dict and mount_target:
         # working_dir will be set later to the final value of mount_target
         container_dict.pop("working_dir")
-
-    if not mount_target and inferred_mount_target is not None:
-        mount_target = inferred_mount_target
 
     if not mount_target:
         logger.debug("No container 'mount_target' specified, using default value.")
@@ -477,6 +474,9 @@ def configure_container_dict(
     if "labels" not in container_dict:
         container_dict.update(labels={"test_name": config.test_name})
 
+    if not Path(mount_source).exists():
+        Path(mount_source).mkdir(parents=True, exist_ok=True)
+
     container_server_info_file, host_server_info_file = _resolve_server_info_file(
         container_dict, container_server_info_file, mount_source, mount_target
     )
@@ -490,9 +490,6 @@ def configure_container_dict(
 
     container_dict.setdefault("detach", True)
     container_dict.setdefault("auto_remove", True)
-
-    if not Path(mount_source).exists():
-        Path(mount_source).mkdir(parents=True, exist_ok=True)
 
     if compose_config.is_compose:
         container_dict["host_server_info_file"] = host_server_info_file
