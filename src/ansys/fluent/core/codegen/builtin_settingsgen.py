@@ -178,7 +178,7 @@ def _write_init_signature(f, kind: str, named_objects: list) -> None:
     if kind == "NonCreatableNamedObject":
         f.write(", name: str = None")
     elif kind == "CreatableNamedObject":
-        f.write(", name: str = None, new_instance_name: str = None")
+        f.write(", name: str | None = None, new_instance_name: str | None = None")
     f.write("):\n")
     f.write("        super().__init__(settings_source=settings_source")
     if kind == "NonCreatableNamedObject":

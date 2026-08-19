@@ -181,8 +181,8 @@ def _resolve_mount_source(mount_source, file_transfer_service, container_dict):
 def _resolve_mount_target(mount_target, container_dict, inferred_mount_target):
     """Resolve mount_target, consuming ``'working_dir'`` from *container_dict* if present.
 
-    Priority: explicit argument > ``working_dir`` in *container_dict* > config default,
-    falling back to *inferred_mount_target* from volumes when still unset.
+    Priority: explicit argument > ``working_dir`` in *container_dict* >
+    *inferred_mount_target* from volumes > config default.
     """
     if not mount_target:
         if "working_dir" in container_dict:
@@ -371,7 +371,7 @@ def configure_container_dict(
     compose_config: ComposeConfig | None = None,
     certificates_folder: str | None = None,
     **container_dict,
-) -> (dict, int, int, Path, str, bool):
+) -> tuple[dict, int | None, int, Path, PurePosixPath, bool]:
     """Parses the parameters listed below, and sets up the container configuration file.
 
     Parameters
