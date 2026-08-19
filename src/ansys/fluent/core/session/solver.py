@@ -78,7 +78,6 @@ if TYPE_CHECKING:
     )
     import ansys.fluent.core.generated.solver.settings_261 as settings_root
     from ansys.fluent.core.generated.solver.tui_261 import main_menu
-    from ansys.fluent.core.session_http_solver import HttpSolver
 
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -174,47 +173,6 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self._build_from_fluent_connection(
             fluent_connection, scheme_eval, launcher_args=launcher_args
         )
-
-    @classmethod
-    def from_http(
-        cls,
-        url: str,
-        token: str,
-    ) -> "HttpSolver":
-        """Create a solver session connected via REST (HTTP) transport.
-
-        Returns an :class:`~ansys.fluent.core.session_http_solver.HttpSolver`
-        instance — a standalone REST-backed session that is independent of the
-        gRPC infrastructure.
-
-        Parameters
-        ----------
-        url : str
-            REST server URL (e.g., ``"http://127.0.0.1:5000"``).
-        token : str
-            Authentication token for the REST server.
-
-        Returns
-        -------
-        HttpSolver
-            A new solver session connected via REST transport.
-
-        Examples
-        --------
-        >>> solver = Solver.from_http(
-        ...     url="http://127.0.0.1:5000",
-        ...     token="my-token"
-        ... )
-        >>> solver.settings.setup.models.energy.enabled()
-        """
-        from ansys.fluent.core.rest.client import FluentRestClient
-        from ansys.fluent.core.session_http_solver import HttpSolver
-
-        rest_client = FluentRestClient.connect(
-            url=url,
-            token=token,
-        )
-        return HttpSolver(rest_client)
 
     def _build_from_fluent_connection(
         self,
