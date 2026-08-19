@@ -81,7 +81,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 def test_convert_value_to_variant_to_value(value, expected):
     variant = Variant()
     _convert_value_to_variant(value, variant)
-    assert expected == _convert_variant_to_value(variant)
+    assert expected == _convert_variant_to_value_v0(variant)
 
 
 def test_pyarguments_registers_and_releases_command_arguments():
