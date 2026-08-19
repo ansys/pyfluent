@@ -141,6 +141,7 @@ jobs:
 
   test-import:
     name: Build and Smoke tests
+    needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -153,12 +154,24 @@ jobs:
           - should-release: false
             os: macos-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download generated API files
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: generated-api-files
+          path: src/ansys/fluent/core/generated
+
       - name: Build wheelhouse and perform smoke test
         uses: ansys/actions/build-wheelhouse@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
+          checkout: false
 
   check-vulnerabilities:
     name: "Check library vulnerabilities"
@@ -459,6 +472,13 @@ jobs:
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_271.py
           python -c "from src.ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Upload generated API files
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: generated-api-files
+          path: src/ansys/fluent/core/generated/
+          retention-days: 7
 
       - name: Install again after codegen
         run: |
