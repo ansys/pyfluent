@@ -365,36 +365,41 @@ def mixing_elbow_watertight_pure_meshing_session(
     return meshing
 
 
-@pytest.fixture
-def new_solver_session():
-    solver = create_session()
-    yield solver
-    solver.exit()
+@pytest.fixture(
+    params=[
+        "grpc",
+        pytest.param(
+            "rest",
+            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
+        ),
+    ]
+)
+def new_solver_session(request):
+    """Solver session, parametrized over transport (gRPC vs REST).
 
-
-@pytest.fixture
-def new_solver_session_rest():
-    """Create a REST-based solver session connected to a live Fluent 27.1+ server.
-
-    Requires FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables to be set.
-    Skips the test if either is unset (REST server not available).
-
-    Marked with @pytest.mark.rest_server to gate tests requiring a live server.
+    The "rest" param connects to a live Fluent 27.1+ server via REST, and
+    requires FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables to
+    be set; the test is skipped if either is unset (REST server not
+    available). Marked with @pytest.mark.rest_server to gate tests requiring
+    a live server.
     """
-    import os
+    if request.param == "rest":
+        import os
 
-    from ansys.fluent.core.session_solver import Solver
+        from ansys.fluent.core.session_solver import Solver
 
-    rest_url = os.environ.get("FLUENT_REST_URL")
-    rest_token = os.environ.get("FLUENT_REST_TOKEN")
+        rest_url = os.environ.get("FLUENT_REST_URL")
+        rest_token = os.environ.get("FLUENT_REST_TOKEN")
 
-    if not rest_url or not rest_token:
-        pytest.skip(
-            "REST live server not configured. "
-            "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
-        )
+        if not rest_url or not rest_token:
+            pytest.skip(
+                "REST live server not configured. "
+                "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
+            )
 
-    solver = Solver.from_http(url=rest_url, token=rest_token)
+        solver = Solver.from_http(url=rest_url, token=rest_token)
+    else:
+        solver = create_session()
     yield solver
     solver.exit()
 
@@ -535,56 +540,6 @@ def periodic_rot_settings_session(new_solver_session):
         file_name=case_name,
         lightweight_setup=True,
     )
-    return solver
-
-
-# ============================================================================
-# REST-based fixtures (for HttpSolver via REST transport)
-# ============================================================================
-
-
-@pytest.fixture
-def mixing_elbow_settings_session_rest(new_solver_session_rest):
-    """REST-based mixing elbow case with lightweight setup.
-
-    Requires live Fluent REST server (FLUENT_REST_URL, FLUENT_REST_TOKEN).
-    Uses solver.settings.file.read() for REST compatibility.
-    """
-    solver = new_solver_session_rest
-    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read(
-        file_type="case",
-        file_name=case_name,
-        lightweight_setup=True,
-    )
-    return solver
-
-
-@pytest.fixture
-def mixing_elbow_case_session_rest(new_solver_session_rest):
-    """REST-based mixing elbow case with full mesh (no lightweight setup).
-
-    Requires live Fluent REST server (FLUENT_REST_URL, FLUENT_REST_TOKEN).
-    Uses solver.settings.file.read() for REST compatibility.
-    """
-    solver = new_solver_session_rest
-    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read(file_type="case", file_name=case_name)
-    return solver
-
-
-@pytest.fixture
-def mixing_elbow_case_data_session_rest(new_solver_session_rest):
-    """REST-based mixing elbow case with case and data files.
-
-    Requires live Fluent REST server (FLUENT_REST_URL, FLUENT_REST_TOKEN).
-    Downloads both .cas.h5 and .dat.h5 files, reads as case-data.
-    Uses solver.settings.file.read() for REST compatibility.
-    """
-    solver = new_solver_session_rest
-    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read(file_type="case-data", file_name=case_name)
     return solver
 
 
