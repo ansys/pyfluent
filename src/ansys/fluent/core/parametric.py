@@ -186,7 +186,7 @@ class LocalDesignPointTable(list):
         self.remove(self.find_design_point(idx_or_name))
 
 
-def _run_local_study_in_fluent(
+def _run_local_study_in_fluent(  # noqa: C901
     local_study,
     num_servers: int,
     launcher: Any,

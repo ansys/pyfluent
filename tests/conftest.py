@@ -134,7 +134,7 @@ def pytest_runtest_setup(item):
             pytest.skip()
 
 
-def pytest_collection_finish(session):
+def pytest_collection_finish(session):  # noqa: C901
     if session.config.getoption("--write-fluent-journals"):
         import_path = Path(__file__).parent
         sys.path.append(str(import_path))

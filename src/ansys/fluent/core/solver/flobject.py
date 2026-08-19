@@ -1831,6 +1831,46 @@ def _rename(obj: NamedObject | _Alias, new: str, old: str):
     obj._create_child_object(new)
 
 
+def _parse_quantity(path, state):
+    """Parse *state* into an ``ansys.units.Quantity``, or return ``None``.
+
+    Accepts either a concrete ``Quantity`` instance or a ``(sequence, units)``
+    tuple shorthand.  Raises ``UnhandledQuantity`` if the conversion fails.
+    """
+    try:
+        if isinstance(state, ansys.units.Quantity):
+            return state
+        if (
+            isinstance(state, tuple)
+            and len(state) == 2
+            and isinstance(state[0], collections.abc.Sequence)
+            and not isinstance(state[0], (str, bytes, bytearray))
+        ):
+            return ansys.units.Quantity(*state)
+        return None
+    except Exception as ex:
+        raise UnhandledQuantity(path, state) from ex
+
+
+def _materialize_quantity_values(path, state, quantity):
+    """Return ``list(quantity.value)``, or raise ``UnhandledQuantity``."""
+    try:
+        return list(quantity.value)
+    except Exception as ex:
+        raise UnhandledQuantity(path, state) from ex
+
+
+def _convert_to_target_units(path, state, quantity, target_units):
+    """Convert *quantity* to *target_units* and return a plain ``float`` list.
+
+    Raises ``UnhandledQuantity`` on failure.
+    """
+    try:
+        return [float(v) for v in quantity.to(target_units).value]
+    except Exception as ex:
+        raise UnhandledQuantity(path, state) from ex
+
+
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
@@ -1946,6 +1986,28 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         else:
             return getattr(super(), name)
 
+    def _sync_list_size(self, size: int) -> None:
+        # Keep list-object cardinality in sync before the final bulk set.
+        if self.get_size() != size:
+            with self._while_resizing():
+                self.flproxy.resize_list_object(self.path, size)
+        if len(self._objects) != size:
+            self._update_objects()
+
+    def _resolve_child_units(self, size: int):
+        # Return the target units string from the first child, or None.
+        if size == 0:
+            return None
+        child = self[0]
+        # First support direct numerical list children.
+        if isinstance(child, RealNumerical):
+            return child.units()
+        # Then support wrapped schemas where units live under .value.
+        child_value = getattr(child, "value", None)
+        if isinstance(child_value, RealNumerical):
+            return child_value.units()
+        return None
+
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the list object.
 
@@ -1961,60 +2023,15 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         if kwargs or state is None:
             return super().set_state(state=state, **kwargs)
 
-        quantity = None
-        try:
-            # Accept either a concrete Quantity or tuple shorthand
-            # (sequence, units) for list-style unit-aware updates.
-            if isinstance(state, ansys.units.Quantity):
-                quantity = state
-            elif (
-                isinstance(state, tuple)
-                and len(state) == 2
-                and isinstance(state[0], collections.abc.Sequence)
-                and not isinstance(state[0], (str, bytes, bytearray))
-            ):
-                quantity = ansys.units.Quantity(*state)
-        except Exception as ex:
-            raise UnhandledQuantity(self.path, state) from ex
-
+        quantity = _parse_quantity(self.path, state)
         if quantity is None:
             return super().set_state(state=state, **kwargs)
 
-        try:
-            # Materialize values once so we can determine target size before
-            # any conversion or server update.
-            values = list(quantity.value)
-        except Exception as ex:
-            raise UnhandledQuantity(self.path, state) from ex
-
-        # Keep list-object cardinality in sync before the final bulk set.
-        size = len(values)
-        if self.get_size() != size:
-            with self._while_resizing():
-                self.flproxy.resize_list_object(self.path, size)
-        if len(self._objects) != size:
-            self._update_objects()
-
-        target_units = None
-        if size > 0:
-            child = self[0]
-            # First support direct numerical list children.
-            if isinstance(child, RealNumerical):
-                target_units = child.units()
-            else:
-                # Then support wrapped schemas where units live under .value.
-                child_value = getattr(child, "value", None)
-                if isinstance(child_value, RealNumerical):
-                    target_units = child_value.units()
-
+        values = _materialize_quantity_values(self.path, state, quantity)
+        self._sync_list_size(len(values))
+        target_units = self._resolve_child_units(len(values))
         if target_units is not None:
-            try:
-                # Convert once using the resolved target units and send plain
-                # floats in a single bulk update.
-                values = [float(v) for v in quantity.to(target_units).value]
-            except Exception as ex:
-                raise UnhandledQuantity(self.path, state) from ex
-
+            values = _convert_to_target_units(self.path, state, quantity, target_units)
         return super().set_state(state=values, **kwargs)
 
 
