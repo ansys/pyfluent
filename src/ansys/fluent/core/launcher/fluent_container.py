@@ -140,6 +140,214 @@ def dict_to_str(dict: dict) -> str:
         return pformat(dict)
 
 
+def _resolve_mount_source(mount_source, file_transfer_service, container_dict):
+    """Resolve mount_source, inferring from file_transfer_service, config, volumes, or cwd.
+
+    Returns ``(mount_source, inferred_mount_target)``.  ``inferred_mount_target`` is
+    ``None`` when ``'volumes'`` is not present in *container_dict*.
+    """
+    if not mount_source:
+        if file_transfer_service:
+            mount_source = file_transfer_service.mount_source
+        else:
+            mount_source = config.container_mount_source
+
+    inferred_mount_target = None
+    if "volumes" in container_dict:
+        if len(container_dict["volumes"]) != 1:
+            logger.warning(
+                "Multiple volumes being mounted in the Docker container, "
+                "Assuming the first mount is the working directory for Fluent."
+            )
+        volumes_string = container_dict["volumes"][0]
+        if mount_source:
+            logger.warning(
+                "'volumes' keyword specified in 'container_dict', but "
+                "it is going to be overwritten by specified 'mount_source'."
+            )
+        else:
+            mount_source = volumes_string.split(":")[0]
+            logger.debug(f"mount_source: {mount_source}")
+        inferred_mount_target = volumes_string.split(":")[1]
+        logger.debug(f"inferred_mount_target: {inferred_mount_target}")
+
+    if not mount_source:
+        logger.debug("No container 'mount_source' specified, using default value.")
+        mount_source = os.getcwd()
+
+    return mount_source, inferred_mount_target
+
+
+def _resolve_mount_target(mount_target, container_dict, inferred_mount_target):
+    """Resolve mount_target, consuming ``'working_dir'`` from *container_dict* if present.
+
+    Priority: explicit argument > ``working_dir`` in *container_dict* > config default,
+    falling back to *inferred_mount_target* from volumes when still unset.
+    """
+    if not mount_target:
+        if "working_dir" in container_dict:
+            mount_target = container_dict["working_dir"]
+        else:
+            mount_target = config.container_mount_target
+
+    if "working_dir" in container_dict and mount_target:
+        # working_dir will be set later to the final value of mount_target
+        container_dict.pop("working_dir")
+
+    if not mount_target and inferred_mount_target is not None:
+        mount_target = inferred_mount_target
+
+    if not mount_target:
+        logger.debug("No container 'mount_target' specified, using default value.")
+        mount_target = config.container_mount_target
+
+    return mount_target
+
+
+def _setup_volumes(container_dict, mount_source, mount_target, certificates_folder):
+    """Write ``volumes`` and ``working_dir`` into *container_dict*."""
+    if "volumes" not in container_dict:
+        container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
+    else:
+        container_dict["volumes"][0] = f"{mount_source}:{mount_target}"
+
+    logger.warning(
+        f"Configuring Fluent container to mount to {mount_source}, "
+        f"with this path available as {mount_target} for the Fluent session running inside the container."
+    )
+
+    if "working_dir" not in container_dict:
+        container_dict.update(working_dir=mount_target)
+
+    if certificates_folder is not None:
+        certs_mount = f"{certificates_folder}:/tmp/certs:ro"
+        if certs_mount not in container_dict["volumes"]:
+            container_dict["volumes"].append(certs_mount)
+
+
+def _resolve_port_mapping(port, container_dict):
+    """Determine port mapping, update ``container_dict['ports']``, and return *container_grpc_port*."""
+    port_mapping = {port: port} if port else {}
+    if not port_mapping and "ports" in container_dict:
+        # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
+        port_mapping = container_dict["ports"]
+    if not port_mapping and config.launch_fluent_port:
+        p = config.launch_fluent_port
+        port_mapping = {p: p}
+    if not port_mapping:
+        p = get_free_port()
+        port_mapping = {p: p}
+
+    container_dict.update(
+        ports={str(x): y for x, y in port_mapping.items()}
+    )  # container port : host port
+    container_grpc_port = next(
+        iter(port_mapping.values())
+    )  # the first port in the mapping is chosen as the gRPC port
+    return container_grpc_port
+
+
+def _setup_environment(container_dict, license_server, container_grpc_port):
+    """Populate ``container_dict['environment']`` with license and remoting keys if not already set."""
+    if "environment" not in container_dict:
+        if not license_server:
+            license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
+        if not license_server:
+            raise LicenseServerNotSpecified()
+        container_dict.update(
+            environment={
+                "ANSYSLMD_LICENSE_FILE": license_server,
+                "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
+                "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
+            }
+        )
+
+
+def _resolve_server_info_file(
+    container_dict, container_server_info_file, mount_source, mount_target
+):
+    """Resolve the container-side and host-side paths for the server info file.
+
+    Extracts any ``-sifile=`` argument already present in ``container_dict['command']``,
+    or creates a temporary file when no server info file is provided.
+    Returns ``(container_server_info_file, host_server_info_file)``.
+    """
+    # Find the server info file name from the command line arguments
+    if "command" in container_dict:
+        for v in container_dict["command"]:
+            if v.startswith("-sifile="):
+                if container_server_info_file:
+                    raise ServerInfoFileError()
+                container_server_info_file = PurePosixPath(
+                    v.replace("-sifile=", "")
+                ).name
+                logger.debug(
+                    f"Found server info file specification for {container_server_info_file}."
+                )
+
+    if container_server_info_file:
+        container_server_info_file = (
+            PurePosixPath(mount_target) / PurePosixPath(container_server_info_file).name
+        )
+    else:
+        fd, sifile = tempfile.mkstemp(
+            suffix=".txt", prefix="serverinfo-", dir=mount_source
+        )
+        os.close(fd)
+        container_server_info_file = PurePosixPath(mount_target) / Path(sifile).name
+
+    logger.debug(
+        f"Using server info file '{container_server_info_file}' for Fluent container."
+    )
+    host_server_info_file = Path(mount_source) / container_server_info_file.name
+    return container_server_info_file, host_server_info_file
+
+
+def _update_command(args, container_dict, container_server_info_file):
+    """Set or update the ``-sifile=`` entry in ``container_dict['command']``."""
+    # If the 'command' had already been specified in the 'container_dict',
+    # maintain other 'command' arguments but update the '-sifile' argument,
+    # as the 'mount_target' or 'working_dir' may have changed.
+    if "command" in container_dict:
+        for i, item in enumerate(container_dict["command"]):
+            if item.startswith("-sifile="):
+                container_dict["command"][i] = f"-sifile={container_server_info_file}"
+    else:
+        container_dict["command"] = args + [f"-sifile={container_server_info_file}"]
+
+
+def _resolve_fluent_image(fluent_image, image_name, image_tag):
+    """Resolve the full Fluent image reference from explicit name, tag, or config defaults."""
+    if fluent_image:
+        return fluent_image
+    if not image_tag:
+        image_tag = config.fluent_image_tag
+    if not image_name and image_tag:
+        image_name = config.fluent_image_name or get_ghcr_fluent_image_name(image_tag)
+    if not image_tag or not image_name:
+        return config.fluent_container_name
+    if image_tag.startswith("sha"):
+        return f"{image_name}@{image_tag}"
+    return f"{image_name}:{image_tag}"
+
+
+def _apply_config_env_vars(container_dict):
+    """Inject optional environment variables driven by PyFluent config settings."""
+    if not config.fluent_automatic_transcript:
+        container_dict.setdefault("environment", {})
+        container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
+
+    if config.launch_fluent_ip or config.remoting_server_address:
+        container_dict.setdefault("environment", {})
+        container_dict["environment"]["REMOTING_SERVER_ADDRESS"] = (
+            config.launch_fluent_ip or config.remoting_server_address
+        )
+
+    if config.launch_fluent_skip_password_check:
+        container_dict.setdefault("environment", {})
+        container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
+
+
 @deprecate_arguments(
     old_args="container_mount_path",
     new_args="mount_target",
@@ -253,201 +461,39 @@ def configure_container_dict(
     # 2. Use the value from 'pyfluent.config.container_mount_source', if it is set.
     # 3. If 'volumes' is specified in 'container_dict', try to infer the value from it.
     # 4. Finally, use the current working directory, which is always available.
-
-    if not mount_source:
-        if file_transfer_service:
-            mount_source = file_transfer_service.mount_source
-        else:
-            mount_source = config.container_mount_source
-
-    if "volumes" in container_dict:
-        if len(container_dict["volumes"]) != 1:
-            logger.warning(
-                "Multiple volumes being mounted in the Docker container, "
-                "Assuming the first mount is the working directory for Fluent."
-            )
-        volumes_string = container_dict["volumes"][0]
-        if mount_source:
-            logger.warning(
-                "'volumes' keyword specified in 'container_dict', but "
-                "it is going to be overwritten by specified 'mount_source'."
-            )
-        else:
-            mount_source = volumes_string.split(":")[0]
-            logger.debug(f"mount_source: {mount_source}")
-        inferred_mount_target = volumes_string.split(":")[1]
-        logger.debug(f"inferred_mount_target: {inferred_mount_target}")
-
-    if not mount_source:
-        logger.debug("No container 'mount_source' specified, using default value.")
-        mount_source = os.getcwd()
-
     # The intended 'mount_target' logic is as follows, if it is not directly specified:
     # 1. If 'working_dir' is specified in 'container_dict', use it as 'mount_target'.
     # 2. Try to infer the value from the 'volumes' keyword in 'container_dict', if available.
     # 3. Finally, use the value from 'pyfluent.config.container_mount_target', which is always set.
-
-    if not mount_target:
-        if "working_dir" in container_dict:
-            mount_target = container_dict["working_dir"]
-        else:
-            mount_target = config.container_mount_target
-
-    if "working_dir" in container_dict and mount_target:
-        # working_dir will be set later to the final value of mount_target
-        container_dict.pop("working_dir")
-
-    if not mount_target and "volumes" in container_dict:
-        mount_target = inferred_mount_target
-
-    if not mount_target:
-        logger.debug("No container 'mount_target' specified, using default value.")
-        mount_target = config.container_mount_target
-
-    if "volumes" not in container_dict:
-        container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
-    else:
-        container_dict["volumes"][0] = f"{mount_source}:{mount_target}"
-
-    logger.warning(
-        f"Configuring Fluent container to mount to {mount_source}, "
-        f"with this path available as {mount_target} for the Fluent session running inside the container."
+    mount_source, inferred_mount_target = _resolve_mount_source(
+        mount_source, file_transfer_service, container_dict
     )
-
-    if "working_dir" not in container_dict:
-        container_dict.update(
-            working_dir=mount_target,
-        )
-
-    if certificates_folder is not None:
-        certs_mount = f"{certificates_folder}:/tmp/certs:ro"
-        if certs_mount not in container_dict["volumes"]:
-            container_dict["volumes"].append(certs_mount)
-    port_mapping = {port: port} if port else {}
-    if not port_mapping and "ports" in container_dict:
-        # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
-        port_mapping = container_dict["ports"]
-    if not port_mapping and config.launch_fluent_port:
-        port = config.launch_fluent_port
-        port_mapping = {port: port}
-    if not port_mapping:
-        port = get_free_port()
-        port_mapping = {port: port}
-
-    container_dict.update(
-        ports={str(x): y for x, y in port_mapping.items()}
-    )  # container port : host port
-    container_grpc_port = next(
-        iter(port_mapping.values())
-    )  # the first port in the mapping is chosen as the gRPC port
-
-    if "environment" not in container_dict:
-        if not license_server:
-            license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
-
-        if not license_server:
-            raise LicenseServerNotSpecified()
-        container_dict.update(
-            environment={
-                "ANSYSLMD_LICENSE_FILE": license_server,
-                "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
-                "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
-            }
-        )
+    mount_target = _resolve_mount_target(
+        mount_target, container_dict, inferred_mount_target
+    )
+    _setup_volumes(container_dict, mount_source, mount_target, certificates_folder)
+    container_grpc_port = _resolve_port_mapping(port, container_dict)
+    _setup_environment(container_dict, license_server, container_grpc_port)
 
     if "labels" not in container_dict:
-        test_name = config.test_name
-        container_dict.update(
-            labels={"test_name": test_name},
-        )
+        container_dict.update(labels={"test_name": config.test_name})
 
-    # Find the server info file name from the command line arguments
-    if "command" in container_dict:
-        for v in container_dict["command"]:
-            if v.startswith("-sifile="):
-                if container_server_info_file:
-                    raise ServerInfoFileError()
-                container_server_info_file = PurePosixPath(
-                    v.replace("-sifile=", "")
-                ).name
-                logger.debug(
-                    f"Found server info file specification for {container_server_info_file}."
-                )
+    container_server_info_file, host_server_info_file = _resolve_server_info_file(
+        container_dict, container_server_info_file, mount_source, mount_target
+    )
+    _update_command(args, container_dict, container_server_info_file)
 
-    if container_server_info_file:
-        container_server_info_file = (
-            PurePosixPath(mount_target) / PurePosixPath(container_server_info_file).name
-        )
-    else:
-        fd, sifile = tempfile.mkstemp(
-            suffix=".txt", prefix="serverinfo-", dir=mount_source
-        )
-        os.close(fd)
-        container_server_info_file = PurePosixPath(mount_target) / Path(sifile).name
-
-    logger.debug(
-        f"Using server info file '{container_server_info_file}' for Fluent container."
+    container_dict["fluent_image"] = _resolve_fluent_image(
+        fluent_image, image_name, image_tag
     )
 
-    # If the 'command' had already been specified in the 'container_dict',
-    # maintain other 'command' arguments but update the '-sifile' argument,
-    # as the 'mount_target' or 'working_dir' may have changed.
-    if "command" in container_dict:
-        for i, item in enumerate(container_dict["command"]):
-            if item.startswith("-sifile="):
-                container_dict["command"][i] = f"-sifile={container_server_info_file}"
-    else:
-        container_dict["command"] = args + [f"-sifile={container_server_info_file}"]
+    _apply_config_env_vars(container_dict)
 
-    if not fluent_image:
-        if not image_tag:
-            image_tag = config.fluent_image_tag
-        if not image_name and image_tag:
-            image_name = config.fluent_image_name or get_ghcr_fluent_image_name(
-                image_tag
-            )
-        if not image_tag or not image_name:
-            fluent_image = config.fluent_container_name
-        elif image_tag and image_name:
-            if image_tag.startswith("sha"):
-                fluent_image = f"{image_name}@{image_tag}"
-            else:
-                fluent_image = f"{image_name}:{image_tag}"
-        else:
-            raise FluentImageNameTagNotSpecified()
-
-    container_dict["fluent_image"] = fluent_image
-
-    if not config.fluent_automatic_transcript:
-        if "environment" not in container_dict:
-            container_dict["environment"] = {}
-        container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
-
-    if config.launch_fluent_ip or config.remoting_server_address:
-        if "environment" not in container_dict:
-            container_dict["environment"] = {}
-        container_dict["environment"]["REMOTING_SERVER_ADDRESS"] = (
-            config.launch_fluent_ip or config.remoting_server_address
-        )
-
-    if config.launch_fluent_skip_password_check:
-        if "environment" not in container_dict:
-            container_dict["environment"] = {}
-        container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
-
-    container_dict_base = {}
-    container_dict_base.update(
-        detach=True,
-        auto_remove=True,
-    )
-
-    for k, v in container_dict_base.items():
-        if k not in container_dict:
-            container_dict[k] = v
+    container_dict.setdefault("detach", True)
+    container_dict.setdefault("auto_remove", True)
 
     if not Path(mount_source).exists():
         Path(mount_source).mkdir(parents=True, exist_ok=True)
-    host_server_info_file = Path(mount_source) / container_server_info_file.name
 
     if compose_config.is_compose:
         container_dict["host_server_info_file"] = host_server_info_file

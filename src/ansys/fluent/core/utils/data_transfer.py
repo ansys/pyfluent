@@ -68,7 +68,7 @@ def _read_case_into_each(solvers, file_type, file_name, full_file_name_container
         r.result()
 
 
-def transfer_case(
+def transfer_case(  # noqa: C901
     source_instance,
     solvers,
     file_type: str,

@@ -50,7 +50,7 @@ class UnsuccessfulWatchdogLaunch(RuntimeError):
     pass
 
 
-def launch(
+def launch(  # noqa: C901
     main_pid: int,
     sv_port: int,
     sv_password: str,
