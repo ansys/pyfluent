@@ -25,7 +25,7 @@ from conftest import SKIP_INVESTIGATING
 import pytest
 
 from ansys.fluent.core.examples import download_file, path
-from ansys.fluent.core.filereader.casereader import CaseReader
+from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 from ansys.fluent.core.rpvars import RPVars, RPVarType
 
 

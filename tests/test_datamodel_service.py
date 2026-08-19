@@ -36,6 +36,9 @@ from ansys.fluent.core import examples
 from ansys.fluent.core._grpc_services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
+from ansys.fluent.core._grpc_services.object_model_service import (
+    _convert_variant_to_value as _convert_variant_to_value_v1,
+)
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_value_to_variant,
     _convert_variant_to_value,
@@ -132,7 +135,6 @@ def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
 
 
 @pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_event_subscription(new_meshing_session):
     session = new_meshing_session
     session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -349,7 +351,10 @@ def test_datamodel_streaming_full_diff_state(
 
     def cb(state, deleted_paths):
         if state:
-            state = _convert_variant_to_value(state)
+            if meshing.get_fluent_version() < FluentVersion.v271:
+                state = _convert_variant_to_value(state)
+            else:
+                state = _convert_variant_to_value_v1(state)
         cb.states.append(state)
 
     cb.states = []
@@ -375,7 +380,10 @@ def test_datamodel_streaming_no_commands_diff_state(
 
     def cb(state, deleted_paths):
         if state:
-            state = _convert_variant_to_value(state)
+            if meshing.get_fluent_version() < FluentVersion.v271:
+                state = _convert_variant_to_value(state)
+            else:
+                state = _convert_variant_to_value_v1(state)
         cb.states.append(state)
 
     cb.states = []
