@@ -1687,6 +1687,32 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
+    def get_active_command_names(self):
+        """Names of commands that are currently active."""
+        ret = []
+        child_classes = type(self)._child_classes
+        for command_name in self.command_names:
+            child_cls = child_classes.get(command_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
+            command = getattr(self, command_name)
+            if command.is_active() and not _is_deprecated(command):
+                ret.append(command_name)
+        return ret
+
+    def get_active_query_names(self):
+        """Names of queries that are currently active."""
+        ret = []
+        child_classes = type(self)._child_classes
+        for query_name in self.query_names:
+            child_cls = child_classes.get(query_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
+            query = getattr(self, query_name)
+            if query.is_active() and not _is_deprecated(query):
+                ret.append(query_name)
+        return ret
+
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
@@ -1950,6 +1976,32 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __iter__(self):
         self._update_objects()
         return iter(self._objects)
+
+    def get_active_command_names(self):
+        """Names of commands that are currently active."""
+        ret = []
+        child_classes = type(self)._child_classes
+        for command_name in self.command_names:
+            child_cls = child_classes.get(command_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
+            command = getattr(self, command_name)
+            if command.is_active() and not _is_deprecated(command):
+                ret.append(command_name)
+        return ret
+
+    def get_active_query_names(self):
+        """Names of queries that are currently active."""
+        ret = []
+        child_classes = type(self)._child_classes
+        for query_name in self.query_names:
+            child_cls = child_classes.get(query_name)
+            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
+                continue
+            query = getattr(self, query_name)
+            if query.is_active() and not _is_deprecated(query):
+                ret.append(query_name)
+        return ret
 
     def get_size(self) -> int:
         """Return the number of elements in a list object.
