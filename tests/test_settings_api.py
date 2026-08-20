@@ -22,7 +22,6 @@
 # SOFTWARE.
 
 from collections import UserList
-import os
 import warnings
 
 from conftest import SKIP_INVESTIGATING
@@ -50,215 +49,15 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 # ============================================================================
 # Helpers for transport-parametrized tests (gRPC vs REST)
 # ============================================================================
-
-
-def _is_rest(session_fixture_name: str) -> bool:
-    """Check if session fixture is REST-based (contains 'rest' in name)."""
-    return "rest" in session_fixture_name
-
-
-# This run targets a live REST server when both env vars are configured (same
-# check used by conftest.py's new_solver_session_rest fixture). Used below to
-# decide, per test, which transport this run is actually exercising.
-_REST_ACTIVE = bool(os.environ.get("FLUENT_REST_URL")) and bool(
-    os.environ.get("FLUENT_REST_TOKEN")
-)
-
-
-@pytest.fixture(autouse=True)
-def _skip_wrong_transport(request):
-    """Skip a test when it doesn't match the transport active for this run.
-
-    - If FLUENT_REST_URL/FLUENT_REST_TOKEN are set, this run targets a live
-      REST server, so gRPC-only tests/params (which assume a local/launchable
-      Fluent install) are skipped instead of erroring out trying to launch one.
-    - Otherwise (default), this run targets local/launched Fluent via gRPC, so
-      REST-only params are skipped (this mirrors, as a fast pre-launch check,
-      what new_solver_session_rest already enforces via its own env-var check).
-
-    Autouse fixtures run before explicitly-requested same-scope fixtures, so
-    this executes before new_solver_session/new_solver_session_rest and
-    prevents a wasted Fluent launch or REST connection attempt.
-    """
-    callspec = getattr(request.node, "callspec", None)
-    session_fixture_name = (
-        callspec.params.get("session_fixture_name") if callspec else None
-    )
-    if session_fixture_name is not None:
-        is_rest_test = _is_rest(session_fixture_name)
-    else:
-        is_rest_test = any("rest" in name for name in request.fixturenames)
-
-    if is_rest_test and not _REST_ACTIVE:
-        pytest.skip(
-            "REST server not configured for this run "
-            "(FLUENT_REST_URL/FLUENT_REST_TOKEN not set); skipping REST test."
-        )
-    if not is_rest_test and _REST_ACTIVE:
-        pytest.skip(
-            "REST-only run active (FLUENT_REST_URL/FLUENT_REST_TOKEN set); "
-            "skipping gRPC-only test."
-        )
-
-
-# ============================================================================
-# Transport adapter infrastructure (abstract factory pattern)
-# ============================================================================
-from abc import ABC, abstractmethod
-
-
-class SettingsTestAdapter(ABC):
-    """Abstract adapter for transport-specific settings API operations.
-
-    Isolates gRPC vs REST differences so test bodies remain uniform,
-    delegating to concrete adapters for transport-specific details.
-    """
-
-    def __init__(self, solver):
-        self.solver = solver
-
-    @abstractmethod
-    def create_named_object(self, path: str, name: str, properties=None) -> None:
-        """Create a named object (e.g., iso_clip, surface)."""
-        pass
-
-    @abstractmethod
-    def delete_named_object(self, path: str, name: str) -> None:
-        """Delete a named object."""
-        pass
-
-    @abstractmethod
-    def rename_named_object(self, collection_path: str, old: str, new: str) -> None:
-        """Rename a named object."""
-        pass
-
-    @abstractmethod
-    def create_contour(self, name: str):
-        """Create a contour object; returns the contour object."""
-        pass
-
-    @abstractmethod
-    def get_range_config_for_contour(self, base_dict: dict) -> dict:
-        """Return transport-specific contour range config dict."""
-        pass
-
-    @abstractmethod
-    def search_in_attrs_result(self, result, key: str) -> bool:
-        """Check if key is found in get_attrs result (transport-specific shape)."""
-        pass
-
-
-class GrpcSettingsAdapter(SettingsTestAdapter):
-    """Adapter for gRPC transport; uses settings API directly."""
-
-    def create_named_object(self, path: str, name: str, properties=None) -> None:
-        # For gRPC, navigate to the collection and direct assignment
-        # path is like "results/surfaces/iso_clip" -> solver.settings.results.surfaces.iso_clip
-        parts = path.split("/")
-        obj = self.solver.settings
-        for part in parts:
-            obj = getattr(obj, part)
-        obj[name] = properties if properties else {}
-
-    def delete_named_object(self, path: str, name: str) -> None:
-        # Navigate to collection and use del
-        parts = path.split("/")
-        obj = self.solver.settings
-        for part in parts:
-            obj = getattr(obj, part)
-        del obj[name]
-
-    def rename_named_object(self, collection_path: str, old: str, new: str) -> None:
-        # Navigate to collection and call .rename()
-        parts = collection_path.split("/")
-        obj = self.solver.settings
-        for part in parts:
-            obj = getattr(obj, part)
-        obj.rename(new=new, old=old)
-
-    def create_contour(self, name: str):
-        # gRPC: use .create() method on contour collection
-        return self.solver.settings.results.graphics.contour.create(name)
-
-    def get_range_config_for_contour(self, base_dict: dict) -> dict:
-        # gRPC uses "range_option" (singular) with nested structure
-        return {
-            **base_dict,
-            "range_option": {
-                "option": "auto-range-off",
-                "auto_range_off": {
-                    "maximum": 400.0,
-                    "minimum": 300,
-                    "clip_to_range": False,
-                },
-            },
-        }
-
-    def search_in_attrs_result(self, result, key: str) -> bool:
-        # gRPC: search recursively through nested attrs/group_children structure
-        return _contains_key_or_name(result, key)
-
-
-class RestSettingsAdapter(SettingsTestAdapter):
-    """Adapter for REST transport; uses REST client methods."""
-
-    def create_named_object(self, path: str, name: str, properties=None) -> None:
-        # REST: use solver.create_named_object()
-        self.solver.create_named_object(path, name, properties=properties)
-
-    def delete_named_object(self, path: str, name: str) -> None:
-        # REST: use solver.delete_named_object()
-        self.solver.delete_named_object(path, name)
-
-    def rename_named_object(self, collection_path: str, old: str, new: str) -> None:
-        # REST: use solver.rename_named_object()
-        self.solver.rename_named_object(collection_path, old, new)
-
-    def create_contour(self, name: str):
-        # REST: create via endpoint, then retrieve from settings
-        self.solver.create_named_object("results/graphics/contour", name)
-        return self.solver.settings.results.graphics.contour[name]
-
-    def get_range_config_for_contour(self, base_dict: dict) -> dict:
-        # REST uses "range_options" (plural) with flat structure
-        return {
-            **base_dict,
-            "range_options": {
-                "auto_range": False,
-                "maximum": 400.0,
-                "minimum": 300,
-                "clip_to_range": False,
-            },
-        }
-
-    def search_in_attrs_result(self, result, key: str) -> bool:
-        # REST: use recursive _contains_key_or_name() search
-        return _contains_key_or_name(result, key)
-
-
-class SettingsTestAdapterFactory:
-    """Factory to create the appropriate transport adapter."""
-
-    @staticmethod
-    def create(session_fixture_name: str, solver) -> SettingsTestAdapter:
-        """Create adapter based on transport type.
-
-        Parameters
-        ----------
-        session_fixture_name : str
-            Parametrized fixture name (e.g., "new_solver_session" or "new_solver_session_rest")
-        solver : Solver
-            The solver session instance.
-
-        Returns
-        -------
-        SettingsTestAdapter
-            Concrete adapter for the transport used in this test.
-        """
-        if _is_rest(session_fixture_name):
-            return RestSettingsAdapter(solver)
-        else:
-            return GrpcSettingsAdapter(solver)
+#
+# new_solver_session (and fixtures built on it, e.g. mixing_elbow_*_session)
+# is itself parametrized over transport (params=["grpc", "rest"]) in
+# conftest.py, so every test using it automatically runs against both. The
+# "rest" param already skips itself when FLUENT_REST_URL/FLUENT_REST_TOKEN
+# aren't set, so no extra skip machinery is needed here. A couple of tests
+# still need to know the transport at runtime (isinstance(solver, HttpSolver))
+# to handle a genuine behavioral difference - that check is inlined at each
+# call site rather than via a shared helper, since it's only needed twice.
 
 
 def _contains_key_or_name(obj, key: str) -> bool:
@@ -614,25 +413,13 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
     }
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        pytest.param(
-            "mixing_elbow_case_data_session", marks=pytest.mark.fluent_version(">=25.1")
-        ),
-        pytest.param(
-            "mixing_elbow_case_data_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_deprecated_settings_with_settings_api_aliases(session_fixture_name, request):
+@pytest.mark.fluent_version(">=25.1")
+def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_session):
     """Test deprecated settings API aliases."""
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
+    solver = mixing_elbow_case_data_session
 
     # Create iso_clip object
-    adapter.create_named_object("results/surfaces/iso_clip", "clip-1")
+    solver.settings.results.surfaces.iso_clip["clip-1"] = {}
 
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
@@ -648,7 +435,10 @@ def test_deprecated_settings_with_settings_api_aliases(session_fixture_name, req
     }
     solver.settings.results.graphics.contour["temperature"] = {}
 
-    # Build range config using adapter (encapsulates transport-specific shape)
+    # Build range config for the contour. The deprecated "range_option" alias
+    # (gRPC) and the current "range_options" key (REST, which does not yet
+    # resolve deprecated aliases) both round-trip to the same range_options
+    # state, exercised below.
     base_config = {
         "field": "temperature",
         "surfaces_list": "wall*",
@@ -671,7 +461,28 @@ def test_deprecated_settings_with_settings_api_aliases(session_fixture_name, req
             "title_elements": "Variable and Object Name",
         },
     }
-    range_config = adapter.get_range_config_for_contour(base_config)
+    if isinstance(solver, HttpSolver):
+        range_config = {
+            **base_config,
+            "range_options": {
+                "auto_range": False,
+                "maximum": 400.0,
+                "minimum": 300,
+                "clip_to_range": False,
+            },
+        }
+    else:
+        range_config = {
+            **base_config,
+            "range_option": {
+                "option": "auto-range-off",
+                "auto_range_off": {
+                    "maximum": 400.0,
+                    "minimum": 300,
+                    "clip_to_range": False,
+                },
+            },
+        }
 
     solver.settings.results.graphics.contour["temperature"] = range_config
     assert solver.settings.results.graphics.contour["temperature"].range_options() == {
@@ -683,36 +494,23 @@ def test_deprecated_settings_with_settings_api_aliases(session_fixture_name, req
     }
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        "new_solver_session",
-        pytest.param(
-            "new_solver_session_rest",
-            marks=[
-                pytest.mark.rest_server,
-                pytest.mark.fluent_version(">=27.1"),
-                pytest.mark.xfail(
-                    strict=False,
-                    reason="REST server bug: string-list command args fail with HTTP 500",
-                ),
-            ],
-        ),
-    ],
-)
-def test_command_return_type(session_fixture_name, request):
+def test_command_return_type(new_solver_session):
     """Test command return types."""
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
+    solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    assert solver.file.read_case_data(file_name=case_path) is None
-    adapter.create_named_object(
-        "solution/report_definitions/surface",
-        "surface-1",
-        properties={"surface_names": ["cold-inlet"]},
-    )
-    ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
+    assert solver.settings.file.read_case_data(file_name=case_path) is None
+    solver.settings.solution.report_definitions.surface["surface-1"] = {
+        "surface_names": ["cold-inlet"]
+    }
+    try:
+        ret = solver.settings.solution.report_definitions.compute(
+            report_defs=["surface-1"]
+        )
+    except Exception:
+        if isinstance(solver, HttpSolver):
+            pytest.xfail("REST server bug: string-list command args fail with HTTP 500")
+        raise
     assert ret is not None
 
 
@@ -899,19 +697,10 @@ def test_nested_alias(mixing_elbow_settings_session):
         )
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        pytest.param("new_solver_session", marks=pytest.mark.fluent_version(">=25.1")),
-        pytest.param(
-            "new_solver_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_commands_not_in_settings(session_fixture_name, request):
+@pytest.mark.fluent_version(">=25.1")
+def test_commands_not_in_settings(new_solver_session):
     """Verify that 'exit' and other top-level commands are not in settings.dir()."""
-    solver = request.getfixturevalue(session_fixture_name)
+    solver = new_solver_session
 
     assert "exit" not in dir(solver.settings)
     with pytest.raises(AttributeError):
@@ -1127,26 +916,13 @@ def test_named_object_commands(mixing_elbow_settings_session):
 # ============================================================================
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        "mixing_elbow_case_data_session",
-        pytest.param(
-            "mixing_elbow_case_data_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_named_object_create_via_setitem(session_fixture_name, request):
+def test_named_object_create_via_setitem(mixing_elbow_case_data_session):
     """Test creating a named object via direct assignment or REST endpoint."""
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
+    solver = mixing_elbow_case_data_session
     # Create a new surface in report_definitions
-    adapter.create_named_object(
-        "solution/report_definitions/surface",
-        "test_surface",
-        properties={"surface_names": ["cold-inlet"]},
-    )
+    solver.settings.solution.report_definitions.surface["test_surface"] = {
+        "surface_names": ["cold-inlet"]
+    }
     # Verify it exists
     assert (
         "test_surface"
@@ -1159,32 +935,19 @@ def test_named_object_create_via_setitem(session_fixture_name, request):
     assert state is not None
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        "mixing_elbow_case_data_session",
-        pytest.param(
-            "mixing_elbow_case_data_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_named_object_delete_via_delitem(session_fixture_name, request):
+def test_named_object_delete_via_delitem(mixing_elbow_case_data_session):
     """Test deleting a named object via direct deletion or REST endpoint."""
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
-    # Create via endpoint then delete
-    adapter.create_named_object(
-        "solution/report_definitions/surface",
-        "deleteme",
-        properties={"surface_names": ["cold-inlet"]},
-    )
+    solver = mixing_elbow_case_data_session
+    # Create via setitem then delete
+    solver.settings.solution.report_definitions.surface["deleteme"] = {
+        "surface_names": ["cold-inlet"]
+    }
     assert (
         "deleteme"
         in solver.settings.solution.report_definitions.surface.get_object_names()
     )
-    # Delete via adapter
-    adapter.delete_named_object("solution/report_definitions/surface", "deleteme")
+    # Delete via delitem
+    del solver.settings.solution.report_definitions.surface["deleteme"]
     # Verify it's gone
     assert (
         "deleteme"
@@ -1192,23 +955,13 @@ def test_named_object_delete_via_delitem(session_fixture_name, request):
     )
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        "mixing_elbow_settings_session",
-        pytest.param(
-            "mixing_elbow_settings_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_named_object_overwrite_existing(session_fixture_name, request):
+def test_named_object_overwrite_existing(mixing_elbow_settings_session):
     """Test overwriting an existing named object's state.
 
     Uses ``cold-inlet``, an existing boundary condition from the case -
     velocity_inlet is a physical mesh zone and is not user-creatable.
     """
-    solver = request.getfixturevalue(session_fixture_name)
+    solver = mixing_elbow_settings_session
     inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     # Set initial state via bracket assignment on the EXISTING object
     solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"] = {
@@ -1222,25 +975,14 @@ def test_named_object_overwrite_existing(session_fixture_name, request):
     assert inlet.momentum.velocity.value() == 2.0
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        "mixing_elbow_settings_session",
-        pytest.param(
-            "mixing_elbow_settings_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_named_object_rename_command(session_fixture_name, request):
+def test_named_object_rename_command(mixing_elbow_settings_session):
     """Test renaming a named object via command or REST endpoint.
 
     Uses ``cold-inlet`` (an existing boundary condition).
     """
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
-    adapter.rename_named_object(
-        "setup/boundary_conditions/velocity_inlet", "cold-inlet", "renamed_inlet"
+    solver = mixing_elbow_settings_session
+    solver.settings.setup.boundary_conditions.velocity_inlet.rename(
+        new="renamed_inlet", old="cold-inlet"
     )
     obj_names = (
         solver.settings.setup.boundary_conditions.velocity_inlet.get_object_names()
@@ -1249,29 +991,16 @@ def test_named_object_rename_command(session_fixture_name, request):
     assert "renamed_inlet" in obj_names
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        "mixing_elbow_settings_session",
-        pytest.param(
-            "mixing_elbow_settings_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_named_object_make_a_copy_command(session_fixture_name, request):
+def test_named_object_make_a_copy_command(mixing_elbow_settings_session):
     """Test copying a named object via command or REST endpoint.
 
     Uses ``report_definitions.surface`` (a virtual, user-creatable collection).
     """
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
+    solver = mixing_elbow_settings_session
     # Create a source object to copy
-    adapter.create_named_object(
-        "solution/report_definitions/surface",
-        "surface-1",
-        properties={"surface_names": ["cold-inlet"]},
-    )
+    solver.settings.solution.report_definitions.surface["surface-1"] = {
+        "surface_names": ["cold-inlet"]
+    }
     # Make a copy via command (same for both transports)
     solver.settings.solution.report_definitions.surface.make_a_copy(
         from_="surface-1", to="copy_of_surface_1"
@@ -1321,24 +1050,12 @@ def test_set_state_via_call(mixing_elbow_settings_session):
     solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        pytest.param(
-            "mixing_elbow_case_session", marks=pytest.mark.fluent_version(">=26.1")
-        ),
-        pytest.param(
-            "mixing_elbow_case_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_read_only_command_execution(session_fixture_name, request):
+@pytest.mark.fluent_version(">=26.1")
+def test_read_only_command_execution(mixing_elbow_case_session):
     """Test read-only command execution."""
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
-    # Create contour via adapter (transport-agnostic)
-    contour = adapter.create_contour("test_contour")
+    solver = mixing_elbow_case_session
+    # Create contour (same for both transports)
+    contour = solver.settings.results.graphics.contour.create("test_contour")
 
     assert contour.display.is_active() is False
     with pytest.raises(InactiveObjectError):
@@ -1352,19 +1069,9 @@ def test_read_only_command_execution(session_fixture_name, request):
         contour.display()
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        "mixing_elbow_settings_session",
-        pytest.param(
-            "mixing_elbow_settings_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_copy_accepts_sequence_types(session_fixture_name, request):
+def test_copy_accepts_sequence_types(mixing_elbow_settings_session):
     """Test that copy operations accept sequence types."""
-    solver = request.getfixturevalue(session_fixture_name)
+    solver = mixing_elbow_settings_session
     hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     hot_inlet.momentum.velocity = 1.0
@@ -1377,22 +1084,10 @@ def test_copy_accepts_sequence_types(session_fixture_name, request):
     assert cold_inlet.momentum.velocity.value() == 1.0
 
 
-@pytest.mark.parametrize(
-    "session_fixture_name",
-    [
-        pytest.param(
-            "mixing_elbow_case_session", marks=pytest.mark.fluent_version(">=26.1")
-        ),
-        pytest.param(
-            "mixing_elbow_case_session_rest",
-            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
-        ),
-    ],
-)
-def test_action_behavior(session_fixture_name, request):
+@pytest.mark.fluent_version(">=26.1")
+def test_action_behavior(mixing_elbow_case_session):
     """Test action behavior (commands with parameters)."""
-    solver = request.getfixturevalue(session_fixture_name)
-    adapter = SettingsTestAdapterFactory.create(session_fixture_name, solver)
+    solver = mixing_elbow_case_session
     with pytest.raises(AttributeError, match="command/query object"):
         solver.settings.solution.run_calculation.iterate.get_state()
     assert isinstance(
@@ -1403,7 +1098,6 @@ def test_action_behavior(session_fixture_name, request):
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True
     )
-    # Use adapter for transport-specific result search
-    assert adapter.search_in_attrs_result(
+    assert _contains_key_or_name(
         result, "active?"
     ), f"'active?' not found in: {result!r}"
