@@ -45,7 +45,9 @@ from ansys.fluent.core.solver import (
     ParametricStudies,
     ReportDefinitions,
     RunCalculation,
-    VelocityInlet,read_case, write_case
+    VelocityInlet,
+    read_case,
+    write_case,
 )
 from ansys.units import VariableCatalog
 from ansys.units.common import K, m, s
@@ -170,7 +172,7 @@ outlet_vel_avg = report_defs.surface.create(
     "outlet-vel-avg",
     report_type="surface-areaavg",
     field=VariableCatalog.VELOCITY_MAGNITUDE,
-    surface_names=[outlet.name()],
+    surface_names=["outlet"],
 )
 
 params = OutputParameters(solver)
@@ -178,9 +180,7 @@ param5 = params.report_definitions.create(
     "parameter-5", report_def_name=outlet_temp_avg
 )
 
-param6 = params.report_definitions.create(
-    "parameter-6", report_def_name=outlet_vel_avg
-)
+param6 = params.report_definitions.create("parameter-6", report_def_name=outlet_vel_avg)
 
 ###########################################################################
 # Enable convergence condition check

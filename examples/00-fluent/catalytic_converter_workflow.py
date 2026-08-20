@@ -204,7 +204,7 @@ workflow.application.improve_surface_mesh(face_quality_limit=0.95)
 
 workflow.application.describe_geometry(
     capping_required=True,
-    setup_type="both",  # Using a string as no enum is currently available.  # TODO double check this is correct
+    setup_type="fluid_solid_voids",  # Using a string as no enum is currently available.  # TODO double check this is correct
     wall_to_internal=True,
 )
 

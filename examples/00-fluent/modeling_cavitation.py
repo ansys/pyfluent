@@ -83,10 +83,13 @@ from ansys.fluent.core.solver import (
     Initialization,
     Methods,
     Models,
+    Multiphase,
     PressureInlet,
     PressureOutlet,
     Residual,
-    RunCalculation,
+    iterate,
+    write_case,
+    write_case_data,
 )
 from ansys.units import VariableCatalog
 from ansys.units.common import Pa, kg, m, s
@@ -118,22 +121,26 @@ solver.settings.mesh.check()
 ###############################################################################
 # Specify an axisymmetric model.
 
-solver.settings.setup.general.solver.two_dim_space = "axisymmetric"
+solver.settings.setup.general.solver.two_dim_space = (
+    solver.settings.setup.general.two_dim_space.AXISYMETRIC
+)
 
 ###############################################################################
 # Enable the multiphase mixture model.
 
 models = Models(solver)
-models.multiphase.models = "mixture"
+models.multiphase.models = models.multiphase.models.MIXTURE
 
 models.multiphase.mixture_parameters.slip_velocity_on = False
-models.multiphase.vof_parameters.vof_formulation = "implicit"
+models.multiphase.vof_parameters.vof_formulation = (
+    models.multiphase.vof_parameters.vof_formulation.IMPLICIT
+)
 
 ###############################################################################
 # Enable the k-ω SST turbulence model.
 
-models.viscous.model = "k-omega"
-models.viscous.k_omega_model = "sst"
+models.viscous.model = models.viscous.model.K_OMEGA
+models.viscous.k_omega_model = models.viscous.k_omega_model.SST
 
 ###############################################################################
 # Define materials
@@ -143,13 +150,15 @@ models.viscous.k_omega_model = "sst"
 # the copy by changing the density to 0.02558 kg/m3 and the viscosity to
 # 1.26e-06 kg/m–s.
 
-water = FluidMaterial.create(solver, name="water")
+fluid_materials = FluidMaterial(solver)
+
+water = fluid_materials.create(name="water")
 water.density = 1000 * kg / m**3
 water.viscosity = 0.001 * kg / (m * s)
 
 # copy vapor from database then override properties
 solver.settings.setup.materials.database.copy_by_name(type="fluid", name="water-vapor")
-water_vapor = FluidMaterial.get(solver, name="water-vapor")
+water_vapor = fluid_materials.get("water-vapor")
 water_vapor.density = 0.02558 * kg / m**3
 water_vapor.viscosity = 1.26e-06 * kg / (m * s)
 
@@ -162,14 +171,15 @@ water_vapor.viscosity = 1.26e-06 * kg / (m * s)
 # mechanism occurring from the liquid to the vapor.
 
 # TODO fix
-primary_phase = solver.setup.models.multiphase.phases["phase-1"]
+multi_phase = Multiphase(solver)
+primary_phase = multi_phase.phases["phase-1"]
 primary_phase.name = "liquid"
-primary_phase.material = water.name
-secondary_phase = solver.setup.models.multiphase.phases["phase-2"]
+primary_phase.material = water
+secondary_phase = multi_phase.phases["phase-2"]
 secondary_phase.name = "vapor"
-secondary_phase.material = water_vapor.name
+secondary_phase.material = water_vapor
 
-# solver.settings.setup.models.multiphase.phase_interaction.mass_transfer_list.
+# multi_phase.phase_interaction.mass_transfer_list.
 solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.mass_transfer(
     1, "liquid", "vapor", "cavitation", "1", "no", "no", "no"
 )
@@ -185,26 +195,32 @@ solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reac
 # turbulent specification. Set turbulent intensity and turbulent viscosity
 # ratio to 0.05 and 10 respectively.
 
-inlets = PressureInlet.get(solver, name="inlet_*")
+inlets = PressureInlet(solver).get("inlet_*")
 inlets.momentum.gauge_total_pressure = 500_000 * Pa
 inlets.momentum.supersonic_or_initial_gauge_pressure = 449_000 * Pa
-inlets.momentum.direction_specification_method = "Normal to Boundary"
-inlets.turbulence.turbulent_specification = "Intensity and Viscosity Ratio"
+inlets.momentum.direction_specification_method = (
+    inlets.momentum.direction_specification_method.NORMAL_TO_BOUNDARY
+)
+inlets.turbulence.turbulent_specification = (
+    inlets.turbulence.turbulent_specification.INTENSITY_AND_VISCOSITY_RATIO
+)
 inlets.turbulence.turbulent_intensity = 0.05
 inlets.turbulence.turbulent_viscosity_ratio = 10
 # Set volume fraction of vapor phase to 0 for the inlets
-inlets.multiphase.volume_fraction = 0
+inlets.multiphase.volume_fraction.value = 0
 
 ###############################################################################
 # For the outlet boundary conditions, set the gauge pressure as 95 kPa. Use
 # the same turbulence and volume fraction settings as the inlets.
 
-outlet = PressureOutlet.get(solver, name="outlet")
+outlet = PressureOutlet(solver).get("outlet")
 outlet.momentum.gauge_pressure = 95_000 * Pa
-outlet.turbulence.turbulent_specification = "Intensity and Viscosity Ratio"
+outlet.turbulence.turbulent_specification = (
+    outlet.turbulence.turbulent_specification.INTENSITY_AND_VISCOSITY_RATIO
+)
 outlet.turbulence.turbulent_intensity = 0.04
 outlet.turbulence.turbulent_viscosity_ratio = 10
-outlet.multiphase.volume_fraction = 0
+outlet.multiphase.volume_fraction.value = 0
 
 
 ###############################################################################
@@ -232,7 +248,9 @@ discretization_scheme["pressure"] = "presto!"
 
 # Pressure-velocity coupling and pseudo-time settings
 methods.p_v_coupling.flow_scheme = "Coupled"
-methods.pseudo_time_method.formulation.coupled_solver = "global-time-step"
+methods.pseudo_time_method.formulation.coupled_solver = (
+    methods.pseudo_time_method.formulation.coupled_solver.GLOBAL_TIME_STEP
+)
 methods.high_order_term_relaxation.enable = True
 controls = Controls(solver)
 controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo_relax["mp"] = 0.3
@@ -262,13 +280,11 @@ initialization.hybrid_initialize()
 # 500 iterations. Save the final case file and the data.
 
 # Write the initial case file
-write_case(file_name="cav.cas.h5")
+write_case(solver, file_name="cav.cas.h5")
 
-# Run calculation using typed RunCalculation
-RunCalculation(solver).iterate(iter_count=500)
+iterate(solver, iter_count=500)
 
-# Write final case and data (file API retained)
-write_case_data(file_name="cav.cas.h5")
+write_case_data(solver, file_name="cav.cas.h5")
 
 ###############################################################################
 # Post Processing
@@ -292,8 +308,8 @@ graphics.picture.y_resolution = 1440
 # volume fraction of water vapor. For each plot enable banded coloring and
 # filled option.
 
-cont_static = Contour.create(
-    solver, name="contour_static_pressure", field=VariableCatalog.PRESSURE, filled=True
+cont_static = Contour(solver).create(
+    name="contour_static_pressure", field=VariableCatalog.PRESSURE, filled=True
 )
 cont_static.coloring.option = "banded"
 cont_static.coloring.smooth = False
@@ -313,8 +329,7 @@ graphics.picture.save_picture(file_name="contour_static_pressure.png")
 #   :width: 500pt
 #   :align: center
 
-cont_tke = Contour.create(
-    solver,
+cont_tke = Contour(solver).create(
     name="contour_tke",
     field=VariableCatalog.TURBULENT_KINETIC_ENERGY,
     filled=True,
@@ -330,8 +345,7 @@ graphics.picture.save_picture(file_name="contour_tke.png")
 #   :width: 500pt
 #   :align: center
 
-cont_vf = Contour.create(
-    solver,
+cont_vf = Contour(solver).create(
     name="contour_vf_vapor",
     field=VariableCatalog.fluent.VOLUME_FRACTION_SECONDARY_PHASE,
     filled=True,
@@ -349,6 +363,6 @@ graphics.picture.save_picture(file_name="contour_vf_vapor.png")
 
 # Save case to 'cav.cas.h5' and exit
 
-write_case(file_name="cav.cas.h5")  # noqa: F821
+write_case(solver, file_name="cav.cas.h5")  # noqa: F821
 
 solver.exit()

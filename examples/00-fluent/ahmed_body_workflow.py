@@ -68,6 +68,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
 from ansys.fluent.core.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import (
     FluidMaterial,
     Initialization,
@@ -162,12 +163,14 @@ workflow.application.add_local_sizing_wtm(
 #######################################################################################
 # Add Surface Mesh Sizing
 # =====================================================================================
-workflow.application.create_surface_mesh.cfd_surface_mesh_controls(  # TODO double check this works (new_meshing_workflows.rst kinda implies it does)
-    curvature_normal_angle=12,
-    growth_rate=1.15,
-    max_size=50,
-    min_size=1,
-    size_functions="curvature",  # Using a string as no enum is currently available
+workflow.application.create_surface_mesh(
+    cfd_surface_mesh_controls=dict(  # TODO double check this works (new_meshing_workflows.rst kinda implies it does)
+        curvature_normal_angle=12,
+        growth_rate=1.15,
+        max_size=50,
+        min_size=1,
+        size_functions="curvature",  # Using a string as no enum is currently available
+    )
 )
 
 workflow.application.improve_surface_mesh(face_quality_limit=0.4)
@@ -203,7 +206,7 @@ workflow.application.create_volume_mesh_wtm(
 #######################################################################################
 # Switch to the Solver Mode
 # =====================================================================================
-solver = meshing.switch_to_solver()
+solver: Solver = meshing.switch_to_solver()
 
 #######################################################################################
 # Mesh Visualization

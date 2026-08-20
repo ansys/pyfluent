@@ -60,17 +60,23 @@ import csv
 from pathlib import Path
 import platform
 
-from ansys.units import VariableCatalog
 import matplotlib.pyplot as plt
 import pyvista as pv
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
 from ansys.fluent.core.solver import (
+    BoundaryCondition,
     CellZoneCondition,
+    Energy,
     FluidMaterial,
+    Fluxes,
+    General,
     Initialization,
+    IsoSurface,
     Materials,
+    MeshInterfaces,
     Monitor,
     PressureOutlet,
     ReportDefinitions,
@@ -79,14 +85,8 @@ from ansys.fluent.core.solver import (
     VelocityInlet,
     Viscous,
     WallBoundary,
-    BoundaryCondition,
-    Energy,
-    Fluxes,
-    General,
-    IsoSurface,
-    write_case_data,
     write_case,
-    MeshInterfaces,
+    write_case_data,
 )
 from ansys.fluent.visualization import (
     Contour,
@@ -95,6 +95,7 @@ from ansys.fluent.visualization import (
     Vector,
     XYPlot,
 )
+from ansys.units import VariableCatalog
 from ansys.units.common import J, K, Pa, W, kg, m, s
 
 filenames = {
@@ -126,358 +127,219 @@ print(meshing.get_fluent_version())
 # Start Watertight Geometry Meshing Workflow
 # ==========================================
 
-meshing.workflow.InitializeWorkflow(WorkflowType=r"Watertight Geometry")
+workflow: mesh_wf_new.WatertightMeshingWorkflow = meshing.watertight(legacy=False)
+meshing.upload(geom_filename)
+workflow.application.import_geometry(file_name=geom_filename)
 
-meshing.workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geom_filename}
+#############################################################################
+# Generate the Surface Mesh
+# =========================
 
-meshing.workflow.TaskObject["Import Geometry"].Execute()
-
-meshing.workflow.TaskObject["Add Local Sizing"].Execute()
-
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
-    "CFDSurfaceMeshControls": {
-        "MinSize": 0.3,
-        "MaxSize": 1,
-        "ScopeProximityTo": "faces",
-    },
-}
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
-
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
-meshing.workflow.TaskObject["Describe Geometry"].Arguments.setState(
-    {
-        r"CappingRequired": r"No",
-        r"InvokeShareTopology": r"No",
-        r"NonConformal": r"Yes",
-        r"SetupType": r"The geometry consists of both fluid and solid regions and/or voids",
-    }
+workflow.application.create_surface_mesh.cfd_surface_mesh_controls(
+    min_size=0.3,
+    max_size=1,
+    scope_proximity_to="faces",
 )
 
-meshing.workflow.TaskObject["Describe Geometry"].Execute()
+#############################################################################
+# Describe Geometry
+# =================
+
+workflow.application.describe_geometry(
+    capping_required=False,
+    invoke_share_topology="No",  # Using a string as no enum is currently available
+    non_conformal=True,
+    setup_type="fluid_solid_voids",
+)
 
 #############################################################################
 # Update Interface Boundaries; Create Region
 # ==========================================
 
-meshing.workflow.TaskObject["Update Boundaries"].Arguments.setState(
-    {
-        r"BoundaryLabelList": [
-            r"interface-out-solid-a",
-            r"interface-out-high-a",
-            r"interface-out-low-a",
-            r"interface-4-solid-sweep",
-            r"interface-4-high-sweep",
-            r"interface-4-low-sweep",
-            r"interface-3-solid-sweep",
-            r"interface-3-high-sweep",
-            r"interface-3-low-sweep",
-            r"interface-2-solid-sweep",
-            r"interface-2-high-sweep",
-            r"interface-2-low-sweep",
-            r"interface-1-solid-sweep",
-            r"interface-1-high-sweep",
-            r"interface-1-low-sweep",
-            r"interface-solid-in-a",
-            r"interface-in-high-a",
-            r"interface-in-low-a",
-            r"interface-tube-2-solid-a",
-            r"interface-tube-2-high-a",
-            r"interface-tube-2-low-a",
-            r"interface-tube-1-solid-a",
-            r"interface-tube-1-high-a",
-            r"interface-tube-1-low-a",
-            r"interface-4-fluid-high-tet",
-            r"interface-4-fluid-low-tet",
-            r"interface-3-fluid-low-tet",
-            r"interface-3-fluid-high-tet",
-            r"interface-2-fluid-high-tet",
-            r"interface-2-fluid-low-tet",
-            r"interface-1-fluid-high-tet",
-            r"interface-1-fluid-low-tet",
-            r"interface-1-solid-tet-4",
-            r"interface-1-solid-tet-3",
-            r"interface-1-solid-tet-2",
-            r"interface-1-solid-tet-1",
-        ],
-        r"BoundaryLabelTypeList": [
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-            r"interface",
-        ],
-        r"OldBoundaryLabelList": [
-            r"interface-out-solid-a",
-            r"interface-out-high-a",
-            r"interface-out-low-a",
-            r"interface-4-solid-sweep",
-            r"interface-4-high-sweep",
-            r"interface-4-low-sweep",
-            r"interface-3-solid-sweep",
-            r"interface-3-high-sweep",
-            r"interface-3-low-sweep",
-            r"interface-2-solid-sweep",
-            r"interface-2-high-sweep",
-            r"interface-2-low-sweep",
-            r"interface-1-solid-sweep",
-            r"interface-1-high-sweep",
-            r"interface-1-low-sweep",
-            r"interface-solid-in-a",
-            r"interface-in-high-a",
-            r"interface-in-low-a",
-            r"interface-tube-2-solid-a",
-            r"interface-tube-2-high-a",
-            r"interface-tube-2-low-a",
-            r"interface-tube-1-solid-a",
-            r"interface-tube-1-high-a",
-            r"interface-tube-1-low-a",
-            r"interface-4-fluid-high-tet",
-            r"interface-4-fluid-low-tet",
-            r"interface-3-fluid-low-tet",
-            r"interface-3-fluid-high-tet",
-            r"interface-2-fluid-high-tet",
-            r"interface-2-fluid-low-tet",
-            r"interface-1-fluid-high-tet",
-            r"interface-1-fluid-low-tet",
-            r"interface-1-solid-tet-4",
-            r"interface-1-solid-tet-3",
-            r"interface-1-solid-tet-2",
-            r"interface-1-solid-tet-1",
-        ],
-        r"OldBoundaryLabelTypeList": [
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-            r"wall",
-        ],
-        r"OldLabelZoneList": [
-            r"interface-out-solid-a",
-            r"interface-out-high-a",
-            r"interface-out-low-a",
-            r"interface-4-solid-sweep",
-            r"interface-4-high-sweep",
-            r"interface-4-low-sweep",
-            r"interface-3-solid-sweep",
-            r"interface-3-high-sweep",
-            r"interface-3-low-sweep",
-            r"interface-2-solid-sweep",
-            r"interface-2-high-sweep",
-            r"interface-2-low-sweep",
-            r"interface-1-solid-sweep",
-            r"interface-1-high-sweep",
-            r"interface-1-low-sweep",
-            r"interface-solid-in-a",
-            r"interface-in-high-a",
-            r"interface-in-low-a",
-            r"interface-tube-2-solid-a.2",
-            r"interface-tube-2-solid-a.1",
-            r"interface-tube-2-solid-a",
-            r"interface-tube-2-high-a.2",
-            r"interface-tube-2-high-a.1",
-            r"interface-tube-2-high-a",
-            r"interface-tube-2-low-a.2",
-            r"interface-tube-2-low-a.1",
-            r"interface-tube-2-low-a",
-            r"interface-tube-1-solid-a.2",
-            r"interface-tube-1-solid-a.1",
-            r"interface-tube-1-solid-a",
-            r"interface-tube-1-high-a.2",
-            r"interface-tube-1-high-a.1",
-            r"interface-tube-1-high-a",
-            r"interface-tube-1-low-a.2",
-            r"interface-tube-1-low-a.1",
-            r"interface-tube-1-low-a",
-            r"interface-4-fluid-high-tet",
-            r"interface-4-fluid-low-tet",
-            r"interface-3-fluid-low-tet",
-            r"interface-3-fluid-high-tet",
-            r"interface-2-fluid-high-tet",
-            r"interface-2-fluid-low-tet",
-            r"interface-1-fluid-high-tet",
-            r"interface-1-fluid-low-tet",
-            r"interface-1-solid-tet-4",
-            r"interface-1-solid-tet-3",
-            r"interface-1-solid-tet-2",
-            r"interface-1-solid-tet-1",
-        ],
-    }
+interface_labels = [
+    "interface-out-solid-a",
+    "interface-out-high-a",
+    "interface-out-low-a",
+    "interface-4-solid-sweep",
+    "interface-4-high-sweep",
+    "interface-4-low-sweep",
+    "interface-3-solid-sweep",
+    "interface-3-high-sweep",
+    "interface-3-low-sweep",
+    "interface-2-solid-sweep",
+    "interface-2-high-sweep",
+    "interface-2-low-sweep",
+    "interface-1-solid-sweep",
+    "interface-1-high-sweep",
+    "interface-1-low-sweep",
+    "interface-solid-in-a",
+    "interface-in-high-a",
+    "interface-in-low-a",
+    "interface-tube-2-solid-a",
+    "interface-tube-2-high-a",
+    "interface-tube-2-low-a",
+    "interface-tube-1-solid-a",
+    "interface-tube-1-high-a",
+    "interface-tube-1-low-a",
+    "interface-4-fluid-high-tet",
+    "interface-4-fluid-low-tet",
+    "interface-3-fluid-low-tet",
+    "interface-3-fluid-high-tet",
+    "interface-2-fluid-high-tet",
+    "interface-2-fluid-low-tet",
+    "interface-1-fluid-high-tet",
+    "interface-1-fluid-low-tet",
+    "interface-1-solid-tet-4",
+    "interface-1-solid-tet-3",
+    "interface-1-solid-tet-2",
+    "interface-1-solid-tet-1",
+]
+
+workflow.application.update_boundaries(
+    boundary_label_list=interface_labels,
+    boundary_label_type_list=["interface"] * len(interface_labels),
+    old_boundary_label_list=interface_labels,
+    old_boundary_label_type_list=["wall"] * len(interface_labels),
+    old_label_zone_list=[
+        "interface-out-solid-a",
+        "interface-out-high-a",
+        "interface-out-low-a",
+        "interface-4-solid-sweep",
+        "interface-4-high-sweep",
+        "interface-4-low-sweep",
+        "interface-3-solid-sweep",
+        "interface-3-high-sweep",
+        "interface-3-low-sweep",
+        "interface-2-solid-sweep",
+        "interface-2-high-sweep",
+        "interface-2-low-sweep",
+        "interface-1-solid-sweep",
+        "interface-1-high-sweep",
+        "interface-1-low-sweep",
+        "interface-solid-in-a",
+        "interface-in-high-a",
+        "interface-in-low-a",
+        "interface-tube-2-solid-a.2",
+        "interface-tube-2-solid-a.1",
+        "interface-tube-2-solid-a",
+        "interface-tube-2-high-a.2",
+        "interface-tube-2-high-a.1",
+        "interface-tube-2-high-a",
+        "interface-tube-2-low-a.2",
+        "interface-tube-2-low-a.1",
+        "interface-tube-2-low-a",
+        "interface-tube-1-solid-a.2",
+        "interface-tube-1-solid-a.1",
+        "interface-tube-1-solid-a",
+        "interface-tube-1-high-a.2",
+        "interface-tube-1-high-a.1",
+        "interface-tube-1-high-a",
+        "interface-tube-1-low-a.2",
+        "interface-tube-1-low-a.1",
+        "interface-tube-1-low-a",
+        "interface-4-fluid-high-tet",
+        "interface-4-fluid-low-tet",
+        "interface-3-fluid-low-tet",
+        "interface-3-fluid-high-tet",
+        "interface-2-fluid-high-tet",
+        "interface-2-fluid-low-tet",
+        "interface-1-fluid-high-tet",
+        "interface-1-fluid-low-tet",
+        "interface-1-solid-tet-4",
+        "interface-1-solid-tet-3",
+        "interface-1-solid-tet-2",
+        "interface-1-solid-tet-1",
+    ],
 )
 
-meshing.workflow.TaskObject["Update Boundaries"].Execute()
-
-meshing.workflow.TaskObject["Create Regions"].Execute()
+workflow.application.create_regions()
 
 #############################################################################
 # Custom Journal for Creating Periodicity due to Non-Conformal Objects
 # ====================================================================
 
-meshing.workflow.TaskObject["Describe Geometry"].InsertNextTask(
-    CommandName=r"RunCustomJournal"
-)
-meshing.workflow.TaskObject["Run Custom Journal"].Rename(NewName=r"set-periodicity")
-meshing.workflow.TaskObject["set-periodicity"].Arguments = {
-    r"JournalString": r"""/bo rps translational semi-auto periodic-1-high periodic-2-high periodic-3-high periodic-4-high , 0 0 -2.3
+workflow.application.custom_journal_task(
+    journal_string=r"""/bo rps translational semi-auto periodic-1-high periodic-2-high periodic-3-high periodic-4-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-5* , 0 0 -2.3
 /bo rps translational semi-auto periodic-6-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-7-high , 0 0 -2.3
 """,
-}
-
-meshing.workflow.TaskObject["set-periodicity"].Execute()
-
-#############################################################################
-# Update Boundary Layer Task
-# ==========================
-
-meshing.workflow.TaskObject["Update Regions"].Execute()
-meshing.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-meshing.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-meshing.workflow.TaskObject["smooth-transition_1"].Rename(NewName=r"aspect-ratio_1")
-
-meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.setState(
-    {
-        "BLControlName": r"aspect-ratio_1",
-        "BLRegionList": [
-            r"fluid-tet-4",
-            r"fluid-tet-3",
-            r"fluid-tet-2",
-            r"fluid-tet-1",
-            r"fluid-sweep-fin2",
-            r"fluid-sweep-fin1",
-            r"fluid-sweep-fin5",
-            r"fluid-sweep-fin3",
-            r"fluid-sweep-fin6",
-            r"fluid-sweep-fin4",
-            r"fluid-in",
-            r"fluid-out",
-        ],
-        r"BLZoneList": [
-            r"wall-fluid-tet-4-solid-tet-4",
-            r"wall-fluid-tet-3-solid-tet-3",
-            r"wall-fluid-tet-2-solid-tet-2",
-            r"wall-fluid-tet-2-solid-tet-2-wall-fluid-tet-3-solid-tet-3-fluid-tet-2-solid-tet-2",
-            r"wall-fluid-tet-1-solid-tet-1",
-            r"wall-fluid-sweep-fin-solid-sweep-fin.1",
-            r"wall-fluid-sweep-fin-solid-sweep-fin",
-            r"wall-fluid-sweep-fin-solid-sweep-fin.5",
-            r"wall-fluid-sweep-fin-solid-sweep-fin.4",
-            r"wall-fluid-sweep-fin-solid-sweep-fin.3",
-            r"wall-fluid-sweep-fin-solid-sweep-fin.2",
-        ],
-        r"BlLabelList": r"wall*",
-        r"CompleteBlLabelList": [
-            r"wall-fluid-sweep-fin-solid-sweep-fin",
-            r"wall-fluid-tet-1-solid-tet-1",
-            r"wall-fluid-tet-2-solid-tet-2",
-            r"wall-fluid-tet-3-solid-tet-3",
-            r"wall-fluid-tet-4-solid-tet-4",
-        ],
-        r"FaceScope": {
-            r"GrowOn": r"selected-labels",
-        },
-        r"OffsetMethodType": r"aspect-ratio",
-    }
 )
 
-meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
+#############################################################################
+# Update Regions; Add Boundary Layers
+# ====================================
+
+workflow.application.update_regions()
+
+workflow.application.add_boundary_layers(
+    add_child="yes",
+    control_name="aspect-ratio_1",
+    offset_method_type="aspect-ratio",
+    region_scope=[
+        "fluid-tet-4",
+        "fluid-tet-3",
+        "fluid-tet-2",
+        "fluid-tet-1",
+        "fluid-sweep-fin2",
+        "fluid-sweep-fin1",
+        "fluid-sweep-fin5",
+        "fluid-sweep-fin3",
+        "fluid-sweep-fin6",
+        "fluid-sweep-fin4",
+        "fluid-in",
+        "fluid-out",
+    ],
+    zone_selection_list=[
+        "wall-fluid-tet-4-solid-tet-4",
+        "wall-fluid-tet-3-solid-tet-3",
+        "wall-fluid-tet-2-solid-tet-2",
+        "wall-fluid-tet-2-solid-tet-2-wall-fluid-tet-3-solid-tet-3-fluid-tet-2-solid-tet-2",
+        "wall-fluid-tet-1-solid-tet-1",
+        "wall-fluid-sweep-fin-solid-sweep-fin.1",
+        "wall-fluid-sweep-fin-solid-sweep-fin",
+        "wall-fluid-sweep-fin-solid-sweep-fin.5",
+        "wall-fluid-sweep-fin-solid-sweep-fin.4",
+        "wall-fluid-sweep-fin-solid-sweep-fin.3",
+        "wall-fluid-sweep-fin-solid-sweep-fin.2",
+    ],
+    bl_label_list=["wall*"],
+    face_scope={"grow_on": "selected-labels"},
+    complete_bl_label_list=[
+        "wall-fluid-sweep-fin-solid-sweep-fin",
+        "wall-fluid-tet-1-solid-tet-1",
+        "wall-fluid-tet-2-solid-tet-2",
+        "wall-fluid-tet-3-solid-tet-3",
+        "wall-fluid-tet-4-solid-tet-4",
+    ],
+)
 
 #############################################################################
 # Generate Mesh
 # =============
 
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+workflow.application.create_volume_mesh_wtm()
 
 #############################################################################
 # Improve Volume Mesh
 # ===================
 
-meshing.workflow.TaskObject["Generate the Volume Mesh"].InsertNextTask(
-    CommandName=r"ImproveVolumeMesh"
+workflow.application.improve_volume_mesh(
+    cell_quality_limit=0.05,
+    improve_volume_mesh_preferences={
+        "show_in_gui": False,
+        "iterations": 5,
+        "min_angle": 0,
+        "smooth_remaining_bad_cells": True,
+    },
 )
-
-meshing.workflow.TaskObject["Improve Volume Mesh"].Arguments.setState(
-    {
-        r"CellQualityLimit": 0.05,
-        r"VMImprovePreferences": {
-            r"ShowVMImprovePreferences": False,
-            r"VIQualityIterations": 5,
-            r"VIQualityMinAngle": 0,
-            r"VIgnoreFeature": r"yes",
-        },
-    }
-)
-
-meshing.workflow.TaskObject["Improve Volume Mesh"].Execute()
 
 #############################################################################
 # Save Mesh File
 # ==============
 
 save_mesh_as = str(Path(pyfluent.config.examples_path) / "hx-fin-2mm.msh.h5")
-meshing_session.tui.file.write_mesh(save_mesh_as)
+meshing.tui.file.write_mesh(save_mesh_as)
 
 #############################################################################
 # Switch to Solution Mode

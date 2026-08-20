@@ -83,16 +83,8 @@ Modeling Ablation
 # ==================================================================================
 from pathlib import Path
 
-from ansys.units import VariableCatalog
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin import (
-    PlaneSurface,
-    ReportFile,
-    ReportPlot,
-)
-from ansys.fluent.core.generated.solver.settings_builtin_261 import read_case, write_case_data
 from ansys.fluent.core.solver import (
     Controls,
     DynamicMesh,
@@ -101,16 +93,23 @@ from ansys.fluent.core.solver import (
     Initialization,
     Models,
     Monitor,
+    PlaneSurface,
     PressureFarFieldBoundary,
     PressureOutlet,
     ReportDefinitions,
+    ReportFile,
+    ReportPlot,
     Residual,
     Results,
     RunCalculation,
     Solution,
     WallBoundary,
+    read_case,
+    write_case,
+    write_case_data,
 )
 from ansys.fluent.visualization import Contour, GraphicsWindow
+from ansys.units import VariableCatalog
 from ansys.units.common import K, Pa, s
 
 ####################################################################################
@@ -122,14 +121,6 @@ import_filename = examples.download_file(
     save_path=Path.cwd(),
 )
 
-# upload mesh to the solver working directory
-solver_upload_path = import_filename
-# Note: solver.upload accepts a path-like or string
-try:
-    # solver may not be created yet; create it before upload below
-    pass
-except Exception:
-    pass
 
 ####################################################################################
 # Fluent Solution Setup
@@ -156,8 +147,8 @@ read_case(solver, file_name=import_filename)
 general = General(solver)
 models = Models(solver)
 
-general.solver.type = "density-based-implicit"
-general.solver.time = "unsteady-1st-order"
+general.solver.type = general.solver.type.DENSITY_BASED_IMPLICIT
+general.solver.time = general.solver.time.UNSTEADY_1ST_ORDER
 general.operating_conditions.operating_pressure = 0.0 * Pa
 models.energy.enabled = True
 models.ablation.enabled = True
@@ -166,21 +157,21 @@ models.ablation.enabled = True
 # Define material
 # =================================================================
 
-air = FluidMaterial.get(solver, name="air")
-air.density.option = "ideal-gas"
+air = FluidMaterial(solver).get("air")
+air.density.option = "ideal-gas"  # Using string as enum is currently unavailable
 air.molecular_weight = 28.966
 
 ############################
 # Define boundary conditions
 # ==========================
 
-inlet = PressureFarFieldBoundary.get(solver, name="inlet")
+inlet = PressureFarFieldBoundary(solver).get(name="inlet")
 inlet.momentum.gauge_pressure = 13500 * Pa
 inlet.momentum.mach_number = 3
 inlet.thermal.temperature = 4500 * K
 inlet.turbulence.turbulent_intensity = 0.001
 
-outlet = PressureOutlet.get(solver, name="outlet")
+outlet = PressureOutlet(solver).get(name="outlet")
 outlet.momentum.gauge_pressure = 13500 * Pa
 outlet.momentum.prevent_reverse_flow = True
 
@@ -192,7 +183,7 @@ outlet.momentum.prevent_reverse_flow = True
 # Remeshing options, #creates the wall-ablation dynamic mesh zone, and configure
 # appropriate dynamic mesh settings.
 
-wall_ablation = WallBoundary.get(solver, name="wall_ablation")
+wall_ablation = WallBoundary(solver).get(name="wall_ablation")
 wall_ablation.ablation.ablation_select_model = "Vielle's Model"
 wall_ablation.ablation.ablation_vielle_a = 5
 wall_ablation.ablation.ablation_vielle_n = 0.1
@@ -286,9 +277,9 @@ monitor = Monitor(solver)
 report_definitions = ReportDefinitions(solver)
 
 drag_def = report_definitions.drag.create(name="drag_force_x", zones=[wall_ablation])
-ReportPlot.create(solver, name="drag_force_x", report_defs=[drag_def])
-ReportFile.create(
-    solver, name="drag_force_x", file_name="drag_force_x.out", report_defs=[drag_def]
+ReportPlot(solver).create(name="drag_force_x", report_defs=[drag_def])
+ReportFile(solver).create(
+    name="drag_force_x", file_name="drag_force_x.out", report_defs=[drag_def]
 )
 
 pressure_avg = report_definitions.surface.create(
@@ -297,9 +288,8 @@ pressure_avg = report_definitions.surface.create(
     field=VariableCatalog.PRESSURE,
     surface_names=[wall_ablation],
 )
-ReportPlot.create(solver, name="pressure_avg_abl_wall", report_defs=[pressure_avg])
-pressure_avg_file = ReportFile.create(
-    solver,
+ReportPlot(solver).create(name="pressure_avg_abl_wall", report_defs=[pressure_avg])
+pressure_avg_file = ReportFile(solver).create(
     name="pressure_avg_abl_wall",
     report_defs=[pressure_avg],
     file_name="pressure_avg_abl_wall.out",
@@ -388,7 +378,7 @@ write_case_data(solver, file_name="ablation_Solved.cas.h5")
 # ================
 # Following contours are displayed in the Fluent GUI:
 
-mid_plane = PlaneSurface.create(name="mid_plane", method="zx-plane")
+mid_plane = PlaneSurface(solver).create(name="mid_plane", method="zx-plane")
 # Create mid plane surface for contouring
 
 ###############################################
@@ -397,7 +387,7 @@ mid_plane = PlaneSurface.create(name="mid_plane", method="zx-plane")
 # Following graphics is displayed in the a new window/notebook
 
 
-contour1 = Contour(solver=solver, field="pressure", surfaces=["mid_plane"])
+contour1 = Contour(solver=solver, field=VariableCatalog.PRESSURE, surfaces=[mid_plane])
 
 window = GraphicsWindow()
 window.add_graphics(contour1)
@@ -410,8 +400,10 @@ window.show()
 # %%
 #    Static Pressure Contour
 
-contour1.field = "mach-number"
-contour1.range.option = "auto-range-off"
+contour1.field = "mach-number"  # Using a string as no enum is currently available.
+contour1.range.option = (
+    "auto-range-off"  # Using a string as no enum is currently available.
+)
 contour1.range.auto_range_off.minimum = 0.5
 contour1.range.auto_range_off.maximum = 3.0
 window = GraphicsWindow()

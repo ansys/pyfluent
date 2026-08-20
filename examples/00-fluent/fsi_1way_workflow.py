@@ -118,7 +118,7 @@ read_case(solver, file_name=mesh_file)
 # Configure solver settings for fluid flow
 # ----------------------------------------
 
-velocity_inlet = VelocityInlet.get(solver, name="velocity_inlet")
+velocity_inlet = VelocityInlet(solver).get(name="velocity_inlet")
 velocity_inlet.momentum.velocity_magnitude = 100.0 * m / s  # High-speed inlet flow
 velocity_inlet.turbulence.turbulent_viscosity_ratio = (
     5  # Dimensionless, typically 1-10 for moderate turbulence
@@ -141,8 +141,7 @@ graphics = Graphics(solver)
 graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
 graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
 
-contour_vel = Contour.create(
-    solver,
+contour_vel = Contour(solver).create(
     name="contour-vel",
     field=VariableCatalog.VELOCITY_MAGNITUDE,
     surfaces_list=["fluid-symmetry"],
@@ -171,7 +170,7 @@ structure.model = "linear-elasticity"
 
 # Copy materials from the database and assign to solid zone
 steel = Materials(solver).database.copy_by_name(type="solid", name="steel")
-solid_zone = SolidCellZone.get(solver, name="solid")
+solid_zone = SolidCellZone(solver).get(name="solid")
 solid_zone.general.material = steel
 
 # %%
@@ -180,28 +179,40 @@ solid_zone.general.material = steel
 # configure Fluent to define the steel probe's support and movement using
 # structural boundary conditions
 
+wall_boundaries = WallBoundary(solver)
+
 # Configure solid-symmetry boundary
-solid_sym = WallBoundary.get(solver, name="solid-symmetry")
-solid_sym.structure.z_disp_boundary_value = 0
-solid_sym.structure.z_disp_boundary_condition = "Node Z-Displacement"
+solid_sym = wall_boundaries.get(name="solid-symmetry")
+solid_sym.structure.z_disp_boundary_value.value = 0
+solid_sym.structure.z_disp_boundary_condition = (
+    solid_sym.structure.z_disp_boundary_condition.NODE_Z_DISPLACEMENT
+)
 
 # Set solid-top boundary (fully fixed)
-solid_top = WallBoundary.get(solver, name="solid-top")
-solid_top.structure.z_disp_boundary_value = 0
-solid_top.structure.z_disp_boundary_condition = "Node Z-Displacement"
-solid_top.structure.y_disp_boundary_value = 0
-solid_top.structure.y_disp_boundary_condition = "Node Y-Displacement"
-solid_top.structure.x_disp_boundary_value = 0
-solid_top.structure.x_disp_boundary_condition = "Node X-Displacement"
+solid_top = wall_boundaries.get(name="solid-top")
+solid_top.structure.z_disp_boundary_value.value = 0
+solid_top.structure.z_disp_boundary_condition = (
+    solid_top.structure.z_disp_boundary_condition.NODE_Z_DISPLACEMENT
+)
+solid_top.structure.y_disp_boundary_value.value = 0
+solid_top.structure.y_disp_boundary_condition = (
+    solid_top.structure.y_disp_boundary_condition.NODE_Y_DISPLACEMENT
+)
+solid_top.structure.x_disp_boundary_value.value = 0
+solid_top.structure.x_disp_boundary_condition = (
+    solid_top.structure.x_disp_boundary_condition.NODE_X_DISPLACEMENT
+)
 
 # Copy boundary conditions
 BoundaryCondition(solver).copy(from_="solid-symmetry", to=["solid-symmetry:011"])
 
 # Configure FSI surface
-fsisurface = WallBoundary.get(solver, name="fsisurface-solid")
-fsisurface.structure.x_disp_boundary_condition = "Intrinsic FSI"
-fsisurface.structure.y_disp_boundary_condition = "Intrinsic FSI"
-fsisurface.structure.z_disp_boundary_condition = "Intrinsic FSI"
+fsi_surface = wall_boundaries.get(name="fsisurface-solid")
+fsi_surface.structure.x_disp_boundary_condition = (
+    "Intrinsic FSI"  # Using a string as no enum is currently available
+)
+fsi_surface.structure.y_disp_boundary_condition = "Intrinsic FSI"
+fsi_surface.structure.z_disp_boundary_condition = "Intrinsic FSI"
 
 # %%
 # Inclusion of Operating Pressure in Fluid-Structure Interaction Forces
@@ -232,8 +243,7 @@ iterate(solver, iter_count=2)
 # Structural Postprocessing
 # -------------------------
 
-displacement_contour = Contour.create(
-    solver,
+displacement_contour = Contour(solver).create(
     name="displacement_contour",
     field=VariableCatalog.TOTAL_DISPLACEMENT,
     surfaces_list=["fsisurface-solid"],

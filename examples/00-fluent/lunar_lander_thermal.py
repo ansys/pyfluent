@@ -308,10 +308,10 @@ solver.settings.file.read_mesh(file_name=lander_mesh_file)
 # 1.
 
 general = General(solver)
-general.solver.time = "unsteady-2nd-order"
+general.solver.time = general.solver.time.UNSTEADY_2ND_ORDER
 
 trans_controls = RunCalculation(solver).transient_controls
-trans_controls.type = "Fixed"
+trans_controls.type = trans_controls.type.FIXED
 trans_controls.max_iter_per_time_step = 20
 trans_controls.time_step_count = 1
 trans_controls.time_step_size = step_size
@@ -326,7 +326,7 @@ energy = Energy(solver)
 energy.enabled = True
 
 viscous = Viscous(solver)
-viscous.model = "laminar"
+viscous.model = viscous.model.LAMINAR
 
 ###############################################################################
 # Set up radiation model
@@ -352,7 +352,7 @@ radiation.multiband["thermal-ir"].start = 2.8
 radiation.multiband["thermal-ir"].end = 100
 
 radiation_freq = radiation.solve_frequency
-radiation_freq.method = "time-step"
+radiation_freq.method = radiation_freq.method.TIME_STEP
 radiation_freq.time_step_interval = 1
 
 ###############################################################################
@@ -363,26 +363,37 @@ radiation_freq.time_step_interval = 1
 # (soil). The thermal conductivity of the regolith and the surface 'fluff' is
 # strongly temperature-dependent and so must be modelled using an expression.
 
-vacuum = SolidMaterial.create(
-    solver,
+materials = SolidMaterial(solver)
+
+# --- Properties of vacuum ---
+# Thermal conductivity: 0
+vacuum = materials.create(
     name="vacuum",
     thermal_conductivity=0 * W / (m * K),
     absorption_coefficient=0,
     refractive_index=1,
 )
 
-fluff = SolidMaterial.create(
-    solver, name="fluff", density=1000 * kg / m**3, specific_heat=1050 * J / (kg * K)
+# --- Properties of fluff (see ref. [2]) ---
+# Density: 1000 [kg m^-3]
+# Specific heat capacity: 1050 [J kg^-1 K^-1]
+# Thermal conductivity: 9.22e-4*(1 + 1.48*(temperature/350 K)^3) [W m^-1 K^-1]
+fluff = materials.create(
+    name="fluff", density=1000 * kg / m**3, specific_heat=1050 * J / (kg * K)
 )
 fluff.thermal_conductivity.option = "expression"
 fluff.thermal_conductivity.expression = (
     "9.22e-4[W m^-1 K^-1]*(1 + 1.48*(StaticTemperature/350[K])^3)"
 )
 
-regolith = SolidMaterial.create(
-    solver, name="regolith", density=2000 * kg / m**3, specific_heat=1050 * J / (kg * K)
+# --- Properties of regolith (see ref. [2]) ---
+# Density: 2000 [kg m^-3]
+# Specific heat capacity: 1050 [J kg^-1 K^-1]
+# Thermal conductivity: 9.30e-4*(1 + 0.73*(temperature/350 K)^3) [W m^-1 K^-1]
+regolith = materials.create(
+    name="regolith", density=2000 * kg / m**3, specific_heat=1050 * J / (kg * K)
 )
-regolith.thermal_conductivity.option = "expression"
+regolith.thermal_conductivity.option = regolith.thermal_conductivity.option.EXPRESSION
 regolith.thermal_conductivity.expression = (
     "9.30e-4[W m^-1 K^-1]*(1 + 0.73*(StaticTemperature/350[K])^3)"
 )
@@ -400,7 +411,7 @@ CellZoneCondition(solver).set_zone_type(
     new_type="solid",
 )
 
-vacuum_zone = SolidCellZone.get(solver, name="geom-2_domain")
+vacuum_zone = SolidCellZone(solver).get(name="geom-2_domain")
 vacuum_zone.general.material = vacuum
 
 ###############################################################################
@@ -411,7 +422,8 @@ vacuum_zone.general.material = vacuum
 # used to represent the geothermal heat from the Moon's interior that heats
 # the regolith from the bottom.
 
-regolith_bc = WallBoundary.get(solver, name="regolith")
+wall_boundaries = WallBoundary(solver)
+regolith_bc = wall_boundaries.get("regolith")
 
 regolith_bc.thermal.q = 0.031 * W / m**2
 regolith_bc.thermal.planar_conduction = True
@@ -445,7 +457,7 @@ regolith_bc.radiation.internal_emissivity_band = {"solar": 0.87, "thermal-ir": 0
 # The space boundary condition represents deep space and also acts as the
 # source of the Sun's illumination in the simulation.
 
-space_bc = WallBoundary.get(solver, name="space")
+space_bc = wall_boundaries.get("space")
 
 space_bc.thermal.thermal_bc = "Temperature"
 space_bc.thermal.t.value = 3 * K
@@ -469,7 +481,7 @@ space_bc.radiation.internal_emissivity_band.create("thermal-ir", value=1)
 # The spacecraft is covered in reflective MLI (multilayer insulation) and heat
 # transfer through the aluminum shell can be simulated using shell conduction.
 
-sc_mli_bc = WallBoundary.get(solver, name="sc-mli")
+sc_mli_bc = wall_boundaries.get("sc-mli")
 
 sc_mli_bc.thermal.planar_conduction = True
 sc_mli_bc.thermal.shell_conduction = [
@@ -488,7 +500,13 @@ sc_mli_bc.radiation.internal_emissivity_band.create("thermal-ir", value=0.05)
 # walls, but the emissivity is left unset as it will be changed dynamically by
 # our PyFluent script depending on its temperature during the simulation.
 
-sc_rad_bc = WallBoundary.get(solver, name="sc-radiator")
+# --- Set up spacecraft radiator boundary condition ---
+# Thickness: 0.03 [m]
+# Material: aluminum
+# Absorptivity: 0.17
+# Emissivity: 0.09 below 273 K, 0.70 otherwise
+
+sc_rad_bc = wall_boundaries.get("sc-radiator")
 
 sc_rad_bc.thermal.planar_conduction = True
 sc_rad_bc.thermal.shell_conduction = [
@@ -590,10 +608,14 @@ surf_report_files.create(
 
 autosave = solver.settings.solution.calculation_activity.auto_save
 
-autosave.case_frequency = "if-mesh-is-modified"
+autosave.case_frequency = autosave.case_frequency.IF_MESH_IS_MODIFIED
 autosave.data_frequency = 1
-autosave.save_data_file_every.frequency_type = "time-step"
-autosave.append_file_name_with.file_suffix_type = "time-step"
+autosave.save_data_file_every.frequency_type = (
+    autosave.save_data_file_every.frequency_type.TIME_STEP
+)
+autosave.append_file_name_with.file_suffix_type = (
+    autosave.append_file_name_with.file_suffix_type.TIME_STEP
+)
 
 ###############################################################################
 # Convergence criteria
@@ -603,7 +625,7 @@ autosave.append_file_name_with.file_suffix_type = "time-step"
 
 residuals = monitor.residual.equations
 
-for criterion in ["continuity", "x-velocity", "y-velocity", "z-velocity"]:
+for criterion in {"continuity", "x-velocity", "y-velocity", "z-velocity"}:
     residuals[criterion].check_convergence = False
     residuals[criterion].monitor = False
 
@@ -648,11 +670,11 @@ for i in range(n_steps):
 
     # Set beam direction
     bcs = BoundaryCondition(solver)
-    bcs.wall["space"].radiation.direct_irradiation_settings.beam_direction = [
+    bcs.wall["space"].radiation.direct_irradiation_settings.beam_direction = (
         beam_x,
         beam_y,
         beam_z,
-    ]
+    )
 
     # Calculate radiator mean temperature
     rad_mean_temp = get_surf_mean_temp(

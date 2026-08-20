@@ -71,6 +71,7 @@ from ansys.fluent.core.solver import (
     VelocityInlet,
     read_case,
 )
+from ansys.units import VariableCatalog
 from ansys.units.common import K, inch, m, s
 
 import_file_name = examples.download_file(
@@ -140,10 +141,15 @@ elbow_fluid.general.material = "water-liquid"
 # Turbulent Intensity: 5 [%]
 # Hydraulic Diameter: 4 [inch]
 # Temperature: 293.15 [K]
-cold_inlet = VelocityInlet(solver, name="cold-inlet")
+
+inlets = VelocityInlet(solver)
+
+cold_inlet = inlets.get("cold-inlet")
 
 cold_inlet.momentum.velocity_magnitude = 0.4 * m / s
-cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+cold_inlet.turbulence.turbulence_specification = (
+    cold_inlet.turbulence.turbulence_specification.INTENSITY_AND_HYDRAULIC_DIAMETER
+)
 cold_inlet.turbulence.turbulent_intensity = 0.05
 cold_inlet.turbulence.hydraulic_diameter = 4 * inch
 cold_inlet.thermal.temperature = 293.15 * K
@@ -155,10 +161,12 @@ cold_inlet.thermal.temperature = 293.15 * K
 # Turbulent Intensity: 5 [%]
 # Hydraulic Diameter: 1 [inch]
 # Temperature: 313.15 [K]
-hot_inlet = VelocityInlet(solver, name="hot-inlet")
+hot_inlet = inlets.get("hot-inlet")
 
 hot_inlet.momentum.velocity_magnitude = 1.2 * m / s
-hot_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+hot_inlet.turbulence.turbulence_specification = (
+    hot_inlet.turbulence.turbulence_specification.INTENSITY_AND_HYDRAULIC_DIAMETER
+)
 hot_inlet.turbulence.hydraulic_diameter = 1 * inch
 hot_inlet.thermal.temperature = 313.15 * K
 
@@ -166,7 +174,7 @@ hot_inlet.thermal.temperature = 313.15 * K
 # Backflow Turbulent Intensity: 5 [%]
 # Backflow Turbulent Viscosity Ratio: 4
 
-outlet = PressureOutlet(solver, name="outlet")
+outlet = PressureOutlet(solver).get("outlet")
 outlet.turbulence.turbulent_viscosity_ratio = 4
 outlet.turbulence.backflow_turbulent_intensity = 0.05
 
@@ -207,15 +215,12 @@ graphics.picture.y_resolution = 1440
 # Create and display velocity vectors on the ``symmetry-xyplane`` plane, then
 # export the image for inspection.
 
-graphics = solver.settings.results.graphics
-
-graphics.vector["velocity_vector_symmetry"] = {}
-velocity_symmetry = Vector.create(
-    solver,
+vectors = Vector(solver)
+velocity_symmetry = vectors.create(
     name="velocity_vector_symmetry",
-    field="velocity-magnitude",
+    field=VariableCatalog.VELOCITY_MAGNITUDE,
     surfaces_list=["symmetry-xyplane"],
-    style="arrow",
+    style="arrow",  # Using a string as no enum is currently available
 )
 velocity_symmetry.options.scale = 4
 velocity_symmetry.display()
