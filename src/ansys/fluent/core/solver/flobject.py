@@ -243,6 +243,20 @@ def _get_hidden_names(names, child_classes, obj) -> set:
     return hidden
 
 
+def _get_active_names(obj, names: list) -> list:
+    """Return entries from ``names`` that are active and visible at the current exposure level."""
+    ret = []
+    child_classes = type(obj)._child_classes
+    for name in names:
+        child_cls = child_classes.get(name)
+        if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
+            continue
+        child = getattr(obj, name)
+        if child.is_active() and not _is_deprecated(child):
+            ret.append(name)
+    return ret
+
+
 def _raise_if_exposure_hidden(name, child_classes, obj) -> None:
     """Raise AttributeError if name is hidden due to exposure level."""
     child_cls = child_classes.get(name)
@@ -1364,29 +1378,11 @@ class Group(SettingsBase[DictStateType]):
 
     def get_active_command_names(self):
         """Names of commands that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for command_name in self.command_names:
-            child_cls = child_classes.get(command_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            command = getattr(self, command_name)
-            if command.is_active() and not _is_deprecated(command):
-                ret.append(command_name)
-        return ret
+        return _get_active_names(self, self.command_names)
 
     def get_active_query_names(self):
         """Names of queries that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for query_name in self.query_names:
-            child_cls = child_classes.get(query_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            query = getattr(self, query_name)
-            if query.is_active() and not _is_deprecated(query):
-                ret.append(query_name)
-        return ret
+        return _get_active_names(self, self.query_names)
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
@@ -1689,29 +1685,11 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def get_active_command_names(self):
         """Names of commands that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for command_name in self.command_names:
-            child_cls = child_classes.get(command_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            command = getattr(self, command_name)
-            if command.is_active() and not _is_deprecated(command):
-                ret.append(command_name)
-        return ret
+        return _get_active_names(self, self.command_names)
 
     def get_active_query_names(self):
         """Names of queries that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for query_name in self.query_names:
-            child_cls = child_classes.get(query_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            query = getattr(self, query_name)
-            if query.is_active() and not _is_deprecated(query):
-                ret.append(query_name)
-        return ret
+        return _get_active_names(self, self.query_names)
 
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
@@ -1979,29 +1957,11 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 
     def get_active_command_names(self):
         """Names of commands that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for command_name in self.command_names:
-            child_cls = child_classes.get(command_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            command = getattr(self, command_name)
-            if command.is_active() and not _is_deprecated(command):
-                ret.append(command_name)
-        return ret
+        return _get_active_names(self, self.command_names)
 
     def get_active_query_names(self):
         """Names of queries that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for query_name in self.query_names:
-            child_cls = child_classes.get(query_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            query = getattr(self, query_name)
-            if query.is_active() and not _is_deprecated(query):
-                ret.append(query_name)
-        return ret
+        return _get_active_names(self, self.query_names)
 
     def get_size(self) -> int:
         """Return the number of elements in a list object.
