@@ -2116,3 +2116,42 @@ def test_list_and_list_properties(new_solver_session):
         assert {"list", "list_properties"}.issubset(
             solver.settings.setup.materials.mixture.command_names
         )
+
+
+def test_get_active_command_names_in_named_objects(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case_data(file_name=case_path)
+    active_command_names = (
+        solver.settings.results.graphics.contour.get_active_command_names()
+    )
+    assert {"create", "delete", "make_a_copy", "display", "add_to_graphics"}.issubset(
+        set(active_command_names)
+    )
+    all_command_names = solver.settings.results.graphics.contour.command_names
+    assert {
+        "create",
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "add_to_graphics",
+    }.issubset(set(all_command_names))
+
+    solver.settings.results.graphics.contour.create("c-1")
+    active_command_names = (
+        solver.settings.results.graphics.contour.get_active_command_names()
+    )
+    assert {
+        "create",
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "add_to_graphics",
+    }.issubset(set(active_command_names))
