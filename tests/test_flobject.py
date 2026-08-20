@@ -2106,6 +2106,7 @@ def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
     )
 
 
+@pytest.mark.fluent_version(">=26.1")
 def test_list_and_list_properties(new_solver_session):
     solver = new_solver_session
     if solver.get_fluent_version() < FluentVersion.v261:
