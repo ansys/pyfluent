@@ -36,6 +36,31 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
     return request
 
 
+# Field groups used by SettingsService._extract_static_info, ordered by extraction strategy.
+# Primitive scalar fields: stored only when truthy (same rule for booleans such as user_creatable).
+_PRIMITIVE_FIELDS: tuple[str, ...] = (
+    "type",
+    "help",
+    "has_allowed_values",
+    "include_child_named_objects",
+    "list_size",
+    "user_creatable",
+    "return_type",
+    "deprecated_version",
+    "api_exposure_level",
+    "file_purpose",
+)
+# Repeated SchemaMap fields whose values are nested schema nodes.
+_SCHEMA_MAP_FIELDS: tuple[str, ...] = ("children", "commands", "queries", "arguments")
+# Repeated StringPair alias fields.
+_ALIAS_FIELDS: tuple[str, ...] = (
+    "child_aliases",
+    "command_aliases",
+    "query_aliases",
+    "arguments_aliases",
+)
+
+
 class SettingsService(ServiceProtocol):
     """Class wrapping the settings gRPC service of Fluent (v1 proto API)."""
 
@@ -208,65 +233,30 @@ class SettingsService(ServiceProtocol):
         ret = {}
 
         # 1. Basic Primitive Fields (Strings, Ints, Bools)
-        if info.type:
-            ret["type"] = info.type
-        if info.help:
-            ret["help"] = info.help
-        if info.has_allowed_values:
-            ret["has_allowed_values"] = info.has_allowed_values
-        if info.include_child_named_objects:
-            ret["include_child_named_objects"] = info.include_child_named_objects
-        if info.list_size:
-            ret["list_size"] = info.list_size
-
-        # user_creatable is a boolean; check directly as it exists in the schema
-        if info.user_creatable:
-            ret["user_creatable"] = info.user_creatable
-
-        if info.return_type:
-            ret["return_type"] = info.return_type
-        if info.deprecated_version:
-            ret["deprecated_version"] = info.deprecated_version
-        if info.api_exposure_level:
-            ret["api_exposure_level"] = info.api_exposure_level
-        if info.file_purpose:
-            ret["file_purpose"] = info.file_purpose
+        # user_creatable is a boolean but handled identically — stored only when truthy.
+        for field in _PRIMITIVE_FIELDS:
+            value = getattr(info, field)
+            if value:
+                ret[field] = value
 
         # 2. Embedded Message Types (Require HasField check)
         if info.HasField("object_type"):
             ret["object_type"] = self._extract_static_info(info.object_type)
 
         # 3. Repeated SchemaMap Fields (Nested Schemas)
-        if info.children:
-            ret["children"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.children
-            }
-        if info.commands:
-            ret["commands"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.commands
-            }
-        if info.queries:
-            ret["queries"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.queries
-            }
-        if info.arguments:
-            ret["arguments"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.arguments
-            }
+        for field in _SCHEMA_MAP_FIELDS:
+            collection = getattr(info, field)
+            if collection:
+                ret[field] = {
+                    child.name: self._extract_static_info(child.value)
+                    for child in collection
+                }
 
         # 4. Repeated StringPair Fields (Aliases)
-        if info.child_aliases:
-            ret["child_aliases"] = {x.key: x.value for x in info.child_aliases}
-        if info.command_aliases:
-            ret["command_aliases"] = {x.key: x.value for x in info.command_aliases}
-        if info.query_aliases:
-            ret["query_aliases"] = {x.key: x.value for x in info.query_aliases}
-        if info.arguments_aliases:
-            ret["arguments_aliases"] = {x.key: x.value for x in info.arguments_aliases}
+        for field in _ALIAS_FIELDS:
+            collection = getattr(info, field)
+            if collection:
+                ret[field] = {x.key: x.value for x in collection}
 
         # 5. Optional Attributes Message
         if info.HasField("optional_attrs"):

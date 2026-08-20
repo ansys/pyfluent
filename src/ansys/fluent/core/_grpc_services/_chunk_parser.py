@@ -57,7 +57,9 @@ class ChunkParserV0:
         """__init__ method of ChunkParserV0 class."""
         self._callbacks_provider = callbacks_provider
 
-    def extract_fields(self, chunk_iterator) -> dict[Any, dict[str, npt.NDArray[Any]]]:
+    def extract_fields(  # noqa: C901
+        self, chunk_iterator
+    ) -> dict[Any, dict[str, npt.NDArray[Any]]]:
         """Extracts field data received from Fluent.
 
         if callbacks_provider is set then callbacks are triggered with extracted data.
@@ -208,7 +210,9 @@ class ChunkParserV0:
 class ChunkParser(ChunkParserV0):
     """Class for parsing field data stream received from Fluent."""
 
-    def extract_fields(self, chunk_iterator) -> dict[Any, dict[str, npt.NDArray[Any]]]:
+    def extract_fields(  # noqa: C901
+        self, chunk_iterator
+    ) -> dict[Any, dict[str, npt.NDArray[Any]]]:
         """Extracts field data received from Fluent."""
 
         def _get_tag_for_surface_request():

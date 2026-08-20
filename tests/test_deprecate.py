@@ -49,7 +49,7 @@ def test_deprecate_argument_warns():
         result = example_func(a=1, b=2, c=3, x1=2, x2=4)
 
     # Check that the warnings were raised
-    assert len(w) == 6
+    assert len(w) == 3
     warning = w[0]
     assert issubclass(warning.category, PyFluentDeprecationWarning)
     assert "'a', 'b'" in str(warning.message)
@@ -92,13 +92,28 @@ def test_deprecate_argument_warns_with_custom_converter():
         result = example_func(a=1, b=2, c=3)
 
     # Check that the warnings were raised
-    assert len(w) == 4
+    assert len(w) == 2
     warning = w[0]
     assert issubclass(warning.category, PyFluentDeprecationWarning)
     assert "'a', 'b'" in str(warning.message)
     assert "'d'" in str(warning.message)
 
     assert result == {"d": (1, 2), "e": 3}
+
+
+def test_deprecate_argument_does_not_warn_without_deprecated_args():
+    """Test that no warning is emitted when deprecated arguments are not passed."""
+
+    @deprecate_arguments(old_args="a", new_args="b", version="3.0.0")
+    def example_func(**kwargs):
+        return kwargs
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        result = example_func(b=10)
+
+    assert result == {"b": 10}
+    assert len(w) == 0
 
 
 def test_deprecate_argument_raises_value_error_without_converter():

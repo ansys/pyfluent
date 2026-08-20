@@ -80,7 +80,9 @@ def _render_widget_from_props(
     return _render_widget_from_props_generic(settings_obj, label, props, pn.widgets)
 
 
-def _param_view(settings_obj, props: dict[str, Any]) -> pn.viewable.Viewable:
+def _param_view(  # noqa: C901
+    settings_obj, props: dict[str, Any]
+) -> pn.viewable.Viewable:
     label = props["python_name"].replace("_", " ").capitalize()
 
     def get_fn():

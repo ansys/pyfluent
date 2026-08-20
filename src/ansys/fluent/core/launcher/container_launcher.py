@@ -55,10 +55,11 @@ from ansys.fluent.core.launcher.fluent_container import (
 )
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
+    UIMode,
     _get_argvals_and_session,
     get_remote_grpc_options,
 )
-from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig, is_windows
 from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
@@ -235,6 +236,14 @@ class DockerLauncher:
         kwargs["insecure_mode"] = insecure_mode
         if certificates_folder is None and not insecure_mode:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
+
+        # HIDDEN_GUI is not supported inside Windows containers; downgrade to NO_GUI.
+        if is_windows() and UIMode(kwargs.get("ui_mode")) == UIMode.HIDDEN_GUI:
+            logger.warning(
+                "HIDDEN_GUI is not supported inside Windows containers. "
+                "Downgrading UI mode to NO_GUI."
+            )
+            kwargs["ui_mode"] = UIMode.NO_GUI
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         if self.argvals.get("cleanup_on_exit") is None:

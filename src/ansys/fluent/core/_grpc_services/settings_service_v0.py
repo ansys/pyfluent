@@ -51,6 +51,16 @@ _V0_ATTRS_KEY_MAP: dict[str, str] = {
     "arguments-aliases": "arguments_aliases",
 }
 
+# Nested schema-map fields; getattr is used in the loop so that proto versions
+# that do not yet expose a field (e.g. 'queries' on older v0 servers) are
+# skipped silently rather than raising AttributeError.
+_V0_SCHEMA_MAP_FIELDS: tuple[str, ...] = (
+    "children",
+    "commands",
+    "queries",
+    "arguments",
+)
+
 
 class SettingsService(ServiceProtocol):
     """Class wrapping the settings gRPC service of Fluent (v0 proto API)."""
@@ -250,42 +260,28 @@ class SettingsService(ServiceProtocol):
 
         if info.has_allowed_values:
             ret["has_allowed_values"] = info.has_allowed_values
-        if info.children:
-            ret["children"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.children
-            }
-        if info.commands:
-            ret["commands"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.commands
-            }
-        if hasattr(info, "queries") and info.queries:
-            ret["queries"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.queries
-            }
-        if info.arguments:
-            ret["arguments"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.arguments
-            }
+
+        # Nested schema maps; getattr handles proto versions that may lack a field.
+        for field in _V0_SCHEMA_MAP_FIELDS:
+            collection = getattr(info, field, None)
+            if collection:
+                ret[field] = {
+                    child.name: self._extract_static_info(child.value)
+                    for child in collection
+                }
+
         if info.HasField("object_type"):
             ret["object_type"] = self._extract_static_info(info.object_type)
         if info.help:
             ret["help"] = info.help
-        try:
-            if info.include_child_named_objects:
-                ret["include_child_named_objects"] = info.include_child_named_objects
-        except AttributeError:
-            pass
 
-        try:
-            if info.list_size:
-                ret["list_size"] = info.list_size
-        except AttributeError:
-            pass
+        # Fields that may not exist on older proto versions; skip silently if absent.
+        for field in ("include_child_named_objects", "list_size"):
+            value = getattr(info, field, None)
+            if value:
+                ret[field] = value
 
+        # user_creatable defaults to True on proto versions that do not expose the field.
         try:
             if info.user_creatable:
                 ret["user_creatable"] = info.user_creatable

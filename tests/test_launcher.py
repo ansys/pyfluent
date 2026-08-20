@@ -688,6 +688,17 @@ def test_standalone_launcher_dry_run(monkeypatch):
     )
 
 
+def test_standalone_launcher_dry_run_default_ui_mode(monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    fluent_launch_string, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+    )
+    expected_ui_arg = "-hidden" if is_windows() else "-gu"
+    assert expected_ui_arg in fluent_launch_string
+
+
 def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
     monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     with tempfile.TemporaryDirectory() as tmp_dir:

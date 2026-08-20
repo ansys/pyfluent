@@ -323,7 +323,7 @@ def _construct_machine_list_pbs(host_file_name):
     return machineList
 
 
-def _construct_machine_list_slurm(host_list):
+def _construct_machine_list_slurm(host_list):  # noqa: C901
     """Provide a private module function to parse the SLURM host and task lists.
 
     The SLURM system provides a comma separated list of host names.  The host
