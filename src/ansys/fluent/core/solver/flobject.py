@@ -524,6 +524,10 @@ class Base:
         """Set interrupt method."""
         self._setattr("_on_interrupt", on_interrupt)
 
+    def _set_is_interruptible_command(self, is_interruptible_command):
+        """Set interruptible command checker."""
+        self._setattr("_is_interruptible_command", is_interruptible_command)
+
     def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
         self._setattr("_file_transfer_service", file_transfer_service)
@@ -2266,6 +2270,21 @@ class Command(BaseCommand):
         except KeyboardInterrupt:
             self._root._on_interrupt(self)
             raise KeyboardInterrupt
+        except RuntimeError as ex:
+            # TODO: Remove this Fluent specific logic during later refactoring.
+            # RuntimeError("()") is Fluent's gRPC signal for a clean solver stop
+            # via interrupt() or via manual stop from a GUI in connected instances.
+            # Suppress it for interruptible commands so that
+            # workflow code following iterate()/calculate() continues normally.
+            _is_interruptible = getattr(self._root, "_is_interruptible_command", None)
+            if (
+                _is_interruptible is not None
+                and ex.args
+                and ex.args[0] == "()"
+                and _is_interruptible(self)
+            ):
+                return None
+            raise
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -2282,6 +2301,21 @@ class CommandWithPositionalArgs(BaseCommand):
         except KeyboardInterrupt:
             self._root._on_interrupt(self)
             raise KeyboardInterrupt
+        except RuntimeError as ex:
+            # TODO: Remove this Fluent specific logic during later refactoring.
+            # RuntimeError("()") is Fluent's gRPC signal for a clean solver stop
+            # via interrupt() or via manual stop from a GUI in connected instances.
+            # Suppress it for interruptible commands so that
+            # workflow code following iterate()/calculate() continues normally.
+            _is_interruptible = getattr(self._root, "_is_interruptible_command", None)
+            if (
+                _is_interruptible is not None
+                and ex.args
+                and ex.args[0] == "()"
+                and _is_interruptible(self)
+            ):
+                return None
+            raise
 
 
 class Query(Action):
@@ -2862,6 +2896,7 @@ def get_root(
     flproxy,
     version: str = "",
     interrupt: Any | None = None,
+    is_interruptible_command: Any | None = None,
     file_transfer_service: Any | None = None,
     scheme_eval=None,
 ) -> Group:
@@ -2873,6 +2908,11 @@ def get_root(
         Object that interfaces with the Fluent backend.
     interrupt: optional
         To interrupt interruptible commands.
+    is_interruptible_command : optional
+        Callable ``(command) -> bool`` that returns True when *command* is an
+        interruptible solver command (iterate, calculate, dual-time-iterate).
+        Used to suppress the ``RuntimeError("()")`` that Fluent returns via
+        gRPC when the solver is stopped cleanly by ``interrupt()``.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     scheme_eval : Any
@@ -2909,6 +2949,8 @@ def get_root(
     root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)
+    if is_interruptible_command is not None:
+        root._set_is_interruptible_command(is_interruptible_command)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval

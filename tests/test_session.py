@@ -55,6 +55,10 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
+from ansys.fluent.core.streaming_services.events_streaming import (
+    IterationEndedEventInfo,
+    SolverEvent,
+)
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -1166,6 +1170,37 @@ def test_context_manager_with_session_switch(new_meshing_session_wo_exit):
         solver = meshing.switch_to_solver()
         assert not meshing.is_active()
         assert solver.is_active()
+
+
+def test_iterate_with_interrupt(new_solver_session):
+    case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+
+    solver = new_solver_session
+    solver.settings.file.read_case(file_name=case_file)
+    solver.settings.solution.initialization.hybrid_initialize()
+
+    def on_iteration_ended(session, event_info: IterationEndedEventInfo) -> None:
+        if event_info.index >= 10:
+            # Signal Fluent to stop — Fluent stops cleanly
+            session.settings.solution.run_calculation.interrupt()
+
+    solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
+
+    # Raises RuntimeError: () from Fluent when the solver is stopped
+    # cleanly via interrupt().  The RuntimeError is suppressed by the
+    # interruptible command guard in flobject.py, so workflow code
+    # following iterate()/calculate() continues normally.
+    solver.settings.solution.run_calculation.iterate(iter_count=100)
+
+    solver.settings.results.graphics.contour.create(name="dummy-contour")
+
+    solver.settings.results.graphics.contour["dummy-contour"] = {
+        "field": "pressure",
+        "surfaces_list": ["wall-elbow"],
+    }
+
+    assert "dummy-contour" in solver.settings.results.graphics.contour()
 
 
 def test_v0_not_imported_in_v1_session(new_solver_session):
