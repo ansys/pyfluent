@@ -2271,8 +2271,10 @@ class Command(BaseCommand):
             self._root._on_interrupt(self)
             raise KeyboardInterrupt
         except RuntimeError as ex:
+            # TODO: Remove this Fluent specific logic during later refactoring.
             # RuntimeError("()") is Fluent's gRPC signal for a clean solver stop
-            # via interrupt(). Suppress it for interruptible commands so that
+            # via interrupt() or via manual stop from a GUI in connected instances.
+            # Suppress it for interruptible commands so that
             # workflow code following iterate()/calculate() continues normally.
             _is_interruptible = getattr(self._root, "_is_interruptible_command", None)
             if (
@@ -2300,8 +2302,10 @@ class CommandWithPositionalArgs(BaseCommand):
             self._root._on_interrupt(self)
             raise KeyboardInterrupt
         except RuntimeError as ex:
+            # TODO: Remove this Fluent specific logic during later refactoring.
             # RuntimeError("()") is Fluent's gRPC signal for a clean solver stop
-            # via interrupt(). Suppress it for interruptible commands so that
+            # via interrupt() or via manual stop from a GUI in connected instances.
+            # Suppress it for interruptible commands so that
             # workflow code following iterate()/calculate() continues normally.
             _is_interruptible = getattr(self._root, "_is_interruptible_command", None)
             if (
