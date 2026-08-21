@@ -28,9 +28,11 @@ from contextlib import contextmanager
 import copy
 from enum import Enum
 from threading import RLock
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from ansys.api.fluent.v0.variant_pb2 import Variant
+if TYPE_CHECKING:
+    from ansys.api.fluent.v0.variant_pb2 import Variant
+
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 StateType = (
@@ -231,7 +233,7 @@ class DataModelCache:
         rules: str,
         source: dict[str, StateType],
         key: str,
-        state: Variant,
+        state: "Variant",
         updater_fn,
         rules_str: str,
         version,
@@ -323,7 +325,7 @@ class DataModelCache:
         source: dict[str, StateType],
         internal_names_as_keys: bool,
         key: str,
-        state: Variant,
+        state: "Variant",
         type_: str,
         iname: str,
     ) -> str:
@@ -349,7 +351,7 @@ class DataModelCache:
         return new_key
 
     def update_cache(
-        self, rules: str, state: Variant, deleted_paths: list[str], version=None
+        self, rules: str, state: "Variant", deleted_paths: list[str], version=None
     ):
         """Update datamodel cache from streamed state.
 
