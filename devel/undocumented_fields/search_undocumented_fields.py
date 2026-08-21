@@ -27,7 +27,7 @@ class ClassFieldVisitor(ast.NodeVisitor):
         self.classes = {}
         self.current_class = None
 
-    def visit_ClassDef(self, node):
+    def visit_ClassDef(self, node):  # noqa: C901
         """Visit a class definition and extract field assignments."""
         old_class = self.current_class
         self.current_class = node.name

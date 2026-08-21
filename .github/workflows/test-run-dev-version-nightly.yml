@@ -87,7 +87,6 @@ jobs:
           VERSION: ${{ env.FLUENT_VERSION }}
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
-          python -c "from ansys.fluent.core.generated.solver.settings_${VERSION} import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |

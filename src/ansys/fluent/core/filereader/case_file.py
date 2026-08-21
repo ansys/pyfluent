@@ -619,7 +619,7 @@ class CaseFile(RPVarProcessor):
         Get the mesh data.
     """
 
-    def __init__(
+    def __init__(  # noqa: C901
         self,
         case_file_name: "PathType | None" = None,
         project_file_name: "PathType | None" = None,

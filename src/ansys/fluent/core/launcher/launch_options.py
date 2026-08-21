@@ -184,7 +184,9 @@ class UIMode(FluentEnum):
 
     def _default(self):
         # Not using NO_GUI in windows as it opens a new cmd or
-        # shows Fluent output in the current cmd if start <launch_string> is not used
+        # shows Fluent output in the current cmd if start <launch_string> is not used.
+        # Note: HIDDEN_GUI is not supported inside containers and the default value will be
+        # downgraded to NO_GUI on windows host automatically by the container launcher.
         return self.HIDDEN_GUI if is_windows() else self.NO_GUI
 
     def _get_enum_map(self):
