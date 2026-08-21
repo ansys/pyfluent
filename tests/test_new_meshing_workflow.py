@@ -1592,3 +1592,21 @@ def test_recursive_update_dict(new_meshing_session):
         "PorousRegions": "Yes",
         "ZeroThickness": "Yes",
     }
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_inactive_and_developer_level_access(new_meshing_session):
+    meshing = new_meshing_session
+    assert meshing.is_active()
+
+    watertight = meshing.watertight()
+    import_geom = watertight.import_geometry
+
+    # Checks inactive arguments not present.
+    assert "mesh_unit" not in import_geom.arguments()
+    assert import_geom.file_format.allowed_values() == ["CAD", "Mesh"]
+    import_geom.file_format = "Mesh"
+    assert "mesh_unit" in import_geom.arguments()
+
+    # Checks items with developer level access are not exposed.
+    assert import_geom.cad_import_options() == {}

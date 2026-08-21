@@ -25,6 +25,7 @@ from concurrent import futures
 import os
 from pathlib import Path
 import platform
+import sys
 import tempfile
 import time
 
@@ -1200,3 +1201,31 @@ def test_iterate_with_interrupt(new_solver_session):
     }
 
     assert "dummy-contour" in solver.settings.results.graphics.contour()
+
+    
+def test_v0_not_imported_in_v1_session(new_solver_session):
+    solver = new_solver_session
+    case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+
+    assert solver.is_active()
+
+    solver.settings.file.read_case_data(file_name=case_file)
+
+    assert solver.application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
+
+    scalar_field_data_request = pyfluent.ScalarFieldDataRequest(
+        field_name="pressure",
+        surfaces=["cold-inlet"],
+    )
+
+    scalar_data = solver.fields.field_data.get_field_data(scalar_field_data_request)
+    assert scalar_data is not None
+
+    assert round(solver.fields.reduction.area(locations=["cold-inlet"]), 5) == 0.00389
+
+    for module_name in sys.modules.keys():
+        if solver.get_fluent_version() >= FluentVersion.v271:
+            assert not module_name.startswith("ansys.fluent.core.solver.v0")
+        else:
+            assert not module_name.startswith("ansys.fluent.core.solver.v1")

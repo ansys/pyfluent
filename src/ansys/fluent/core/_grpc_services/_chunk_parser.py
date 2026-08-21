@@ -30,13 +30,6 @@ import warnings
 import numpy as np
 import numpy.typing as npt
 
-from ansys.api.fluent.v0 import field_data_pb2 as field_data_pb2_v0
-from ansys.api.fluent.v1 import field_data_pb2 as field_data_pb2_v1
-from ansys.fluent.core._grpc_services.field_data_service import _FieldDataConstants
-from ansys.fluent.core._grpc_services.field_data_service_v0 import (
-    _FieldDataConstants as _FieldDataConstantsV0,
-)
-
 
 class ChunkParserV0:
     """Class for parsing field data stream received from Fluent.
@@ -74,6 +67,8 @@ class ChunkParserV0:
         def _get_tag_for_scalar_field_request(
             scalar_field_request,
         ) -> tuple[tuple[str, str], tuple[str, Any], tuple[str, Any]]:
+            from ansys.api.fluent.v0 import field_data_pb2
+
             return (
                 ("type", "scalar-field"),
                 (
@@ -81,7 +76,7 @@ class ChunkParserV0:
                     (
                         1
                         if scalar_field_request.dataLocation
-                        == field_data_pb2_v0.DataLocation.Nodes
+                        == field_data_pb2.DataLocation.Nodes
                         else 0
                     ),
                 ),
@@ -131,6 +126,10 @@ class ChunkParserV0:
 
         fields_data = dict[Any, dict[str, npt.NDArray[Any]]]()
         for chunk in chunk_iterator:
+            from ansys.fluent.core._grpc_services.field_data_service_v0 import (
+                _FieldDataConstants,
+            )
+
             payload_info = chunk.payloadInfo
             surface_id = payload_info.surfaceId
             field_request_info = payload_info.fieldRequestInfo
@@ -162,7 +161,7 @@ class ChunkParserV0:
                     payload_tag_id = reduce(
                         lambda x, y: x | y,
                         [
-                            _FieldDataConstantsV0.payloadTags[tag]
+                            _FieldDataConstants.payloadTags[tag]
                             for tag in payload_info.payloadTag
                         ]
                         or [0],
@@ -173,7 +172,7 @@ class ChunkParserV0:
             if payload_tag_id is not None:
                 if payload_info.fieldSize > 0:
                     field = _extract_field(
-                        _FieldDataConstantsV0.proto_field_type_to_np_data_type[
+                        _FieldDataConstants.proto_field_type_to_np_data_type[
                             payload_info.fieldType
                         ],
                         payload_info.fieldSize,
@@ -222,6 +221,8 @@ class ChunkParser(ChunkParserV0):
             return (("type", "vector-field"),)
 
         def _get_tag_for_scalar_field_request(scalar_field_request):
+            from ansys.api.fluent.v1 import field_data_pb2
+
             return (
                 ("type", "scalar-field"),
                 (
@@ -229,7 +230,7 @@ class ChunkParser(ChunkParserV0):
                     (
                         1
                         if scalar_field_request.data_location
-                        == field_data_pb2_v1.DataLocation.DATA_LOCATION_NODES
+                        == field_data_pb2.DataLocation.DATA_LOCATION_NODES
                         else 0
                     ),
                 ),
@@ -275,6 +276,10 @@ class ChunkParser(ChunkParserV0):
 
         fields_data = {}
         for chunk in chunk_iterator:
+            from ansys.fluent.core._grpc_services.field_data_service import (
+                _FieldDataConstants,
+            )
+
             payload_info = chunk.payload_info
             surface_id = payload_info.surface_id
             field_request_info = payload_info.field_request_info
