@@ -401,7 +401,10 @@ def new_solver_session(request):
     else:
         solver = create_session()
     yield solver
-    solver.exit()
+    # HttpSolver (REST transport) has no .exit()/close mechanism yet - guard
+    # so REST-parametrized tests don't fail during fixture teardown.
+    if hasattr(solver, "exit"):
+        solver.exit()
 
 
 @pytest.fixture
