@@ -28,7 +28,7 @@ import warnings
 from deprecated.sphinx import deprecated
 import numpy as np
 
-from ansys.api.fluent.v0.field_data_pb2 import DataLocation
+from ansys.api.fluent.v1.field_data_pb2 import DataLocation
 from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldInfo,
@@ -154,7 +154,11 @@ class BatchFieldData:
                 ("type", "scalar-field"),
                 (
                     "dataLocation",
-                    DataLocation.Nodes if node_value else DataLocation.Elements,
+                    (
+                        DataLocation.DATA_LOCATION_NODES
+                        if node_value
+                        else DataLocation.DATA_LOCATION_ELEMENTS
+                    ),
                 ),
                 ("boundaryValues", boundary_value),
             )
@@ -603,7 +607,11 @@ class Batch(FieldBatch):
                 ("type", "scalar-field"),
                 (
                     "dataLocation",
-                    DataLocation.Nodes if batch.node_value else DataLocation.Elements,
+                    (
+                        DataLocation.DATA_LOCATION_NODES
+                        if batch.node_value
+                        else DataLocation.DATA_LOCATION_ELEMENTS
+                    ),
                 ),
                 ("boundaryValues", batch.boundary_value),
             )

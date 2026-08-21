@@ -25,6 +25,7 @@
 
 from collections.abc import Callable
 from enum import Enum
+from functools import cached_property
 import json
 import logging
 import os
@@ -186,8 +187,6 @@ class BaseSession:
         )
         self._datamodel_events.start()
 
-        self._batch_ops_service = fluent_connection._service_factory.batch_ops
-
         if event_type:
             self.events = fluent_connection._service_factory._get_events_manager(
                 event_type=event_type,
@@ -216,6 +215,11 @@ class BaseSession:
         )
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
+
+    @cached_property
+    def _batch_ops_service(self):
+        """gRPC service for batch operations (loaded on first use)."""
+        return self._fluent_connection._service_factory.batch_ops
 
     @deprecate_function(version="v0.38.0", new_func="is_active")
     def is_server_healthy(self) -> bool:
