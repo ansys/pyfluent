@@ -1202,7 +1202,7 @@ def test_iterate_with_interrupt(new_solver_session):
 
     assert "dummy-contour" in solver.settings.results.graphics.contour()
 
-    
+
 def test_v0_not_imported_in_v1_session(new_solver_session):
     solver = new_solver_session
     case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
