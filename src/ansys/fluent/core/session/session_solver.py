@@ -36,7 +36,7 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_shared import (
+from ansys.fluent.core.session.session_shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
@@ -376,7 +376,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("switch_to_meshing")
-        from ansys.fluent.core.session_meshing import Meshing
+        from ansys.fluent.core.session.session_meshing import Meshing
 
         self.settings.switch_to_meshing_mode()
         for cb in self._fluent_connection.finalizer_cbs:

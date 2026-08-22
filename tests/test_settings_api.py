@@ -31,7 +31,7 @@ from pytest import WarningsRecorder
 from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session.session_solver import Solver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,

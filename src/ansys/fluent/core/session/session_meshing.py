@@ -28,8 +28,8 @@ from typing import TYPE_CHECKING, Any
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session.session_solver import Solver
 
 
 class Meshing(PureMeshing):

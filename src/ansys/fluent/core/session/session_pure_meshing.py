@@ -34,7 +34,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_base_meshing import BaseMeshing
+from ansys.fluent.core.session.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
 

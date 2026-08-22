@@ -31,7 +31,7 @@ import warnings
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.session_shared import (
+from ansys.fluent.core.session.session_shared import (
     _make_datamodel_module,
     _make_tui_module,
 )

@@ -28,7 +28,7 @@
 
 from typing import Any
 
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session.session_solver import Solver
 
 
 class SolverLite(Solver):

@@ -30,11 +30,11 @@ import warnings
 
 if TYPE_CHECKING:
     from ansys.fluent.core.fluent_connection import FluentConnection
-    from ansys.fluent.core.session_meshing import Meshing
-    from ansys.fluent.core.session_pure_meshing import PureMeshing
-    from ansys.fluent.core.session_solver import Solver
-    from ansys.fluent.core.session_solver_aero import SolverAero
-    from ansys.fluent.core.session_solver_icing import SolverIcing
+    from ansys.fluent.core.session.session_meshing import Meshing
+    from ansys.fluent.core.session.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session.session_solver import Solver
+    from ansys.fluent.core.session.session_solver_aero import SolverAero
+    from ansys.fluent.core.session.session_solver_icing import SolverIcing
 
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.exceptions import DisallowedValuesError
@@ -140,11 +140,11 @@ class FluentMode(FluentEnum):
         return self.SOLVER
 
     def _get_enum_map(self):
-        from ansys.fluent.core.session_meshing import Meshing
-        from ansys.fluent.core.session_pure_meshing import PureMeshing
-        from ansys.fluent.core.session_solver import Solver
-        from ansys.fluent.core.session_solver_aero import SolverAero
-        from ansys.fluent.core.session_solver_icing import SolverIcing
+        from ansys.fluent.core.session.session_meshing import Meshing
+        from ansys.fluent.core.session.session_pure_meshing import PureMeshing
+        from ansys.fluent.core.session.session_solver import Solver
+        from ansys.fluent.core.session.session_solver_aero import SolverAero
+        from ansys.fluent.core.session.session_solver_icing import SolverIcing
 
         return {
             self.MESHING: Meshing,

@@ -31,7 +31,7 @@ from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session.session_solver import Solver
 
 
 class SolverIcing(Solver):

@@ -21,30 +21,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to get global PyConsole objects."""
-
-from ansys.fluent.core.launcher.launcher import launch_fluent
-from ansys.fluent.core.session.session_solver import Solver
-
-__all__ = ("setup_for_fluent",)
+"""Fields module for managing Fluent field data, reduction and solution variables data."""
 
 
-def setup_for_fluent(*args, **kwargs):
-    """Returns global PyConsole objects."""
-    session = launch_fluent(*args, **kwargs)
-    globals = {}
-    if kwargs.get("mode", "solver") == "meshing":
-        globals["meshing"] = session
-        globals["PartManagement"] = session.PartManagement
-        globals["PMFileManagement"] = session.PMFileManagement
-        globals["solver"] = Solver(
-            fluent_connection=session._fluent_connection,
-            scheme_eval=session._fluent_connection.scheme_eval,
-        )
-    else:
-        globals["solver"] = session
+from ansys.fluent.core.session.file_session import FileSession
+from ansys.fluent.core.session.session_meshing import Meshing as MeshingSession
+from ansys.fluent.core.session.session_pure_meshing import (
+    PureMeshing as PureMeshingSession,
+)
+from ansys.fluent.core.session.session_solver import Solver as SolverSession
+from ansys.fluent.core.session.session_solver_aero import (
+    SolverAero as SolverAeroSession,
+)
+from ansys.fluent.core.session.session_solver_icing import (
+    SolverIcing as SolverIcingSession,
+)
+from ansys.fluent.core.session.session_solver_lite import (
+    SolverLite as SolverLiteSession,
+)
 
-    globals["preferences"] = session.preferences
-    globals["workflow"] = session.workflow
-
-    return globals
+__all__ = [
+    "MeshingSession",
+    "PureMeshingSession",
+    "SolverSession",
+    "SolverAeroSession",
+    "SolverIcingSession",
+    "SolverLiteSession",
+    "FileSession",
+]
