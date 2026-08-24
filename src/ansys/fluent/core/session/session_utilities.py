@@ -44,13 +44,13 @@ from ansys.fluent.core.launcher.standalone_launcher import (
     StandaloneLauncher,
 )
 from ansys.fluent.core.session import (
-    BaseSession,
     session_meshing,
     session_pure_meshing,
     session_solver,
     session_solver_aero,
     session_solver_icing,
 )
+from ansys.fluent.core.session.session import BaseSession
 
 __all__ = (
     "Meshing",

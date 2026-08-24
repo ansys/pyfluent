@@ -28,7 +28,6 @@ import warnings
 from deprecated.sphinx import deprecated
 import numpy as np
 
-from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldInfo,
     FieldBatch,
@@ -53,6 +52,7 @@ from ansys.fluent.core.filereader.data_file import (
     _to_scalar_field_name,
     _to_vector_field_name,
 )
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.utils.deprecate import (
     deprecate_arguments,
     deprecate_function,

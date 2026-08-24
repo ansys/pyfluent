@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Fields module for managing Fluent field data, reduction and solution variables data."""
+"""Session module providing Fluent session classes for meshing, solving, and file-based workflows."""
 
 
 from ansys.fluent.core.session.file_session import FileSession

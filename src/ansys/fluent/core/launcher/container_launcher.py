@@ -64,7 +64,7 @@ from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.session import _parse_server_info_file
+from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:

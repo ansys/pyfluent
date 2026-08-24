@@ -35,7 +35,7 @@ from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.session.session_shared import (
     _make_datamodel_module,
     _make_tui_module,
