@@ -100,6 +100,14 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
+    def __new__(cls, *args, **kwargs):
+        if cls is BaseSession:
+            raise TypeError(
+                "BaseSession cannot be instantiated directly. "
+                "Use Solver, SolverAero, SolverIcing, SolverLite, Meshing, or PureMeshing."
+            )
+        return super().__new__(cls)
+
     # We are passing around an WeakMethod to avoid circular references
     def __init__(
         self,
@@ -129,11 +137,6 @@ class BaseSession:
         event_type : Enum, optional
             Event enumeration specific to the session type.
         """
-        if type(self) is BaseSession:
-            raise TypeError(
-                "BaseSession cannot be instantiated directly. "
-                "Use Solver, SolverAero, SolverIcing, SolverLite, Meshing, or PureMeshing."
-            )
         self._start_transcript = start_transcript
         self._launcher_args = launcher_args
         BaseSession._build_from_fluent_connection(

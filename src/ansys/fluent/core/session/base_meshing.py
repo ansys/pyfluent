@@ -106,6 +106,14 @@ class BaseMeshing(BaseSession):
         "PMFileManagement",
     ]
 
+    def __new__(cls, *args, **kwargs):
+        if cls is BaseMeshing:
+            raise TypeError(
+                "BaseMeshing cannot be instantiated directly. "
+                "Use Meshing or PureMeshing."
+            )
+        return super().__new__(cls)
+
     def __init__(
         self,
         fluent_connection: FluentConnection,
@@ -130,11 +138,6 @@ class BaseMeshing(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        if type(self) is BaseMeshing:
-            raise TypeError(
-                "BaseMeshing cannot be instantiated directly. "
-                "Use Meshing or PureMeshing."
-            )
         super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
