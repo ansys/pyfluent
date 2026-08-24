@@ -52,6 +52,7 @@ from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.session.base_meshing import BaseMeshing
 from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
@@ -170,6 +171,16 @@ class MockHealthServicerV1(health_pb2_grpc_v1.HealthServicer):
         yield health_pb2_v1.HealthCheckResponse(
             status=health_pb2_v1.HealthCheckResponse.SERVING_STATUS_SERVING
         )
+
+
+def test_base_session_cannot_be_instantiated_directly():
+    with pytest.raises(TypeError, match="BaseSession cannot be instantiated directly"):
+        BaseSession(fluent_connection=None, scheme_eval=None)
+
+
+def test_base_meshing_cannot_be_instantiated_directly():
+    with pytest.raises(TypeError, match="BaseMeshing cannot be instantiated directly"):
+        BaseMeshing(fluent_connection=None, scheme_eval=None)
 
 
 def test_download_file():

@@ -130,6 +130,11 @@ class BaseMeshing(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
+        if type(self) is BaseMeshing:
+            raise TypeError(
+                "BaseMeshing cannot be instantiated directly. "
+                "Use Meshing or PureMeshing."
+            )
         super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,

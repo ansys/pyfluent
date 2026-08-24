@@ -129,6 +129,11 @@ class BaseSession:
         event_type : Enum, optional
             Event enumeration specific to the session type.
         """
+        if type(self) is BaseSession:
+            raise TypeError(
+                "BaseSession cannot be instantiated directly. "
+                "Use Solver, SolverAero, SolverIcing, SolverLite, Meshing, or PureMeshing."
+            )
         self._start_transcript = start_transcript
         self._launcher_args = launcher_args
         BaseSession._build_from_fluent_connection(
