@@ -68,11 +68,11 @@ from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.session.session_meshing import Meshing
-    from ansys.fluent.core.session.session_pure_meshing import PureMeshing
-    from ansys.fluent.core.session.session_solver import Solver
-    from ansys.fluent.core.session.session_solver_aero import SolverAero
-    from ansys.fluent.core.session.session_solver_icing import SolverIcing
+    from ansys.fluent.core.session.meshing import Meshing
+    from ansys.fluent.core.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.session.solver import Solver
+    from ansys.fluent.core.session.solver_aero import SolverAero
+    from ansys.fluent.core.session.solver_icing import SolverIcing
 
 
 class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):

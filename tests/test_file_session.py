@@ -34,7 +34,7 @@ from ansys.fluent.core import (
     VectorFieldDataRequest,
     examples,
 )
-from ansys.fluent.core.session.file_session import (
+from ansys.fluent.core.session.file import (
     FileSession,
     InvalidFieldName,
     InvalidMultiPhaseFieldName,

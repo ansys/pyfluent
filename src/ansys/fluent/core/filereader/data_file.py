@@ -43,22 +43,15 @@ from pathlib import Path
 import defusedxml.ElementTree as ET
 import numpy as np
 
-from . import lispy
-from .pre_processor import remove_unsupported_xml_chars
-
-try:
-    import h5py
-except ModuleNotFoundError as exc:
-    raise ModuleNotFoundError(
-        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
-    ) from exc
-
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as vector_naming,
 )
 from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as scalar_naming,
 )
+
+from . import lispy
+from .pre_processor import remove_unsupported_xml_chars
 
 _to_scalar_field_name = scalar_naming().to_string
 _to_vector_field_name = vector_naming().to_string
@@ -111,6 +104,12 @@ class DataFile:
 
         try:
             if Path(data_file_name).match("*.dat.h5"):
+                try:
+                    import h5py
+                except ModuleNotFoundError as exc:
+                    raise ModuleNotFoundError(
+                        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
+                    ) from exc
                 _file = h5py.File(data_file_name)
                 results = _file["results"]
                 self._settings = _file["settings"]

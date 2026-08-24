@@ -24,21 +24,13 @@
 """Session module providing Fluent session classes for meshing, solving, and file-based workflows."""
 
 
-from ansys.fluent.core.session.file_session import FileSession
-from ansys.fluent.core.session.session_meshing import Meshing as MeshingSession
-from ansys.fluent.core.session.session_pure_meshing import (
-    PureMeshing as PureMeshingSession,
-)
-from ansys.fluent.core.session.session_solver import Solver as SolverSession
-from ansys.fluent.core.session.session_solver_aero import (
-    SolverAero as SolverAeroSession,
-)
-from ansys.fluent.core.session.session_solver_icing import (
-    SolverIcing as SolverIcingSession,
-)
-from ansys.fluent.core.session.session_solver_lite import (
-    SolverLite as SolverLiteSession,
-)
+from ansys.fluent.core.session.file import FileSession
+from ansys.fluent.core.session.meshing import Meshing as MeshingSession
+from ansys.fluent.core.session.pure_meshing import PureMeshing as PureMeshingSession
+from ansys.fluent.core.session.solver import Solver as SolverSession
+from ansys.fluent.core.session.solver_aero import SolverAero as SolverAeroSession
+from ansys.fluent.core.session.solver_icing import SolverIcing as SolverIcingSession
+from ansys.fluent.core.session.solver_lite import SolverLite as SolverLiteSession
 
 __all__ = [
     "MeshingSession",
