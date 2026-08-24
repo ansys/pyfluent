@@ -648,15 +648,16 @@ class CaseFile(RPVarProcessor):
                 )
 
         try:
+            import h5py
+        except ModuleNotFoundError as exc:
+            raise ModuleNotFoundError(
+                "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
+            ) from exc
+
+        try:
             if Path(case_file_name).match("*.cas.h5") or Path(case_file_name).match(
                 "*.msh.h5"
             ):
-                try:
-                    import h5py
-                except ModuleNotFoundError as exc:
-                    raise ModuleNotFoundError(
-                        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
-                    ) from exc
                 _file = h5py.File(case_file_name)
                 if Path(case_file_name).match("*.h5"):
                     if Path(case_file_name).match("*.cas.h5"):

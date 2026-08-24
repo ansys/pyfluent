@@ -103,13 +103,14 @@ class DataFile:
                 )
 
         try:
+            import h5py
+        except ModuleNotFoundError as exc:
+            raise ModuleNotFoundError(
+                "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
+            ) from exc
+
+        try:
             if Path(data_file_name).match("*.dat.h5"):
-                try:
-                    import h5py
-                except ModuleNotFoundError as exc:
-                    raise ModuleNotFoundError(
-                        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
-                    ) from exc
                 _file = h5py.File(data_file_name)
                 results = _file["results"]
                 self._settings = _file["settings"]
