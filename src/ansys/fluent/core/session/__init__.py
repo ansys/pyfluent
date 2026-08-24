@@ -36,9 +36,9 @@ objects are created via :func:`ansys.fluent.core.launch_fluent`.
     │   ├── SolverAero        — solver + Aero add-on
     │   ├── SolverIcing       — solver + Icing add-on
     │   └── SolverLite        — lightweight solver variant
-    └── BaseMeshing  (private)
-        └── PureMeshing       — meshing-only (no solver switching)
-            └── Meshing       — meshing with :meth:`~Meshing.switch_to_solver`
+    └── BaseMeshing  (private)   — full public meshing API
+        ├── PureMeshing       — meshing-only (no solver switching)
+        └── Meshing           — meshing with :meth:`~Meshing.switch_to_solver`
 
 Session aliases
 ---------------

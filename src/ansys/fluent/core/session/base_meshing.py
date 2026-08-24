@@ -21,11 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Internal base class for meshing sessions.
+"""Internal base class for all meshing sessions.
 
 This module is private.  Do not import from it directly; use
 :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` or
 :class:`~ansys.fluent.core.session.meshing.Meshing` instead.
+
+Both leaf classes are lightweight and add no further public API beyond what
+is defined here.  ``PureMeshing`` targets deployments where meshing and
+solving run as separate processes; ``Meshing`` additionally exposes
+:meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
 """
 
 import functools
@@ -36,16 +41,18 @@ import warnings
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session._session import BaseSession
 from ansys.fluent.core.session._shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
+from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
+from ansys.fluent.core.utils.data_transfer import transfer_case
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -83,7 +90,12 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 class BaseMeshing(BaseSession):
-    """Encapsulates base methods of a meshing session."""
+    """Base class providing the full public API for all meshing sessions.
+
+    Both :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` and
+    :class:`~ansys.fluent.core.session.meshing.Meshing` inherit from this
+    class and add no further public methods.
+    """
 
     _rules = [
         "workflow",
@@ -285,7 +297,7 @@ class BaseMeshing(BaseSession):
         # Case 3: User explicitly requests legacy mode (legacy=True)
         return True
 
-    def watertight_workflow(
+    def _watertight_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow_new.WatertightMeshingWorkflow":
         """Create a watertight meshing workflow.
@@ -319,7 +331,7 @@ class BaseMeshing(BaseSession):
         )
         return self._current_workflow
 
-    def fault_tolerant_workflow(
+    def _fault_tolerant_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow_new.FaultTolerantMeshingWorkflow":
         """Create a fault-tolerant meshing workflow.
@@ -355,7 +367,7 @@ class BaseMeshing(BaseSession):
         )
         return self._current_workflow
 
-    def two_dimensional_meshing_workflow(
+    def _two_dimensional_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow_new.TwoDimensionalMeshingWorkflow":
         """Create a 2D meshing workflow.
@@ -389,7 +401,7 @@ class BaseMeshing(BaseSession):
         )
         return self._current_workflow
 
-    def topology_based_meshing_workflow(
+    def _topology_based_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ) -> "_meshing_workflow.TopologyBasedMeshingWorkflow | meshing_workflow_new.TopologyBasedMeshingWorkflow":
         """Create a topology-based workflow (beta).
@@ -426,9 +438,9 @@ class BaseMeshing(BaseSession):
 
     def load_workflow(
         self,
-        file_path: PathType = None,
-        initialize: bool = True,
+        file_path: PathType,
         legacy: bool | None = None,
+        initialize: bool = True,
     ) -> "_meshing_workflow.LoadWorkflow | meshing_workflow_new.LoadWorkflow":
         """Load a previously saved meshing workflow from file.
 
@@ -476,7 +488,7 @@ class BaseMeshing(BaseSession):
         return self._current_workflow
 
     def create_workflow(
-        self, initialize: bool = True, legacy: bool | None = None
+        self, legacy: bool | None = None, initialize: bool = True
     ) -> "_meshing_workflow.CreateWorkflow | meshing_workflow_new.CreateWorkflow":
         """Create a new blank meshing workflow for manual task configuration.
 
@@ -512,34 +524,18 @@ class BaseMeshing(BaseSession):
         )
         return self._current_workflow
 
-    def current_workflow(
+    def _get_current_workflow(
         self, legacy: bool | None = None
     ) -> "_workflow.Workflow | workflow_new.Workflow":
-        """Get the currently active meshing workflow.
-
-        Returns the workflow instance that is currently loaded in the session.
-
-        Parameters
-        ----------
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
-
-        Raises
-        ------
-        RuntimeError
-            If no workflow is initialized.
-        """
+        """Return the active workflow; called by the current_workflow property."""
         legacy = self._fallback_check(legacy)
 
         # Define workflow type to factory method mapping
         workflow_factories = {
-            "Watertight Geometry": self.watertight_workflow,
-            "Fault-tolerant Meshing": self.fault_tolerant_workflow,
-            "2D Meshing": self.two_dimensional_meshing_workflow,
-            "Topology Based Meshing": self.topology_based_meshing_workflow,
+            "Watertight Geometry": self._watertight_workflow,
+            "Fault-tolerant Meshing": self._fault_tolerant_workflow,
+            "2D Meshing": self._two_dimensional_meshing_workflow,
+            "Topology Based Meshing": self._topology_based_meshing_workflow,
             "Create New": self.create_workflow,
         }
 
@@ -591,3 +587,126 @@ class BaseMeshing(BaseSession):
                 "preferences_root", _make_datamodel_module(self, "preferences")
             )
         return self._preferences
+
+    def watertight(
+        self, legacy: bool | None = None
+    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow_new.WatertightMeshingWorkflow":
+        """Get a new watertight meshing workflow.
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), auto-selects based on Fluent version: legacy for
+            versions up to 25R2, new implementation from 26R1 onwards.
+
+        Returns
+        -------
+        WatertightMeshingWorkflow
+        """
+        return self._watertight_workflow(legacy=legacy)
+
+    def fault_tolerant(
+        self, legacy: bool | None = None
+    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow_new.FaultTolerantMeshingWorkflow":
+        """Get a new fault-tolerant meshing workflow.
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), auto-selects based on Fluent version: legacy for
+            versions up to 25R2, new implementation from 26R1 onwards.
+
+        Returns
+        -------
+        FaultTolerantMeshingWorkflow
+        """
+        return self._fault_tolerant_workflow(legacy=legacy)
+
+    def two_dimensional_meshing(
+        self, legacy: bool | None = None
+    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow_new.TwoDimensionalMeshingWorkflow":
+        """Get a new 2D meshing workflow.
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), auto-selects based on Fluent version: legacy for
+            versions up to 25R2, new implementation from 26R1 onwards.
+
+        Returns
+        -------
+        TwoDimensionalMeshingWorkflow
+        """
+        return self._two_dimensional_meshing_workflow(legacy=legacy)
+
+    def topology_based(self, legacy: bool | None = None):
+        """Get a new topology-based meshing workflow (beta feature).
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, returns the legacy workflow implementation.
+            If False, returns the new workflow implementation.
+            If None (default), auto-selects based on Fluent version: legacy for
+            versions up to 25R2, new implementation from 26R1 onwards.
+
+        Raises
+        ------
+        BetaFeaturesNotEnabled
+            If beta features are not enabled in the Fluent session.
+        """
+        if not self._is_beta_enabled:
+            raise BetaFeaturesNotEnabled("Topology-based meshing")
+        return self._topology_based_meshing_workflow(legacy=legacy)
+
+    @property
+    def current_workflow(self):
+        """Get the currently active meshing workflow."""
+        return self._get_current_workflow()
+
+    @property
+    def legacy_current_workflow(self):
+        """Get the currently active meshing workflow using the legacy implementation."""
+        return self._get_current_workflow(legacy=True)
+
+    def transfer_mesh_to_solvers(
+        self,
+        solvers,
+        file_type: str = "case",
+        file_name_stem: str | None = None,
+        num_files_to_try: int = 1,
+        clean_up_mesh_file: bool = True,
+        overwrite_previous: bool = True,
+    ):
+        """Transfer mesh to Fluent solver instances.
+
+        Parameters
+        ----------
+        solvers : iterable
+            Sequence of solver instances.
+        file_type : str, optional
+            ``"case"`` or ``"mesh"``.  Default is ``"case"``.
+        file_name_stem : str, optional
+            Stem for the generated file name.
+        num_files_to_try : int, optional
+            Number of candidate file names to try.  Default is ``1``.
+        clean_up_mesh_file : bool, optional
+            Remove the mesh file after transfer.  Default is ``True``.
+        overwrite_previous : bool, optional
+            Overwrite an existing file with the same name.  Default is ``True``.
+        """
+        transfer_case(
+            self,
+            solvers,
+            file_type,
+            file_name_stem,
+            num_files_to_try,
+            clean_up_mesh_file,
+            overwrite_previous,
+        )

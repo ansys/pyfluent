@@ -50,7 +50,7 @@ from ansys.fluent.core.session import (
     solver_aero,
     solver_icing,
 )
-from ansys.fluent.core.session._session import BaseSession
+from ansys.fluent.core.session.session import BaseSession
 
 __all__ = (
     "Meshing",

@@ -29,64 +29,29 @@ Inheritance
 
     BaseSession (private)
     └── BaseMeshing (private)
-        └── PureMeshing
-            └── Meshing          ← this class
+        └── Meshing          ← this class
 """
 
 from typing import TYPE_CHECKING, Any
 
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session._session import BaseSession
-from ansys.fluent.core.session.pure_meshing import PureMeshing
+from ansys.fluent.core.session.base_meshing import BaseMeshing
+from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.session.solver import Solver
 
 
-class Meshing(PureMeshing):
+class Meshing(BaseMeshing):
     """Fluent meshing session with the ability to switch to a solver.
 
-    Extends :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` by
+    Extends :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing` by
     adding :meth:`switch_to_solver`, which transitions the running Fluent
     process from meshing mode to solver mode and returns a
     :class:`~ansys.fluent.core.session.solver.Solver` instance.
 
     All attributes and workflow factory methods of
-    :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` are available
+    :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing` are available
     here.  After :meth:`switch_to_solver` is called this object is deactivated
     and must not be used.
     """
-
-    def __init__(
-        self,
-        fluent_connection: FluentConnection,
-        scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
-        start_transcript: bool = True,
-        launcher_args: dict[str, Any] | None = None,
-    ):
-        """Meshing session.
-
-        Parameters
-        ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
-            Encapsulates a Fluent connection.
-        scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
-        file_transfer_service : Optional
-            Service for uploading and downloading files.
-        start_transcript : bool, optional
-            Whether to start the Fluent transcript in the client.
-            The default is ``True``, in which case the Fluent
-            transcript can be subsequently started and stopped
-            using method calls on the ``Session`` object.
-        """
-        super().__init__(
-            fluent_connection=fluent_connection,
-            scheme_eval=scheme_eval,
-            file_transfer_service=file_transfer_service,
-            start_transcript=start_transcript,
-            launcher_args=launcher_args,
-        )
 
     def switch_to_solver(self) -> Any:
         """Switch to solver mode and return a solver session object. Deactivate this

@@ -52,7 +52,7 @@ from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.session._session import BaseSession
+from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.streaming_services.events_streaming import (

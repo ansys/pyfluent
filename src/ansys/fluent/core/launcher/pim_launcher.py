@@ -51,7 +51,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
     _get_argvals_and_session,
 )
-from ansys.fluent.core.session._session import _parse_server_info_file
+from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
