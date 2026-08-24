@@ -39,6 +39,7 @@ if TYPE_CHECKING:
     from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow
     from ansys.fluent.core.meshing import meshing_workflow_new
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
@@ -180,6 +181,59 @@ class PureMeshing(BaseMeshing):
             A new 2D meshing workflow instance ready for configuration and execution.
         """
         return self.two_dimensional_meshing_workflow(legacy=legacy)
+
+    def load_workflow(
+        self,
+        file_path: PathType,
+        legacy: bool | None = None,
+        initialize: bool = True,
+    ) -> "_meshing_workflow.LoadWorkflow | meshing_workflow_new.LoadWorkflow":
+        """Load a saved meshing workflow from a file.
+
+        Parameters
+        ----------
+        file_path : str or PathType
+            Path to the saved workflow file (typically with .wft extension).
+        legacy : bool, optional
+            If True, loads as a legacy workflow implementation.
+            If False, loads as a new workflow implementation.
+            If None (default), auto-selects based on Fluent version.
+        initialize : bool, keyword-only, optional
+            If True (default), initializes the workflow after loading.
+            If False, skips initialization (new-mode only, 26R1+).
+
+        Returns
+        -------
+        LoadWorkflow
+            The loaded workflow instance with all saved state restored.
+        """
+        return super().load_workflow(
+            file_path=file_path, initialize=initialize, legacy=legacy
+        )
+
+    def create_workflow(
+        self,
+        legacy: bool | None = None,
+        initialize: bool = True,
+    ) -> "_meshing_workflow.CreateWorkflow | meshing_workflow_new.CreateWorkflow":
+        """Create a new blank meshing workflow for manual task configuration.
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), auto-selects based on Fluent version.
+        initialize : bool, keyword-only, optional
+            If True (default), initializes the workflow after creation.
+            If False, skips initialization (new-mode only, 26R1+).
+
+        Returns
+        -------
+        CreateWorkflow
+            A new empty workflow instance ready for task insertion.
+        """
+        return super().create_workflow(initialize=initialize, legacy=legacy)
 
     @property
     def current_workflow(self):
