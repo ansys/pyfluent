@@ -663,13 +663,15 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
 
 @pytest.mark.standalone
 def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
-    orig_parse_server_info_file = session._parse_server_info_file
+    orig_parse_server_info_file = session._session._parse_server_info_file
 
     def mock_parse_server_info_file(file_name):
         ip, port, password = orig_parse_server_info_file(file_name)
         return ip, port - 1, password  # provide wrong port
 
-    monkeypatch.setattr(session, "_parse_server_info_file", mock_parse_server_info_file)
+    monkeypatch.setattr(
+        session._session, "_parse_server_info_file", mock_parse_server_info_file
+    )
     with pytest.raises(LaunchFluentError) as ex:
         _ = pyfluent.launch_fluent()
     # grpc.RpcError -> RuntimeError -> LaunchFluentError
