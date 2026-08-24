@@ -21,7 +21,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Session module providing Fluent session classes for meshing, solving, and file-based workflows."""
+"""Fluent session classes for meshing, solving, and file-based workflows.
+
+Class hierarchy
+---------------
+The two non-user-facing base classes (``BaseSession``, ``BaseMeshing``) live in
+private modules and must not be instantiated directly.  All concrete session
+objects are created via :func:`ansys.fluent.core.launch_fluent`.
+
+.. code-block:: text
+
+    BaseSession  (private)
+    ├── Solver                — full solver session
+    │   ├── SolverAero        — solver + Aero add-on
+    │   ├── SolverIcing       — solver + Icing add-on
+    │   └── SolverLite        — lightweight solver variant
+    └── BaseMeshing  (private)
+        └── PureMeshing       — meshing-only (no solver switching)
+            └── Meshing       — meshing with :meth:`~Meshing.switch_to_solver`
+
+Session aliases
+---------------
+Each concrete class is re-exported here with a ``Session`` suffix for backward
+compatibility and convenience:
+
+- :class:`SolverSession`       → :class:`~ansys.fluent.core.session.solver.Solver`
+- :class:`SolverAeroSession`   → :class:`~ansys.fluent.core.session.solver_aero.SolverAero`
+- :class:`SolverIcingSession`  → :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`
+- :class:`SolverLiteSession`   → :class:`~ansys.fluent.core.session.solver_lite.SolverLite`
+- :class:`PureMeshingSession`  → :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`
+- :class:`MeshingSession`      → :class:`~ansys.fluent.core.session.meshing.Meshing`
+- :class:`FileSession`         → :class:`~ansys.fluent.core.session.file.FileSession`
+"""
 
 
 from ansys.fluent.core.session.file import FileSession

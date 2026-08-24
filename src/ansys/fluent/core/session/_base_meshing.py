@@ -21,20 +21,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to get base Meshing session."""
+"""Internal base class for meshing sessions.
 
+This module is private.  Do not import from it directly; use
+:class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` or
+:class:`~ansys.fluent.core.session.meshing.Meshing` instead.
+"""
+
+import functools
 import logging
 import os
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 import warnings
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
+from ansys.fluent.core.session._session import BaseSession
 from ansys.fluent.core.session._shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
+from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -71,46 +82,90 @@ pyfluent_logger = logging.getLogger("pyfluent.general")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
-class BaseMeshing:
+class BaseMeshing(BaseSession):
     """Encapsulates base methods of a meshing session."""
+
+    _rules = [
+        "workflow",
+        "meshing_workflow",
+        "meshing",
+        "MeshingUtilities",
+        "PartManagement",
+        "PMFileManagement",
+    ]
 
     def __init__(
         self,
-        session_execute_tui,
         fluent_connection: FluentConnection,
-        fluent_version,
-        datamodel_service_tui,
-        datamodel_service_se,
+        scheme_eval: SchemeInterpreter,
+        file_transfer_service: Any | None = None,
+        start_transcript: bool = True,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """BaseMeshing session.
 
         Parameters
         ----------
-        session_execute_tui (_type_):
-            Executes Fluent’s SolverTUI methods.
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
+        scheme_eval: SchemeInterpreter
+            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+        file_transfer_service : Optional
+            Service for uploading and downloading files.
+        start_transcript : bool, optional
+            Whether to start the Fluent transcript in the client.
+            The default is ``True``, in which case the Fluent
+            transcript can be subsequently started and stopped
+            using method calls on the ``Session`` object.
         """
-        self._tui_service = datamodel_service_tui
-        self._se_service = datamodel_service_se
-        self._fluent_connection = fluent_connection
+        super().__init__(
+            fluent_connection=fluent_connection,
+            scheme_eval=scheme_eval,
+            file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
+            event_type=MeshingEvent,
+        )
+        # Aliases required by _shared.py
+        self._tui_service = self._datamodel_service_tui
+        self._se_service = self._datamodel_service_se
         self._tui = None
         self._meshing = None
-        self._fluent_version = fluent_version
         self._meshing_utilities = None
         self._old_workflow = None
         self._meshing_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
-        self._session_execute_tui = session_execute_tui
         self._product_version = None
         self._current_workflow = None
 
-    def get_fluent_version(self) -> FluentVersion:
-        """Gets and returns the fluent version."""
-        pyfluent_logger.debug("Fluent version = " + str(self._fluent_version))
-        return FluentVersion(self._fluent_version)
+        self.datamodel_streams = {}
+        if self._datamodel_service_se._cache is not None:
+            for rules in BaseMeshing._rules:
+                self._datamodel_service_se._cache.set_config(
+                    rules,
+                    "name_key",
+                    (
+                        NameKey.DISPLAY
+                        if DataModelCache.use_display_name
+                        else NameKey.INTERNAL
+                    ),
+                )
+                stream = fluent_connection._service_factory.object_model_streaming
+                stream.register_callback(
+                    functools.partial(
+                        self._datamodel_service_se._cache.update_cache,
+                        rules=rules,
+                        version=self._datamodel_service_se._version,
+                    )
+                )
+                self.datamodel_streams[rules] = stream
+                stream.start(
+                    rules=rules,
+                    no_commands_diff_state=config.datamodel_use_nocommands_diff_state,
+                )
+                self._fluent_connection.register_finalizer_cb(stream.stop)
 
     @property
     def _version(self):

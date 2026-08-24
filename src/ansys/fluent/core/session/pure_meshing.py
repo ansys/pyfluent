@@ -21,69 +21,73 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module containing class encapsulating Fluent connection."""
+"""Meshing-only Fluent session (:class:`PureMeshing`).
 
-import functools
-import os
+Inheritance
+-----------
+::
+
+    BaseSession (private)
+    └── BaseMeshing (private)
+        └── PureMeshing          ← this class
+            └── Meshing
+"""
+
 from typing import TYPE_CHECKING, Any
 
-from ansys.fluent.core._types import PathType
-from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+if TYPE_CHECKING:
+    from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow
+    from ansys.fluent.core.meshing import meshing_workflow_new
+
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session.base_meshing import BaseMeshing
-from ansys.fluent.core.session.session import BaseSession
-from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
+from ansys.fluent.core.session._base_meshing import BaseMeshing
 from ansys.fluent.core.utils.data_transfer import transfer_case
 
-if TYPE_CHECKING:
-    from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
-    from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
-        Root as meshing_utilities_root,
-    )
-    from ansys.fluent.core.generated.datamodel_261.meshing_workflow import (
-        Root as meshing_workflow_root,
-    )
-    from ansys.fluent.core.generated.datamodel_261.part_management import (
-        Root as partmanagement_root,
-    )
-    from ansys.fluent.core.generated.datamodel_261.pm_file_management import (
-        Root as pmfilemanagement_root,
-    )
-    from ansys.fluent.core.generated.datamodel_261.preferences import (
-        Root as preferences_root,
-    )
-    from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
-    from ansys.fluent.core.generated.meshing.tui_261 import main_menu
-    from ansys.fluent.core.meshing import (
-        meshing_workflow_new,
-    )
-    from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow
 
+class PureMeshing(BaseMeshing):
+    """Fluent meshing session without solver-switching capability.
 
-class PureMeshing(BaseSession):
-    """Encapsulates a Fluent meshing session with a meshing-only Python interface.
+    Designed for deployments where meshing and solving run as separate
+    processes (e.g. containerised pipelines).  Use
+    :class:`~ansys.fluent.core.session.meshing.Meshing` when you also need
+    :meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
 
-    ``PureMeshing`` is designed for workflows where meshing and solving are run as
-        separate stages or in different environments, such as modular or containerized
-        deployments. It provides a clean API that focuses solely on meshing tasks.
-
-        This interface exposes:
-
-        - ``workflow`` and ``meshing`` objects for task-based meshing operations.
-        - ``tui`` for scripting via the legacy Text User Interface (when needed).
+    Attributes
+    ----------
+    tui : main_menu
+        Root of the Fluent meshing TUI.  Access commands as Python
+        attributes, e.g. ``session.tui.mesh.check()``.
+    meshing : meshing_root
+        Root of the ``meshing`` datamodel.
+    meshing_utilities : meshing_utilities_root
+        Utility queries on the current mesh state.
+    workflow : workflow_root
+        Root of the legacy ``workflow`` datamodel.  Prefer the typed
+        workflow factory methods below.
+    meshing_workflow : meshing_workflow_root
+        Root of the new-style ``meshing_workflow`` datamodel (26R1+).
+    PartManagement : partmanagement_root
+        Root of the ``PartManagement`` datamodel.
+    PMFileManagement : pmfilemanagement_root
+        Root of the ``PMFileManagement`` datamodel.
+    preferences : preferences_root
+        Root of the ``preferences`` datamodel.
+    scheme : SchemeInterpreter
+        Direct access to Fluent's Scheme interpreter.
+    journal : Journal
+        Fluent journal recorder; call :meth:`~Journal.start` /
+        :meth:`~Journal.stop`.
+    fields : Fields
+        Container for ``field_data`` and ``field_data_streaming``.
+    transcript : TranscriptStreaming
+        Fluent console transcript; call ``.start()`` / ``.stop()``.
+    events : EventsManager
+        Subscribe to meshing events (``MeshingEvent``).
+    datamodel_streams : dict[str, ObjectModelStreaming]
+        Live object-model streaming handles, keyed by rule name.
     """
-
-    _rules = [
-        "workflow",
-        "meshing_workflow",
-        "meshing",
-        "MeshingUtilities",
-        "PartManagement",
-        "PMFileManagement",
-    ]
 
     def __init__(
         self,
@@ -115,69 +119,7 @@ class PureMeshing(BaseSession):
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
-            event_type=MeshingEvent,
         )
-        self._base_meshing = BaseMeshing(
-            self.execute_tui,
-            fluent_connection,
-            self.get_fluent_version().value,
-            self._datamodel_service_tui,
-            self._datamodel_service_se,
-        )
-
-        datamodel_service_se = self._datamodel_service_se
-        self.datamodel_streams = {}
-        if datamodel_service_se._cache is not None:
-            for rules in PureMeshing._rules:
-                datamodel_service_se._cache.set_config(
-                    rules,
-                    "name_key",
-                    (
-                        NameKey.DISPLAY
-                        if DataModelCache.use_display_name
-                        else NameKey.INTERNAL
-                    ),
-                )
-                stream = fluent_connection._service_factory.object_model_streaming
-                stream.register_callback(
-                    functools.partial(
-                        datamodel_service_se._cache.update_cache,
-                        rules=rules,
-                        version=datamodel_service_se._version,
-                    )
-                )
-                self.datamodel_streams[rules] = stream
-                stream.start(
-                    rules=rules,
-                    no_commands_diff_state=config.datamodel_use_nocommands_diff_state,
-                )
-                self._fluent_connection.register_finalizer_cb(stream.stop)
-
-    @property
-    def tui(self) -> "main_menu":
-        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
-        executed."""
-        return self._base_meshing.tui
-
-    @property
-    def meshing(self) -> "meshing_root":
-        """Datamodel root of meshing."""
-        return self._base_meshing.meshing
-
-    @property
-    def meshing_utilities(self) -> "meshing_utilities_root | None":
-        """Datamodel root of meshing_utilities."""
-        return self._base_meshing.meshing_utilities
-
-    @property
-    def workflow(self) -> "workflow_root":
-        """Datamodel root of workflow."""
-        return self._base_meshing.workflow
-
-    @property
-    def meshing_workflow(self):
-        """Full API to meshing and meshing_workflow."""
-        return self._base_meshing.meshing_workflow
 
     def watertight(
         self, legacy: bool | None = None
@@ -189,17 +131,19 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, returns the legacy workflow implementation.
             If False, returns the new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If None (default), auto-selects based on Fluent version: legacy for
+            versions up to 25R2, new implementation from 26R1 onwards.
 
         Returns
         -------
-        Workflow
+        WatertightMeshingWorkflow
             A new watertight workflow instance ready for configuration and execution.
         """
-        return self._base_meshing.watertight_workflow(legacy=legacy)
+        return self.watertight_workflow(legacy=legacy)
 
-    def fault_tolerant(self, legacy: bool | None = None):
+    def fault_tolerant(
+        self, legacy: bool | None = None
+    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow_new.FaultTolerantMeshingWorkflow":
         """Get a new fault-tolerant meshing workflow.
 
         Parameters
@@ -207,17 +151,19 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, returns the legacy workflow implementation.
             If False, returns the new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If None (default), auto-selects based on Fluent version: legacy for
+            versions up to 25R2, new implementation from 26R1 onwards.
 
         Returns
         -------
-        Workflow
+        FaultTolerantMeshingWorkflow
             A new fault-tolerant workflow instance ready for configuration and execution.
         """
-        return self._base_meshing.fault_tolerant_workflow(legacy=legacy)
+        return self.fault_tolerant_workflow(legacy=legacy)
 
-    def two_dimensional_meshing(self, legacy: bool | None = None):
+    def two_dimensional_meshing(
+        self, legacy: bool | None = None
+    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow_new.TwoDimensionalMeshingWorkflow":
         """Get a new 2D meshing workflow.
 
         Parameters
@@ -225,63 +171,15 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, returns the legacy workflow implementation.
             If False, returns the new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If None (default), auto-selects based on Fluent version: legacy for
+            versions up to 25R2, new implementation from 26R1 onwards.
 
         Returns
         -------
-        Workflow
+        TwoDimensionalMeshingWorkflow
             A new 2D meshing workflow instance ready for configuration and execution.
         """
-        return self._base_meshing.two_dimensional_meshing_workflow(legacy=legacy)
-
-    def load_workflow(self, file_path: PathType, legacy: bool | None = None):
-        """Load a saved meshing workflow from a file.
-
-        Restores a previously saved workflow configuration, including all task
-        settings, sizing controls, and intermediate state. This allows resuming
-        work or reusing established workflows on new geometry.
-
-        Parameters
-        ----------
-        file_path : str or PathType
-            Path to the saved workflow file (typically with .wft extension).
-        legacy : bool, optional
-            If True, loads as a legacy workflow implementation.
-            If False, loads as a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
-
-        Returns
-        -------
-        Workflow
-            The loaded workflow instance with all saved state restored.
-        """
-        return self._base_meshing.load_workflow(
-            file_path=os.fspath(file_path), legacy=legacy
-        )
-
-    def create_workflow(self, legacy: bool | None = None):
-        """Create a new blank meshing workflow.
-
-        Initializes an empty workflow that can be manually configured with tasks.
-        Unlike predefined workflows (watertight, fault-tolerant), this gives you
-        full control to build a custom task sequence from scratch.
-
-        Parameters
-        ----------
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
-
-        Returns
-        -------
-        Workflow
-            A new empty workflow instance ready for task insertion.
-        """
-        return self._base_meshing.create_workflow(legacy=legacy)
+        return self.two_dimensional_meshing_workflow(legacy=legacy)
 
     @property
     def current_workflow(self):
@@ -297,7 +195,7 @@ class PureMeshing(BaseSession):
         Workflow
             The currently active workflow instance, or None if no workflow is loaded.
         """
-        return self._base_meshing.current_workflow()
+        return super().current_workflow()
 
     @property
     def legacy_current_workflow(self):
@@ -307,7 +205,7 @@ class PureMeshing(BaseSession):
         is provided for backward compatibility with code written for Fluent 25R2
         and earlier versions.
         """
-        return self._base_meshing.current_workflow(legacy=True)
+        return super().current_workflow(legacy=True)
 
     def topology_based(self, legacy: bool | None = None):
         """Get a new topology-based meshing workflow (beta feature).
@@ -333,22 +231,7 @@ class PureMeshing(BaseSession):
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("Topology-based meshing")
-        return self._base_meshing.topology_based_meshing_workflow(legacy=legacy)
-
-    @property
-    def PartManagement(self) -> "partmanagement_root":
-        """Datamodel root of PartManagement."""
-        return self._base_meshing.PartManagement
-
-    @property
-    def PMFileManagement(self) -> "pmfilemanagement_root":
-        """Datamodel root of PMFileManagement."""
-        return self._base_meshing.PMFileManagement
-
-    @property
-    def preferences(self) -> "preferences_root":
-        """Datamodel root of preferences."""
-        return self._base_meshing.preferences
+        return self.topology_based_meshing_workflow(legacy=legacy)
 
     def transfer_mesh_to_solvers(
         self,

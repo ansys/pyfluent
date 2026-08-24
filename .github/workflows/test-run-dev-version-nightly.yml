@@ -2,7 +2,7 @@ name: Test Run Dev Version Nightly
 
 on:
   schedule: # UTC at 0300
-    - cron: "0 3 * * *"
+    - cron: "0 1 * * *"
   workflow_dispatch:
 
 concurrency:

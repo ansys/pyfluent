@@ -21,7 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module containing class encapsulating Fluent connection and the Base Session."""
+"""Internal base class for all Fluent sessions.
+
+This module is private.  Do not import from it directly; use the concrete
+session classes exposed by :mod:`ansys.fluent.core.session`.
+"""
 
 from collections.abc import Callable
 from enum import Enum

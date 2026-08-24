@@ -21,9 +21,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module containing class encapsulating Fluent connection.
+"""Lightweight Fluent solver session (:class:`SolverLite`).
 
-**********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
+Inheritance
+-----------
+::
+
+    BaseSession (private)
+    └── Solver
+        └── SolverLite      ← this class
 """
 
 from typing import Any
@@ -32,9 +38,17 @@ from ansys.fluent.core.session.solver import Solver
 
 
 class SolverLite(Solver):
-    """Encapsulates a Fluent - Solver(Lite) session connection.
-    SolverLite(Session) holds the top-level objects
-    for solver TUI and settings objects calls."""
+    """Lightweight Fluent solver session.
+
+    Currently provides the same interface as
+    :class:`~ansys.fluent.core.session.solver.Solver` plus
+    :meth:`switch_to_full_solver` to upgrade to a full solver session.
+
+    .. note::
+        This class is a work-in-progress.  Its feature set is expected to
+        differ from :class:`~ansys.fluent.core.session.solver.Solver` in a
+        future release.
+    """
 
     def __init__(
         self,
@@ -61,10 +75,6 @@ class SolverLite(Solver):
             start_transcript=start_transcript,
             launcher_args=launcher_args,
         )
-        self._tui_service = self._datamodel_service_tui
-        self._settings_service = self.settings_service
-        self._tui = None
-        self._settings_root = None
 
     # One can inherit methods from 'Solver' and re-define it here to make it unavailable in solver-Lite
 

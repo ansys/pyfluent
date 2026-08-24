@@ -46,7 +46,7 @@ from ansys.fluent.core.fluent_connection import (
     UnsupportedRemoteFluentInstance,
 )
 from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session._session import BaseSession
 from ansys.fluent.core.session.pure_meshing import PureMeshing
 from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
