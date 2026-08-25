@@ -70,11 +70,9 @@ if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
 
-from ansys.fluent.core.session import (  # noqa: E402
-    file as ansys_fluent_core_session_file,
-)
+from ansys.fluent.core.session import file as _session_file  # noqa: E402
 
-_sys.modules["ansys.fluent.core.file_session"] = ansys_fluent_core_session_file
+_sys.modules["ansys.fluent.core.file_session"] = _session_file
 
 
 def version_info() -> str:
