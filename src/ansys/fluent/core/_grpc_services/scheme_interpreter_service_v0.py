@@ -26,33 +26,20 @@
 
 from typing import Any, Sequence
 
-import grpc
-
 from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 class SchemeInterpreterService(ServiceProtocol):
     """SchemeInterpreter gRPC service wrapper (v0 proto API)."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
     ) -> None:
         """Initialize SchemeInterpreterService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = scheme_eval_pb2_grpc.SchemeEvalStub(intercept_channel)
         self._metadata = metadata
 

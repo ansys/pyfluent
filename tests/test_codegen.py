@@ -26,7 +26,6 @@ import importlib
 from pathlib import Path
 import pickle
 import shutil
-import sys
 import tempfile
 
 import pytest
@@ -461,7 +460,7 @@ def _get_group_settings_static_info(name, children, commands, queries):
 def _get_named_object_settings_static_info(name, object_type, children):
     return {
         name: {
-            "object-type": object_type,
+            "object_type": object_type,
             "children": children,
             "type": "named-object",
             "help": f"{name} help",
@@ -531,8 +530,6 @@ from ansys.fluent.core.solver.flobject import (
     _InOutFile,
     _FlStringConstant,
 )
-
-SHASH = "855b05953087d440471b35817227cb48708938415a9d3cc7eaa5ae71fb305d19"
 
 class P3(Integer):
     """
@@ -753,11 +750,6 @@ def test_codegen_with_settings_static_info(monkeypatch):
     }
     with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
         expected_settings_api_output = _expected_settings_api_output
-        if sys.version_info >= (3, 14):
-            expected_settings_api_output = expected_settings_api_output.replace(
-                'SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"',
-                'SHASH = "54828595751f83d80abe11673952397862edb1f6f1ff3c23b2c133b483561345"',
-            )
         assert f.read().strip() == expected_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:

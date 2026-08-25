@@ -333,7 +333,7 @@ class Mesh:
 
     def _get_nodes(
         self, surface_id: int
-    ) -> tuple[npt.NDArray[np.uint32], npt.NDArray[np.int16]]:
+    ) -> tuple[npt.NDArray[np.uint32], npt.NDArray[np.integer[Any]]]:
         min_id, max_id = self.get_surface_locs(surface_id)
         nnodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nnodes"]
         nodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nodes"]
@@ -619,7 +619,7 @@ class CaseFile(RPVarProcessor):
         Get the mesh data.
     """
 
-    def __init__(
+    def __init__(  # noqa: C901
         self,
         case_file_name: "PathType | None" = None,
         project_file_name: "PathType | None" = None,

@@ -55,7 +55,7 @@ def _get_api_tree_data():
             return api_tree_data
 
 
-def _print_search_results(
+def _print_search_results(  # noqa: C901
     queries: list,
     api_tree_data: dict | None = None,
     api_path: str | None = None,

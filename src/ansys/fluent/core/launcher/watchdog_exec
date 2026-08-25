@@ -4,7 +4,7 @@
 PyFluent will handle the Watchdog process, see ``launch_fluent`` documentation.
 """
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # noqa: C901
     try:
         import os
         import signal

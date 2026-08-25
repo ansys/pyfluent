@@ -25,16 +25,8 @@
 import collections.abc
 from typing import Any
 
-import grpc
-
 from ansys.api.fluent.v1 import settings_pb2, settings_pb2_grpc
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 def _get_request_instance_for_path(request_class, path: str) -> Any:
@@ -44,20 +36,36 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
     return request
 
 
-class SettingsService(ServiceProtocol):
-    """Settings gRPC service wrapper (v1 proto API)."""
+# Field groups used by SettingsService._extract_static_info, ordered by extraction strategy.
+# Primitive scalar fields: stored only when truthy (same rule for booleans such as user_creatable).
+_PRIMITIVE_FIELDS: tuple[str, ...] = (
+    "type",
+    "help",
+    "has_allowed_values",
+    "include_child_named_objects",
+    "list_size",
+    "user_creatable",
+    "return_type",
+    "deprecated_version",
+    "api_exposure_level",
+    "file_purpose",
+)
+# Repeated SchemaMap fields whose values are nested schema nodes.
+_SCHEMA_MAP_FIELDS: tuple[str, ...] = ("children", "commands", "queries", "arguments")
+# Repeated StringPair alias fields.
+_ALIAS_FIELDS: tuple[str, ...] = (
+    "child_aliases",
+    "command_aliases",
+    "query_aliases",
+    "arguments_aliases",
+)
 
-    def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
-    ) -> None:
+
+class SettingsService(ServiceProtocol):
+    """Class wrapping the settings gRPC service of Fluent (v1 proto API)."""
+
+    def __init__(self, intercept_channel, metadata: list[tuple[str, str]]) -> None:
         """Initialize SettingsService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = settings_pb2_grpc.SettingsStub(intercept_channel)
         self._metadata = metadata
 
@@ -223,51 +231,40 @@ class SettingsService(ServiceProtocol):
 
     def _extract_static_info(self, info) -> dict[str, Any]:
         ret = {}
-        ret["type"] = info.type
-        for key, value in sorted(info.attrs.items()):
-            ret[key] = self._get_state_from_value(value)
-        if info.has_allowed_values:
-            ret["has-allowed-values"] = info.has_allowed_values
-        if info.children:
-            ret["children"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.children
-            }
-        if info.commands:
-            ret["commands"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.commands
-            }
-        if hasattr(info, "queries") and info.queries:
-            ret["queries"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.queries
-            }
-        if info.arguments:
-            ret["arguments"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.arguments
-            }
+
+        # 1. Basic Primitive Fields (Strings, Ints, Bools)
+        # user_creatable is a boolean but handled identically — stored only when truthy.
+        for field in _PRIMITIVE_FIELDS:
+            value = getattr(info, field)
+            if value:
+                ret[field] = value
+
+        # 2. Embedded Message Types (Require HasField check)
         if info.HasField("object_type"):
-            ret["object-type"] = self._extract_static_info(info.object_type)
-        if info.help:
-            ret["help"] = info.help
-        try:
-            if info.include_child_named_objects:
-                ret["include_child_named_objects"] = info.include_child_named_objects
-        except AttributeError:
-            pass
+            ret["object_type"] = self._extract_static_info(info.object_type)
 
-        try:
-            if info.list_size:
-                ret["list_size"] = info.list_size
-        except AttributeError:
-            pass
+        # 3. Repeated SchemaMap Fields (Nested Schemas)
+        for field in _SCHEMA_MAP_FIELDS:
+            collection = getattr(info, field)
+            if collection:
+                ret[field] = {
+                    child.name: self._extract_static_info(child.value)
+                    for child in collection
+                }
 
-        try:
-            if info.user_creatable:
-                ret["user_creatable"] = info.user_creatable
-        except AttributeError:
-            ret["user_creatable"] = True
+        # 4. Repeated StringPair Fields (Aliases)
+        for field in _ALIAS_FIELDS:
+            collection = getattr(info, field)
+            if collection:
+                ret[field] = {x.key: x.value for x in collection}
+
+        # 5. Optional Attributes Message
+        if info.HasField("optional_attrs"):
+            opt = info.optional_attrs
+            # allowed_values is a repeated string
+            if opt.allowed_values:
+                ret["allowed_values"] = list(opt.allowed_values)
+            if opt.has_migration_adapter:
+                ret["has_migration_adapter"] = opt.has_migration_adapter
 
         return ret

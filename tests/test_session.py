@@ -25,6 +25,7 @@ from concurrent import futures
 import os
 from pathlib import Path
 import platform
+import sys
 import tempfile
 import time
 
@@ -45,6 +46,7 @@ from ansys.api.fluent.v1 import health_pb2_grpc as health_pb2_grpc_v1
 from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_grpc
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
+from ansys.fluent.core._grpc_services import _server_supports_v1
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
@@ -53,6 +55,10 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
+from ansys.fluent.core.streaming_services.events_streaming import (
+    IterationEndedEventInfo,
+    SolverEvent,
+)
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -563,7 +569,7 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
 def test_server_supports_v1_by_version(session_fixture_name, request):
     fluent_session = request.getfixturevalue(session_fixture_name)
     expected = fluent_session.get_fluent_version() >= FluentVersion.v271
-    assert fluent_session._fluent_connection._server_supports_v1 is expected
+    assert _server_supports_v1(fluent_session._fluent_connection._channel) is expected
 
 
 @pytest.mark.standalone
@@ -1164,3 +1170,62 @@ def test_context_manager_with_session_switch(new_meshing_session_wo_exit):
         solver = meshing.switch_to_solver()
         assert not meshing.is_active()
         assert solver.is_active()
+
+
+def test_iterate_with_interrupt(new_solver_session):
+    case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+
+    solver = new_solver_session
+    solver.settings.file.read_case(file_name=case_file)
+    solver.settings.solution.initialization.hybrid_initialize()
+
+    def on_iteration_ended(session, event_info: IterationEndedEventInfo) -> None:
+        if event_info.index >= 10:
+            # Signal Fluent to stop — Fluent stops cleanly
+            session.settings.solution.run_calculation.interrupt()
+
+    solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
+
+    # Raises RuntimeError: () from Fluent when the solver is stopped
+    # cleanly via interrupt().  The RuntimeError is suppressed by the
+    # interruptible command guard in flobject.py, so workflow code
+    # following iterate()/calculate() continues normally.
+    solver.settings.solution.run_calculation.iterate(iter_count=100)
+
+    solver.settings.results.graphics.contour.create(name="dummy-contour")
+
+    solver.settings.results.graphics.contour["dummy-contour"] = {
+        "field": "pressure",
+        "surfaces_list": ["wall-elbow"],
+    }
+
+    assert "dummy-contour" in solver.settings.results.graphics.contour()
+
+
+def test_v0_not_imported_in_v1_session(new_solver_session):
+    solver = new_solver_session
+    case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+
+    assert solver.is_active()
+
+    solver.settings.file.read_case_data(file_name=case_file)
+
+    assert solver.application_runtime.get_app_mode() == pyfluent.FluentMode.SOLVER
+
+    scalar_field_data_request = pyfluent.ScalarFieldDataRequest(
+        field_name="pressure",
+        surfaces=["cold-inlet"],
+    )
+
+    scalar_data = solver.fields.field_data.get_field_data(scalar_field_data_request)
+    assert scalar_data is not None
+
+    assert round(solver.fields.reduction.area(locations=["cold-inlet"]), 5) == 0.00389
+
+    for module_name in sys.modules.keys():
+        if solver.get_fluent_version() >= FluentVersion.v271:
+            assert not module_name.startswith("ansys.fluent.core.solver.v0")
+        else:
+            assert not module_name.startswith("ansys.fluent.core.solver.v1")

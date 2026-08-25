@@ -76,6 +76,8 @@ class RPVarType(Enum):
 class RPVars:
     """Access to rpvars in a specific session."""
 
+    _MAX_NEW_RPVAR_NAME_LENGTH = 62
+
     def __init__(self, eval_fn):
         """Initialize RPVars."""
         self._eval_fn = eval_fn
@@ -191,7 +193,7 @@ class RPVars:
         Parameters
         ----------
         name : str
-            Name of the rpvar to create.
+            Name of the rpvar to create. Must not exceed `62` characters.
         value : Any
             Initial value for the rpvar.
         var_type : RPVarType | type | None
@@ -206,7 +208,15 @@ class RPVars:
             If the value type doesn't match the specified var_type.
         RuntimeError
             If 'make-new-rpvar' returns #f for a reason other than the variable name already matching an existing entry.
+        ValueError
+            If the rpvar name exceeds Fluent's length limit of 62.
         """
+        if len(name) > self._MAX_NEW_RPVAR_NAME_LENGTH:
+            raise ValueError(
+                f"RPVar name '{name}' exceeds maximum allowed length of "
+                f"{self._MAX_NEW_RPVAR_NAME_LENGTH} characters."
+            )
+
         if var_type is None:
             var_type = RPVarType.CUSTOM
             python_type = None

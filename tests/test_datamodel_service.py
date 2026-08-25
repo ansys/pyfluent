@@ -33,12 +33,17 @@ from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core._grpc_services.object_model_service_v0 import (
-    _convert_value_to_variant,
+from ansys.fluent.core._grpc_services._command_arguments_mixin import (
+    CommandArgumentsCleanupMixin,
+)
+from ansys.fluent.core._grpc_services.object_model_service import (
     _convert_variant_to_value,
 )
-from ansys.fluent.core.services._command_arguments_mixin import (
-    CommandArgumentsCleanupMixin,
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_value_to_variant,
+)
+from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+    _convert_variant_to_value as _convert_variant_to_value_v0,
 )
 from ansys.fluent.core.services.object_model import (
     PyArguments,
@@ -51,10 +56,7 @@ from ansys.fluent.core.services.object_model import (
     convert_path_to_se_path,
 )
 from ansys.fluent.core.streaming_services.datamodel_streaming import (
-    DatamodelStream as DatamodelStreamV0,
-)
-from ansys.fluent.core.streaming_services.datamodel_streaming_v1 import (
-    DatamodelStream as DatamodelStreamV1,
+    DatamodelStream,
 )
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -79,7 +81,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 def test_convert_value_to_variant_to_value(value, expected):
     variant = Variant()
     _convert_value_to_variant(value, variant)
-    assert expected == _convert_variant_to_value(variant)
+    assert expected == _convert_variant_to_value_v0(variant)
 
 
 def test_pyarguments_registers_and_releases_command_arguments():
@@ -135,7 +137,6 @@ def test_command_arguments_cleanup_mixin_deletes_and_stops_tracking():
 
 
 @pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
 def test_event_subscription(new_meshing_session):
     session = new_meshing_session
     session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -347,17 +348,15 @@ def test_datamodel_streaming_full_diff_state(
 ):
     meshing = new_meshing_session
     datamodel_service_se = meshing._datamodel_service_se
-    DatamodelStream = (
-        DatamodelStreamV1
-        if meshing._fluent_connection._server_supports_v1
-        else DatamodelStreamV0
-    )
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=False)
 
     def cb(state, deleted_paths):
         if state:
-            state = _convert_variant_to_value(state)
+            if meshing.get_fluent_version() < FluentVersion.v271:
+                state = _convert_variant_to_value_v0(state)
+            else:
+                state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []
@@ -378,17 +377,15 @@ def test_datamodel_streaming_no_commands_diff_state(
 ):
     meshing = new_meshing_session
     datamodel_service_se = meshing._datamodel_service_se
-    DatamodelStream = (
-        DatamodelStreamV1
-        if meshing._fluent_connection._server_supports_v1
-        else DatamodelStreamV0
-    )
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=True)
 
     def cb(state, deleted_paths):
         if state:
-            state = _convert_variant_to_value(state)
+            if meshing.get_fluent_version() < FluentVersion.v271:
+                state = _convert_variant_to_value_v0(state)
+            else:
+                state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []

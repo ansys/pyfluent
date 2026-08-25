@@ -22,18 +22,11 @@
 
 """Wrapper over the field data gRPC service of Fluent (v0 proto API)."""
 
-import grpc
 import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2, field_data_pb2_grpc
-from ansys.fluent.core._grpc_services.streaming_service import StreamingService
+from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 def get_fields_request() -> field_data_pb2.GetFieldsRequest:
@@ -50,16 +43,11 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     """FieldData service of Fluent (v0 proto API)."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
     ):
         """Initialize FieldDataService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         super().__init__(
             stub=field_data_pb2_grpc.FieldDataStub(intercept_channel), metadata=metadata
         )
@@ -232,6 +220,10 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         )
         return self.get_fields(fields_request)
 
+    def reset_batched_fields_request(self) -> None:
+        """Reset the batched fields request to an empty state."""
+        self._batched_fields_request = get_fields_request()
+
     def _add_pathlines_fields_request(
         self,
         field_name: str,
@@ -369,6 +361,13 @@ class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         for response in responses:
             elementss.append(response.elements)
         return elementss
+
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        """Processes field data streaming."""
+        request = field_data_pb2.BeginFieldsStreamingRequest(*args, **kwargs)
+        return self.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
 
 
 class _FetchFieldData:

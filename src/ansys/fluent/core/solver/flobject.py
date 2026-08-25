@@ -243,6 +243,20 @@ def _get_hidden_names(names, child_classes, obj) -> set:
     return hidden
 
 
+def _get_active_names(obj, names: list) -> list:
+    """Return entries from ``names`` that are active and visible at the current exposure level."""
+    ret = []
+    child_classes = type(obj)._child_classes
+    for name in names:
+        child_cls = child_classes.get(name)
+        if child_cls is not None and _is_hidden_by_exposure_level(child_cls, obj):
+            continue
+        child = getattr(obj, name)
+        if child.is_active() and not _is_deprecated(child):
+            ret.append(name)
+    return ret
+
+
 def _raise_if_exposure_hidden(name, child_classes, obj) -> None:
     """Raise AttributeError if name is hidden due to exposure level."""
     child_cls = child_classes.get(name)
@@ -509,6 +523,10 @@ class Base:
     def _set_on_interrupt(self, on_interrupt):
         """Set interrupt method."""
         self._setattr("_on_interrupt", on_interrupt)
+
+    def _set_is_interruptible_command(self, is_interruptible_command):
+        """Set interruptible command checker."""
+        self._setattr("_is_interruptible_command", is_interruptible_command)
 
     def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
@@ -1364,29 +1382,11 @@ class Group(SettingsBase[DictStateType]):
 
     def get_active_command_names(self):
         """Names of commands that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for command_name in self.command_names:
-            child_cls = child_classes.get(command_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            command = getattr(self, command_name)
-            if command.is_active() and not _is_deprecated(command):
-                ret.append(command_name)
-        return ret
+        return _get_active_names(self, self.command_names)
 
     def get_active_query_names(self):
         """Names of queries that are currently active."""
-        ret = []
-        child_classes = type(self)._child_classes
-        for query_name in self.query_names:
-            child_cls = child_classes.get(query_name)
-            if child_cls is not None and _is_hidden_by_exposure_level(child_cls, self):
-                continue
-            query = getattr(self, query_name)
-            if query.is_active() and not _is_deprecated(query):
-                ret.append(query_name)
-        return ret
+        return _get_active_names(self, self.query_names)
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
@@ -1687,6 +1687,14 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
+    def get_active_command_names(self):
+        """Names of commands that are currently active."""
+        return _get_active_names(self, self.command_names)
+
+    def get_active_query_names(self):
+        """Names of queries that are currently active."""
+        return _get_active_names(self, self.query_names)
+
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
@@ -1831,6 +1839,46 @@ def _rename(obj: NamedObject | _Alias, new: str, old: str):
     obj._create_child_object(new)
 
 
+def _parse_quantity(path, state):
+    """Parse *state* into an ``ansys.units.Quantity``, or return ``None``.
+
+    Accepts either a concrete ``Quantity`` instance or a ``(sequence, units)``
+    tuple shorthand.  Raises ``UnhandledQuantity`` if the conversion fails.
+    """
+    try:
+        if isinstance(state, ansys.units.Quantity):
+            return state
+        if (
+            isinstance(state, tuple)
+            and len(state) == 2
+            and isinstance(state[0], collections.abc.Sequence)
+            and not isinstance(state[0], (str, bytes, bytearray))
+        ):
+            return ansys.units.Quantity(*state)
+        return None
+    except Exception as ex:
+        raise UnhandledQuantity(path, state) from ex
+
+
+def _materialize_quantity_values(path, state, quantity):
+    """Return ``list(quantity.value)``, or raise ``UnhandledQuantity``."""
+    try:
+        return list(quantity.value)
+    except Exception as ex:
+        raise UnhandledQuantity(path, state) from ex
+
+
+def _convert_to_target_units(path, state, quantity, target_units):
+    """Convert *quantity* to *target_units* and return a plain ``float`` list.
+
+    Raises ``UnhandledQuantity`` on failure.
+    """
+    try:
+        return [float(v) for v in quantity.to(target_units).value]
+    except Exception as ex:
+        raise UnhandledQuantity(path, state) from ex
+
+
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
@@ -1911,6 +1959,14 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         self._update_objects()
         return iter(self._objects)
 
+    def get_active_command_names(self):
+        """Names of commands that are currently active."""
+        return _get_active_names(self, self.command_names)
+
+    def get_active_query_names(self):
+        """Names of queries that are currently active."""
+        return _get_active_names(self, self.query_names)
+
     def get_size(self) -> int:
         """Return the number of elements in a list object.
 
@@ -1946,6 +2002,28 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         else:
             return getattr(super(), name)
 
+    def _sync_list_size(self, size: int) -> None:
+        # Keep list-object cardinality in sync before the final bulk set.
+        if self.get_size() != size:
+            with self._while_resizing():
+                self.flproxy.resize_list_object(self.path, size)
+        if len(self._objects) != size:
+            self._update_objects()
+
+    def _resolve_child_units(self, size: int):
+        # Return the target units string from the first child, or None.
+        if size == 0:
+            return None
+        child = self[0]
+        # First support direct numerical list children.
+        if isinstance(child, RealNumerical):
+            return child.units()
+        # Then support wrapped schemas where units live under .value.
+        child_value = getattr(child, "value", None)
+        if isinstance(child_value, RealNumerical):
+            return child_value.units()
+        return None
+
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the list object.
 
@@ -1961,60 +2039,15 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         if kwargs or state is None:
             return super().set_state(state=state, **kwargs)
 
-        quantity = None
-        try:
-            # Accept either a concrete Quantity or tuple shorthand
-            # (sequence, units) for list-style unit-aware updates.
-            if isinstance(state, ansys.units.Quantity):
-                quantity = state
-            elif (
-                isinstance(state, tuple)
-                and len(state) == 2
-                and isinstance(state[0], collections.abc.Sequence)
-                and not isinstance(state[0], (str, bytes, bytearray))
-            ):
-                quantity = ansys.units.Quantity(*state)
-        except Exception as ex:
-            raise UnhandledQuantity(self.path, state) from ex
-
+        quantity = _parse_quantity(self.path, state)
         if quantity is None:
             return super().set_state(state=state, **kwargs)
 
-        try:
-            # Materialize values once so we can determine target size before
-            # any conversion or server update.
-            values = list(quantity.value)
-        except Exception as ex:
-            raise UnhandledQuantity(self.path, state) from ex
-
-        # Keep list-object cardinality in sync before the final bulk set.
-        size = len(values)
-        if self.get_size() != size:
-            with self._while_resizing():
-                self.flproxy.resize_list_object(self.path, size)
-        if len(self._objects) != size:
-            self._update_objects()
-
-        target_units = None
-        if size > 0:
-            child = self[0]
-            # First support direct numerical list children.
-            if isinstance(child, RealNumerical):
-                target_units = child.units()
-            else:
-                # Then support wrapped schemas where units live under .value.
-                child_value = getattr(child, "value", None)
-                if isinstance(child_value, RealNumerical):
-                    target_units = child_value.units()
-
+        values = _materialize_quantity_values(self.path, state, quantity)
+        self._sync_list_size(len(values))
+        target_units = self._resolve_child_units(len(values))
         if target_units is not None:
-            try:
-                # Convert once using the resolved target units and send plain
-                # floats in a single bulk update.
-                values = [float(v) for v in quantity.to(target_units).value]
-            except Exception as ex:
-                raise UnhandledQuantity(self.path, state) from ex
-
+            values = _convert_to_target_units(self.path, state, quantity, target_units)
         return super().set_state(state=values, **kwargs)
 
 
@@ -2237,6 +2270,21 @@ class Command(BaseCommand):
         except KeyboardInterrupt:
             self._root._on_interrupt(self)
             raise KeyboardInterrupt
+        except RuntimeError as ex:
+            # TODO: Remove this Fluent specific logic during later refactoring.
+            # RuntimeError("()") is Fluent's gRPC signal for a clean solver stop
+            # via interrupt() or via manual stop from a GUI in connected instances.
+            # Suppress it for interruptible commands so that
+            # workflow code following iterate()/calculate() continues normally.
+            _is_interruptible = getattr(self._root, "_is_interruptible_command", None)
+            if (
+                _is_interruptible is not None
+                and ex.args
+                and ex.args[0] == "()"
+                and _is_interruptible(self)
+            ):
+                return None
+            raise
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -2253,6 +2301,21 @@ class CommandWithPositionalArgs(BaseCommand):
         except KeyboardInterrupt:
             self._root._on_interrupt(self)
             raise KeyboardInterrupt
+        except RuntimeError as ex:
+            # TODO: Remove this Fluent specific logic during later refactoring.
+            # RuntimeError("()") is Fluent's gRPC signal for a clean solver stop
+            # via interrupt() or via manual stop from a GUI in connected instances.
+            # Suppress it for interruptible commands so that
+            # workflow code following iterate()/calculate() continues normally.
+            _is_interruptible = getattr(self._root, "_is_interruptible_command", None)
+            if (
+                _is_interruptible is not None
+                and ex.args
+                and ex.args[0] == "()"
+                and _is_interruptible(self)
+            ):
+                return None
+            raise
 
 
 class Query(Action):
@@ -2490,218 +2553,329 @@ class _FlStringConstant:
 _bases_by_class = {}
 
 
+def _resolve_base_class(name: str, obj_type: str):
+    """Resolve the base class for a settings API node."""
+    base = _baseTypes.get(obj_type)
+    if obj_type == "command" and name in ["create", "rename", "delete", "resize"]:
+        base = CommandWithPositionalArgs
+    if base is None:
+        settings_logger.warning(
+            f"Unable to find base class for '{name}' "
+            f"(type = '{obj_type}'). "
+            f"Falling back to String."
+        )
+        base = String
+    return base
+
+
+def _set_generated_docstring(dct: dict, info: dict, obj_type: str, parent, pname: str):
+    """Set the generated docstring for a runtime settings class."""
+    helpinfo = info.get("help")
+    if helpinfo:
+        dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
+    elif parent is None:
+        dct["__doc__"] = "'root' object."
+    elif obj_type == "command":
+        dct["__doc__"] = f"'{pname.strip('_')}' command."
+    elif obj_type == "query":
+        dct["__doc__"] = f"'{pname.strip('_')}' query."
+    else:
+        dct["__doc__"] = f"'{pname.strip('_')}' child."
+
+
+def _augment_generated_bases(
+    base,
+    info: dict,
+    obj_type: str,
+    version: str | None,
+    include_child_named_objects: bool,
+    user_creatable: bool,
+) -> tuple[type, ...]:
+    """Compute mixin-augmented bases for the generated class."""
+    bases = (base,)
+    if include_child_named_objects:
+        bases = bases + (_ChildNamedObjectAccessorMixin,)
+    if obj_type == "named-object" and user_creatable:
+        if version is not None and version < "251":
+            bases = bases + (CreatableNamedObjectMixinOld,)
+        else:
+            bases = bases + (CreatableNamedObjectMixin,)
+    elif obj_type == "named-object":
+        bases = bases + (_NonCreatableNamedObjectMixin,)
+    elif info.get("has_allowed_values"):
+        bases += (AllowedValuesMixin,)
+    elif info.get("file_purpose") == "input":
+        bases += (_InputFile,)
+    elif info.get("file_purpose") == "output":
+        bases += (_OutputFile,)
+    elif info.get("file_purpose") == "inout":
+        bases += (_InOutFile,)
+    return bases
+
+
+def _resolve_generated_names(
+    pname: str,
+    bases: tuple[type, ...],
+    file_purpose: str | None,
+    parent_taboo: set | None,
+) -> tuple[str, str]:
+    """Resolve generated class name and parent attribute name."""
+    original_pname = pname
+    i = 1
+    if parent_taboo:
+        while pname in parent_taboo:
+            pname = f"{original_pname}_{i}"
+            i += 1
+    parent_attr_name = pname
+    if file_purpose:  # not generalizing for performance
+        while pname in _bases_by_class and _bases_by_class[pname] != bases:
+            pname = f"{original_pname}_{i}"
+            i += 1
+        _bases_by_class[pname] = bases
+    if parent_taboo:
+        parent_taboo.add(pname)
+    return pname, parent_attr_name
+
+
+def _set_generated_exposure_level(cls, parent, info: dict):
+    """Set class exposure level based on static info and parent level."""
+    # If root, set it explicitly to stable
+    if parent is None:
+        cls.exposure_level = ExposureLevel.STABLE
+        return
+    exposure_level_str = info.get("api_exposure_level")
+    if exposure_level_str is None:
+        cls.exposure_level = parent.exposure_level
+    else:
+        cls.exposure_level = min(
+            ExposureLevel(exposure_level_str), parent.exposure_level
+        )
+
+
+def _set_generated_deprecated_version(cls, info: dict):
+    """Set deprecation metadata for generated class."""
+    deprecated_version = info.get("deprecated_version", None)
+    if deprecated_version and float(deprecated_version) >= 22.2:
+        cls._deprecated_version = deprecated_version
+    else:
+        cls._deprecated_version = ""
+
+
+def _get_generation_taboo(cls, version: str | None) -> set[str]:
+    """Get taboo names used while generating descendants of ``cls``."""
+    taboo = set(dir(cls))
+    if version and version >= "261":
+        taboo -= {"list", "list_properties"}
+    taboo |= {
+        "child_names",
+        "command_names",
+        "query_names",
+        "argument_names",
+        "child_object_type",
+    }
+    return taboo
+
+
+def _process_generated_children(info_dict, names, cls, taboo, version, doc_parts=None):
+    """Generate child classes and register them on ``cls``."""
+    for cname, cinfo in info_dict.items():
+        ccls, parent_attr_name = get_cls(
+            cname, cinfo, cls, version=version, parent_taboo=taboo
+        )
+
+        if doc_parts is not None:
+            th = ccls._state_type
+            th = th.__name__ if hasattr(th, "__name__") else str(th)
+            doc_parts.append(f"    {ccls.__name__} : {th}\n")
+            doc_parts.append(f"        {ccls.__doc__}\n")
+
+        names.append(parent_attr_name)
+        taboo.add(ccls.__name__)
+        cls._child_classes[parent_attr_name] = ccls
+
+
+def _register_generated_children_section(cls, info: dict, taboo: set[str], version):
+    """Populate child names/classes on ``cls`` from static info."""
+    children = info.get("children")
+    if not children:
+        return
+    taboo.add("child_names")
+    cls.child_names = []
+    _process_generated_children(children, cls.child_names, cls, taboo, version)
+
+
+def _register_generated_commands_section(
+    cls, info: dict, taboo: set[str], version, user_creatable: bool
+):
+    """Populate command names/classes on ``cls`` from static info."""
+    commands = info.get("commands")
+    if not commands:
+        return
+    commands.pop("exit", None)
+    if not user_creatable:
+        commands.pop("create", None)
+    if not commands:
+        return
+    cls.command_names = []
+    _process_generated_children(commands, cls.command_names, cls, taboo, version)
+
+
+def _register_generated_queries_section(cls, info: dict, taboo: set[str], version):
+    """Populate query names/classes on ``cls`` from static info."""
+    queries = info.get("queries")
+    if not queries:
+        return
+    cls.query_names = []
+    _process_generated_children(queries, cls.query_names, cls, taboo, version)
+
+
+def _register_generated_arguments_section(cls, info: dict, taboo: set[str], version):
+    """Populate argument names/classes and parameter docs on ``cls``."""
+    arguments = info.get("arguments")
+    if not arguments:
+        return
+    doc_parts = [cls.__doc__, "\n\n", "Parameters\n", "----------\n"]
+    cls.argument_names = []
+    _process_generated_children(
+        arguments,
+        cls.argument_names,
+        cls,
+        taboo,
+        version,
+        doc_parts=doc_parts,
+    )
+    cls.__doc__ = "".join(doc_parts)
+
+
+def _set_generated_return_type(cls, info: dict, version: str | None):
+    """Set return type metadata for generated command/query classes."""
+    if version == "":
+        # This is kept for backwards compatibility.
+        cls.return_type = "object"
+        return
+    return_type = info.get("return_type")
+    if return_type:
+        cls.return_type = return_type
+
+
+def _set_generated_child_object_type(cls, info: dict, version: str | None):
+    """Set child object type metadata for container classes."""
+    object_type = info.get("object_type", False)
+    if not object_type:
+        return
+    cls.child_object_type, _ = get_cls(
+        "child-object-type", object_type, cls, version=version
+    )
+    cls.child_object_type.get_name = lambda self: self._name
+
+
+def _set_generated_aliases(cls, info: dict):
+    """Set consolidated alias metadata on generated classes."""
+    child_aliases = info.get("child_aliases", {})
+    command_aliases = info.get("command_aliases", {})
+    query_aliases = info.get("query_aliases", {})
+    arguments_aliases = info.get("arguments_aliases", {})
+    if not (child_aliases or command_aliases or query_aliases or arguments_aliases):
+        return
+    cls._child_aliases = {}
+    # No need to differentiate in the Python implementation.
+    for k, v in (
+        child_aliases | command_aliases | query_aliases | arguments_aliases
+    ).items():
+        # Storing the original name as we don't have any other way
+        # to recover it at runtime.
+        cls._child_aliases[to_python_name(k)] = (
+            "/".join(x if x == ".." else to_python_name(x) for x in v.split("/")),
+            k,
+        )
+
+
+def _set_generated_allowed_values(cls, info: dict):
+    """Attach allowed-value constants and cached allowed-values list."""
+    allowed_values = info.get("allowed_values", [])
+    if not allowed_values:
+        return
+    for allowed_value in allowed_values:
+        setattr(
+            cls,
+            to_constant_name(allowed_value),
+            _FlStringConstant(allowed_value),
+        )
+    cls._allowed_values = allowed_values
+
+
+def _set_generated_migration_adapter(cls, info: dict):
+    """Mark generated classes that support migration adapters."""
+    has_migration_adapter = info.get("has_migration_adapter", False)
+    if has_migration_adapter:
+        cls._has_migration_adapter = True
+
+
+def _create_generated_class(
+    name: str,
+    info: dict,
+    parent,
+    version: str | None,
+    parent_taboo: set | None,
+) -> tuple[type, str, set[str], bool]:
+    """Build the base generated class and return context for further registration."""
+    pname = "root" if name == "" else to_python_name(name)
+    obj_type = info["type"]
+    base = _resolve_base_class(name, obj_type)
+    dct = {"fluent_name": name, "_version": version}
+    _set_generated_docstring(dct, info, obj_type, parent, pname)
+
+    include_child_named_objects = info.get("include_child_named_objects", False)
+    user_creatable = info.get("user_creatable", False)
+
+    bases = _augment_generated_bases(
+        base,
+        info,
+        obj_type,
+        version,
+        include_child_named_objects,
+        user_creatable,
+    )
+
+    pname, parent_attr_name = _resolve_generated_names(
+        pname,
+        bases,
+        info.get("file_purpose"),
+        parent_taboo,
+    )
+
+    dct["_child_classes"] = {}
+    cls = type(pname, bases, dct)
+
+    _set_generated_exposure_level(cls, parent, info)
+    _set_generated_deprecated_version(cls, info)
+
+    taboo = _get_generation_taboo(cls, version)
+    return cls, parent_attr_name, taboo, user_creatable
+
+
 # pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None, parent_taboo=None):
     """Create a class for the object identified by "path"."""
     try:
-        if name == "":
-            pname = "root"
-        else:
-            pname = to_python_name(name)
-        obj_type = info["type"]
-        base = _baseTypes.get(obj_type)
-        if obj_type == "command" and name in ["create", "rename", "delete", "resize"]:
-            base = CommandWithPositionalArgs
-        if base is None:
-            settings_logger.warning(
-                f"Unable to find base class for '{name}' "
-                f"(type = '{obj_type}'). "
-                f"Falling back to String."
-            )
-            base = String
-        dct = {"fluent_name": name, "_version": version}
-        helpinfo = info.get("help")
-        if helpinfo:
-            dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
-        else:
-            if parent is None:
-                dct["__doc__"] = "'root' object."
-            else:
-                if obj_type == "command":
-                    dct["__doc__"] = f"'{pname.strip('_')}' command."
-                elif obj_type == "query":
-                    dct["__doc__"] = f"'{pname.strip('_')}' query."
-                else:
-                    dct["__doc__"] = f"'{pname.strip('_')}' child."
-
-        include_child_named_objects = info.get(
-            "include-child-named-objects?", False
-        ) or info.get("include_child_named_objects", False)
-        user_creatable = info.get("user-creatable?", False) or info.get(
-            "user_creatable", False
+        cls, parent_attr_name, taboo, user_creatable = _create_generated_class(
+            name,
+            info,
+            parent,
+            version,
+            parent_taboo,
         )
 
-        if version == "222":
-            user_creatable = True
+        _register_generated_children_section(cls, info, taboo, version)
+        _register_generated_commands_section(cls, info, taboo, version, user_creatable)
+        _register_generated_queries_section(cls, info, taboo, version)
+        _register_generated_arguments_section(cls, info, taboo, version)
 
-        bases = (base,)
-        if include_child_named_objects:
-            bases = bases + (_ChildNamedObjectAccessorMixin,)
-        if obj_type == "named-object" and user_creatable:
-            if version < "251":
-                bases = bases + (CreatableNamedObjectMixinOld,)
-            else:
-                bases = bases + (CreatableNamedObjectMixin,)
-        elif obj_type == "named-object":
-            bases = bases + (_NonCreatableNamedObjectMixin,)
-        elif info.get("has-allowed-values"):
-            bases += (AllowedValuesMixin,)
-        elif info.get("file_purpose") == "input":
-            bases += (_InputFile,)
-        elif info.get("file_purpose") == "output":
-            bases += (_OutputFile,)
-        elif info.get("file_purpose") == "inout":
-            bases += (_InOutFile,)
-
-        original_pname = pname
-        i = 1
-        if parent_taboo:
-            while pname in parent_taboo:
-                pname = f"{original_pname}_{i}"
-                i += 1
-        parent_attr_name = pname
-        if info.get("file_purpose"):  # not generalizing for performance
-            while pname in _bases_by_class and _bases_by_class[pname] != bases:
-                pname = f"{original_pname}_{i}"
-                i += 1
-            _bases_by_class[pname] = bases
-        if parent_taboo:
-            parent_taboo.add(pname)
-
-        dct["_child_classes"] = {}
-        cls = type(pname, bases, dct)
-
-        # If root, set it explicitly to stable
-        if parent is None:
-            cls.exposure_level = ExposureLevel.STABLE
-        else:
-            exposure_level_str = info.get("api_exposure_level")
-            if exposure_level_str is None:
-                cls.exposure_level = parent.exposure_level
-            else:
-                cls.exposure_level = min(
-                    ExposureLevel(exposure_level_str), parent.exposure_level
-                )
-
-        deprecated_version = info.get("deprecated_version", None)
-        if deprecated_version and float(deprecated_version) >= 22.2:
-            cls._deprecated_version = deprecated_version
-        else:
-            cls._deprecated_version = ""
-
-        taboo = set(dir(cls))
-        if version and version >= "261":
-            taboo -= {"list", "list_properties"}
-        taboo |= set(
-            [
-                "child_names",
-                "command_names",
-                "query_names",
-                "argument_names",
-                "child_object_type",
-            ]
-        )
-
-        doc = ""
-
-        def _process_cls_names(info_dict, names, write_doc=False):
-            nonlocal taboo
-            nonlocal cls
-
-            for cname, cinfo in info_dict.items():
-                ccls, parent_attr_name = get_cls(
-                    cname, cinfo, cls, version=version, parent_taboo=taboo
-                )
-
-                if write_doc:
-                    nonlocal doc
-                    th = ccls._state_type
-                    th = th.__name__ if hasattr(th, "__name__") else str(th)
-                    doc += f"    {ccls.__name__} : {th}\n"
-                    doc += f"        {ccls.__doc__}\n"
-
-                names.append(parent_attr_name)
-                taboo.add(ccls.__name__)
-                cls._child_classes[parent_attr_name] = ccls
-
-        children = info.get("children")
-        if children:
-            taboo.add("child_names")
-            cls.child_names = []
-            _process_cls_names(children, cls.child_names)
-
-        commands = info.get("commands")
-        if commands:
-            commands.pop("exit", None)
-        if commands and not user_creatable:
-            commands.pop("create", None)
-        if commands:
-            cls.command_names = []
-            _process_cls_names(commands, cls.command_names)
-
-        queries = info.get("queries")
-        if queries:
-            cls.query_names = []
-            _process_cls_names(queries, cls.query_names)
-
-        arguments = info.get("arguments")
-        if arguments:
-            doc = cls.__doc__
-            doc += "\n\n"
-            doc += "Parameters\n"
-            doc += "----------\n"
-            cls.argument_names = []
-            _process_cls_names(arguments, cls.argument_names, write_doc=True)
-            cls.__doc__ = doc
-
-        if version < "242":
-            cls.return_type = "object"
-        else:
-            return_type = info.get("return-type") or info.get("return_type")
-            if return_type:
-                cls.return_type = return_type
-
-        object_type = info.get("object-type", False) or info.get("object_type", False)
-        if object_type:
-            cls.child_object_type, _ = get_cls(
-                "child-object-type", object_type, cls, version=version
-            )
-            cls.child_object_type.get_name = lambda self: self._name
-
-        child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
-        command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
-        query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        arguments_aliases = info.get("arguments-aliases") or info.get(
-            "arguments_aliases", {}
-        )
-        if child_aliases or command_aliases or query_aliases or arguments_aliases:
-            cls._child_aliases = {}
-            # No need to differentiate in the Python implementation
-            for k, v in (
-                child_aliases | command_aliases | query_aliases | arguments_aliases
-            ).items():
-                # Storing the original name as we don't have any other way
-                # to recover it at runtime.
-                cls._child_aliases[to_python_name(k)] = (
-                    "/".join(
-                        x if x == ".." else to_python_name(x) for x in v.split("/")
-                    ),
-                    k,
-                )
-
-        allowed_values = info.get("allowed-values") or info.get("allowed_values", [])
-        if allowed_values:
-            for allowed_value in allowed_values:
-                setattr(
-                    cls,
-                    to_constant_name(allowed_value),
-                    _FlStringConstant(allowed_value),
-                )
-            cls._allowed_values = allowed_values
-
-        has_migration_adapter = info.get("has-migration-adapter?", False)
-        if has_migration_adapter:
-            cls._has_migration_adapter = True
+        _set_generated_return_type(cls, info, version)
+        _set_generated_child_object_type(cls, info, version)
+        _set_generated_aliases(cls, info)
+        _set_generated_allowed_values(cls, info)
+        _set_generated_migration_adapter(cls, info)
 
     except Exception:
         print(
@@ -2722,6 +2896,7 @@ def get_root(
     flproxy,
     version: str = "",
     interrupt: Any | None = None,
+    is_interruptible_command: Any | None = None,
     file_transfer_service: Any | None = None,
     scheme_eval=None,
 ) -> Group:
@@ -2733,6 +2908,11 @@ def get_root(
         Object that interfaces with the Fluent backend.
     interrupt: optional
         To interrupt interruptible commands.
+    is_interruptible_command : optional
+        Callable ``(command) -> bool`` that returns True when *command* is an
+        interruptible solver command (iterate, calculate, dual-time-iterate).
+        Used to suppress the ``RuntimeError("()")`` that Fluent returns via
+        gRPC when the solver is stopped cleanly by ``interrupt()``.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     scheme_eval : Any
@@ -2769,6 +2949,8 @@ def get_root(
     root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)
+    if is_interruptible_command is not None:
+        root._set_is_interruptible_command(is_interruptible_command)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval

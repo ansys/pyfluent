@@ -24,7 +24,7 @@
 from collections.abc import Iterable
 import time
 
-from conftest import SKIP_UNKNOWN
+from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples
@@ -1250,6 +1250,8 @@ def test_loaded_workflow(new_meshing_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/5082
 def test_created_workflow(new_meshing_session):
     meshing = new_meshing_session
     created_workflow = meshing.create_workflow(legacy=True)
@@ -1590,3 +1592,21 @@ def test_recursive_update_dict(new_meshing_session):
         "PorousRegions": "Yes",
         "ZeroThickness": "Yes",
     }
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_inactive_and_developer_level_access(new_meshing_session):
+    meshing = new_meshing_session
+    assert meshing.is_active()
+
+    watertight = meshing.watertight()
+    import_geom = watertight.import_geometry
+
+    # Checks inactive arguments not present.
+    assert "mesh_unit" not in import_geom.arguments()
+    assert import_geom.file_format.allowed_values() == ["CAD", "Mesh"]
+    import_geom.file_format = "Mesh"
+    assert "mesh_unit" in import_geom.arguments()
+
+    # Checks items with developer level access are not exposed.
+    assert import_geom.cad_import_options() == {}

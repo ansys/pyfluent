@@ -25,16 +25,8 @@
 import collections.abc
 from typing import Any
 
-import grpc
-
 from ansys.api.fluent.v0 import settings_pb2, settings_pb2_grpc
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.interceptors import (
-    BatchInterceptor,
-    ErrorStateInterceptor,
-    GrpcErrorInterceptor,
-    TracingInterceptor,
-)
 
 
 def _get_request_instance_for_path(request_class, path: str) -> Any:
@@ -44,20 +36,41 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
     return request
 
 
+# Mapping from v0 optional-attrs keys (hyphenated / question-mark suffixed) to the
+# v1-compatible underscore keys that flobject.py consumes via ``info.get(...)``.
+_V0_ATTRS_KEY_MAP: dict[str, str] = {
+    "allowed-values": "allowed_values",
+    "has-migration-adapter?": "has_migration_adapter",
+    "deprecated-version": "deprecated_version",
+    "api-exposure-level": "api_exposure_level",
+    "file-purpose": "file_purpose",
+    "return-type": "return_type",
+    "child-aliases": "child_aliases",
+    "command-aliases": "command_aliases",
+    "query-aliases": "query_aliases",
+    "arguments-aliases": "arguments_aliases",
+}
+
+# Nested schema-map fields; getattr is used in the loop so that proto versions
+# that do not yet expose a field (e.g. 'queries' on older v0 servers) are
+# skipped silently rather than raising AttributeError.
+_V0_SCHEMA_MAP_FIELDS: tuple[str, ...] = (
+    "children",
+    "commands",
+    "queries",
+    "arguments",
+)
+
+
 class SettingsService(ServiceProtocol):
-    """Settings gRPC service wrapper (v0 proto API)."""
+    """Class wrapping the settings gRPC service of Fluent (v0 proto API)."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        intercept_channel,
+        metadata: list[tuple[str, str]],
     ) -> None:
         """Initialize SettingsService."""
-        intercept_channel = grpc.intercept_channel(
-            channel,
-            GrpcErrorInterceptor(),
-            ErrorStateInterceptor(fluent_error_state),
-            TracingInterceptor(),
-            BatchInterceptor(),
-        )
         self._stub = settings_pb2_grpc.SettingsStub(intercept_channel)
         self._metadata = metadata
 
@@ -164,7 +177,23 @@ class SettingsService(ServiceProtocol):
         """
         request = settings_pb2.GetStaticInfoRequest()
         request.root = "fluent"
-        request.optional_attrs.extend(["allowed-values", "has-migration-adapter?"])
+        # Request the full set of optional attrs so that v0 servers which support
+        # them can return the data; servers that do not support a given attr simply
+        # omit it from the response attrs map.
+        request.optional_attrs.extend(
+            [
+                "allowed-values",
+                "has-migration-adapter?",
+                "deprecated-version",
+                "api-exposure-level",
+                "file-purpose",
+                "return-type",
+                "child-aliases",
+                "command-aliases",
+                "query-aliases",
+                "arguments-aliases",
+            ]
+        )
         response = self._stub.GetStaticInfo(request, metadata=self._metadata)
         # The RPC calls no longer raise an exception. Force an exception if
         # type is empty
@@ -216,46 +245,43 @@ class SettingsService(ServiceProtocol):
     def _extract_static_info(self, info) -> dict[str, Any]:
         ret = {}
         ret["type"] = info.type
+
+        # Map v0 optional-attrs (hyphenated / question-mark keys) to the
+        # v1-compatible underscore keys expected by flobject.get_cls().
+        # Use sorted() to guarantee deterministic insertion order so that
+        # repeated calls produce an identical dict (required for hash stability).
         for key, value in sorted(info.attrs.items()):
-            ret[key] = self._get_state_from_value(value)
+            if key in _V0_ATTRS_KEY_MAP.values():
+                mapped_key = key
+            else:
+                mapped_key = _V0_ATTRS_KEY_MAP.get(key)
+            if mapped_key is not None:
+                ret[mapped_key] = self._get_state_from_value(value)
+
         if info.has_allowed_values:
-            ret["has-allowed-values"] = info.has_allowed_values
-        if info.children:
-            ret["children"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.children
-            }
-        if info.commands:
-            ret["commands"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.commands
-            }
-        if hasattr(info, "queries") and info.queries:
-            ret["queries"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.queries
-            }
-        if info.arguments:
-            ret["arguments"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.arguments
-            }
+            ret["has_allowed_values"] = info.has_allowed_values
+
+        # Nested schema maps; getattr handles proto versions that may lack a field.
+        for field in _V0_SCHEMA_MAP_FIELDS:
+            collection = getattr(info, field, None)
+            if collection:
+                ret[field] = {
+                    child.name: self._extract_static_info(child.value)
+                    for child in collection
+                }
+
         if info.HasField("object_type"):
-            ret["object-type"] = self._extract_static_info(info.object_type)
+            ret["object_type"] = self._extract_static_info(info.object_type)
         if info.help:
             ret["help"] = info.help
-        try:
-            if info.include_child_named_objects:
-                ret["include_child_named_objects"] = info.include_child_named_objects
-        except AttributeError:
-            pass
 
-        try:
-            if info.list_size:
-                ret["list_size"] = info.list_size
-        except AttributeError:
-            pass
+        # Fields that may not exist on older proto versions; skip silently if absent.
+        for field in ("include_child_named_objects", "list_size"):
+            value = getattr(info, field, None)
+            if value:
+                ret[field] = value
 
+        # user_creatable defaults to True on proto versions that do not expose the field.
         try:
             if info.user_creatable:
                 ret["user_creatable"] = info.user_creatable

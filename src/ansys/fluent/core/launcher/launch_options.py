@@ -184,7 +184,9 @@ class UIMode(FluentEnum):
 
     def _default(self):
         # Not using NO_GUI in windows as it opens a new cmd or
-        # shows Fluent output in the current cmd if start <launch_string> is not used
+        # shows Fluent output in the current cmd if start <launch_string> is not used.
+        # Note: HIDDEN_GUI is not supported inside containers and the default value will be
+        # downgraded to NO_GUI on windows host automatically by the container launcher.
         return self.HIDDEN_GUI if is_windows() else self.NO_GUI
 
     def _get_enum_map(self):
@@ -388,7 +390,7 @@ def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     return FluentVersion.get_latest_installed()
 
 
-def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int):
+def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | None):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
@@ -398,7 +400,7 @@ def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int):
     dimension : int, optional
         Geometric dimensionality of the Fluent simulation.
     """
-    if Dimension(dimension) == Dimension.TWO and gpu:
+    if dimension is not None and Dimension(dimension) == Dimension.TWO and gpu:
         raise exceptions.GPUSolverSupportError()
 
 
