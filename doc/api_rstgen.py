@@ -65,7 +65,6 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     legacy/legacy_contents
     data_model_cache
     exceptions
-    file_session
     fields/fields_contents
     fluent_connection
     journaling
@@ -209,21 +208,12 @@ hierarchy = {
     "other": [
         "module_config",
         "exceptions",
-        "file_session",
         "fluent_connection",
         "journaling",
         "logger",
         "parametric",
         "rpvars",
         "search",
-        "session_base_meshing",
-        "session_meshing",
-        "session_pure_meshing",
-        "session_solver_icing",
-        "session_solver_lite",
-        "session_solver",
-        "session_utilities",
-        "session",
         "system_coupling",
         "pyfluent_warnings",
         "workflow_new",

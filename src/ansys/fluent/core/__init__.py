@@ -60,6 +60,7 @@ Build timestamp and commit hash are added to this variable during packaging.
 """
 
 import os as _os  # noqa: E402
+import sys as _sys  # noqa: E402
 import warnings as _warnings  # noqa: E402
 
 _THIS_DIRNAME = _os.path.dirname(__file__)
@@ -68,6 +69,12 @@ _README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rs
 if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
+
+from ansys.fluent.core.session import (  # noqa: E402
+    file as ansys_fluent_core_session_file,
+)
+
+_sys.modules["ansys.fluent.core.file_session"] = ansys_fluent_core_session_file
 
 
 def version_info() -> str:

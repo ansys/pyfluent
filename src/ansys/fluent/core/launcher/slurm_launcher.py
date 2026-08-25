@@ -45,7 +45,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 (False, True, False)
 >>> session = slurm.result()
 >>> type(session)
-<class 'ansys.fluent.core.session_solver.Solver'>
+<class 'ansys.fluent.core.session.solver.Solver'>
 >>> session.exit()
 >>> slurm.pending(), slurm.running(), slurm.done()
 (False, False, True)
@@ -345,10 +345,10 @@ class SlurmFuture(Generic[SessionT]):
 
         Returns
         -------
-        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
-        :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
-        :class:`~ansys.fluent.core.session_solver.Solver`, \
-        :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session.meshing.Meshing>`, \
+        :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`, \
+        :class:`~ansys.fluent.core.session.solver.Solver`, \
+        :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`]
             The session instance corresponding to the Fluent launch.
         """
         return self._future.result(timeout)
@@ -548,10 +548,10 @@ class SlurmLauncher:
 
         Returns
         -------
-        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
-        :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
-        :class:`~ansys.fluent.core.session_solver.Solver`, \
-        :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
+        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session.meshing.Meshing>`, \
+        :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`, \
+        :class:`~ansys.fluent.core.session.solver.Solver`, \
+        :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`, dict]
             Session object or configuration dictionary if ``dry_run = True``.
 
         Raises
