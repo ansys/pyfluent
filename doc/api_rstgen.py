@@ -74,14 +74,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     parametric
     rpvars
     search
-    session_base_meshing
-    session_meshing
-    session_pure_meshing
-    session_solver_icing
-    session_solver_lite
-    session_solver
-    session
-    session_utilities
+    session/session_contents
     system_coupling
     pyfluent_warnings
     workflow_new
@@ -201,6 +194,17 @@ hierarchy = {
         "live_field_data",
         "reduction",
         "solution_variables",
+    ],
+    "session": [
+        "base_meshing",
+        "meshing",
+        "pure_meshing",
+        "solver",
+        "solver_icing",
+        "solver_aero",
+        "solver_lite",
+        "utilities",
+        "file",
     ],
     "other": [
         "module_config",

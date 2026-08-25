@@ -108,6 +108,13 @@ class BaseSession:
             )
         return super().__new__(cls)
 
+    @classmethod
+    def _create_instance(cls, *args, **kwargs):
+        """Private factory bypassing the direct-instantiation guard."""
+        instance = object.__new__(cls)
+        instance.__init__(*args, **kwargs)
+        return instance
+
     # We are passing around an WeakMethod to avoid circular references
     def __init__(
         self,

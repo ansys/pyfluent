@@ -54,6 +54,7 @@ from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session.base_meshing import BaseMeshing
 from ansys.fluent.core.session.session import BaseSession
+from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.streaming_services.events_streaming import (
@@ -223,7 +224,7 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
             allow_remote_host=True,
             insecure_mode=True,
         )
-        session = BaseSession(
+        session = BaseSession._create_instance(
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection.scheme_eval,
         )
@@ -237,7 +238,7 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
         allow_remote_host=True,
         insecure_mode=True,
     )
-    session = BaseSession(
+    session = BaseSession._create_instance(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection.scheme_eval,
     )
@@ -281,7 +282,7 @@ def test_create_mock_session_by_setting_ip_port_env_var(
         allow_remote_host=True,
         insecure_mode=True,
     )
-    session = BaseSession(
+    session = BaseSession._create_instance(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection.scheme_eval,
     )
@@ -317,7 +318,7 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     fluent_connection = FluentConnection(
         channel=channel, cleanup_on_exit=False, password="12345"
     )
-    session = BaseSession(
+    session = BaseSession._create_instance(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection.scheme_eval,
     )
@@ -352,7 +353,7 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path, monkeypatch) 
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
-    session = BaseSession._create_from_server_info_file(
+    session = Solver._create_from_server_info_file(
         server_info_file_name=str(server_info_file),
         cleanup_on_exit=False,
         inside_container=True,
@@ -393,7 +394,7 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
     with pytest.raises(RuntimeError) as ex:
-        session = BaseSession._create_from_server_info_file(
+        session = Solver._create_from_server_info_file(
             server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
             inside_container=True,
@@ -442,7 +443,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password(
         allow_remote_host=True,
         insecure_mode=True,
     )
-    session = BaseSession(
+    session = BaseSession._create_instance(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection.scheme_eval,
     )
@@ -493,7 +494,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
         allow_remote_host=True,
         insecure_mode=True,
     )
-    session = BaseSession(
+    session = BaseSession._create_instance(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection.scheme_eval,
     )
