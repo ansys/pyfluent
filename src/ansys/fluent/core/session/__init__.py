@@ -46,32 +46,32 @@ Session aliases
 Each concrete class is re-exported here with a ``Session`` suffix for backward
 compatibility and convenience:
 
-- :class:`SolverSession`       → :class:`~ansys.fluent.core.session.solver.Solver`
-- :class:`SolverAeroSession`   → :class:`~ansys.fluent.core.session.solver_aero.SolverAero`
-- :class:`SolverIcingSession`  → :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`
-- :class:`SolverLiteSession`   → :class:`~ansys.fluent.core.session.solver_lite.SolverLite`
-- :class:`PureMeshingSession`  → :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`
-- :class:`MeshingSession`      → :class:`~ansys.fluent.core.session.meshing.Meshing`
+- :class:`Solver`       → :class:`~ansys.fluent.core.session.solver.Solver`
+- :class:`SolverAero`   → :class:`~ansys.fluent.core.session.solver_aero.SolverAero`
+- :class:`SolverIcing`  → :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`
+- :class:`SolverLite`   → :class:`~ansys.fluent.core.session.solver_lite.SolverLite`
+- :class:`PureMeshing`  → :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`
+- :class:`Meshing`      → :class:`~ansys.fluent.core.session.meshing.Meshing`
 - :class:`FileSession`         → :class:`~ansys.fluent.core.session.file.FileSession`
 """
 
 
 from ansys.fluent.core.session.file import FileSession
-from ansys.fluent.core.session.meshing import Meshing as MeshingSession
-from ansys.fluent.core.session.pure_meshing import PureMeshing as PureMeshingSession
-from ansys.fluent.core.session.solver import Solver as SolverSession
-from ansys.fluent.core.session.solver_aero import SolverAero as SolverAeroSession
-from ansys.fluent.core.session.solver_icing import SolverIcing as SolverIcingSession
-from ansys.fluent.core.session.solver_lite import SolverLite as SolverLiteSession
+from ansys.fluent.core.session.meshing import Meshing
+from ansys.fluent.core.session.pure_meshing import PureMeshing
+from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.session.solver_aero import SolverAero
+from ansys.fluent.core.session.solver_icing import SolverIcing
+from ansys.fluent.core.session.solver_lite import SolverLite
 from ansys.fluent.core.session.solver_pre_post import PrePost
 
 __all__ = [
-    "MeshingSession",
-    "PureMeshingSession",
-    "SolverSession",
-    "SolverAeroSession",
-    "SolverIcingSession",
-    "SolverLiteSession",
+    "Meshing",
+    "PureMeshing",
+    "Solver",
+    "SolverAero",
+    "SolverIcing",
+    "SolverLite",
     "FileSession",
     "PrePost",
 ]
