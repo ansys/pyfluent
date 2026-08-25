@@ -78,7 +78,7 @@ class Fluent(BaseSession):
     """Fluent session management.
 
     This class serves as the primary base class for both meshing and solver
-    sessions within PyFluent. It wraps the core functionality
+    sessions within PyFluent. It extends the core functionality
     provided by the base session instance.
 
     Attributes
