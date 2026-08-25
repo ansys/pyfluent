@@ -36,6 +36,7 @@ objects are created via :func:`ansys.fluent.core.launch_fluent`.
     │   ├── SolverAero        — solver + Aero add-on
     │   ├── SolverIcing       — solver + Icing add-on
     │   └── SolverLite        — lightweight solver variant
+    │   └── PrePost            — pre-post session
     └── BaseMeshing  (private)   — full public meshing API
         ├── PureMeshing       — meshing-only (no solver switching)
         └── Meshing           — meshing with :meth:`~Meshing.switch_to_solver`
@@ -62,6 +63,7 @@ from ansys.fluent.core.session.solver import Solver as SolverSession
 from ansys.fluent.core.session.solver_aero import SolverAero as SolverAeroSession
 from ansys.fluent.core.session.solver_icing import SolverIcing as SolverIcingSession
 from ansys.fluent.core.session.solver_lite import SolverLite as SolverLiteSession
+from ansys.fluent.core.session.solver_pre_post import PrePost
 
 __all__ = [
     "MeshingSession",
@@ -71,4 +73,5 @@ __all__ = [
     "SolverIcingSession",
     "SolverLiteSession",
     "FileSession",
+    "PrePost",
 ]
