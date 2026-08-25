@@ -136,7 +136,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
             remote_instance=mock_instance,
             cleanup_on_exit=False,
         )
-        session = BaseSession(
+        session = BaseSession._create_instance(
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection.scheme_eval,
         )
