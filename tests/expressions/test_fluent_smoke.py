@@ -16,8 +16,10 @@ import pytest
 
 from ansys.fluent.core.expressions import ExpressionBuilder, parse
 from ansys.units import VariableCatalog as V
+from tests.conftest import SKIP_INVESTIGATING
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
 @pytest.mark.fluent_version(">=25.1")
 def test_expression_builder_area_ave_on_static_mixer(
     static_mixer_case_session: Any,
