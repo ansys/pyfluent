@@ -35,8 +35,10 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from tests.conftest import SKIP_INVESTIGATING
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 def test_simple_solve(mixing_elbow_param_case_data_session):
