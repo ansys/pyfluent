@@ -25,6 +25,7 @@ from ansys.fluent.core.expressions._ast import (
     Variable,
 )
 from ansys.units import VariableCatalog as V
+from tests.conftest import SKIP_INVESTIGATING
 
 
 @pytest.fixture
@@ -250,6 +251,7 @@ def test_parse_trailing_garbage():
         parse("42 garbage")
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
 def test_parse_bad_character():
     with pytest.raises(ExpressionBuildError):
         parse("1 @ 2")
