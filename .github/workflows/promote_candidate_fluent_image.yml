@@ -2,7 +2,7 @@ name: Promote Candidate Fluent Image
 
 on:
   schedule: # UTC at 0300
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * SUN,WED"
   workflow_dispatch:
 
 concurrency:
