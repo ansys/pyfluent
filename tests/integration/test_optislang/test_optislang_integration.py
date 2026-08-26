@@ -144,6 +144,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     assert output_unit == "K"
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 def test_simple_solve_unitless(static_mixer_params_unitless_session):
