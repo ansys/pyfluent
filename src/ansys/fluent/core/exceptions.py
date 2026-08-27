@@ -26,8 +26,6 @@ from collections.abc import Iterable
 from typing import Any
 import warnings
 
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
-
 __all__ = (
     "DisallowedValuesError",
     "InvalidArgument",
@@ -49,6 +47,8 @@ class DisallowedValuesError(ValueError):
         allowed_values: Iterable[Any] | None = None,
     ) -> None:
         """Initialize DisallowedValuesError."""
+        from ansys.fluent.core.solver.error_message import allowed_name_error_message
+
         super().__init__(
             allowed_name_error_message(
                 context=context,
