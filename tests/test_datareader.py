@@ -22,8 +22,8 @@
 # SOFTWARE.
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.data_file import DataFile
+from ansys.fluent.core.file_reader.case_file import CaseFile
+from ansys.fluent.core.file_reader.data_file import DataFile
 
 
 def test_data_reader_for_single_phase():

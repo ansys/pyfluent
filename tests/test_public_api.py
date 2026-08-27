@@ -95,7 +95,7 @@ def test_ansys_fluent_core_public_api():
         "docker",
         "examples",
         "exceptions",
-        "filereader",
+        "file_reader",
         "fluent_connection",
         "generated",
         "get_build_details",
@@ -107,7 +107,6 @@ def test_ansys_fluent_core_public_api():
         "logger",
         "module_config",
         "parametric",
-        "pyfluent_warnings",
         "rpvars",
         "scheduler",
         "search",
@@ -217,7 +216,6 @@ def test_star_import_exports_all_public_symbols():
         "services",
         "streaming_services",
         "module_config",
-        "pyfluent_warnings",
         "utils",
     }
 

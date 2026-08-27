@@ -41,10 +41,12 @@ import warnings
 import weakref
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.exceptions import (
+    BetaFeaturesNotEnabled,
+    PyFluentDeprecationWarning,
+)
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session._shared import (
     _make_datamodel_module,

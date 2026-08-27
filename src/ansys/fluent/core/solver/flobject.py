@@ -71,7 +71,7 @@ from typing import (
 import warnings
 import weakref
 
-from ansys.fluent.core.pyfluent_warnings import (
+from ansys.fluent.core.exceptions import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
@@ -86,7 +86,7 @@ import ansys.units
 from ansys.units import VariableDescriptor
 
 from . import _docstrings
-from ..pyfluent_warnings import warning_for_fluent_dev_version
+from ..exceptions import warning_for_fluent_dev_version
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument

@@ -278,7 +278,7 @@ def _generate_py_file(root, version) -> None:
             " _SingletonSetting, _CreatableNamedObjectSetting,"
             " _NonCreatableNamedObjectSetting, _CommandSetting, Solver\n"
             "from ansys.fluent.core.solver.flobject import SettingsBase\n"
-            "from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning\n"
+            "from ansys.fluent.core.exceptions import PyFluentDeprecationWarning\n"
             "import warnings\n\n\n"
         )
         f.write("__all__ = [\n")

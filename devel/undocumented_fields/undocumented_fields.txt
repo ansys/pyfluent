@@ -120,7 +120,7 @@
   Class: StandaloneLauncher
     - file_transfer_service
 
-  Module: ansys.fluent.core.parametric
+  Module: ansys.fluent.core.legacy.local_parametric_study
   Class: LocalDesignPoint
     - name
   Class: LocalParametricStudy

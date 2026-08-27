@@ -20,3 +20,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+"""Legacy module for Fluent."""
+
+from ansys.fluent.core.legacy.local_parametric_study import LocalParametricStudy
+from ansys.fluent.core.legacy.rpvars import RPVars, RPVarType
+
+__all__ = [
+    "LocalParametricStudy",
+    "RPVars",
+    "RPVarType",
+]

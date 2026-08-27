@@ -21,16 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module for Case Reader."""
+"""Standalone file reader for PyFluent."""
 
-import warnings
+from ansys.fluent.core.file_reader.case_file import CaseFile
+from ansys.fluent.core.file_reader.data_file import DataFile
 
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-
-from .case_file import CaseFile as CaseReader  # noqa: F401
-
-# Compatibility aliases
-warnings.warn(
-    "Use case_file.CaseFile instead of casereader.CaseReader",
-    PyFluentDeprecationWarning,
-)
+__all__ = [
+    "CaseFile",
+    "DataFile",
+]

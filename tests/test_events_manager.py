@@ -29,7 +29,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import MeshingEvent, SolverEvent, examples
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:

@@ -25,8 +25,8 @@ from conftest import SKIP_INVESTIGATING
 import pytest
 
 from ansys.fluent.core.examples import download_file, path
-from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.rpvars import RPVars, RPVarType
+from ansys.fluent.core.file_reader.case_file import CaseFile
+from ansys.fluent.core.legacy.rpvars import RPVars, RPVarType
 
 
 def test_get_and_set_rp_vars(new_solver_session) -> None:
