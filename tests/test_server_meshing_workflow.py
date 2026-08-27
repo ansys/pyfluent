@@ -2079,7 +2079,7 @@ def test_switching_workflow_interface(new_meshing_session):
     del wt1, ft, tw, cw, lw, wt2
 
 
-@pytest.mark.fluent_version(">=26.1")
+@pytest.mark.fluent_version(">=27.1")
 def test_direct_construction(new_meshing_session):
     """WatertightMeshing(session=meshing) should work identically to
     meshing.watertight() and so on."""
