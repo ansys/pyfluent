@@ -24,31 +24,28 @@
 """Module for context managers used in PyFluent."""
 
 from contextlib import contextmanager
-from threading import local
+from contextvars import ContextVar
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.session import BaseSession
 
 __all__ = ("using",)
 
-_thread_local = local()
-
-
-def _get_stack():
-    if not hasattr(_thread_local, "stack"):
-        _thread_local.stack = []
-    return _thread_local.stack
+_active_session: ContextVar["BaseSession | None"] = ContextVar(
+    "active_session", default=None
+)
 
 
 @contextmanager
 def using(session):
     """Context manager to use a Fluent session."""
-    stack = _get_stack()
-    stack.append(session)
+    token = _active_session.set(session)
     try:
         yield
     finally:
-        stack.pop()
+        _active_session.reset(token)
 
 
 def _get_active_session():
-    stack = _get_stack()
-    if stack:
-        return stack[-1]
+    return _active_session.get()
