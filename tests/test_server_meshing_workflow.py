@@ -24,7 +24,25 @@
 from conftest import SKIP_UNKNOWN
 import pytest
 
-from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
+from ansys.fluent.core import (
+    CreateNewWorkflow,
+    FaultTolerantMeshing,
+    FluentVersion,
+    LoadExistingWorkflow,
+    PyFluentUserWarning,
+    TopologyBasedMeshing,
+    TwoDimensionalMeshing,
+    WatertightMeshing,
+    examples,
+)
+from ansys.fluent.core.meshing.meshing_workflow_new import (
+    CreatedWorkflow,
+    FaultTolerantMeshingWorkflow,
+    LoadedWorkflow,
+    TopologyBasedMeshingWorkflow,
+    TwoDimensionalMeshingWorkflow,
+    WatertightMeshingWorkflow,
+)
 from ansys.fluent.core.services.object_model import PyMenu
 
 
@@ -2059,3 +2077,60 @@ def test_switching_workflow_interface(new_meshing_session):
     lw = new_meshing_session.load_workflow(file_path=saved_workflow_path)
     wt2 = new_meshing_session.watertight()
     del wt1, ft, tw, cw, lw, wt2
+
+
+@pytest.mark.fluent_version(">=27.1")
+def test_direct_construction(new_meshing_session):
+    """WatertightMeshing(session=meshing) should work identically to
+    meshing.watertight() and so on."""
+
+    meshing = new_meshing_session
+    watertight = WatertightMeshing(session=meshing)
+
+    assert isinstance(watertight, WatertightMeshingWorkflow)
+    assert watertight.import_geometry
+
+    fault_tolerant = FaultTolerantMeshing(session=meshing)
+    assert isinstance(fault_tolerant, FaultTolerantMeshingWorkflow)
+    assert fault_tolerant.import_cad_and_part_management
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_direct_construction_of_create_workflow(new_meshing_session):
+    """CreateNewWorkflow(session=meshing) should work identically to
+    meshing.create_workflow() and so on."""
+
+    meshing = new_meshing_session
+    create_workflow = CreateNewWorkflow(session=meshing)
+
+    assert isinstance(create_workflow, CreatedWorkflow)
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_direct_construction_of_load_workflow(new_meshing_session):
+    """LoadExistingWorkflow(session=meshing) should work identically to
+    meshing.load_workflow() and so on."""
+
+    meshing = new_meshing_session
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
+    )
+    loaded_workflow = LoadExistingWorkflow(
+        session=meshing, file_path=saved_workflow_path
+    )
+
+    assert isinstance(loaded_workflow, LoadedWorkflow)
+    assert "set_up_rotational_periodic_boundaries" in loaded_workflow.task_names()
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_invalid_session(new_solver_session):
+    """Passing a solver session to a meshing workflow constructor should raise TypeError."""
+    with pytest.raises(TypeError):
+        _ = WatertightMeshing(session=new_solver_session)
+    with pytest.raises(TypeError):
+        _ = FaultTolerantMeshing(session=new_solver_session)
+    with pytest.raises(TypeError):
+        _ = CreateNewWorkflow(session=new_solver_session)
+    with pytest.raises(TypeError):
+        _ = LoadExistingWorkflow(session=new_solver_session)

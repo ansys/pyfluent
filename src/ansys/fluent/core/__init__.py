@@ -37,6 +37,14 @@ from ansys.fluent.core.fields.field_data_interfaces import *
 from ansys.fluent.core.get_build_details import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
+from ansys.fluent.core.meshing.meshing_workflow_new import (
+    CreateNewWorkflow,
+    FaultTolerantMeshing,
+    LoadExistingWorkflow,
+    TopologyBasedMeshing,
+    TwoDimensionalMeshing,
+    WatertightMeshing,
+)
 from ansys.fluent.core.parametric import *
 from ansys.fluent.core.pyfluent_warnings import *
 from ansys.fluent.core.search import *
