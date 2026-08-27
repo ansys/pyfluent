@@ -43,6 +43,7 @@ import weakref
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import (
     BetaFeaturesNotEnabled,
+    DeprecatedSettingWarning,
     PyFluentDeprecationWarning,
 )
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
@@ -55,7 +56,6 @@ from ansys.fluent.core.session._shared import (
 from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
-    DeprecatedSettingWarning,
     Group,
     NamedObject,
     SettingsBase,

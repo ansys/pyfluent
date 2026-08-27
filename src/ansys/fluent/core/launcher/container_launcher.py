@@ -63,7 +63,6 @@ from ansys.fluent.core.launcher.launcher_utils import ComposeConfig, is_windows
 from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -366,6 +365,8 @@ class DockerLauncher:
                 self.argvals["start_watchdog"] = True
             if self.argvals["start_watchdog"]:
                 logger.debug("Launching Watchdog for Fluent container...")
+                import ansys.fluent.core.launcher.watchdog as watchdog
+
                 watchdog.launch(
                     os.getpid(),
                     port,

@@ -108,6 +108,12 @@ class InsecureGrpcWarning(Warning):
     pass
 
 
+class DeprecatedSettingWarning(PyFluentDeprecationWarning):
+    """Provides deprecated settings warning."""
+
+    pass
+
+
 warnings.filterwarnings("always", category=InsecureGrpcWarning)
 
 
