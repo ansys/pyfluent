@@ -21,30 +21,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to get global PyConsole objects."""
+"""Meshing-only Fluent session (:class:`PureMeshing`).
 
-from ansys.fluent.core.launcher.launcher import launch_fluent
-from ansys.fluent.core.session.solver import Solver
+Inheritance
+-----------
+::
 
-__all__ = ("setup_for_fluent",)
+    BaseSession (private)
+    └── BaseMeshing (private)
+        └── PureMeshing          ← this class
+"""
+
+from ansys.fluent.core.session.base_meshing import BaseMeshing
 
 
-def setup_for_fluent(*args, **kwargs):
-    """Returns global PyConsole objects."""
-    session = launch_fluent(*args, **kwargs)
-    globals = {}
-    if kwargs.get("mode", "solver") == "meshing":
-        globals["meshing"] = session
-        globals["PartManagement"] = session.PartManagement
-        globals["PMFileManagement"] = session.PMFileManagement
-        globals["solver"] = Solver(
-            fluent_connection=session._fluent_connection,
-            scheme_eval=session._fluent_connection.scheme_eval,
-        )
-    else:
-        globals["solver"] = session
+class PureMeshing(BaseMeshing):
+    """Fluent meshing session without solver-switching capability.
 
-    globals["preferences"] = session.preferences
-    globals["workflow"] = session.workflow
+    Designed for deployments where meshing and solving run as separate
+    processes (e.g. containerised pipelines).  All public API is provided
+    by :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing`.
 
-    return globals
+    Use :class:`~ansys.fluent.core.session.meshing.Meshing` when you also
+    need :meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
+    """

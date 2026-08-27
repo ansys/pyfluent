@@ -5,10 +5,10 @@
 File Session
 ============
 
-The :obj:`~ansys.fluent.core.file_session.FileSession` class mimics the functionality of :ref:`live session objects <ref_session_guide>`, allowing you
+The :obj:`~ansys.fluent.core.session.file.FileSession` class mimics the functionality of :ref:`live session objects <ref_session_guide>`, allowing you
 to access field data and other relevant information without a live Fluent session.
-You command :obj:`~ansys.fluent.core.file_session.FileSession` objects to read your input files before you access the data through
-the :obj:`~ansys.fluent.core.file_session.FileSession` object methods. 
+You command :obj:`~ansys.fluent.core.session.file.FileSession` objects to read your input files before you access the data through
+the :obj:`~ansys.fluent.core.session.file.FileSession` object methods. 
 
 Sample usage
 ------------
@@ -23,7 +23,7 @@ Single-phase
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.file_session import FileSession
+  >>> from ansys.fluent.core.session.file import FileSession
   >>> from ansys.fluent.core import (
   >>>   examples,
   >>>   ScalarFieldDataRequest,
@@ -123,7 +123,7 @@ Multiphase
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.file_session import FileSession
+  >>> from ansys.fluent.core.session.file import FileSession
   >>> from ansys.fluent.core import (
   >>>   examples,
   >>>   ScalarFieldDataRequest,
@@ -208,7 +208,7 @@ post-processing objects.
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.visualization.matplotlib import Plots
   >>> from ansys.fluent.visualization.pyvista import Graphics
-  >>> from ansys.fluent.core.file_session import FileSession
+  >>> from ansys.fluent.core.session.file import FileSession
   >>> fileSession=FileSession()
   >>> fileSession.read_case("elbow1.cas.h5")
   >>> fileSession.read_data("elbow1.dat.h5")

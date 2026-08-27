@@ -21,9 +21,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module containing class encapsulating Fluent connection.
+"""Fluent solver session with Icing add-on (:class:`SolverIcing`).
 
-Expose icing capabilities.
+Inheritance
+-----------
+::
+
+    BaseSession (private)
+    └── Solver
+        └── SolverIcing     ← this class
 """
 
 import importlib
@@ -31,14 +37,21 @@ from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session.solver import Solver
 
 
 class SolverIcing(Solver):
-    """Encapsulates a Fluent server for Icing session connection.
+    """Fluent solver session with the Icing add-on loaded.
 
-    SolverIcing(Session) holds the top-level objects for solver TUI, settings and icing
-    datamodel objects calls.
+    Extends :class:`~ansys.fluent.core.session.solver.Solver` by loading the
+    ``flicing`` datamodel module and exposing the Icing application object.
+    All attributes of :class:`~ansys.fluent.core.session.solver.Solver` are
+    available here.
+
+    Attributes
+    ----------
+    icing
+        Root of the Icing datamodel application object (``Case.App``).
     """
 
     def __init__(
@@ -73,8 +86,6 @@ class SolverIcing(Solver):
             launcher_args=launcher_args,
         )
         self._flserver_root = None
-        self._fluent_version = None
-        self._fluent_connection = fluent_connection
 
     @property
     def _flserver(self):

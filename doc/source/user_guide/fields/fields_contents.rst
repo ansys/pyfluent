@@ -9,7 +9,7 @@ PyFluent provides several services that allow you to access field data in differ
 Every PyFluent solution and meshing :ref:`Session <ref_session_guide>` object contains a
 ``fields`` object. In both solution and meshing modes, the ``fields`` object contains
 ``field_data`` and ``field_data_streaming`` children. In
-:obj:`solution <ansys.fluent.core.session_solver.Solver>` mode, the ``fields`` object
+:obj:`solution <ansys.fluent.core.session.solver.Solver>` mode, the ``fields`` object
 also has ``reduction``, ``solution_variable_data`` and ``solution_variable_info`` children.
 
 To help decide between using ``field_data`` and ``solution_variable_data``, refer to the

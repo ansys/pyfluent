@@ -46,9 +46,9 @@ from ansys.fluent.core.fluent_connection import (
     UnsupportedRemoteFluentInstance,
 )
 from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session.pure_meshing import PureMeshing
+from ansys.fluent.core.session.session import BaseSession
+from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -136,7 +136,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
             remote_instance=mock_instance,
             cleanup_on_exit=False,
         )
-        session = BaseSession(
+        session = BaseSession._create_instance(
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection.scheme_eval,
         )

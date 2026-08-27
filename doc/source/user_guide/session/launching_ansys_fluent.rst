@@ -20,7 +20,7 @@ Launch from local installation
 
 .. vale Google.Spacing = NO
 
-The :meth:`from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>` method launches Fluent using a locally installed version of Ansys Fluent.
+The :meth:`from_install() <ansys.fluent.core.session.utilities.SessionBase.from_install>` method launches Fluent using a locally installed version of Ansys Fluent.
 
 Use this method when:
 
@@ -45,7 +45,7 @@ Use this method when:
 Launch in a container
 ---------------------
 
-The :meth:`from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>` method launches Fluent inside a Docker container.
+The :meth:`from_container() <ansys.fluent.core.session.utilities.SessionBase.from_container>` method launches Fluent inside a Docker container.
 Pass ``use_docker_compose=True`` or ``use_podman_compose=True`` to use Docker Compose or Podman Compose, respectively.
 
 Use this method when:
@@ -78,7 +78,7 @@ Use this method when:
 Connect to an existing session
 ------------------------------
 
-The :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
+The :meth:`from_connection() <ansys.fluent.core.session.utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
 
 Use this method when:
 
@@ -116,7 +116,7 @@ Before connecting, you must launch Fluent externally with the gRPC server enable
     ``Meshing`` includes ``switch_to_solver()``.
 
     When connecting to an existing Fluent session
-    via :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`:
+    via :meth:`from_connection() <ansys.fluent.core.session.utilities.SessionBase.from_connection>`:
 
     - Use ``PureMeshing.from_connection()`` if the session was launched for **meshing only**.
     - Use ``Meshing.from_connection()`` if the session supports **meshing and solving**.
@@ -132,7 +132,7 @@ Before connecting, you must launch Fluent externally with the gRPC server enable
 Launch in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode
 ----------------------------------------------------------------------
 
-The :meth:`from_pim() <ansys.fluent.core.session_utilities.SessionBase.from_pim>` method launches Fluent in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
+The :meth:`from_pim() <ansys.fluent.core.session.utilities.SessionBase.from_pim>` method launches Fluent in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
 Use this method when:
 

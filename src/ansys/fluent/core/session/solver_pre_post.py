@@ -21,30 +21,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to get global PyConsole objects."""
 
-from ansys.fluent.core.launcher.launcher import launch_fluent
+"""Encapsulates a Fluent server for pre-post session connection (:class:`PrePost`).
+
+Inheritance
+-----------
+::
+
+    BaseSession (private)
+    └── Solver
+        └── PrePost      ← this class
+"""
+
 from ansys.fluent.core.session.solver import Solver
 
-__all__ = ("setup_for_fluent",)
 
+class PrePost(Solver):
+    """Fluent pre-post session.
 
-def setup_for_fluent(*args, **kwargs):
-    """Returns global PyConsole objects."""
-    session = launch_fluent(*args, **kwargs)
-    globals = {}
-    if kwargs.get("mode", "solver") == "meshing":
-        globals["meshing"] = session
-        globals["PartManagement"] = session.PartManagement
-        globals["PMFileManagement"] = session.PMFileManagement
-        globals["solver"] = Solver(
-            fluent_connection=session._fluent_connection,
-            scheme_eval=session._fluent_connection.scheme_eval,
-        )
-    else:
-        globals["solver"] = session
-
-    globals["preferences"] = session.preferences
-    globals["workflow"] = session.workflow
-
-    return globals
+    All public API is provided by :class:`~ansys.fluent.core.session.solver.Solver`.
+    """

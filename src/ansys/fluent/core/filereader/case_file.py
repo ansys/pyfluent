@@ -56,13 +56,6 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from . import lispy
 from .pre_processor import remove_unsupported_xml_chars
 
-try:
-    import h5py
-except ModuleNotFoundError as exc:
-    raise ModuleNotFoundError(
-        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
-    ) from exc
-
 
 class InputParameterOld:
     """Represents an input parameter (old format).
@@ -291,7 +284,7 @@ class Mesh:
         Get list of vertices of the surface.
     """
 
-    def __init__(self, file_handle: h5py.File):
+    def __init__(self, file_handle: Any):
         """Initialize the object."""
         _check_h5_extension(file_handle.filename)
         self._file_handle: Any = file_handle
@@ -653,6 +646,13 @@ class CaseFile(RPVarProcessor):
                 raise FileNotFoundError(
                     "Please provide a valid fluent project file path"
                 )
+
+        try:
+            import h5py
+        except ModuleNotFoundError as exc:
+            raise ModuleNotFoundError(
+                "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
+            ) from exc
 
         try:
             if Path(case_file_name).match("*.cas.h5") or Path(case_file_name).match(
