@@ -232,8 +232,8 @@ within its intended scope:
   ...     print(Viscous().model())
   k-omega
 
-Thread-local behavior
-~~~~~~~~~~~~~~~~~~~~~
+Thread- and task-local behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each thread can set and use its own active session. Sessions set in one thread are not visible to other threads:
 
@@ -249,8 +249,12 @@ Each thread can set and use its own active session. Sessions set in one thread a
   >>> t = threading.Thread(target=work, args=(solver_session,))
   >>> t.start(); t.join()
 
+``using(session)`` is implemented with :class:`contextvars.ContextVar`, so the same isolation
+also holds across ``asyncio`` tasks: each task gets its own copy of the active session context,
+so concurrent tasks using different sessions do not interfere with each other.
+
 Outside of a ``with using(...)`` block, pass sessions explicitly when operating on multiple sessions in the same scope
-or when working with multi-threaded code.
+or when working with multi-threaded or asynchronous code.
 
 
 Switching between sessions
