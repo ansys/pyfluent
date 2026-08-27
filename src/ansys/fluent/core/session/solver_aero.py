@@ -21,9 +21,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module containing class encapsulating Fluent connection.
+"""Fluent solver session with Aero add-on (:class:`SolverAero`).
 
-Expose aero capabilities.
+Inheritance
+-----------
+::
+
+    BaseSession (private)
+    └── Solver
+        └── SolverAero      ← this class
 """
 
 from typing import Any
@@ -31,14 +37,21 @@ from typing import Any
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.object_model import PySimpleMenuGeneric
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session.solver import Solver
 
 
 class SolverAero(Solver):
-    """Encapsulates a Fluent server for Aero session connection.
+    """Fluent solver session with the Aero add-on loaded.
 
-    SolverAero(Session) holds the top-level objects for solver TUI, settings and aero
-    datamodel objects calls.
+    Extends :class:`~ansys.fluent.core.session.solver.Solver` by loading the
+    ``aero`` Scheme add-on at construction time and exposing the Aero project
+    and simulation management API.  All attributes of
+    :class:`~ansys.fluent.core.session.solver.Solver` are available here.
+
+    Attributes
+    ----------
+    aero
+        Root of the Aero datamodel application object (``Case.App``).
     """
 
     def __init__(
@@ -73,8 +86,6 @@ class SolverAero(Solver):
             launcher_args=launcher_args,
         )
         self._flserver_root = None
-        self._fluent_version = None
-        self._fluent_connection = fluent_connection
         # TODO: Update Aero DM
         scheme_eval.eval("(aero-load-addon)")
 

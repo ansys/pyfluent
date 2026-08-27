@@ -21,7 +21,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module containing class encapsulating Fluent connection."""
+"""Full Fluent solver session (:class:`Solver`).
+
+Inheritance
+-----------
+::
+
+    BaseSession (private)
+    └── Solver          ← this class
+        ├── SolverAero
+        ├── SolverIcing
+        └── SolverLite
+"""
 
 import logging
 import threading
@@ -35,11 +46,11 @@ from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_shared import (
+from ansys.fluent.core.session._shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
+from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -84,10 +95,41 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
 
 
 class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
-    """Encapsulates a Fluent solver session.
+    """Fluent solver session.
 
-    A ``tui`` object for solver TUI
-    commanding, and solver settings objects are all exposed here.
+    Provides access to Fluent's full solver capabilities: settings tree,
+    TUI commands, solution monitors, field data, workflows, and more.
+
+    Attributes
+    ----------
+    settings : settings_root
+        Root of the solver settings tree.  Use for all case/solver
+        configuration, e.g.
+        ``session.settings.setup.models.energy.enabled = True``.
+    tui : main_menu
+        Root of the Fluent solver TUI.  Access commands as Python
+        attributes, e.g. ``session.tui.solve.iterate(10)``.
+    workflow : ClassicWorkflow
+        Classic Fluent workflow object.
+    preferences : preferences_root
+        Root of the ``preferences`` datamodel.
+    fields : Fields
+        Field data container (``solution_variable_info``,
+        ``solution_variable_data``, ``reduction``, ``field_data``).
+    monitors : MonitorsManager
+        Residual and report-definition monitors; auto-refreshed on
+        solution events.
+    system_coupling : SystemCoupling
+        System Coupling co-simulation integration object.
+    scheme : SchemeInterpreter
+        Direct access to Fluent's Scheme interpreter.
+    journal : Journal
+        Fluent journal recorder; call :meth:`~Journal.start` /
+        :meth:`~Journal.stop`.
+    transcript : TranscriptStreaming
+        Fluent console transcript; call ``.start()`` / ``.stop()``.
+    events : EventsManager
+        Subscribe to solver events (``SolverEvent``).
     """
 
     def __init__(
@@ -179,6 +221,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                 flproxy=self._settings_service,
                 version=self._version,
                 interrupt=Solver._interrupt,
+                is_interruptible_command=Solver._is_interruptible_command,
                 file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.scheme.eval,
             )
@@ -232,14 +275,24 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @classmethod
     def _interrupt(cls, command):
-        interruptible_commands = [
+        _interruptible_commands = [
             "solution/run-calculation/iterate",
             "solution/run-calculation/calculate",
             "solution/run-calculation/dual-time-iterate",
         ]
         if config.support_solver_interrupt:
-            if command.path in interruptible_commands:
+            if command.path in _interruptible_commands:
                 command._root.solution.run_calculation.interrupt()
+
+    @classmethod
+    def _is_interruptible_command(cls, command) -> bool:
+        """Return True when *command* is a solver command that can be interrupted."""
+        _interruptible_commands = [
+            "solution/run-calculation/iterate",
+            "solution/run-calculation/calculate",
+            "solution/run-calculation/dual-time-iterate",
+        ]
+        return command.path in _interruptible_commands
 
     @property
     def system_coupling(self) -> SystemCoupling:
@@ -365,7 +418,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("switch_to_meshing")
-        from ansys.fluent.core.session_meshing import Meshing
+        from ansys.fluent.core.session.meshing import Meshing
 
         self.settings.switch_to_meshing_mode()
         for cb in self._fluent_connection.finalizer_cbs:

@@ -9,6 +9,99 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.42.0 <https://github.com/ansys/pyfluent/releases/tag/v0.42.0>`_ - August 22, 2026
+====================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add 'get_active_command_names' and 'get_active_query_names' methods in named and list objects
+          - `#5335 <https://github.com/ansys/pyfluent/pull/5335>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Couple of issues in launch fluent
+          - `#4990 <https://github.com/ansys/pyfluent/pull/4990>`_
+
+        * - Restrict rp var creation length.
+          - `#5321 <https://github.com/ansys/pyfluent/pull/5321>`_
+
+        * - Deprecation behavior.
+          - `#5322 <https://github.com/ansys/pyfluent/pull/5322>`_
+
+        * - Default ui mode.
+          - `#5323 <https://github.com/ansys/pyfluent/pull/5323>`_
+
+        * - Issue with interruptible commands on interrupt.
+          - `#5339 <https://github.com/ansys/pyfluent/pull/5339>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version to v 0.42.0
+          - `#5340 <https://github.com/ansys/pyfluent/pull/5340>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update CHANGELOG for v0.41.0
+          - `#5315 <https://github.com/ansys/pyfluent/pull/5315>`_
+
+        * - Include generated files in the wheelhouse build.
+          - `#5331 <https://github.com/ansys/pyfluent/pull/5331>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - 'get_cls' of flobject.
+          - `#5320 <https://github.com/ansys/pyfluent/pull/5320>`_
+
+        * - To reduce complexity of few code blocks.
+          - `#5329 <https://github.com/ansys/pyfluent/pull/5329>`_
+
+        * - Avoid writing out static-info's hash in settings_v<ver>.py
+          - `#5330 <https://github.com/ansys/pyfluent/pull/5330>`_
+
+        * - Clean up imports in tests.
+          - `#5332 <https://github.com/ansys/pyfluent/pull/5332>`_
+
+        * - Avoid v0 import when proto v1 is active.
+          - `#5336 <https://github.com/ansys/pyfluent/pull/5336>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add testing to confirm that inactive and developer level state are absent.
+          - `#5337 <https://github.com/ansys/pyfluent/pull/5337>`_
+
+
 `0.41.0 <https://github.com/ansys/pyfluent/releases/tag/v0.41.0>`_ - August 06, 2026
 ====================================================================================
 

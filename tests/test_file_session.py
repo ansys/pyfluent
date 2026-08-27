@@ -34,7 +34,7 @@ from ansys.fluent.core import (
     VectorFieldDataRequest,
     examples,
 )
-from ansys.fluent.core.file_session import (
+from ansys.fluent.core.session.file import (
     FileSession,
     InvalidFieldName,
     InvalidMultiPhaseFieldName,
@@ -324,7 +324,7 @@ def test_batch_request_single_phase_merges_multiple_fields_per_surface():
 
     scalar_field_tag = (
         ("type", "scalar-field"),
-        ("dataLocation", 1),
+        ("dataLocation", 0),
         ("boundaryValues", False),
     )
     assert set(data()[scalar_field_tag][5]) == {"SV_T", "SV_P"}
@@ -713,7 +713,7 @@ def test_batch_request_single_phase_deprecated():
     # Scalar Field Data
     scalar_field_tag = (
         ("type", "scalar-field"),
-        ("dataLocation", 1),
+        ("dataLocation", 0),
         ("boundaryValues", False),
     )
     scalar_data = data()[scalar_field_tag]
@@ -763,7 +763,7 @@ def test_batch_request_multi_phase_deprecated():
     # Scalar Field Data
     scalar_field_tag = (
         ("type", "scalar-field"),
-        ("dataLocation", 1),
+        ("dataLocation", 0),
         ("boundaryValues", False),
     )
 

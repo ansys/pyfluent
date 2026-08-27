@@ -1,12 +1,12 @@
-name: Test Run Dev Version Nightly
+name: Promote Candidate Fluent Image
 
 on:
   schedule: # UTC at 0300
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * SUN,WED"
   workflow_dispatch:
 
 concurrency:
-  group: test-run-dev-version-nightly-${{ github.workflow }}-${{ github.ref }}
+  group: promote-candidate-fluent-image-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -22,11 +22,12 @@ env:
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYTHON_VERSION: "3.12"
+  FLUENT_IMAGE_TAG: v27.1.latest
   FLUENT_VERSION: 271
 
 jobs:
   test:
-    name: Unit Testing
+    name: Run Tests to Promote Candidate Fluent Image
     runs-on: [self-hosted, pyfluent]
 
     steps:
@@ -74,12 +75,12 @@ jobs:
       - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
       - name: Run API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
       - name: Print Fluent version info
         env:
@@ -99,8 +100,17 @@ jobs:
           make unittest-all-${VERSION}
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
         continue-on-error: true
+
+      - name: Update Fluent image
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+          IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+        if: github.ref == 'refs/heads/main' && steps.unittest.outcome == 'success'
+        run: |
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${IMAGE_TAG} | sed 's/.*@//')
+          gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
       - name: Clean Docker Data
         run: make docker-clean-all-except-supported-images

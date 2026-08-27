@@ -121,44 +121,162 @@ def generate(version: str):
     config.codegen_outdir.mkdir(exist_ok=True)
     root = _get_settings_root(version)
     version = FluentVersion(version)
+    _generate_py_file(root, version)
+    _generate_pyi_file()
+
+
+def _write_name_to_all(f, name: str) -> None:
+    f.write(f'    "{name}",\n')
+
+
+def _write_symbol_to_all(f, name: str, kind: str) -> None:
+    _write_name_to_all(f, name)
+    if kind == "Command":
+        _write_name_to_all(f, _convert_camel_case_to_snake_case(name))
+
+
+def _write_deprecation_warning(
+    f, alias_name: str, preferred_name: str, indentation: str
+) -> None:
+    f.write(
+        f"{indentation}warnings.warn(\"'{alias_name}' is deprecated, use '{preferred_name}' instead.\","
+        " PyFluentDeprecationWarning, stacklevel=2)\n"
+    )
+
+
+def _write_deprecated_alias_class(
+    f, alias_name: str, preferred_name: str, alias_kind_desc: str
+) -> None:
+    f.write(f"class {alias_name}({preferred_name}):\n")
+    f.write(
+        f'    """{alias_name} {alias_kind_desc} (deprecated alias of {preferred_name})."""\n\n'
+    )
+    f.write("    def __init__(self, *args, **kwargs):\n")
+    _write_deprecation_warning(f, alias_name, preferred_name, "       ")
+    f.write("       super().__init__(*args, **kwargs)\n\n")
+
+
+def _resolve_path_for_version(path, version) -> tuple:
+    """Resolve a version-keyed path dict to a string for *version*.
+
+    Returns ``(resolved_path, True)`` when supported, ``(None, False)`` otherwise.
+    """
+    if isinstance(path, str):
+        return path, True
+    for version_set, p in path.items():
+        if version in version_set:
+            return p, True
+    return None, False
+
+
+def _write_init_signature(f, kind: str, named_objects: list) -> None:
+    """Write ``__init__`` parameters and ``super().__init__()`` call."""
+    f.write("    def __init__(self")
+    for named_object in named_objects:
+        f.write(f", {named_object}: str")
+    f.write(", settings_source: SettingsBase | Solver | None = None")
+    if kind == "NonCreatableNamedObject":
+        f.write(", name: str = None")
+    elif kind == "CreatableNamedObject":
+        f.write(", name: str | None = None, new_instance_name: str | None = None")
+    f.write("):\n")
+    f.write("        super().__init__(settings_source=settings_source")
+    if kind == "NonCreatableNamedObject":
+        f.write(", name=name")
+    elif kind == "CreatableNamedObject":
+        f.write(", name=name, new_instance_name=new_instance_name")
+    for named_object in named_objects:
+        f.write(f", {named_object}={named_object}")
+    f.write(")\n\n")
+
+
+def _write_setting_class(
+    f, name: str, kind: str, legacy_name: str, named_objects: list
+) -> None:
+    doc_kind = "command object" if kind == "Command" else "setting"
+    f.write(f"class {name}(_{kind}Setting):\n")
+    f.write(f'    """{name} {doc_kind}."""\n\n')
+    f.write(f'    _db_name = "{legacy_name}"\n\n')
+    _write_init_signature(f, kind, named_objects)
+
+
+def _write_command_callable_class(f, name: str, kind: str, legacy_name: str) -> str:
+    """Write the snake_case callable wrapper and return its name."""
+    command_name = _convert_camel_case_to_snake_case(name)
+    f.write(f"class {command_name}(_{kind}Setting):\n")
+    f.write(f'    """{command_name} command."""\n\n')
+    f.write(f'    _db_name = "{legacy_name}"\n\n')
+    f.write(
+        "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
+    )
+    f.write("       instance = super().__new__(cls)\n")
+    f.write("       instance.__init__(settings_source=settings_source, **kwargs)\n")
+    f.write("       return instance(**kwargs)\n\n")
+    return command_name
+
+
+def _write_deprecated_command_aliases(
+    f, legacy_name: str, name: str, kind: str, command_name: str
+) -> None:
+    """Write deprecated alias classes for a renamed command."""
+    _write_deprecated_alias_class(f, legacy_name, name, "command object")
+    legacy_command_name = _convert_camel_case_to_snake_case(legacy_name)
+    f.write(f"class {legacy_command_name}({command_name}):\n")
+    f.write(
+        f'    """{legacy_command_name} command (deprecated alias of {command_name})."""\n\n'
+    )
+    f.write(
+        "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
+    )
+    _write_deprecation_warning(f, legacy_command_name, command_name, "        ")
+    f.write(
+        "        return super().__new__(cls, settings_source=settings_source, **kwargs)\n\n"
+    )
+
+
+def _write_py_entry(f, legacy_name: str, v, root, version) -> None:
+    """Write all classes for one DATA entry to the .py file."""
+    kind, path = v
+    name = _get_public_class_name(legacy_name)
+    path, version_supported = _resolve_path_for_version(path, version)
+    if not version_supported:
+        return
+    named_objects, is_creatable = _get_named_objects_in_path(
+        root, path.split("."), cast(SettingKind, kind)
+    )
+    if kind == "NamedObject":
+        kind = f"{'Creatable' if is_creatable else 'NonCreatable'}NamedObject"
+    _write_setting_class(f, name, kind, legacy_name, named_objects)
+    command_name = None
+    if kind == "Command":
+        command_name = _write_command_callable_class(f, name, kind, legacy_name)
+    if name != legacy_name and kind == "Command":
+        _write_deprecated_command_aliases(f, legacy_name, name, kind, command_name)
+
+
+def _write_pyi_entry(f, legacy_name: str, kind: str, path, name: str) -> None:
+    """Write the stub class for one DATA entry to the .pyi file."""
+    f.write(f"class {name}(\n")
+    if isinstance(path, str):
+        path = {all_versions(): path}
+    for version_set, p in path.items():
+        if kind == "NamedObject":
+            p = f"{p}.child_object_type"
+        for fv in reversed(list(version_set)):
+            f.write(f"    type(settings_root_{fv.number}.{p}),\n")
+    f.write("): ...\n\n")
+    if name != legacy_name:
+        f.write(f"class {legacy_name}({name}): ...\n\n")
+
+
+def _generate_py_file(root, version) -> None:
+    """Write ``settings_builtin.py``."""
     with open(_PY_FILE, "w") as f:
-
-        def _write_name_to_all(name: str):
-            f.write(f'    "{name}",\n')
-
-        def _write_command_name_to_all(command_class_name: str):
-            _write_name_to_all(_convert_camel_case_to_snake_case(command_class_name))
-
-        def _write_symbol_to_all(name: str, kind: str):
-            _write_name_to_all(name)
-            if kind == "Command":
-                _write_command_name_to_all(name)
-
-        def _write_deprecation_warning(
-            alias_name: str,
-            preferred_name: str,
-            indentation: str,
-        ):
-            f.write(
-                f"{indentation}warnings.warn(\"'{alias_name}' is deprecated, use '{preferred_name}' instead.\", PyFluentDeprecationWarning, stacklevel=2)\n"
-            )
-
-        def _write_deprecated_alias_class(
-            alias_name: str,
-            preferred_name: str,
-            alias_kind_desc: str,
-        ):
-            f.write(f"class {alias_name}({preferred_name}):\n")
-            f.write(
-                f'    """{alias_name} {alias_kind_desc} (deprecated alias of {preferred_name})."""\n\n'
-            )
-            f.write("    def __init__(self, *args, **kwargs):\n")
-            _write_deprecation_warning(alias_name, preferred_name, "       ")
-            f.write("       super().__init__(*args, **kwargs)\n\n")
-
         f.write('"""Solver settings."""\n\n')
         f.write(
-            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting, Solver\n"
+            "from ansys.fluent.core.solver.settings_builtin_bases import"
+            " _SingletonSetting, _CreatableNamedObjectSetting,"
+            " _NonCreatableNamedObjectSetting, _CommandSetting, Solver\n"
             "from ansys.fluent.core.solver.flobject import SettingsBase\n"
             "from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning\n"
             "import warnings\n\n\n"
@@ -166,105 +284,27 @@ def generate(version: str):
         f.write("__all__ = [\n")
         for legacy_name, (kind, _) in DATA.items():
             name = _get_public_class_name(legacy_name)
-            _write_symbol_to_all(name, kind)
+            _write_symbol_to_all(f, name, kind)
             if name != legacy_name:
-                _write_symbol_to_all(legacy_name, kind)
+                _write_symbol_to_all(f, legacy_name, kind)
         f.write("]\n\n")
         for legacy_name, v in DATA.items():
-            kind, path = v
-            name = _get_public_class_name(legacy_name)
-            if isinstance(path, dict):
-                version_supported = False
-                for version_set, p in path.items():
-                    if version in version_set:
-                        path = p
-                        version_supported = True
-                        break
-                if not version_supported:
-                    continue
-            named_objects, is_creatable = _get_named_objects_in_path(
-                root, path.split("."), cast(SettingKind, kind)
-            )
-            if kind == "NamedObject":
-                kind = f"{'Creatable' if is_creatable else 'NonCreatable'}NamedObject"
-            f.write(f"class {name}(_{kind}Setting):\n")
-            doc_kind = "command object" if kind == "Command" else "setting"
-            f.write(f'    """{name} {doc_kind}."""\n\n')
-            f.write(f'    _db_name = "{legacy_name}"\n\n')
-            f.write("    def __init__(self")
-            for named_object in named_objects:
-                f.write(f", {named_object}: str")
-            f.write(", settings_source: SettingsBase | Solver | None = None")
-            if kind == "NonCreatableNamedObject":
-                f.write(", name: str = None")
-            elif kind == "CreatableNamedObject":
-                f.write(", name: str = None, new_instance_name: str = None")
-            f.write("):\n")
-            f.write("        super().__init__(settings_source=settings_source")
-            if kind == "NonCreatableNamedObject":
-                f.write(", name=name")
-            elif kind == "CreatableNamedObject":
-                f.write(", name=name, new_instance_name=new_instance_name")
-            for named_object in named_objects:
-                f.write(f", {named_object}={named_object}")
-            f.write(")\n\n")
-            if kind == "Command":
-                command_name = _convert_camel_case_to_snake_case(name)
-                f.write(f"class {command_name}(_{kind}Setting):\n")
-                f.write(f'    """{command_name} command."""\n\n')
-                f.write(f'    _db_name = "{legacy_name}"\n\n')
-                f.write(
-                    "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
-                )
-                f.write("       instance = super().__new__(cls)\n")
-                f.write(
-                    "       instance.__init__(settings_source=settings_source, **kwargs)\n"
-                )
-                f.write("       return instance(**kwargs)\n\n")
+            _write_py_entry(f, legacy_name, v, root, version)
 
-            if name != legacy_name:
-                if kind == "Command":
-                    _write_deprecated_alias_class(
-                        alias_name=legacy_name,
-                        preferred_name=name,
-                        alias_kind_desc="command object",
-                    )
-                    legacy_command_name = _convert_camel_case_to_snake_case(legacy_name)
-                    f.write(f"class {legacy_command_name}({command_name}):\n")
-                    f.write(
-                        f'    """{legacy_command_name} command (deprecated alias of {command_name})."""\n\n'
-                    )
-                    f.write(
-                        "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
-                    )
-                    _write_deprecation_warning(
-                        legacy_command_name, command_name, "        "
-                    )
-                    f.write(
-                        "        return super().__new__(cls, settings_source=settings_source, **kwargs)\n\n"
-                    )
 
+def _generate_pyi_file() -> None:
+    """Write ``settings_builtin.pyi``."""
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:
             f.write(
-                f"from ansys.fluent.core.generated.solver.settings_{version.number} import root as settings_root_{version.number}\n"
+                f"from ansys.fluent.core.generated.solver.settings_{version.number}"
+                f" import root as settings_root_{version.number}\n"
             )
         f.write("\n\n")
         for legacy_name, v in DATA.items():
             kind, path = v
             name = _get_public_class_name(legacy_name)
-            f.write(f"class {name}(\n")
-            if isinstance(path, str):
-                path = {all_versions(): path}
-            for version_set, p in path.items():
-                if kind == "NamedObject":
-                    p = f"{p}.child_object_type"
-                for v in reversed(list(version_set)):
-                    f.write(f"    type(settings_root_{v.number}.{p}),\n")
-            f.write("): ...\n\n")
-
-            if name != legacy_name:
-                f.write(f"class {legacy_name}({name}): ...\n\n")
+            _write_pyi_entry(f, legacy_name, kind, path, name)
 
 
 if __name__ == "__main__":

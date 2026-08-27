@@ -67,11 +67,11 @@ from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.session_meshing import Meshing
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.session_solver_aero import SolverAero
-from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.session.meshing import Meshing
+from ansys.fluent.core.session.pure_meshing import PureMeshing
+from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.session.solver_aero import SolverAero
+from ansys.fluent.core.session.solver_icing import SolverIcing
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -376,10 +376,10 @@ def launch_fluent(
 
     Returns
     -------
-    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
-    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
-    :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str] | dict[str, Any]]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session.meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session.solver.Solver`, \
+    :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`, tuple[str, str] | dict[str, Any]]
         Session object or configuration ``dict[str, Any]`` if ``dry_run = True`` for docker or a tuple of
         (fluent executable path, startup arguments) if ``dry_run = True`` for standalone launch.
 
@@ -610,10 +610,10 @@ def connect_to_fluent(
 
     Returns
     -------
-    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
-    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
-    :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session.meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session.solver.Solver`, \
+    :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`]
         Session object.
 
     Raises

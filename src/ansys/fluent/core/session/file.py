@@ -28,8 +28,6 @@ import warnings
 from deprecated.sphinx import deprecated
 import numpy as np
 
-from ansys.api.fluent.v0.field_data_pb2 import DataLocation
-from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldInfo,
     FieldBatch,
@@ -54,6 +52,7 @@ from ansys.fluent.core.filereader.data_file import (
     _to_scalar_field_name,
     _to_vector_field_name,
 )
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.utils.deprecate import (
     deprecate_arguments,
     deprecate_function,
@@ -152,10 +151,7 @@ class BatchFieldData:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
-                (
-                    "dataLocation",
-                    DataLocation.Nodes if node_value else DataLocation.Elements,
-                ),
+                ("dataLocation", 1 if node_value else 0),
                 ("boundaryValues", boundary_value),
             )
         ]
@@ -601,10 +597,7 @@ class Batch(FieldBatch):
         for batch in self._scalar_field_batches:
             scalar_field_tag = (
                 ("type", "scalar-field"),
-                (
-                    "dataLocation",
-                    DataLocation.Nodes if batch.node_value else DataLocation.Elements,
-                ),
+                ("dataLocation", 1 if batch.node_value else 0),
                 ("boundaryValues", batch.boundary_value),
             )
             field_data_surface = field_data.setdefault(scalar_field_tag, {})

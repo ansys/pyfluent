@@ -42,8 +42,7 @@ from ansys.fluent.core.pyfluent_warnings import *
 from ansys.fluent.core.search import *
 from ansys.fluent.core.services.batch_ops import *
 from ansys.fluent.core.session import *
-from ansys.fluent.core.session import BaseSession as Fluent
-from ansys.fluent.core.session_utilities import *
+from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
 from ansys.fluent.core.streaming_services.events_streaming import *
 from ansys.fluent.core.utils import *
@@ -51,7 +50,7 @@ from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
-__version__ = "0.42.dev0"
+__version__ = "0.43.dev0"
 
 _VERSION_INFO = None
 """
@@ -60,6 +59,7 @@ Build timestamp and commit hash are added to this variable during packaging.
 """
 
 import os as _os  # noqa: E402
+import sys as _sys  # noqa: E402
 import warnings as _warnings  # noqa: E402
 
 _THIS_DIRNAME = _os.path.dirname(__file__)
@@ -68,6 +68,23 @@ _README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rs
 if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
+
+from ansys.fluent.core.session import file as _session_file  # noqa: E402
+
+_sys.modules["ansys.fluent.core.file_session"] = _session_file
+
+
+class Fluent(BaseSession):
+    """Fluent session management.
+
+    This class serves as the primary base class for both meshing and solver
+    sessions within PyFluent. It extends the core functionality
+    provided by the base session instance.
+
+    Attributes
+    ----------
+    Inherits all attributes from :class:`~ansys.fluent.core.session.session.BaseSession`.
+    """
 
 
 def version_info() -> str:
