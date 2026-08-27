@@ -531,16 +531,21 @@ class BaseMeshing(BaseSession):
         if legacy:
             root_module = "workflow"
             from ansys.fluent.core.meshing.meshing_workflow import CreateWorkflow
+
+            self._current_workflow = CreateWorkflow(
+                _make_datamodel_module(self, root_module),
+                self.meshing,
+                self.get_fluent_version(),
+                initialize,
+            )
         else:
             root_module = "meshing_workflow"
             from ansys.fluent.core.meshing.meshing_workflow_new import CreatedWorkflow
 
-        self._current_workflow = CreatedWorkflow(
-            _make_datamodel_module(self, root_module),
-            self.meshing,
-            self.get_fluent_version(),
-            initialize,
-        )
+            self._current_workflow = CreatedWorkflow(
+                self,
+                initialize,
+            )
         return self._current_workflow
 
     def _get_current_workflow(
