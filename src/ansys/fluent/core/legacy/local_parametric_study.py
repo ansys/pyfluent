@@ -56,7 +56,6 @@ import os
 from typing import Any
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.utils.execution import asynchronous
 
 BASE_DP_NAME = "Base DP"
@@ -331,11 +330,15 @@ class LocalParametricStudy:
     def run_in_fluent(
         self,
         num_servers: int,
-        launcher: Any = launch_fluent,
+        launcher: Any = None,
         start_transcript: bool = False,
         capture_report_data: bool = False,
     ):
         """Run the local study in fluent."""
+        from ansys.fluent.core.launcher.launcher import launch_fluent
+
+        if launcher is None:
+            launcher = launch_fluent
         _run_local_study_in_fluent(
             local_study=self,
             num_servers=num_servers,
