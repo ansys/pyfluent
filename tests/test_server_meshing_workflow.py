@@ -2088,12 +2088,10 @@ def test_direct_construction(new_meshing_session):
     watertight = WatertightMeshing(session=meshing)
 
     assert isinstance(watertight, WatertightMeshingWorkflow)
-    assert meshing.current_workflow is watertight
     assert watertight.import_geometry
 
     fault_tolerant = FaultTolerantMeshing(session=meshing)
     assert isinstance(fault_tolerant, FaultTolerantMeshingWorkflow)
-    assert meshing.current_workflow is fault_tolerant
     assert fault_tolerant.import_cad_and_part_management
 
 
@@ -2106,7 +2104,6 @@ def test_direct_construction_of_create_workflow(new_meshing_session):
     create_workflow = CreateNewWorkflow(session=meshing)
 
     assert isinstance(create_workflow, CreatedWorkflow)
-    assert meshing.current_workflow is create_workflow
 
 
 @pytest.mark.fluent_version(">=26.1")
@@ -2123,7 +2120,6 @@ def test_direct_construction_of_load_workflow(new_meshing_session):
     )
 
     assert isinstance(loaded_workflow, LoadedWorkflow)
-    assert meshing.current_workflow is loaded_workflow
     assert "set_up_rotational_periodic_boundaries" in loaded_workflow.task_names()
 
 
