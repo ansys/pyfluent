@@ -49,7 +49,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     :caption: ansys.fluent.core
 
     docker/docker_contents
-    filereader/filereader_contents
+    file_reader/file_reader_contents
     launcher/launcher_contents
     meshing/meshing_workflow_new
     meshing/meshing_utilities
@@ -75,7 +75,6 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     search
     session/session_contents
     system_coupling
-    pyfluent_warnings
     workflow_new
     deprecated_apis
 """
@@ -122,7 +121,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 hierarchy = {
     "docker": ["docker_compose"],
-    "filereader": ["case_file", "data_file", "lispy"],
+    "file_reader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
         "error_handler",
@@ -215,7 +214,6 @@ hierarchy = {
         "rpvars",
         "search",
         "system_coupling",
-        "pyfluent_warnings",
         "workflow_new",
     ],
     "legacy": [

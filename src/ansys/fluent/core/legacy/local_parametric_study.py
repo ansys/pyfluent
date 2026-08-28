@@ -29,7 +29,7 @@ Example
 
 Set up a local study
 
->>> from ansys.fluent.core.parametric import LocalParametricStudy
+>>> from ansys.fluent.core.legacy.local_parametric_study import LocalParametricStudy
 >>> local_study = LocalParametricStudy(case_filepath="E:/elbow1_param.cas.h5")
 >>> design_point = local_study.design_point("Base DP")
 >>> design_point.input_parameters['v1'] = 0.0
@@ -56,7 +56,6 @@ import os
 from typing import Any
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.utils.execution import asynchronous
 
 BASE_DP_NAME = "Base DP"
@@ -304,11 +303,11 @@ class LocalParametricStudy:
         self, case_filepath: PathType, base_design_point_name: str = "Base DP"
     ):
         """Initialize LocalParametricStudy."""
-        from ansys.fluent.core.filereader.casereader import CaseReader
+        from ansys.fluent.core.file_reader.case_file import CaseFile
 
         self.case_filepath = os.fspath(case_filepath)
         base_design_point = LocalDesignPoint(base_design_point_name)
-        case_reader = CaseReader(case_file_name=self.case_filepath)
+        case_reader = CaseFile(case_file_name=self.case_filepath)
 
         base_design_point.input_parameters = {
             p.name: p.value for p in case_reader.input_parameters()
@@ -331,11 +330,15 @@ class LocalParametricStudy:
     def run_in_fluent(
         self,
         num_servers: int,
-        launcher: Any = launch_fluent,
+        launcher: Any = None,
         start_transcript: bool = False,
         capture_report_data: bool = False,
     ):
         """Run the local study in fluent."""
+        from ansys.fluent.core.launcher.launcher import launch_fluent
+
+        if launcher is None:
+            launcher = launch_fluent
         _run_local_study_in_fluent(
             local_study=self,
             num_servers=num_servers,

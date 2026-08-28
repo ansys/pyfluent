@@ -48,10 +48,12 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
 from ansys.fluent.core._grpc_services import _server_supports_v1
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.exceptions import (
+    BetaFeaturesNotEnabled,
+    PyFluentDeprecationWarning,
+)
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session.base_meshing import BaseMeshing
 from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.session.solver import Solver

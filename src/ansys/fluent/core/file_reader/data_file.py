@@ -29,7 +29,7 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.data_file import DataFile
+    >>> from ansys.fluent.core.file_reader.data_file import DataFile
 
     >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session", return_without_path=False)
 

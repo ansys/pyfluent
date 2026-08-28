@@ -71,10 +71,6 @@ from typing import (
 import warnings
 import weakref
 
-from ansys.fluent.core.pyfluent_warnings import (
-    PyFluentDeprecationWarning,
-    PyFluentUserWarning,
-)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.get_completer_info import (
     get_completer_info as _get_completer_info,
@@ -86,7 +82,6 @@ import ansys.units
 from ansys.units import VariableDescriptor
 
 from . import _docstrings
-from ..pyfluent_warnings import warning_for_fluent_dev_version
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
@@ -935,23 +930,12 @@ class Textual(Property):
         return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 
-class DeprecatedSettingWarning(PyFluentDeprecationWarning):
-    """Provides deprecated settings warning."""
-
-    pass
-
-
-# TODO: Delete this after updating PyConsole code when next PyFluent version is pushed.
-class UnstableSettingWarning(PyFluentUserWarning):
-    """Provides unstable settings warning."""
-
-    pass
-
-
 _show_warning_orig = warnings.showwarning
 
 
 def _show_warning(message, category, *args, **kwargs):
+    from ansys.fluent.core.exceptions import DeprecatedSettingWarning
+
     if category == DeprecatedSettingWarning:
         print(message)
     else:
@@ -979,6 +963,8 @@ class _Alias:
                 journal_str = scheme_eval(
                     "(close-output-port pyfluent-journal-str-port)"
                 )
+                from ansys.fluent.core.exceptions import DeprecatedSettingWarning
+
                 if isinstance(journal_str, str):
                     warnings.warn(
                         "A newer syntax is available to perform the last operation:\n"
@@ -1064,6 +1050,8 @@ class SettingsBase(Base, Generic[StateT]):
         if kwargs:
             # Send value of the first key only
             if len(kwargs) > 1:
+                from ansys.fluent.core.exceptions import PyFluentUserWarning
+
                 warnings.warn(
                     f"Only the first keyword argument is used when setting state at {self.python_path}.",
                     PyFluentUserWarning,
@@ -2086,6 +2074,8 @@ def _get_new_keywords(obj, *args, **kwds):
                 unknown_keywords.add(k)
     for k in unknown_keywords:
         # Noisily ignore unknown keywords
+        from ansys.fluent.core.exceptions import PyFluentUserWarning
+
         warnings.warn(
             f"Unknown keyword '{k}' for command '{obj.python_path}'. "
             "It will be ignored.",
@@ -2942,6 +2932,8 @@ def get_root(
                 config.codegen_outdir / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
+            from ..exceptions import warning_for_fluent_dev_version
+
             warning_for_fluent_dev_version(version)
         except FileNotFoundError:
             obj_info = flproxy.get_static_info()

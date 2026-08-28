@@ -30,7 +30,7 @@ interfaces: solver settings objects and task-based meshing workflow.
 from enum import Enum
 from typing import Any
 
-import ansys.fluent.core.filereader.lispy as lispy
+import ansys.fluent.core.file_reader.lispy as lispy
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 

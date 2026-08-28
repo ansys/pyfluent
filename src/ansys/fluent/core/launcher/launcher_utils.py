@@ -35,12 +35,11 @@ import time
 from typing import Any
 import warnings
 
-from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.exceptions import InvalidArgument, PyFluentDeprecationWarning
 from ansys.fluent.core.launcher.error_warning_messages import (
     LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA,
     LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
 )
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")

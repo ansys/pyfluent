@@ -25,8 +25,8 @@
 
 import logging
 
+from ansys.fluent.core.exceptions import warning_for_fluent_dev_version
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.pyfluent_warnings import warning_for_fluent_dev_version
 from ansys.fluent.core.services.text_interface import TUIMenu
 from ansys.fluent.core.utils import load_module
 

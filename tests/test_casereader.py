@@ -29,16 +29,15 @@ import defusedxml.ElementTree as ET
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader import lispy
-from ansys.fluent.core.filereader.case_file import (
+from ansys.fluent.core.file_reader import lispy
+from ansys.fluent.core.file_reader.case_file import (
+    CaseFile,
     InputParameter,
     InputParameterOld,
     MeshType,
     _get_processed_string,
 )
-from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
-from ansys.fluent.core.filereader.pre_processor import remove_unsupported_xml_chars
+from ansys.fluent.core.file_reader.pre_processor import remove_unsupported_xml_chars
 
 
 def call_casereader(
@@ -46,7 +45,7 @@ def call_casereader(
     project_file_name: str | None = None,
     expected: dict | None = None,
 ):
-    reader = CaseReader(
+    reader = CaseFile(
         case_file_name=case_file_name, project_file_name=project_file_name
     )
     if expected is not None:
@@ -220,7 +219,7 @@ def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_di
 
 
 def test_case_reader_get_rp_and_config_vars():
-    reader = CaseReader(case_file_name=static_mixer_file())
+    reader = CaseFile(case_file_name=static_mixer_file())
     rp_vars = reader.rp_vars()
     assert rp_vars
     assert hasattr(rp_vars, "__getitem__")
@@ -337,9 +336,9 @@ def test_mesh_reader():
         "pyfluent/mixing_elbow",
         return_without_path=False,
     )
-    mesh_reader_2d = CaseReader(case_file_name=mesh_file_2d)
-    mesh_reader_3d = CaseReader(case_file_name=mesh_file_3d)
-    case_reader = CaseReader(case_file_name=case_file)
+    mesh_reader_2d = CaseFile(case_file_name=mesh_file_2d)
+    mesh_reader_3d = CaseFile(case_file_name=mesh_file_3d)
+    case_reader = CaseFile(case_file_name=case_file)
 
     assert mesh_reader_2d.get_mesh().get_mesh_type() == MeshType.SURFACE
     assert mesh_reader_3d.get_mesh().get_mesh_type() == MeshType.VOLUME

@@ -29,7 +29,7 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.case_file import CaseFile
+    >>> from ansys.fluent.core.file_reader.case_file import CaseFile
 
     >>> case_file_name = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer", return_without_path=False)
 

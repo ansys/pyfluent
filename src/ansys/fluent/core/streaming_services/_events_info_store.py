@@ -27,7 +27,7 @@ from dataclasses import dataclass, field, fields
 from enum import Enum
 import warnings
 
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
 
 
 def _missing_for_events(cls, value):
