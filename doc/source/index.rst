@@ -7,6 +7,7 @@ PyFluent documentation |version|
 
    getting_started/getting_started_contents
    user_guide/user_guide_contents
+   cheatsheet/index
    api/api_contents
    examples/index
    contributing/contributing_contents
@@ -50,6 +51,8 @@ Getting started
 ---------------
 
 Get started with PyFluent by following the steps in the :ref:`getting_started` guide.
+For a one-page reference of the most common commands, see the
+:ref:`PyFluent cheat sheet <ref_pyfluent_cheat_sheet>`.
 
 
 Resources
