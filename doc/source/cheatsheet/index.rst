@@ -24,10 +24,10 @@ Import PyFluent and the settings API objects most workflows need:
    import ansys.fluent.core as pyfluent
    from ansys.units import VariableCatalog as VC
    from ansys.fluent.core import (
-	   ScalarFieldDataRequest,
-	   VectorFieldDataRequest,
-	   SurfaceFieldDataRequest,
-	   SurfaceDataType,
+      ScalarFieldDataRequest,
+      VectorFieldDataRequest,
+      SurfaceFieldDataRequest,
+      SurfaceDataType,
    )
    from ansys.fluent.core.solver import *
 
@@ -100,7 +100,7 @@ settings API:
 
    turbulence = inlet.turbulence
    turbulence = (
-	   turbulence.turbulence_specification.INTENSITY_AND_HYDRAULIC_DIAMETER
+      turbulence.turbulence_specification.INTENSITY_AND_HYDRAULIC_DIAMETER
    )
    turbulence.turbulent_intensity = 0.05
    turbulence.hydraulic_diameter = "4 [in]"
@@ -211,18 +211,18 @@ Request scalar, vector, and surface field data from the solver:
    field_data = solver.fields.field_data
 
    abs_press_req = ScalarFieldDataRequest(
-	   field_name=VC.ABSOLUTE_PRESSURE, surfaces=["cold-inlet"]
+      field_name=VC.ABSOLUTE_PRESSURE, surfaces=["cold-inlet"]
    )
    abs_pressure = field_data.get_field_data(abs_press_req)
 
    vel_req = VectorFieldDataRequest(
-	   field_name=VC.VELOCITY, surfaces=["cold-inlet"]
+      field_name=VC.VELOCITY, surfaces=["cold-inlet"]
    )
    velocity = field_data.get_field_data(vel_req)
 
    surf_req = SurfaceFieldDataRequest(
-	   data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
-	   surfaces=["hot-inlet", "cold-inlet"],
+      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+      surfaces=["hot-inlet", "cold-inlet"],
    )
    surfaces = field_data.get_field_data(surf_req)
    vertices = surfaces["cold-inlet"].vertices
@@ -264,10 +264,10 @@ locations:
    volume = reduction.volume(locations=[velocity_inlet])
 
    avg_pressure = reduction.area_average(
-	   VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet]
+      VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet]
    )
    total_mass = reduction.mass_integral(
-	   VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet]
+      VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet]
    )
 
    force = reduction.force(locations=[wall])
@@ -286,18 +286,18 @@ Read and write raw solution variable data by zone and domain:
 
    zones_info = sv_info.get_zones_info()
    temp_data = sv_data.get_data(
-	   variable_name=VC.TEMPERATURE,
-	   zone_names=["elbow-fluid"],
-	   domain_name="mixture",
+      variable_name=VC.TEMPERATURE,
+      zone_names=["elbow-fluid"],
+      domain_name="mixture",
    )
 
    temp_array = sv_data.create_empty_array(
-	   VC.TEMPERATURE, "elbow-fluid", "mixture"
+      VC.TEMPERATURE, "elbow-fluid", "mixture"
    )
    temp_array[:] = 500
 
    sv_data.set_data(
-	   variable_name=VC.TEMPERATURE,
-	   zone_names_to_data={"elbow-fluid": temp_array},
-	   domain_name="mixture",
+      variable_name=VC.TEMPERATURE,
+      zone_names_to_data={"elbow-fluid": temp_array},
+      domain_name="mixture",
    )
