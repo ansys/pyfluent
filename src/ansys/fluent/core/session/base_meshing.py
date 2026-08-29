@@ -58,8 +58,8 @@ from ansys.fluent.core.utils.fluent_version import (
 )
 
 if TYPE_CHECKING:
-    from ansys.fluent.core import workflow_old as _workflow
-    from ansys.fluent.core import workflow
+    from ansys.fluent.core import workflow as _workflow_new
+    from ansys.fluent.core import workflow_old as _workflow_old
     from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
     from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
         Root as meshing_utilities_root,
@@ -78,10 +78,8 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
     from ansys.fluent.core.generated.meshing.tui_261 import main_menu
-    from ansys.fluent.core.meshing import (
-        meshing_workflow,
-    )
-    from ansys.fluent.core.meshing import meshing_workflow_old as _meshing_workflow
+    from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow_new
+    from ansys.fluent.core.meshing import meshing_workflow_old as _meshing_workflow_old
 
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
@@ -306,7 +304,7 @@ class BaseMeshing(BaseSession):
 
     def _watertight_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow.WatertightMeshingWorkflow":
+    ) -> "_meshing_workflow_old.WatertightMeshingWorkflow | _meshing_workflow_new.WatertightMeshingWorkflow":
         """Create a watertight meshing workflow.
 
         Parameters
@@ -344,7 +342,7 @@ class BaseMeshing(BaseSession):
 
     def _fault_tolerant_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow.FaultTolerantMeshingWorkflow":
+    ) -> "_meshing_workflow_old.FaultTolerantMeshingWorkflow | _meshing_workflow_new.FaultTolerantMeshingWorkflow":
         """Create a fault-tolerant meshing workflow.
 
         Parameters
@@ -384,7 +382,7 @@ class BaseMeshing(BaseSession):
 
     def _two_dimensional_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow.TwoDimensionalMeshingWorkflow":
+    ) -> "_meshing_workflow_old.TwoDimensionalMeshingWorkflow | _meshing_workflow_new.TwoDimensionalMeshingWorkflow":
         """Create a 2D meshing workflow.
 
         Parameters
@@ -422,7 +420,7 @@ class BaseMeshing(BaseSession):
 
     def _topology_based_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.TopologyBasedMeshingWorkflow | meshing_workflow.TopologyBasedMeshingWorkflow":
+    ) -> "_meshing_workflow_old.TopologyBasedMeshingWorkflow | _meshing_workflow_new.TopologyBasedMeshingWorkflow":
         """Create a topology-based workflow (beta).
 
         Parameters
@@ -463,7 +461,7 @@ class BaseMeshing(BaseSession):
         file_path: PathType,
         legacy: bool | None = None,
         initialize: bool = True,
-    ) -> "_meshing_workflow.LoadWorkflow | meshing_workflow.LoadedWorkflow":
+    ) -> "_meshing_workflow_old.LoadWorkflow | _meshing_workflow_new.LoadedWorkflow":
         """Load a previously saved meshing workflow from file.
 
         Restores workflow configuration including tasks, settings, and state.
@@ -507,7 +505,7 @@ class BaseMeshing(BaseSession):
 
     def create_workflow(
         self, legacy: bool | None = None, initialize: bool = True
-    ) -> "_meshing_workflow.CreateWorkflow | meshing_workflow.CreateWorkflow":
+    ) -> "_meshing_workflow_old.CreateWorkflow | _meshing_workflow_new.CreateWorkflow":
         """Create a new blank meshing workflow for manual task configuration.
 
         Provides an empty workflow to build custom task sequences from scratch.
@@ -549,7 +547,7 @@ class BaseMeshing(BaseSession):
 
     def _get_current_workflow(
         self, legacy: bool | None = None
-    ) -> "_workflow.Workflow | workflow.Workflow":
+    ) -> "_workflow_old.Workflow | _workflow_new.Workflow":
         """Return the active workflow; called by the current_workflow property."""
         legacy = self._fallback_check(legacy)
 
@@ -563,7 +561,9 @@ class BaseMeshing(BaseSession):
         }
 
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import get_current_workflow
+            from ansys.fluent.core.meshing.meshing_workflow_old import (
+                get_current_workflow,
+            )
 
             return get_current_workflow(
                 meshing_root=self.meshing,
@@ -613,7 +613,7 @@ class BaseMeshing(BaseSession):
 
     def watertight(
         self, legacy: bool | None = None
-    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow.WatertightMeshingWorkflow":
+    ) -> "_meshing_workflow_old.WatertightMeshingWorkflow | _meshing_workflow_new.WatertightMeshingWorkflow":
         """Get a new watertight meshing workflow.
 
         Parameters
@@ -632,7 +632,7 @@ class BaseMeshing(BaseSession):
 
     def fault_tolerant(
         self, legacy: bool | None = None
-    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow.FaultTolerantMeshingWorkflow":
+    ) -> "_meshing_workflow_old.FaultTolerantMeshingWorkflow | _meshing_workflow_new.FaultTolerantMeshingWorkflow":
         """Get a new fault-tolerant meshing workflow.
 
         Parameters
@@ -651,7 +651,7 @@ class BaseMeshing(BaseSession):
 
     def two_dimensional_meshing(
         self, legacy: bool | None = None
-    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow.TwoDimensionalMeshingWorkflow":
+    ) -> "_meshing_workflow_old.TwoDimensionalMeshingWorkflow | _meshing_workflow_new.TwoDimensionalMeshingWorkflow":
         """Get a new 2D meshing workflow.
 
         Parameters
@@ -668,7 +668,9 @@ class BaseMeshing(BaseSession):
         """
         return self._two_dimensional_meshing_workflow(legacy=legacy)
 
-    def topology_based(self, legacy: bool | None = None):
+    def topology_based(
+        self, legacy: bool | None = None
+    ) -> "_meshing_workflow_old.TopologyBasedMeshingWorkflow | _meshing_workflow_new.TopologyBasedMeshingWorkflow":
         """Get a new topology-based meshing workflow (beta feature).
 
         Parameters
