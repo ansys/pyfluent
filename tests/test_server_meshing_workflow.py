@@ -1989,13 +1989,13 @@ def test_default_workflow(new_meshing_session):
         watertight = meshing.watertight()
         assert (
             watertight.__class__.__module__
-            == "ansys.fluent.core.meshing.meshing_workflow"
+            == "ansys.fluent.core.meshing.meshing_workflow_old"
         )
     else:
         watertight = meshing.watertight()
         assert (
             watertight.__class__.__module__
-            == "ansys.fluent.core.meshing.meshing_workflow_new"
+            == "ansys.fluent.core.meshing.meshing_workflow"
         )
 
 
@@ -2007,13 +2007,13 @@ def test_non_default_workflow(new_meshing_session):
             watertight = meshing.watertight(legacy=False)
             assert (
                 watertight.__class__.__module__
-                == "ansys.fluent.core.meshing.meshing_workflow"
+                == "ansys.fluent.core.meshing.meshing_workflow_old"
             )
     else:
         watertight = meshing.watertight(legacy=True)
         assert (
             watertight.__class__.__module__
-            == "ansys.fluent.core.meshing.meshing_workflow"
+            == "ansys.fluent.core.meshing.meshing_workflow_old"
         )
 
 
