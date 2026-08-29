@@ -392,8 +392,8 @@ TwoDimensionalMeshing = TwoDimensionalMeshingWorkflow
 TopologyBasedMeshing = TopologyBasedMeshingWorkflow
 """Alias for :class:`TopologyBasedMeshingWorkflow`."""
 
-CreateNewWorkflow = CreatedWorkflow
+CreateMeshingWorkflow = CreatedWorkflow
 """Alias for :class:`CreatedWorkflow`."""
 
-LoadExistingWorkflow = LoadedWorkflow
+LoadMeshingWorkflow = LoadedWorkflow
 """Alias for :class:`LoadedWorkflow`."""

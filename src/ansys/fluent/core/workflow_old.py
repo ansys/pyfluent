@@ -1572,7 +1572,7 @@ class Workflow:
         return list(self._initial_task_python_names_map)
 
     def _create_workflow(self, dynamic_interface: bool = True):
-        self._workflow.CreateNewWorkflow()
+        self._workflow.CreateMeshingWorkflow()
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
     @property

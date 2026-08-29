@@ -40,9 +40,9 @@ from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
 from ansys.fluent.core.legacy.local_parametric_study import *
 from ansys.fluent.core.meshing.meshing_workflow import (
-    CreateNewWorkflow,
+    CreateMeshingWorkflow,
     FaultTolerantMeshing,
-    LoadExistingWorkflow,
+    LoadMeshingWorkflow,
     TopologyBasedMeshing,
     TwoDimensionalMeshing,
     WatertightMeshing,
