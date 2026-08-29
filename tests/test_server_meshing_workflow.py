@@ -35,7 +35,7 @@ from ansys.fluent.core import (
     WatertightMeshing,
     examples,
 )
-from ansys.fluent.core.meshing.meshing_workflow_new import (
+from ansys.fluent.core.meshing.meshing_workflow import (
     CreatedWorkflow,
     FaultTolerantMeshingWorkflow,
     LoadedWorkflow,

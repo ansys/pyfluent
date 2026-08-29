@@ -39,7 +39,7 @@ from ansys.fluent.core.get_build_details import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
 from ansys.fluent.core.legacy.local_parametric_study import *
-from ansys.fluent.core.meshing.meshing_workflow_new import (
+from ansys.fluent.core.meshing.meshing_workflow import (
     CreateNewWorkflow,
     FaultTolerantMeshing,
     LoadExistingWorkflow,

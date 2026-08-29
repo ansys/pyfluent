@@ -58,8 +58,8 @@ from ansys.fluent.core.utils.fluent_version import (
 )
 
 if TYPE_CHECKING:
-    from ansys.fluent.core import workflow as _workflow
-    from ansys.fluent.core import workflow_new
+    from ansys.fluent.core import workflow_old as _workflow
+    from ansys.fluent.core import workflow
     from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
     from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
         Root as meshing_utilities_root,
@@ -79,9 +79,9 @@ if TYPE_CHECKING:
     from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
     from ansys.fluent.core.generated.meshing.tui_261 import main_menu
     from ansys.fluent.core.meshing import (
-        meshing_workflow_new,
+        meshing_workflow,
     )
-    from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow
+    from ansys.fluent.core.meshing import meshing_workflow_old as _meshing_workflow
 
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
@@ -306,7 +306,7 @@ class BaseMeshing(BaseSession):
 
     def _watertight_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow_new.WatertightMeshingWorkflow":
+    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow.WatertightMeshingWorkflow":
         """Create a watertight meshing workflow.
 
         Parameters
@@ -325,7 +325,7 @@ class BaseMeshing(BaseSession):
         """
         legacy = self._fallback_check(legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
 
             self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
                 _make_datamodel_module(self, "workflow"),
@@ -334,7 +334,7 @@ class BaseMeshing(BaseSession):
                 initialize,
             )
         else:
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
 
             self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
                 self,
@@ -344,7 +344,7 @@ class BaseMeshing(BaseSession):
 
     def _fault_tolerant_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow_new.FaultTolerantMeshingWorkflow":
+    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow.FaultTolerantMeshingWorkflow":
         """Create a fault-tolerant meshing workflow.
 
         Parameters
@@ -363,7 +363,7 @@ class BaseMeshing(BaseSession):
         """
         legacy = self._fallback_check(legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
 
             self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
                 _make_datamodel_module(self, "workflow"),
@@ -374,7 +374,7 @@ class BaseMeshing(BaseSession):
                 initialize,
             )
         else:
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
 
             self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
                 self,
@@ -384,7 +384,7 @@ class BaseMeshing(BaseSession):
 
     def _two_dimensional_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow_new.TwoDimensionalMeshingWorkflow":
+    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow.TwoDimensionalMeshingWorkflow":
         """Create a 2D meshing workflow.
 
         Parameters
@@ -403,7 +403,7 @@ class BaseMeshing(BaseSession):
         """
         legacy = self._fallback_check(legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
 
             self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
                 _make_datamodel_module(self, "workflow"),
@@ -412,7 +412,7 @@ class BaseMeshing(BaseSession):
                 initialize,
             )
         else:
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
 
             self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
                 self,
@@ -422,7 +422,7 @@ class BaseMeshing(BaseSession):
 
     def _topology_based_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> "_meshing_workflow.TopologyBasedMeshingWorkflow | meshing_workflow_new.TopologyBasedMeshingWorkflow":
+    ) -> "_meshing_workflow.TopologyBasedMeshingWorkflow | meshing_workflow.TopologyBasedMeshingWorkflow":
         """Create a topology-based workflow (beta).
 
         Parameters
@@ -441,7 +441,7 @@ class BaseMeshing(BaseSession):
         """
         legacy = self._fallback_check(legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
 
             self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
                 _make_datamodel_module(self, "workflow"),
@@ -450,7 +450,7 @@ class BaseMeshing(BaseSession):
                 initialize,
             )
         else:
-            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
 
             self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
                 self,
@@ -463,7 +463,7 @@ class BaseMeshing(BaseSession):
         file_path: PathType,
         legacy: bool | None = None,
         initialize: bool = True,
-    ) -> "_meshing_workflow.LoadWorkflow | meshing_workflow_new.LoadedWorkflow":
+    ) -> "_meshing_workflow.LoadWorkflow | meshing_workflow.LoadedWorkflow":
         """Load a previously saved meshing workflow from file.
 
         Restores workflow configuration including tasks, settings, and state.
@@ -487,7 +487,7 @@ class BaseMeshing(BaseSession):
         """
         legacy = self._fallback_check(legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow import LoadWorkflow
+            from ansys.fluent.core.meshing.meshing_workflow_old import LoadWorkflow
 
             self._current_workflow = LoadWorkflow(
                 _make_datamodel_module(self, "workflow"),
@@ -496,7 +496,7 @@ class BaseMeshing(BaseSession):
                 self.get_fluent_version(),
             )
         else:
-            from ansys.fluent.core.meshing.meshing_workflow_new import LoadedWorkflow
+            from ansys.fluent.core.meshing.meshing_workflow import LoadedWorkflow
 
             self._current_workflow = LoadedWorkflow(
                 self,
@@ -507,7 +507,7 @@ class BaseMeshing(BaseSession):
 
     def create_workflow(
         self, legacy: bool | None = None, initialize: bool = True
-    ) -> "_meshing_workflow.CreateWorkflow | meshing_workflow_new.CreateWorkflow":
+    ) -> "_meshing_workflow.CreateWorkflow | meshing_workflow.CreateWorkflow":
         """Create a new blank meshing workflow for manual task configuration.
 
         Provides an empty workflow to build custom task sequences from scratch.
@@ -529,7 +529,7 @@ class BaseMeshing(BaseSession):
         legacy = self._fallback_check(legacy)
         if legacy:
             root_module = "workflow"
-            from ansys.fluent.core.meshing.meshing_workflow import CreateWorkflow
+            from ansys.fluent.core.meshing.meshing_workflow_old import CreateWorkflow
 
             self._current_workflow = CreateWorkflow(
                 _make_datamodel_module(self, root_module),
@@ -539,7 +539,7 @@ class BaseMeshing(BaseSession):
             )
         else:
             root_module = "meshing_workflow"
-            from ansys.fluent.core.meshing.meshing_workflow_new import CreatedWorkflow
+            from ansys.fluent.core.meshing.meshing_workflow import CreatedWorkflow
 
             self._current_workflow = CreatedWorkflow(
                 self,
@@ -549,7 +549,7 @@ class BaseMeshing(BaseSession):
 
     def _get_current_workflow(
         self, legacy: bool | None = None
-    ) -> "_workflow.Workflow | workflow_new.Workflow":
+    ) -> "_workflow.Workflow | workflow.Workflow":
         """Return the active workflow; called by the current_workflow property."""
         legacy = self._fallback_check(legacy)
 
@@ -563,7 +563,7 @@ class BaseMeshing(BaseSession):
         }
 
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow import get_current_workflow
+            from ansys.fluent.core.meshing.meshing_workflow_old import get_current_workflow
 
             return get_current_workflow(
                 meshing_root=self.meshing,
@@ -572,7 +572,7 @@ class BaseMeshing(BaseSession):
             )
 
         else:
-            from ansys.fluent.core.meshing.meshing_workflow_new import (
+            from ansys.fluent.core.meshing.meshing_workflow import (
                 get_current_workflow,
             )
 
@@ -613,7 +613,7 @@ class BaseMeshing(BaseSession):
 
     def watertight(
         self, legacy: bool | None = None
-    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow_new.WatertightMeshingWorkflow":
+    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow.WatertightMeshingWorkflow":
         """Get a new watertight meshing workflow.
 
         Parameters
@@ -632,7 +632,7 @@ class BaseMeshing(BaseSession):
 
     def fault_tolerant(
         self, legacy: bool | None = None
-    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow_new.FaultTolerantMeshingWorkflow":
+    ) -> "_meshing_workflow.FaultTolerantMeshingWorkflow | meshing_workflow.FaultTolerantMeshingWorkflow":
         """Get a new fault-tolerant meshing workflow.
 
         Parameters
@@ -651,7 +651,7 @@ class BaseMeshing(BaseSession):
 
     def two_dimensional_meshing(
         self, legacy: bool | None = None
-    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow_new.TwoDimensionalMeshingWorkflow":
+    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow.TwoDimensionalMeshingWorkflow":
         """Get a new 2D meshing workflow.
 
         Parameters
