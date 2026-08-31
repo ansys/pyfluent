@@ -33,34 +33,7 @@ from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.session import Meshing, PureMeshing
 from ansys.fluent.core.session._shared import _make_datamodel_module
-from ansys.fluent.core.session.meshing import BaseMeshing
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow import Workflow
-
-
-def _validate_meshing_session(session: BaseMeshing) -> bool:
-    """Check if the session is a meshing session.
-
-    Parameters
-    ----------
-    session : BaseMeshing
-        The session to check.
-
-    Returns
-    -------
-    bool
-        True if the session is a meshing session, False otherwise.
-
-    Raises
-    ------
-    TypeError
-        If the session is not an instance of BaseMeshing.
-    """
-    if not isinstance(session, BaseMeshing):
-        raise TypeError(
-            f"Expected a BaseMeshing session, got {type(session).__name__} instead."
-        )
-    return True
 
 
 class MeshingWorkflow(Workflow):
@@ -69,7 +42,7 @@ class MeshingWorkflow(Workflow):
 
     def __init__(
         self,
-        session: BaseMeshing,
+        session: PureMeshing | Meshing,
         workflow_type: str,
         initialize: bool = True,
     ) -> None:
@@ -77,14 +50,13 @@ class MeshingWorkflow(Workflow):
 
         Parameters
         ----------
-        session : BaseMeshing
+        session : PureMeshing | Meshing
             The meshing session.
         workflow_type: str
             Workflow type to initialize it.
         initialize: bool
             Flag to initialize the workflow, defaults to True.
         """
-        _validate_meshing_session(session)
         self._meshing = session.meshing
         super().__init__(
             workflow=_make_datamodel_module(session, "meshing_workflow"),
@@ -281,13 +253,12 @@ class LoadedWorkflow(Workflow):
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
         """
-        _validate_meshing_session(session)
+        self._meshing = session.meshing
         super().__init__(
             workflow=_make_datamodel_module(session, "meshing_workflow"),
-            command_source=session.meshing,
+            command_source=self._meshing,
             fluent_version=session.get_fluent_version(),
         )
-        self._meshing = session.meshing
         if initialize:
             self._load_workflow(file_path=os.fspath(file_path))
 
@@ -312,13 +283,12 @@ class CreatedWorkflow(Workflow):
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
         """
-        _validate_meshing_session(session)
+        self._meshing = session.meshing
         super().__init__(
             workflow=_make_datamodel_module(session, "meshing_workflow"),
-            command_source=session.meshing,
+            command_source=self._meshing,
             fluent_version=session.get_fluent_version(),
         )
-        self._meshing = session.meshing
         if initialize:
             self._create_workflow()
 
@@ -376,24 +346,3 @@ def get_current_workflow(
     return _get_current_workflow(current_workflow, workflow_type) or factory(
         initialize=False
     )
-
-
-# Public aliases
-
-WatertightMeshing = WatertightMeshingWorkflow
-"""Alias for :class:`WatertightMeshingWorkflow`."""
-
-FaultTolerantMeshing = FaultTolerantMeshingWorkflow
-"""Alias for :class:`FaultTolerantMeshingWorkflow`."""
-
-TwoDimensionalMeshing = TwoDimensionalMeshingWorkflow
-"""Alias for :class:`TwoDimensionalMeshingWorkflow`."""
-
-TopologyBasedMeshing = TopologyBasedMeshingWorkflow
-"""Alias for :class:`TopologyBasedMeshingWorkflow`."""
-
-CreateMeshingWorkflow = CreatedWorkflow
-"""Alias for :class:`CreatedWorkflow`."""
-
-LoadMeshingWorkflow = LoadedWorkflow
-"""Alias for :class:`LoadedWorkflow`."""
