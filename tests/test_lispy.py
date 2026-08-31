@@ -44,6 +44,19 @@ scm_pys = (
     ("(x 1)", ["x", 1]),
     ('(x . "1.0 [m/s]")', ("x", '"1.0 [m/s]"')),
     ("(define x 1)", ["define", "x", 1]),
+    # A line nested within a multi-line buffer closes one string
+    # and opens another. This results in an even quote count for that specific
+    # line alone, but the cumulative buffer count remains odd.
+    #
+    # How the parser processes it line by line:
+    # Line 1: '("string1\n'           -> Buffer quotes: 1 (Odd)  -> Keeps reading
+    # Line 2: ' string2"\n "string3\n' -> Line quotes: 2 (Even)  -> Buffer quotes: 3 (Odd) -> Keeps reading
+    # Line 3: ' string4")'            -> Line quotes: 1 (Odd)   -> Buffer quotes: 4 (Even) -> Finishes string
+    (
+        '("string1\n string2"\n "string3\n string4")',
+        ['"string1\n string2"', '"string3\n string4"'],
+        '("string1\n string2" "string3\n string4")',
+    ),
 )
 
 extra_scm_pys = (
