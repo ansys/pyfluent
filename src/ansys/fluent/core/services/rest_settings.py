@@ -96,28 +96,6 @@ class RestSettings(BaseSettings):
         super().__init__(rest_client)
 
     @_trace
-    def create(
-        self, path: str, name: str, properties: dict[str, Any] | None = None
-    ) -> Any:
-        """Create a named object child for the given path.
-
-        Parameters
-        ----------
-        path : str
-            DataModel path where the object will be created.
-        name : str
-            Name for the created object.
-        properties : dict[str, Any], optional
-            Properties to set on creation. Defaults to None.
-
-        Returns
-        -------
-        Any
-            Server response containing details of the created object.
-        """
-        return self.service.create(path, name, properties)
-
-    @_trace
     def get_static_info(self) -> dict[str, Any]:
         """Get static-info for settings.
 
