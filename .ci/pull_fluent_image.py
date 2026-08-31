@@ -34,7 +34,6 @@ def pull_fluent_image():
                 time.sleep(2)
             else:
                 raise e
-    subprocess.run(["docker", "pull", full_image_name], check=True)
     subprocess.run(["docker", "image", "prune", "-f"], check=True)
 
 

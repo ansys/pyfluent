@@ -74,11 +74,13 @@ jobs:
       - name: Pull Fluent docker image
         run: make docker-pull
         env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run API codegen
         run: make api-codegen
         env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Print Fluent version info
@@ -99,6 +101,7 @@ jobs:
           make unittest-all-${VERSION}
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
         continue-on-error: true
 
