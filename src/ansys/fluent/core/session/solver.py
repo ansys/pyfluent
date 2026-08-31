@@ -48,7 +48,6 @@ from ansys.fluent.core.exceptions import (
 )
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session._shared import (

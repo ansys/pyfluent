@@ -31,8 +31,8 @@ from pytest import WarningsRecorder
 from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.exceptions import DeprecatedSettingWarning, PyFluentUserWarning
-from ansys.fluent.core.session_http_solver import HttpSolver
 from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.session_http_solver import HttpSolver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
@@ -874,8 +874,6 @@ def test_runtime_python_classes(
 
 @pytest.mark.fluent_version(">=26.1")
 def test_setting_string_constants(mixing_elbow_settings_session):
-    from ansys.fluent.core.solver import Viscous
-
     solver = mixing_elbow_settings_session
     viscous = Viscous(solver)
 
@@ -900,8 +898,6 @@ def test_setting_string_constants(mixing_elbow_settings_session):
 
 
 def test_named_object_commands(mixing_elbow_settings_session):
-    from ansys.fluent.core.solver import VelocityInlets
-
     solver = mixing_elbow_settings_session
     inlets = VelocityInlets(solver)
     inlets.list()
