@@ -68,10 +68,9 @@ class MeshingWorkflow(Workflow):
         initialize: bool
             Flag to initialize the workflow, defaults to True.
         """
-        self._meshing = session.meshing
         super().__init__(
-            workflow=_make_datamodel_module(self, "workflow"),
-            command_source=self._meshing,
+            workflow=_make_datamodel_module(session, "workflow"),
+            command_source=session.meshing,
             fluent_version=session.get_fluent_version(),
         )
         self._name = workflow_type
@@ -82,6 +81,7 @@ class MeshingWorkflow(Workflow):
         else:
             self._activate_dynamic_interface(dynamic_interface=True)
         self._initialized = True
+        self._meshing = session.meshing
 
     if not TYPE_CHECKING:
 
@@ -260,10 +260,9 @@ class LoadedWorkflow(Workflow):
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
         """
-        self._meshing = session.meshing
         super().__init__(
-            workflow=_make_datamodel_module(self, "workflow"),
-            command_source=self._meshing,
+            workflow=_make_datamodel_module(session, "workflow"),
+            command_source=session.meshing,
             fluent_version=session.get_fluent_version(),
         )
         self._unsubscribe_root_affected_callback()
@@ -291,10 +290,9 @@ class CreatedWorkflow(Workflow):
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
         """
-        self._meshing = session.meshing
         super().__init__(
-            workflow=_make_datamodel_module(self, "workflow"),
-            command_source=self._meshing,
+            workflow=_make_datamodel_module(session, "workflow"),
+            command_source=session.meshing,
             fluent_version=session.get_fluent_version(),
         )
         self._unsubscribe_root_affected_callback()
