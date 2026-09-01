@@ -120,13 +120,22 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
 
 
 class WatertightMeshing:
-    """Provides watertight meshing specialization of the workflow wrapper."""
+    """Provides watertight meshing specialization of the workflow wrapper.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session.
+    initialize : bool, optional
+        Flag to initialize the workflow, defaults to True.
+        Set this to False if you are connecting to an existing meshing session which
+        has been initialized and want to avoid re-initializing the workflow.
+    """
 
     def __new__(
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-        legacy: bool | None = None,
     ) -> None:
         """Initialize WatertightMeshing.
 
@@ -134,18 +143,13 @@ class WatertightMeshing:
         ----------
         session : PureMeshing | Meshing
             The meshing session.
-        initialize: bool, optional
+        initialize : bool, optional
             Flag to initialize the workflow, defaults to True.
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
         """
         _validate_meshing_session(session)
-        legacy = _fallback_check(session, legacy)
+        legacy = _fallback_check(session, session._legacy)
         if legacy:
             from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
         else:
@@ -157,13 +161,22 @@ class WatertightMeshing:
 
 
 class FaultTolerantMeshing:
-    """Provides fault tolerant meshing specialization of the workflow wrapper."""
+    """Provides fault tolerant meshing specialization of the workflow wrapper.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session.
+    initialize: bool, optional
+        Flag to initialize the workflow, defaults to True.
+        Set this to False if you are connecting to an existing meshing session which
+        has been initialized and want to avoid re-initializing the workflow.
+    """
 
     def __new__(
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-        legacy: bool | None = None,
     ) -> None:
         """Initialize FaultTolerantMeshing.
 
@@ -175,14 +188,9 @@ class FaultTolerantMeshing:
             Flag to initialize the workflow, defaults to True.
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
         """
         _validate_meshing_session(session)
-        legacy = _fallback_check(session, legacy)
+        legacy = _fallback_check(session, session._legacy)
         if legacy:
             from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
         else:
@@ -194,13 +202,22 @@ class FaultTolerantMeshing:
 
 
 class TwoDimensionalMeshing:
-    """Provides 2D meshing specialization of the workflow wrapper."""
+    """Provides 2D meshing specialization of the workflow wrapper.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session.
+    initialize: bool, optional
+        Flag to initialize the workflow, defaults to True.
+        Set this to False if you are connecting to an existing meshing session which
+        has been initialized and want to avoid re-initializing the workflow.
+    """
 
     def __new__(
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-        legacy: bool | None = None,
     ) -> None:
         """Initialize TwoDimensionalMeshing.
 
@@ -212,14 +229,9 @@ class TwoDimensionalMeshing:
             Flag to initialize the workflow, defaults to True.
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
         """
         _validate_meshing_session(session)
-        legacy = _fallback_check(session, legacy)
+        legacy = _fallback_check(session, session._legacy)
         if legacy:
             from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
         else:
@@ -231,13 +243,22 @@ class TwoDimensionalMeshing:
 
 
 class TopologyBasedMeshing:
-    """Provides topology based meshing specialization of the workflow wrapper."""
+    """Provides topology based meshing specialization of the workflow wrapper.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session.
+    initialize: bool, optional
+        Flag to initialize the workflow, defaults to True.
+        Set this to False if you are connecting to an existing meshing session which
+        has been initialized and want to avoid re-initializing the workflow.
+    """
 
     def __new__(
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-        legacy: bool | None = None,
     ) -> None:
         """Initialize TopologyBasedMeshing.
 
@@ -249,14 +270,9 @@ class TopologyBasedMeshing:
             Flag to initialize the workflow, defaults to True.
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
         """
         _validate_meshing_session(session)
-        legacy = _fallback_check(session, legacy)
+        legacy = _fallback_check(session, session._legacy)
         if legacy:
             from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
         else:
@@ -268,13 +284,22 @@ class TopologyBasedMeshing:
 
 
 class CreateMeshingWorkflow:
-    """Provides a specialization of the workflow wrapper for a newly created workflow."""
+    """Provides a specialization of the workflow wrapper for a newly created workflow.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session.
+    initialize: bool, optional
+        Flag to initialize the workflow, defaults to True.
+        Set this to False if you are connecting to an existing meshing session which
+        has been initialized and want to avoid re-initializing the workflow.
+    """
 
     def __new__(
         cls,
         session: PureMeshing | Meshing,
         initialize: bool = True,
-        legacy: bool | None = None,
     ) -> None:
         """Initialize CreateMeshingWorkflow.
 
@@ -286,14 +311,9 @@ class CreateMeshingWorkflow:
             Flag to initialize the workflow, defaults to True.
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
         """
         _validate_meshing_session(session)
-        legacy = _fallback_check(session, legacy)
+        legacy = _fallback_check(session, session._legacy)
         if legacy:
             from ansys.fluent.core.meshing.meshing_workflow_old import CreatedWorkflow
         else:
@@ -305,14 +325,25 @@ class CreateMeshingWorkflow:
 
 
 class LoadMeshingWorkflow:
-    """Provides a specialization of the workflow wrapper for a loaded workflow."""
+    """Provides a specialization of the workflow wrapper for a loaded workflow.
+
+    Parameters
+    ----------
+    session : PureMeshing | Meshing
+        The meshing session.
+    file_path : str
+        The path to the saved workflow file.
+    initialize: bool, optional
+        Flag to initialize the workflow, defaults to True.
+        Set this to False if you are connecting to an existing meshing session which
+        has been initialized and want to avoid re-initializing the workflow.
+    """
 
     def __new__(
         cls,
         session: PureMeshing | Meshing,
         file_path: str,
         initialize: bool = True,
-        legacy: bool | None = None,
     ) -> None:
         """Initialize LoadMeshingWorkflow.
 
@@ -326,14 +357,9 @@ class LoadMeshingWorkflow:
             Flag to initialize the workflow, defaults to True.
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
-        legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
         """
         _validate_meshing_session(session)
-        legacy = _fallback_check(session, legacy)
+        legacy = _fallback_check(session, session._legacy)
         if legacy:
             from ansys.fluent.core.meshing.meshing_workflow_old import LoadedWorkflow
         else:

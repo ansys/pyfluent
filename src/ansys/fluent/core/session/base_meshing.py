@@ -154,6 +154,7 @@ class BaseMeshing(BaseSession):
         self._preferences = None
         self._product_version = None
         self._current_workflow = None
+        self._legacy: bool | None = None
 
         self.datamodel_streams = {}
         if self._datamodel_service_se._cache is not None:
@@ -259,10 +260,10 @@ class BaseMeshing(BaseSession):
         """
         from ansys.fluent.core.meshing import WatertightMeshing
 
+        self._legacy = legacy
         self._current_workflow = WatertightMeshing(
             self,
             initialize,
-            legacy,
         )
         return self._current_workflow
 
@@ -287,10 +288,10 @@ class BaseMeshing(BaseSession):
         """
         from ansys.fluent.core.meshing import FaultTolerantMeshing
 
+        self._legacy = legacy
         self._current_workflow = FaultTolerantMeshing(
             self,
             initialize,
-            legacy,
         )
         return self._current_workflow
 
@@ -315,10 +316,10 @@ class BaseMeshing(BaseSession):
         """
         from ansys.fluent.core.meshing import TwoDimensionalMeshing
 
+        self._legacy = legacy
         self._current_workflow = TwoDimensionalMeshing(
             self,
             initialize,
-            legacy,
         )
         return self._current_workflow
 
@@ -343,10 +344,10 @@ class BaseMeshing(BaseSession):
         """
         from ansys.fluent.core.meshing import TopologyBasedMeshing
 
+        self._legacy = legacy
         self._current_workflow = TopologyBasedMeshing(
             self,
             initialize,
-            legacy,
         )
         return self._current_workflow
 
@@ -379,11 +380,11 @@ class BaseMeshing(BaseSession):
         """
         from ansys.fluent.core.meshing import LoadMeshingWorkflow
 
+        self._legacy = legacy
         self._current_workflow = LoadMeshingWorkflow(
             self,
             os.fspath(file_path),
             initialize,
-            legacy,
         )
         return self._current_workflow
 
@@ -412,10 +413,10 @@ class BaseMeshing(BaseSession):
         """
         from ansys.fluent.core.meshing import CreateMeshingWorkflow
 
+        self._legacy = legacy
         self._current_workflow = CreateMeshingWorkflow(
             self,
             initialize,
-            legacy,
         )
         return self._current_workflow
 
