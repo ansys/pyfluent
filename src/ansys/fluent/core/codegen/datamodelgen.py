@@ -41,6 +41,7 @@ from ansys.fluent.core.services.object_model import (
     PyArgumentsSingletonSubItem,
     arg_class_by_type,
 )
+from ansys.fluent.core.solver.flobject import to_constant_name
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -495,7 +496,8 @@ class DataModelGenerator:
         for parameter_name in parameters:
             parameter_info = info["parameters"][parameter_name]
             parameter_type = parameter_info["type"]
-            if parameter_type in {"String", "String List", "ListString"}:
+            is_textual = parameter_type in {"String", "String List", "ListString"}
+            if is_textual:
                 f.write(f"{indent}    class {parameter_name}(PyTextual):\n")
             elif parameter_type in {"Integer", "Int", "Real"}:
                 f.write(f"{indent}    class {parameter_name}(PyNumerical):\n")
@@ -511,7 +513,34 @@ class DataModelGenerator:
             for line in parameter_doc.splitlines():
                 f.write(f"{indent}        {escape_wildcards(line)}\n")
             f.write(f'{indent}        """\n')
-            f.write(f"{indent}        pass\n\n")
+            # allowedValues lives under 'attrs' as a Variant proto message.
+            # After MessageToDict serialization it becomes:
+            #   attrs["allowedValues"] = {"stringVectorState": {"items": [...]}}  (v1)
+            #   attrs["allowedValues"] = {"stringVectorState": {"item": [...]}}   (v0)
+            # Mirror _get_api_help_text which already unwraps the Variant for
+            # api_help_text.  Fall back to a plain list at the top level of
+            # parameter_info for any older server / test static infos.
+            allowed_values = None
+            if is_textual:
+                attrs = parameter_info.get("attrs") or {}
+                av_variant = attrs.get("allowedValues")
+                if av_variant:
+                    sv = av_variant.get("stringVectorState") or {}
+                    # v1 proto field is 'items'; v0 proto field is 'item'
+                    allowed_values = sv.get("items") or sv.get("item")
+                if not allowed_values:
+                    raw = parameter_info.get("allowedValues")
+                    if isinstance(raw, list):
+                        allowed_values = raw
+            if allowed_values:
+                for val in allowed_values:
+                    f.write(
+                        f"{indent}        {to_constant_name(val)} = _PyTextualConstant({val!r})\n"
+                    )
+                f.write(f"{indent}        _allowed_values = {allowed_values!r}\n")
+                f.write("\n")
+            else:
+                f.write(f"{indent}        pass\n\n")
             api_tree[parameter_name] = "Parameter"
 
     def _write_meshing_utilities_stub(
@@ -653,7 +682,8 @@ class DataModelGenerator:
                 f.write("    PyArgumentsNumericalSubItem,\n")
                 f.write("    PyArgumentsDictionarySubItem,\n")
                 f.write("    PyArgumentsParameterSubItem,\n")
-                f.write("    PyArgumentsSingletonSubItem\n")
+                f.write("    PyArgumentsSingletonSubItem,\n")
+                f.write("    _PyTextualConstant\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)

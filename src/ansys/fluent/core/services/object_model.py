@@ -929,6 +929,54 @@ class PyTextual(PyParameter):
         return self.get_attr(Attribute.ALLOWED_VALUES.value)
 
 
+class _PyTextualString(str):
+    """A string subclass with an ``is_active()`` method for PyTextual constants.
+
+    Mirrors :class:`~ansys.fluent.core.solver.flobject._MaybeActiveString` in
+    the settings API so that enum-like constants on generated datamodel classes
+    behave the same way.
+    """
+
+    def __new__(cls, value, is_active: Callable[[], bool]):
+        return super().__new__(cls, value)
+
+    def __init__(self, value, is_active: Callable[[], bool]):
+        super().__init__()
+        self.is_active = is_active
+
+
+class _PyTextualConstant:
+    """A descriptor class to hold a constant string value for PyTextual parameters.
+
+    Used in generated datamodel classes (e.g. ``meshing_workflow``) to expose
+    enum-like constants on :class:`PyTextual` parameters that carry a fixed set
+    of allowed values in the server schema.  Mirrors
+    :class:`~ansys.fluent.core.solver.flobject._FlStringConstant` in the
+    settings API.
+
+    Parameters
+    ----------
+    value : str
+        The constant string value (e.g. ``'m'``, ``'hdf5'``).
+    """
+
+    def __init__(self, value: str):
+        self._value = value
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self._value
+
+        def is_active() -> bool:
+            avs = instance.allowed_values()
+            return avs is not None and self._value in avs
+
+        return _PyTextualString(self._value, is_active=is_active)
+
+    def __set__(self, instance, value):
+        raise AttributeError("Cannot set a constant value.")
+
+
 class PyNumerical(PyParameter):
     """Provides interface for numerical parameters."""
 
