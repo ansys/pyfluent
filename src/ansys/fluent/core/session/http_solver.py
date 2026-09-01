@@ -30,7 +30,7 @@ completely independent of the gRPC infrastructure (``BaseSession``,
 
 Usage::
 
-    >>> from ansys.fluent.core.session_http_solver import HttpSolver
+    >>> from ansys.fluent.core.session.http_solver import HttpSolver
     >>> from ansys.fluent.core.rest.client import FluentRestClient
     >>>
     >>> client = FluentRestClient.connect(
@@ -39,8 +39,6 @@ Usage::
     >>> solver = HttpSolver(client)
     >>> solver.settings.setup.models.energy.enabled()
 """
-
-from typing import Any
 
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.services.rest_settings import RestSettings
@@ -53,7 +51,7 @@ _DEFAULT_VERSION = "271"
 class HttpSolver:
     """Standalone solver session backed by the Fluent REST API.
 
-    Unlike the gRPC-based :class:`~ansys.fluent.core.session_solver.Solver`,
+    Unlike the gRPC-based :class:`~ansys.fluent.core.session.solver.Solver`,
     this class has **no** dependency on ``BaseSession``, ``FluentConnection``,
     or any gRPC service.  Settings classes are built at runtime from
     ``get_static_info()`` — no generated settings module is required.
@@ -89,3 +87,20 @@ class HttpSolver:
     def is_active(self) -> bool:
         """Whether the REST connection is still usable."""
         return self._rest_client is not None
+
+    def exit(self) -> None:
+        """Release the REST connection.
+
+        Only client-side state is dropped; the Fluent server itself keeps
+        running. This mirrors :meth:`BaseSession.exit` closely enough for
+        fixture/context-manager teardown; moving it into a finalizer (as
+        ``BaseSession`` does) is left for the inheritance refactor.
+        """
+        self._rest_client = None
+        self._settings = None
+
+    def __enter__(self) -> "HttpSolver":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        self.exit()

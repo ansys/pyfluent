@@ -113,24 +113,18 @@ class RestSettings(BaseSettings):
         return _normalize_static_info_keys(self.service.get_static_info(full=True))
 
     @_trace
-    def is_interactive_mode(self) -> bool:
-        """Checks whether commands can be executed interactively.
-
-        Returns
-        ------
-        bool
-            Always False for REST transport (REST is stateless and non-interactive).
-        """
-        return False
-
-    @_trace
     def is_wildcard(self, input: str | None = None) -> bool:
-        """Check whether a name contains fnmatch wildcard characters (*, ?, [, ])."""
+        """Check whether a name contains a wildcard pattern.
+
+        ``AbstractSettings`` requires this, but the REST API exposes no
+        equivalent of the gRPC ``Settings.IsWildcard`` endpoint, so the
+        fnmatch metacharacters are matched client-side instead.
+        """
         if input is None:
             return False
         return any(c in input for c in "*?[]")
 
     @_trace
     def has_wildcard(self, name: str) -> bool:
-        """Check whether a name contains fnmatch wildcard characters (*, ?, [, ])."""
+        """Check whether a name has a wildcard pattern."""
         return self.is_wildcard(name)

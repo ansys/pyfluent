@@ -48,7 +48,6 @@ from ansys.fluent.core.exceptions import (
 )
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session._shared import (
     _make_datamodel_module,
@@ -77,7 +76,7 @@ if TYPE_CHECKING:
     )
     import ansys.fluent.core.generated.solver.settings_261 as settings_root
     from ansys.fluent.core.generated.solver.tui_261 import main_menu
-    from ansys.fluent.core.session_http_solver import HttpSolver
+    from ansys.fluent.core.session.http_solver import HttpSolver
 
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -182,7 +181,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     ) -> "HttpSolver":
         """Create a solver session connected via REST (HTTP) transport.
 
-        Returns an :class:`~ansys.fluent.core.session_http_solver.HttpSolver`
+        Returns an :class:`~ansys.fluent.core.session.http_solver.HttpSolver`
         instance - a standalone REST-backed session that is independent of the
         gRPC infrastructure.
 
@@ -207,7 +206,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         >>> solver.settings.setup.models.energy.enabled()
         """
         from ansys.fluent.core.rest.client import FluentRestClient
-        from ansys.fluent.core.session_http_solver import HttpSolver
+        from ansys.fluent.core.session.http_solver import HttpSolver
 
         rest_client = FluentRestClient.connect(
             url=url,
