@@ -39,7 +39,11 @@ def clean_docker_data():
         ]
     ).decode()
     for line in images_output.splitlines():
-        image, image_sha = line.strip().split()
+        parts = line.strip().split(maxsplit=1)
+        if not parts:
+            continue
+        image = parts[0]
+        image_sha = parts[1] if len(parts) > 1 else ""
         if image not in images_to_retain and image_sha != dev_image_sha:
             subprocess.run(["docker", "rmi", "-f", image], check=True)
 
