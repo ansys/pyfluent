@@ -28,7 +28,7 @@ from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples
-from ansys.fluent.core.workflow import camel_to_snake_case
+from ansys.fluent.core.workflow_old import camel_to_snake_case
 
 
 @pytest.mark.nightly
