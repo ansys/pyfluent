@@ -34,18 +34,17 @@ def clean_docker_data():
             "docker",
             "images",
             "--format",
-            "{{.Repository}}:{{.Tag}} {{.Digest}}",
+            "{{.Repository}}:{{.Tag}}\t{{.Digest}}\t{{.ID}}",
             "--no-trunc",
         ]
     ).decode()
     for line in images_output.splitlines():
-        parts = line.strip().split(maxsplit=1)
-        if not parts:
+        image, image_sha, image_id = line.split("\t")
+        if not image:
             continue
-        image = parts[0]
-        image_sha = parts[1] if len(parts) > 1 else ""
         if image not in images_to_retain and image_sha != dev_image_sha:
-            subprocess.run(["docker", "rmi", "-f", image], check=True)
+            image_reference = image_id if image.endswith(":<none>") else image
+            subprocess.run(["docker", "rmi", "-f", image_reference], check=True)
 
     # Remove everything else (networks, volumes)
     subprocess.run(["docker", "system", "prune", "-f", "--volumes"], check=True)
