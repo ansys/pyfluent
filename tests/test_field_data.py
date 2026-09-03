@@ -870,7 +870,7 @@ def test_allowed_surface_ids_warngs_on_missing_surface_id_key() -> None:
             return {"bad-surface": {"no_surface_id_key": []}}
 
     allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
-    with pytest.warns(Warning, match="invalid surface id"):
+    with pytest.warns(Warning, match="retrieve surface id"):
         allowed()
 
 
@@ -883,5 +883,5 @@ def test_surface_ids_validate_raises_on_bad_surface_info() -> None:
 
     allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
     validator = _SurfaceIds(allowed)
-    with pytest.warns(Warning, match="invalid surface id"):
+    with pytest.warns(Warning, match="not a valid surface id"):
         validator.validate([1])
