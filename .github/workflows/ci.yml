@@ -482,7 +482,7 @@ jobs:
 
       - name: Check package
         run: |
-          pip install twine
+          pip install 'twine<6.2.0'
           twine check dist/*
 
       - name: Upload package
