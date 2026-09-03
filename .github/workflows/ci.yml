@@ -482,7 +482,7 @@ jobs:
 
       - name: Check package
         run: |
-          pip install twine
+          pip install 'twine>=7.0.0' 'packaging>=26.1'
           twine check dist/*
 
       - name: Upload package
@@ -781,7 +781,7 @@ jobs:
 
       - name: Upload to Private PyPi
         run: |
-          pip install 'twine<6.2.0'
+          pip install 'twine>=7.0.0' 'packaging>=26.1'
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
