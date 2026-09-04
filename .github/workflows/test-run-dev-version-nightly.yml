@@ -2,7 +2,7 @@ name: Test Run Dev Version Nightly
 
 on:
   schedule: # UTC at 0300
-    - cron: "0 3 * * *"
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -22,7 +22,6 @@ env:
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYTHON_VERSION: "3.12"
-  FLUENT_IMAGE_TAG: v27.1.latest
   FLUENT_VERSION: 271
 
 jobs:
@@ -66,7 +65,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -75,19 +74,18 @@ jobs:
       - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Print Fluent version info
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
-          python -c "from ansys.fluent.core.generated.solver.settings_${VERSION} import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -101,17 +99,8 @@ jobs:
           make unittest-all-${VERSION}
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
-          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
         continue-on-error: true
-
-      - name: Update Fluent image
-        env:
-          GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
-          IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
-        if: github.ref == 'refs/heads/main' && steps.unittest.outcome == 'success'
-        run: |
-          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${IMAGE_TAG} | sed 's/.*@//')
-          gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
       - name: Clean Docker Data
         run: make docker-clean-all-except-supported-images

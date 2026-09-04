@@ -608,6 +608,199 @@ def test_attrs():
         r.g_1.s_4.get_attr("allowed-values")
 
 
+def test_get_cls_base_resolution_and_fallback(caplog):
+    cls, _ = flobject.get_cls("create", {"type": "command"}, version="271")
+    assert issubclass(cls, flobject.CommandWithPositionalArgs)
+
+    with caplog.at_level("WARNING", logger="pyfluent.settings_api"):
+        fallback_cls, _ = flobject.get_cls(
+            "unknown", {"type": "unknown-type"}, version="271"
+        )
+    assert issubclass(fallback_cls, flobject.String)
+    assert "Falling back to String." in caplog.text
+
+
+def test_get_cls_named_object_mixins_and_command_filtering():
+    creatable_info = {
+        "type": "named-object",
+        "user_creatable": True,
+        "object_type": {"type": "group"},
+        "commands": {
+            "create": {"type": "command"},
+            "delete": {"type": "command"},
+            "exit": {"type": "command"},
+        },
+    }
+
+    cls_old, _ = flobject.get_cls("n-1", creatable_info, version="242")
+    assert issubclass(cls_old, flobject.CreatableNamedObjectMixinOld)
+    assert any(name.startswith("create") for name in cls_old.command_names)
+    assert "exit" not in cls_old.command_names
+
+    cls_new, _ = flobject.get_cls("n-1", creatable_info, version="251")
+    assert issubclass(cls_new, flobject.CreatableNamedObjectMixin)
+    assert "create" in cls_new.command_names
+    assert "exit" not in cls_new.command_names
+
+    non_creatable_info = {
+        "type": "named-object",
+        "user_creatable": False,
+        "object_type": {"type": "group"},
+        "commands": {
+            "create": {"type": "command"},
+            "delete": {"type": "command"},
+            "exit": {"type": "command"},
+        },
+    }
+    cls_non_creatable, _ = flobject.get_cls("n-1", non_creatable_info, version="271")
+    assert issubclass(cls_non_creatable, flobject._NonCreatableNamedObjectMixin)
+    assert "create" not in cls_non_creatable.command_names
+    assert "delete" in cls_non_creatable.command_names
+    assert "exit" not in cls_non_creatable.command_names
+
+
+def test_get_cls_aliases_allowed_values_and_deprecation_metadata():
+    info = {
+        "type": "string",
+        "deprecated_version": "22.2",
+        "has_migration_adapter": True,
+        "child_aliases": {"legacy-name": "new-name"},
+        "command_aliases": {"legacy-cmd": "../new-cmd"},
+        "allowed_values": ["yes", "1st choice", ""],
+    }
+    cls, _ = flobject.get_cls("node", info, version="271")
+
+    assert cls._deprecated_version == "22.2"
+    assert cls._has_migration_adapter is True
+    assert cls._allowed_values == ["yes", "1st choice", ""]
+
+    assert "legacy_name" in cls._child_aliases
+    assert cls._child_aliases["legacy_name"] == ("new_name", "legacy-name")
+    assert "legacy_cmd" in cls._child_aliases
+    assert cls._child_aliases["legacy_cmd"] == ("../new_cmd", "legacy-cmd")
+
+    assert str(getattr(cls, "YES")) == "yes"
+    assert str(getattr(cls, "CASE_1ST_CHOICE")) == "1st choice"
+    assert str(getattr(cls, "EMPTY_STRING")) == ""
+
+    cls_not_deprecated, _ = flobject.get_cls(
+        "node", {"type": "real", "deprecated_version": "22.1"}, version="271"
+    )
+    assert cls_not_deprecated._deprecated_version == ""
+
+
+def test_get_cls_list_command_name_handling_by_version():
+    info = {
+        "type": "named-object",
+        "user_creatable": True,
+        "object_type": {"type": "group"},
+        "commands": {
+            "list": {"type": "command"},
+            "list-properties": {"type": "command"},
+        },
+    }
+
+    cls_251, _ = flobject.get_cls("n-1", info, version="251")
+    assert "list" not in cls_251.command_names
+    assert "list_properties" not in cls_251.command_names
+    assert any(name.startswith("list") for name in cls_251.command_names)
+
+    cls_261, _ = flobject.get_cls("n-1", info, version="261")
+    assert "list" in cls_261.command_names
+    assert "list_properties" in cls_261.command_names
+
+
+def test_get_cls_argument_docstring_uses_real_newlines():
+    cls, _ = flobject.get_cls(
+        "do-work",
+        {
+            "type": "command",
+            "arguments": {
+                "arg-1": {"type": "real", "help": "first argument"},
+            },
+        },
+        version="271",
+    )
+
+    assert "Parameters\n----------\n" in cls.__doc__
+    assert "arg_1 : real\n" in cls.__doc__
+    assert "\\n" not in cls.__doc__
+
+
+def test_create_generated_class_returns_context():
+    cls, parent_attr_name, taboo, user_creatable = flobject._create_generated_class(
+        "",
+        {"type": "group", "help": "root"},
+        parent=None,
+        version="271",
+        parent_taboo=None,
+    )
+
+    assert cls.__name__ == "root"
+    assert parent_attr_name == "root"
+    assert user_creatable is False
+    assert cls.exposure_level == ExposureLevel.STABLE
+    assert "command_names" in taboo
+
+
+def test_set_generated_return_type_helper():
+    legacy_cls = type("legacy", (), {})
+    flobject._set_generated_return_type(legacy_cls, {"return_type": "real"}, "")
+    assert legacy_cls.return_type == "object"
+
+    current_cls = type("current", (), {})
+    flobject._set_generated_return_type(current_cls, {"return_type": "real"}, "271")
+    assert current_cls.return_type == "real"
+
+    no_return_cls = type("no_return", (), {})
+    flobject._set_generated_return_type(no_return_cls, {}, "271")
+    assert not hasattr(no_return_cls, "return_type")
+
+
+def test_set_generated_child_object_type_helper():
+    parent_cls = type(
+        "parent",
+        (),
+        {"exposure_level": ExposureLevel.STABLE, "fluent_name": "parent"},
+    )
+    flobject._set_generated_child_object_type(
+        parent_cls,
+        {"object_type": {"type": "group"}},
+        "271",
+    )
+
+    assert issubclass(parent_cls.child_object_type, flobject.Group)
+    child = parent_cls.child_object_type("child-name")
+    assert child.get_name() == "child-name"
+
+
+def test_register_generated_commands_section_filters_exit_and_create():
+    cls = type(
+        "test_parent",
+        (),
+        {"_child_classes": {}, "exposure_level": ExposureLevel.STABLE},
+    )
+    info = {
+        "commands": {
+            "create": {"type": "command"},
+            "delete": {"type": "command"},
+            "exit": {"type": "command"},
+        }
+    }
+
+    flobject._register_generated_commands_section(
+        cls,
+        info,
+        taboo=set(),
+        version="271",
+        user_creatable=False,
+    )
+
+    assert "delete" in cls.command_names
+    assert "create" not in cls.command_names
+    assert "exit" not in cls.command_names
+
+
 def test_exposure_level_filtering(monkeypatch):
     """Test that beta/alpha objects are hidden by default and revealed by activation."""
     from ansys.fluent.core.module_config import config
@@ -1923,3 +2116,43 @@ def test_list_and_list_properties(new_solver_session):
         assert {"list", "list_properties"}.issubset(
             solver.settings.setup.materials.mixture.command_names
         )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_get_active_command_names_in_named_objects(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case_data(file_name=case_path)
+    active_command_names = (
+        solver.settings.results.graphics.contour.get_active_command_names()
+    )
+    assert {"create", "delete", "make_a_copy", "display", "add_to_graphics"}.issubset(
+        set(active_command_names)
+    )
+    all_command_names = solver.settings.results.graphics.contour.command_names
+    assert {
+        "create",
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "add_to_graphics",
+    }.issubset(set(all_command_names))
+
+    solver.settings.results.graphics.contour.create("c-1")
+    active_command_names = (
+        solver.settings.results.graphics.contour.get_active_command_names()
+    )
+    assert {
+        "create",
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "add_to_graphics",
+    }.issubset(set(active_command_names))

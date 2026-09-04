@@ -21,1772 +21,1263 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Workflow module that wraps and extends the core functionality."""
+"""Workflow module that wraps and extends the core functionality.
+
+This module provides a high-level, Pythonic interface for working with Ansys Fluent
+workflows. It wraps the underlying datamodel service layer to provide intuitive
+navigation, task management, and workflow operations.
+
+The main classes are:
+
+- **Workflow**: Top-level workflow container that manages tasks and provides
+  navigation between them.
+- **TaskObject**: Individual task wrapper that provides access to task properties,
+  arguments, execution, and navigation to sibling/child tasks.
+
+
+Notes
+-----
+This module is designed for Fluent 26R1 and later versions. Some features may not
+be available in earlier versions.
+
+The workflow system provides both imperative and declarative approaches to building
+simulation workflows, with automatic dependency management and validation.
+"""
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator
-from contextlib import suppress
-import logging
+from collections import OrderedDict
+from functools import wraps
+import inspect
 import re
-import threading
-from typing import Any
-import warnings
+from typing import ValuesView
 
-from ansys.fluent.core.pyfluent_warnings import (
-    PyFluentDeprecationWarning,
-)
-from ansys.fluent.core.services.object_model import (
-    PyArgumentsSingletonSubItem,
-    PyCallableStateObject,
-    PyCommand,
-    PyMenu,
-)
-from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
+from ansys.fluent.core.services.object_model import PyMenu
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-class CommandInstanceCreationError(RuntimeError):
-    """Raised when an attempt to create an instance of a task command fails."""
+def _get_task_type_name(task_obj: PyMenu) -> str:
+    """Extract the task type name from a task object's class name.
 
-    def __init__(self, task_name):
-        """Initialize CommandInstanceCreationError."""
-        super().__init__(f"Could not create command instance for task {task_name}.")
+    The datamodel generates task classes with leading underscores (e.g., "_import_geometry").
+    This function strips the leading underscore to get the clean task type name.
 
+    Parameters
+    ----------
+    task_obj : PyMenu
+        The task datamodel object.
 
-def camel_to_snake_case(camel_case_str: str) -> str:
-    """Convert camel case input string to snake case output string."""
-    try:
-        return camel_to_snake_case.cache[camel_case_str]
-    except KeyError:
-        if not camel_case_str.islower():
-            _snake_case_str = (
-                re.sub(
-                    "((?<=[a-z])[A-Z0-9]|(?!^)[A-Z](?=[a-z0-9]))",
-                    r"_\1",
-                    camel_case_str,
-                )
-                .lower()
-                .replace("__", "_")
-            )
-        else:
-            _snake_case_str = camel_case_str
-        camel_to_snake_case.cache[camel_case_str] = _snake_case_str
-        return _snake_case_str
-
-
-camel_to_snake_case.cache = {}
-
-
-def snake_to_camel_case(snake_case_str: str, camel_case_strs: Iterable):
-    """Populate the snake-case attribute map and return camel case of the passed
-    attribute."""
-    try:
-        return snake_to_camel_case.cache[snake_case_str]
-    except KeyError:
-        if snake_case_str.islower():
-            for camel_case_str in camel_case_strs:
-                _snake_case_str = camel_to_snake_case(camel_case_str)
-                if _snake_case_str not in snake_to_camel_case.cache:
-                    snake_to_camel_case.cache[_snake_case_str] = camel_case_str
-                if _snake_case_str == snake_case_str:
-                    return camel_case_str
-
-
-snake_to_camel_case.cache = {}
-
-
-logger = logging.getLogger("pyfluent.datamodel")
-
-
-def _new_command_for_task(task, session):
-    task_cmd_name = task.CommandName()
-    cmd_creator = getattr(session, task_cmd_name)
-    if cmd_creator:
-        new_cmd = cmd_creator.create_instance()
-        if new_cmd:
-            return new_cmd
-    raise CommandInstanceCreationError(task._name_())
-
-
-def _init_task_accessors(obj):
-    logger.debug("_init_task_accessors")
-    logger.debug(f"thread ID in _init_task_accessors {threading.get_ident()}")
-    for task in obj.tasks(recompute=True):
-        py_name = task.python_name()
-        logger.debug(f"py_name: {py_name}")
-        with obj._lock:
-            obj._python_task_names.append(py_name)
-        if py_name not in obj._task_objects:
-            logger.debug(f"adding {py_name} {type(task)}")
-            obj._task_objects[py_name] = task
-        else:
-            logger.debug(
-                f"Could not add task {py_name} {type(getattr(obj, py_name, None))}"
-            )
-        _init_task_accessors(task)
-
-
-def _refresh_task_accessors(obj):
-    logger.debug(f"thread ID in _refresh_task_accessors {threading.get_ident()}")
-    with obj._lock:
-        old_task_names = set(obj._python_task_names)
-    logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
-    tasks = obj.tasks(recompute=True)
-    current_task_names = [task.python_name() for task in tasks]
-    logger.debug(f"current_task_names: {current_task_names}")
-    current_task_name_set = set(current_task_names)
-    created_task_names = current_task_name_set - old_task_names
-    deleted_task_names = old_task_names - current_task_name_set
-    for task_name in deleted_task_names:
-        try:
-            del obj._task_objects[task_name]
-        except KeyError:
-            pass
-    for task_name in created_task_names:
-        if task_name not in obj._task_objects:
-            logger.debug(f"Add task {task_name}")
-            obj._task_objects[task_name] = tasks[current_task_names.index(task_name)]
-        else:
-            logger.debug(
-                f"Could not add task {task_name} {type(getattr(obj, task_name, None))}"
-            )
-    with obj._lock:
-        obj._python_task_names = current_task_names
-        logger.debug(f"updated_task_names: {obj._python_task_names}")
-    for task in tasks:
-        logger.debug(f"next task {task.python_name()} {id(task)}")
-        _refresh_task_accessors(task)
-
-
-def _call_refresh_task_accessors(obj):
-    """This layer handles exception for PyConsole."""
-    # Use suppress to ignore exceptions during task accessor refresh without triggering B110
-    with suppress(Exception):
-        _refresh_task_accessors(obj)
-
-
-def _convert_task_list_to_display_names(workflow_root, task_list):
-    if workflow_root.service._cache is not None:
-        workflow_state = workflow_root.service._cache.get_state(
-            "workflow", workflow_root
-        )
-        return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
-    else:
-        _display_names = []
-        for _task_name in task_list:
-            name_obj = PyMenu(
-                service=workflow_root.service,
-                rules=workflow_root.rules,
-                path=[("TaskObject", _task_name), ("_name_", "")],
-            )
-            _display_names.append(name_obj())
-        return _display_names
-
-
-class BaseTask:
-    """Base class Task representation for wrapping a Workflow TaskObject instance,
-    adding methods to discover more about the relationships between TaskObjects.
-
-    Methods
+    Returns
     -------
-    get_direct_upstream_tasks()
-    get_direct_downstream_tasks()
-    tasks()
-    inactive_tasks()
-    get_id()
-    get_idx()
-    __getattr__(attr)
-    __setattr__(attr, value)
-    __dir__()
-    __call__()
+    str
+        Clean task type name without leading underscore (e.g., "import_geometry").
+
+    Notes
+    -----
+    This is needed because the datamodel service generates class names with a leading
+    underscore convention (e.g., `_import_geometry`), but we want clean names for
+    internal use and type creation.
+    """
+    return task_obj.__class__.__name__.lstrip("_")
+
+
+def is_compound_child(task_type: str) -> bool:
+    """Check if a task type represents a compound child task. This encapsulates
+    a string comparison to avoid repetition.
+
+    Parameters
+    ----------
+    task_type : str
+        The task type string to check.
+
+    Returns
+    -------
+    bool
+        True if the task type is "Compound Child", False otherwise.
+    """
+    return task_type == "Compound Child"
+
+
+def _convert_task_list_to_display_names(
+    workflow_root: PyMenu, task_list: list[str]
+) -> list[str]:
+    """Convert a list of task IDs to their corresponding display names.
+
+    Parameters
+    ----------
+    workflow_root : PyMenu
+        The root workflow datamodel object that provides service access.
+    task_list : list[str]
+        List of internal task identifiers (e.g., ["TaskObject1", "TaskObject2"]).
+
+    Returns
+    -------
+    list[str]
+        List of display names corresponding to the task IDs
+        (e.g., ["Import Geometry", "Add Local Sizing"]).
+    """
+    _display_names = []
+    for _task_name in task_list:
+        name_obj = PyMenu(
+            service=workflow_root.service,
+            rules=workflow_root.rules,
+            path=[("task_object", _task_name), ("_name_", "")],
+        )
+        _display_names.append(name_obj.get_remote_state())
+    return _display_names
+
+
+def _get_child_task_by_task_id(workflow_root, task_id):
+    """Get a child task's display name by its internal task ID.
+
+    Parameters
+    ----------
+    workflow_root : PyMenu
+        The root workflow datamodel object.
+    task_id : str
+        Internal identifier for the task (e.g., "TaskObject1").
+
+    Returns
+    -------
+    str
+        The display name of the task (e.g., "Import Geometry").
+    """
+    return PyMenu(
+        service=workflow_root.service,
+        rules=workflow_root.rules,
+        path=[("task_object", task_id), ("_name_", "")],
+    ).get_remote_state()
+
+
+def command_name_to_task_name(meshing_root, command_name: str) -> str:
+    """Convert a command name to its corresponding task display name.
+
+    This function maps internal command names (used by the Fluent core) to
+    user-facing task names.
+
+    Parameters
+    ----------
+    meshing_root : PyMenu
+        The root meshing datamodel object.
+    command_name : str
+        Internal command name (e.g., "ImportGeometry").
+
+    Returns
+    -------
+    str
+        User-facing task name (e.g., "import_geometry").
+
+    Notes
+    -----
+    This is a workaround for Fluent 26R1.
+    """
+    # TODO: This fix is applicable till the server lacks the mechanism to return mapped values
+    #  for '<Task Object>.get_next_possible_tasks()' and
+    #  for '<Workflow>.get_new_insertable_tasks()'.
+    command_instance = getattr(meshing_root, command_name).create_instance()
+    return command_instance.get_attr("APIName") or command_instance.get_attr(
+        "helpString"
+    )
+
+
+class Workflow:
+    """High-level workflow container that manages tasks and provides navigation.
+
+    The Workflow class wraps the underlying datamodel workflow object and provides
+    a Pythonic interface for:
+
+    - Discovering and accessing tasks
+    - Creating, loading, and saving workflows
+    - Navigating task hierarchies
+    - Managing task lifecycles (creation/deletion)
     """
 
     def __init__(
         self,
-        command_source: Workflow,
-        task: str,
+        workflow: PyMenu,
+        command_source: PyMenu,
+        fluent_version: FluentVersion,
     ) -> None:
-        """Initialize BaseTask.
+        """Initialize Workflow."""
+        self._workflow = workflow
+        self._command_source = command_source
+        self._fluent_version = fluent_version
+        self._task_dict = {}
+        self._compound_child_dict = {}
 
-        Parameters
-        ----------
-        command_source : WorkflowWrapper
-            Set of workflow commands.
-        task : str
-            Name of this task.
+    def tasks(self) -> ValuesView[PyMenu]:
+        """Get the complete list of tasks in the workflow.
+
+        This method builds and returns a comprehensive list of all task objects
+        currently present in the workflow, including:
+
+        - Top-level tasks
+        - Compound child tasks (tasks with multiple instances)
+        - Dynamically created tasks
+
+        The method rebuilds its internal task cache on each call to ensure
+        freshness, though this can be expensive for large workflows.
         """
-        self.__dict__.update(
-            dict(
-                _command_source=command_source,
-                _workflow=command_source._workflow,
-                _source=command_source._command_source,
-                _task=task,
-                _cmd=None,
-                _python_name=None,
-                _python_task_names=[],
-                _python_task_names_map={},
-                _lock=command_source._lock,
-                _ordered_children=[],
-                _task_list=[],
-                _task_objects={},
-                _fluent_version=command_source._fluent_version,
-            )
-        )
+        self._task_dict = {}
+        _state = self._workflow.task_object()
+        for task in sorted(_state):
+            name, display_name = task.split(":")
+            task_obj = getattr(self._workflow.task_object, name)[display_name]
+            if is_compound_child(task_obj.task_type()):
+                if name not in self._compound_child_dict:
+                    # CASE 1: First instance of this compound child type
+                    # ===================================================
+                    # This is the first time we've seen this task type (e.g., "add_boundary_layers")
+                    # Create a new entry in the compound child dictionary with the first child
+                    #
+                    # Example: For "Boundary Layer 1" task with name="add_boundary_layers"
+                    # Creates: {"add_boundary_layers": {"add_boundary_layers_child_1": task_obj}}
+                    self._compound_child_dict[name] = {
+                        name + "_child_1": task_obj,
+                    }
+                else:
+                    # CASE 2: Subsequent instance of this compound child type
+                    # ========================================================
+                    # We've already seen this task type before. Now we need to determine if this
+                    # specific task instance is new or if we've already processed it.
+                    #
+                    # Why check for duplicates?
+                    # The workflow datamodel may return the same task multiple times during iteration,
+                    # so we need to verify this is actually a NEW instance (e.g., "Boundary Layer 2")
+                    # and not a duplicate reference to an existing one (e.g., "Boundary Layer 1" again).
 
-    def get_direct_upstream_tasks(self) -> list:
-        """Get the list of tasks upstream of this one and directly connected by a data
-        dependency.
+                    # Check if this specific task instance already exists in the compound child dict
+                    # We compare by display name using task_obj._name_() which returns names like
+                    # "Boundary Layer 1", "Boundary Layer 2", etc.
+                    if task_obj._name_() not in (
+                        value._name_()
+                        for value in self._compound_child_dict[name].values()
+                    ):
+                        # This is genuinely a NEW instance - add it with the next available number
+                        #
+                        # Calculate the next child number:
+                        # 1. Sort existing keys: ["add_boundary_layers_child_1", "add_boundary_layers_child_2"]
+                        # 2. Take the last key: "add_boundary_layers_child_2"
+                        # 3. Extract the last character (the number): "2"
+                        # 4. Convert to int and add 1: 3
+                        # 5. Result: "add_boundary_layers_child_3"
+                        #
+                        # Example progression:
+                        #   First:  "add_boundary_layers_child_1" -> number is 1
+                        #   Second: "add_boundary_layers_child_2" -> number is 2
+                        #   Third:  "add_boundary_layers_child_3" -> number is 3
+                        child_key = (
+                            int(sorted(self._compound_child_dict[name])[-1][-1]) + 1
+                        )
+                        self._compound_child_dict[name][
+                            name + f"_child_{child_key}"
+                        ] = task_obj
+            else:
+                # Store regular (non-compound-child) tasks in the task dictionary
+                if name not in self._task_dict:
+                    # CASE 1: First occurrence of this task type
+                    # =============================================
+                    # Store using the base name (e.g., "import_geometry")
+                    # This allows access via: workflow.import_geometry
+                    self._task_dict[name] = task_obj
+                else:
+                    # CASE 2: Duplicate task type (e.g., second "Import Geometry")
+                    # =============================================================
+                    # Multiple tasks of the same type can exist in a workflow.
+                    # Their display names have numeric suffixes: "Import Geometry 1", "Import Geometry 2"
+                    #
+                    # To create unique dictionary keys, we:
+                    # 1. Extract the numeric suffix from the display name
+                    # 2. Append it to the base name with an underscore
+                    #
+                    # Example transformation:
+                    #   Display name: "Import Geometry 2"
+                    #   Base name: "import_geometry"
+                    #   Suffix: "2" (last word from display name)
+                    #   Final key: "import_geometry_2"
+                    #
+                    # This allows access via: workflow.import_geometry_2
+                    self._task_dict[name + f"_{task_obj.name().split()[-1]}"] = task_obj
 
-        Returns
-        -------
-        list
-            Upstream task list.
-        """
-        return self._tasks_with_matching_attributes(
-            attr="requiredInputs", other_attr="outputs"
-        )
+        # Merge all compound child tasks into main dictionary
+        for child_tasks in self._compound_child_dict.values():
+            self._task_dict.update(child_tasks)
 
-    def get_direct_downstream_tasks(self) -> list:
-        """Get the list of tasks downstream of this one and directly connected by a data
-        dependency.
+        return self._task_dict.values()
 
-        Returns
-        -------
-        list
-            Downstream task list.
-        """
-        return self._tasks_with_matching_attributes(
-            attr="outputs", other_attr="requiredInputs"
-        )
+    def _workflow_state(self):
+        """Get the complete state dictionary of the workflow."""
+        return self._workflow()
 
-    def mark_as_updated(self) -> None:
-        """Mark tasks in workflow as updated."""
-        state = getattr(self, "state", None)
-        if state and "Forced-up-to-date" in state.allowed_values():
-            state.set_state("Forced-up-to-date")
+    def _new_workflow(self, name: str):
+        """Initialize a new workflow from a predefined template."""
+        self._workflow.general.initialize_workflow(workflow_type=name)
 
-    def tasks(self, recompute=True) -> list:
-        """Get the ordered task list held by this task.
+    def _load_workflow(self, file_path: str):
+        """Load a workflow from a saved workflow file (.wft)."""
+        self._workflow.general.load_workflow(file_path=file_path)
 
-        This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
-        You can obtain other tasks by calling the ``tasks()`` method on a parent task.
+    def _create_workflow(self):
+        """Create a new empty workflow."""
+        self._workflow.general.create_new_workflow()
 
-        Given the workflow::
+    def save_workflow(self, file_path: str):
+        """Save the current workflow to a file."""
+        self._workflow.general.save_workflow(file_path=file_path)
 
-            Workflow
-            ├── A
-            ├── B
-            │   ├── C
-            │   └── D
-            └── E
-
-        C and D are the ordered children of task B.
-
-        Returns
-        -------
-        list
-            Ordered children.
-        """
-        if recompute:
-
-            def task_by_id(mappings):
-                def _task_by_id(task_id):
-                    if task_id in mappings:
-                        return mappings[task_id]
-                    # Use suppress to ignore exceptions during task ID resolution fallback without triggering B110
-                    with suppress(Exception):
-                        return self._command_source._task_by_id(task_id)
-
-                return _task_by_id
-
-            task_list = self._task.TaskList()
-            task_list = _convert_task_list_to_display_names(self._workflow, task_list)
-            if task_list != self._task_list:
-                mappings = {
-                    k: v for k, v in zip(self._task_list, self._ordered_children)
-                }
-                self._ordered_children = list(
-                    filter(None, map(task_by_id(mappings), task_list))
-                )
-                self._task_list = task_list
-        return self._ordered_children
+    def load_state(self, list_of_roots: list):
+        """Load the state of the workflow."""
+        self._workflow.general.load_state(list_of_roots=list_of_roots)
 
     def task_names(self):
-        """Get the list of the Python names for the available tasks."""
-        return [child.python_name() for child in self.tasks()]
+        """Get Python-friendly names for all available tasks.
 
-    def inactive_tasks(self) -> list:
-        """Get the inactive ordered child list.
+        Returns the list of task names as they would be accessed via Python
+        attribute syntax (e.g., "import_geometry" for "Import Geometry").
+        """
+        return [name.split(":")[0] for name in self._workflow.task_object()]
+
+    def children(self) -> list[TaskObject]:
+        """Get the top-level tasks in the workflow in display order.
+
+        Returns an ordered list of the workflow's main tasks (those directly under
+        the workflow root, not nested child tasks). The order reflects the execution
+        sequence in the workflow.
 
         Returns
         -------
-        list
-            Inactive ordered children.
+        List[TaskObject]
+            Ordered list of top-level task wrappers.
         """
-        return []
-
-    def get_id(self) -> str:
-        """Get the unique string identifier of this task, as it is in the application.
-
-        Returns
-        -------
-        str
-            The string identifier.
-        """
-        workflow_state = self._command_source._workflow_state()
-        for k, v in workflow_state.items():
-            if isinstance(v, dict) and "_name_" in v:
-                if v["_name_"] == self.name():
-                    type_, id_ = k.split(":")
-                    if type_ == "TaskObject":
-                        return id_
-
-    def get_idx(self) -> int:
-        """Get the unique integer index of this task, as it is in the application.
-
-        Returns
-        -------
-        int
-            The integer index.
-        """
-        return int(self.get_id()[len("TaskObject") :])
-
-    def _populate_duplicate_task_list(self):
-        disp_text = self.display_name()
-        if disp_text.split()[-1].isdigit():
-            new_task = "".join(disp_text.rsplit(f" {disp_text.split()[-1]}", 1))
-            if (
-                new_task
-                == self._command_source._python_name_display_text_map[self._python_name]
-            ):
-                self._python_name = self._python_name + f"_{disp_text.split()[-1]}"
-                self._command_source._python_name_display_text_map[
-                    self._python_name
-                ] = disp_text
-                self._command_source._repeated_task_python_name_display_text_map[
-                    self._python_name
-                ] = disp_text
-
-    def python_name(self) -> str:
-        """Get the Pythonic name of this task from the underlying application.
-
-        Returns
-        -------
-        str
-            Pythonic name of the task.
-        """
-        if not self._python_name:
-            if self._command_source._dynamic_python_names:
-                display_name_map = self._command_source._python_name_display_text_map
-                if self.display_name() not in display_name_map.values():
-                    self._set_python_name()
-                else:
-                    self._python_name = get_first_dict_key_for_value(
-                        display_name_map, self.display_name()
-                    )
-            else:
-                self._set_python_name()
-
-        return self._python_name
-
-    def _set_python_name(self):
-        this_command = self._command()
-        self._python_name = camel_to_snake_case(
-            this_command.get_attr("APIName") or this_command.get_attr("helpString")
+        ordered_names = _convert_task_list_to_display_names(
+            self._workflow,
+            self._workflow.general.workflow.task_list(),
         )
-        self._cache_data(this_command)
 
-    def _cache_data(self, command):
-        disp_text = command.get_attr("displayText")
-        if self._python_name in self._command_source._python_name_display_text_map:
-            self._populate_duplicate_task_list()
-        else:
-            self._command_source._python_name_display_text_map[self._python_name] = (
-                self.display_name()
-                if self._command_source._dynamic_python_names
-                else disp_text
-            )
-        self._command_source._python_name_command_id_map[self._python_name] = (
-            command.command
-        )
-        self._command_source._python_name_display_id_map[self._python_name] = disp_text
+        # Create lightweight lookup: task name -> task datamodel object
+        tasks_by_name = {task_obj.name(): task_obj for task_obj in self.tasks()}
 
-    def _get_camel_case_arg_keys(self):
-        args = self.arguments
-        camel_args = []
-        for arg in args().keys():
-            camel_args.append(args._snake_to_camel_map[arg])
-
-        return camel_args
-
-    def __getattr__(self, attr):
-        result = getattr(self._task, attr, None)
-        if result:
-            return result
-        if not attr.islower() and attr != "Arguments":
-            raise AttributeError(
-                "Camel case attribute access is not supported. "
-                f"Try using '{camel_to_snake_case(attr)}' instead."
-            )
-        camel_attr = (
-            snake_to_camel_case(
-                str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
-            )
-            if attr.islower()
-            else attr
-        )
-        attr = camel_attr or attr
-        result = getattr(self._task, attr, None)
-        if result:
-            return result
-        try:
-            return ArgumentWrapper(self, attr)
-        except Exception as ex:
-            logger.debug(str(ex))
-        result = self._task_objects.get(attr, None)
-        if result:
-            return result
-        return super().__getattribute__(attr)
-
-    def __setattr__(self, attr, value):
-        logger.debug(f"BaseTask.__setattr__({attr}, {value})")
-        if attr in self.__dict__:
-            self.__dict__[attr] = value
-        elif attr in self.arguments() or attr == "arguments":
-            getattr(self, attr).set_state(value)
-        else:
-            setattr(self._task, attr, value)
-
-    def __dir__(self):
-        arg_list = []
-        for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
-            arg_list.append(camel_to_snake_case(arg))
-
-        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
-
-    def delete(self) -> None:
-        """Delete this task from the workflow."""
-        self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
-
-    def rename(self, new_name: str):
-        """Rename the current task to a given name."""
-        self._command_source._dynamic_python_names = True
-        py_name = self.python_name()
-        if py_name in self._command_source._repeated_task_python_name_display_text_map:
-            self._command_source._python_name_command_id_map[new_name] = (
-                self._command_source._python_name_command_id_map.pop(py_name, None)
-            )
-            self._command_source._python_name_display_id_map[new_name] = (
-                self._command_source._python_name_display_id_map.pop(py_name, None)
-            )
-            self._command_source._python_name_display_text_map.pop(py_name, None)
-            self._command_source._repeated_task_python_name_display_text_map.pop(
-                py_name, None
-            )
-        else:
-            self._command_source._python_name_command_id_map[new_name] = (
-                self._command_source._python_name_command_id_map[py_name]
-            )
-            self._command_source._python_name_display_id_map[new_name] = (
-                self._command_source._python_name_display_id_map[py_name]
-            )
-            self._command_source._python_name_display_text_map.pop(py_name, None)
-
-        self._command_source._python_name_display_text_map[new_name] = new_name
-        self._command_source._repeated_task_python_name_display_text_map[new_name] = (
-            new_name
-        )
-        self._python_name = new_name
-        return self._task.Rename(NewName=new_name)
-
-    def add_child_to_task(self):
-        """Add a child task."""
-        return self._task.AddChildToTask()
-
-    def update_child_tasks(self, setup_type_changed: bool):
-        """Update child tasks."""
-        self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
-
-    def _get_next_python_task_names(self) -> list[str]:
-        self._python_task_names_map = {}
-        for command_name in self._task.GetNextPossibleTasks():
-            comm_obj = getattr(
-                self._command_source._command_source, command_name
-            ).create_instance()
-            self._python_task_names_map[
-                camel_to_snake_case(
-                    comm_obj.get_attr("APIName") or comm_obj.get_attr("helpString")
+        # Wrap only the top-level tasks in the correct order
+        wrapped_tasks = []
+        for name in ordered_names:
+            if name in tasks_by_name:
+                task_obj = tasks_by_name[name]
+                wrapped = make_task_wrapper(
+                    task_obj,
+                    _get_task_type_name(task_obj),
+                    self._workflow,
+                    self,
+                    self._command_source,
                 )
-            ] = command_name
-        return list(self._python_task_names_map.keys())
+                wrapped_tasks.append(wrapped)
 
-    def _insert_next_task(self, task_name: str):
-        """Insert a task based on the Python name after the current task is executed.
+        return wrapped_tasks
+
+    def first_child(self) -> TaskObject | None:
+        """Get the first top-level task in the workflow.
+
+        Returns
+        -------
+        TaskObject or None
+            The first task in the workflow, or None if the workflow is empty.
+
+        Examples
+        --------
+        >>> first = '<workflow>'.first_child()
+        >>> if first:
+        ...     print(f"Starting task: {first.name()}")
+        ...     first()  # Execute it
+
+        >>> # Navigate from first to last
+        >>> current = '<workflow>'.first_child()
+        >>> while current and current.has_next():
+        ...     print(current.name())
+        ...     current()  # Execute it
+        ...     current = current.next()
+
+        Notes
+        -----
+        Returns None for empty workflows. Always check before accessing properties.
+        """
+        task_list = self._workflow.general.workflow.task_list()
+        if task_list:
+            first_name = _get_child_task_by_task_id(self._workflow, task_list[0])
+        else:
+            return None
+        for task_obj in self.tasks():
+            if task_obj.name() == first_name:
+                return make_task_wrapper(
+                    task_obj,
+                    _get_task_type_name(task_obj),
+                    self._workflow,
+                    self,
+                    self._command_source,
+                )
+
+    def last_child(self) -> TaskObject | None:
+        """Get the last top-level task in the workflow.
+
+        Returns
+        -------
+        TaskObject or None
+            The last task in the workflow, or None if the workflow is empty.
+
+        Examples
+        --------
+        >>> last = '<workflow>'.last_child()
+        >>> if last:
+        ...     print(f"Final task: {last.name()}")
+        ...     last()  # Execute it
+
+        >>> # Execute workflow in reverse
+        >>> current = '<workflow>'.last_child()
+        >>> while current and current.has_previous():
+        ...     print(current.name())
+        ...     current()  # Execute it
+        ...     current = current.previous()
+        """
+        task_list = self._workflow.general.workflow.task_list()
+        if task_list:
+            last_name = _get_child_task_by_task_id(self._workflow, task_list[-1])
+        else:
+            return None
+        for task_obj in self.tasks():
+            if task_obj.name() == last_name:
+                return make_task_wrapper(
+                    task_obj,
+                    _get_task_type_name(task_obj),
+                    self._workflow,
+                    self,
+                    self._command_source,
+                )
+
+    def _task_names(self):
+        """Gets a list of display names of all tasks in the workflow."""
+        return _convert_task_list_to_display_names(
+            self._workflow, self._workflow.general.workflow.task_list()
+        )
+
+    def _ordered_tasks(self):
+        """Get ordered dictionary mapping task names to task objects."""
+        ordered_names = _convert_task_list_to_display_names(
+            self._workflow,
+            self._workflow.general.workflow.task_list(),
+        )
+
+        # Create lightweight lookup: display name -> task datamodel object
+        tasks_by_name = {task_obj.name(): task_obj for task_obj in self.tasks()}
+
+        # Build ordered dict by wrapping only the tasks in ordered_names
+        sorted_dict = OrderedDict()
+        for name in ordered_names:
+            if name in tasks_by_name:
+                task_obj = tasks_by_name[name]
+                wrapped = make_task_wrapper(
+                    task_obj,
+                    _get_task_type_name(task_obj),
+                    self._workflow,
+                    self,
+                    self._command_source,
+                )
+                sorted_dict[name] = wrapped
+
+        return sorted_dict
+
+    def delete_tasks(self, list_of_tasks: list[TaskObject]):
+        """Delete multiple tasks from the workflow.
+
+        Removes the specified tasks from the workflow. Tasks are identified by TaskObject instances.
 
         Parameters
         ----------
-        task_name: str
-            Python name of the new task.
-
-        Returns
-        -------
-        None
+        list_of_tasks: list[TaskObject]
+            List of task objects to delete.
 
         Raises
         ------
-        ValueError
-            If the Python name does not match the next possible task names.
+        TypeError
+            If list contains items that are neither TaskObject nor str.
         """
-        self._command_source._dynamic_python_names = True
-        if task_name not in self._get_next_python_task_names():
-            raise ValueError(
-                f"'{task_name}' cannot be inserted next to '{self.python_name()}'."
+        items_to_be_deleted = []
+        for item in list_of_tasks:
+            if not isinstance(item, TaskObject):
+                # This is done to support backwards compatibility.
+                if isinstance(item, str):
+                    items_to_be_deleted.append(item)
+                else:
+                    raise TypeError(
+                        "'list_of_tasks' only takes list of 'TaskObject' types."
+                    )
+            else:
+                items_to_be_deleted.append(item.name())
+
+        self._workflow.general.delete_tasks(list_of_tasks=items_to_be_deleted)
+
+    @property
+    def insertable_tasks(self) -> FirstTask:
+        """Tasks that can be inserted into an empty workflow.
+
+        Returns a helper that exposes the set of valid starting tasks for a blank
+        workflow as attributes. Each attribute is an object with an `insert()`
+        method that inserts that task into the workflow.
+
+        Notes
+        -----
+        - This helper only populates insertable tasks when the workflow is empty.
+        - Task names are exposed using Python-friendly identifiers (snake_case).
+        """
+        return self.FirstTask(self)
+
+    class FirstTask:
+        """Helper exposing insertable tasks for an empty workflow.
+
+        This container dynamically creates attributes for each command that the
+        server allows as the first task in a new workflow.
+
+        Access an attribute and call `.insert()` to insert that task.
+        """
+
+        def __init__(self, workflow):
+            """Initialize a ``FirstTask`` instance."""
+            self._workflow = workflow
+            self._insertable_tasks: list = []
+            # Map: server command name -> python-friendly task name
+            self._initial_task_map: dict[str, str] = {}
+
+            # Query server for commands that can start a new workflow.
+            # Older Fluent versions don’t provide this API; use a fallback list.
+            try:
+                initial_tasks = self._workflow.general.get_insertable_tasks()
+            except AttributeError:
+                # For Fluent Version 26R1 or before.
+                initial_tasks = ["ImportGeometry", "PartManagement", "RunCustomJournal"]
+            for command in initial_tasks:
+                self._initial_task_map[command] = command_name_to_task_name(
+                    self._workflow._command_source, command
+                )
+            # Only expose these attributes when the workflow is empty.
+            if self._workflow._workflow.general.workflow.task_list() == []:
+                for command_name, python_name in self._initial_task_map.items():
+                    # Build a lightweight proxy object with an insert() method.
+                    insertable_task = type("Insert", (self._Insert,), {})(
+                        self._workflow,
+                        command_name,
+                        self._initial_task_map,
+                    )
+                    # Expose as attribute: e.g., <workflow>.insertable_tasks.import_geometry.insert()
+                    setattr(self, python_name, insertable_task)
+                    self._insertable_tasks.append(insertable_task)
+
+        def __call__(self) -> list:
+            """Return all insertable task proxies as a list."""
+            return self._insertable_tasks
+
+        class _Insert:
+            """Represents a single insertable starting task.
+
+            Provides the `insert()` method to add this task to the workflow.
+            """
+
+            def __init__(self, workflow, name, task_map):
+                """Initialize an _Insert instance.
+
+                Parameters
+                ----------
+                workflow : Workflow
+                    Target workflow.
+                name : str
+                    Server command name (e.g., "ImportGeometry").
+                task_map : dict[str, str]
+                    Mapping from server command name -> python-friendly task name.
+                """
+                self._workflow = workflow
+                self._name = name
+                self._task_map = task_map
+
+            def insert(self) -> None:
+                """Insert this task into the workflow as the first task."""
+                self._workflow.general.insert_new_task(command_name=self._name)
+
+            def __repr__(self) -> str:
+                return f"<Insertable '{self._task_map[self._name]}' task>"
+
+    def __getattr__(self, item):
+        """Enable attribute-style access to tasks."""
+        if item in ["parts", "parts_files"]:
+            raise AttributeError(
+                f"'{item}' is only supported in Fault-tolerant Meshing workflows."
             )
-        self._task.InsertNextTask(CommandName=self._python_task_names_map[task_name])
-        _call_refresh_task_accessors(self._command_source)
+        self.tasks()
+        if item in self._task_dict:
+            return make_task_wrapper(
+                self._task_dict[item], item, self._workflow, self, self._command_source
+            )
+        try:
+            return getattr(self._workflow, item)
+        except AttributeError as ex:
+            raise AttributeError(
+                allowed_name_error_message(
+                    allowed_values=list(self._task_dict.keys()),
+                    context=type(self).__name__,
+                    trial_name=item,
+                )
+            ) from ex
+
+    def __call__(self):
+        """Get workflow state when called as a function."""
+        return self._workflow_state()
+
+    def __delattr__(self, item):
+        """Delete a task using Python's del statement.
+
+        Parameters
+        ----------
+        item : str
+            Python attribute name of the task to delete.
+
+        Examples
+        --------
+        >>> del '<workflow>'.import_geometry
+
+        Raises
+        ------
+        LookupError
+            If the task name is not valid.
+        """
+        if item not in self._task_dict:
+            self.tasks()
+        if item in self._task_dict:
+            getattr(self, item).delete()
+            del self._task_dict[item]
+        else:
+            raise LookupError(f"'{item}' is not a valid task name.'")
+
+
+class TaskObject:
+    """Wrapper for individual workflow task objects.
+
+    TaskObject provides a high-level interface for interacting with individual
+    tasks in a workflow. It exposes task properties, arguments, execution methods,
+    and navigation capabilities.
+
+    Key Features
+    ------------
+    - Access task arguments and properties
+    - Execute tasks
+    - Navigate to parent, sibling, and child tasks
+    - Insert new tasks after the current task
+    - Access compound child tasks (for multi-instance tasks)
+    """
+
+    def __init__(
+        self,
+        task_object: PyMenu,
+        base_name: str,
+        workflow: PyMenu,
+        parent: Workflow | TaskObject,
+        meshing_root: PyMenu,
+    ):
+        """Initialize a TaskObject wrapper.
+
+        Parameters
+        ----------
+        task_object : PyMenu
+            The underlying datamodel task object.
+        base_name : str
+            Python-friendly base name for the task.
+        workflow : PyMenu
+            Reference to the parent workflow datamodel.
+        parent : Union[Workflow, TaskObject]
+            Parent container (Workflow or parent TaskObject).
+
+        Notes
+        -----
+        This constructor is called internally by `make_task_wrapper()`.
+        Users should not instantiate TaskObject directly.
+        """
+        super().__setattr__("_task_object", task_object)
+        super().__setattr__("_name", base_name)
+        super().__setattr__("_workflow", workflow)
+        super().__setattr__("_parent", parent)
+        super().__setattr__("_meshing_root", meshing_root)
+        self._cache = {}
+
+    def mark_as_updated(self) -> None:
+        """Mark tasks in workflow as updated."""
+        state = getattr(self._task_object, "state", None)
+        if state and "Forced-up-to-date" in state.allowed_values():
+            state.set_state("Forced-up-to-date")
+
+    def _get_next_possible_tasks(self):
+        """Get display names of tasks that can be inserted after this task."""
+        task_obj = self._task_object
+        ret_list = []
+        for item in task_obj.get_next_possible_tasks():
+            snake_case_name = command_name_to_task_name(self._meshing_root, item)
+            if snake_case_name != item:
+                self._cache[snake_case_name] = item
+            ret_list.append(snake_case_name)
+        return ret_list
+
+    def _insert_next_task(self, task_name):
+        """Insert a task after the current task.
+
+        Notes
+        -----
+        Internal method. Users should use `insertable_tasks.<task>.insert()` instead.
+        """
+        self._get_next_possible_tasks()
+        command_name = self._cache.get(task_name) or task_name
+        self._task_object.insert_next_task(command_name=command_name)
 
     @property
     def insertable_tasks(self):
-        """Tasks that can be inserted after the current task."""
+        """Get interface for inserting tasks after this one.
+
+        Returns a dynamic object that exposes all valid task types that can be
+        inserted after the current task. Each insertable task is accessible as
+        an attribute with an `insert()` method.
+
+        Returns
+        -------
+        _NextTask
+            Object with attributes for each insertable task type.
+
+        Examples
+        --------
+        Basic usage::
+
+            >>> task = '<workflow>'.import_geometry
+            >>>
+            >>> # See what's available
+            >>> available = task.insertable_tasks()
+            >>> for insertable in available:
+            ...     print(insertable)
+            <Insertable 'import_boi_geometry' task>
+            <Insertable 'set_up_rotational_periodic_boundaries' task>
+            <Insertable 'create_local_refinement_regions' task>
+            <Insertable 'custom_journal_task' task>
+
+        Insert specific task::
+
+            >>> # Insert by accessing as attribute
+            >>> task.insertable_tasks.import_boi_geometry.insert()
+
+        Access specific task after insertion::
+
+            >>> # Access task as attribute
+            >>> '<workflow>'.import_boi_geometry
+        """
         return self._NextTask(self)
 
     class _NextTask:
+        """Container for insertable task operations.
+
+        This internal class provides a dynamic interface for task insertion.
+        It creates attributes on-the-fly for each valid insertable task type.
+
+        Attributes are created dynamically based on the result of
+        `_get_next_possible_tasks()`, with each attribute being an `_Insert`
+        instance that provides the `insert()` method.
+        """
+
         def __init__(self, base_task):
-            """Initialize an ``_NextTask`` instance."""
+            """Initialize insertable tasks container.
+
+            Parameters
+            ----------
+            base_task : TaskObject
+                The task after which new tasks can be inserted.
+            """
             self._base_task = base_task
             self._insertable_tasks = []
-            for item in self._base_task._get_next_python_task_names():
+            for item in self._base_task._get_next_possible_tasks():
                 insertable_task = type("Insert", (self._Insert,), {})(
                     self._base_task, item
                 )
                 setattr(self, item, insertable_task)
                 self._insertable_tasks.append(insertable_task)
 
-        def __call__(self):
+        def __call__(self) -> list[_Insert]:
+            """Get list of all insertable task objects.
+
+            Returns
+            -------
+            List[_Insert]
+                List of insertable task objects.
+            """
             return self._insertable_tasks
 
         class _Insert:
+            """Represents a single insertable task.
+
+            Provides the `insert()` method to actually insert the task into
+            the workflow after the base task.
+            """
+
             def __init__(self, base_task, name):
-                """Initialize an ``_Insert`` instance."""
+                """Initialize an insertable task reference.
+
+                Parameters
+                ----------
+                base_task : TaskObject
+                    The task after which this will be inserted.
+                name : str
+                    Python friendly name of the insertable task.
+                """
                 self._base_task = base_task
                 self._name = name
 
             def insert(self):
-                """Insert a task in the workflow."""
+                """Insert this task into the workflow.
+
+                Creates a new instance of this task type and inserts it
+                immediately after the base task in the workflow sequence.
+                """
                 return self._base_task._insert_next_task(task_name=self._name)
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
 
-    def __call__(self, **kwds) -> Any:
-        if kwds:
-            self._task.Arguments.set_state(**kwds)
-        result = self._task.Execute()
-        _call_refresh_task_accessors(self._command_source)
-        return result
+    def __getattr__(self, item):
+        """Enable attribute access to task properties and arguments.
 
-    def _tasks_with_matching_attributes(self, attr: str, other_attr: str) -> list:
-        this_command = self._command()
-        attrs = this_command.get_attr(attr)
-        if not attrs:
-            return []
-        attrs = set(attrs)
-        tasks = [
-            task for task in self._command_source.tasks() if task.name() != self.name()
-        ]
-        matches = []
-        for task in tasks:
-            command = task._command()
-            other_attrs = command.get_attr(other_attr)
-            if other_attrs and (attrs & set(other_attrs)):
-                matches.append(task)
-        return matches
-
-    def display_name(self):
-        """Display name."""
-        return self._name_()
-
-    def __repr__(self):
-        return f"<Task '{self.display_name()}'>"
-
-
-class TaskContainer(PyCallableStateObject):
-    """Wrap a workflow TaskObject container.
-
-    Methods
-    -------
-    __iter__()
-    __getitem__(attr)
-    __getattr__(attr)
-    __dir__()
-    """
-
-    def __init__(self, command_source: ClassicWorkflow) -> None:
-        """Initialize TaskContainer.
-
-        Parameters
-        ----------
-        command_source : WorkflowWrapper
-            The set of workflow commands.
+        Notes
+        -----
+        Arguments take precedence over task object properties.
         """
-        self._container = command_source
-        self._task_container = command_source._workflow.TaskObject
-
-    def __iter__(self) -> Iterator[BaseTask]:
-        """Yield the next child object.
-
-        Yields
-        ------
-        Iterator[BaseTask]
-            Iterator of child objects.
-        """
-        for name in self.get_object_names():
-            yield self[name]
-
-    def __getitem__(self, name):
-        logger.debug(f"TaskContainer.__getitem__({name})")
-        return self._container._workflow.TaskObject[name]
-
-    def __getattr__(self, attr):
-        return getattr(self._task_container, attr)
-
-    def __dir__(self):
-        return sorted(
-            set(
-                list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
-            )
-        )
-
-    def items(self):
-        """Get state items."""
-        return self._task_container.get_state().items()
-
-    def get_state(self):
-        """Get state."""
-        return self._task_container.get_state()
-
-    def __call__(self):
-        return self.get_state()
-
-
-def _getarg_recursive(obj, arg_name):
-    """Search for an argument within a command arguments object at any descendant level."""
-
-    def inner(obj, arg_name):
-        if hasattr(obj, arg_name):
-            return getattr(obj, arg_name)
-
-        for sub_attr_name in dir(obj):
-            if sub_attr_name.startswith("_"):
-                continue
-            sub_attr = getattr(obj, sub_attr_name)
-            if isinstance(sub_attr, PyArgumentsSingletonSubItem):
-                result = inner(sub_attr, arg_name)
-                if result is not None:
-                    return result
-
-    arg = inner(obj, arg_name)
-    if arg is None:
-        raise AttributeError(
-            f"'{obj.__class__.__name__}' object has no attribute '{arg_name}' at any descendant level."
-        )
-    return arg
-
-
-class ArgumentsWrapper(PyCallableStateObject):
-    """Wrapper for a dictionary of task arguments."""
-
-    def __init__(self, task: BaseTask) -> None:
-        """Initialize ArgumentsWrapper.
-
-        Parameters
-        ----------
-        task : BaseTask
-            Task holding these arguments.
-        """
-        self.__dict__.update(
-            dict(
-                _task=task,
-                _snake_to_camel_map={},
-            )
-        )
-
-    def set_state(self, args: dict) -> None:
-        """Overwrite arguments.
-
-        Parameters
-        ----------
-        args : dict
-            State of the arguments.
-
-        Raises
-        ------
-        ValueError
-            If input is invalid.
-        """
-        self._assign(args, "set_state")
-
-    def update_dict(self, args: dict) -> None:
-        """Merge with arguments.
-
-        Parameters
-        ----------
-        args : dict
-            State of the arguments.
-
-        Raises
-        ------
-        ValueError
-            If input is invalid.
-        """
-        self._assign(args, "update_dict")
-
-    def _camel_snake_arguments_map(self, input_dict, cmd_args=None):
-        snake_case_state_dict = {}
-        cmd_args = self._task._command_arguments if cmd_args is None else cmd_args
-        for key, val in input_dict.items():
-            self._snake_to_camel_map[camel_to_snake_case(key)] = key
-            if isinstance(
-                # Key can be parameter name of a singleton-type command argument.
-                # Hence, we are searching for the key recursively within the command arguments.
-                _getarg_recursive(cmd_args, key),
-                PyArgumentsSingletonSubItem,
-            ):
-                snake_case_state_dict[camel_to_snake_case(key)] = (
-                    self._camel_snake_arguments_map(val)
-                )
-            else:
-                snake_case_state_dict[camel_to_snake_case(key)] = val
-        return snake_case_state_dict
-
-    def get_state(self, explicit_only=False) -> dict:
-        """Get the state of the arguments.
-
-        Parameters
-        ----------
-        explicit_only : bool
-            Whether to only include explicitly set values.
-            Otherwise, all values are included.
-        """
-        state_dict = (
-            self._task.Arguments() if explicit_only else self._task._command_arguments()
-        )
-
-        return self._camel_snake_arguments_map(state_dict)
-
-    def _assign(self, args: dict, fn) -> None:
-        # This function sets the task arguments' state, either via update_dict()
-        # or set_state(). Datamodel dicts are not subject to rules at the
-        # key-value level. In order to trigger rules validation, it's necessary
-        # to apply the arguments' state to the actual command, and that is what
-        # we do here. If the introduced arguments' state is invalid, we leave the
-        # target state unaffected (by repairing it) and throw an exception.
-        try:
-            # We get the initial state for exception safety, but this also
-            # has the positive side effect of populating the name map.
-            # So, if this initial state access is removed then we must ensure
-            # that we still populate that map. But we can also optimise by keeping
-            # a global map and only fetching the remote state for unpopulated
-            # paths. Furthermore we can generate all name information statically,
-            # avoiding remote trips for such purposes. In order to avoid the initial
-            # get_state (to support exception safety), we could optionally return the
-            # current state from the prior set_state invocation.
-            old_state = self.get_state()
-        except Exception:
-            old_state = None
-        camel_args = {}
-        # TODO: Figure out proper way to implement "add_child".
-        if "add_child" in args:
-            self._snake_to_camel_map["add_child"] = "AddChild"
-
-        cmd_args = self._task._command_arguments
-        for key, val in args.items():
-            camel_arg = self._snake_to_camel_map[key] if key.islower() else key
-            # TODO: Implement enhanced meshing workflow to hide away internal info.
-            if isinstance(getattr(cmd_args, camel_arg), PyArgumentsSingletonSubItem):
-                updated_dict = {}
-                for attr, attr_val in val.items():
-                    camel_attr = snake_to_camel_case(
-                        str(attr),
-                        getattr(
-                            self, camel_to_snake_case(key)
-                        )._get_camel_case_arg_keys()
-                        or [],
-                    )
-                    updated_dict[camel_attr] = attr_val
-                camel_args[camel_arg] = updated_dict
-            else:
-                camel_args[camel_arg] = val
-        if fn == "update_dict":
-            self._task.Arguments.update_dict(camel_args, recursive=True)
-        else:
-            getattr(self._task.Arguments, fn)(camel_args)
-        try:
-            self._refresh_command_after_changing_args(old_state)
-        except Exception as ex:
-            raise ValueError(
-                "Invalid task arguments, {args} for '{self._task.python_name()}'."
-            ) from ex
-
-    def _refresh_command_after_changing_args(self, recovery_state) -> None:
-        try:
-            self._task._refreshed_command()()
-        except Exception as ex:
-            self._just_set_state(recovery_state)
-            # Use suppress to ignore exceptions when retrying command refresh without triggering B110
-            with suppress(Exception):
-                self._task._refreshed_command()()
-            raise ex
-
-    def _just_set_state(self, args):
-        camel_args = {}
-        if isinstance(args, dict):
-            for key, val in args.items():
-                camel_args[self._snake_to_camel_map[key]] = val
-        self._task.Arguments.set_state(camel_args)
-
-    def __getattr__(self, attr):
-        return getattr(self._task, attr)
+        task_obj = self._task_object
+        args = task_obj.arguments
+        if item in args():
+            return getattr(args, item)
+        return getattr(task_obj, item)
 
     def __setattr__(self, key, value):
-        try:
-            getattr(self, key).set_state(value)
-        except AttributeError:
-            raise AttributeError(
-                f"No attribute named '{key}' in '{self._task.name()}'."
-            )
-
-    def __setitem__(self, key, value):
-        getattr(self._task, key).set_state(value)
-
-    def __getitem__(self, item):
-        return getattr(self._task, item).get_state()
-
-
-class ArgumentWrapper(PyCallableStateObject):
-    """Wrapper for a single task argument."""
-
-    def __init__(self, task: BaseTask, arg: str) -> None:
-        """Initialize ArgumentWrapper.
-
-        Parameters
-        ----------
-        task : BaseTask
-            The task holding these arguments.
-        arg: str
-            Argument name.
-        """
-        self.__dict__.update(
-            dict(
-                _task=task,
-                _arg_name=arg,
-                _arg=getattr(task._command_arguments, arg),
-                _snake_to_camel_map={},
-            )
-        )
-        if self._arg is None:
-            raise RuntimeError(f"{arg} is not an argument.")
-
-    def set_state(self, value: Any) -> None:
-        """Set the state of the argument.
-
-        Parameters
-        ----------
-        value : Any
-            Value of the argument.
-        """
-        self._task.arguments.update_dict({self._arg_name: value})
-
-    def get_state(self, explicit_only: bool = False) -> Any:
-        """Get the state of this argument.
-
-        Parameters
-        ----------
-        explicit_only : bool
-            Whether to return the explicitly set value or the
-            full derived value.
-        """
-
-        state_dict = (
-            self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
-        )
-
-        if isinstance(self._arg, PyArgumentsSingletonSubItem):
-            snake_case_state_dict = {}
-            for key, val in state_dict.items():
-                self._snake_to_camel_map[camel_to_snake_case(key)] = key
-                snake_case_state_dict[camel_to_snake_case(key)] = val
-            return snake_case_state_dict
-
-        return state_dict
-
-    def _get_camel_case_arg_keys(self):
-        if not isinstance(self(), dict):
-            return
-        _args = self
-        _camel_args = []
-        for arg in _args().keys():
-            try:
-                _camel_args.append(self._snake_to_camel_map[arg])
-            except KeyError:
-                _camel_args.append(arg)
-
-        return _camel_args
-
-    def __getattr__(self, attr):
-        if not attr.islower():
-            raise AttributeError(
-                "Camel case attribute access is not supported. "
-                f"Try using '{camel_to_snake_case(attr)}' instead."
-            )
-        camel_attr = snake_to_camel_case(
-            str(attr), self._get_camel_case_arg_keys() or []
-        )
-        attr = camel_attr or attr
-        return getattr(self._arg, attr)
-
-    def __setattr__(self, attr, value):
-        if attr in self.__dict__:
-            self.__dict__[attr] = value
+        """Enable attribute assignment to task arguments."""
+        args = self._task_object.arguments
+        if hasattr(args, key):
+            setattr(args, key, value)
         else:
-            self.set_state({attr: value})
+            super().__setattr__(key, value)
 
-    def __dir__(self):
-        arg_state = self.get_state()
-        arg_list = list(arg_state) if isinstance(arg_state, dict) else []
-        dir_arg = [item for item in dir(self._arg) if item.islower()]
-        return sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir_arg)
-        )
+    def __call__(self):
+        """Execute the task when called as a function."""
+        return self._task_object.execute()
 
-
-class CommandTask(BaseTask):
-    """Intermediate base class task representation for wrapping a Workflow TaskObject
-    instance, adding attributes related to commanding.
-
-    Classes without these attributes cannot be commanded.
-    """
-
-    def __init__(
-        self,
-        command_source: Workflow,
-        task: str,
-    ) -> None:
-        """Initialize CommandTask.
-
-        Parameters
-        ----------
-        command_source : WorkflowWrapper
-            The set of workflow commands.
-        task : str
-            The name of this task.
-        """
-        super().__init__(command_source, task)
-
-    @property
-    def command_arguments(self) -> ReadOnlyObject:
-        """Get the task's arguments in read-only form (deprecated).
-
-        Returns
-        -------
-        ReadOnlyObject
-            The task's arguments.
-        """
-        warnings.warn("CommandArguments", PyFluentDeprecationWarning)
-        return self._refreshed_command()
-
-    @property
-    def _command_arguments(self) -> ReadOnlyObject:
-        return self._refreshed_command()
-
-    @property
-    def arguments(self) -> ArgumentsWrapper:
-        """Get the task's arguments.
-
-        Returns
-        -------
-        ArgumentsWrapper
-            The task's arguments.
-        """
-        return ArgumentsWrapper(self)
-
-    def _refreshed_command(self) -> ReadOnlyObject:
-        task_arg_state = self._task.Arguments.get_state()
-        cmd = self._command()
-        if task_arg_state:
-            cmd.set_state(task_arg_state)
-        return self._cmd_sub_items_read_only(cmd, cmd())
-
-    def _cmd_sub_items_read_only(self, cmd, cmd_state):
-        for key, value in cmd_state.items():
-            if isinstance(value, dict):
-                setattr(
-                    cmd, key, self._cmd_sub_items_read_only(getattr(cmd, key), value)
+    def __getitem__(self, key):
+        task_obj = self._task_object
+        name = self._name
+        workflow = self._workflow
+        parent = self._parent
+        meshing_root = self._meshing_root
+        name_1 = name
+        temp_name = re.sub(r"\s+\d+$", "", task_obj.name().strip())
+        # For the first instance (index 0), use the base task name without a numeric suffix;
+        # subsequent instances follow the "<base> <index>" naming convention (e.g., "Task 1").
+        name_2 = temp_name if key == 0 else temp_name + f" {key}"
+        try:
+            task_obj = getattr(workflow.task_object, name_1)[name_2]
+            if is_compound_child(task_obj.task_type):
+                temp_parent = self
+            else:
+                temp_parent = parent
+            return make_task_wrapper(
+                task_obj, name_1, workflow, temp_parent, meshing_root
+            )
+        except LookupError:
+            task_obj = getattr(workflow.task_object, name_1)[key]
+            if is_compound_child(task_obj.task_type):
+                temp_parent = self
+            else:
+                temp_parent = parent
+            try:
+                return make_task_wrapper(
+                    getattr(workflow.task_object, name_1)[key],
+                    name_1,
+                    workflow,
+                    temp_parent,
+                    meshing_root,
                 )
-            setattr(cmd, key, getattr(cmd, key))
-        return cmd
+            except LookupError as ex2:
+                raise LookupError(
+                    f"Neither '{name_2}' nor '{key}' found in task object '{name_1}'."
+                ) from ex2
 
-    def _command(self):
-        if not self._cmd:
-            self._cmd = _new_command_for_task(self._task, self._source)
-        return self._cmd
+    def __delitem__(self, key):
+        self[key].delete()
 
+    def _task_names(self):
+        """Gets the display names of the child tasks of a task item."""
+        task_list = self._task_object.task_list()
+        if task_list:
+            return _convert_task_list_to_display_names(self._workflow, task_list)
+        else:
+            return []
 
-class SimpleTask(CommandTask):
-    """Simple task representation for wrapping a Workflow TaskObject instance of
-    TaskType Simple."""
+    def children(self):
+        """Get ordered list of direct child tasks.
 
-    def __init__(
-        self,
-        command_source: Workflow,
-        task: str,
-    ) -> None:
-        """Initialize SimpleTask.
+        Returns
+        -------
+        List[TaskObject]
+            Ordered list of child task wrappers, or empty list if no children.
+        """
+        child_names = self._task_names()
+        if not child_names:
+            return []
+
+        workflow = self._workflow
+
+        # Create reverse lookup: display name -> task type
+        name_to_type = {
+            display_name: task_type
+            for task_type, display_name in (
+                item.split(":") for item in workflow.task_object()
+            )
+        }
+
+        # Build list by wrapping only the child tasks in the correct order
+        wrapped_children = []
+        for display_name in child_names:
+            if display_name in name_to_type:
+                task_type = name_to_type[display_name]
+                wrapped = make_task_wrapper(
+                    getattr(workflow.task_object, task_type)[display_name],
+                    task_type,
+                    workflow,
+                    self,
+                    self._meshing_root,
+                )
+                wrapped_children.append(wrapped)
+
+        return wrapped_children
+
+    def first_child(self):
+        """Get the first child task of this task.
+
+        Returns
+        -------
+        TaskObject or None
+            The first child task, or None if no children exist.
+
+        Examples
+        --------
+        >>> parent = '<workflow>'.describe_geometry
+        >>> first = parent.first_child()
+        >>> if first:
+        ...     print(f"First child: {first.name()}")
+
+        Navigate through children::
+
+            >>> current = parent.first_child()
+            >>> while current:
+            ...     print(current.name())
+            ...     if current.has_next():
+            ...         current = current.next()
+            ...     else:
+            ...         break
+        """
+        task_list = self._task_names()
+        if task_list:
+            first_name = task_list[0]
+        else:
+            return None
+        workflow = self._workflow
+
+        type_to_name = {
+            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
+        }
+        for key, val in type_to_name.items():
+            if val == first_name:
+                return make_task_wrapper(
+                    getattr(workflow.task_object, key)[val],
+                    key,
+                    workflow,
+                    self,
+                    self._meshing_root,
+                )
+
+    def last_child(self):
+        """Get the last child task of this task.
+
+        Returns
+        -------
+        TaskObject or None
+            The last child task, or None if no children exist.
+
+        Examples
+        --------
+        >>> parent = '<workflow>'.describe_geometry
+        >>> last = parent.last_child()
+        >>> if last:
+        ...     print(f"Last child: {last.name()}")
+        """
+        task_list = self._task_names()
+        if task_list:
+            last_name = task_list[-1]
+        else:
+            return None
+        workflow = self._workflow
+
+        type_to_name = {
+            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
+        }
+        for key, val in type_to_name.items():
+            if val == last_name:
+                return make_task_wrapper(
+                    getattr(workflow.task_object, key)[val],
+                    key,
+                    workflow,
+                    self,
+                    self._meshing_root,
+                )
+
+    @staticmethod
+    def _get_next_key(input_dict, current_key):
+        """Get the key that follows current_key in an ordered dictionary.
 
         Parameters
         ----------
-        command_source : WorkflowWrapper
-            The set of workflow commands.
-        task : str
-            The name of this task.
-        """
-        super().__init__(command_source, task)
-
-    def tasks(self, recompute=True) -> list:
-        """Get the ordered task list held by the workflow.
-
-        SimpleTasks have no TaskList.
-        """
-        return []
-
-
-class CompoundChild(SimpleTask):
-    """Compound Child representation for wrapping a Workflow TaskObject instance of
-    TaskType Compound Child."""
-
-    def __init__(
-        self,
-        command_source: Workflow,
-        task: str,
-    ) -> None:
-        """Initialize CompoundChild.
-
-        Parameters
-        ----------
-        command_source : WorkflowWrapper
-            The set of workflow commands.
-        task : str
-            The name of this task.
-        """
-        super().__init__(command_source, task)
-
-    def python_name(self) -> str:
-        """Get the Pythonic name of this task.
+        input_dict : Dict
+            Ordered dictionary of tasks.
+        current_key : str
+            Current task name.
 
         Returns
         -------
         str
-            Pythonic name of the task.
-        """
-        if not self._python_name:
-            self._python_name = self._get_python_names_for_compound_child()
-        return self._python_name
-
-    def _get_python_names_for_compound_child(self):
-        if self._command_source._parent_of_compound_child:
-            return (
-                self._command_source._parent_of_compound_child
-                + "_child_"
-                + str(
-                    self._command_source._compound_child_map[
-                        self._command_source._parent_of_compound_child
-                    ]
-                )
-            )
-
-
-class CompositeTask(BaseTask):
-    """Composite task representation for wrapping a Workflow TaskObject instance of
-    TaskType Composite."""
-
-    def __init__(
-        self,
-        command_source: Workflow,
-        task: str,
-    ) -> None:
-        """Initialize CompositeTask.
-
-        Parameters
-        ----------
-        command_source : WorkflowWrapper
-            The set of workflow commands.
-        task : str
-            The name of this task.
-        """
-        super().__init__(command_source, task)
-
-    @property
-    def command_arguments(self) -> ReadOnlyObject:
-        """Get the task's arguments in read-only form (deprecated).
-
-        Returns
-        -------
-        ReadOnlyObject
-            The task's arguments.
-        """
-        warnings.warn("CommandArguments", PyFluentDeprecationWarning)
-        return {}
-
-    @property
-    def _command_arguments(self) -> ReadOnlyObject:
-        return {}
-
-    @property
-    def arguments(self) -> dict:
-        """Get the task's arguments (empty for CompositeTask).
-
-        Returns
-        -------
-        dict
-            The task's arguments (empty).
-        """
-        return {}
-
-    def insert_composite_child_task(self, command_name: str):
-        """Insert a composite child task based on the Python name."""
-        return self._task.InsertCompositeChildTask(CommandName=command_name)
-
-
-class ConditionalTask(CommandTask):
-    """Conditional task representation for wrapping a Workflow TaskObject instance of
-    TaskType Conditional."""
-
-    def __init__(
-        self,
-        command_source: Workflow,
-        task: str,
-    ) -> None:
-        """Initialize ConditionalTask.
-
-        Parameters
-        ----------
-        command_source : WorkflowWrapper
-            The set of workflow commands.
-        task : str
-            The name of this task.
-        """
-        super().__init__(command_source, task)
-
-    def inactive_tasks(self) -> list:
-        """Get the inactive ordered task list held by this task.
-
-        Returns
-        -------
-        list
-            Inactive ordered children.
-        """
-        inactive_task_list = self._task.InactiveTaskList()
-        inactive_task_list = _convert_task_list_to_display_names(inactive_task_list)
-        return [
-            self._command_source._task_by_id(task_id) for task_id in inactive_task_list
-        ]
-
-
-class CompoundTask(CommandTask):
-    """Compound task representation for wrapping a Workflow TaskObject instance of
-    TaskType Compound."""
-
-    def __init__(
-        self,
-        command_source: Workflow,
-        task: str,
-    ) -> None:
-        """Initialize CompoundTask.
-
-        Parameters
-        ----------
-        command_source : WorkflowWrapper
-            The set of workflow commands.
-        task : str
-            The name of this task.
-        """
-        super().__init__(command_source, task)
-
-    def _add_child(self, state: dict | None = None) -> None:
-        """Add a child to this CompoundTask.
-
-        Parameters
-        ----------
-        state : dict | None
-            Optional state.
-        """
-        state = state or {}
-        state.update({"add_child": "yes"})
-        self.arguments.update_dict(state)
-
-    def insert_compound_child_task(self):
-        """Insert a compound child task."""
-        return self.add_child_and_update()
-
-    def add_child_and_update(self, state=None, defer_update=None):
-        """Add a child to this CompoundTask and update.
-
-        Parameters
-        ----------
-        state : dict | None
-            Optional state.
-        defer_update : bool, default: False
-            Whether to defer the update.
-        """
-        if state is not None:
-            self._add_child(state)
-        py_name = self.python_name()
-        if py_name not in self._command_source._compound_child_map:
-            self._command_source._compound_child_map[py_name] = 1
-        else:
-            self._command_source._compound_child_map[py_name] = (
-                self._command_source._compound_child_map[py_name] + 1
-            )
-        self._command_source._compound_child = True
-        self._command_source._parent_of_compound_child = py_name
-        try:
-            if defer_update is None:
-                defer_update = False
-            self._task.AddChildAndUpdate(DeferUpdate=defer_update)
-        finally:
-            self._command_source._compound_child = False
-        # Updates the workflow after the new task is inserted.
-        _call_refresh_task_accessors(self._command_source)
-        return self.last_child()
-
-    def last_child(self) -> BaseTask:
-        """Get the last child of this CompoundTask and set their Python name.
-
-        Returns
-        -------
-        BaseTask
-            the last child of this CompoundTask
-        """
-        children = self.tasks()
-        if children:
-            return children[-1]
-
-    def compound_child(self, name: str):
-        """Get the compound child task of this CompoundTask by name.
-
-        Parameters
-        ----------
-        name : str
-            name
-
-        Returns
-        -------
-        BaseTask
-            the named child of this CompoundTask
-        """
-        try:
-            return next(filter(lambda t: t.name() == name, self.tasks()))
-        except StopIteration:
-            pass
-
-
-def _makeTask(command_source, name: str) -> BaseTask:
-    task = command_source._workflow.TaskObject[name]
-    kinds = {
-        "Simple": SimpleTask,
-        "Compound Child": CompoundChild,
-        "Compound": CompoundTask,
-        "Composite": CompositeTask,
-        "Conditional": ConditionalTask,
-    }
-    task_type = task.TaskType()
-    if task_type is None:
-        if command_source._compound_child:
-            kind = CompoundChild
-        else:
-            kind = SimpleTask
-    else:
-        kind = kinds[task_type]
-    if not kind:
-        message = (
-            "Unhandled empty workflow task type."
-            if not task_type
-            else f"Unhandled workflow task type, {task_type}."
-        )
-        raise RuntimeError(message)
-    return kind(command_source, task)
-
-
-class Workflow:
-    """Wraps a workflow object, adding methods to discover more about the relationships
-    between task objects.
-
-    Methods
-    -------
-    tasks()
-    __getattr__(attr)
-    __dir__()
-    __call__()
-    """
-
-    _root_affected_cb_by_server = {}
-
-    def __init__(
-        self,
-        workflow: PyMenu,
-        command_source: PyMenu,
-        fluent_version: FluentVersion,
-    ) -> None:
-        """Initialize WorkflowWrapper.
-
-        Parameters
-        ----------
-        workflow : PyMenu
-            The workflow object.
-        command_source : PyMenu
-            The application root for commanding.
-        """
-        self.__dict__.update(
-            dict(
-                _workflow=workflow,
-                _command_source=command_source,
-                _python_task_names=[],
-                _lock=threading.RLock(),
-                _refreshing=False,
-                _dynamic_python_names=False,
-                _refresh_count=0,
-                _ordered_children=[],
-                _task_list=[],
-                _getattr_recurse_depth=0,
-                _main_thread_ident=None,
-                _task_objects={},
-                _python_name_command_id_map={},
-                _python_name_display_id_map={},
-                _python_name_display_text_map={},
-                _repeated_task_python_name_display_text_map={},
-                _initial_task_python_names_map={},
-                _parent_of_compound_child=None,
-                _compound_child_map={},
-                _compound_child=False,
-                _unwanted_attrs={
-                    "reset_workflow",
-                    "initialize_workflow",
-                    "load_workflow",
-                    "insert_new_task",
-                    "create_composite_task",
-                    "create_new_workflow",
-                    "rules",
-                    "service",
-                    "task_object",
-                    "workflow",
-                    "rename",
-                },
-                _fluent_version=fluent_version,
-                _initialized=False,
-            )
-        )
-
-    def task(self, name: str) -> BaseTask:
-        """Get a TaskObject by name, in a ``BaseTask`` wrapper.
-
-        The wrapper adds extra functionality.
-
-        Parameters
-        ----------
-        name : str
-            Task name - the display name, not the internal ID.
-        Returns
-        -------
-        BaseTask
-            wrapped task object.
-        """
-        py_name = self.tasks()[
-            [repr(task) for task in self.tasks()].index(repr(self._task(name)))
-        ].python_name()
-        warnings.warn(
-            f"'task' is deprecated -> Use '{py_name}' instead.",
-            PyFluentDeprecationWarning,
-        )
-        return self._task(name)
-
-    def _task(self, name: str) -> BaseTask:
-        """Get a TaskObject by name, in a ``BaseTask`` wrapper.
-
-        The wrapper adds extra functionality.
-
-        Parameters
-        ----------
-        name : str
-            Task name - the display name, not the internal ID.
-        Returns
-        -------
-        BaseTask
-            wrapped task object.
-        """
-        return _makeTask(self, name)
-
-    def tasks(self, recompute=True) -> list:
-        """Get the ordered task list held by the workflow.
-
-        This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
-        You can obtain other tasks by calling the ``tasks()`` method on a parent task.
-
-        Consider the following workflow.
-
-        Given the workflow::
-
-            Workflow
-            ├── A
-            ├── B
-            │   ├── C
-            │   └── D
-            └── E
-
-        The ordered children of the workflow are A, B, E, while B has ordered children C
-        and D.
-        """
-        if recompute:
-            workflow_state, task_list = self._workflow_and_task_list_state()
-
-            def task_by_id(mappings):
-                def _task_by_id(task_id):
-                    if task_id in mappings:
-                        return mappings[task_id]
-                    # Use suppress to ignore exceptions during task ID resolution fallback without triggering B110
-                    with suppress(Exception):
-                        return self._task_by_id_impl(task_id, workflow_state)
-
-                return _task_by_id
-
-            if task_list != self._task_list:
-                mappings = {
-                    k: v for k, v in zip(self._task_list, self._ordered_children)
-                }
-                self._ordered_children = list(
-                    filter(None, map(task_by_id(mappings), task_list))
-                )
-                self._task_list = task_list
-        return self._ordered_children
-
-    @staticmethod
-    def inactive_tasks() -> list:
-        """Get the inactive ordered task list held by this task.
-
-        Returns
-        -------
-        list
-            Inactive ordered children.
-        """
-        return []
-
-    def __getattr__(self, attr):
-        """Delegate attribute lookup to the wrapped workflow object."""
-        if attr in self._repeated_task_python_name_display_text_map:
-            return self._task(self._repeated_task_python_name_display_text_map[attr])
-        _task_object = self._task_objects.get(attr)
-        if _task_object:
-            return _task_object
-        if attr != "TaskObject" and attr not in self._unwanted_attrs:
-            if not attr.islower():
-                raise AttributeError(
-                    "Camel case attribute access is not supported. "
-                    f"Try using '{camel_to_snake_case(attr)}' instead."
-                )
-            camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
-            attr = camel_attr or attr
-            try:
-                return getattr(self._workflow, attr)
-            except AttributeError:
-                pass
-        return super().__getattribute__(attr)
-
-    def __setattr__(self, attr, value):
-        if attr in self.__dict__:
-            self.__dict__[attr] = value
-        elif attr in self._task_objects:
-            self._task_objects[attr].set_state(value)
-        else:
-            super().__setattr__(attr, value)
-
-    def __dir__(self):
-        """Override the behavior of ``dir`` to include attributes in the
-        ``WorkflowWrapper`` class and the underlying workflow."""
-        arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
-        dir_set = set(
-            list(self.__dict__)
-            + dir(type(self))
-            + arg_list
-            + self.task_names()
-            + list(self._repeated_task_python_name_display_text_map)
-        )
-        dir_set = dir_set - self._unwanted_attrs
-        return sorted(filter(None, dir_set))
-
-    def __call__(self):
-        """Delegate calls to the underlying workflow."""
-        return self._workflow()
-
-    def _workflow_state(self):
-        return self._workflow()
-
-    def _workflow_and_task_list_state(self) -> tuple[dict, dict]:
-        workflow_state = self._workflow_state()
-        prefix = "TaskObject:"
-        task_list = [
-            x.removeprefix(prefix)
-            for x in workflow_state.keys()
-            if x.startswith(prefix)
-        ]
-        return workflow_state, task_list
-
-    def _task_by_id_impl(self, task_id, workflow_state):
-        task_key = "TaskObject:" + task_id
-        task_state = workflow_state[task_key]
-        return self._task(task_state["_name_"])
-
-    def _task_by_id(self, task_id):
-        workflow_state = self._workflow_state()
-        return self._task_by_id_impl(task_id, workflow_state)
-
-    def _activate_dynamic_interface(self, dynamic_interface: bool):
-        self._initialize_methods(dynamic_interface=dynamic_interface)
-
-    def _unsubscribe_root_affected_callback(self):
-        if self._workflow.service in self._root_affected_cb_by_server:
-            self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
-            self._root_affected_cb_by_server.pop(self._workflow.service)
-
-    def _new_workflow(self, name: str, dynamic_interface: bool = True):
-        self._workflow.InitializeWorkflow(WorkflowType=name)
-        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
-
-    def _load_workflow(self, file_path: str, dynamic_interface: bool = True):
-        self._workflow.LoadWorkflow(FilePath=file_path)
-        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
-
-    def _get_initial_task_list_while_creating_new_workflow(self):
-        """Get a list of independent tasks that can be inserted at the initial level
-        while creating a workflow."""
-        self._populate_first_tasks_python_name_command_id_map()
-        return list(self._initial_task_python_names_map)
-
-    def _create_workflow(self, dynamic_interface: bool = True):
-        self._workflow.CreateNewWorkflow()
-        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
-
-    @property
-    def insertable_tasks(self):
-        """Tasks that can be inserted on a blank workflow."""
-        return self._FirstTask(self)
-
-    class _FirstTask:
-        def __init__(self, workflow):
-            """Initialize an ``_FirstTask`` instance."""
-            self._workflow = workflow
-            self._insertable_tasks = []
-            if len(self._workflow.task_names()) == 0:
-                for (
-                    item
-                ) in (
-                    self._workflow._get_initial_task_list_while_creating_new_workflow()
-                ):
-                    insertable_task = type("Insert", (self._Insert,), {})(
-                        self._workflow, item
-                    )
-                    setattr(self, item, insertable_task)
-                    self._insertable_tasks.append(insertable_task)
-
-        def __call__(self):
-            return self._insertable_tasks
-
-        class _Insert:
-            def __init__(self, workflow, name):
-                """Initialize an ``_Insert`` instance."""
-                self._workflow = workflow
-                self._name = name
-
-            def insert(self):
-                """Insert a task in the workflow."""
-                return self._workflow._workflow.InsertNewTask(
-                    CommandName=self._workflow._initial_task_python_names_map[
-                        self._name
-                    ]
-                )
-
-            def __repr__(self):
-                return f"<Insertable '{self._name}' task>"
-
-    def _populate_first_tasks_python_name_command_id_map(self):
-        if not self._initial_task_python_names_map:
-            for command in dir(self._command_source):
-                if command in ["SwitchToSolution", "set_state"]:
-                    continue
-                command_obj = getattr(self._command_source, command)
-                if isinstance(command_obj, PyCommand):
-                    command_obj_instance = command_obj.create_instance()
-                    if not command_obj_instance.get_attr("requiredInputs"):
-                        help_str = command_obj_instance.get_attr(
-                            "APIName"
-                        ) or command_obj_instance.get_attr("helpString")
-                        if help_str:
-                            self._initial_task_python_names_map[help_str] = command
-                    del command_obj_instance
-
-    def _initialize_methods(self, dynamic_interface: bool):
-        _init_task_accessors(self)
-        if dynamic_interface:
-            self._main_thread_ident = threading.get_ident()
-            logger.debug(f"setting main thread to {self._main_thread_ident}")
-
-            def refresh_after_sleep(_):
-                while self._refreshing:
-                    logger.debug("Already _refreshing, ...")
-                self._refreshing = True
-                logger.debug("Call _refresh_task_accessors")
-                _call_refresh_task_accessors(self)
-                self._refresh_count += 1
-                self._refreshing = False
-
-            self._root_affected_cb_by_server[self._workflow.service] = (
-                self.add_on_affected(refresh_after_sleep)
-            )
-
-    def save_workflow(self, file_path: str):
-        """Save the current workflow to the location provided."""
-        self._workflow.SaveWorkflow(FilePath=file_path)
-
-    def load_state(self, list_of_roots: list):
-        """Load the state of the workflow."""
-        self._workflow.LoadState(ListOfRoots=list_of_roots)
-
-    def task_names(self):
-        """Get the list of the Python names for the available tasks."""
-        return [child.python_name() for child in self.tasks()]
-
-    def delete_tasks(self, list_of_tasks: list[str]):
-        """Delete the provided list of tasks.
-
-        Parameters
-        ----------
-        list_of_tasks: list[str]
-            List of task items.
-
-        Returns
-        -------
-        None
+            Next task name.
 
         Raises
         ------
-        ValueError
-            If 'task' does not match a task name, no tasks are deleted.
+        IndexError
+            If current_key is the last key in the dictionary.
         """
-        list_of_tasks_with_display_name = []
-        for task_name in list_of_tasks:
-            try:
-                list_of_tasks_with_display_name.append(
-                    self._python_name_display_id_map[task_name]
-                )
-                self._python_name_display_text_map.pop(task_name, None)
-                if task_name in self._repeated_task_python_name_display_text_map:
-                    self._python_name_command_id_map.pop(task_name, None)
-                    self._python_name_display_id_map.pop(task_name, None)
-                self._repeated_task_python_name_display_text_map.pop(task_name, None)
-            except KeyError as ex:
-                raise ValueError(
-                    f"'{task_name}' is not an allowed task.\n"
-                    "Use the 'task_names()' method to view a list of allowed tasks."
-                ) from ex
+        keys = list(input_dict)
+        idx = keys.index(current_key)
+        if idx == len(keys) - 1:
+            raise IndexError("Reached the end.")
+        return keys[idx + 1]
 
-        return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
-
-
-class ClassicWorkflow:
-    """Wraps a meshing workflow object.
-
-    Methods
-    -------
-    __getattr__(attr)
-    __dir__()
-    __call__()
-    """
-
-    def __init__(
-        self,
-        workflow: PyMenu,
-        command_source: PyMenu,
-        fluent_version: FluentVersion,
-    ) -> None:
-        """Initialize ClassicWorkflow.
+    @staticmethod
+    def _get_previous_key(input_dict, current_key):
+        """Get the key that precedes current_key in an ordered dictionary.
 
         Parameters
         ----------
-        workflow : PyMenu
-            The workflow object.
-        command_source : PyMenu
-            The application root for commanding.
+        input_dict : Dict
+            Ordered dictionary of tasks.
+        current_key : str
+            Current task name.
+
+        Returns
+        -------
+        str
+            Previous task name.
+
+        Raises
+        ------
+        IndexError
+            If current_key is the first key in the dictionary.
         """
-        self._workflow = workflow
-        self._command_source = command_source
-        self._lock = (
-            threading.RLock()
-        )  # TODO: sort out issues with these un-used variables.
-        self._fluent_version = fluent_version
+        keys = list(input_dict)
+        idx = keys.index(current_key)
+        if idx == 0:
+            raise IndexError("In the beginning.")
+        return keys[idx - 1]
 
-    @property
-    def TaskObject(self) -> TaskContainer:
-        # missing from dir
-        """Get a TaskObject container wrapper that 'holds' the underlying TaskObjects.
+    def has_parent(self):
+        """Check if this task has a parent container.
 
-        The wrapper adds extra functionality.
+        Returns
+        -------
+        bool
+            True if task has a parent (Workflow or TaskObject), False otherwise.
         """
-        return TaskContainer(self)
-
-    def __getattr__(self, attr):
-        """Delegate attribute lookup to the wrapped workflow object."""
         try:
-            return getattr(self._workflow, attr)
+            super().__getattribute__("_parent")
+            return True
         except AttributeError:
-            return super().__getattribute__(attr)
+            return False
 
-    def __dir__(self):
-        """Override the behaviour of dir to include attributes in WorkflowWrapper and
-        the underlying workflow."""
-        return sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
-        )
+    def parent(self):
+        """Get the parent container of this task.
 
-    def __call__(self):
-        """Delegate calls to the underlying workflow."""
-        return self._workflow()
+        Returns
+        -------
+        Union[Workflow, TaskObject]
+            The parent container. Can be:
+            - Workflow instance for top-level tasks
+            - TaskObject instance for nested child tasks
+        """
+        return self._parent
+
+    def has_next(self) -> bool:
+        """Check if there is a next sibling task.
+
+        Determines whether this task has a sibling task that follows it in the
+        workflow sequence at the same level.
+
+        Returns
+        -------
+        bool
+            True if a next sibling exists, False if this is the last task.
+        """
+        task_dict = self._parent._ordered_tasks()
+        try:
+            self._get_next_key(task_dict, self.name())
+            return True
+        except IndexError:
+            return False
+
+    def next(self):
+        """Returns the next sibling task item."""
+        task_dict = self._parent._ordered_tasks()
+        next_key = self._get_next_key(task_dict, self.name())
+        return task_dict[next_key]
+
+    def has_previous(self) -> bool:
+        """Check if there is a previous sibling task.
+
+        Determines whether this task has a sibling task that precedes it in the
+        workflow sequence at the same level.
+
+        Returns
+        -------
+        bool
+            True if a previous sibling exists, False if this is the first task.
+        """
+        task_dict = self._parent._ordered_tasks()
+        try:
+            self._get_previous_key(task_dict, self.name())
+            return True
+        except IndexError:
+            return False
+
+    def previous(self):
+        """Returns the previous sibling task item."""
+        task_dict = self._parent._ordered_tasks()
+        previous_key = self._get_previous_key(task_dict, self.name())
+        return task_dict[previous_key]
+
+    def _ordered_tasks(self):
+        if not self._task_names():
+            return OrderedDict()
+
+        workflow = self._workflow
+
+        # Create lightweight lookup: task type -> display name
+        type_to_name = dict(item.split(":") for item in workflow.task_object())
+
+        # Get ordered list of display names for this level
+        ordered_names = self._task_names()
+
+        # Build ordered dict by wrapping only the tasks that are in ordered_names
+        sorted_dict = OrderedDict()
+        for display_name in ordered_names:
+            # Find the matching task type for this display name
+            for task_type, name in type_to_name.items():
+                if name == display_name:
+                    wrapped = make_task_wrapper(
+                        getattr(workflow.task_object, task_type)[display_name],
+                        task_type,
+                        workflow,
+                        self,
+                        self._meshing_root,
+                    )
+                    sorted_dict[display_name] = wrapped
+                    break
+
+        return sorted_dict
+
+    def delete(self):
+        """Deletes the task item on which it is called."""
+        self._workflow.general.delete_tasks(list_of_tasks=[self.name()])
+
+    def __repr__(self):
+        try:
+            suffix = int(self.name().split()[-1])
+        except (TypeError, ValueError):
+            suffix = 0
+        return f"task < {self._name}: {suffix} >"
 
 
-class ReadOnlyObject:
-    """Removes ``set_state()`` to implement read-only behavior."""
+def build_specific_interface(task_object):
+    """
+    Build a dynamic interface type that exposes task-specific
+    commands/properties while delegating back to the task_object.
+    """
 
-    _unwanted_attr = ["set_state", "setState"]
+    def make_delegate(attr):
+        target = getattr(task_object, attr)
 
-    def __init__(self, cmd):
-        """Initialize this object."""
-        self._cmd = cmd
+        # If this is a bound method, unwrap it
+        func = getattr(target, "__func__", target)
 
-    def is_read_only(self):
-        """Get the read-only status of this object."""
-        return True
+        @wraps(func)
+        def delegate(self, *args, **kwargs):
+            return getattr(self._task_object, attr)(*args, **kwargs)
 
-    def __getattr__(self, attr):
-        if attr in ReadOnlyObject._unwanted_attr:
-            raise AttributeError("Command Arguments are read-only.")
-        return getattr(self._cmd, attr)
+        # Force friendly names for help()/pydoc
+        delegate.__name__ = attr
+        delegate.__qualname__ = f"{task_object.__class__.__name__}.{attr}"
 
-    def __dir__(self):
-        returned_list = sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
-        )
-        for attr in ReadOnlyObject._unwanted_attr:
-            if attr in returned_list:
-                returned_list.remove(attr)
-        return returned_list
+        try:
+            sig = inspect.signature(target)
+            delegate.__signature__ = sig
+            # pydoc uses __text_signature__ when present
+            delegate.__text_signature__ = str(sig)
+        except (TypeError, ValueError):
+            # guards cases where Python can’t derive a signature (e.g., some C-implemented callables),
+            # so the wrapper still works even if signature extraction fails.
+            pass
 
-    def __call__(self):
-        return self._cmd()
+        # Preserve docstring explicitly (wraps may not)
+        if func.__doc__:
+            delegate.__doc__ = func.__doc__
+
+        return delegate
+
+    # Determine the API surface of the underlying task:
+    public_members = {
+        name
+        for name in dir(task_object)
+        if not name.startswith("_") and callable(getattr(task_object, name))
+    }
+
+    # Build the namespace (class dictionary) for a new dynamic interface class where
+    # each public member is replaced by a lightweight delegating wrapper.
+    # The delegate forwards the call to self._task_object.<method>(*args, **kwargs).
+    namespace = {name: make_delegate(name) for name in public_members}
+
+    # Give the interface a friendly, human-readable class name based on the display name
+    # of the underlying task. task_object._name_() returns the display name, e.g., "Import Geometry".
+    # This produces "Import Geometry Interface" for clearer repr/help/pydoc.
+    iface_name = f"{task_object._name_()} Interface"
+
+    # Dynamically create the interface type with the computed name and namespace.
+    # This class only contains the delegated methods; it does not yet include TaskObject behavior.
+    return type(iface_name, (), namespace)
+
+
+def make_task_wrapper(task_obj, name, workflow, parent, meshing_root):
+    """Wraps TaskObjects."""
+
+    # Build the method-only dynamic interface for the concrete task (e.g., "Import Geometry Interface").
+    specific_interface = build_specific_interface(task_obj)
+
+    # Create a concrete wrapper class that:
+    # - Inherits from the task-specific interface (delegated methods)
+    # - Inherits from TaskObject (core wrapper features: navigation, insert, children, etc.)
+    #
+    # The resulting class name is also human-friendly:
+    #   f"{task_obj._name_()} Task" -> "Import Geometry Task" for the Import Geometry TaskObject.
+    combined_type = type(
+        f"{task_obj._name_()} Task", (specific_interface, TaskObject), {}
+    )
+
+    # Instantiate and return the wrapper. Instances expose:
+    # - TaskObject features (parent/next/prev/children/execute/etc.)
+    # - Task-specific delegated methods from the datamodel via the interface
+    return combined_type(task_obj, name, workflow, parent, meshing_root)

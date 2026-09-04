@@ -31,7 +31,7 @@ import warnings
 
 from deprecated.sphinx import deprecated
 
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
 
 
 def deprecate_arguments(
@@ -111,12 +111,12 @@ def deprecate_arguments(
         reason = f"Argument {old_str} is deprecated; use {new_str} instead."
 
     def decorator(func: Callable):
-        deprecated_func = deprecated(version=version, reason=reason)(func)
-
-        @functools.wraps(deprecated_func)
+        @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # Warn only if any old arg(s) present
-            if any(arg in kwargs for arg in old_args):
+            has_deprecated_args = any(arg in kwargs for arg in old_args)
+
+            # Warn and convert only when deprecated arg(s) are actually present.
+            if has_deprecated_args:
                 warnings.warn(
                     reason,
                     warning_cls,
@@ -135,7 +135,8 @@ def deprecate_arguments(
                         f"Converter must accept either (kwargs) or (kwargs, old_args, new_args), "
                         f"but got {n_params} parameter(s): {list(params)}"
                     )
-            return deprecated_func(*args, **kwargs)
+
+            return func(*args, **kwargs)
 
         return wrapper
 

@@ -1,0 +1,181 @@
+name: Promote Candidate Fluent Image
+
+on:
+  schedule: # UTC at 0300
+    - cron: "0 0 * * SUN,WED"
+  workflow_dispatch:
+
+concurrency:
+  group: promote-candidate-fluent-image-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read # Required for actions/checkout and repository reads.
+  packages: read # Required for docker/login-action access to GHCR images.
+
+env:
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYTEST_XDIST_AUTO_NUM_WORKERS: 1
+  PYFLUENT_LAUNCH_CONTAINER: 1
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
+  PYFLUENT_HIDE_LOG_SECRETS: 1
+  PYTHON_VERSION: "3.12"
+  FLUENT_IMAGE_TAG: v27.1.latest
+  FLUENT_VERSION: 271
+
+jobs:
+  test:
+    name: Run Tests to Promote Candidate Fluent Image
+    runs-on: [self-hosted, pyfluent]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Cache pip
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+
+      - name: Add version information
+        run: make version-info
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+
+      - name: Run API codegen
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+
+      - name: Print Fluent version info
+        env:
+          VERSION: ${{ env.FLUENT_VERSION }}
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: Unit Testing
+        id: unittest
+        run: |
+          make install-test
+          make unittest-all-${VERSION}
+        env:
+          VERSION: ${{ env.FLUENT_VERSION }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+        continue-on-error: true
+
+      - name: Update Fluent image
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+          IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+        if: github.ref == 'refs/heads/main' && steps.unittest.outcome == 'success'
+        run: |
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${IMAGE_TAG} | sed 's/.*@//')
+          gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
+
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
+        if: github.event_name == 'schedule' && steps.unittest.outcome != 'success'
+        run: | # zizmor: ignore[template-injection]
+          STATUS="Failure"
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+
+          JSON_PAYLOAD=$(jq -n \
+            --arg status "$STATUS" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg commit "${{ github.sha }}" \
+            --arg commit_url "$COMMIT_URL" \
+            --arg run_url "$RUN_URL" \
+            '{
+              "attachments": [
+                {
+                  "contentType": "application/vnd.microsoft.card.adaptive",
+                  "content": {
+                    "type": "AdaptiveCard",
+                    "version": "1.2",
+                    "body": [
+                      {
+                        "type": "TextBlock",
+                        "weight": "Bolder",
+                        "size": "Medium",
+                        "text": "${{ github.workflow }}"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Status: \($status)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Branch: \($branch)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Commit: \($commit)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "[View Commit](\($commit_url))"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "[View Run](\($run_url))"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }'
+          )
+
+          echo "Sending notification to Power Automate..."
+          curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
+
+      - name: Check test run status and fail the whole job if tests failed
+        if: steps.unittest.outcome != 'success'
+        run: |
+          echo "One or more tests failed. Failing the job."
+          exit 1

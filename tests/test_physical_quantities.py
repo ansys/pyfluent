@@ -35,7 +35,7 @@ from ansys.fluent.core import (
     VectorFieldDataRequest,
     examples,
 )
-from ansys.fluent.core.file_session import FileSession
+from ansys.fluent.core.session.file import FileSession
 from ansys.units.variable_descriptor import VariableCatalog
 
 

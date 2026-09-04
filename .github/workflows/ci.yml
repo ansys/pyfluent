@@ -66,7 +66,7 @@ jobs:
       contents: write # Required to commit and push CHANGELOG updates.
       pull-requests: write # Required to create or update changelog PRs.
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+      - uses: ansys/actions/doc-deploy-changelog@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running Vale
-        uses: ansys/actions/doc-style@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+        uses: ansys/actions/doc-style@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -89,7 +89,7 @@ jobs:
 
     steps:
       - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+        uses: ansys/actions/code-style@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: false
@@ -135,12 +135,13 @@ jobs:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-pr-title@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+      - uses: ansys/actions/check-pr-title@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   test-import:
     name: Build and Smoke tests
+    needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -153,18 +154,30 @@ jobs:
           - should-release: false
             os: macos-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download generated API files
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: generated-api-files
+          path: src/ansys/fluent/core/generated
+
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+        uses: ansys/actions/build-wheelhouse@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
+          checkout: false
 
   check-vulnerabilities:
     name: "Check library vulnerabilities"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-vulnerabilities@9dc4e3161033d2c2485fbf9687d40cfb7a661fb2 # v10.3.6
+      - uses: ansys/actions/check-vulnerabilities@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -178,7 +191,7 @@ jobs:
     name: "Actions Security"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-actions-security@84b6533ae76f5dde69a1df26c18682160a8121cf # v10.3.5
+      - uses: ansys/actions/check-actions-security@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -260,7 +273,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -356,7 +369,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -388,7 +401,6 @@ jobs:
       - name: Print 24.2 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_242.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 25.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -406,7 +418,6 @@ jobs:
       - name: Print 25.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_251.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 25.2 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -424,7 +435,6 @@ jobs:
       - name: Print 25.2 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_252.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_252 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 26.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -441,7 +451,6 @@ jobs:
       - name: Print 26.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_261.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 27.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -458,7 +467,13 @@ jobs:
       - name: Print 27.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_271.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Upload generated API files
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: generated-api-files
+          path: src/ansys/fluent/core/generated/
+          retention-days: 7
 
       - name: Install again after codegen
         run: |
@@ -467,7 +482,7 @@ jobs:
 
       - name: Check package
         run: |
-          pip install twine
+          pip install 'twine>=7.0.0' 'packaging>=26.1'
           twine check dist/*
 
       - name: Upload package
@@ -543,7 +558,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -622,7 +637,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -717,7 +732,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -766,7 +781,7 @@ jobs:
 
       - name: Upload to Private PyPi
         run: |
-          pip install 'twine<6.2.0'
+          pip install 'twine>=7.0.0' 'packaging>=26.1'
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
@@ -775,7 +790,7 @@ jobs:
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # v1.14.1
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true

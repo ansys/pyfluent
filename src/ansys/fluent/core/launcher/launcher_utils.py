@@ -35,8 +35,11 @@ import time
 from typing import Any
 import warnings
 
-from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.exceptions import InvalidArgument, PyFluentDeprecationWarning
+from ansys.fluent.core.launcher.error_warning_messages import (
+    LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA,
+    LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
+)
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -241,3 +244,87 @@ def _build_journal_argument(
         return fluent_jou_arg
 
     return _impl(topy, journal_file_names)
+
+
+def _validate_lightweight_with_journal(
+    lightweight_mode: bool | None, journal_file_names: None | str | list[str]
+) -> tuple[bool, str | None]:
+    """Validate that lightweight_mode and journal_file_names are not both provided.
+
+    Parameters
+    ----------
+    lightweight_mode : bool | None
+        Lightweight mode flag.
+    journal_file_names : None | str | list[str]
+        Journal file names.
+
+    Returns
+    -------
+    tuple[bool, str | None]
+        A tuple where:
+        - First element (bool): True if lightweight_mode should be disabled, False otherwise.
+        - Second element (str | None): Warning message if lightweight_mode should be disabled, None otherwise.
+    """
+    if lightweight_mode and journal_file_names:
+        return (True, LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL)
+    return (False, None)
+
+
+def _validate_lightweight_with_case_data(
+    lightweight_mode: bool | None, case_data_file_name: None | str
+) -> tuple[bool, str | None]:
+    """Validate that lightweight_mode and case_data_file_name are not both provided.
+
+    Parameters
+    ----------
+    lightweight_mode : bool | None
+        Lightweight mode flag.
+    case_data_file_name : None | str
+        Case-data file name.
+
+    Returns
+    -------
+    tuple[bool, str | None]
+        A tuple where:
+        - First element (bool): True if lightweight_mode should be disabled, False otherwise.
+        - Second element (str | None): Warning message if lightweight_mode should be disabled, None otherwise.
+    """
+    if lightweight_mode and case_data_file_name:
+        return (True, LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA)
+    return (False, None)
+
+
+def _build_case_data_arguments(
+    case_file_name: None | str, case_data_file_name: None | str
+) -> str:
+    """Build Fluent commandline case and data file arguments.
+
+    Parameters
+    ----------
+    case_file_name : None | str
+        Path to the case file.
+    case_data_file_name : None | str
+        Path to the case-data file. Must be provided together with
+        ``case_file_name``; a data file on its own is not a valid Fluent CLI
+        input.
+
+    Returns
+    -------
+    str
+        Fluent's case/data arguments string.
+
+    Raises
+    ------
+    InvalidArgument
+        If ``case_data_file_name`` is provided without ``case_file_name``.
+    """
+    if case_data_file_name and not case_file_name:
+        raise InvalidArgument(
+            "'case_data_file_name' requires 'case_file_name' to also be provided."
+        )
+    fluent_case_data_arg = ""
+    if case_file_name:
+        fluent_case_data_arg += f' -case "{str(case_file_name)}"'
+    if case_data_file_name:
+        fluent_case_data_arg += f' -data "{str(case_data_file_name)}"'
+    return fluent_case_data_arg

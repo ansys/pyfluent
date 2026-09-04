@@ -235,7 +235,7 @@ def sun_vec_to_beam_dir(
 
 def get_surf_mean_temp(
     surf_names: list[str],
-    solver: pyfluent.session_solver.Solver,
+    solver: pyfluent.session.solver.Solver,
 ) -> float:
     """Calculate mean surface temperature."""
     # Get surface IDs

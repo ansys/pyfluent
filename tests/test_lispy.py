@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core.filereader import lispy
+from ansys.fluent.core.file_reader import lispy
 
 scm_pys = (
     ("()", []),
@@ -49,6 +49,18 @@ scm_pys = (
 extra_scm_pys = (
     ("(define x)", ["define", "x", None]),
     ('(define "x")', []),
+    # A line nested within a multi-line buffer closes one string
+    # and opens another. This results in an even quote count for that specific
+    # line alone, but the cumulative buffer count remains odd.
+    #
+    # How the parser processes it line by line:
+    # Line 1: '("string1\n'           -> Buffer quotes: 1 (Odd)  -> Keeps reading
+    # Line 2: ' string2"\n "string3\n' -> Line quotes: 2 (Even)  -> Buffer quotes: 3 (Odd) -> Keeps reading
+    # Line 3: ' string4")'            -> Line quotes: 1 (Odd)   -> Buffer quotes: 4 (Even) -> Finishes string
+    (
+        '("string1\n string2"\n "string3\n string4")',
+        ['"string1\n string2"', '"string3\n string4"'],
+    ),
 )
 
 

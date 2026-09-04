@@ -215,24 +215,16 @@ def _write_function_stub(name, data, s_stub):
     s_stub.write('        """\n')
 
 
-def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
-    # We are traversing the class tree from root to leaves. But the class definitions must
-    # be written to the file from leaves to root. We gather the parent definition within
-    # in a string buffer which is written after writing the child class definitions.
-    s = StringIO()
-    s_stub = StringIO()
-    child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
-    bases = _construct_bases(data["bases"], child_object_name)
-    bases = ", ".join(bases)
-    bases_stub = _construct_bases_stub(data["bases"], child_object_name)
-    bases_stub = ", ".join(bases_stub)
+def _write_class_header(s, s_stub, cls_name, bases, bases_stub, data):
+    doc = data["doc"].strip().replace("\n", "\n    ")
     s.write(f"class {cls_name}({bases}):\n")
     s_stub.write(f"class {cls_name}({bases_stub}):\n")
-    doc = data["doc"]
-    doc = doc.strip().replace("\n", "\n    ")
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
+
+
+def _write_scalar_attrs(s, s_stub, python_name, data):
     s.write(f"    _version = {data['version']!r}\n")
     deprecated = data["deprecated_version"]
     if deprecated:
@@ -247,6 +239,9 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s_stub.write("    _version: str\n")
     s_stub.write("    fluent_name: str\n")
     s_stub.write("    _python_name: str\n")
+
+
+def _write_name_lists(s, s_stub, data):
     child_names = data["child_names"]
     if child_names:
         s.write(f"    child_names = {child_names}\n")
@@ -263,47 +258,45 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if argument_names:
         s.write(f"    argument_names = {argument_names}\n")
         s_stub.write("    argument_names: list[str]\n")
-    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
-    if data["child_classes"]:
-        s.write("    _child_classes = dict(\n")
-        for k, v in data["child_classes"].items():
-            name = v["name"]
-            # Retrieving the original python name before get_cls() modifies it.
-            child_python_name = to_python_name(v["fluent_name"])
-            hash_ = _gethash(v)
-            # We are within a tree-traversal, so the global _NAME_BY_HASH dict
-            # must be updated immediately at the point of lookup. Same lookup
-            # can happen at a child-level which will be evaluated incorrectly
-            # without the previous lookup result.
-            unique_name = _NAME_BY_HASH.get(hash_)
-            if not unique_name:
-                unique_name = _get_unique_name(name)
-                _NAME_BY_HASH[hash_] = unique_name
-            s.write(f"        {k}={unique_name},\n")
-            # We include the child-class to write irrespective of the above
-            # _NAME_BY_HASH lookup result and later use the global _CLASS_WRITTEN
-            # set to avoid duplicate writes. This is necessary because class
-            # definition must be written to the file before writing its usage.
-            # If we didn't have this constraint, we could include the child-class
-            # to write only if it is not found in the _NAME_BY_HASH dict and avoid
-            # the _CLASS_WRITTEN set.
-            if k in command_names + query_names:
-                _write_function_stub(k, v, s_stub)
-                classes_to_write[unique_name] = (child_python_name, v, hash_, False)
-            else:
-                s_stub.write(f"    {k}: {unique_name}\n")
-                classes_to_write[unique_name] = (child_python_name, v, hash_, True)
-        s.write("    )\n")
-    if child_object_name:
-        child_object_type = data["child_object_type"]
-        s.write(f"    child_object_type = {child_object_name}\n")
-        classes_to_write[child_object_name] = (
-            f"{python_name}_child",
-            child_object_type,
-            _gethash(child_object_type),
-            True,
-        )
-        s_stub.write(f"    child_object_type: {child_object_name}\n")
+
+
+def _collect_child_classes(s, s_stub, data, classes_to_write):
+    if not data["child_classes"]:
+        return
+    command_names = data["command_names"]
+    query_names = data["query_names"]
+    s.write("    _child_classes = dict(\n")
+    for k, v in data["child_classes"].items():
+        name = v["name"]
+        # Retrieving the original python name before get_cls() modifies it.
+        child_python_name = to_python_name(v["fluent_name"])
+        hash_ = _gethash(v)
+        # We are within a tree-traversal, so the global _NAME_BY_HASH dict
+        # must be updated immediately at the point of lookup. Same lookup
+        # can happen at a child-level which will be evaluated incorrectly
+        # without the previous lookup result.
+        unique_name = _NAME_BY_HASH.get(hash_)
+        if not unique_name:
+            unique_name = _get_unique_name(name)
+            _NAME_BY_HASH[hash_] = unique_name
+        s.write(f"        {k}={unique_name},\n")
+        # We include the child-class to write irrespective of the above
+        # _NAME_BY_HASH lookup result and later use the global _CLASS_WRITTEN
+        # set to avoid duplicate writes. This is necessary because class
+        # definition must be written to the file before writing its usage.
+        # If we didn't have this constraint, we could include the child-class
+        # to write only if it is not found in the _NAME_BY_HASH dict and avoid
+        # the _CLASS_WRITTEN set.
+        if k in command_names + query_names:
+            _write_function_stub(k, v, s_stub)
+            classes_to_write[unique_name] = (child_python_name, v, hash_, False)
+        else:
+            s_stub.write(f"    {k}: {unique_name}\n")
+            classes_to_write[unique_name] = (child_python_name, v, hash_, True)
+    s.write("    )\n")
+
+
+def _write_optional_attrs(s, s_stub, data):
     child_aliases = data["child_aliases"]
     if child_aliases:
         s.write("    _child_aliases = dict(\n")
@@ -328,6 +321,33 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if data["has_migration_adapter"]:
         s.write("    _has_migration_adapter = True\n")
         s_stub.write("    _has_migration_adapter: bool\n")
+
+
+def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
+    # We are traversing the class tree from root to leaves. But the class definitions must
+    # be written to the file from leaves to root. We gather the parent definition within
+    # in a string buffer which is written after writing the child class definitions.
+    s = StringIO()
+    s_stub = StringIO()
+    child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
+    bases = ", ".join(_construct_bases(data["bases"], child_object_name))
+    bases_stub = ", ".join(_construct_bases_stub(data["bases"], child_object_name))
+    _write_class_header(s, s_stub, cls_name, bases, bases_stub, data)
+    _write_scalar_attrs(s, s_stub, python_name, data)
+    _write_name_lists(s, s_stub, data)
+    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
+    _collect_child_classes(s, s_stub, data, classes_to_write)
+    if child_object_name:
+        child_object_type = data["child_object_type"]
+        s.write(f"    child_object_type = {child_object_name}\n")
+        classes_to_write[child_object_name] = (
+            f"{python_name}_child",
+            child_object_type,
+            _gethash(child_object_type),
+            True,
+        )
+        s_stub.write(f"    child_object_type: {child_object_name}\n")
+    _write_optional_attrs(s, s_stub, data)
     s.write("\n")
     s_stub.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
@@ -364,7 +384,6 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     start_time = time.time()
     api_tree = {}
     sinfo = static_infos.get(StaticInfoType.SETTINGS)
-    shash = _gethash(sinfo)
     if not sinfo:
         return {"<solver_session>": api_tree}
     output_dir = (pyfluent.config.codegen_outdir / "solver").resolve()
@@ -399,7 +418,6 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
         f_stub.write("from typing import Any, Final\n\n")
-        f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
         _write_data(name, name, data, f, f_stub)

@@ -24,7 +24,7 @@
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.parametric import (
+from ansys.fluent.core.legacy.local_parametric_study import (
     LocalParametricStudy,
     convert_design_point_parameter_units,
 )

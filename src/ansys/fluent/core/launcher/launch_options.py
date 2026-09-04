@@ -30,19 +30,19 @@ import warnings
 
 if TYPE_CHECKING:
     from ansys.fluent.core.fluent_connection import FluentConnection
-    from ansys.fluent.core.session_meshing import Meshing
-    from ansys.fluent.core.session_pure_meshing import PureMeshing
-    from ansys.fluent.core.session_solver import Solver
-    from ansys.fluent.core.session_solver_aero import SolverAero
-    from ansys.fluent.core.session_solver_icing import SolverIcing
+    from ansys.fluent.core.session.meshing import Meshing
+    from ansys.fluent.core.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.session.solver import Solver
+    from ansys.fluent.core.session.solver_aero import SolverAero
+    from ansys.fluent.core.session.solver_icing import SolverIcing
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.exceptions import DisallowedValuesError, PyFluentUserWarning
+import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.error_warning_messages import (
     BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
 )
 from ansys.fluent.core.launcher.launcher_utils import is_windows
-from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 __all__ = (
@@ -137,21 +137,27 @@ class FluentMode(FluentEnum):
     def _default(self):
         return self.SOLVER
 
-    def _get_enum_map(self):
-        from ansys.fluent.core.session_meshing import Meshing
-        from ansys.fluent.core.session_pure_meshing import PureMeshing
-        from ansys.fluent.core.session_solver import Solver
-        from ansys.fluent.core.session_solver_aero import SolverAero
-        from ansys.fluent.core.session_solver_icing import SolverIcing
+    @classmethod
+    def _get_enum_map(cls):
+        from ansys.fluent.core.session.meshing import Meshing
+        from ansys.fluent.core.session.pure_meshing import PureMeshing
+        from ansys.fluent.core.session.solver import Solver
+        from ansys.fluent.core.session.solver_aero import SolverAero
+        from ansys.fluent.core.session.solver_icing import SolverIcing
 
         return {
-            self.MESHING: Meshing,
-            self.PURE_MESHING: PureMeshing,
-            self.SOLVER: Solver,
-            self.SOLVER_ICING: SolverIcing,
-            self.SOLVER_AERO: SolverAero,
-            self.PRE_POST: Solver,
+            cls.MESHING: Meshing,
+            cls.PURE_MESHING: PureMeshing,
+            cls.SOLVER: Solver,
+            cls.SOLVER_ICING: SolverIcing,
+            cls.SOLVER_AERO: SolverAero,
+            cls.PRE_POST: Solver,
         }
+
+    @classmethod
+    def from_session_class(cls, session_class):
+        """Get the FluentMode corresponding to a session class."""
+        return {v: k for k, v in cls._get_enum_map().items()}.get(session_class)
 
     @staticmethod
     def is_meshing(mode: "FluentMode") -> bool:
@@ -182,7 +188,9 @@ class UIMode(FluentEnum):
 
     def _default(self):
         # Not using NO_GUI in windows as it opens a new cmd or
-        # shows Fluent output in the current cmd if start <launch_string> is not used
+        # shows Fluent output in the current cmd if start <launch_string> is not used.
+        # Note: HIDDEN_GUI is not supported inside containers and the default value will be
+        # downgraded to NO_GUI on windows host automatically by the container launcher.
         return self.HIDDEN_GUI if is_windows() else self.NO_GUI
 
     def _get_enum_map(self):

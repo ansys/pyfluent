@@ -1,5 +1,5 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
+requires = ["flit_core >=3.2,<5"]
 build-backend = "flit_core.buildapi"
 
 [project]
@@ -22,7 +22,7 @@ dependencies = [
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
-    "ansys-units~=0.12.1",
+    "ansys-units>=0.10,<1.0",
     "defusedxml>=0.7.1",
     "deprecated>=1.2.18",
     "docker>=7.1.0",
@@ -53,12 +53,12 @@ tests = [
     "pytest-xdist==3.8.0",
     "pyfakefs==6.2.0",
     "ansys-platform-instancemanagement==1.1.2",
-    "ansys-tools-common==0.5.1",
+    "ansys-tools-common==0.5.2",
     "docker==7.1.0",
     "grpcio==1.81.1",
     "grpcio-health-checking==1.81.1",
     "grpcio-status==1.81.1",
-    "grpcio-reflection==1.81.1",
+    "grpcio-reflection==1.83.0",
     "numpy==2.5.0",
 ]
 docs = [
@@ -83,20 +83,20 @@ docs = [
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.9.38",
+    "quarto-cli==1.10.18",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
     "ansys-platform-instancemanagement==1.1.2",
-    "ansys-tools-common==0.5.1",
+    "ansys-tools-common==0.5.2",
     "docker==7.1.0",
     "grpcio==1.81.1",
     "grpcio-health-checking==1.81.1",
     "grpcio-status==1.81.1",
-    "grpcio-reflection==1.81.1",
+    "grpcio-reflection==1.83.0",
     "numpy==2.5.0",
 ]
 ci_types = [
-    "basedpyright==1.39.8",
+    "basedpyright==1.39.10",
     "ansys-fluent-visualization",
     "h5py",
     "pytest",

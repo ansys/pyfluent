@@ -52,7 +52,10 @@ import weakref
 if TYPE_CHECKING:
     import numpy as np
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.exceptions import (
+    DisallowedValuesError,
+    PyFluentDeprecationWarning,
+)
 from ansys.fluent.core.fields.field_data_interfaces import (
     BaseFieldDataSource,
     BaseFieldInfo,
@@ -74,7 +77,6 @@ from ansys.fluent.core.fields.field_data_interfaces import (
     _VectorFields,
     get_surfaces_from_objects,
 )
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
