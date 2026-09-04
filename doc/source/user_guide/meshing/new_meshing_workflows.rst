@@ -27,8 +27,8 @@ Import geometry
     from ansys.fluent.core import examples
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = pyfluent.Meshing.from_install(
+        precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     watertight = pyfluent.WatertightMeshing(session=meshing_session)
     import_geometry = watertight.import_geometry
@@ -129,7 +129,7 @@ Import CAD and part management
     import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
-    meshing_session = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode=pyfluent.FluentMode.MESHING)
+    meshing_session = pyfluent.Meshing.from_install(precision=pyfluent.Precision.DOUBLE, processor_count=2)
 
     fault_tolerant = FaultTolerantMeshing(session=meshing_session)
     fault_tolerant.parts.input_file_changed(
@@ -380,8 +380,8 @@ Import geometry
     from ansys.fluent.core import examples, TwoDimensionalMeshing
 
     import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = pyfluent.Meshing.from_install(
+        precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     two_dim_mesh = TwoDimensionalMeshing(session=meshing_session)
 
@@ -518,8 +518,8 @@ Create workflow
     from ansys.fluent.core import examples, CreateMeshingWorkflow
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = pyfluent.Meshing.from_install(
+        precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     custom_workflow = CreateMeshingWorkflow(session=meshing_session)
 
@@ -563,8 +563,8 @@ Load workflow
     saved_workflow_path = examples.download_file(
         "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
     )
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = pyfluent.Meshing.from_install(
+        precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     loaded_workflow = LoadMeshingWorkflow(session=meshing_session, file_path=saved_workflow_path)
 
@@ -577,8 +577,8 @@ You can insert tasks into a workflow using the workflow object.
 
     import ansys.fluent.core as pyfluent
 
-    meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
+    meshing_session = pyfluent.Meshing.from_install(
+        precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     watertight = meshing_session.watertight()
     watertight.import_geometry.insertable_tasks()

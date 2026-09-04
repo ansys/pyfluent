@@ -28,7 +28,7 @@ Depending on how Fluent is launched, different file transfer strategies are avai
 
       >>> case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
-      >>> session = pyfluent.launch_fluent()
+      >>> session = pyfluent.Solver.from_install()
       >>> session.settings.file.read_case(file_name=case_file)
       >>> session.settings.file.write_case(file_name="write_mixing_elbow.cas.h5")
 
@@ -55,7 +55,7 @@ Depending on how Fluent is launched, different file transfer strategies are avai
 
       >>> file_transfer_service = ContainerFileTransferStrategy()
       >>> container_dict = {"mount_source": file_transfer_service.mount_source}
-      >>> session = pyfluent.launch_fluent(file_transfer_service=file_transfer_service, container_dict=container_dict)
+      >>> session = pyfluent.Solver.from_container(file_transfer_service=file_transfer_service, container_dict=container_dict)
       >>> session.settings.file.read_case(file_name=case_file)
       >>> session.settings.file.write_case(file_name="write_mixing_elbow.cas.h5")
 
@@ -80,7 +80,7 @@ Depending on how Fluent is launched, different file transfer strategies are avai
 
       >>> mesh_file = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
-      >>> session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=StandaloneFileTransferStrategy())
+      >>> session = pyfluent.Meshing.from_install(file_transfer_service=StandaloneFileTransferStrategy())
       >>> session.upload(file_name=mesh_file, remote_file_name="elbow.msh.h5")
       >>> session.meshing.File.ReadMesh(FileName="elbow.msh.h5")
       >>> session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")

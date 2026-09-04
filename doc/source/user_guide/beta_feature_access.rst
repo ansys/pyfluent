@@ -24,7 +24,7 @@ Example usage:
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.launch_fluent(mode="meshing")
+  >>> meshing_session = pyfluent.Meshing.from_install()
 
   >>> # Feature is available before enabling beta features, but unusable and raises 'BetaFeaturesNotEnabled'
   >>> assert hasattr(meshing_session, "topology_based")
@@ -53,7 +53,7 @@ Example usage:
 
 .. code-block:: python
 
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
 
   >>> # Method available before enabling beta features, but unusable and raises 'BetaFeaturesNotEnabled'
   >>> assert hasattr(solver_session, "switch_to_meshing")
