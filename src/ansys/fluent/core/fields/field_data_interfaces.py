@@ -688,7 +688,8 @@ class _AllowedSurfaceIDs(_AllowedNames):
                 for _, info in self._field_info._get_surfaces_info().items()
             ]
         except (KeyError, IndexError):
-            pass
+            warnings.warn("Unable to retrieve surface ids from Fluent")
+            return []
 
 
 class FieldUnavailableError(RuntimeError):

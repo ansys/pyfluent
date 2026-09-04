@@ -30,7 +30,7 @@ Import geometry
     meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    watertight = meshing_session.watertight()
+    watertight = pyfluent.WatertightMeshing(session=meshing_session)
     import_geometry = watertight.import_geometry
     import_geometry.file_name = import_file_name
     import_geometry.length_unit = "in"
@@ -124,14 +124,14 @@ Import CAD and part management
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples
+    from ansys.fluent.core import examples, FaultTolerantMeshing
 
     import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
     meshing_session = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode=pyfluent.FluentMode.MESHING)
 
-    fault_tolerant = meshing_session.fault_tolerant()
+    fault_tolerant = FaultTolerantMeshing(session=meshing_session)
     fault_tolerant.parts.input_file_changed(
      file_path=import_file_name, ignore_solid_names=False, part_per_body=False
     )
@@ -377,13 +377,13 @@ Import geometry
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples
+    from ansys.fluent.core import examples, TwoDimensionalMeshing
 
     import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
     meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    two_dim_mesh = meshing_session.two_dimensional_meshing()
+    two_dim_mesh = TwoDimensionalMeshing(session=meshing_session)
 
     load_cad = two_dim_mesh.load_cad_geometry
     load_cad.file_name = import_file_name
@@ -507,7 +507,7 @@ Switching to solver is not allowed in 2D Meshing mode.
 
 Creating a new workflow
 -----------------------
-The following example shows you how to use ``create_workflow()`` to build a custom workflow.
+The following example shows you how to use ``CreateMeshingWorkflow`` to build a custom workflow.
 
 Create workflow
 ~~~~~~~~~~~~~~~
@@ -515,13 +515,13 @@ Create workflow
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples
+    from ansys.fluent.core import examples, CreateMeshingWorkflow
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
     meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    custom_workflow = meshing_session.create_workflow()
+    custom_workflow = CreateMeshingWorkflow(session=meshing_session)
 
 Insert first task
 ~~~~~~~~~~~~~~~~~
@@ -550,7 +550,7 @@ Save workflow
 
 Loading a saved workflow
 ------------------------
-The following example shows you how to use ``load_workflow()`` to load a previously saved workflow.
+The following example shows you how to use ``LoadMeshingWorkflow`` to load a previously saved workflow.
 
 Load workflow
 ~~~~~~~~~~~~~
@@ -558,7 +558,7 @@ Load workflow
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    from ansys.fluent.core import examples
+    from ansys.fluent.core import examples, LoadMeshingWorkflow
 
     saved_workflow_path = examples.download_file(
         "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
@@ -566,7 +566,7 @@ Load workflow
     meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    loaded_workflow = meshing_session.load_workflow(file_path=saved_workflow_path)
+    loaded_workflow = LoadMeshingWorkflow(session=meshing_session, file_path=saved_workflow_path)
 
 
 Insert new task
