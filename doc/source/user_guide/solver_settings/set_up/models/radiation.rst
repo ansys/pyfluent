@@ -13,12 +13,8 @@ Setting up and querying the model
     {'model': 'none',
      'solar_load': {'solar_model': 'none',
                     'sun_direction_vector_definition': None}}
-    >>> pprint(radiation.model.allowed_values(), width=1)
-    ['none',
-     'p1',
-     's2s',
-     'discrete-ordinates',
-     'monte-carlo']
+    >>> radiation.model.allowed_values()
+    ['none', 'p1', 's2s', 'discrete-ordinates', 'monte-carlo']
     >>> radiation.model.set_state("monte-carlo")
     >>> pprint(radiation.get_state(), width=1)
     {'model': 'monte-carlo',
