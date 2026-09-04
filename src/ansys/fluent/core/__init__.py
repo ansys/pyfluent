@@ -113,13 +113,290 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-import pydoc as _pydoc  # noqa: E402
+# ──────────────────────────────────────────────────────────────────────────────
+# Module docstring from README
+# ──────────────────────────────────────────────────────────────────────────────
+_THIS_DIRNAME = _os.path.dirname(__file__)
+_README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rst"))
 
-from ansys.fluent.core.utils import fldoc as _fldoc  # noqa: E402
+if _os.path.exists(_README_FILE):
+    with open(_README_FILE, encoding="utf8") as f:
+        __doc__ = f.read()
 
-_pydoc.text.docother = _fldoc.docother.__get__(_pydoc.text, _pydoc.TextDoc)
+# ──────────────────────────────────────────────────────────────────────────────
+# Lazy imports via PEP 562 __getattr__ / __dir__
+# Maps public name -> (module_path, attribute_name)
+# ──────────────────────────────────────────────────────────────────────────────
+_LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    # fields.field_data_interfaces
+    "PathlinesFieldDataRequest": (
+        "ansys.fluent.core.fields.field_data_interfaces",
+        "PathlinesFieldDataRequest",
+    ),
+    "ScalarFieldDataRequest": (
+        "ansys.fluent.core.fields.field_data_interfaces",
+        "ScalarFieldDataRequest",
+    ),
+    "SurfaceDataType": (
+        "ansys.fluent.core.fields.field_data_interfaces",
+        "SurfaceDataType",
+    ),
+    "SurfaceFieldDataRequest": (
+        "ansys.fluent.core.fields.field_data_interfaces",
+        "SurfaceFieldDataRequest",
+    ),
+    "VectorFieldDataRequest": (
+        "ansys.fluent.core.fields.field_data_interfaces",
+        "VectorFieldDataRequest",
+    ),
+    # get_build_details
+    "get_build_version": (
+        "ansys.fluent.core.get_build_details",
+        "get_build_version",
+    ),
+    "get_build_version_string": (
+        "ansys.fluent.core.get_build_details",
+        "get_build_version_string",
+    ),
+    # launcher.launch_options
+    "FluentMode": (
+        "ansys.fluent.core.launcher.launch_options",
+        "FluentMode",
+    ),
+    "UIMode": (
+        "ansys.fluent.core.launcher.launch_options",
+        "UIMode",
+    ),
+    "Dimension": (
+        "ansys.fluent.core.launcher.launch_options",
+        "Dimension",
+    ),
+    "Precision": (
+        "ansys.fluent.core.launcher.launch_options",
+        "Precision",
+    ),
+    "FluentWindowsGraphicsDriver": (
+        "ansys.fluent.core.launcher.launch_options",
+        "FluentWindowsGraphicsDriver",
+    ),
+    "FluentLinuxGraphicsDriver": (
+        "ansys.fluent.core.launcher.launch_options",
+        "FluentLinuxGraphicsDriver",
+    ),
+    # launcher.launcher
+    "create_launcher": (
+        "ansys.fluent.core.launcher.launcher",
+        "create_launcher",
+    ),
+    "launch_fluent": (
+        "ansys.fluent.core.launcher.launcher",
+        "launch_fluent",
+    ),
+    "connect_to_fluent": (
+        "ansys.fluent.core.launcher.launcher",
+        "connect_to_fluent",
+    ),
+    # parametric
+    "LocalParametricStudy": (
+        "ansys.fluent.core.parametric",
+        "LocalParametricStudy",
+    ),
+    # search
+    "search": (
+        "ansys.fluent.core.search",
+        "search",
+    ),
+    # services.batch_ops
+    "BatchOps": (
+        "ansys.fluent.core.services.batch_ops",
+        "BatchOps",
+    ),
+    # session
+    "BaseSession": (
+        "ansys.fluent.core.session",
+        "BaseSession",
+    ),
+    "Fluent": (
+        "ansys.fluent.core.session",
+        "BaseSession",
+    ),
+    # session_utilities
+    "Meshing": (
+        "ansys.fluent.core.session_utilities",
+        "Meshing",
+    ),
+    "PureMeshing": (
+        "ansys.fluent.core.session_utilities",
+        "PureMeshing",
+    ),
+    "PrePost": (
+        "ansys.fluent.core.session_utilities",
+        "PrePost",
+    ),
+    "Solver": (
+        "ansys.fluent.core.session_utilities",
+        "Solver",
+    ),
+    "SolverAero": (
+        "ansys.fluent.core.session_utilities",
+        "SolverAero",
+    ),
+    "SolverIcing": (
+        "ansys.fluent.core.session_utilities",
+        "SolverIcing",
+    ),
+    # solver.exposure_level (lightweight, no ansys.units dependency)
+    "ExposureLevel": (
+        "ansys.fluent.core.solver.exposure_level",
+        "ExposureLevel",
+    ),
+    # streaming_services.events_streaming
+    "EventsManager": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "EventsManager",
+    ),
+    "Event": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "Event",
+    ),
+    "SolverEvent": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "SolverEvent",
+    ),
+    "MeshingEvent": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "MeshingEvent",
+    ),
+    "TimestepStartedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "TimestepStartedEventInfo",
+    ),
+    "TimestepEndedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "TimestepEndedEventInfo",
+    ),
+    "IterationEndedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "IterationEndedEventInfo",
+    ),
+    "CalculationsStartedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "CalculationsStartedEventInfo",
+    ),
+    "CalculationsEndedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "CalculationsEndedEventInfo",
+    ),
+    "CalculationsPausedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "CalculationsPausedEventInfo",
+    ),
+    "CalculationsResumedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "CalculationsResumedEventInfo",
+    ),
+    "AboutToLoadCaseEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "AboutToLoadCaseEventInfo",
+    ),
+    "CaseLoadedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "CaseLoadedEventInfo",
+    ),
+    "AboutToLoadDataEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "AboutToLoadDataEventInfo",
+    ),
+    "DataLoadedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "DataLoadedEventInfo",
+    ),
+    "AboutToInitializeSolutionEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "AboutToInitializeSolutionEventInfo",
+    ),
+    "SolutionInitializedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "SolutionInitializedEventInfo",
+    ),
+    "ReportDefinitionUpdatedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "ReportDefinitionUpdatedEventInfo",
+    ),
+    "ReportPlotSetUpdatedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "ReportPlotSetUpdatedEventInfo",
+    ),
+    "ResidualPlotUpdatedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "ResidualPlotUpdatedEventInfo",
+    ),
+    "SettingsClearedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "SettingsClearedEventInfo",
+    ),
+    "SolutionPausedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "SolutionPausedEventInfo",
+    ),
+    "ProgressUpdatedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "ProgressUpdatedEventInfo",
+    ),
+    "SolverTimeEstimateUpdatedEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "SolverTimeEstimateUpdatedEventInfo",
+    ),
+    "FatalErrorEventInfo": (
+        "ansys.fluent.core.streaming_services.events_streaming",
+        "FatalErrorEventInfo",
+    ),
+    # utils
+    "load_module": (
+        "ansys.fluent.core.utils",
+        "load_module",
+    ),
+    "get_user_data_dir": (
+        "ansys.fluent.core.utils",
+        "get_user_data_dir",
+    ),
+    # utils.context_managers
+    "using": (
+        "ansys.fluent.core.utils.context_managers",
+        "using",
+    ),
+    # utils.fluent_version
+    "FluentVersion": (
+        "ansys.fluent.core.utils.fluent_version",
+        "FluentVersion",
+    ),
+    # utils.setup_for_fluent
+    "setup_for_fluent": (
+        "ansys.fluent.core.utils.setup_for_fluent",
+        "setup_for_fluent",
+    ),
+}
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Explicit __all__ (preserves the same public API surface)
+# ──────────────────────────────────────────────────────────────────────────────
+__all__ = [
+    # Eager
+    "config",
+    "set_console_logging_level",
+    "PyFluentDeprecationWarning",
+    "PyFluentUserWarning",
+    "FluentDevVersionWarning",
+    "warning",
+    "__version__",
+    "version_info",
+    # Lazy
+    *_LAZY_IMPORTS.keys(),
+]
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Deprecated config variable names (backward compat)
+# ──────────────────────────────────────────────────────────────────────────────
 _config_by_deprecated_name = {
     "FLUENT_RELEASE_VERSION": "fluent_release_version",
     "FLUENT_DEV_VERSION": "fluent_dev_version",
@@ -149,12 +426,24 @@ _config_by_deprecated_name = {
     "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",  # nosec B105: Not a password
 }
 
+# ──────────────────────────────────────────────────────────────────────────────
+# PEP 562: module-level __getattr__ for lazy imports + deprecated config names
+# ──────────────────────────────────────────────────────────────────────────────
 from typing import TYPE_CHECKING as _TYPE_CHECKING  # noqa: E402
 
 if not _TYPE_CHECKING:
 
-    def __getattr__(name: str) -> str:
-        """Get the value of a deprecated configuration variable."""
+    def __getattr__(name: str):
+        """Lazy-load public symbols on first access; also handles deprecated names."""
+        # 1. Lazy imports
+        if name in _LAZY_IMPORTS:
+            module_path, attr_name = _LAZY_IMPORTS[name]
+            module = _importlib.import_module(module_path)
+            value = getattr(module, attr_name)
+            globals()[name] = value  # cache for subsequent access
+            return value
+
+        # 2. Deprecated config variable names
         if name in _config_by_deprecated_name:
             config_name = _config_by_deprecated_name[name]
             _warnings.warn(
@@ -162,4 +451,75 @@ if not _TYPE_CHECKING:
                 category=PyFluentDeprecationWarning,
             )
             return getattr(config, config_name)
+
         raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+
+
+# Submodules that should appear in dir() for backward compatibility
+_SUBMODULES = {
+    "data_model_cache",
+    "docker",
+    "examples",
+    "exceptions",
+    "expressions",
+    "fields",
+    "filereader",
+    "file_session",
+    "fluent_connection",
+    "generated",
+    "get_build_details",
+    "journaling",
+    "launcher",
+    "logger",
+    "meshing",
+    "module_config",
+    "parametric",
+    "pyfluent_warnings",
+    "report",
+    "rpvars",
+    "scheduler",
+    "search",
+    "services",
+    "session",
+    "session_base_meshing",
+    "session_meshing",
+    "session_pure_meshing",
+    "session_shared",
+    "session_solver",
+    "session_solver_aero",
+    "session_solver_icing",
+    "session_utilities",
+    "solver",
+    "streaming_services",
+    "system_coupling",
+    "utils",
+    "variable_strategies",
+    "workflow",
+    "workflow_new",
+}
+
+
+def __dir__():
+    """Return all public names (eager + lazy + submodules) for tab-completion."""
+    return sorted(
+        set(__all__) | set(globals().keys()) | _SUBMODULES - {"_TYPE_CHECKING"}
+    )
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# pydoc customization (lightweight, stdlib only)
+# ──────────────────────────────────────────────────────────────────────────────
+import pydoc as _pydoc  # noqa: E402
+
+from ansys.fluent.core.utils import fldoc as _fldoc  # noqa: E402
+
+_pydoc.text.docother = _fldoc.docother.__get__(_pydoc.text, _pydoc.TextDoc)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Utility: force-load all lazy symbols (for tests and AOT scenarios)
+# ──────────────────────────────────────────────────────────────────────────────
+def _eager_load():
+    """Force-load all lazy symbols. Used by test_public_api.py and AOT setups."""
+    for name in _LAZY_IMPORTS:
+        getattr(__import__(__name__), name)
