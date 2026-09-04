@@ -28,7 +28,7 @@ Example usage
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
   >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
 
 
@@ -364,7 +364,7 @@ in a single solver session:
   >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
@@ -375,18 +375,7 @@ in a single solver session:
   False
   >>> viscous.model.default_value()
   >>> pprint(viscous.model.allowed_values(), width=1)
-  ['inviscid',
-   'laminar',
-   'k-epsilon',
-   'k-omega',
-   'mixing-length',
-   'spalart-allmaras',
-   'k-kl-w',
-   'transition-sst',
-   'reynolds-stress',
-   'scale-adaptive-simulation',
-   'detached-eddy-simulation',
-   'large-eddy-simulation']
+  ['inviscid', 'laminar', 'k-omega', ...]  # plus additional models
   >>> cold_inlet = VelocityInlet(settings_source=solver_session, name="cold-inlet")
   >>> cold_inlet.turb_intensity.min()
   0

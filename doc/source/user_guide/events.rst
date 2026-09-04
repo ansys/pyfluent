@@ -35,11 +35,8 @@ function.
 Examples
 --------
 
-This script demonstrates how to use the Fluent event callback mechanism in PyFluent
-to trigger a custom Python function when a specific solver event occurs. In this example,
-a callback is registered to the CASE_LOADED event. When a case file is read into the solver,
-the registered function is automatically called, allowing users to perform custom actions
-(like logging, validation, or automated workflows) immediately after the case is loaded.
+This example registers a callback for the ``CASE_LOADED`` event, which fires whenever a
+case file is read into the solver.
 
 .. code-block:: python
 
@@ -53,7 +50,7 @@ the registered function is automatically called, allowing users to perform custo
 
   >>> on_case_loaded.loaded = False
 
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
   >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
 
   >>> on_case_loaded.loaded
@@ -65,20 +62,16 @@ the registered function is automatically called, allowing users to perform custo
   True
 
 
-The next example demonstrates how to register multiple event callbacks with additional arguments
-in PyFluent's event handling system.
-It builds on the basic usage of event callbacks by showcasing how to pass both positional and
-keyword arguments to the callback functions. The script registers three different callbacks to the CASE_LOADED event:
+This example registers three callbacks for the same ``CASE_LOADED`` event to show how to pass
+positional and keyword arguments to callback functions:
 
 1. A simple callback that sets a flag when the case is loaded.
 
-2. A callback that accepts optional arguments (x, y) before the standard parameters.
+2. A callback that accepts optional arguments (``x``, ``y``) before the standard parameters.
 
-3. A callback that expects x and y after the standard parameters.
+3. A callback that expects ``x`` and ``y`` after the standard parameters.
 
-When a case file is read into Fluent, all three callbacks are triggered in order,
-and their internal state is updated accordingly. This pattern is useful for building flexible,
-reusable handlers that can react differently based on runtime configuration or contextual data.
+All three callbacks run, in order, whenever a case file is loaded.
 
 .. code-block:: python
 
@@ -102,7 +95,7 @@ reusable handlers that can react differently based on runtime configuration or c
 
   >>> on_case_loaded_with_args.state = None
 
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
 
   >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
   >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42)

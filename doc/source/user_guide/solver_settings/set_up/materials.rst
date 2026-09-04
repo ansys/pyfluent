@@ -10,7 +10,7 @@ Copy material from database
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    >>> solver_session = pyfluent.launch_fluent()
+    >>> solver_session = pyfluent.Solver.from_install()
     >>> solver_session.settings.file.read_case(file_name=file_name)
     >>> materials = pyfluent.Materials(settings_source=solver_session)
     >>> fluids = materials.fluid
@@ -24,15 +24,8 @@ Copy material from database
      'specific_heat': {'option': 'constant', 'value': 1006.43},
      'thermal_conductivity': {'option': 'constant', 'value': 0.0242},
      'viscosity': {'option': 'constant', 'value': 1.7894e-05}}
-    >>> pprint(air_copy.viscosity.option.allowed_values(), width=1)
-    ['constant',
-     'piecewise-linear',
-     'piecewise-polynomial',
-     'polynomial',
-     'expression',
-     'power-law',
-     'sutherland',
-     'kinetic-theory']
+    >>> air_copy.viscosity.option.allowed_values()
+    ['constant', 'piecewise-linear', 'polynomial', ...]  # plus additional options
     >>> air_copy.viscosity.value.set_state(1.81e-05)
     >>> elbow_fluid = pyfluent.solver.FluidCellZone(settings_source=solver_session, name="elbow-fluid")
     >>> elbow_fluid.material.set_state("air-2")
