@@ -74,6 +74,7 @@ docs = [
     "sphinx-copybutton==0.5.2",
     "sphinx-gallery==0.21.0",
     "sphinx-notfound-page==1.1.0",
+    "sphinx-sitemap==2.6.0",
     "sphinxcontrib-websupport==2.0.0",
     "sphinx_design==0.6.1",
     "sphinxemoji==0.3.2",
