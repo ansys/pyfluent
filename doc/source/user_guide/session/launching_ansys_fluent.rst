@@ -83,7 +83,7 @@ The :meth:`from_connection() <ansys.fluent.core.session.utilities.SessionBase.fr
 **Prerequisites**
 
 Before connecting, start Fluent with ``<fluent_executable> -sifile=<server_info_file_name>``
-to enable the Fluent gRPC server and choose the server info file path.
+to enable the Fluent gRPC server and specify the server info file path.
 
 .. note::
 
@@ -113,7 +113,7 @@ to enable the Fluent gRPC server and choose the server info file path.
     - Use ``PureMeshing.from_connection()`` if the session was launched for **meshing only**.
     - Use ``Meshing.from_connection()`` if the session supports **meshing and solving**.
 
-    A ``PureMeshing`` session type is recommended for a **meshing-only** session.
+    A ``Meshing`` session type is not recommended for a **meshing-only** session.
 
 
 .. _connect_to_pim_session:
