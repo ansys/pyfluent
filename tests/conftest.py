@@ -37,6 +37,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
+from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -365,46 +366,78 @@ def mixing_elbow_watertight_pure_meshing_session(
     return meshing
 
 
+@pytest.fixture
+def new_solver_session():
+    solver = create_session()
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture
+def http_solver_session():
+    """Solver session connected to a live Fluent server over REST (HTTP).
+
+    Requires ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN``; the test is
+    skipped when either is unset.
+    """
+    rest_url = os.getenv("FLUENT_REST_URL")
+    rest_token = os.getenv("FLUENT_REST_TOKEN")
+    if not rest_url or not rest_token:
+        pytest.skip(
+            "REST live server not configured. "
+            "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
+        )
+    solver = Solver.from_http(url=rest_url, token=rest_token)
+    yield solver
+    solver.exit()
+
+
 @pytest.fixture(
     params=[
-        "grpc",
+        "new_solver_session",
         pytest.param(
-            "rest",
+            "http_solver_session",
             marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
         ),
-    ]
+    ],
+    ids=["grpc", "rest"],
 )
-def new_solver_session(request):
-    """Solver session, parametrized over transport (gRPC vs REST).
+def solver_session_grpc_rest(request):
+    """Solver session over either transport, gRPC or REST.
 
-    The "rest" param connects to a live Fluent 27.1+ server via REST, and
-    requires FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables to
-    be set; the test is skipped if either is unset (REST server not
-    available). Marked with @pytest.mark.rest_server to gate tests requiring
-    a live server.
+    Use this instead of ``new_solver_session`` for settings-API tests that are
+    transport-agnostic, so the same test body runs against both backends.
     """
-    if request.param == "rest":
-        import os
+    return request.getfixturevalue(request.param)
 
-        from ansys.fluent.core.session_solver import Solver
 
-        rest_url = os.environ.get("FLUENT_REST_URL")
-        rest_token = os.environ.get("FLUENT_REST_TOKEN")
+@pytest.fixture
+def mixing_elbow_settings_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver
 
-        if not rest_url or not rest_token:
-            pytest.skip(
-                "REST live server not configured. "
-                "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
-            )
 
-        solver = Solver.from_http(url=rest_url, token=rest_token)
-    else:
-        solver = create_session()
-    yield solver
-    # HttpSolver (REST transport) has no .exit()/close mechanism yet - guard
-    # so REST-parametrized tests don't fail during fixture teardown.
-    if hasattr(solver, "exit"):
-        solver.exit()
+@pytest.fixture
+def mixing_elbow_case_data_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case-data", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
 
 
 @pytest.fixture

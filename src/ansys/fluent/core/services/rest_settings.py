@@ -128,3 +128,34 @@ class RestSettings(BaseSettings):
     def has_wildcard(self, name: str) -> bool:
         """Check whether a name has a wildcard pattern."""
         return self.is_wildcard(name)
+
+    @_trace
+    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+        """Execute a given command with the provided keyword arguments.
+
+        The REST endpoint wraps the actual return value in an envelope of
+        the form ``{"result": <value>, "output": <console text>}``. Unwrap
+        it here so callers see the same plain value that the gRPC service
+        returns, instead of the raw envelope.
+        """
+        return _unwrap_result(self.service.execute_cmd(path, command, **kwds))
+
+    @_trace
+    def execute_query(self, path: str, query: str, **kwds) -> Any:
+        """Execute a given query with the provided keyword arguments.
+
+        See :meth:`execute_cmd` for why the response is unwrapped.
+        """
+        return _unwrap_result(self.service.execute_query(path, query, **kwds))
+
+
+def _unwrap_result(response: Any) -> Any:
+    """Extract the ``"result"`` value from a command/query response envelope.
+
+    The REST API returns ``{"result": <value>, "output": <text>}`` for
+    command/query execution. Responses without a ``"result"`` key are
+    returned unchanged (defensive fallback).
+    """
+    if isinstance(response, dict) and "result" in response:
+        return response["result"]
+    return response

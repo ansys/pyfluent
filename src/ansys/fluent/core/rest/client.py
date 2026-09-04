@@ -304,9 +304,9 @@ class FluentRestClient:
     # Commands / queries
     # ------------------------------------------------------------------
 
-    def _execute(self, path: str, name: str, force: bool = False, **kwds) -> Any:
+    def _execute(self, path: str, command: str, force: bool = False, **kwds) -> Any:
         """POST a command/query endpoint and return response."""
-        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(name, safe='')}"
+        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(command, safe='')}"
         if force:
             endpoint += "?force=true"
         return self._strategy.request("POST", endpoint, body=kwds)
