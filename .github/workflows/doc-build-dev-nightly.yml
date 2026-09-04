@@ -112,9 +112,8 @@ jobs:
 
       - name: Build All Documentation
         run: |
-          python -m pip install -r requirements/requirements_build.txt
-          python -m pip install --force-reinstall ".[docs,reader,tests]"
-          python -c "import ansys.fluent.core as pyfluent; print(pyfluent.__file__, pyfluent.__version__)"
+          pip install -r requirements/requirements_build.txt
+          pip install --force-reinstall ansys-fluent-core[docs,reader,tests]
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
