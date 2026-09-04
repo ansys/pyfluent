@@ -43,7 +43,7 @@ no code-generated modules, no local settings tree.
 Quick start::
 
     >>> from ansys.fluent.core.rest import FluentRestClient
-    >>> client = FluentRestClient.connect("http://127.0.0.1:5000", auth_token="secret")
+    >>> client = FluentRestClient.connect("http://127.0.0.1:5000", token="secret")
     >>> client.get_var("setup/models/energy/enabled")
 
 """

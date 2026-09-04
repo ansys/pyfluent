@@ -27,6 +27,7 @@ Defines the :class:`RequestStrategy` protocol and the real
 in unit tests — no subclassing needed (structural subtyping via Protocol).
 """
 
+import collections.abc
 import hashlib
 import json
 import ssl
@@ -38,6 +39,20 @@ from ansys.fluent.core.rest.errors import FluentRestError
 
 # Only idempotent methods are retried on transient failures.
 _RETRYABLE_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
+
+
+def _json_default(o: Any) -> Any:
+    """Fallback for ``json.dumps`` supporting non-native sequence/mapping types.
+
+    Callers may pass ``UserList``/``UserDict`` or other ``Sequence``/``Mapping``
+    subclasses (e.g. as command arguments) that ``json`` cannot serialize
+    natively; convert them to plain ``list``/``dict`` here.
+    """
+    if isinstance(o, collections.abc.Mapping):
+        return dict(o)
+    if isinstance(o, collections.abc.Sequence) and not isinstance(o, (str, bytes)):
+        return list(o)
+    raise TypeError(f"Object of type {o.__class__.__name__} is not JSON serializable")
 
 
 @runtime_checkable
@@ -75,11 +90,11 @@ class RequestStrategy(Protocol):
         ...  # pragma: no cover
 
 
-def _make_auth_headers(auth_token: str | None) -> dict[str, str]:
+def _make_auth_headers(token: str | None) -> dict[str, str]:
     """Return ``Authorization`` header dict, or ``{}`` when there is no token."""
-    if not auth_token:
+    if not token:
         return {}
-    token_hash = hashlib.sha256(auth_token.encode()).hexdigest()
+    token_hash = hashlib.sha256(token.encode()).hexdigest()
     return {"Authorization": f"Bearer {token_hash}"}
 
 
@@ -91,7 +106,7 @@ class HttpRequestStrategy:
     base_url : str
         Root URL of the Fluent REST server, e.g. ``"http://127.0.0.1:5000"``.
         A trailing slash is stripped automatically.
-    auth_token : str, optional
+    token : str, optional
         Raw bearer token; SHA-256 hashed before transmission.
     timeout : float, optional
         Socket timeout in seconds. Defaults to ``30.0``.
@@ -107,7 +122,7 @@ class HttpRequestStrategy:
         self,
         base_url: str,
         *,
-        auth_token: str | None = None,
+        token: str | None = None,
         timeout: float = 30.0,
         max_retries: int = 2,
         retry_delay: float = 1.0,
@@ -118,7 +133,7 @@ class HttpRequestStrategy:
         self._max_retries = max_retries
         self._retry_delay = retry_delay
         self._ssl_context = ssl_context
-        self._headers = _make_auth_headers(auth_token)
+        self._headers = _make_auth_headers(token)
 
     # ------------------------------------------------------------------
     # HTTP request execution with retry logic
@@ -136,7 +151,7 @@ class HttpRequestStrategy:
         data: bytes | None = None
         headers: dict[str, str] = dict(self._headers)
         if body is not None:
-            data = json.dumps(body).encode("utf-8")
+            data = json.dumps(body, default=_json_default).encode("utf-8")
             headers["Content-Type"] = "application/json"
         return urllib.request.Request(
             url, data=data, headers=headers, method=method.upper()

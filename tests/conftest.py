@@ -37,6 +37,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
+from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -370,6 +371,73 @@ def new_solver_session():
     solver = create_session()
     yield solver
     solver.exit()
+
+
+@pytest.fixture
+def http_solver_session():
+    """Solver session connected to a live Fluent server over REST (HTTP).
+
+    Requires ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN``; the test is
+    skipped when either is unset.
+    """
+    rest_url = os.getenv("FLUENT_REST_URL")
+    rest_token = os.getenv("FLUENT_REST_TOKEN")
+    if not rest_url or not rest_token:
+        pytest.skip(
+            "REST live server not configured. "
+            "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
+        )
+    solver = Solver.from_http(url=rest_url, token=rest_token)
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture(
+    params=[
+        "new_solver_session",
+        pytest.param(
+            "http_solver_session",
+            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
+        ),
+    ],
+    ids=["grpc", "rest"],
+)
+def solver_session_grpc_rest(request):
+    """Solver session over either transport, gRPC or REST.
+
+    Use this instead of ``new_solver_session`` for settings-API tests that are
+    transport-agnostic, so the same test body runs against both backends.
+    """
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def mixing_elbow_settings_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_data_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case-data", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
 
 
 @pytest.fixture
