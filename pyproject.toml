@@ -58,7 +58,7 @@ tests = [
     "grpcio==1.81.1",
     "grpcio-health-checking==1.81.1",
     "grpcio-status==1.81.1",
-    "grpcio-reflection==1.83.0",
+    "grpcio-reflection==1.81.1",
     "numpy==2.5.0",
 ]
 docs = [
@@ -92,7 +92,7 @@ docs = [
     "grpcio==1.81.1",
     "grpcio-health-checking==1.81.1",
     "grpcio-status==1.81.1",
-    "grpcio-reflection==1.83.0",
+    "grpcio-reflection==1.81.1",
     "numpy==2.5.0",
 ]
 ci_types = [
