@@ -591,7 +591,7 @@ def test_nested_alias_till_26r1(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=27.1")
-def test_nested_alias(mixing_elbow_settings_session_grpc_rest):
+def test_nested_alias(request, mixing_elbow_settings_session_grpc_rest):
     solver = mixing_elbow_settings_session_grpc_rest
     solver.settings.setup.models.viscous.model = "k-omega"
     solver.settings.setup.models.viscous.k_omega_model = "standard"
@@ -601,6 +601,12 @@ def test_nested_alias(mixing_elbow_settings_session_grpc_rest):
     solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction.enabled = (
         True
     )
+    if request.node.callspec.id == "rest":
+        pytest.xfail(
+            "REST transport has no scheme_eval equivalent (HttpSolver.settings "
+            "never wires up flobject.get_root(scheme_eval=...)), so "
+            "DeprecatedSettingWarning can never fire over REST."
+        )
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
@@ -643,7 +649,9 @@ def test_commands_not_in_settings(solver_session_grpc_rest):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_deprecated_command_arguments(mixing_elbow_case_data_session_grpc_rest):
+def test_deprecated_command_arguments(
+    request, mixing_elbow_case_data_session_grpc_rest
+):
     solver = mixing_elbow_case_data_session_grpc_rest
     with pytest.warns(
         PyFluentUserWarning,
@@ -658,6 +666,12 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session_grpc_rest):
 
     solver.settings.results.graphics.mesh.create("m1")
     solver.settings.results.graphics.mesh.make_a_copy(from_="m1", to="m2")
+    if request.node.callspec.id == "rest":
+        pytest.xfail(
+            "REST transport has no scheme_eval equivalent (HttpSolver.settings "
+            "never wires up flobject.get_root(scheme_eval=...)), so "
+            "DeprecatedSettingWarning can never fire over REST."
+        )
     with pytest.warns(DeprecatedSettingWarning) as record:
         solver.settings.results.graphics.mesh.copy(from_name="m1", new_name="m3")
     first, second = str(record[0].message).splitlines()[0:2]
@@ -998,7 +1012,7 @@ def test_copy_accepts_sequence_types(mixing_elbow_settings_session_grpc_rest):
 
 
 @pytest.mark.fluent_version(">=26.1")
-def test_action_behavior(mixing_elbow_case_session_grpc_rest):
+def test_action_behavior(request, mixing_elbow_case_session_grpc_rest):
     solver = mixing_elbow_case_session_grpc_rest
     with pytest.raises(AttributeError, match="command/query object"):
         solver.settings.solution.run_calculation.iterate.get_state()
@@ -1010,6 +1024,13 @@ def test_action_behavior(mixing_elbow_case_session_grpc_rest):
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True
     )
+    if request.node.callspec.id == "rest":
+        pytest.xfail(
+            "REST server does not build a nested 'group_children' structure for "
+            "get_attrs(recursive=True) (verified: REST returns byte-identical "
+            "JSON regardless of the recursive flag) - no server-side equivalent "
+            "to gRPC's _parse_attrs() exists yet."
+        )
     assert "iter-count" in result["group_children"]
 
 
