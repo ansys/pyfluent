@@ -91,9 +91,8 @@ to enable the Fluent gRPC server and specify the server info file path.
   specify the file path with ``-sifile``, Fluent generates the file in the directory where
   ``fluent.exe`` resides.
 
-  For local connections, pass the server info file path when it is accessible to Python. For
-  remote connections, use the IP address, port, and password from the file, unless the same
-  server info file path is available from the client machine.
+  The recommended approach is to connect using the server info file path, which encapsulates
+  all connection information.
 
 **Example:**
 
