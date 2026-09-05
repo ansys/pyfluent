@@ -1,0 +1,32 @@
+.. _ref_meshing_tui_display_set_colors_by_type_type_name:
+
+type_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_251.main_menu.display.set.colors.by_type.type_name
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   axis/axis_contents
+   far_field/far_field_contents
+   free_surface/free_surface_contents
+   inlet/inlet_contents
+   interface/interface_contents
+   interior/interior_contents
+   internal/internal_contents
+   outlet/outlet_contents
+   overset/overset_contents
+   periodic/periodic_contents
+   rans_les_interface/rans_les_interface_contents
+   surface/surface_contents
+   symmetry/symmetry_contents
+   traction/traction_contents
+   wall/wall_contents

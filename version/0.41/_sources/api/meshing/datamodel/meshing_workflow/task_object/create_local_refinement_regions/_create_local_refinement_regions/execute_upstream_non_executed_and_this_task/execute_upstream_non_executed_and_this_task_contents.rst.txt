@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_local_refinement_regions__create_local_refinement_regions_execute_upstream_non_executed_and_this_task:
+
+execute_upstream_non_executed_and_this_task
+===========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.create_local_refinement_regions._create_local_refinement_regions.execute_upstream_non_executed_and_this_task
+   :members: _execute_upstream_non_executed_and_this_taskArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

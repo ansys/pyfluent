@@ -1,0 +1,21 @@
+:orphan:
+
+.. _run_analysis:
+
+run_analysis
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.run_analysis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`automation <automation>`   Run sensitivity-analysis reports and result graphics.
+
+==============================   =====================================================
+

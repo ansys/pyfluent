@@ -1,0 +1,21 @@
+:orphan:
+
+.. _crate_value:
+
+crate_value
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.crate_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ================================
+
+Parent                                                            Summary
+
+======================================   ================================
+:ref:`eload_settings <eload_settings>`       Up electric load conditions.
+
+======================================   ================================
+

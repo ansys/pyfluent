@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cunningham_factor:
+
+cunningham_factor
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cunningham_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===================================
+
+Parent                                                             Summary
+
+====================================   ===================================
+:ref:`particle_drag <particle_drag>`       Lagrangian drag model settings.
+
+====================================   ===================================
+

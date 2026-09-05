@@ -1,0 +1,21 @@
+:orphan:
+
+.. _z_fan_normal_vector:
+
+z_fan_normal_vector
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.z_fan_normal_vector
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

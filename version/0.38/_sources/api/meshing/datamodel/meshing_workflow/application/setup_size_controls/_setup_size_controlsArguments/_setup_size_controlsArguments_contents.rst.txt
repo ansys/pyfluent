@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_setup_size_controls__setup_size_controlsArguments:
+
+_setup_size_controlsArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.setup_size_controls._setup_size_controlsArguments
+   :members: _complete_edge_selection_list, _complete_label_selection_list, _complete_object_selection_list, _complete_zone_selection_list, _compute_for_solid_only, _edge_selection_list, _label_selection_list, _local_settings_name, _object_selection_list, _selection_type, _value_changed, _zone_location, _zone_selection_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _local_size_control_parameters/_local_size_control_parameters_contents

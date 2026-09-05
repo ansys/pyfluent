@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_transform_operations_delete_transform__delete_transformArguments:
+
+_delete_transformArguments
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.transform_operations.delete_transform._delete_transformArguments
+   :members: _paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

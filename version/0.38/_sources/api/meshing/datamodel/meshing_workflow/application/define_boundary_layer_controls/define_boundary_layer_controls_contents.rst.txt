@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_define_boundary_layer_controls:
+
+define_boundary_layer_controls
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.define_boundary_layer_controls
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _define_boundary_layer_controlsArguments/_define_boundary_layer_controlsArguments_contents

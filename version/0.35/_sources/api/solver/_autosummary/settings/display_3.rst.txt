@@ -1,0 +1,32 @@
+:orphan:
+
+.. _display_3:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.display_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ===========================
+
+Argument                                             Summary
+
+==============================   ===========================
+:ref:`locations <locations_1>`       Components for display.
+
+==============================   ===========================
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`parts_child <parts_child>`       'child_object_type' of parts.
+
+================================   =================================
+

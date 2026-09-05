@@ -1,0 +1,21 @@
+:orphan:
+
+.. _full_mesh:
+
+full_mesh
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.full_mesh
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ================================================
+
+Parent                                                        Summary
+
+==================   ================================================
+:ref:`lpfm <lpfm>`   The settings for the LPFM initialization method.
+
+==================   ================================================
+

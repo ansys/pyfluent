@@ -1,0 +1,36 @@
+:orphan:
+
+.. _soot_process_parameters:
+
+soot_process_parameters
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.soot_process_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ===============================================================================
+
+Attribute                                                                                                        Summary
+
+======================================   ===============================================================================
+:ref:`soot_mean_dens <soot_mean_dens>`                                 Mean density of soot particle for two-step model.
+
+:ref:`soot_incp_mass <soot_incp_mass>`                           Mass of incipient soot particle for Moss-Brookes model.
+
+:ref:`prec_from <prec_from>`             Source for precursor: user correlation, species list, or user-defined function.
+
+======================================   ===============================================================================
+
+.. rubric:: Included in:
+
+==================   =============================================
+
+Parent                                                     Summary
+
+==================   =============================================
+:ref:`soot <soot>`   Configure soot model settings and parameters.
+
+==================   =============================================
+

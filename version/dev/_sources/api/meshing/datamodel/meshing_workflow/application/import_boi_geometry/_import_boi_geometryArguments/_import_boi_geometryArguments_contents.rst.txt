@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_import_boi_geometry__import_boi_geometryArguments:
+
+_import_boi_geometryArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.import_boi_geometry._import_boi_geometryArguments
+   :members: _geometry_file_name, _imported_objects, _length_unit, _mesh_file_name, _type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _cad_import_options/_cad_import_options_contents

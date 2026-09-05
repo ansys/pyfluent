@@ -1,0 +1,36 @@
+:orphan:
+
+.. _zonal_phase_change:
+
+zonal_phase_change
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zonal_phase_change
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =====================================================================================================================================================
+
+Argument                                                                                                                                                                                 Summary
+
+========================================   =====================================================================================================================================================
+:ref:`modify <modify>`                                                                                                    Confirm modification of the phase change state in specific cell zones.
+
+:ref:`zones <zones_1>`                                                                                                         Fluid cell zones in which the phase change state will be updated.
+
+:ref:`active_per_zone <active_per_zone>`   Per-zone activation flags ("yes" or "no"), one entry per selected zone. Only used from the Python API; the interactive TUI asks y/n per zone instead.
+
+========================================   =====================================================================================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`wet_steam_settings <wet_steam_settings>`   Adjust settings for the wet steam model.
+
+==============================================   ========================================
+

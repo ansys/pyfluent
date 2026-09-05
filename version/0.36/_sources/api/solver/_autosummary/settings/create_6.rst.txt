@@ -1,0 +1,42 @@
+:orphan:
+
+.. _create_6:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_6
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   ========================================
+
+Argument                                                                        Summary
+
+============================================   ========================================
+:ref:`name <name_17>`                              The prefix for mesh interface names.
+
+:ref:`boundary_1 <boundary_1>`                       First interface zones for pairing.
+
+:ref:`boundary_2 <boundary_2>`                       First interface zones for pairing.
+
+:ref:`periodicity <periodicity>`                            Interface periodicity type.
+
+:ref:`intf_type <intf_type>`                                            Interface type.
+
+:ref:`mesh_connectivity <mesh_connectivity>`          Interface mesh connectivity type.
+
+============================================   ========================================
+
+.. rubric:: Included in:
+
+==============================   ==================================
+
+Parent                                                      Summary
+
+==============================   ==================================
+:ref:`interfaces <interfaces>`       Physics interface definitions.
+
+==============================   ==================================
+

@@ -1,0 +1,55 @@
+.. _ref_meshing_datamodel_part_management:
+
+meshing.datamodel.part_management
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   AppendFmdFiles/AppendFmdFiles_contents
+   AssemblyNode/AssemblyNode_contents
+   ChangeFileLengthUnit/ChangeFileLengthUnit_contents
+   ChangeLengthUnit/ChangeLengthUnit_contents
+   CreateObjForEachPart/CreateObjForEachPart_contents
+   CreateObjects/CreateObjects_contents
+   Delete/Delete_contents
+   DeletePaths/DeletePaths_contents
+   GlobalSettings/GlobalSettings_contents
+   InitializeTemplate/InitializeTemplate_contents
+   InputFileChanged/InputFileChanged_contents
+   ListMeshingOperations/ListMeshingOperations_contents
+   LoadFmdFile/LoadFmdFile_contents
+   LoadTemplate/LoadTemplate_contents
+   MarkObjectsOutofDate/MarkObjectsOutofDate_contents
+   MeshingOperations/MeshingOperations_contents
+   Mirror/Mirror_contents
+   MoveCADComponentsToNewObject/MoveCADComponentsToNewObject_contents
+   MoveToNewSubobject/MoveToNewSubobject_contents
+   MoveToObject/MoveToObject_contents
+   Node/Node_contents
+   ObjectSetting/ObjectSetting_contents
+   ObjectSettingOperations/ObjectSettingOperations_contents
+   RedoAllTransforms/RedoAllTransforms_contents
+   Refaceting/Refaceting_contents
+   RefacetingOperations/RefacetingOperations_contents
+   ResetTemplate/ResetTemplate_contents
+   Rotate/Rotate_contents
+   RotateAboutAxis/RotateAboutAxis_contents
+   SaveFmdFile/SaveFmdFile_contents
+   SaveTemplate/SaveTemplate_contents
+   Scaling/Scaling_contents
+   SuppressNodeObjects/SuppressNodeObjects_contents
+   Transform/Transform_contents
+   TransformBase/TransformBase_contents
+   TransformOperations/TransformOperations_contents
+   Translate/Translate_contents
+   UndoAllTransforms/UndoAllTransforms_contents

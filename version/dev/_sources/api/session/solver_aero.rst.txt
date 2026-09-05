@@ -1,0 +1,12 @@
+.. _ref_solver_aero:
+
+solver_aero
+===========
+
+.. automodule:: ansys.fluent.core.session.solver_aero
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__
+    :autosummary:

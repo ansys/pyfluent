@@ -1,0 +1,82 @@
+:orphan:
+
+.. _viscous:
+
+viscous
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.viscous
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ===========================================================================================================
+
+Attribute                                                                                                                                                              Summary
+
+================================================================   ===========================================================================================================
+:ref:`model <model_2>`                                                                                                                                          Viscous Model.
+
+:ref:`spalart_allmaras_production <spalart_allmaras_production>`                                         Enable/disable strain/vorticity production in Spalart-Allmaras model.
+
+:ref:`k_epsilon_model <k_epsilon_model>`                                                                                                                      K-epsilon model.
+
+:ref:`k_omega_model <k_omega_model>`                                                                                                                            K-omega model.
+
+:ref:`k_omega <k_omega>`                                                                                                                                K-omega model options.
+
+:ref:`geko <geko>`                                                                                                                                    The GEKO options object.
+
+:ref:`rng <rng>`                                                                                                                                            RNG model options.
+
+:ref:`near_wall_treatment <near_wall_treatment>`                                                                                               The near wall treatment object.
+
+:ref:`reynolds_stress <reynolds_stress>`                                                                                                        Reynolds Stress Model Options.
+
+:ref:`subgrid_scale_model <subgrid_scale_model>`                                                                                                          Subgrid scale model.
+
+:ref:`les_model_options <les_model_options>`                                                                                                                LES model options.
+
+:ref:`reynolds_stress_options <reynolds_stress_options>`                                                                                        Reynolds Stress Model options.
+
+:ref:`rans <rans>`                                                                                                                                         RANS model options.
+
+:ref:`des <des>`                                                                                                                                                  DES options.
+
+:ref:`transition_module <transition_module>`                                                            Enable/disable a transition model to account for transitional effects.
+
+:ref:`hybrid_rans_les <hybrid_rans_les>`                                                                                               Enable/disable a hybrid RANS-LES model.
+
+:ref:`sbes <sbes>`                                                                                                                                               SBES options.
+
+:ref:`user_defined_transition <user_defined_transition>`                                                                                 User-defined transition correlations.
+
+:ref:`options <options_1>`                                                                                                                          The viscous model options.
+
+:ref:`multiphase_turbulence <multiphase_turbulence>`                                                                                      Multiphase turbulence model options.
+
+:ref:`turbulence_expert <turbulence_expert>`                                                                                                  Turbulence expert model options.
+
+:ref:`transition <transition>`                                                                                                                   The transition model options.
+
+:ref:`transition_sst <transition_sst>`                                                                                                                 Transition-SST options.
+
+:ref:`user_defined_functions <user_defined_functions>`                 User-defined functions to define the turbulent viscosity and the turbulent Prandtl and Schmidt numbers.
+
+:ref:`sa_enhanced_wall_treatment <sa_enhanced_wall_treatment>`                                      Enable/disable the enhanced wall treatment for the Spalart-Allmaras model.
+
+:ref:`sa_damping <sa_damping>`                                                                     Enable/disable the full low-Reynolds number form of Spalart-Allmaras model.
+
+================================================================   ===========================================================================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`models <models>`       'models' child.
+
+======================   ===================
+

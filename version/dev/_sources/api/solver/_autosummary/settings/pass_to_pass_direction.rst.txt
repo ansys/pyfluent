@@ -1,0 +1,36 @@
+:orphan:
+
+.. _pass_to_pass_direction:
+
+pass_to_pass_direction
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pass_to_pass_direction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============   =================================================
+
+Attribute                                                  Summary
+
+==============   =================================================
+:ref:`x <x_1>`   X component of the pass-to-pass direction vector.
+
+:ref:`y <y_1>`   Y component of the pass-to-pass direction vector.
+
+:ref:`z <z_1>`   Z component of the pass-to-pass direction vector.
+
+==============   =================================================
+
+.. rubric:: Included in:
+
+========================================   ==========================================
+
+Parent                                                                        Summary
+
+========================================   ==========================================
+:ref:`flow_directions <flow_directions>`   Flow directions for a heat exchanger core.
+
+========================================   ==========================================
+

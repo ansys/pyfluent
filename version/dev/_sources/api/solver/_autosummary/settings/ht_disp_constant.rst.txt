@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ht_disp_constant:
+
+ht_disp_constant
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ht_disp_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ====================================================
+
+Parent                                                                                            Summary
+
+==================================================   ====================================================
+:ref:`dispersed_heat_coeff <dispersed_heat_coeff>`   Dispersed phase heat transfer coefficient sub-model.
+
+==================================================   ====================================================
+

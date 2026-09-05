@@ -1,0 +1,38 @@
+:orphan:
+
+.. _dynamic_injection_child:
+
+dynamic_injection_child
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dynamic_injection_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ============================
+
+Attribute                                             Summary
+
+==============================   ============================
+:ref:`acd <acd>`                                       ACd: .
+
+:ref:`cd <cd>`                                          Cd: .
+
+:ref:`direction <direction_5>`       The vector of direction.
+
+:ref:`angle <angle_4>`                            The angles.
+
+==============================   ============================
+
+.. rubric:: Included in:
+
+============================================   =========================================================================
+
+Parent                                                                                                           Summary
+
+============================================   =========================================================================
+:ref:`dynamic_injection <dynamic_injection>`       Defines the dynamic injection type configuration for perforated wall.
+
+============================================   =========================================================================
+

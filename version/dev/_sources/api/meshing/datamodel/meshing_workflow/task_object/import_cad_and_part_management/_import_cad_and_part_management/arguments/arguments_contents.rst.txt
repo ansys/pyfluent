@@ -1,0 +1,20 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_import_cad_and_part_management__import_cad_and_part_management_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.import_cad_and_part_management._import_cad_and_part_management.arguments
+   :members: append, append_file_name, context, create_object_per, edge_extraction, feature_angle, file_length_unit, file_length_unit_append, file_loaded, fmd_file_name, ignore_solid_names, ignore_solid_names_append, jt_lod, jt_lod_append, length_unit, object_setting, one_zone_per, part_per_body, prefix_parent_name, remove_empty_parts, route, route_append
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   options/options_contents
+   refacet_options/refacet_options_contents
+   refaceting/refaceting_contents

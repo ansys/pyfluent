@@ -1,0 +1,21 @@
+:orphan:
+
+.. _angle_maximum:
+
+angle_maximum
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.angle_maximum
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`constraint_1 <constraint_1>`       'constraint' child.
+
+==================================   =======================
+

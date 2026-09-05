@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_LocalScopedSizingForPartReplacement__LocalScopedSizingForPartReplacementCommandArguments__LocalSizeControlParameters:
+
+_LocalSizeControlParameters
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.LocalScopedSizingForPartReplacement._LocalScopedSizingForPartReplacementCommandArguments._LocalSizeControlParameters
+   :members: _AdvancedOptions, _CellsPerGap, _CurvatureNormalAngle, _GrowthRate, _IgnoreSelf, _InitialSizeControl, _MaxSize, _MinSize, _ScopeProximityTo, _SizingType, _TargetSizeControl, _WrapCellsPerGap, _WrapCurvatureNormalAngle, _WrapGrowthRate, _WrapMax, _WrapMin
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _input_file_1:
+
+input_file
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.input_file_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =======================================================================================================
+
+Parent                                                                                                                                     Summary
+
+========================================   =======================================================================================================
+:ref:`reflection_data <reflection_data>`   Read experimental reflection coefficient data and output impedance parameters for a boundary condition.
+
+========================================   =======================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _list_species_1:
+
+list_species
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.list_species_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`init_value <init_value>`   Initial concentration (kmol/m3).
+
+==============================   ================================
+

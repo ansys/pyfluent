@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scale_factor_1:
+
+scale_factor
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scale_factor_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================
+
+Parent                                                Summary
+
+==========================   ================================
+:ref:`new_unit <new_unit>`       Set unit conversion factors.
+
+==========================   ================================
+

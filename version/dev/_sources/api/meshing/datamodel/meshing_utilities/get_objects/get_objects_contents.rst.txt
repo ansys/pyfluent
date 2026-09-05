@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_objects:
+
+get_objects
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_objects
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _get_objectsArguments/_get_objectsArguments_contents

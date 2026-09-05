@@ -1,0 +1,21 @@
+:orphan:
+
+.. _basis:
+
+basis
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.basis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`viewfactor_settings <viewfactor_settings>`       Viewfactor related settings.
+
+================================================   ================================
+

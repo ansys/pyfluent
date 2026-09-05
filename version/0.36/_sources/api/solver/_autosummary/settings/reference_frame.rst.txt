@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reference_frame:
+
+reference_frame
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.reference_frame
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================================================
+
+Parent                                                                                Summary
+
+==========================   ================================================================
+:ref:`expert_2 <expert_2>`       Menu containing not frequently used (expert level) settings.
+
+==========================   ================================================================
+

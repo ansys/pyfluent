@@ -1,0 +1,20 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_set_up_rotational_periodic_boundaries__set_up_rotational_periodic_boundariesArguments:
+
+_set_up_rotational_periodic_boundariesArguments
+===============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.set_up_rotational_periodic_boundaries._set_up_rotational_periodic_boundariesArguments
+   :members: _auto_multiple_periodic, _label_list, _list_all_label_toggle, _mesh_object, _method, _multiple_option, _periodicity_angle, _remesh_boundaries_option, _selection_type, _topology_list, _type, _zone_list, _zone_location
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _rotation_axis_direction/_rotation_axis_direction_contents
+   _rotation_axis_origin/_rotation_axis_origin_contents
+   _trans_shift/_trans_shift_contents

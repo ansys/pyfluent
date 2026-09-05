@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_faces_by_quality__mark_faces_by_qualityArguments:
+
+_mark_faces_by_qualityArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.mark_faces_by_quality._mark_faces_by_qualityArguments
+   :members: _append_marking, _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern, _quality_limit, _quality_measure
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

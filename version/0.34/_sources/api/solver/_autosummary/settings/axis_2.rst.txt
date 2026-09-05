@@ -1,0 +1,21 @@
+:orphan:
+
+.. _axis_2:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.axis_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`cylinder <cylinder>`       'cylinder' child.
+
+==========================   =====================
+

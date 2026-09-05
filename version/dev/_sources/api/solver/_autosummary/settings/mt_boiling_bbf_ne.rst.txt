@@ -1,0 +1,36 @@
+:orphan:
+
+.. _mt_boiling_bbf_ne:
+
+mt_boiling_bbf_ne
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_bbf_ne
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ===========================================================
+
+Attribute                                                                                                        Summary
+
+==========================================================   ===========================================================
+:ref:`mt_boiling_bbf_ne_method <mt_boiling_bbf_ne_method>`   Blending function method for non-equilibrium boiling model.
+
+:ref:`mt_boiling_lav_coeff1 <mt_boiling_lav_coeff1>`                         Lavieville critical liquid volume fraction.
+
+:ref:`mt_boiling_bbf_ne_udf <mt_boiling_bbf_ne_udf>`                          UDF for non-equilibrium blending function.
+
+==========================================================   ===========================================================
+
+.. rubric:: Included in:
+
+============================================   ====================================================================
+
+Parent                                                                                                      Summary
+
+============================================   ====================================================================
+:ref:`mt_boiling_params <mt_boiling_params>`   Boiling sub-model parameters: BDD, NSD, BDF, AIC, blending function.
+
+============================================   ====================================================================
+

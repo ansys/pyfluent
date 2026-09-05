@@ -1,0 +1,21 @@
+:orphan:
+
+.. _edge_type_1:
+
+edge_type
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.edge_type_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==================================
+
+Parent                                                                    Summary
+
+============================================   ==================================
+:ref:`edge_type_options <edge_type_options>`       Controls the display of edges.
+
+============================================   ==================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_update_regions__update_regionsArguments:
+
+_update_regionsArguments
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.update_regions._update_regionsArguments
+   :members: _mesh_object, _number_of_listed_regions, _old_region_name_list, _old_region_type_list, _region_current_list, _region_current_type_list, _region_internal_types, _region_internals, _region_name_list, _region_type_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

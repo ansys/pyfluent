@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_initialization_species_selection:
+
+species_selection
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.initialization.species_selection
+   :members: add_boundary_species, remove_boundary_species, selected_species
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

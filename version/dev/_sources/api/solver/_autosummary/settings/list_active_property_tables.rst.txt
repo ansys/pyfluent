@@ -1,0 +1,21 @@
+:orphan:
+
+.. _list_active_property_tables:
+
+list_active_property_tables
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.list_active_property_tables
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ======================================================================================================================
+
+Parent                                                                                                                                                                        Summary
+
+============================================================   ======================================================================================================================
+:ref:`rgp_saturation_properties <rgp_saturation_properties>`   RGP Material Saturation Properties Interface - Read and manage RGP material names for saturation property computation.
+
+============================================================   ======================================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _export_omdb_in_optislang_postprocessor:
+
+export_omdb_in_optislang_postprocessor
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.export_omdb_in_optislang_postprocessor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

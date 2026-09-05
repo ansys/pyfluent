@@ -1,0 +1,23 @@
+:orphan:
+
+.. _type_7:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.type_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============================================
+
+Parent                                                            Summary
+
+==========================   ============================================
+:ref:`create_3 <create_3>`                              Crate new volume.
+
+:ref:`set_type <set_type>`       Input volume name(s) to change its type.
+
+==========================   ============================================
+

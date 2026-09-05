@@ -1,0 +1,140 @@
+:orphan:
+
+.. _structure_1:
+
+structure
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.structure_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ==================================
+
+Attribute                                                                                 Summary
+
+============================================================   ==================================
+:ref:`x_disp_boundary_condition <x_disp_boundary_condition>`   X-Displacement Boundary Condition.
+
+:ref:`x_disp_boundary_value <x_disp_boundary_value>`               X-Displacement Boundary value.
+
+:ref:`y_disp_boundary_condition <y_disp_boundary_condition>`   Y-Displacement Boundary Condition.
+
+:ref:`y_disp_boundary_value <y_disp_boundary_value>`               Y-Displacement Boundary Value.
+
+:ref:`z_disp_boundary_condition <z_disp_boundary_condition>`   Z-Displacement Boundary Condition.
+
+:ref:`z_disp_boundary_value <z_disp_boundary_value>`               Z-Displacement Boundary Value.
+
+============================================================   ==================================
+
+.. rubric:: Included in:
+
+==================================================================   ==============================================
+
+Parent                                                                                                      Summary
+
+==================================================================   ==============================================
+:ref:`netm_solid_wall <netm_solid_wall>`                                       Define settings for NETM solid wall.
+
+:ref:`exhaust_fan_child <exhaust_fan_child>`                                    'child_object_type' of exhaust_fan.
+
+:ref:`phase_7_child <phase_7_child>`                                                  'child_object_type' of phase.
+
+:ref:`inlet_vent_child <inlet_vent_child>`                                       'child_object_type' of inlet_vent.
+
+:ref:`phase_9_child <phase_9_child>`                                                  'child_object_type' of phase.
+
+:ref:`intake_fan_child <intake_fan_child>`                                       'child_object_type' of intake_fan.
+
+:ref:`phase_10_child <phase_10_child>`                                                'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_child <mass_flow_inlet_child>`                        'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_13_child <phase_13_child>`                                                'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_child <mass_flow_outlet_child>`                     'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_14_child <phase_14_child>`                                                'child_object_type' of phase.
+
+:ref:`outflow_child <outflow_child>`                                                'child_object_type' of outflow.
+
+:ref:`phase_17_child <phase_17_child>`                                                'child_object_type' of phase.
+
+:ref:`outlet_vent_child <outlet_vent_child>`                                    'child_object_type' of outlet_vent.
+
+:ref:`phase_18_child <phase_18_child>`                                                'child_object_type' of phase.
+
+:ref:`pressure_far_field_child <pressure_far_field_child>`               'child_object_type' of pressure_far_field.
+
+:ref:`phase_21_child <phase_21_child>`                                                'child_object_type' of phase.
+
+:ref:`pressure_inlet_child <pressure_inlet_child>`                           'child_object_type' of pressure_inlet.
+
+:ref:`phase_22_child <phase_22_child>`                                                'child_object_type' of phase.
+
+:ref:`pressure_outlet_child <pressure_outlet_child>`                        'child_object_type' of pressure_outlet.
+
+:ref:`phase_23_child <phase_23_child>`                                                'child_object_type' of phase.
+
+:ref:`velocity_inlet_child <velocity_inlet_child>`                           'child_object_type' of velocity_inlet.
+
+:ref:`phase_28_child <phase_28_child>`                                                'child_object_type' of phase.
+
+:ref:`wall_child <wall_child>`                                                         'child_object_type' of wall.
+
+:ref:`phase_29_child <phase_29_child>`                                                'child_object_type' of phase.
+
+:ref:`overlapping_boundaries_child <overlapping_boundaries_child>`   'child_object_type' of overlapping_boundaries.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`                                'child_object_type' of exhaust_fan.
+
+:ref:`phase_31_child <phase_31_child>`                                                'child_object_type' of phase.
+
+:ref:`inlet_vent_1_child <inlet_vent_1_child>`                                   'child_object_type' of inlet_vent.
+
+:ref:`phase_33_child <phase_33_child>`                                                'child_object_type' of phase.
+
+:ref:`intake_fan_1_child <intake_fan_1_child>`                                   'child_object_type' of intake_fan.
+
+:ref:`phase_34_child <phase_34_child>`                                                'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_1_child <mass_flow_inlet_1_child>`                    'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_37_child <phase_37_child>`                                                'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_1_child <mass_flow_outlet_1_child>`                 'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_38_child <phase_38_child>`                                                'child_object_type' of phase.
+
+:ref:`outflow_1_child <outflow_1_child>`                                            'child_object_type' of outflow.
+
+:ref:`phase_41_child <phase_41_child>`                                                'child_object_type' of phase.
+
+:ref:`outlet_vent_1_child <outlet_vent_1_child>`                                'child_object_type' of outlet_vent.
+
+:ref:`phase_42_child <phase_42_child>`                                                'child_object_type' of phase.
+
+:ref:`pressure_far_field_1_child <pressure_far_field_1_child>`           'child_object_type' of pressure_far_field.
+
+:ref:`phase_45_child <phase_45_child>`                                                'child_object_type' of phase.
+
+:ref:`pressure_inlet_1_child <pressure_inlet_1_child>`                       'child_object_type' of pressure_inlet.
+
+:ref:`phase_46_child <phase_46_child>`                                                'child_object_type' of phase.
+
+:ref:`pressure_outlet_1_child <pressure_outlet_1_child>`                    'child_object_type' of pressure_outlet.
+
+:ref:`phase_47_child <phase_47_child>`                                                'child_object_type' of phase.
+
+:ref:`velocity_inlet_1_child <velocity_inlet_1_child>`                       'child_object_type' of velocity_inlet.
+
+:ref:`phase_52_child <phase_52_child>`                                                'child_object_type' of phase.
+
+:ref:`wall_1_child <wall_1_child>`                                                     'child_object_type' of wall.
+
+:ref:`phase_53_child <phase_53_child>`                                                'child_object_type' of phase.
+
+==================================================================   ==============================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _show_major_gridlines_1:
+
+show_major_gridlines
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.show_major_gridlines_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==========
+
+Parent                Summary
+
+================   ==========
+:ref:`x_9 <x_9>`   'x' child.
+
+:ref:`y_9 <y_9>`   'y' child.
+
+================   ==========
+

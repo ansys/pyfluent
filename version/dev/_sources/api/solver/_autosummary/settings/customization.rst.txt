@@ -1,0 +1,36 @@
+:orphan:
+
+.. _customization:
+
+customization
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.customization
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ======================================
+
+Attribute                                                                             Summary
+
+====================================================   ======================================
+:ref:`echem_rate <echem_rate>`                         Electrochemistry rate factor function.
+
+:ref:`relative_permeability <relative_permeability>`          Relative permeability function.
+
+:ref:`osmotic_drag_coeff <osmotic_drag_coeff>`             Osmotic drag coefficient function.
+
+====================================================   ======================================
+
+.. rubric:: Included in:
+
+==================================   =====================================
+
+Parent                                                             Summary
+
+==================================   =====================================
+:ref:`electrolysis <electrolysis>`   The Electrochemical Devices settings.
+
+==================================   =====================================
+

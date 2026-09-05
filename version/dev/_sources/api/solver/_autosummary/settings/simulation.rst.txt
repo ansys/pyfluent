@@ -1,0 +1,47 @@
+:orphan:
+
+.. _simulation:
+
+simulation
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.simulation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================   ==========================================
+
+Attribute                                             Summary
+
+================   ==========================================
+:ref:`run <run>`   Manage runs within the current simulation.
+
+================   ==========================================
+
+.. rubric:: Methods
+
+======================================   ======================================================
+
+Method                                                                                  Summary
+
+======================================   ======================================================
+:ref:`new_simulation <new_simulation>`   Create a new simulation in the current Fluent project.
+
+:ref:`set_as_current <set_as_current>`                     Set the named simulation as current.
+
+:ref:`delete <delete>`                           Delete the named simulation and all its files.
+
+======================================   ======================================================
+
+.. rubric:: Included in:
+
+========================   ==============================================
+
+Parent                                                            Summary
+
+========================   ==============================================
+:ref:`project <project>`   Standalone Fluent Project management commands.
+
+========================   ==============================================
+

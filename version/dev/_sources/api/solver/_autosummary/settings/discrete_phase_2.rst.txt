@@ -1,0 +1,94 @@
+:orphan:
+
+.. _discrete_phase_2:
+
+discrete_phase
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.discrete_phase_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ====================================
+
+Attribute                                                                                 Summary
+
+==========================================================   ====================================
+:ref:`bc_type <bc_type_3>`                                                Discrete Phase BC Type.
+
+:ref:`reinject_using_injection <reinject_using_injection>`                     Use Settings from.
+
+:ref:`bc_user_function <bc_user_function>`                            Discrete Phase BC Function.
+
+:ref:`dem_collision_partner <dem_collision_partner>`                       DEM Collision Partner.
+
+:ref:`mixing_plane_thread <mixing_plane_thread>`             Is zone used in mixing-plane model?.
+
+==========================================================   ====================================
+
+.. rubric:: Included in:
+
+========================================================   =======================================
+
+Parent                                                                                     Summary
+
+========================================================   =======================================
+:ref:`exhaust_fan_child <exhaust_fan_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`phase_7_child <phase_7_child>`                                 'child_object_type' of phase.
+
+:ref:`inlet_vent_child <inlet_vent_child>`                      'child_object_type' of inlet_vent.
+
+:ref:`phase_9_child <phase_9_child>`                                 'child_object_type' of phase.
+
+:ref:`intake_fan_child <intake_fan_child>`                      'child_object_type' of intake_fan.
+
+:ref:`phase_10_child <phase_10_child>`                               'child_object_type' of phase.
+
+:ref:`outlet_vent_child <outlet_vent_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`phase_18_child <phase_18_child>`                               'child_object_type' of phase.
+
+:ref:`pressure_inlet_child <pressure_inlet_child>`          'child_object_type' of pressure_inlet.
+
+:ref:`phase_22_child <phase_22_child>`                               'child_object_type' of phase.
+
+:ref:`pressure_outlet_child <pressure_outlet_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`phase_23_child <phase_23_child>`                               'child_object_type' of phase.
+
+:ref:`velocity_inlet_child <velocity_inlet_child>`          'child_object_type' of velocity_inlet.
+
+:ref:`phase_28_child <phase_28_child>`                               'child_object_type' of phase.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`               'child_object_type' of exhaust_fan.
+
+:ref:`phase_31_child <phase_31_child>`                               'child_object_type' of phase.
+
+:ref:`inlet_vent_1_child <inlet_vent_1_child>`                  'child_object_type' of inlet_vent.
+
+:ref:`phase_33_child <phase_33_child>`                               'child_object_type' of phase.
+
+:ref:`intake_fan_1_child <intake_fan_1_child>`                  'child_object_type' of intake_fan.
+
+:ref:`phase_34_child <phase_34_child>`                               'child_object_type' of phase.
+
+:ref:`outlet_vent_1_child <outlet_vent_1_child>`               'child_object_type' of outlet_vent.
+
+:ref:`phase_42_child <phase_42_child>`                               'child_object_type' of phase.
+
+:ref:`pressure_inlet_1_child <pressure_inlet_1_child>`      'child_object_type' of pressure_inlet.
+
+:ref:`phase_46_child <phase_46_child>`                               'child_object_type' of phase.
+
+:ref:`pressure_outlet_1_child <pressure_outlet_1_child>`   'child_object_type' of pressure_outlet.
+
+:ref:`phase_47_child <phase_47_child>`                               'child_object_type' of phase.
+
+:ref:`velocity_inlet_1_child <velocity_inlet_1_child>`      'child_object_type' of velocity_inlet.
+
+:ref:`phase_52_child <phase_52_child>`                               'child_object_type' of phase.
+
+========================================================   =======================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_regions__get_regionsArguments:
+
+_get_regionsArguments
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_regions._get_regionsArguments
+   :members: _filter, _object_name, _region_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _backward_compatibility:
+
+backward_compatibility
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.backward_compatibility
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================================================================   ===========================================================================================================================
+
+Method                                                                                                                                                                                                           Summary
+
+==========================================================================================   ===========================================================================================================================
+:ref:`revert_27r1_hypersonic_chemistry_changes <revert_27r1_hypersonic_chemistry_changes>`       Modify active materials to revert changes to hypersonic chemistry made in 27R1, so a fresh case can use older kinetics.
+
+:ref:`apply_27r1_hypersonic_chemistry_changes <apply_27r1_hypersonic_chemistry_changes>`     Modify active materials to apply changes to hypersonic chemistry made in 27R1, so a pre-27R1 case can use updated kinetics.
+
+==========================================================================================   ===========================================================================================================================
+
+.. rubric:: Included in:
+
+============================   ==========
+
+Parent                            Summary
+
+============================   ==========
+:ref:`reactions <reactions>`   Reactions.
+
+============================   ==========
+

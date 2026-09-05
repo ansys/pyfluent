@@ -1,0 +1,21 @@
+:orphan:
+
+.. _row_value:
+
+row_value
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.row_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ====================================================
+
+Parent                                                                                          Summary
+
+================================================   ====================================================
+:ref:`heat_transfer_table <heat_transfer_table>`   2D heat transfer data structure in a 2D table class.
+
+================================================   ====================================================
+

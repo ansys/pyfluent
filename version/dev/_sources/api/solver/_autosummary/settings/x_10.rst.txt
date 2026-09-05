@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_10:
+
+x
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.x_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ================================
+
+Parent                                            Summary
+
+======================   ================================
+:ref:`extent <extent>`   Cartesian design region extents.
+
+======================   ================================
+

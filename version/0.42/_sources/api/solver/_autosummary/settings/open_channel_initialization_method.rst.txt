@@ -1,0 +1,21 @@
+:orphan:
+
+.. _open_channel_initialization_method:
+
+open_channel_initialization_method
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.open_channel_initialization_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ==========================================
+
+Parent                                                                                      Summary
+
+======================================================   ==========================================
+:ref:`open_channel_auto_init <open_channel_auto_init>`       Open channel automatic initialization.
+
+======================================================   ==========================================
+

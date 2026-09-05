@@ -1,0 +1,21 @@
+:orphan:
+
+.. _weight_5:
+
+weight
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.weight_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`results_1_child <results_1_child>`       'child_object_type' of results.
+
+========================================   ===================================
+

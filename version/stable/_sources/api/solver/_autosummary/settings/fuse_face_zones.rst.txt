@@ -1,0 +1,34 @@
+:orphan:
+
+.. _fuse_face_zones:
+
+fuse_face_zones
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fuse_face_zones
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ===================================================================================
+
+Argument                                                                                                               Summary
+
+========================================   ===================================================================================
+:ref:`face_zones <face_zones>`                                                         Names or IDs of face zones to be fused.
+
+:ref:`fused_zone_name <fused_zone_name>`       User specified name for fused zone (only available when fusing two face zones).
+
+========================================   ===================================================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

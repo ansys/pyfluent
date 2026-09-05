@@ -1,0 +1,34 @@
+:orphan:
+
+.. _no_species:
+
+no_species
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.no_species
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ======================
+
+Attribute                                                   Summary
+
+==========================================   ======================
+:ref:`add <add>`                                 Enable/disable NO.
+
+:ref:`molecular_weight <molecular_weight>`       Molecular weights.
+
+==========================================   ======================
+
+.. rubric:: Included in:
+
+==========================   ====================
+
+Parent                                    Summary
+
+==========================   ====================
+:ref:`expert_2 <expert_2>`       NOx expert mode.
+
+==========================   ====================
+

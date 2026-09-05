@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_load_cad_geometry__load_cad_geometryArguments:
+
+_load_cad_geometryArguments
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.load_cad_geometry._load_cad_geometryArguments
+   :members: _create_object_per, _faceting_tolerance, _file_name, _length_unit, _num_parts, _route, _use_prime_geometry_kernel
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _refaceting/_refaceting_contents

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _solver_1:
+
+solver
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.solver_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ==========================
+
+Attribute                                                 Summary
+
+====================================   ==========================
+:ref:`stabilization <stabilization>`       'stabilization' child.
+
+====================================   ==========================
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`dynamic_zones_child <dynamic_zones_child>`       'child_object_type' of dynamic_zones.
+
+================================================   =========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _face_zone_ids:
+
+face_zone_ids
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.face_zone_ids
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`gap_regions_child <gap_regions_child>`   'child_object_type' of gap_regions.
+
+============================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temp_rfname:
+
+temp_rfname
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.temp_rfname
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===========================================================================================================
+
+Parent                                                                                                                               Summary
+
+==============================   ===========================================================================================================
+:ref:`inspection <inspection>`   Run inspection based on the selected type: grid quality, case settings, velocity, or temperature anomalies.
+
+==============================   ===========================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _export_all_windows:
+
+export_all_windows
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.export_all_windows
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =========================================
+
+Parent                                                       Summary
+
+========================   =========================================
+:ref:`picture <picture>`   The hardcopy/save-picture options object.
+
+========================   =========================================
+

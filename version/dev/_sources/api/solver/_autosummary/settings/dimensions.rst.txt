@@ -1,0 +1,36 @@
+:orphan:
+
+.. _dimensions:
+
+dimensions
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.dimensions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   =================================
+
+Attribute                                          Summary
+
+======================   =================================
+:ref:`width <width>`     Computed width of this core zone.
+
+:ref:`height <height>`       Computed height of this core.
+
+:ref:`depth <depth>`          Computed depth of this core.
+
+======================   =================================
+
+.. rubric:: Included in:
+
+==============================   ===================================
+
+Parent                                                       Summary
+
+==============================   ===================================
+:ref:`geometry_4 <geometry_4>`   Geometry for a heat exchanger core.
+
+==============================   ===================================
+

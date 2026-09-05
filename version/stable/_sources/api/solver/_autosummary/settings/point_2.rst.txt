@@ -1,0 +1,23 @@
+:orphan:
+
+.. _point_2:
+
+point
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.point_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================================
+
+Parent                                                   Summary
+
+============================   =================================
+:ref:`axis_from <axis_from>`       The initial state properties.
+
+:ref:`axis_to <axis_to>`           The initial state properties.
+
+============================   =================================
+

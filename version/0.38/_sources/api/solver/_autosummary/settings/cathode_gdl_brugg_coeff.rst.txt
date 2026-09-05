@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cathode_gdl_brugg_coeff:
+
+cathode_gdl_brugg_coeff
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cathode_gdl_brugg_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================
+
+Parent                                                   Summary
+
+==========================================   ===================
+:ref:`cathode_gdl_zone <cathode_gdl_zone>`       Up cathode GDL.
+
+==========================================   ===================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_identify_construction_surfaces__identify_construction_surfacesArguments__rotation:
+
+_rotation
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.identify_construction_surfaces._identify_construction_surfacesArguments._rotation
+   :members: _x_component, _y_component
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

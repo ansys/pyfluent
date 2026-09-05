@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_custom_journal_task__custom_journal_task_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.custom_journal_task._custom_journal_task.arguments
+   :members: journal_string, prime_journal, python_journal
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

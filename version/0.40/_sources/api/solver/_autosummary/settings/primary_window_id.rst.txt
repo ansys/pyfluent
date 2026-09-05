@@ -1,0 +1,21 @@
+:orphan:
+
+.. _primary_window_id:
+
+primary_window_id
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.primary_window_id
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===========================================
+
+Parent                                                         Summary
+
+========================   ===========================================
+:ref:`start_3 <start_3>`       Start the view synchronization process.
+
+========================   ===========================================
+

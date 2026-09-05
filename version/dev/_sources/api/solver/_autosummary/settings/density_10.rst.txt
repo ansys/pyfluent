@@ -1,0 +1,21 @@
+:orphan:
+
+.. _density_10:
+
+density
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.density_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ==========================================================================
+
+Parent                                                                                                                      Summary
+
+======================================================   ==========================================================================
+:ref:`global_extrema_tracker <global_extrema_tracker>`   Monitor global maximum and minimum field extrema values during simulation.
+
+======================================================   ==========================================================================
+

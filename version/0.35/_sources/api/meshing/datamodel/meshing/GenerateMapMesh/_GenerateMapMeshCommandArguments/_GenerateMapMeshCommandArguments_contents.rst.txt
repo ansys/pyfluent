@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateMapMesh__GenerateMapMeshCommandArguments:
+
+_GenerateMapMeshCommandArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.GenerateMapMesh._GenerateMapMeshCommandArguments
+   :members: _AddChild, _ConstantSize, _ControlName, _FaceLabelList, _FaceZoneList, _GrowthRate, _ProjectOnGeometry, _SelectionType, _ShortSideDivisions, _SizingOption, _SplitQuads
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

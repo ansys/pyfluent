@@ -1,0 +1,34 @@
+:orphan:
+
+.. _constant_velocity:
+
+constant_velocity
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.constant_velocity
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =================================================================================================
+
+Attribute                                                                                                                                    Summary
+
+================================================   =================================================================================================
+:ref:`linear_velocity <linear_velocity>`               The linear velocity in XYZ directions with respect to the parent reference frame orientation.
+
+:ref:`rotational_velocity <rotational_velocity>`                     The rotational velocity with respect to the parent reference frame orientation.
+
+================================================   =================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`motion_1 <motion_1>`       Give motion properties.
+
+==========================   ===========================
+

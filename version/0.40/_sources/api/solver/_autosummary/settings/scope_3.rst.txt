@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scope_3:
+
+scope
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.scope_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =================================
+
+Parent                                       Summary
+
+================   =================================
+:ref:`vtk <vtk>`       Write a VTK (.vtp/.vtu) file.
+
+================   =================================
+

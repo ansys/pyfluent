@@ -1,0 +1,21 @@
+:orphan:
+
+.. _swirl_origin:
+
+swirl_origin
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.swirl_origin
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ====================================
+
+Parent                                                                                  Summary
+
+========================================================   ====================================
+:ref:`write_in_cylinder_ouput <write_in_cylinder_ouput>`       'write_in_cylinder_ouput' child.
+
+========================================================   ====================================
+

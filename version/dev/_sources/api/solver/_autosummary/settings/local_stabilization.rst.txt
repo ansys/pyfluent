@@ -1,0 +1,21 @@
+:orphan:
+
+.. _local_stabilization:
+
+local_stabilization
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.local_stabilization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===================================================
+
+Parent                                                                           Summary
+
+==================================   ===================================================
+:ref:`sponge_layer <sponge_layer>`   Settings for the Sponge Layer flow-modeling method.
+
+==================================   ===================================================
+

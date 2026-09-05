@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_species_1:
+
+delete_species
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_species_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ==================================
+
+Argument                                                          Summary
+
+====================================   ==================================
+:ref:`species_name <species_name_2>`   Pick a species you want to delete.
+
+====================================   ==================================
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`init_value <init_value>`   Initial concentration (kmol/m3).
+
+==============================   ================================
+

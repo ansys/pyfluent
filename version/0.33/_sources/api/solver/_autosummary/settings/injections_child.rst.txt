@@ -1,0 +1,48 @@
+:orphan:
+
+.. _injections_child:
+
+injections_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.injections_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ===============================================================================================
+
+Attribute                                                                                                                                  Summary
+
+================================================   ===============================================================================================
+:ref:`name <name_4>`                                                                                                           Name of the object.
+
+:ref:`particle_type <particle_type>`                                                                                               Particle type:.
+
+:ref:`material <material_2>`                           Pick a particle material, appropriate for the particle type, from the case or the database.
+
+:ref:`interaction <interaction_1>`                                                                           Lagrangian two-way coupling settings.
+
+:ref:`injection_type <injection_type>`                                   Define the type of the injection, including surface, file, and atomizers.
+
+:ref:`initial_values <initial_values>`                                                                     Lagrangian particle initial properties.
+
+:ref:`particle_reinjector <particle_reinjector>`                                                         Lagrangian particle reinjection settings.
+
+:ref:`physical_models <physical_models_1>`                                                                    Lagrangian physical models settings.
+
+:ref:`parcel_method <parcel_method>`                                                                            Lagrangian parcel method settings.
+
+================================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+==============================   =====================================
+
+Parent                                                         Summary
+
+==============================   =====================================
+:ref:`injections <injections>`       Injection named object container.
+
+==============================   =====================================
+

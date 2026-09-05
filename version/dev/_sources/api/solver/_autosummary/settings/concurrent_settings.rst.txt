@@ -1,0 +1,36 @@
+:orphan:
+
+.. _concurrent_settings:
+
+concurrent_settings
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.concurrent_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ====================
+
+Attribute                                                       Summary
+
+================================================   ====================
+:ref:`remote_project_name <remote_project_name>`   Name of the Project.
+
+:ref:`current_endpoint <current_endpoint>`            Current Endpoint.
+
+:ref:`licensing <licensing>`                                 Licensing.
+
+================================================   ====================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`parametric_studies_child <parametric_studies_child>`   'child_object_type' of parametric_studies.
+
+==========================================================   ==========================================
+

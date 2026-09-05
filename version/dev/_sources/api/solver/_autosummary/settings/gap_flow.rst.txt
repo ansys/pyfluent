@@ -1,0 +1,36 @@
+:orphan:
+
+.. _gap_flow:
+
+gap_flow
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gap_flow
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ============================================================================
+
+Attribute                                                                                               Summary
+
+================================   ============================================================================
+:ref:`x_velocity <x_velocity_1>`             X-component of the prescribed gap velocity for the Gap Flow model.
+
+:ref:`y_velocity <y_velocity_1>`             Y-component of the prescribed gap velocity for the Gap Flow model.
+
+:ref:`z_velocity <z_velocity_1>`   Z-component of the prescribed gap velocity for the Gap Flow model (3D only).
+
+================================   ============================================================================
+
+.. rubric:: Included in:
+
+================================================   ==========================================================
+
+Parent                                                                                                Summary
+
+================================================   ==========================================================
+:ref:`reduced_order_model <reduced_order_model>`   Settings for the Reduced Order Model flow-modeling method.
+
+================================================   ==========================================================
+

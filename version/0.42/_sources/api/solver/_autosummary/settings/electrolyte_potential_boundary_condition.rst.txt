@@ -1,0 +1,23 @@
+:orphan:
+
+.. _electrolyte_potential_boundary_condition:
+
+electrolyte_potential_boundary_condition
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.electrolyte_potential_boundary_condition
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================================================
+
+Parent                                                                                 Summary
+
+================================   ===========================================================
+:ref:`potential <potential>`           Allows to change potential model variables or settings.
+
+:ref:`potential_2 <potential_2>`       Allows to change potential model variables or settings.
+
+================================   ===========================================================
+

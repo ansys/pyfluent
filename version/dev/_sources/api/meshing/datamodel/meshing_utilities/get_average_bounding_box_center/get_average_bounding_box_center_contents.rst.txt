@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_average_bounding_box_center:
+
+get_average_bounding_box_center
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_average_bounding_box_center
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _get_average_bounding_box_centerArguments/_get_average_bounding_box_centerArguments_contents

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _slit_interior_between_diff_materials:
+
+slit_interior_between_diff_materials
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.slit_interior_between_diff_materials
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

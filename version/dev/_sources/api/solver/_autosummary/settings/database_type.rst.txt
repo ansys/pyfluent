@@ -1,0 +1,25 @@
+:orphan:
+
+.. _database_type:
+
+database_type
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.database_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===================================================================
+
+Parent                                                                                                       Summary
+
+==============================================   ===================================================================
+:ref:`database <database>`                       Backward-compatibility namespace for legacy database command paths.
+
+:ref:`copy_materials <copy_materials>`                                                 Copy materials from database.
+
+:ref:`copy_from_database <copy_from_database>`                                         Copy materials from database.
+
+==============================================   ===================================================================
+

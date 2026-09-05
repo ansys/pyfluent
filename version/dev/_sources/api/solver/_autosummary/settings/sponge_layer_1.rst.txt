@@ -1,0 +1,38 @@
+:orphan:
+
+.. _sponge_layer_1:
+
+sponge_layer
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sponge_layer_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ==================================================================================================
+
+Attribute                                                                                                                                                     Summary
+
+================================================================   ==================================================================================================
+:ref:`viscosity_variation_factor <viscosity_variation_factor>`         Controls how much the viscosity varies in the sponge layer: 0.0 = fully variable, 1.0 = fixed.
+
+:ref:`min_velocity_magnitude <min_velocity_magnitude>`                               Minimum velocity magnitude limit used in the sponge layer viscosity calculation.
+
+:ref:`max_viscosity_change_ratio <max_viscosity_change_ratio>`                        Maximum ratio by which viscosity can change between layers in the sponge layer.
+
+:ref:`viscosity_based_formulation <viscosity_based_formulation>`   Use viscosity-based formulation instead of Reynolds-number-based formulation for the sponge layer.
+
+================================================================   ==================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`advanced_options <advanced_options>`   Advanced and expert controls for the gap model.
+
+==========================================   ===============================================
+

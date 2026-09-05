@@ -1,0 +1,32 @@
+:orphan:
+
+.. _remove_1:
+
+remove
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.remove_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   =================================
+
+Argument                                                   Summary
+
+==============================   =================================
+:ref:`file_list <file_list_2>`       Sensitivities list to remove.
+
+==============================   =================================
+
+.. rubric:: Included in:
+
+================================   ==============================
+
+Parent                                                    Summary
+
+================================   ==============================
+:ref:`manage_data <manage_data>`       Manage sensitivitity data.
+
+================================   ==============================
+

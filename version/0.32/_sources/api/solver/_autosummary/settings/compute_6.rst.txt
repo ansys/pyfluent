@@ -1,0 +1,21 @@
+:orphan:
+
+.. _compute_6:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.compute_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===================================================================================================================
+
+Parent                                                                                                                                 Summary
+
+========================   ===================================================================================================================
+:ref:`range_3 <range_3>`       Indicates minimum and maximum values of the selected field variable in the selected surfaces and/or cell zones.
+
+========================   ===================================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ht_cont_constant:
+
+ht_cont_constant
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ht_cont_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================================
+
+Parent                                                                                               Summary
+
+====================================================   =====================================================
+:ref:`continuous_heat_coeff <continuous_heat_coeff>`   Continuous phase heat transfer coefficient sub-model.
+
+====================================================   =====================================================
+

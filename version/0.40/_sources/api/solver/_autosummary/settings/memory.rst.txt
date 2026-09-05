@@ -1,0 +1,38 @@
+:orphan:
+
+.. _memory:
+
+memory
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.memory
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ================================================
+
+Attribute                                                                                       Summary
+
+====================================================   ================================================
+:ref:`memory_locations <memory_locations>`                     Number of user-defined memory locations.
+
+:ref:`memory_node_locations <memory_node_locations>`                                   The memory size.
+
+:ref:`zone_based_udm <zone_based_udm>`                     Enable/disable zone based memory allocation.
+
+:ref:`udm_zone_ids <udm_zone_ids>`                                                        The zone IDs.
+
+====================================================   ================================================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

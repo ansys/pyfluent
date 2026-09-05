@@ -1,0 +1,21 @@
+:orphan:
+
+.. _c1prime:
+
+c1prime
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.c1prime
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ========================
+
+Parent                                  Summary
+
+====================   ========================
+:ref:`earsm <earsm>`   The EARSM model options.
+
+====================   ========================
+

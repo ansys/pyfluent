@@ -1,0 +1,21 @@
+:orphan:
+
+.. _delta_grad:
+
+delta_grad
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delta_grad
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================================
+
+Parent                                                                            Summary
+
+======================================================   ================================
+:ref:`flow_regime_parameters <flow_regime_parameters>`   Flow regime blending parameters.
+
+======================================================   ================================
+

@@ -1,0 +1,53 @@
+:orphan:
+
+.. _custom_child:
+
+custom_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.custom_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===========================================================================
+
+Attribute                                                                                                            Summary
+
+==============================================   ===========================================================================
+:ref:`name <name_5>`                                                                                     Name of the object.
+
+:ref:`output_parameter <output_parameter_1>`              Option to make report definition available as an output parameter.
+
+:ref:`create_report_file <create_report_file>`                              Create a new file set for the report definition.
+
+:ref:`create_report_plot <create_report_plot>`                              Create a new plot set for the report definition.
+
+:ref:`print_to_console <print_to_console>`       Enable printing of report definition values to the console during solution.
+
+:ref:`frequency <frequency_4>`                                                       Frequency of report definition updates.
+
+==============================================   ===========================================================================
+
+.. rubric:: Methods
+
+========================================================   ==================================================================
+
+Method                                                                                                                Summary
+
+========================================================   ==================================================================
+:ref:`create_output_parameter <create_output_parameter>`   Option to make report definition available as an output parameter.
+
+========================================================   ==================================================================
+
+.. rubric:: Included in:
+
+======================   ===================================================
+
+Parent                                                               Summary
+
+======================   ===================================================
+:ref:`custom <custom>`   Create a new or edit an existing report definition.
+
+======================   ===================================================
+

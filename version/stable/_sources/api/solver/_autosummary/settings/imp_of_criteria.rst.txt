@@ -1,0 +1,21 @@
+:orphan:
+
+.. _imp_of_criteria:
+
+imp_of_criteria
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.imp_of_criteria
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

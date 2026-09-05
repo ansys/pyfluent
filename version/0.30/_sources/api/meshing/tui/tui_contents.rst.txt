@@ -1,0 +1,33 @@
+.. _ref_meshing_tui:
+
+meshing.tui
+===========
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_251.main_menu
+   :members: beta_feature_access, close_fluent, print_license_usage, switch_to_solution_mode
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   boundary/boundary_contents
+   cad_assemblies/cad_assemblies_contents
+   diagnostics/diagnostics_contents
+   display/display_contents
+   file/file_contents
+   material_point/material_point_contents
+   mesh/mesh_contents
+   objects/objects_contents
+   openmp_controls/openmp_controls_contents
+   parallel/parallel_contents
+   preferences/preferences_contents
+   reference_frames/reference_frames_contents
+   report/report_contents
+   scoped_sizing/scoped_sizing_contents
+   server/server_contents
+   size_functions/size_functions_contents

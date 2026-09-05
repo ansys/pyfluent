@@ -1,0 +1,21 @@
+:orphan:
+
+.. _beta_star_inf_1:
+
+beta_star_inf
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.beta_star_inf_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`auxiliary_constants <auxiliary_constants>`   Auxiliary GEKO model constants group.
+
+================================================   =====================================
+

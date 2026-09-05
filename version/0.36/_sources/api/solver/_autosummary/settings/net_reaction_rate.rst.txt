@@ -1,0 +1,21 @@
+:orphan:
+
+.. _net_reaction_rate:
+
+net_reaction_rate
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.net_reaction_rate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

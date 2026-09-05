@@ -1,0 +1,32 @@
+:orphan:
+
+.. _uds_flow:
+
+uds_flow
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.uds_flow
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ===============
+
+Argument                           Summary
+
+========================   ===============
+:ref:`domain <domain_2>`       The domain.
+
+========================   ===============
+
+.. rubric:: Included in:
+
+==================   =======================================================
+
+Parent                                                               Summary
+
+==================   =======================================================
+:ref:`flow <flow>`       Print flow rate at boundaries for species, element.
+
+==================   =======================================================
+

@@ -1,0 +1,101 @@
+.. _ref_meshing_datamodel_meshing_workflow_application:
+
+application
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   add_2d_boundary_layers/add_2d_boundary_layers_contents
+   add_boundary_layers/add_boundary_layers_contents
+   add_boundary_layers_for_part_replacement/add_boundary_layers_for_part_replacement_contents
+   add_boundary_type/add_boundary_type_contents
+   add_linear_mesh_pattern/add_linear_mesh_pattern_contents
+   add_local_sizing_wtm/add_local_sizing_wtm_contents
+   add_multizone_controls/add_multizone_controls_contents
+   add_shell_boundary_layers/add_shell_boundary_layers_contents
+   add_thin_volume_meshing_controls/add_thin_volume_meshing_controls_contents
+   add_virtual_topology/add_virtual_topology_contents
+   apply_share_topology/apply_share_topology_contents
+   axisymmetric_sweep/axisymmetric_sweep_contents
+   capping/capping_contents
+   check_mesh/check_mesh_contents
+   check_surface_quality/check_surface_quality_contents
+   check_volume_quality/check_volume_quality_contents
+   choose_mesh_control_options/choose_mesh_control_options_contents
+   close_leakage/close_leakage_contents
+   compute_regions/compute_regions_contents
+   compute_size_fields/compute_size_fields_contents
+   create_collar_mesh/create_collar_mesh_contents
+   create_component_mesh/create_component_mesh_contents
+   create_contact_patch/create_contact_patch_contents
+   create_external_flow_boundaries/create_external_flow_boundaries_contents
+   create_gap_cover/create_gap_cover_contents
+   create_group/create_group_contents
+   create_leak_shield/create_leak_shield_contents
+   create_local_refinement_regions/create_local_refinement_regions_contents
+   create_mesh_objects/create_mesh_objects_contents
+   create_multizone_mesh/create_multizone_mesh_contents
+   create_overset_mesh/create_overset_mesh_contents
+   create_porous_regions/create_porous_regions_contents
+   create_regions/create_regions_contents
+   create_surface_mesh/create_surface_mesh_contents
+   create_volume_mesh_ftm/create_volume_mesh_ftm_contents
+   create_volume_mesh_wtm/create_volume_mesh_wtm_contents
+   create_zero_thickness_geometry/create_zero_thickness_geometry_contents
+   custom_journal_task/custom_journal_task_contents
+   define_boundary_layer_controls/define_boundary_layer_controls_contents
+   define_global_sizing/define_global_sizing_contents
+   define_leakage_threshold/define_leakage_threshold_contents
+   describe_geometry/describe_geometry_contents
+   describe_geometry_and_flow/describe_geometry_and_flow_contents
+   describe_overset_features/describe_overset_features_contents
+   diagnostics/diagnostics_contents
+   extract_edge_features/extract_edge_features_contents
+   extrude_volume_mesh/extrude_volume_mesh_contents
+   file/file_contents
+   generate_initial_surface_mesh/generate_initial_surface_mesh_contents
+   generate_map_mesh/generate_map_mesh_contents
+   generate_prism_layers/generate_prism_layers_contents
+   generate_surface_mesh/generate_surface_mesh_contents
+   generate_volume_mesh/generate_volume_mesh_contents
+   global_settings/global_settings_contents
+   graphics/graphics_contents
+   identify_construction_surfaces/identify_construction_surfaces_contents
+   identify_deviated_faces/identify_deviated_faces_contents
+   identify_orphans/identify_orphans_contents
+   identify_regions/identify_regions_contents
+   import_boi_geometry/import_boi_geometry_contents
+   import_cad_and_part_management/import_cad_and_part_management_contents
+   import_geometry/import_geometry_contents
+   improve_surface_mesh/improve_surface_mesh_contents
+   improve_volume_mesh/improve_volume_mesh_contents
+   load_cad_geometry/load_cad_geometry_contents
+   manage_zones_ftm/manage_zones_ftm_contents
+   mesh_controls_table/mesh_controls_table_contents
+   modify_mesh_refinement/modify_mesh_refinement_contents
+   part_replacement_options/part_replacement_options_contents
+   part_replacement_settings/part_replacement_settings_contents
+   prepare_for_volume_meshing/prepare_for_volume_meshing_contents
+   remesh_surface/remesh_surface_contents
+   separate_contacts/separate_contacts_contents
+   set_up_rotational_periodic_boundaries/set_up_rotational_periodic_boundaries_contents
+   setup_size_controls/setup_size_controls_contents
+   switch_to_solution/switch_to_solution_contents
+   transform_volume_mesh/transform_volume_mesh_contents
+   update_boundaries/update_boundaries_contents
+   update_region_settings/update_region_settings_contents
+   update_regions/update_regions_contents
+   update_volume_mesh/update_volume_mesh_contents
+   wrap_main/wrap_main_contents
+   write_2d_mesh/write_2d_mesh_contents
+   write_skin/write_skin_contents

@@ -1,0 +1,63 @@
+:orphan:
+
+.. _impedance_data_fitting:
+
+impedance_data_fitting
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.impedance_data_fitting
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ======================================================
+
+Attribute                                                                                             Summary
+
+====================================================   ======================================================
+:ref:`iterations <iterations_1>`                          The number of iterations for the fitting algorithm.
+
+:ref:`convergence_tolerance <convergence_tolerance>`     The convergence tolerance for the fitting algorithm.
+
+:ref:`residue_tolerance <residue_tolerance>`                 The residue tolerance for the fitting algorithm.
+
+:ref:`verbosity <verbosity_1>`                              Verbosity level [0, 1] for the fitting algorithm.
+
+:ref:`phase_mode <phase_mode>`                           The phase unwrapping mode for the fitting algorithm.
+
+:ref:`input_data <input_data>`                         The type and file path of the experimental input data.
+
+====================================================   ======================================================
+
+.. rubric:: Methods
+
+============================================   =======================================================================================================
+
+Method                                                                                                                                         Summary
+
+============================================   =======================================================================================================
+:ref:`impedance_data <impedance_data>`                      Read experimental impedance data and output impedance parameters for a boundary condition.
+
+:ref:`reflection_data <reflection_data>`       Read experimental reflection coefficient data and output impedance parameters for a boundary condition.
+
+:ref:`absorption_data <absorption_data>`       Read experimental absorption coefficient data and output impedance parameters for a boundary condition.
+
+:ref:`import_parameters <import_parameters>`                                Import impedance pole/residue parameters from a file into a boundary zone.
+
+:ref:`export_data <export_data>`                                                                                      Write the fitted data to a file.
+
+:ref:`export_model <export_model>`                                                        Write the impedance pole/residue model parameters to a file.
+
+============================================   =======================================================================================================
+
+.. rubric:: Included in:
+
+========================   ==================================================================================================
+
+Parent                                                                                                                Summary
+
+========================   ==================================================================================================
+:ref:`general <general>`   Configures general solver settings such as dimensionality, solver type, and time-stepping options.
+
+========================   ==================================================================================================
+

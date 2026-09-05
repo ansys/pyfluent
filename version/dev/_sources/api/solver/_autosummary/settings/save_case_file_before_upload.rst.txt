@@ -1,0 +1,21 @@
+:orphan:
+
+.. _save_case_file_before_upload:
+
+save_case_file_before_upload
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.save_case_file_before_upload
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ====================
+
+Parent                                            Summary
+
+==================================   ====================
+:ref:`job_settings <job_settings>`   Remote Job Settings.
+
+==================================   ====================
+

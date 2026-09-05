@@ -1,0 +1,34 @@
+:orphan:
+
+.. _open_1:
+
+open
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.open_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================================   ===================================================================
+
+Argument                                                                                                                   Summary
+
+============================================================   ===================================================================
+:ref:`load_current_case_or_mesh <load_current_case_or_mesh>`   Whether to load the case/mesh registered as current in the project.
+
+:ref:`project_file_name <project_file_name_1_1>`                                      The path of the Fluent project file to open.
+
+============================================================   ===================================================================
+
+.. rubric:: Included in:
+
+========================   ==============================================
+
+Parent                                                            Summary
+
+========================   ==============================================
+:ref:`project <project>`   Standalone Fluent Project management commands.
+
+========================   ==============================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_LoadTemplate__LoadTemplateArguments:
+
+_LoadTemplateArguments
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.LoadTemplate._LoadTemplateArguments
+   :members: _FilePath
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

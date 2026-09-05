@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cfl:
+
+cfl
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cfl
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ==========================================================================
+
+Parent                                                                                                                      Summary
+
+======================================================   ==========================================================================
+:ref:`global_extrema_tracker <global_extrema_tracker>`   Monitor global maximum and minimum field extrema values during simulation.
+
+======================================================   ==========================================================================
+

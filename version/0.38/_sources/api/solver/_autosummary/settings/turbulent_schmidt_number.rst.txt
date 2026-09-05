@@ -1,0 +1,36 @@
+:orphan:
+
+.. _turbulent_schmidt_number:
+
+turbulent_schmidt_number
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.turbulent_schmidt_number
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=====================================   =======================================================
+
+Attribute                                                                               Summary
+
+=====================================   =======================================================
+:ref:`option <option_16>`                                      Turbulent Schmidt number option.
+
+:ref:`value <value_12>`                            Constant value for turbulent Schmidt number.
+
+:ref:`user_defined <user_defined_15>`       User-Defined Function for turbulent Schmidt number.
+
+=====================================   =======================================================
+
+.. rubric:: Included in:
+
+============================================================   ================================================
+
+Parent                                                                                                  Summary
+
+============================================================   ================================================
+:ref:`turbulent_prandtl_numbers <turbulent_prandtl_numbers>`       Turbulent Prandtl and Schmidt numbers group.
+
+============================================================   ================================================
+

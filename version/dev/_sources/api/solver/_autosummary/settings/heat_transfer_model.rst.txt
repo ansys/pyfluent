@@ -1,0 +1,21 @@
+:orphan:
+
+.. _heat_transfer_model:
+
+heat_transfer_model
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.heat_transfer_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================================
+
+Parent                                                         Summary
+
+==============================   =====================================
+:ref:`model_data <model_data>`   Model data for a heat exchanger core.
+
+==============================   =====================================
+

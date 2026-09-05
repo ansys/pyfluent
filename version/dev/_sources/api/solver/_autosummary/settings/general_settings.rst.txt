@@ -1,0 +1,36 @@
+:orphan:
+
+.. _general_settings:
+
+general_settings
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.general_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ==========================================================================================================================
+
+Attribute                                                                                                                                                                               Summary
+
+==================================================================   ==========================================================================================================================
+:ref:`interaction <interaction>`                                                         Configures how particles interact with the continuous phase. One-way coupling means the fluid affects 
+
+:ref:`unsteady_tracking <unsteady_tracking>`                                                Configures particle tracking that advances particle in sync with the transient motion of the fluid.
+
+:ref:`cell_averaged_postprocessing <cell_averaged_postprocessing>`   Controls calculation of cell-based DPM statistics for post-processing (e.g. contour plots of cell-averaged DPM variables).
+
+==================================================================   ==========================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   =============================================================================================================
+
+Parent                                                                                                                                         Summary
+
+======================================   =============================================================================================================
+:ref:`discrete_phase <discrete_phase>`   Configures the Discrete Phase Model (DPM) to track particles, droplets, or bubbles in a Lagrangian framework.
+
+======================================   =============================================================================================================
+

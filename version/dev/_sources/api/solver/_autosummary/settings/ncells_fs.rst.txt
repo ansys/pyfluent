@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ncells_fs:
+
+ncells_fs
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ncells_fs
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================================
+
+Parent                                                                            Summary
+
+======================================================   ================================
+:ref:`flow_regime_parameters <flow_regime_parameters>`   Flow regime blending parameters.
+
+======================================================   ================================
+

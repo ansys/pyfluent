@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_boundary_type__add_boundary_type_update_child_tasks:
+
+update_child_tasks
+==================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.add_boundary_type._add_boundary_type.update_child_tasks
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _update_child_tasksArguments/_update_child_tasksArguments_contents

@@ -1,0 +1,18 @@
+.. _ref_solver_tui_define_turbo_model_generalized_forces:
+
+generalized_forces
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.define.turbo_model.generalized_forces
+   :members: enable_generalized_forces
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   objects/objects_contents

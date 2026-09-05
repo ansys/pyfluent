@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_describe_geometry_and_flow__describe_geometry_and_flowArguments:
+
+_describe_geometry_and_flowArguments
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.describe_geometry_and_flow._describe_geometry_and_flowArguments
+   :members: _add_enclosure, _all_task_list, _close_caps, _flow_type, _geometry_options, _local_refinement_regions
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _describe_geometry_and_flow_options/_describe_geometry_and_flow_options_contents

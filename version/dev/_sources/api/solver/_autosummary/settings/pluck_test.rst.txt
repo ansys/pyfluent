@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pluck_test:
+
+pluck_test
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pluck_test
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ================================================
+
+Parent                                                                                                            Summary
+
+======================================================================   ================================================
+:ref:`perdisp_group_properties_child <perdisp_group_properties_child>`   'child_object_type' of perdisp_group_properties.
+
+======================================================================   ================================================
+

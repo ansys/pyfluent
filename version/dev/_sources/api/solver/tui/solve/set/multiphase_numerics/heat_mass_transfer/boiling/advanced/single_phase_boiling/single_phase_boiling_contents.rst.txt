@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_set_multiphase_numerics_heat_mass_transfer_boiling_advanced_single_phase_boiling:
+
+single_phase_boiling
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.boiling.advanced.single_phase_boiling
+   :members: enabled, wall_evap_qnuc_fraction
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

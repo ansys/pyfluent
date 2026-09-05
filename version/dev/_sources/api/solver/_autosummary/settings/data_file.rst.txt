@@ -1,0 +1,21 @@
+:orphan:
+
+.. _data_file:
+
+data_file
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.data_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`export_data <export_data>`   Write the fitted data to a file.
+
+================================   ================================
+

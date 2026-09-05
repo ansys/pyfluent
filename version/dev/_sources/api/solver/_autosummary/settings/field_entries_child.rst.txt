@@ -1,0 +1,50 @@
+:orphan:
+
+.. _field_entries_child:
+
+field_entries_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.field_entries_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ==========================================
+
+Attribute                                                                                         Summary
+
+============================================================   ==========================================
+:ref:`scalar_quantity <scalar_quantity>`                                      Is this a scalar quantity?.
+
+:ref:`complex_pair <complex_pair>`                             Does this represent a complex-pair field?.
+
+:ref:`vector_field_names <vector_field_names>`                      List of vector component field names.
+
+:ref:`vector_compute_from <vector_compute_from>`                                Source fields for vector.
+
+:ref:`complex_real_field_names <complex_real_field_names>`                 List of real-part field names.
+
+:ref:`complex_real_compute_from <complex_real_compute_from>`                 Source fields for real-part.
+
+:ref:`complex_imag_field_names <complex_imag_field_names>`            List of imaginary-part field names.
+
+:ref:`complex_imag_compute_from <complex_imag_compute_from>`            Source fields for imaginary-part.
+
+:ref:`scalar_field_names <scalar_field_names>`                                List of scalar field names.
+
+:ref:`scalar_compute_from <scalar_compute_from>`                    Source fields for scalar computation.
+
+============================================================   ==========================================
+
+.. rubric:: Included in:
+
+====================================   ======================================
+
+Parent                                                                Summary
+
+====================================   ======================================
+:ref:`field_entries <field_entries>`   List of field entries for replication.
+
+====================================   ======================================
+

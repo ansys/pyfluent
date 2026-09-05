@@ -1,0 +1,46 @@
+:orphan:
+
+.. _copy:
+
+copy
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.copy
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ================================================================
+
+Argument                                                                                          Summary
+
+======================================   ================================================================
+:ref:`orig_beam_name <orig_beam_name>`                        The name for the optical beam to be copied.
+
+:ref:`beam_name <beam_name>`                                         A unique name for each optical beam.
+
+:ref:`ap_face_zone <ap_face_zone>`           The wall face zones to specify the optical aperture surface.
+
+:ref:`beam_length <beam_length>`                                  The length of optical beam propagation.
+
+:ref:`ray_npoints <ray_npoints>`                The number of grid point in each ray of the optical beam.
+
+:ref:`x_beam_vector <x_beam_vector>`                      The x-component of the beam propagation vector.
+
+:ref:`y_beam_vector <y_beam_vector>`                      The y-component of the beam propagation vector.
+
+:ref:`z_beam_vector <z_beam_vector>`                      The z-component of the beam propagation vector.
+
+======================================   ================================================================
+
+.. rubric:: Included in:
+
+====================   =============================
+
+Parent                                       Summary
+
+====================   =============================
+:ref:`beams <beams>`       The optical beams object.
+
+====================   =============================
+

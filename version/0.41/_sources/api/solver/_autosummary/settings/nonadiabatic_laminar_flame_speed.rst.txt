@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nonadiabatic_laminar_flame_speed:
+
+nonadiabatic_laminar_flame_speed
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.nonadiabatic_laminar_flame_speed
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`property <property>`       PDF Properties Options.
+
+==========================   ===========================
+

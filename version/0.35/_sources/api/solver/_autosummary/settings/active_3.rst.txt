@@ -1,0 +1,27 @@
+:orphan:
+
+.. _active_3:
+
+active
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.active_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================
+
+Parent                                                                      Summary
+
+============================================   ====================================
+:ref:`settings_29_child <settings_29_child>`       'child_object_type' of settings.
+
+:ref:`settings_30_child <settings_30_child>`       'child_object_type' of settings.
+
+:ref:`settings_31_child <settings_31_child>`       'child_object_type' of settings.
+
+:ref:`settings_32_child <settings_32_child>`       'child_object_type' of settings.
+
+============================================   ====================================
+

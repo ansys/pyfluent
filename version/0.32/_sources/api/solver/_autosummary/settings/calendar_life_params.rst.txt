@@ -1,0 +1,38 @@
+:orphan:
+
+.. _calendar_life_params:
+
+calendar_life_params
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.calendar_life_params
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =============================================================================
+
+Attribute                                                                                                        Summary
+
+========================================   =============================================================================
+:ref:`ref_temperature <ref_temperature>`       Ref. temperature in calendar life model in empirical battery life model..
+
+:ref:`pre_exp_fac <pre_exp_fac>`                                          Pre-exponential factor in calendar life model.
+
+:ref:`activation_e <activation_e>`                                             Activation energy in calendar life model.
+
+:ref:`exponent_value <exponent_value>`                                            Exponent value in calendar life model.
+
+========================================   =============================================================================
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`life_model <life_model>`       Empirical battery life model.
+
+==============================   =================================
+

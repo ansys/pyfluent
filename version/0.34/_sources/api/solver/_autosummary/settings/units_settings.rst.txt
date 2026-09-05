@@ -1,0 +1,45 @@
+:orphan:
+
+.. _units_settings:
+
+units_settings
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.units_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================   ==========
+
+Attribute                 Summary
+
+====================   ==========
+:ref:`units <units>`       Units.
+
+====================   ==========
+
+.. rubric:: Methods
+
+========================================   ==================================================
+
+Method                                                                                Summary
+
+========================================   ==================================================
+:ref:`new_unit <new_unit>`                                       Set unit conversion factors.
+
+:ref:`set_unit_system <set_unit_system>`       Apply standard set of units to all quantities.
+
+========================================   ==================================================
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`general <general>`       'general' child.
+
+========================   ====================
+

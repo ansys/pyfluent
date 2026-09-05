@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_13:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_1_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ===============================================================
+
+Parent                                                                                                       Summary
+
+==================================================   ===============================================================
+:ref:`read_abuse_rate_file <read_abuse_rate_file>`       Command object to read abuse rate in the N-eqn abuse model.
+
+==================================================   ===============================================================
+

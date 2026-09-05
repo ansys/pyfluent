@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solid_press_udf:
+
+solid_press_udf
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.solid_press_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`granular_props <granular_props>`   Granular phase properties.
+
+======================================   ==========================
+

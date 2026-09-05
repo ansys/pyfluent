@@ -1,0 +1,24 @@
+.. _ref_meshing_workflow_new:
+
+Meshing workflow
+================
+
+.. automodule:: ansys.fluent.core.meshing.meshing_workflow_new
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__
+    :autosummary:
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    datamodel/meshing_workflow/application/application_contents
+    datamodel/meshing_workflow/general/general_contents
+    datamodel/meshing_workflow/parts/parts_contents
+    datamodel/meshing_workflow/parts_files/parts_files_contents
+    datamodel/meshing_workflow/task_object/task_object_contents
+
+
+The meshing workflow provides task-based guided workflows for surface and volume meshing.

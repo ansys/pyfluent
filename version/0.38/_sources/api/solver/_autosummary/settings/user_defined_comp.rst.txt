@@ -1,0 +1,47 @@
+:orphan:
+
+.. _user_defined_comp:
+
+user_defined_comp
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.user_defined_comp
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   =====================================================
+
+Method                                                                                       Summary
+
+============================================   =====================================================
+:ref:`create <create>`                             Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                      Delete selected objects.
+
+:ref:`rename <rename>`                                                            Rename the object.
+
+:ref:`list_1 <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                        Create a copy of the object.
+
+============================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`user_defined_comp_child <user_defined_comp_child>`
+
+
+.. rubric:: Included in:
+
+==========================================================   ====================================
+
+Parent                                                                                    Summary
+
+==========================================================   ====================================
+:ref:`inert_stream_composition <inert_stream_composition>`       Define inert stream composition.
+
+==========================================================   ====================================
+

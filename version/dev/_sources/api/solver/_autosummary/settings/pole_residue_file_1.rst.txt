@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pole_residue_file_1:
+
+pole_residue_file
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pole_residue_file_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =====================================================================================
+
+Parent                                                                                                                                 Summary
+
+======================================================   =====================================================================================
+:ref:`compute_from_data_file <compute_from_data_file>`   Open the impedance data fitting dialog to fit model parameters from measurement data.
+
+======================================================   =====================================================================================
+

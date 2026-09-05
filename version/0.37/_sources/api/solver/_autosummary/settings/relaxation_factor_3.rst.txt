@@ -1,0 +1,21 @@
+:orphan:
+
+.. _relaxation_factor_3:
+
+relaxation_factor
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.relaxation_factor_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ===============================
+
+Parent                                                                                   Summary
+
+==============================================================   ===============================
+:ref:`high_order_term_relaxation <high_order_term_relaxation>`       High Order Relaxation Menu.
+
+==============================================================   ===============================
+

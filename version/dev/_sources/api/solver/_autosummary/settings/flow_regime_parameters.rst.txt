@@ -1,0 +1,38 @@
+:orphan:
+
+.. _flow_regime_parameters:
+
+flow_regime_parameters
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_regime_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ==============================================================
+
+Attribute                                                                                 Summary
+
+================================   ==============================================================
+:ref:`critical_vf <critical_vf>`   Critical volume fraction for bubbly and droplet flow blending.
+
+:ref:`delta_vf <delta_vf>`                     Volume fraction width for intermediate transition.
+
+:ref:`ncells_fs <ncells_fs>`                          Number of cells defining interfacial width.
+
+:ref:`delta_grad <delta_grad>`      Critical gradient fraction for intermediate transition width.
+
+================================   ==============================================================
+
+.. rubric:: Included in:
+
+====================================   =========================
+
+Parent                                                   Summary
+
+====================================   =========================
+:ref:`model_options <model_options>`   Multiphase model options.
+
+====================================   =========================
+

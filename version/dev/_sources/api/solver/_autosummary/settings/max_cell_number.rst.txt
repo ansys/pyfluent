@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_cell_number:
+
+max_cell_number
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.max_cell_number
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   ======================================================================
+
+Parent                                                                                                                                    Summary
+
+========================================================================   ======================================================================
+:ref:`mark_cell_neighbors_by_register <mark_cell_neighbors_by_register>`   Mark neighboring cells based on the provided id or name of a register.
+
+========================================================================   ======================================================================
+

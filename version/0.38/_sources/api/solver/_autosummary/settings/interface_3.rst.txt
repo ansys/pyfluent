@@ -1,0 +1,55 @@
+:orphan:
+
+.. _interface_3:
+
+interface
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interface_3
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================================================   ==========================================
+
+Method                                                                                                        Summary
+
+========================================================================   ==========================================
+:ref:`create <create_9>`                                                                      Create mesh interfaces.
+
+:ref:`delete <delete>`                                                                       Delete selected objects.
+
+:ref:`rename <rename>`                                                                             Rename the object.
+
+:ref:`list_1 <list_1>`                                                                 List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`                                    List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                                         Create a copy of the object.
+
+:ref:`create_many_to_many_interfaces <create_many_to_many_interfaces>`                        Create mesh interfaces.
+
+:ref:`display <display_6>`                                                     Display specified mesh interface zone.
+
+:ref:`display_interfaces <display_interfaces>`                                                Display mesh interface.
+
+:ref:`display_interfaces_with_parents <display_interfaces_with_parents>`          Display mesh interface with parent.
+
+========================================================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`interface_3_child <interface_3_child>`
+
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`mesh_interfaces <mesh_interfaces>`       The mesh interfaces object.
+
+========================================   ===============================
+

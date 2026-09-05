@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_external_flow_boundaries__create_external_flow_boundariesArguments:
+
+_create_external_flow_boundariesArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.create_external_flow_boundaries._create_external_flow_boundariesArguments
+   :members: _creation_method, _external_boundaries_name, _extraction_method, _label_selection_list, _label_selection_single, _object_selection_list, _object_selection_single, _original_object_name, _selection_type, _zone_location, _zone_selection_list, _zone_selection_single
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _bounding_box_object/_bounding_box_object_contents

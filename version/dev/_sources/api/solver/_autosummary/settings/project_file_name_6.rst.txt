@@ -1,0 +1,21 @@
+:orphan:
+
+.. _project_file_name_6:
+
+project_file_name
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.project_file_name_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================================================================
+
+Parent                                                                                                Summary
+
+======================================   ====================================================================
+:ref:`save_as_copy_1 <save_as_copy_1>`   Export a copy of the current Fluent project without switching to it.
+
+======================================   ====================================================================
+

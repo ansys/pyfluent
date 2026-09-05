@@ -1,0 +1,21 @@
+:orphan:
+
+.. _method_32:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.method_32
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ===========
+
+Parent                   Summary
+
+==================   ===========
+:ref:`auto <auto>`   The object.
+
+==================   ===========
+

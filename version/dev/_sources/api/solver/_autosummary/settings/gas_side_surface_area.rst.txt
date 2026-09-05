@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gas_side_surface_area:
+
+gas_side_surface_area
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gas_side_surface_area
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===========================================================
+
+Parent                                                                                   Summary
+
+==================================   ===========================================================
+:ref:`parameters_1 <parameters_1>`   Gas-Side Pressure Drop parameters of a core porosity model.
+
+==================================   ===========================================================
+

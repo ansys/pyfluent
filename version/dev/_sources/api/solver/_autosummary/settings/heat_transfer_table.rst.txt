@@ -1,0 +1,57 @@
+:orphan:
+
+.. _heat_transfer_table:
+
+heat_transfer_table
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.heat_transfer_table
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ==========================================
+
+Attribute                                                                 Summary
+
+====================================   ==========================================
+:ref:`column_number <column_number>`   Number of auxiliary fluid mass flow rates.
+
+:ref:`row_number <row_number>`           Number of primary fluid mass flow rates.
+
+:ref:`column_value <column_value>`         Auxiliary fluid mass flow rate (kg/s).
+
+:ref:`row_value <row_value>`                 Primary fluid mass flow rate (kg/s).
+
+:ref:`table_value <table_value>`                        Heat transfer values (W).
+
+:ref:`table_label <table_label>`                               Table title label.
+
+====================================   ==========================================
+
+.. rubric:: Methods
+
+================================   ==================================================
+
+Method                                                                        Summary
+
+================================   ==================================================
+:ref:`read_table <read_table>`     Read heat transfer table from a .tab or .txt file.
+
+:ref:`write_table <write_table>`    Write heat transfer table to a .tab or .txt file.
+
+:ref:`print_table <print_table>`            Print heat transfer table to the console.
+
+================================   ==================================================
+
+.. rubric:: Included in:
+
+======================================================   =====================================
+
+Parent                                                                                 Summary
+
+======================================================   =====================================
+:ref:`ntu_effectiveness_data <ntu_effectiveness_data>`   NTU heat transfer effectiveness data.
+
+======================================================   =====================================
+

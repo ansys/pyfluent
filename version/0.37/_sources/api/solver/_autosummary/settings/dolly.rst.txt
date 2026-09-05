@@ -1,0 +1,36 @@
+:orphan:
+
+.. _dolly:
+
+dolly
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.dolly
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   ====================================================
+
+Argument                                                            Summary
+
+====================   ====================================================
+:ref:`right <right>`                        Dollys the camera to the right.
+
+:ref:`up <up>`                                        Dollys the camera up.
+
+:ref:`in_ <in_>`           Dollys the camera in toward the model (zoom in).
+
+====================   ====================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`camera <camera>`       'camera' child.
+
+======================   ===================
+

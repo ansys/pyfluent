@@ -1,0 +1,21 @@
+:orphan:
+
+.. _up_2:
+
+up
+==
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.up_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ============================================================================
+
+Parent                                                                                  Summary
+
+================   ============================================================================
+:ref:`pan <pan>`       Settings for adjusting the camera position without modifying the target.
+
+================   ============================================================================
+

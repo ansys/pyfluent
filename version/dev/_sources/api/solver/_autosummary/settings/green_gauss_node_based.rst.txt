@@ -1,0 +1,42 @@
+:orphan:
+
+.. _green_gauss_node_based:
+
+green_gauss_node_based
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.green_gauss_node_based
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================================   ==========================================================================================================
+
+Attribute                                                                                                                                                                                   Summary
+
+======================================================================================   ==========================================================================================================
+:ref:`alternative_default_settings <alternative_default_settings>`                                                                                       Enable alternative GGNB defaults for PBNS.
+
+:ref:`boundary_treatment_location <boundary_treatment_location>`                                             Locations where modified boundary treatment with Node Based gradient scheme is active.
+
+:ref:`least_squares_node_weights <least_squares_node_weights>`                                                                                 Enable alternative method for GGNB gradient weights.
+
+:ref:`alternative_weights_at_boundary <alternative_weights_at_boundary>`                                                          Enable alternative method for GGNB gradient weights for boundary.
+
+:ref:`weight_treatment_at_sliding_boundary <weight_treatment_at_sliding_boundary>`                               Disable node interpolation weights clipping at non-conformal interface boundaries.
+
+:ref:`use_inverse_distance_for_clipped_nodes <use_inverse_distance_for_clipped_nodes>`   Enable use of inverse distance interpolation weighting for nodes with clipped nodal interpolation weights.
+
+======================================================================================   ==========================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===================================================
+
+Parent                                                                                   Summary
+
+==========================================   ===================================================
+:ref:`gradient_options <gradient_options>`   Expert options for gradient reconstruction schemes.
+
+==========================================   ===================================================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _moss_brookes_hall_params:
+
+moss_brookes_hall_params
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.moss_brookes_hall_params
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ======================================================
+
+Attribute                                                                               Summary
+
+======================================   ======================================================
+:ref:`mbh_nuc_c1 <mbh_nuc_c1>`                           PAH inception model constant C-Alpha1.
+
+:ref:`mbh_nuc_c1_exp <mbh_nuc_c1_exp>`   Exponent of the PAH inception model constant C-Alpha1.
+
+:ref:`mbh_nuc_t1 <mbh_nuc_t1>`                Activation temperature T-Alpha1 of PAH inception.
+
+:ref:`mbh_nuc_c2 <mbh_nuc_c2>`                           PAH inception model constant C-Alpha2.
+
+:ref:`mbh_nuc_c2_exp <mbh_nuc_c2_exp>`   Exponent of the PAH inception model constant C-Alpha2.
+
+:ref:`mbh_nuc_t2 <mbh_nuc_t2>`                Activation temperature T-Alpha2 of PAH inception.
+
+:ref:`mbh_cgamma <mbh_cgamma>`                      Surface growth rate scaling factor C-Gamma.
+
+======================================   ======================================================
+
+.. rubric:: Included in:
+
+==================   =============================================
+
+Parent                                                     Summary
+
+==================   =============================================
+:ref:`soot <soot>`   Configure soot model settings and parameters.
+
+==================   =============================================
+

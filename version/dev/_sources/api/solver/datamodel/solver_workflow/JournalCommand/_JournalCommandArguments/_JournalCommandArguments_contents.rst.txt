@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_JournalCommand__JournalCommandArguments:
+
+_JournalCommandArguments
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.solver_workflow.Root.JournalCommand._JournalCommandArguments
+   :members: _JournalString, _PythonJournal
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

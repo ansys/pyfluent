@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_generate_initial_surface_mesh__generate_initial_surface_mesh_arguments_surface_2d_preferences:
+
+surface_2d_preferences
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.generate_initial_surface_mesh._generate_initial_surface_mesh.arguments.surface_2d_preferences
+   :members: merge_edge_zones_based_on_labels, merge_face_zones_based_on_labels, show_advanced_options
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

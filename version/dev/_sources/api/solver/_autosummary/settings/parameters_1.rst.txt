@@ -1,0 +1,44 @@
+:orphan:
+
+.. _parameters_1:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.parameters_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ==============================================
+
+Attribute                                                                                                         Summary
+
+========================================================================   ==============================================
+:ref:`minimum_flow_to_face_area_ratio <minimum_flow_to_face_area_ratio>`         Minimum flow-to-face area ratio (sigma).
+
+:ref:`entrance_loss_coefficient <entrance_loss_coefficient>`               Entrance (contraction) loss coefficient (k_c).
+
+:ref:`exit_loss_coefficient <exit_loss_coefficient>`                             Exit (expansion) loss coefficient (k_e).
+
+:ref:`gas_side_surface_area <gas_side_surface_area>`                                    Air-side (gas-side) surface area.
+
+:ref:`minimum_cross_section_flow_area <minimum_cross_section_flow_area>`                 Minimum cross-section flow area.
+
+:ref:`core_friction_coefficient <core_friction_coefficient>`                      Core friction factor coefficient (f_a).
+
+:ref:`core_friction_exponent <core_friction_exponent>`                               Core friction factor exponent (f_b).
+
+========================================================================   ==============================================
+
+.. rubric:: Included in:
+
+====================================================   =======================================
+
+Parent                                                                                 Summary
+
+====================================================   =======================================
+:ref:`porosity_models_child <porosity_models_child>`   'child_object_type' of porosity_models.
+
+====================================================   =======================================
+

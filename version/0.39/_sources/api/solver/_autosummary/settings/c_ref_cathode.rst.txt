@@ -1,0 +1,21 @@
+:orphan:
+
+.. _c_ref_cathode:
+
+c_ref_cathode
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.c_ref_cathode
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ======================
+
+Parent                                                  Summary
+
+======================================   ======================
+:ref:`swelling_model <swelling_model>`       Up swelling model.
+
+======================================   ======================
+

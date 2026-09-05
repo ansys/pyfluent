@@ -1,0 +1,38 @@
+:orphan:
+
+.. _lpfm:
+
+lpfm
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.lpfm
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ===========================================================================================
+
+Attribute                                                                                                                    Summary
+
+======================================   ===========================================================================================
+:ref:`full_mesh <full_mesh>`             Determines whether LPFM treats the Fluent mesh as a full-domain mesh or a half-domain mesh.
+
+:ref:`geometry_zones <geometry_zones>`                                        Fluent wall zone for the vehicle surface sent to LPFM.
+
+:ref:`flow_boundary <flow_boundary>`                         Fluent velocity-inlet face zone used to read freestream speed for LPFM.
+
+:ref:`vmag <vmag_1>`                                                Velocity magnitude for the selected velocity boundary condition.
+
+======================================   ===========================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`initialization_1 <initialization_1>`   Solution initialization object.
+
+==========================================   ===============================
+

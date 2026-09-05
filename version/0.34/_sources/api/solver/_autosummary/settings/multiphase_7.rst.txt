@@ -1,0 +1,48 @@
+:orphan:
+
+.. _multiphase_7:
+
+multiphase
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.multiphase_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ============================
+
+Attribute                                                                     Summary
+
+======================================================   ============================
+:ref:`gtemp_bc <gtemp_bc>`                                       Granular Conditions.
+
+:ref:`g_temperature <g_temperature>`                            Granular Temperature.
+
+:ref:`g_qflux <g_qflux>`                                               Granular Flux.
+
+:ref:`wall_restitution_coeff <wall_restitution_coeff>`       Restitution Coefficient.
+
+:ref:`contact_angles <contact_angles>`                          Contact angle values.
+
+======================================================   ============================
+
+.. rubric:: Included in:
+
+======================================   ======================================
+
+Parent                                                                  Summary
+
+======================================   ======================================
+:ref:`settings_24 <settings_24>`             Domain name to define settings on.
+
+:ref:`phase_26_child <phase_26_child>`            'child_object_type' of phase.
+
+:ref:`wall_1_child <wall_1_child>`                 'child_object_type' of wall.
+
+:ref:`wall_2_child <wall_2_child>`                 'child_object_type' of wall.
+
+:ref:`phase_51_child <phase_51_child>`            'child_object_type' of phase.
+
+======================================   ======================================
+

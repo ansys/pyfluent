@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_of_copies:
+
+number_of_copies
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_of_copies
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================================
+
+Parent                                                                                      Summary
+
+============================================   ====================================================
+:ref:`replicate_profile <replicate_profile>`   User-configurable settings for replicating profiles.
+
+============================================   ====================================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_setup_size_controls__setup_size_controlsArguments__local_size_control_parameters:
+
+_local_size_control_parameters
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.setup_size_controls._setup_size_controlsArguments._local_size_control_parameters
+   :members: _advanced_options, _cells_per_gap, _curvature_normal_angle, _growth_rate, _ignore_self, _initial_size_control, _max_size, _min_size, _scope_proximity_to, _sizing_type, _target_size_control, _wrap_cells_per_gap, _wrap_curvature_normal_angle, _wrap_growth_rate, _wrap_max, _wrap_min
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

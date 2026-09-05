@@ -1,0 +1,38 @@
+:orphan:
+
+.. _coefficients_7:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coefficients_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ==========================================
+
+Attribute                                                                   Summary
+
+======================================   ==========================================
+:ref:`c_shielded_des <c_shielded_des>`   The C Shielded DES constant for SBES/SDES.
+
+:ref:`csdes <csdes>`                              The Csdes constant for SBES/SDES.
+
+:ref:`cs <cs>`                                            The model coefficient Cs.
+
+:ref:`cwale <cwale>`                                   The model coefficient Cwale.
+
+======================================   ==========================================
+
+.. rubric:: Included in:
+
+==================   =============
+
+Parent                     Summary
+
+==================   =============
+:ref:`sbes <sbes>`   SBES options.
+
+==================   =============
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AddThinVolumeMeshControls__AddThinVolumeMeshControlsCommandArguments__ThinVolumePreferences:
+
+_ThinVolumePreferences
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.AddThinVolumeMeshControls._AddThinVolumeMeshControlsCommandArguments._ThinVolumePreferences
+   :members: _IgnoreExtraSources, _IncludeAdjacent, _MaxGapSize, _ShowThinVolumePreferences, _StackedPlateTolerance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

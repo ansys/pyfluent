@@ -1,0 +1,25 @@
+:orphan:
+
+.. _process:
+
+process
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.process
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`efficiency <efficiency>`                            The object.
+
+:ref:`isentropic <isentropic>`       Calculate isentropic efficiency.
+
+:ref:`polytropic <polytropic>`       Calculate polytropic efficiency.
+
+==============================   ====================================
+

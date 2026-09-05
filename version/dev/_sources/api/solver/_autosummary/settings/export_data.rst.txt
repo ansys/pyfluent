@@ -1,0 +1,32 @@
+:orphan:
+
+.. _export_data:
+
+export_data
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.export_data
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   =========================================
+
+Argument                                                         Summary
+
+============================   =========================================
+:ref:`data_file <data_file>`   The output file path for the fitted data.
+
+============================   =========================================
+
+.. rubric:: Included in:
+
+======================================================   ==================================
+
+Parent                                                                              Summary
+
+======================================================   ==================================
+:ref:`impedance_data_fitting <impedance_data_fitting>`   The impedance data fitting object.
+
+======================================================   ==================================
+

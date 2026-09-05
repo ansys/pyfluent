@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_identify_deviated_faces__identify_deviated_faces_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.identify_deviated_faces._identify_deviated_faces.arguments
+   :members: advanced_options, deviation_max_value, deviation_min_value, display_grid_name, include_gap_cover_geometry, object_selection_list, overlay, selection_type, zone_location, zone_selection_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

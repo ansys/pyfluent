@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_list_meshing_operations:
+
+list_meshing_operations
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.list_meshing_operations
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _list_meshing_operationsArguments/_list_meshing_operationsArguments_contents

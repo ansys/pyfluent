@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_group:
+
+delete_group
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_group
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ============================
+
+Argument                                                Summary
+
+================================   ============================
+:ref:`group_name <group_name_3>`   Name of the group to delete.
+
+================================   ============================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _track_volume:
+
+track_volume
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.track_volume
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================================================================================================
+
+Parent                                                                                                                             Summary
+
+==================================   =====================================================================================================
+:ref:`volume_track <volume_track>`       Attach the reference frame to a volume. You can specify reference frame location and orientation.
+
+==================================   =====================================================================================================
+

@@ -1,0 +1,51 @@
+:orphan:
+
+.. _table_file_manager:
+
+table_file_manager
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.table_file_manager
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ======================================================================================================================
+
+Attribute                                                                                                                                                                     Summary
+
+============================================================   ======================================================================================================================
+:ref:`rgp_saturation_properties <rgp_saturation_properties>`   RGP Material Saturation Properties Interface - Read and manage RGP material names for saturation property computation.
+
+============================================================   ======================================================================================================================
+
+.. rubric:: Methods
+
+====================================================   ====================================
+
+Method                                                                              Summary
+
+====================================================   ====================================
+:ref:`read_table_file <read_table_file>`                          Read material table file.
+
+:ref:`read_rgp_file <read_rgp_file>`                                         Read RGP file.
+
+:ref:`read_matrix_data_file <read_matrix_data_file>`                 Read matrix data file.
+
+:ref:`create_rgp_material <create_rgp_material>`       Create RGP material from table data.
+
+:ref:`display_table <display_table>`                                    Display table data.
+
+====================================================   ====================================
+
+.. rubric:: Included in:
+
+==================   ==============================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                      Summary
+
+==================   ==============================================================================================================================================================================================================
+:ref:`file <file>`   Import and export several kinds of files. Files that are read include mesh, case, data, profile, Scheme, and journal files. Files that are written include case, data, profile, journal, and transcript files.
+
+==================   ==============================================================================================================================================================================================================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _write_ntu:
+
+write_ntu
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.write_ntu
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ============================
+
+Argument                                               Summary
+
+===============================   ============================
+:ref:`file_name <file_name_15>`   Path to the output NTU file.
+
+===============================   ============================
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`cores_child <cores_child>`   'child_object_type' of cores.
+
+================================   =============================
+

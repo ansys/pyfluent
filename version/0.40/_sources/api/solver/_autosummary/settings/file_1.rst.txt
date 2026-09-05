@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_1:
+
+file
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`read_2 <read_2>`       'read' child.
+
+======================   =================
+

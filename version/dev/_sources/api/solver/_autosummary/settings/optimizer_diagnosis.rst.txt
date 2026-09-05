@@ -1,0 +1,21 @@
+:orphan:
+
+.. _optimizer_diagnosis:
+
+optimizer_diagnosis
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.optimizer_diagnosis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`diagnosis <diagnosis>`   Diagnosis utilities object.
+
+============================   ===========================
+

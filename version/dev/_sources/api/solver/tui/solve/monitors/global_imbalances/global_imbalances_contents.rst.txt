@@ -1,0 +1,19 @@
+.. _ref_solver_tui_solve_monitors_global_imbalances:
+
+global_imbalances
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.monitors.global_imbalances
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   equations/equations_contents
+   options/options_contents

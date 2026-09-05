@@ -1,0 +1,14 @@
+.. _ref_solver_tui_define_models_species_backward_compatibility:
+
+backward_compatibility
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.define.models.species.backward_compatibility
+   :members: apply_27r1_hypersonic_chemistry_changes, revert_27r1_hypersonic_chemistry_changes
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

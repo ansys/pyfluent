@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreatePorousRegions__CreatePorousRegionsCommandArguments__NonRectangularParameters:
+
+_NonRectangularParameters
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreatePorousRegions._CreatePorousRegionsCommandArguments._NonRectangularParameters
+   :members: _BufferSize, _FeatureAngle, _FlipDirection, _LabelSelectionList, _MeshSize, _NonRectangularBufferSize, _NumberOfLayers, _ObjectSelectionList, _SelectionType, _Thickness, _ZoneSelectionList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _discrete_phase:
+
+discrete_phase
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.discrete_phase
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =======================
+
+Attribute                                                                Summary
+
+======================================================   =======================
+:ref:`general_settings <general_settings>`                          Main object.
+
+:ref:`physical_models <physical_models>`                            Main object.
+
+:ref:`tracking <tracking>`                                          Main object.
+
+:ref:`numerics <numerics>`                                          Main object.
+
+:ref:`parallel <parallel_1>`                                        Main object.
+
+:ref:`user_defined_functions <user_defined_functions>`              Main object.
+
+:ref:`injections <injections>`                               'injections' child.
+
+======================================================   =======================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`models <models>`       'models' child.
+
+======================   ===================
+

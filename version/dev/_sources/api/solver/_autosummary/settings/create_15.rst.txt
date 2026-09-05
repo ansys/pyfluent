@@ -1,0 +1,36 @@
+:orphan:
+
+.. _create_15:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_15
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================================   ===================================================================================================================
+
+Argument                                                                                                                                                                   Summary
+
+============================================================   ===================================================================================================================
+:ref:`autofill_from_turbo_setup <autofill_from_turbo_setup>`   When enabled, automatically fill properties of turbomachine description from the Turbo Setup data (workflow/state).
+
+:ref:`component_type <component_type>`                                                     Type of turbomachine component. This determines the default naming convention for rows.
+
+:ref:`number_of_rows <number_of_rows>`                                                                                                Number of rows (stages) in the turbomachine.
+
+============================================================   ===================================================================================================================
+
+.. rubric:: Included in:
+
+============================================   ================================================================================
+
+Parent                                                                                                                  Summary
+
+============================================   ================================================================================
+:ref:`turbo_description <turbo_description>`   Turbomachine description defining rows, sectors, and rotational characteristics.
+
+============================================   ================================================================================
+

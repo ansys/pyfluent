@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_general_initialize_workflow__initialize_workflowArguments:
+
+_initialize_workflowArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.general.initialize_workflow._initialize_workflowArguments
+   :members: _workflow_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

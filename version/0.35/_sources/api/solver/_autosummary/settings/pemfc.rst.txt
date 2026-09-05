@@ -1,0 +1,50 @@
+:orphan:
+
+.. _pemfc:
+
+pemfc
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.pemfc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ================================
+
+Attribute                                                           Summary
+
+========================================   ================================
+:ref:`enabled <enabled_41>`                               Enable-fc-model?.
+
+:ref:`options <options_7>`                                   Model options.
+
+:ref:`parameters <parameters_4>`                          Model parameters.
+
+:ref:`anode <anode_1>`                                            Up anode.
+
+:ref:`membrane <membrane>`                                     Up membrane.
+
+:ref:`cathode <cathode_1>`                                      Up cathode.
+
+:ref:`electrical_tab <electrical_tab>`         Up external electrical tabs.
+
+:ref:`advanced <advanced_1>`                             Advanced settings.
+
+:ref:`report <report_1>`                                   Report settings.
+
+:ref:`customized_udf <customized_udf_1>`          Customized UDFs settings.
+
+========================================   ================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`models <models>`       'models' child.
+
+======================   ===================
+

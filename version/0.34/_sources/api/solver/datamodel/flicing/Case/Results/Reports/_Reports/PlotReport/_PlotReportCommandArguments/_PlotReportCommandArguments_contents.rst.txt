@@ -1,0 +1,18 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Reports__Reports_PlotReport__PlotReportCommandArguments:
+
+_PlotReportCommandArguments
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.flicing.Root.Case.Results.Reports._Reports.PlotReport._PlotReportCommandArguments
+   :members: _Title, _XAxis, _XAxisLabel, _YAxisLabel
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _TimestepSelection/_TimestepSelection_contents

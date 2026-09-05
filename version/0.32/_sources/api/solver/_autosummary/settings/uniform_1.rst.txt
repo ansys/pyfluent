@@ -1,0 +1,36 @@
+:orphan:
+
+.. _uniform_1:
+
+uniform
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.uniform_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   =========================================
+
+Argument                                                           Summary
+
+==============================   =========================================
+:ref:`begin <begin>`                 Begin-timestep for timestep-selector.
+
+:ref:`end <end_2>`                     End-timestep for timestep-selector.
+
+:ref:`increment <increment_3>`            Increment for timestep-selector.
+
+==============================   =========================================
+
+.. rubric:: Included in:
+
+==========================   ===========================================================
+
+Parent                                                                           Summary
+
+==========================   ===========================================================
+:ref:`custom_1 <custom_1>`       Settings related to customizing the selected timesteps.
+
+==========================   ===========================================================
+

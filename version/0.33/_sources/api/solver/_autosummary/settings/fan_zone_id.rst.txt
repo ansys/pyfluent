@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fan_zone_id:
+
+fan_zone_id
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.fan_zone_id
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================================
+
+Parent                                                       Summary
+
+============================   =====================================
+:ref:`fan_model <fan_model>`       Configure user-defined fan model.
+
+============================   =====================================
+

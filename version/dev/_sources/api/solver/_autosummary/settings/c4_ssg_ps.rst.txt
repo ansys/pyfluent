@@ -1,0 +1,21 @@
+:orphan:
+
+.. _c4_ssg_ps:
+
+c4_ssg_ps
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.c4_ssg_ps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =========================================
+
+Parent                                                                     Summary
+
+======================================   =========================================
+:ref:`coefficients_3 <coefficients_3>`   Reynolds Stress Model coefficients group.
+
+======================================   =========================================
+

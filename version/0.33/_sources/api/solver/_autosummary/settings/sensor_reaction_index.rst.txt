@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sensor_reaction_index:
+
+sensor_reaction_index
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sensor_reaction_index
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`tfm_options <tfm_options>`       TFM model options.
+
+================================   ======================
+

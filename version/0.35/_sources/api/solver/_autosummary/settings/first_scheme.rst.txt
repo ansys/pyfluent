@@ -1,0 +1,38 @@
+:orphan:
+
+.. _first_scheme:
+
+first_scheme
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.first_scheme
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ========================================================================================================================
+
+Attribute                                                                                                                                                 Summary
+
+======================================   ========================================================================================================================
+:ref:`method <method_17>`                                                                                   None: Solves adjoint equations with no stabilization.
+
+:ref:`auto_detection <auto_detection>`       When enabled the first scheme will be used until divergence or slow convergence in the adjoint residual is detected.
+
+:ref:`iterations <iterations_2>`                                                                      Iterations to be run before switching to the second scheme.
+
+:ref:`dissipation <dissipation>`                                                                            The dissipation method stabilization controls object.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+========================================   ==============================================
+
+Parent                                                                            Summary
+
+========================================   ==============================================
+:ref:`stabilization_2 <stabilization_2>`       The adjoint stabilization controls object.
+
+========================================   ==============================================
+

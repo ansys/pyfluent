@@ -1,0 +1,38 @@
+:orphan:
+
+.. _input_data:
+
+input_data
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.input_data
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ==========================================================
+
+Attribute                                                                                     Summary
+
+========================================   ==========================================================
+:ref:`type <type_5>`                                            The type of experimental data to fit.
+
+:ref:`impedance_file <impedance_file>`         Path to the experimental specific impedance data file.
+
+:ref:`reflection_file <reflection_file>`   Path to the experimental reflection coefficient data file.
+
+:ref:`absorption_file <absorption_file>`   Path to the experimental absorption coefficient data file.
+
+========================================   ==========================================================
+
+.. rubric:: Included in:
+
+======================================================   ==================================
+
+Parent                                                                              Summary
+
+======================================================   ==================================
+:ref:`impedance_data_fitting <impedance_data_fitting>`   The impedance data fitting object.
+
+======================================================   ==================================
+

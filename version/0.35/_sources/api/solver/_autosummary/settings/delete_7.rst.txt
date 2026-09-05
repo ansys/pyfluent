@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_7:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.delete_7
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =========================
+
+Argument                                                   Summary
+
+======================================   =========================
+:ref:`design_points <design_points_1>`       Design Point Name(s).
+
+======================================   =========================
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

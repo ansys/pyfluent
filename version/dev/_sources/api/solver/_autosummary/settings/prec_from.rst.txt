@@ -1,0 +1,21 @@
+:orphan:
+
+.. _prec_from:
+
+prec_from
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.prec_from
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =========================================================================
+
+Parent                                                                                                                       Summary
+
+========================================================   =========================================================================
+:ref:`soot_process_parameters <soot_process_parameters>`   Soot process parameters including stoichiometry and precursor properties.
+
+========================================================   =========================================================================
+

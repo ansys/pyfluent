@@ -1,0 +1,34 @@
+:orphan:
+
+.. _copy_displacement:
+
+copy_displacement
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.copy_displacement
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================   ======================================
+
+Argument                                                                          Summary
+
+================================================   ======================================
+:ref:`source_displacement <source_displacement>`   Name of the displacement to copy from.
+
+:ref:`new_name <new_name_3>`                            Name for the copied displacement.
+
+================================================   ======================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

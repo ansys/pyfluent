@@ -1,0 +1,37 @@
+.. _ref_solver_tui_define_models:
+
+models
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.define.models
+   :members: ablation, addon_module, axisymmetric, battery_model, crevice_model, crevice_model_controls, energy, frozen_flux, noniterative_time_advance, nox, potential_and_li_ion_battery, solidification_melting, soot, steady, swirl, unsteady_1st_order, unsteady_2nd_order, unsteady_2nd_order_bounded, unsteady_global_time, unsteady_structure_euler, unsteady_structure_newmark, use_limiter_in_time
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   acoustics/acoustics_contents
+   cht/cht_contents
+   dpm/dpm_contents
+   dsmc/dsmc_contents
+   electrolysis_setup/electrolysis_setup_contents
+   eulerian_wallfilm/eulerian_wallfilm_contents
+   heat_exchanger/heat_exchanger_contents
+   multiphase/multiphase_contents
+   nox_parameters/nox_parameters_contents
+   optics/optics_contents
+   radiation/radiation_contents
+   shell_conduction/shell_conduction_contents
+   solver/solver_contents
+   soot_parameters/soot_parameters_contents
+   species/species_contents
+   structure/structure_contents
+   system_coupling_settings/system_coupling_settings_contents
+   two_temperature/two_temperature_contents
+   virtual_blade_model/virtual_blade_model_contents
+   viscous/viscous_contents

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _least_squares_node_weights:
+
+least_squares_node_weights
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.least_squares_node_weights
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===================================================
+
+Parent                                                                                               Summary
+
+======================================================   ===================================================
+:ref:`green_gauss_node_based <green_gauss_node_based>`   Options for Green-Gauss Node Based gradient scheme.
+
+======================================================   ===================================================
+

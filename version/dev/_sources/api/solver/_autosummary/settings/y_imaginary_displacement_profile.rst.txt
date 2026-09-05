@@ -1,0 +1,23 @@
+:orphan:
+
+.. _y_imaginary_displacement_profile:
+
+y_imaginary_displacement_profile
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.y_imaginary_displacement_profile
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==============================================
+
+Parent                                                                                    Summary
+
+================================================   ==============================================
+:ref:`create_displacement <create_displacement>`       Create a new periodic displacement object.
+
+:ref:`edit_displacement <edit_displacement>`       Edit an existing periodic displacement object.
+
+================================================   ==============================================
+

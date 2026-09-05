@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_mark_gaps__mark_gapsArguments__share_topology_preferences:
+
+_share_topology_preferences
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.graphics.mark_gaps._mark_gapsArguments._share_topology_preferences
+   :members: _advanced_improve, _allow_defeaturing, _connect_label_wildcard, _execute_join_intersect, _fluid_label_wildcard, _intf_label_list, _join_tolerance_increment, _model_is_periodic, _number_of_join_tries, _operation, _per_label_list, _relative_share_topology_tolerance, _rename_internals_by_body_names, _share_topology_angle, _show_in_gui
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _print_stream_layout:
+
+print_stream_layout
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.print_stream_layout
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`macro_model <macro_model>`   Macro heat exchanger model.
+
+================================   ===========================
+

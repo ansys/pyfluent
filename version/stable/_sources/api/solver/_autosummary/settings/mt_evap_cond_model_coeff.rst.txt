@@ -1,0 +1,52 @@
+:orphan:
+
+.. _mt_evap_cond_model_coeff:
+
+mt_evap_cond_model_coeff
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_evap_cond_model_coeff
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================   ==================================
+
+Attribute                                                                                                     Summary
+
+================================================================================   ==================================
+:ref:`mt_evap_cond_lee_evap_freq <mt_evap_cond_lee_evap_freq>`                                       From phase freq.
+
+:ref:`mt_evap_cond_lee_evap_freq_constant <mt_evap_cond_lee_evap_freq_constant>`            Constant from phase freq.
+
+:ref:`mt_evap_cond_lee_evap_freq_udf <mt_evap_cond_lee_evap_freq_udf>`                           Udf from phase freq.
+
+:ref:`mt_evap_cond_lee_cond_freq <mt_evap_cond_lee_cond_freq>`                                            Phase freq.
+
+:ref:`mt_evap_cond_lee_cond_freq_constant <mt_evap_cond_lee_cond_freq_constant>`              Constant to phase freq.
+
+:ref:`mt_evap_cond_lee_cond_freq_udf <mt_evap_cond_lee_cond_freq_udf>`                             Udf to phase freq.
+
+:ref:`mt_evap_cond_hk_from_freq <mt_evap_cond_hk_from_freq>`                                     Hk from phase coeff.
+
+:ref:`mt_evap_cond_hk_to_freq <mt_evap_cond_hk_to_freq>`                                           Hk to phase coeff.
+
+:ref:`mt_evap_cond_hk_wall_scaling_factor <mt_evap_cond_hk_wall_scaling_factor>`              Hk wall scaling factor.
+
+:ref:`mt_evap_cond_ihf_from_freq <mt_evap_cond_ihf_from_freq>`                         Ihf from phase scaling factor.
+
+:ref:`mt_evap_cond_ihf_to_freq <mt_evap_cond_ihf_to_freq>`                               Ihf to phase scaling factor.
+
+================================================================================   ==================================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

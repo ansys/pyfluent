@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ia_hyb_blend:
+
+ia_hyb_blend
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ia_hyb_blend
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =================================
+
+Parent                                                               Summary
+
+========================================   =================================
+:ref:`intf_area_child <intf_area_child>`   'child_object_type' of intf_area.
+
+========================================   =================================
+

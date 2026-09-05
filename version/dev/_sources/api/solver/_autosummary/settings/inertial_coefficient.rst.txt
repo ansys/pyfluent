@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inertial_coefficient:
+
+inertial_coefficient
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inertial_coefficient
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ========================================================
+
+Parent                                                                                        Summary
+
+==========================================   ========================================================
+:ref:`decelerated_flow <decelerated_flow>`   Parameters for the Decelerated Flow reduced-order model.
+
+==========================================   ========================================================
+

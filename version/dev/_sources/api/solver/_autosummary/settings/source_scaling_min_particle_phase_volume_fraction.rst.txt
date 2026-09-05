@@ -1,0 +1,21 @@
+:orphan:
+
+.. _source_scaling_min_particle_phase_volume_fraction:
+
+source_scaling_min_particle_phase_volume_fraction
+=================================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.source_scaling_min_particle_phase_volume_fraction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                       Summary
+
+================================================   =================================================================================================================================================================================
+:ref:`volume_displacement <volume_displacement>`   Configures fluid displacement effects due to particle volume. Relevant for dense particle loading where particle volume fraction affects fluid continuity and momentum equations.
+
+================================================   =================================================================================================================================================================================
+

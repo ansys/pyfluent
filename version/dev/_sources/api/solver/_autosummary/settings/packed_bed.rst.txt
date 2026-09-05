@@ -1,0 +1,21 @@
+:orphan:
+
+.. _packed_bed:
+
+packed_bed
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.packed_bed
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`phases_child <phases_child>`   'child_object_type' of phases.
+
+==================================   ==============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _radio_soot:
+
+radio_soot
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.radio_soot
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================
+
+Parent                                                                               Summary
+
+====================================================   =====================================
+:ref:`radiation_interaction <radiation_interaction>`   Configure soot-radiation interaction.
+
+====================================================   =====================================
+

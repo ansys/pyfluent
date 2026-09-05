@@ -1,0 +1,21 @@
+:orphan:
+
+.. _residual_tolerance:
+
+residual_tolerance
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.residual_tolerance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`nita_controls_child <nita_controls_child>`   'child_object_type' of nita_controls.
+
+================================================   =====================================
+

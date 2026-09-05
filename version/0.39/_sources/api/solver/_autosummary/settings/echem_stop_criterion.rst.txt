@@ -1,0 +1,40 @@
+:orphan:
+
+.. _echem_stop_criterion:
+
+echem_stop_criterion
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.echem_stop_criterion
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =====================
+
+Attribute                                                Summary
+
+========================================   =====================
+:ref:`echem_stop_type <echem_stop_type>`        Echem stop type.
+
+:ref:`min_voltage <min_voltage>`               Min stop voltage.
+
+:ref:`max_voltage <max_voltage>`               Max stop voltage.
+
+:ref:`min_soc <min_soc>`                           Min stop soc.
+
+:ref:`max_soc <max_soc>`                           Max stop soc.
+
+========================================   =====================
+
+.. rubric:: Included in:
+
+========================================   ================================
+
+Parent                                                              Summary
+
+========================================   ================================
+:ref:`eload_condition <eload_condition>`       Up electric load conditions.
+
+========================================   ================================
+

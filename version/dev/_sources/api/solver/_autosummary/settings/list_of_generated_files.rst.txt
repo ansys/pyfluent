@@ -1,0 +1,21 @@
+:orphan:
+
+.. _list_of_generated_files:
+
+list_of_generated_files
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.list_of_generated_files
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===================================================
+
+Parent                                                                           Summary
+
+==================================   ===================================================
+:ref:`submit_job_1 <submit_job_1>`   Submit job to remote cluster with current settings.
+
+==================================   ===================================================
+

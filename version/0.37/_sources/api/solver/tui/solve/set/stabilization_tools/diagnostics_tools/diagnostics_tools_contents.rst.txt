@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_set_stabilization_tools_diagnostics_tools:
+
+diagnostics_tools
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.solve.set.stabilization_tools.diagnostics_tools
+   :members: clear_divergence_tracker_files, diagnostics_visualization, global_exterma_tracker, inspector, local_divergence_tracker, mark_cell_neighbors_by_id, mark_cell_neighbors_by_register, report_cell_info_by_id, report_cell_info_by_register
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

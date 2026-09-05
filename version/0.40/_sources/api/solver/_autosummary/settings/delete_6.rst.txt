@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_6:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.delete_6
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   =======================================
+
+Argument                                                Summary
+
+=====================   =======================================
+:ref:`name <name_39>`       Name of Compute Resource to delete.
+
+=====================   =======================================
+
+.. rubric:: Included in:
+
+============================================   ==========================
+
+Parent                                                            Summary
+
+============================================   ==========================
+:ref:`compute_resources <compute_resources>`       Compute Resource List.
+
+============================================   ==========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _divisions_1:
+
+divisions
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.divisions_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`major_gridlines_1 <major_gridlines_1>`       Major rules settings.
+
+============================================   =========================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _single_rate:
+
+single_rate
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.single_rate
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ===========================
+
+Attribute                                                                    Summary
+
+======================================================   ===========================
+:ref:`pre_exponential_factor <pre_exponential_factor>`       Pre-exponential factor.
+
+:ref:`activation_energy <activation_energy_3>`                    Activation energy.
+
+======================================================   ===========================
+
+.. rubric:: Included in:
+
+======================================================   ==============================================
+
+Parent                                                                                          Summary
+
+======================================================   ==============================================
+:ref:`thermolysis_model <thermolysis_model>`                      Material property: thermolysis-model.
+
+:ref:`devolatilization_model <devolatilization_model>`       Material property: devolatilization-model.
+
+======================================================   ==============================================
+

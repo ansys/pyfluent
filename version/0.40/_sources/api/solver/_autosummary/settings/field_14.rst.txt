@@ -1,0 +1,21 @@
+:orphan:
+
+.. _field_14:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.field_14
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================================
+
+Parent                                                            Summary
+
+====================================   ==================================
+:ref:`export_data_1 <export_data_1>`       Export data for interpolation.
+
+====================================   ==================================
+

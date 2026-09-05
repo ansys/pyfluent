@@ -1,0 +1,32 @@
+:orphan:
+
+.. _cl_cd_interpolation:
+
+cl_cd_interpolation
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cl_cd_interpolation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ================================
+
+Attribute                                                                               Summary
+
+============================================================   ================================
+:ref:`cl_cd_interpolation_model <cl_cd_interpolation_model>`   Cl/Cd Data Interpolation Model:.
+
+============================================================   ================================
+
+.. rubric:: Included in:
+
+============================   =============================================
+
+Parent                                                               Summary
+
+============================   =============================================
+:ref:`general_1 <general_1>`   Menu to define the rotor general information.
+
+============================   =============================================
+

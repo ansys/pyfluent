@@ -1,0 +1,21 @@
+:orphan:
+
+.. _min_temp:
+
+min_temp
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.min_temp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================================
+
+Parent                                                                                            Summary
+
+==============================================   ========================================================
+:ref:`divergence_tracker <divergence_tracker>`   Stop simulation after a divergence incident is detected.
+
+==============================================   ========================================================
+

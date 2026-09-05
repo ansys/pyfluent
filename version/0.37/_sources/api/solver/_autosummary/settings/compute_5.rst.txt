@@ -1,0 +1,21 @@
+:orphan:
+
+.. _compute_5:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.compute_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ========================
+
+Parent                                      Summary
+
+========================   ========================
+:ref:`range_1 <range_1>`       Range of the volume.
+
+========================   ========================
+

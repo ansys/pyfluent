@@ -1,0 +1,32 @@
+:orphan:
+
+.. _create_group:
+
+create_group
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_group
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =================================================
+
+Argument                                                                     Summary
+
+================================   =================================================
+:ref:`group_name <group_name_1>`   The name for the new periodic displacement group.
+
+================================   =================================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

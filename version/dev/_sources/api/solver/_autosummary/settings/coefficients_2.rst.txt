@@ -1,0 +1,46 @@
+:orphan:
+
+.. _coefficients_2:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coefficients_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =================================
+
+Attribute                                                          Summary
+
+======================================   =================================
+:ref:`cb1 <cb1>`                                The model coefficient Cb1.
+
+:ref:`cb2 <cb2>`                                The model coefficient Cb2.
+
+:ref:`cv1 <cv1>`                                The model coefficient Cv1.
+
+:ref:`cw2 <cw2>`                                The model coefficient Cw2.
+
+:ref:`cw3 <cw3>`                                The model coefficient Cw3.
+
+:ref:`kappa <kappa>`                        The von Karman constant Kappa.
+
+:ref:`cprod <cprod>`                     The production coefficient Cprod.
+
+:ref:`prandtl_number <prandtl_number>`       The turbulent Prandtl number.
+
+======================================   =================================
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`spalart_allmaras <spalart_allmaras>`   Spalart-Allmaras model options.
+
+==========================================   ===============================
+

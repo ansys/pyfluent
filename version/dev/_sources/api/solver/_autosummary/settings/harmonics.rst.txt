@@ -1,0 +1,21 @@
+:orphan:
+
+.. _harmonics:
+
+harmonics
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.harmonics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ==============================================
+
+Parent                                                                                                      Summary
+
+==================================================================   ==============================================
+:ref:`inter_row_disturbances_child <inter_row_disturbances_child>`   'child_object_type' of inter_row_disturbances.
+
+==================================================================   ==============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _current_leakage:
+
+current_leakage
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.current_leakage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============
+
+Parent                                     Summary
+
+================================   ===============
+:ref:`electrolyte <electrolyte>`   Up electrolyte.
+
+================================   ===============
+

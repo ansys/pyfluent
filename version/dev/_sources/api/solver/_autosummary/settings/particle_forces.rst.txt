@@ -1,0 +1,40 @@
+:orphan:
+
+.. _particle_forces:
+
+particle_forces
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.particle_forces
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ======================================================================================================================================================
+
+Attribute                                                                                                                                                                                                           Summary
+
+==================================================================   ======================================================================================================================================================
+:ref:`pressure_gradient_force <pressure_gradient_force>`                                                                                                                 Legacy option retained for backward compatibility.
+
+:ref:`pressure_force_enabled <pressure_force_enabled>`               Includes pressure gradient force acting on particles. Relevant in strongly accelerating (curved) or non-uniform flows, especially for light particles.
+
+:ref:`virtual_mass_force <virtual_mass_force>`                       Configures the virtual mass force model. Important when particle density is comparable to or lower than fluid density (e.g., bubbles, light droplets).
+
+:ref:`saffman_lift_force_enabled <saffman_lift_force_enabled>`                                  Includes Saffman lift force. Important in shear flows where velocity gradients induce lateral migration of small particles.
+
+:ref:`thermophoretic_force_enabled <thermophoretic_force_enabled>`         Includes thermophoretic force from temperature gradients. Important in strong temperature gradients, such as combustion or near heated surfaces.
+
+==================================================================   ======================================================================================================================================================
+
+.. rubric:: Included in:
+
+========================================   =================================================================
+
+Parent                                                                                               Summary
+
+========================================   =================================================================
+:ref:`physical_models <physical_models>`   Enables and configures physical submodels for the discrete phase.
+
+========================================   =================================================================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _multiphase_specific_time_constraints:
+
+multiphase_specific_time_constraints
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.multiphase_specific_time_constraints
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   =======================================================
+
+Attribute                                                                                                        Summary
+
+==============================================================   =======================================================
+:ref:`moving_mesh_cfl_constraint <moving_mesh_cfl_constraint>`                        Moving mesh CFL constraint object.
+
+:ref:`physics_based_constraint <physics_based_constraint>`                 Include physics driven time-step constraints.
+
+:ref:`time_scale_options <time_scale_options>`                                         Physics based time scale options.
+
+:ref:`verbosity <verbosity_20>`                                      Verbosity to print multiphase specific time scales.
+
+==============================================================   =======================================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================
+
+Parent                                                                  Summary
+
+==============================================   ==============================
+:ref:`transient_controls <transient_controls>`       Transient controls object.
+
+==============================================   ==============================
+

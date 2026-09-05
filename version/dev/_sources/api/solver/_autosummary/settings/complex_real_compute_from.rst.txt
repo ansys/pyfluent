@@ -1,0 +1,21 @@
+:orphan:
+
+.. _complex_real_compute_from:
+
+complex_real_compute_from
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.complex_real_compute_from
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`field_entries_child <field_entries_child>`   'child_object_type' of field_entries.
+
+================================================   =====================================
+

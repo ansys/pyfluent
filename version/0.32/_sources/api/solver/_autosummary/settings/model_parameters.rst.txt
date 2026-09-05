@@ -1,0 +1,50 @@
+:orphan:
+
+.. _model_parameters:
+
+model_parameters
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.model_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===================================================================
+
+Attribute                                                                                                              Summary
+
+========================================================   ===================================================================
+:ref:`options <options_6>`                                                                         The model options settings.
+
+:ref:`individual_bc_enabled <individual_bc_enabled>`           Electrical boundary condition in Boundary Conditions task page.
+
+:ref:`converg_voltage_enabled <converg_voltage_enabled>`                     Enable/disable input of specified system voltage.
+
+:ref:`system_voltage <system_voltage>`                                                                   Total system voltage.
+
+:ref:`system_current <system_current>`                                                                   Total system current.
+
+:ref:`leakage_current_density <leakage_current_density>`                                              Leakage current density.
+
+:ref:`electrolyte_thickness <electrolyte_thickness_1>`                                                  Electrolyte thickness.
+
+:ref:`electrolyte_resistivity <electrolyte_resistivity>`                                              Electrolyte resistivity.
+
+:ref:`current_urf <current_urf_1>`                                                            Current under-relaxation factor.
+
+:ref:`fcycle_amg_enabled <fcycle_amg_enabled>`                                                Apply F-Cycle for all equations.
+
+========================================================   ===================================================================
+
+.. rubric:: Included in:
+
+==================   ========================
+
+Parent                                Summary
+
+==================   ========================
+:ref:`sofc <sofc>`       SOFC model settings.
+
+==================   ========================
+

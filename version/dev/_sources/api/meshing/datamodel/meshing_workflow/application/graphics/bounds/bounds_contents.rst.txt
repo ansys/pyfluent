@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_bounds:
+
+bounds
+======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.graphics.bounds
+   :members: bound_x, bound_y, bound_z, delta_value, selection
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   reset_bounds/reset_bounds_contents
+   set_bounds/set_bounds_contents

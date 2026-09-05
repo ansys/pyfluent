@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateTheSurfaceMeshWTM__GenerateTheSurfaceMeshWTMCommandArguments__SurfaceMeshPreferences:
+
+_SurfaceMeshPreferences
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.GenerateTheSurfaceMeshWTM._GenerateTheSurfaceMeshWTMCommandArguments._SurfaceMeshPreferences
+   :members: _AutoAssignZoneTypes, _AutoMerge, _AutoSurfaceRemesh, _FoldFaceLimit, _SMQualityCollapseLimit, _SMQualityImprove, _SMQualityImproveLimit, _SMQualityMaxAngle, _SMRemoveStep, _SMSeparation, _SMSeparationAngle, _SMStepWidth, _SelfIntersectCheck, _SetVolumeMeshMaxSize, _ShowSurfaceMeshPreferences, _TVMAutoControlCreation, _VolumeMeshMaxSize
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

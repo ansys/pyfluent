@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_value:
+
+boundary_value
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.boundary_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =====================================================================
+
+Parent                                                                                                             Summary
+
+==================================================   =====================================================================
+:ref:`set_boundary_val_off <set_boundary_val_off>`       Set boundary value off when node values off for XY/Solution Plot.
+
+==================================================   =====================================================================
+

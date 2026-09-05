@@ -1,0 +1,38 @@
+:orphan:
+
+.. _mt_boiling_group:
+
+mt_boiling_group
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ====================================================================
+
+Attribute                                                                                                         Summary
+
+==================================================   ====================================================================
+:ref:`mt_boiling_evap_prop <mt_boiling_evap_prop>`         Evaporation-condensation property inputs for Eulerian boiling.
+
+:ref:`mt_boiling_params <mt_boiling_params>`         Boiling sub-model parameters: BDD, NSD, BDF, AIC, blending function.
+
+:ref:`mt_boiling_nlbf <mt_boiling_nlbf>`                             Non-local boundary field model settings for boiling.
+
+:ref:`mt_boiling_quench <mt_boiling_quench>`                             Quenching model correction for Eulerian boiling.
+
+==================================================   ====================================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`mass_transfer_list_child <mass_transfer_list_child>`   'child_object_type' of mass_transfer_list.
+
+==========================================================   ==========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _base_mat_name:
+
+base_mat_name
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.base_mat_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ====================
+
+Parent                              Summary
+
+====================   ====================
+:ref:`new_3 <new_3>`   Create new material.
+
+====================   ====================
+

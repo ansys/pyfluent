@@ -1,0 +1,21 @@
+:orphan:
+
+.. _list_details:
+
+list_details
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.list_details
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ================================================================================
+
+Parent                                                                                                                  Summary
+
+============================================   ================================================================================
+:ref:`turbo_description <turbo_description>`   Turbomachine description defining rows, sectors, and rotational characteristics.
+
+============================================   ================================================================================
+

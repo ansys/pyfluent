@@ -1,0 +1,32 @@
+:orphan:
+
+.. _radiation_interaction:
+
+radiation_interaction
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.radiation_interaction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ====================================================
+
+Attribute                                                                     Summary
+
+==============================   ====================================================
+:ref:`radio_soot <radio_soot>`   Enable interaction between soot and radiation model.
+
+==============================   ====================================================
+
+.. rubric:: Included in:
+
+==================   =============================================
+
+Parent                                                     Summary
+
+==================   =============================================
+:ref:`soot <soot>`   Configure soot model settings and parameters.
+
+==================   =============================================
+

@@ -1,0 +1,47 @@
+:orphan:
+
+.. _scalars:
+
+scalars
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scalars
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ===================================
+
+Attribute                                                                Summary
+
+==========================================   ===================================
+:ref:`inlet_diffusion <inlet_diffusion_3>`       Enable/disable inlet diffusion.
+
+:ref:`diffusion_long <diffusion_long>`                  The diffusion long name.
+
+:ref:`scalar <scalar>`                              User-defined scalar options.
+
+==========================================   ===================================
+
+.. rubric:: Methods
+
+========================   ===============================================
+
+Method                                                             Summary
+
+========================   ===============================================
+:ref:`update <update_3>`       Update UDS model with the current settings.
+
+========================   ===============================================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

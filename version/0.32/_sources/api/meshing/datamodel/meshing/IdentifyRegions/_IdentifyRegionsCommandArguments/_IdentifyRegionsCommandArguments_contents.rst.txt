@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_IdentifyRegions__IdentifyRegionsCommandArguments:
+
+_IdentifyRegionsCommandArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.IdentifyRegions._IdentifyRegionsCommandArguments
+   :members: _AddChild, _GraphicalSelection, _LabelSelectionList, _LinkConstruction, _MaterialPointsName, _MptMethodType, _NewRegionType, _ObjectSelectionList, _OffsetX, _OffsetY, _OffsetZ, _SelectionType, _ShowCoordinates, _X, _Y, _Z, _ZoneLocation, _ZoneSelectionList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

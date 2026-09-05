@@ -1,0 +1,25 @@
+:orphan:
+
+.. _field:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.field
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`surface_1_child <surface_1_child>`       'child_object_type' of surface.
+
+:ref:`volume_2_child <volume_2_child>`          'child_object_type' of volume.
+
+:ref:`ribbon <ribbon>`                                         'ribbon' child.
+
+========================================   ===================================
+

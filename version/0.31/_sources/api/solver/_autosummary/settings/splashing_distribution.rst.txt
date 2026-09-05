@@ -1,0 +1,21 @@
+:orphan:
+
+.. _splashing_distribution:
+
+splashing_distribution
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.splashing_distribution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================
+
+Parent                                                            Summary
+
+======================================================   ================
+:ref:`user_defined_functions <user_defined_functions>`       Main object.
+
+======================================================   ================
+

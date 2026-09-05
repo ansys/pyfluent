@@ -1,0 +1,38 @@
+:orphan:
+
+.. _volume_4:
+
+volume
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.volume_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =============================
+
+Attribute                                                          Summary
+
+==========================================   =============================
+:ref:`option <option_2>`                                   'option' child.
+
+:ref:`volume_magnitude <volume_magnitude>`       'volume_magnitude' child.
+
+:ref:`volume_change <volume_change>`                'volume_change' child.
+
+:ref:`range <range_1>`                                Range of the volume.
+
+==========================================   =============================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_18 <type_18>`       The type for this cell register.
+
+========================   ====================================
+

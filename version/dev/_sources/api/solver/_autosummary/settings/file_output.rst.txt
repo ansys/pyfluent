@@ -1,0 +1,36 @@
+:orphan:
+
+.. _file_output:
+
+file_output
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_output
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =============================================================
+
+Attribute                                                                                      Summary
+
+======================================   =============================================================
+:ref:`output_to_file <output_to_file>`             Write sensitivity analysis report output to a file.
+
+:ref:`file_name <file_name_52>`                        Path of the output file used for report output.
+
+:ref:`overwrite <overwrite_1>`           Overwrite an existing output file when writing report output.
+
+======================================   =============================================================
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`automation <automation>`   Run sensitivity-analysis reports and result graphics.
+
+==============================   =====================================================
+

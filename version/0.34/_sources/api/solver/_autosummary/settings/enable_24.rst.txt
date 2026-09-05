@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_24:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enable_24
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`high_speed_numerics <high_speed_numerics>`       High-speed-numerics object.
+
+================================================   ===============================
+

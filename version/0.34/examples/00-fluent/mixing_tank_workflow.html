@@ -1,0 +1,1166 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:site_name" content="PyAnsys" />
+    <title>Mixing Tank Workflow &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=5c41f301"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/00-fluent/mixing_tank_workflow';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.34';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Modeling Ablation" href="modeling_ablation.html" />
+    <link rel="prev" title="Fluent setup and solution using settings objects" href="mixing_elbow_settings_api.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.34.2" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/examples/00-fluent/mixing_tank_workflow.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Simulation Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DOE_ML.html">Design of Experiments and Machine Learning model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ahmed_body_workflow.html">Ahmed Body External Aerodynamics Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brake.html">Automotive Brake Thermal Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjugate_heat_transfer.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exhaust_system_settings_api.html">Fault-tolerant meshing workflow using settings objects</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="external_compressible_flow.html">Modeling External Compressible Flow</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="frozen_rotor_workflow.html">Impeller-Volute simulation using the Frozen Rotor Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lunar_lander_thermal.html">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="mixing_elbow_settings_api.html">Fluent setup and solution using settings objects</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Mixing Tank Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_ablation.html">Modeling Ablation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_cavitation.html">Modeling Cavitation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="parametric_static_mixer_1.html">Parametric study workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="radiation_headlamp.html">Modeling Radiation in a Headlamp Using the Monte Carlo Method</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="species_transport.html">Modeling Species Transport and Gaseous Combustion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tyler_sofrin_modes.html">Tyler-Sofrin Compressor Modes Post-Processing</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">Simulation Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Mixing Tank Workflow</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-00-fluent-mixing-tank-workflow-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="mixing-tank-workflow">
+<span id="sphx-glr-examples-00-fluent-mixing-tank-workflow-py"></span><span id="id1"></span><h1>Mixing Tank Workflow<a class="headerlink" href="#mixing-tank-workflow" title="Link to this heading">#</a></h1>
+<section id="overeview">
+<h2>Overeview<a class="headerlink" href="#overeview" title="Link to this heading">#</a></h2>
+<p>The mixing tank workflow demonstrates basic end to end comprehensive solution for simulating
+mixing tank with an single impeller. This workflow also demonstrates the use of the Python API’s
+capabilities to setup complex workflows.</p>
+<p>Mixing tanks are commonly used in industries such as chemical processing, food and healthcare,
+pharmaceuticals etc. The mixing tank workflow in ANSYS Fluent allows engineers to analyze the
+performance of mixing tanks, optimize the design of impellers, and understand the flow
+patterns within the tank. By simulating the mixing process, engineers can gain insights
+into the efficiency of mixing, blend time, the distribution of shear forces, and the overall
+performance of the mixing system.</p>
+<p>This workflow can be extended to design and develop the vertical application for non-experts
+and seemingly expose the required functionality to democraticize the simulation process.</p>
+<p>The workflow includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Importing a geometry file</p></li>
+<li><p>Generating the mesh</p></li>
+<li><p>Setting up the solver</p></li>
+<li><p>Defining the materials</p></li>
+<li><p>Defining the cell zones and wall boundary conditions</p></li>
+<li><p>Setting up the solution methods and controls</p></li>
+<li><p>Defining the report definitions</p></li>
+<li><p>Running the solver</p></li>
+<li><p>Post-processing the results</p></li>
+<li><p>Saving the case file</p></li>
+<li><p>Closing the session</p></li>
+</ul>
+</div></blockquote>
+<a class="reference internal image-reference" href="../../_images/mixing_tank_geom_view.png"><img alt="Mixing Tank Model" class="align-center" src="../../_images/mixing_tank_geom_view.png" style="width: 618.0px; height: 445.8px;" />
+</a>
+</section>
+<section id="import-required-libraries-modules">
+<h2>Import required libraries/modules<a class="headerlink" href="#import-required-libraries-modules" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyfluent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">examples</span>
+</pre></div>
+</div>
+</section>
+<section id="launch-fluent-session-with-meshing-mode-and-print-fluent-version">
+<h2>Launch Fluent session with meshing mode and print Fluent version<a class="headerlink" href="#launch-fluent-session-with-meshing-mode-and-print-fluent-version" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;meshing&quot;</span><span class="p">,</span>
+    <span class="n">cleanup_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get_fluent_version</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="meshing-workflow">
+<h2>Meshing Workflow<a class="headerlink" href="#meshing-workflow" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">workflow</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">workflow</span>
+
+<span class="n">filenames</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Windows&quot;</span><span class="p">:</span> <span class="s2">&quot;mixing_tank_geom.dsco&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Other&quot;</span><span class="p">:</span> <span class="s2">&quot;StirredTank.scdoc.pmdb&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">geometry_filename</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+    <span class="n">filenames</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><a href="https://docs.python.org/3/library/platform.html#platform.system" title="platform.system" class="sphx-glr-backref-module-platform sphx-glr-backref-type-py-function"><span class="n">platform</span><span class="o">.</span><span class="n">system</span></a><span class="p">(),</span> <span class="n">filenames</span><span class="p">[</span><span class="s2">&quot;Other&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;pyfluent/examples/MixingTank-WorkFlow&quot;</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="n">workflow</span><span class="o">.</span><span class="n">InitializeWorkflow</span><span class="p">(</span><span class="n">WorkflowType</span><span class="o">=</span><span class="s2">&quot;Watertight Geometry&quot;</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Import Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">FileName</span><span class="o">=</span><span class="n">geometry_filename</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Import Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Surface Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Describe Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">SetupType</span><span class="o">=</span><span class="s2">&quot;The geometry consists of only fluid regions with no voids&quot;</span><span class="p">,</span>
+    <span class="n">wall_to_internal</span><span class="o">=</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span>
+    <span class="n">InvokeShareTopology</span><span class="o">=</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Describe Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Apply Share Topology&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Update Boundaries&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Update Regions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Add Boundary Layers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">InsertCompoundChildTask</span><span class="p">()</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;smooth-transition_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Volume Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+
+<span class="c1"># Write a mesh file for reference</span>
+<span class="n">session</span><span class="o">.</span><span class="n">tui</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write_mesh</span><span class="p">(</span><span class="s2">&quot;mixing_tank.msh.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="switch-to-the-solver-mode">
+<h2>Switch to the Solver Mode<a class="headerlink" href="#switch-to-the-solver-mode" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">switch_to_solver</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="display-the-mesh-in-solver-mode">
+<h2>Display the mesh in solver mode<a class="headerlink" href="#display-the-mesh-in-solver-mode" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a middle plane to display the mesh</span>
+<span class="n">y_mid_plane</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">surfaces</span><span class="o">.</span><span class="n">plane_surface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mid_plane&quot;</span>
+<span class="p">)</span>
+<span class="n">y_mid_plane</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;zx-plane&quot;</span>
+<span class="n">y_mid_plane</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">y_mid_plane</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+
+<span class="c1"># Access the graphics object</span>
+<span class="n">graphics</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">graphics</span>
+<span class="c1"># Set the hardcopy format for saving the image</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">driver_options</span><span class="o">.</span><span class="n">hardcopy_format</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span>
+
+<span class="c1"># View settings</span>
+<span class="n">geom_view</span> <span class="o">=</span> <span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">display_states</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;geom_view&quot;</span><span class="p">)</span>
+<span class="n">geom_view</span><span class="o">.</span><span class="n">front_faces_transparent</span> <span class="o">=</span> <span class="s2">&quot;enable&quot;</span>
+<span class="n">geom_view</span><span class="o">.</span><span class="n">view_name</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span>
+
+<span class="c1"># Get the list of all walls</span>
+<span class="n">all_walls</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="o">.</span><span class="n">get_object_names</span><span class="p">()</span>
+<span class="n">filtered_walls_to_display</span> <span class="o">=</span> <span class="p">[</span><span class="n">wall</span> <span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="n">all_walls</span> <span class="k">if</span> <span class="s2">&quot;mrf&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wall</span><span class="p">]</span>
+
+<span class="c1"># Create a mesh object and configure its settings</span>
+<span class="n">mesh_object</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;mesh-1&quot;</span><span class="p">)</span>
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">filtered_walls_to_display</span>
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">display_state_name</span> <span class="o">=</span> <span class="n">geom_view</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">coloring</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="s2">&quot;manual&quot;</span>
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span>
+    <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;mixing_tank_geom_view.png&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">y_mid_plane</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mesh_object</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span>
+    <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;mixing_tank_mesh.png&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">geom_view</span><span class="o">.</span><span class="n">front_faces_transparent</span> <span class="o">=</span> <span class="s2">&quot;disable&quot;</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/mixing_tank_mesh.png"><img alt="Mixing Tank Mesh" class="align-center" src="../../_images/mixing_tank_mesh.png" style="width: 830.4px; height: 435.59999999999997px;" />
+</a>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span>  <span class="c1"># m/s^2</span>
+<span class="n">water_density</span> <span class="o">=</span> <span class="mf">1000.0</span>  <span class="c1"># kg/m^3</span>
+<span class="n">water_viscosity</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># kg/m-s</span>
+<span class="n">agitation_speed</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># rad/s</span>
+</pre></div>
+</div>
+</section>
+<section id="solver-setup-and-solve-workflow">
+<h2>Solver Setup and Solve Workflow<a class="headerlink" href="#solver-setup-and-solve-workflow" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">operating_conditions</span><span class="o">.</span><span class="n">gravity</span><span class="o">.</span><span class="n">enable</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">operating_conditions</span><span class="o">.</span><span class="n">gravity</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+    <span class="mf">0.0</span><span class="p">,</span>
+    <span class="o">-</span><span class="n">g</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="define-materials">
+<h2>Define Materials<a class="headerlink" href="#define-materials" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">copy_by_name</span><span class="p">(</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;fluid&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;water-liquid&quot;</span>
+<span class="p">)</span>
+<span class="n">fluid_mat</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">fluid</span><span class="p">[</span><span class="s2">&quot;water-liquid&quot;</span><span class="p">]</span>
+<span class="n">fluid_mat</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">water_density</span>
+<span class="n">fluid_mat</span><span class="o">.</span><span class="n">viscosity</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">water_viscosity</span>
+</pre></div>
+</div>
+</section>
+<section id="define-cell-zones-wall-boundary-conditions">
+<h2>Define Cell Zones, Wall Boundary Conditions<a class="headerlink" href="#define-cell-zones-wall-boundary-conditions" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the list of all Fluid Cell Zones,</span>
+<span class="n">fluid_cell_zones</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">cell_zone_conditions</span><span class="o">.</span><span class="n">fluid</span><span class="o">.</span><span class="n">get_object_names</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">fluid_mrf_cell_zones</span> <span class="o">=</span> <span class="p">[</span><span class="n">zone</span> <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">fluid_cell_zones</span> <span class="k">if</span> <span class="s2">&quot;mrf&quot;</span> <span class="ow">in</span> <span class="n">zone</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">cell_zone</span> <span class="ow">in</span> <span class="n">fluid_mrf_cell_zones</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">cell_zone</span><span class="p">)</span>
+    <span class="c1"># Set the material for each cell zone</span>
+    <span class="n">fluid_cell_zone</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">cell_zone_conditions</span><span class="o">.</span><span class="n">fluid</span><span class="p">[</span>
+        <span class="n">cell_zone</span>
+    <span class="p">]</span>
+    <span class="n">fluid_cell_zone</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="s2">&quot;water-liquid&quot;</span>
+    <span class="c1"># Set the reference frame for each cell zone</span>
+    <span class="n">fluid_cell_zone</span><span class="o">.</span><span class="n">reference_frame</span><span class="o">.</span><span class="n">reference_frame_axis_origin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]</span>
+    <span class="n">fluid_cell_zone</span><span class="o">.</span><span class="n">reference_frame</span><span class="o">.</span><span class="n">reference_frame_axis_direction</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">fluid_cell_zone</span><span class="o">.</span><span class="n">reference_frame</span><span class="o">.</span><span class="n">frame_motion</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># Set the rotation speed for each cell zone</span>
+    <span class="n">fluid_cell_zone</span><span class="o">.</span><span class="n">reference_frame</span><span class="o">.</span><span class="n">mrf_omega</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">agitation_speed</span>
+
+<span class="n">stationary_cell_zones</span> <span class="o">=</span> <span class="p">[</span><span class="n">zone</span> <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">fluid_cell_zones</span> <span class="k">if</span> <span class="s2">&quot;mrf&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zone</span><span class="p">]</span>
+<span class="n">stationary_cell_zones</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">cell_zone_conditions</span><span class="o">.</span><span class="n">fluid</span><span class="p">[</span>
+    <span class="n">stationary_cell_zones</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">]</span>
+<span class="n">stationary_cell_zones</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="s2">&quot;water-liquid&quot;</span>
+
+<span class="c1"># Wall boundary conditions</span>
+<span class="n">wall_shaft</span> <span class="o">=</span> <span class="p">[</span><span class="n">wall</span> <span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="n">all_walls</span> <span class="k">if</span> <span class="s2">&quot;shaft&quot;</span> <span class="ow">in</span> <span class="n">wall</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="n">wall_shaft</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">wall</span><span class="p">)</span>
+    <span class="n">wall_boundary</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span><span class="n">wall</span><span class="p">]</span>
+    <span class="n">wall_boundary</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">wall_motion</span> <span class="o">=</span> <span class="s2">&quot;Moving Wall&quot;</span>
+    <span class="n">wall_boundary</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">relative</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">wall_boundary</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">rotating</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">wall_boundary</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">rotation_axis_direction</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">wall_boundary</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">rotation_speed</span> <span class="o">=</span> <span class="n">agitation_speed</span>
+
+
+<span class="n">liquid_level_bc</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span>
+    <span class="s2">&quot;wall_liquid_level&quot;</span>
+<span class="p">]</span>
+<span class="n">liquid_level_bc</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">wall_motion</span> <span class="o">=</span> <span class="s2">&quot;Stationary Wall&quot;</span>
+<span class="n">liquid_level_bc</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">shear_condition</span> <span class="o">=</span> <span class="s2">&quot;Specified Shear&quot;</span>
+
+<span class="c1"># Change the Zone type for internal walls to interior</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">set_zone_type</span><span class="p">(</span>
+    <span class="n">zone_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;fluid_mrf_1-fluid_tank&quot;</span><span class="p">],</span> <span class="n">new_type</span><span class="o">=</span><span class="s2">&quot;interior&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="solution-methods-and-controls">
+<h2>Solution Methods and Controls<a class="headerlink" href="#solution-methods-and-controls" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">p_v_coupling</span><span class="o">.</span><span class="n">flow_scheme</span> <span class="o">=</span> <span class="s2">&quot;SIMPLE&quot;</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">spatial_discretization</span><span class="o">.</span><span class="n">discretization_scheme</span><span class="p">[</span>
+    <span class="s2">&quot;pressure&quot;</span>
+<span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;presto!&quot;</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">under_relaxation</span><span class="p">[</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">under_relaxation</span><span class="p">[</span><span class="s2">&quot;mom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">under_relaxation</span><span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">under_relaxation</span><span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">under_relaxation</span><span class="p">[</span><span class="s2">&quot;turb-viscosity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
+</pre></div>
+</div>
+</section>
+<section id="residuals-criteria-initialization">
+<h2>Residuals Criteria &amp; Initialization<a class="headerlink" href="#residuals-criteria-initialization" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Residuals criteria</span>
+<span class="n">residuals_options</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">residual</span>
+<span class="n">residuals_options</span><span class="o">.</span><span class="n">equations</span><span class="p">[</span><span class="s2">&quot;continuity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">absolute_criteria</span> <span class="o">=</span> <span class="mf">0.0001</span>
+<span class="n">residuals_options</span><span class="o">.</span><span class="n">equations</span><span class="p">[</span><span class="s2">&quot;continuity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">monitor</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Enable continuity residuals</span>
+<span class="n">residuals_options</span><span class="o">.</span><span class="n">equations</span><span class="p">[</span><span class="s2">&quot;x-velocity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">absolute_criteria</span> <span class="o">=</span> <span class="mf">0.0001</span>
+<span class="n">residuals_options</span><span class="o">.</span><span class="n">equations</span><span class="p">[</span><span class="s2">&quot;y-velocity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">absolute_criteria</span> <span class="o">=</span> <span class="mf">0.0001</span>
+<span class="n">residuals_options</span><span class="o">.</span><span class="n">equations</span><span class="p">[</span><span class="s2">&quot;z-velocity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">absolute_criteria</span> <span class="o">=</span> <span class="mf">0.0001</span>
+<span class="n">residuals_options</span><span class="o">.</span><span class="n">equations</span><span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">absolute_criteria</span> <span class="o">=</span> <span class="mf">0.0001</span>
+<span class="n">residuals_options</span><span class="o">.</span><span class="n">equations</span><span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">absolute_criteria</span> <span class="o">=</span> <span class="mf">0.0001</span>
+
+
+<span class="c1"># Initialize the solution</span>
+<span class="n">initialization</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">initialization</span>
+<span class="n">initialization</span><span class="o">.</span><span class="n">reference_frame</span> <span class="o">=</span> <span class="s2">&quot;absolute&quot;</span>
+<span class="n">initialization</span><span class="o">.</span><span class="n">initialization_type</span> <span class="o">=</span> <span class="s2">&quot;standard&quot;</span>
+<span class="n">initialization</span><span class="o">.</span><span class="n">standard_initialize</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="define-report-definitions">
+<h2>Define Report Definitions<a class="headerlink" href="#define-report-definitions" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a report definition for the volume average velocity magnitude</span>
+<span class="n">volume_avg_vmag_report_def</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;volume-avg-vmag&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">volume_avg_vmag_report_def</span><span class="o">.</span><span class="n">report_type</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>  <span class="c1"># output the allowed values for report type</span>
+<span class="n">volume_avg_vmag_report_def</span><span class="o">.</span><span class="n">report_type</span> <span class="o">=</span> <span class="s2">&quot;volume-average&quot;</span>
+<span class="n">volume_avg_vmag_report_def</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;velocity-magnitude&quot;</span>
+<span class="n">volume_avg_vmag_report_def</span><span class="o">.</span><span class="n">cell_zones</span> <span class="o">=</span> <span class="n">fluid_cell_zones</span>
+
+<span class="c1"># Report plot</span>
+<span class="n">volume_avg_vmag_report_plot</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">report_plots</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="s2">&quot;volume-avg-vmag-rplot&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">volume_avg_vmag_report_plot</span><span class="o">.</span><span class="n">report_defs</span> <span class="o">=</span> <span class="s2">&quot;volume-avg-vmag&quot;</span>
+<span class="c1"># Report file</span>
+<span class="n">volume_avg_vmag_report_file</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">report_files</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="s2">&quot;volume-avg-vmag-rfile&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">volume_avg_vmag_report_file</span><span class="o">.</span><span class="n">report_defs</span> <span class="o">=</span> <span class="s2">&quot;volume-avg-vmag&quot;</span>
+
+
+<span class="c1"># Create a report definition for the torque on the impeller walls</span>
+<span class="n">torque_report_def</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">moment</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="s2">&quot;torque_imp_walls&quot;</span>
+<span class="p">)</span>
+<span class="n">torque_report_def</span><span class="o">.</span><span class="n">report_output_type</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>  <span class="c1"># output the allowed values for report output type</span>
+<span class="n">torque_report_def</span><span class="o">.</span><span class="n">report_output_type</span> <span class="o">=</span> <span class="s2">&quot;Moment&quot;</span>
+<span class="n">filtered_walls</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/fnmatch.html#fnmatch.filter" title="fnmatch.filter" class="sphx-glr-backref-module-fnmatch sphx-glr-backref-type-py-function"><span class="n">fnmatch</span><span class="o">.</span><span class="n">filter</span></a><span class="p">(</span><span class="n">all_walls</span><span class="p">,</span> <span class="s2">&quot;wall_impeller*&quot;</span><span class="p">)</span>
+<span class="n">torque_report_def</span><span class="o">.</span><span class="n">zones</span> <span class="o">=</span> <span class="n">filtered_walls</span>
+
+<span class="c1"># Report plot</span>
+<span class="n">torque_report_plot</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">report_plots</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="s2">&quot;torque_imp_walls_rplot&quot;</span>
+<span class="p">)</span>
+<span class="n">torque_report_plot</span><span class="o">.</span><span class="n">report_defs</span> <span class="o">=</span> <span class="s2">&quot;torque_imp_walls&quot;</span>
+<span class="c1"># Report file</span>
+<span class="n">torque_report_file</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">report_files</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="s2">&quot;torque_imp_walls_rfile&quot;</span>
+<span class="p">)</span>
+<span class="n">torque_report_file</span><span class="o">.</span><span class="n">report_defs</span> <span class="o">=</span> <span class="s2">&quot;torque_imp_walls&quot;</span>
+
+
+<span class="c1"># Average and maximum dissipation rate report definitions</span>
+<span class="n">average_dissipation_rate_report_def</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="s2">&quot;average-dissipation-rate&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">average_dissipation_rate_report_def</span><span class="o">.</span><span class="n">report_type</span> <span class="o">=</span> <span class="s2">&quot;volume-average&quot;</span>
+<span class="n">average_dissipation_rate_report_def</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;turb-diss-rate&quot;</span>
+<span class="n">average_dissipation_rate_report_def</span><span class="o">.</span><span class="n">cell_zones</span> <span class="o">=</span> <span class="n">fluid_cell_zones</span>
+
+<span class="n">maximum_dissipation_rate_report_def</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="s2">&quot;maximum-dissipation-rate&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">maximum_dissipation_rate_report_def</span><span class="o">.</span><span class="n">report_type</span> <span class="o">=</span> <span class="s2">&quot;volume-max&quot;</span>
+<span class="n">maximum_dissipation_rate_report_def</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;turb-diss-rate&quot;</span>
+<span class="n">maximum_dissipation_rate_report_def</span><span class="o">.</span><span class="n">cell_zones</span> <span class="o">=</span> <span class="n">fluid_cell_zones</span>
+
+<span class="c1"># Average and maximum strain rate report definitions</span>
+<span class="n">average_strain_rate_report_def</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="s2">&quot;average-strain-rate&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">average_strain_rate_report_def</span><span class="o">.</span><span class="n">report_type</span> <span class="o">=</span> <span class="s2">&quot;volume-average&quot;</span>
+<span class="n">average_strain_rate_report_def</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;strain-rate-mag&quot;</span>
+<span class="n">average_strain_rate_report_def</span><span class="o">.</span><span class="n">cell_zones</span> <span class="o">=</span> <span class="n">fluid_cell_zones</span>
+
+
+<span class="n">maximum_strain_rate_report_def</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="s2">&quot;maximum-strain-rate&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">maximum_strain_rate_report_def</span><span class="o">.</span><span class="n">report_type</span> <span class="o">=</span> <span class="s2">&quot;volume-max&quot;</span>
+<span class="n">maximum_strain_rate_report_def</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;strain-rate-mag&quot;</span>
+<span class="n">maximum_strain_rate_report_def</span><span class="o">.</span><span class="n">cell_zones</span> <span class="o">=</span> <span class="n">fluid_cell_zones</span>
+</pre></div>
+</div>
+</section>
+<section id="run-solver">
+<h2>Run Solver<a class="headerlink" href="#run-solver" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the calculation</span>
+<span class="n">run_calculation</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span>
+<span class="n">run_calculation</span><span class="o">.</span><span class="n">iter_count</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="c1"># Write the case file</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;case&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;mixing_tank_final.cas.h5&quot;</span>
+<span class="p">)</span>
+<span class="c1"># Run the calculation</span>
+<span class="n">run_calculation</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="post-processing-workflow">
+<h2>Post-Processing Workflow<a class="headerlink" href="#post-processing-workflow" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set View</span>
+<span class="n">contour_view</span> <span class="o">=</span> <span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">display_states</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;contour_view&quot;</span><span class="p">)</span>
+<span class="n">contour_view</span><span class="o">.</span><span class="n">front_faces_transparent</span> <span class="o">=</span> <span class="s2">&quot;disable&quot;</span>
+<span class="n">contour_view</span><span class="o">.</span><span class="n">view_name</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span>
+
+<span class="c1"># Define the contour for velocity magnitude</span>
+<span class="n">velocity_contour</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">contour</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;velocity-contour&quot;</span>
+<span class="p">)</span>
+<span class="n">velocity_contour</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;velocity-magnitude&quot;</span>
+<span class="n">velocity_contour</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mid_plane&quot;</span><span class="p">]</span>
+<span class="n">velocity_contour</span><span class="o">.</span><span class="n">display_state_name</span> <span class="o">=</span> <span class="n">contour_view</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<span class="n">velocity_contour</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;mixing_tank_velocity_contour.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/mixing_tank_velocity_contour.png"><img alt="Mixing Tank Model Velocity Contour" class="align-center" src="../../_images/mixing_tank_velocity_contour.png" style="width: 803.4px; height: 444.59999999999997px;" />
+</a>
+</section>
+<section id="save-the-case-file">
+<h2>Save the case file<a class="headerlink" href="#save-the-case-file" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;case-data&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;mixing_tank_final.cas.h5&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="close-the-session">
+<h2>Close the session<a class="headerlink" href="#close-the-session" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-00-fluent-mixing-tank-workflow-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/b3c7b0c74c60b5769fcee7c3b4791ffd/mixing_tank_workflow.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">mixing_tank_workflow.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/8c66b622058513ce6c915378bfdf20f3/mixing_tank_workflow.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">mixing_tank_workflow.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/007cb101b5110098697e3d4fbe23479b/mixing_tank_workflow.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">mixing_tank_workflow.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overeview">Overeview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-required-libraries-modules">Import required libraries/modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-fluent-session-with-meshing-mode-and-print-fluent-version">Launch Fluent session with meshing mode and print Fluent version</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing-workflow">Meshing Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switch-to-the-solver-mode">Switch to the Solver Mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#display-the-mesh-in-solver-mode">Display the mesh in solver mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-setup-and-solve-workflow">Solver Setup and Solve Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-materials">Define Materials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-cell-zones-wall-boundary-conditions">Define Cell Zones, Wall Boundary Conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-methods-and-controls">Solution Methods and Controls</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals-criteria-initialization">Residuals Criteria &amp; Initialization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-report-definitions">Define Report Definitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-solver">Run Solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing-workflow">Post-Processing Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-the-case-file">Save the case file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#close-the-session">Close the session</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/00-fluent/mixing_tank_workflow.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.5.2. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

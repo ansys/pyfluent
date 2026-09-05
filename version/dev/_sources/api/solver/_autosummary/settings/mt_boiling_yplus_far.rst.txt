@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_boiling_yplus_far:
+
+mt_boiling_yplus_far
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_yplus_far
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ================================================
+
+Parent                                                                                  Summary
+
+============================================   ================================================
+:ref:`mt_boiling_quench <mt_boiling_quench>`   Quenching model correction for Eulerian boiling.
+
+============================================   ================================================
+

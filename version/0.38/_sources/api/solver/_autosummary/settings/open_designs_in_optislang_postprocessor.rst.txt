@@ -1,0 +1,21 @@
+:orphan:
+
+.. _open_designs_in_optislang_postprocessor:
+
+open_designs_in_optislang_postprocessor
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.open_designs_in_optislang_postprocessor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

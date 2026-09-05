@@ -1,0 +1,34 @@
+:orphan:
+
+.. _adjacent_zones:
+
+adjacent_zones
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.adjacent_zones
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============   ===============
+
+Attribute                Summary
+
+==============   ===============
+:ref:`t0 <t0>`       't0' child.
+
+:ref:`t1 <t1>`       't1' child.
+
+==============   ===============
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`meshing <meshing>`       'meshing' child.
+
+========================   ====================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _upstream:
+
+upstream
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.upstream
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ====================================================================
+
+Parent                                                                                            Summary
+
+==================================   ====================================================================
+:ref:`connectivity <connectivity>`   Configure serial chain connections between heat exchanger instances.
+
+==================================   ====================================================================
+

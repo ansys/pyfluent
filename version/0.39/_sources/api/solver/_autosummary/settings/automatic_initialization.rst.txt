@@ -1,0 +1,38 @@
+:orphan:
+
+.. _automatic_initialization:
+
+automatic_initialization
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.automatic_initialization
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   ===========================================================
+
+Argument                                                                                                 Summary
+
+==================================================   ===========================================================
+:ref:`initialization_type <initialization_type_1>`                                          Initialization Type.
+
+:ref:`data_file_name <data_file_name>`                                             Data file name to initialize.
+
+:ref:`init_from_solution <init_from_solution>`           If no solution data exists, how to initialize the case.
+
+:ref:`data_file_name2 <data_file_name2>`                                           Data file name to initialize.
+
+==================================================   ===========================================================
+
+.. rubric:: Included in:
+
+============================================   =======================================================================
+
+Parent                                                                                                         Summary
+
+============================================   =======================================================================
+:ref:`case_modification <case_modification>`       The automatic initialization and case modification strategy object.
+
+============================================   =======================================================================
+

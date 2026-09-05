@@ -1,0 +1,21 @@
+:orphan:
+
+.. _match_fluent_flux_type:
+
+match_fluent_flux_type
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.match_fluent_flux_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`expert_11 <expert_11>`       Expert utilities object.
+
+============================   ============================
+

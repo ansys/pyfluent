@@ -1,0 +1,40 @@
+:orphan:
+
+.. _total_temperature:
+
+total_temperature
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.total_temperature
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ===============================================
+
+Attribute                                                                    Summary
+
+==================================   ===============================================
+:ref:`option <option_44>`                How the boundary condition will be defined.
+
+:ref:`value <value_17>`                             Value as constant or expression.
+
+:ref:`profile_name <profile_name>`                          The name of the profile.
+
+:ref:`field_name <field_name>`                                The name of the field.
+
+:ref:`udf <udf>`                              The name of the user-defined function.
+
+==================================   ===============================================
+
+.. rubric:: Included in:
+
+============================   =========================================================
+
+Parent                                                                           Summary
+
+============================   =========================================================
+:ref:`thermal_1 <thermal_1>`       Allows to change thermal model variables or settings.
+
+============================   =========================================================
+

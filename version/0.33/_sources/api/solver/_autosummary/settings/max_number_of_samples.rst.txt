@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_number_of_samples:
+
+max_number_of_samples
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.max_number_of_samples
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

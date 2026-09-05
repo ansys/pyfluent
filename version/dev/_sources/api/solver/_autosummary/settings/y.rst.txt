@@ -1,0 +1,21 @@
+:orphan:
+
+.. _y:
+
+y
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.y
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   ===================================================
+
+Parent                                                                                                                 Summary
+
+========================================================================   ===================================================
+:ref:`auxiliary_fluid_inlet_direction <auxiliary_fluid_inlet_direction>`   The direction vector of auxiliary fluid inlet flow.
+
+========================================================================   ===================================================
+

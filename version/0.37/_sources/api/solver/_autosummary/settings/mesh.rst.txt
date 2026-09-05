@@ -1,0 +1,93 @@
+:orphan:
+
+.. _mesh:
+
+mesh
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mesh
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ===============================================================================================================
+
+Attribute                                                                                                                                                                  Summary
+
+================================================================   ===============================================================================================================
+:ref:`adapt <adapt>`                                                                                                                                          The adaption object.
+
+:ref:`geometry <geometry_1>`                                                                                                                  The mesh geometry management object.
+
+:ref:`anisotropic_adaption <anisotropic_adaption>`                                                                                                The anisotropic adaption object.
+
+:ref:`check_before_solve <check_before_solve>`                                                          Specifies whether to perform various mesh consistency checks before solve.
+
+:ref:`check_verbosity <check_verbosity>`                               Verbosity output of mesh check and mesh quality. Higher verbosity corresponds to more detailed information.
+
+:ref:`enhanced_orthogonal_quality <enhanced_orthogonal_quality>`                                                                        Enable enhanced orthogonal quality method.
+
+:ref:`matching_tolerance <matching_tolerance>`                                                                         The normalized tolerance used for finding coincident nodes.
+
+:ref:`modify_zones <modify_zones>`                                                                                                                        The modify zones object.
+
+:ref:`show_periodic_shadow_zones <show_periodic_shadow_zones>`                                                             Option to show periodic shadow zones in user interface.
+
+:ref:`reorder <reorder>`                                                                                                                                The reorder domain object.
+
+:ref:`repair_improve <repair_improve>`                                                                                                      The repair and improve quality object.
+
+:ref:`surface_mesh <surface_mesh>`                                                                                                                        The surface mesh object.
+
+:ref:`polyhedra <polyhedra>`                                                                                                                                 The polyhedra object.
+
+:ref:`wall_distance_method <wall_distance_method>`                                                                                                           Wall distance method.
+
+================================================================   ===============================================================================================================
+
+.. rubric:: Methods
+
+================================================================   =====================================================================
+
+Method                                                                                                                           Summary
+
+================================================================   =====================================================================
+:ref:`adjacency <adjacency>`                                                 View and rename face zones adjacent to selected cell zones.
+
+:ref:`check <check>`                                                                            Perform various mesh consistency checks.
+
+:ref:`memory_usage <memory_usage>`                                                                             Report solver memory use.
+
+:ref:`mesh_info <mesh_info>`                                                                                Print zone information size.
+
+:ref:`quality <quality>`                                                                               Perform analysis of mesh quality.
+
+:ref:`rotate <rotate>`                                                                                                  Rotate the mesh.
+
+:ref:`scale <scale>`                                                                                                    'scale' command.
+
+:ref:`size_info <size_info>`                                                                                            Print mesh size.
+
+:ref:`redistribute_boundary_layer <redistribute_boundary_layer>`                                  Enforce growth rate in boundary layer.
+
+:ref:`swap_mesh_faces <swap_mesh_faces>`                                                                                Swap mesh faces.
+
+:ref:`smooth_mesh <smooth_mesh>`                                       Smooth the mesh using quality-based, Laplace or skewness methods.
+
+:ref:`replace <replace>`                                                                              Replace mesh and interpolate data.
+
+:ref:`translate <translate>`                                                                                         Translate the mesh.
+
+================================================================   =====================================================================
+
+.. rubric:: Included in:
+
+======================   ==================
+
+Parent                              Summary
+
+======================   ==================
+:ref:`root <ref_root>`       'root' object.
+
+======================   ==================
+

@@ -1,0 +1,39 @@
+:orphan:
+
+.. _slip_velocity:
+
+slip_velocity
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.slip_velocity
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`slip_velocity_child <slip_velocity_child>`
+
+
+.. rubric:: Included in:
+
+======================   =======================
+
+Parent                                   Summary
+
+======================   =======================
+:ref:`forces <forces>`       Interfacial forces.
+
+======================   =======================
+

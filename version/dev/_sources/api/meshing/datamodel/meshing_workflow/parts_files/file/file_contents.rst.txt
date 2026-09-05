@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_files_file:
+
+file
+====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts_files.file
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _file/_file_contents

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _orthogonality_enhancing_cell_centroids:
+
+orthogonality_enhancing_cell_centroids
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.orthogonality_enhancing_cell_centroids
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ============================================================================================
+
+Argument                                                                                                            Summary
+
+============================   ============================================================================================
+:ref:`enable <enable_33>`          Relocate select cell centroids, to improve orthogonality metrics and solution stability.
+
+:ref:`threshold <threshold>`                                             Threshold for orthogonal enhancing cell centroids.
+
+============================   ============================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ==================================
+
+Parent                                                                      Summary
+
+==============================================   ==================================
+:ref:`poor_mesh_numerics <poor_mesh_numerics>`       The poor mesh numerics object.
+
+==============================================   ==================================
+

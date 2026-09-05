@@ -1,0 +1,21 @@
+:orphan:
+
+.. _locations_3:
+
+locations
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.locations_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===============================================
+
+Parent                                                             Summary
+
+========================   ===============================================
+:ref:`split_1 <split_1>`       Input boundary and location names to split.
+
+========================   ===============================================
+

@@ -1,0 +1,33 @@
+:orphan:
+
+.. _td_coeff_udf:
+
+td_coeff_udf
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.td_coeff_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`lift_euler_child <lift_euler_child>`                      'child_object_type' of lift_euler.
+
+:ref:`wall_lub_euler_child <wall_lub_euler_child>`          'child_object_type' of wall_lub_euler.
+
+:ref:`turb_disp_euler_child <turb_disp_euler_child>`       'child_object_type' of turb_disp_euler.
+
+:ref:`slip_velocity_child <slip_velocity_child>`             'child_object_type' of slip_velocity.
+
+:ref:`surface_tension_child <surface_tension_child>`       'child_object_type' of surface_tension.
+
+:ref:`intf_area_child <intf_area_child>`                         'child_object_type' of intf_area.
+
+:ref:`slope_limiter_child <slope_limiter_child>`             'child_object_type' of slope_limiter.
+
+====================================================   ===========================================
+

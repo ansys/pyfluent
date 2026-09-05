@@ -1,0 +1,21 @@
+:orphan:
+
+.. _crsf:
+
+crsf
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.crsf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==============================
+
+Parent                                                                      Summary
+
+==================================================   ==============================
+:ref:`crossflow_transition <crossflow_transition>`   Crossflow transition settings.
+
+==================================================   ==============================
+

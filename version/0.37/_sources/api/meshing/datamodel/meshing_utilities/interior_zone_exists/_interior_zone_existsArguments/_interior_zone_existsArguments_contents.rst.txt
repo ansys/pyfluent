@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_interior_zone_exists__interior_zone_existsArguments:
+
+_interior_zone_existsArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.interior_zone_exists._interior_zone_existsArguments
+   :members: _zone_id, _zone_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

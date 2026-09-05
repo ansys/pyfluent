@@ -1,0 +1,21 @@
+:orphan:
+
+.. _insert_position:
+
+insert_position
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.insert_position
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================================================================
+
+Parent                                                                                             Summary
+
+============================   ===========================================================================
+:ref:`create_16 <create_16>`   Create a new row in the turbomachine description at the specified position.
+
+============================   ===========================================================================
+

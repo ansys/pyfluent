@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_Node__Node_CreateChild__CreateChildCommandArguments:
+
+_CreateChildCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root.Node._Node.CreateChild._CreateChildCommandArguments
+   :members: _ChildName
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

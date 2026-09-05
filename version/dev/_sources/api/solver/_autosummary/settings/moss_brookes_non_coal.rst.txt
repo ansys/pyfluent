@@ -1,0 +1,40 @@
+:orphan:
+
+.. _moss_brookes_non_coal:
+
+moss_brookes_non_coal
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.moss_brookes_non_coal
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ==============================================
+
+Attribute                                                               Summary
+
+==============================   ==============================================
+:ref:`mbo_cbeta <mbo_cbeta>`             C-Beta parameter for coagulation rate.
+
+:ref:`mbo_calpha <mbo_calpha>`       C-Alpha parameter for soot inception rate.
+
+:ref:`mbo_talpha <mbo_talpha>`        Activation temperature of soot inception.
+
+:ref:`mbo_cgamma <mbo_cgamma>`      Surface growth rate scaling factor C-Gamma.
+
+:ref:`mbo_tgamma <mbo_tgamma>`   Activation temperature of surface growth rate.
+
+==============================   ==============================================
+
+.. rubric:: Included in:
+
+==================   =============================================
+
+Parent                                                     Summary
+
+==================   =============================================
+:ref:`soot <soot>`   Configure soot model settings and parameters.
+
+==================   =============================================
+

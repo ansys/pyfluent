@@ -1,0 +1,21 @@
+:orphan:
+
+.. _angle_6:
+
+angle
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.angle_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`orientation <orientation>`       'orientation' child.
+
+================================   ========================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_tui_display_views_view_sync:
+
+view_sync
+=========
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_271.main_menu.display.views.view_sync
+   :members: add, add_all, list, remove, start, stop
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

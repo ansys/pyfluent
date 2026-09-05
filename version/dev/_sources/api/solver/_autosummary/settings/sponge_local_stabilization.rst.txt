@@ -1,0 +1,23 @@
+:orphan:
+
+.. _sponge_local_stabilization:
+
+sponge_local_stabilization
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sponge_local_stabilization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ========================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                          Summary
+
+============================   ========================================================================================================================================================================================================================================
+:ref:`create_13 <create_13>`                                                                                                                                        Create a new gap region. From PyConsole supply gap_region_name, face_zone_ids, threshold, and type.
+
+:ref:`edit <edit>`             Edit the settings of an existing gap region. From PyConsole, supply gap_region_name and any subset of new_name, face_zone_ids, threshold, type; fields at their sentinel (empty string, empty list, or 0.0) retain their current values.
+
+============================   ========================================================================================================================================================================================================================================
+

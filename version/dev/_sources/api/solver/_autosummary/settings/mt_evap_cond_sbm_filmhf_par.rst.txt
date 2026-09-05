@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mt_evap_cond_sbm_filmhf_par:
+
+mt_evap_cond_sbm_filmhf_par
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_evap_cond_sbm_filmhf_par
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ===========================================
+
+Attribute                                                                Summary
+
+==================================   ===========================================
+:ref:`film_htc <film_htc>`               Film boiling heat transfer coefficient.
+
+:ref:`film_htc_udf <film_htc_udf>`   Film boiling heat transfer coefficient udf.
+
+==================================   ===========================================
+
+.. rubric:: Included in:
+
+============================================   ===================================================
+
+Parent                                                                                     Summary
+
+============================================   ===================================================
+:ref:`boil_adv_settings <boil_adv_settings>`   Semi Mechanistic Model advanced boiling parameters.
+
+============================================   ===================================================
+

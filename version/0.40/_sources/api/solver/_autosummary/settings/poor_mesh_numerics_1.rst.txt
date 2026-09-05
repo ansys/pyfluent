@@ -1,0 +1,46 @@
+:orphan:
+
+.. _poor_mesh_numerics_1:
+
+poor_mesh_numerics
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.poor_mesh_numerics_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================   ===================================================================================================
+
+Attribute                                                                                                                                                                          Summary
+
+====================================================================================   ===================================================================================================
+:ref:`enable <enable_30>`                                                                                                                               Enable/disable poor mesh numerics.
+
+:ref:`orthogonal_quality_threshold_enabled <orthogonal_quality_threshold_enabled_1>`                                        Enable/disable poor mesh numerics based on orthogonal quality.
+
+:ref:`orthogonal_quality_threshold <orthogonal_quality_threshold_1>`                                                                  Orthogonal quality threshold for poor mesh numerics.
+
+:ref:`tangent_skewness_threshold_enabled <tangent_skewness_threshold_enabled_1>`                                      Enable/disable poor mesh numerics based on tangent skewness quality.
+
+:ref:`tangent_skewness_threshold <tangent_skewness_threshold_1>`                                                                        Tangent skewness threshold for poor mesh numerics.
+
+:ref:`volume_ratio_threshold_enabled <volume_ratio_threshold_enabled>`                                                    Enable/disable poor mesh numerics based on volume ratio quality.
+
+:ref:`volume_ratio_threshold <volume_ratio_threshold>`                                                                                      Volume ratio threshold for poor mesh numerics.
+
+:ref:`boundary_skew_limiter <boundary_skew_limiter>`                                       Enable/disable boundary skew limiter for skewed cells adjacent to boundaries and coupled walls.
+
+====================================================================================   ===================================================================================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================
+
+Parent                                                                            Summary
+
+==================================================   ====================================
+:ref:`poor_mesh_robustness <poor_mesh_robustness>`       The poor mesh robustness object.
+
+==================================================   ====================================
+
