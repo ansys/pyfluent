@@ -25,6 +25,13 @@
 
 # isort: off
 
+# Runtime type-checking works by transforming module source at import time, so
+# the hook has to be installed before any other PyFluent module is imported.
+# This module only depends on the standard library.
+from ansys.fluent.core._type_checking import install_import_hook
+
+install_import_hook()
+
 # config must be initialized before logging setup.
 from ansys.fluent.core.module_config import *
 
