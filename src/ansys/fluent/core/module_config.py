@@ -30,12 +30,24 @@ import sys
 from typing import Any, Generic, TypeVar, cast
 import warnings
 
+from ansys.fluent.core._type_checking import (
+    is_type_checking_enabled as _is_type_checking_enabled,
+)
+from ansys.fluent.core._type_checking import (
+    no_runtime_type_check,
+)
+from ansys.fluent.core._type_checking import ENV_VAR as _TYPE_CHECKING_ENV_VAR
+
 __all__ = ("config",)
 
 
 TConfig = TypeVar("TConfig", bound="Config")
 
 
+# ``TConfig`` is bound to a forward reference which cannot be resolved while the
+# ``Config`` class body is still executing, which is exactly when
+# ``__set_name__`` runs.
+@no_runtime_type_check
 class _ConfigDescriptor(Generic[TConfig]):
     """Descriptor for managing configuration attributes."""
 
@@ -79,6 +91,26 @@ def _get_default_examples_path(instance: "Config") -> str:
     default_path = Path.home() / "Downloads" / "ansys_fluent_core_examples"
     default_path.mkdir(parents=True, exist_ok=True)
     return str(default_path)
+
+
+class _RuntimeTypeCheckingDescriptor(_ConfigDescriptor[TConfig]):
+    """Descriptor for the runtime type-checking configuration attribute.
+
+    Runtime type-checking is driven by an import hook which is installed while
+    PyFluent is imported. Assigning to this attribute afterwards cannot check
+    modules which are already imported, so a warning is emitted whenever the
+    assigned value disagrees with the state of the hook.
+    """
+
+    def __set__(self, instance: TConfig, value: Any):
+        if bool(value) != _is_type_checking_enabled():
+            warnings.warn(
+                "Runtime type-checking cannot be changed after PyFluent is imported. "
+                f"Set the '{_TYPE_CHECKING_ENV_VAR}' environment variable to '1' "
+                "before importing PyFluent instead.",
+                UserWarning,
+            )
+        super().__set__(instance, value)
 
 
 class Config:
@@ -300,6 +332,13 @@ class Config:
     #: Whether to use runtime Python classes for settings, defaults to the value of ``PYFLUENT_USE_RUNTIME_PYTHON_CLASSES`` environment variable.
     use_runtime_python_classes = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1"
+    )
+
+    #: Whether runtime type-checking of PyFluent APIs is active, defaults to whether the
+    #: ``PYFLUENT_RUNTIME_TYPE_CHECKING`` environment variable was set to ``1`` when PyFluent was imported.
+    #: The import hook backing this option is installed while PyFluent is imported, so assigning to this option afterwards has no effect.
+    runtime_type_checking = _RuntimeTypeCheckingDescriptor["Config"](
+        lambda instance: _is_type_checking_enabled()
     )
 
     #: Whether to hide sensitive information in logs, defaults to the value of ``PYFLUENT_HIDE_LOG_SECRETS`` environment variable.
