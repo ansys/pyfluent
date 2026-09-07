@@ -46,6 +46,7 @@ reader = ["h5py>=3.15.1"]
 ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 search = ["nltk>=3.9.3"]
+type-checking = ["beartype>=0.19,<1"]
 tests = [
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
@@ -54,6 +55,7 @@ tests = [
     "pyfakefs==6.2.0",
     "ansys-platform-instancemanagement==1.1.2",
     "ansys-tools-common==0.5.2",
+    "beartype==0.22.9",
     "docker==7.1.0",
     "grpcio==1.81.1",
     "grpcio-health-checking==1.81.1",
