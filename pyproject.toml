@@ -45,7 +45,7 @@ include = ["src/ansys/fluent/core/generated/"]
 reader = ["h5py>=3.15.1"]
 ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
-search = ["nltk>=3.9.3"]
+search = ["nltk>=3.10.3"]
 tests = [
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
@@ -58,7 +58,7 @@ tests = [
     "grpcio==1.81.1",
     "grpcio-health-checking==1.81.1",
     "grpcio-status==1.81.1",
-    "grpcio-reflection==1.83.0",
+    "grpcio-reflection==1.81.1",
     "numpy==2.5.0",
 ]
 docs = [
@@ -92,7 +92,7 @@ docs = [
     "grpcio==1.81.1",
     "grpcio-health-checking==1.81.1",
     "grpcio-status==1.81.1",
-    "grpcio-reflection==1.83.0",
+    "grpcio-reflection==1.81.1",
     "numpy==2.5.0",
 ]
 ci_types = [
