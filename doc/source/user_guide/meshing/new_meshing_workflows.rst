@@ -12,6 +12,8 @@ PyFluent provides pre-built workflows (Watertight Geometry, Fault-tolerant, and 
 as well as the ability to create custom workflows. You can insert and duplicate tasks, save your workflow to file,
 and load previously saved workflows for reuse.
 
+.. _ref_watertight_meshing_workflow_example:
+
 Watertight geometry workflow
 ----------------------------
 Use the **Watertight Geometry** workflow for watertight CAD geometries that

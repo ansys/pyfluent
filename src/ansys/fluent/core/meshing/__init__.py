@@ -122,6 +122,9 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
 class WatertightMeshing:
     """Provides watertight meshing specialization of the workflow wrapper.
 
+    See the :ref:`Watertight geometry workflow example
+    <ref_watertight_meshing_workflow_example>` for a sample usage example.
+
     Parameters
     ----------
     session : PureMeshing | Meshing
