@@ -382,11 +382,11 @@ def http_solver_session():
     """
     rest_url = os.getenv("FLUENT_REST_URL")
     rest_token = os.getenv("FLUENT_REST_TOKEN")
-    if not rest_url or not rest_token:
-        pytest.skip(
-            "REST live server not configured. "
-            "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
-        )
+    # if not rest_url or not rest_token:
+    #     pytest.skip(
+    #         "REST live server not configured. "
+    #         "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
+    #     )
     solver = Solver.from_http(url=rest_url, token=rest_token)
     yield solver
     solver.exit()
@@ -437,6 +437,18 @@ def mixing_elbow_case_session_grpc_rest(solver_session_grpc_rest):
     solver = solver_session_grpc_rest
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_settings_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
     return solver
 
 
