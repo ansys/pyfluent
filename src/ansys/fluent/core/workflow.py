@@ -187,6 +187,9 @@ class Workflow:
     The Workflow class wraps the underlying datamodel workflow object and provides
     a Pythonic interface for:
 
+    See the :ref:`meshing workflow datamodel <ref_meshing_datamodel_meshing_workflow>`
+    for the underlying workflow hierarchy and available task nodes.
+
     - Discovering and accessing tasks
     - Creating, loading, and saving workflows
     - Navigating task hierarchies

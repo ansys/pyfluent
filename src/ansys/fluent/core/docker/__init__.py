@@ -1,6 +1,7 @@
-# Copyright (C) 2021 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2023 - 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
 # SPDX-License-Identifier: MIT
-#
+# SPDX-License-Identifier: MIT
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,18 +22,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Backward-compatible interfaces for Fluent.
+"""Launch and configure Fluent in Docker or Podman containers.
 
-This package provides legacy support for running local parametric studies and
-reading or writing Fluent RP variables through :class:`LocalParametricStudy`
-and :class:`RPVars`.
+The package provides :class:`ComposeBasedLauncher` for launching Fluent with
+Docker Compose or Podman Compose, together with utilities for selecting Fluent
+container images and configuring gRPC launcher arguments in GitHub Actions.
 """
 
-from ansys.fluent.core.legacy.local_parametric_study import LocalParametricStudy
-from ansys.fluent.core.legacy.rpvars import RPVars, RPVarType
+from .docker_compose import ComposeBasedLauncher
+from .utils import get_ghcr_fluent_image_name, get_grpc_launcher_args_for_gh_runs
 
 __all__ = [
-    "LocalParametricStudy",
-    "RPVars",
-    "RPVarType",
+    "ComposeBasedLauncher",
+    "get_ghcr_fluent_image_name",
+    "get_grpc_launcher_args_for_gh_runs",
 ]

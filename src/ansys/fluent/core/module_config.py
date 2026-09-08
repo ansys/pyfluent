@@ -21,7 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Configuration variables for PyFluent."""
+"""Configure global PyFluent behavior.
+
+Use the global :data:`config` object to control Fluent launching, container
+and remoting options, datamodel caching, code generation, logging, timeouts,
+and other runtime settings. Prefer setting the corresponding configuration
+attributes in Python; environment variables are primarily intended for
+initializing configuration in deployment environments.
+"""
 from collections.abc import Callable
 import inspect
 import os

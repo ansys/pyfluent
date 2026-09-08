@@ -20,10 +20,15 @@ SKIP_DIRECTORIES = {
     "rest",
     "ui",
 }
+SKIP_FILES = {
+    "settings_builtin_bases",
+    "settings_builtin_data",
+    "settings_external",
+}
 ADDITIONAL_DOCUMENTATION = {
     "ansys.fluent.core.meshing": (
         "Meshing workflows use the underlying meshing workflow object. See the "
-        ":ref:`meshing workflow API <ref_meshing_workflow_new>` "
+        ":ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` "
         "for details.\n"
     ),
     "ansys.fluent.core.solver": (
@@ -70,6 +75,20 @@ def _package_name(source_path):
     return ".".join((PACKAGE_NAME, *relative_path.parts))
 
 
+def _documented_children(source_path):
+    children = []
+    for child in source_path.iterdir():
+        if (
+            child.name in SKIP_DIRECTORIES
+            or child.name.startswith("_")
+            or child.stem in SKIP_FILES
+        ):
+            continue
+        if child.is_dir() or (child.suffix == ".py" and child.name != "__init__.py"):
+            children.append(child)
+    return sorted(children, key=lambda path: (not path.is_dir(), path.name))
+
+
 def _write_module_page(source_path):
     module_name = _module_name(source_path)
     output_path = API_DIR / source_path.relative_to(SOURCE_PACKAGE).with_suffix(".rst")
@@ -98,12 +117,10 @@ def _write_package_index(source_path):
         rst_file.write("    :maxdepth: 2\n")
         rst_file.write("    :hidden:\n\n")
 
-        for child in sorted(source_path.iterdir(), key=lambda path: path.name):
-            if child.name in SKIP_DIRECTORIES or child.name.startswith("_"):
-                continue
+        for child in _documented_children(source_path):
             if child.is_dir():
                 rst_file.write(f"    {child.name}/{child.name}_contents\n")
-            elif child.suffix == ".py" and child.name != "__init__.py":
+            else:
                 rst_file.write(f"    {child.stem}\n")
 
         rst_file.write("\n")
@@ -112,12 +129,10 @@ def _write_package_index(source_path):
 def _generate_package_tree(source_path):
     if source_path != SOURCE_PACKAGE:
         _write_package_index(source_path)
-    for child in sorted(source_path.iterdir(), key=lambda path: path.name):
-        if child.name in SKIP_DIRECTORIES or child.name.startswith("_"):
-            continue
+    for child in _documented_children(source_path):
         if child.is_dir():
             _generate_package_tree(child)
-        elif child.suffix == ".py" and child.name != "__init__.py":
+        else:
             _write_module_page(child)
 
 
@@ -139,12 +154,10 @@ def _write_api_index():
             "    :maxdepth: 2\n"
             "    :hidden:\n\n"
         )
-        for child in sorted(SOURCE_PACKAGE.iterdir(), key=lambda path: path.name):
-            if child.name in SKIP_DIRECTORIES or child.name.startswith("_"):
-                continue
+        for child in _documented_children(SOURCE_PACKAGE):
             if child.is_dir():
                 rst_file.write(f"    {child.name}/{child.name}_contents\n")
-            elif child.suffix == ".py" and child.name != "__init__.py":
+            else:
                 rst_file.write(f"    {child.stem}\n")
 
 

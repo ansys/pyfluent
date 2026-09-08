@@ -2913,6 +2913,8 @@ def get_root(
     Returns
     -------
     root object
+        The top-level :ref:`settings root <ref_root>` used to access the Fluent
+        settings hierarchy.
 
     Raises
     ------

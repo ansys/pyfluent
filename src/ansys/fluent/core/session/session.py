@@ -896,7 +896,11 @@ class BaseSession:
 
 
 class Fields:
-    """Container for field and solution variables."""
+    """Container for field and solution variables.
+
+    See the :ref:`fields API <ref_ansys_fluent_core_fields>` for field data,
+    solution-variable information, and related reduction operations.
+    """
 
     def __init__(
         self,

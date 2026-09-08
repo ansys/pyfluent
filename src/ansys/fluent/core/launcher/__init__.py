@@ -21,7 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Public objects and functions under launcher."""
+"""Launch and connect to Ansys Fluent.
+
+This package provides launch configuration for local Fluent processes, Fluent
+containers, and remote Fluent instances. It also includes launch-mode options,
+container setup helpers, remote launch support, executable discovery, and the
+Fluent version information used by launchers.
+"""
 
 from ..utils.fluent_version import FluentVersion  # noqa: F401
 from .fluent_container import (  # noqa: F401
@@ -32,3 +38,13 @@ from .launch_options import LaunchMode  # noqa: F401
 from .launcher import create_launcher  # noqa: F401
 from .pim_launcher import launch_remote_fluent  # noqa: F401
 from .process_launch_string import get_fluent_exe_path  # noqa: F401
+
+__all__ = [
+    "FluentVersion",
+    "configure_container_dict",
+    "start_fluent_container",
+    "LaunchMode",
+    "create_launcher",
+    "launch_remote_fluent",
+    "get_fluent_exe_path",
+]

@@ -192,7 +192,8 @@ class BaseMeshing(BaseSession):
     @property
     def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
-        executed."""
+        executed. See the :ref:`meshing TUI <ref_meshing_tui>` documentation for
+        the complete hierarchy of menus, commands, and related TUI methods."""
         if self._tui is None:
             self._tui = _make_tui_module(self, "meshing")
 
@@ -200,7 +201,11 @@ class BaseMeshing(BaseSession):
 
     @property
     def meshing(self) -> "meshing_root":
-        """Meshing object."""
+        """Meshing object.
+
+        See the :ref:`meshing datamodel <ref_meshing_datamodel_meshing>` for
+        the complete hierarchy of meshing objects and operations.
+        """
         if self._meshing is None:
             self._meshing = _make_datamodel_module(self, "meshing")
         return cast("meshing_root", self._meshing)
@@ -214,14 +219,23 @@ class BaseMeshing(BaseSession):
 
     @property
     def meshing_utilities(self) -> "meshing_utilities_root":
-        """A wrapper over the Fluent's meshing queries."""
+        """A wrapper over Fluent's meshing queries.
+
+        See the :ref:`meshing utilities datamodel
+        <ref_meshing_datamodel_meshing_utilities>` for the complete collection
+        of available meshing operations.
+        """
         if self._meshing_utilities is None:
             self._meshing_utilities = self._meshing_utilities_root
         return self._meshing_utilities
 
     @property
     def workflow(self) -> "workflow_root":
-        """Datamodel root of workflow."""
+        """Datamodel root of workflow.
+
+        See the :ref:`workflow datamodel <ref_meshing_datamodel_workflow>` for
+        the complete hierarchy of workflow objects and operations.
+        """
         if self._old_workflow is None:
             self._old_workflow = cast(
                 "workflow_root", _make_datamodel_module(self, "workflow")
@@ -230,7 +244,12 @@ class BaseMeshing(BaseSession):
 
     @property
     def meshing_workflow(self) -> "meshing_workflow_root":
-        """Full API to meshing and meshing_workflow."""
+        """Full API to meshing and meshing_workflow.
+
+        See the :ref:`meshing workflow datamodel
+        <ref_meshing_datamodel_meshing_workflow>` for the complete hierarchy
+        of workflow tasks and operations.
+        """
         if self._meshing_workflow is None:
             self._meshing_workflow = cast(
                 "meshing_workflow_root",
@@ -459,7 +478,12 @@ class BaseMeshing(BaseSession):
 
     @property
     def PartManagement(self) -> "partmanagement_root":
-        """Datamodel root of ``PartManagement``."""
+        """Datamodel root of ``PartManagement``.
+
+        See the :ref:`PartManagement datamodel
+        <ref_meshing_datamodel_part_management>` for its complete hierarchy
+        of objects and operations.
+        """
         if self._part_management is None:
             self._part_management = cast(
                 "partmanagement_root", _make_datamodel_module(self, "PartManagement")
@@ -468,7 +492,12 @@ class BaseMeshing(BaseSession):
 
     @property
     def PMFileManagement(self) -> "pmfilemanagement_root":
-        """Datamodel root of PMFileManagement."""
+        """Datamodel root of PMFileManagement.
+
+        See the :ref:`PMFileManagement datamodel
+        <ref_meshing_datamodel_pm_file_management>` for the complete hierarchy
+        of objects and operations.
+        """
         if self._pm_file_management is None:
             self._pm_file_management = cast(
                 "pmfilemanagement_root",
@@ -478,7 +507,11 @@ class BaseMeshing(BaseSession):
 
     @property
     def preferences(self) -> "preferences_root":
-        """Datamodel root of preferences."""
+        """Datamodel root of preferences.
+
+        See the :ref:`preferences datamodel <ref_meshing_datamodel_preferences>`
+        for the complete hierarchy of preference objects and operations.
+        """
         if self._preferences is None:
             self._preferences = cast(
                 "preferences_root", _make_datamodel_module(self, "preferences")

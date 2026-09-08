@@ -1339,6 +1339,10 @@ class Workflow:
     """Wraps a workflow object, adding methods to discover more about the relationships
     between task objects.
 
+    The wrapped workflow is documented in the :ref:`workflow datamodel
+    <ref_meshing_datamodel_workflow>`. Commands are provided by the
+    :ref:`meshing command-source datamodel <ref_meshing_datamodel_meshing>`.
+
     Methods
     -------
     tasks()

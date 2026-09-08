@@ -216,7 +216,11 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def settings(self) -> "settings_root.root":
-        """Settings root handle."""
+        """Settings root handle.
+
+        See the :ref:`settings root <ref_root>` for the complete solver
+        settings hierarchy and available configuration objects.
+        """
         if self._settings is None:
             #: Root settings object.
             self._settings = flobject.get_root(
@@ -258,7 +262,8 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     @property
     def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
-        executed."""
+        executed. See the :ref:`solver TUI <ref_solver_tui>` documentation for
+        the complete hierarchy of menus, commands, and related TUI methods."""
         if self._tui is None:
             self._tui = _make_tui_module(self, "solver")
 
@@ -266,7 +271,12 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def workflow(self) -> ClassicWorkflow:
-        """Datamodel root for workflow."""
+        """Datamodel root for workflow.
+
+        See the :ref:`solver workflow datamodel
+        <ref_solver_datamodel_workflow>` for the complete hierarchy of workflow
+        objects and operations.
+        """
         if not self._workflow:
             self._workflow = ClassicWorkflow(
                 _make_datamodel_module(self, "workflow"),
@@ -305,7 +315,12 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def preferences(self) -> "preferences_root":
-        """Datamodel root of preferences."""
+        """Datamodel root of preferences.
+
+        See the :ref:`solver preferences datamodel
+        <ref_solver_datamodel_preferences>` for the complete hierarchy of
+        preference objects and operations.
+        """
         if self._preferences is None:
             self._preferences = _make_datamodel_module(self, "preferences")
         return cast("preferences_root", self._preferences)

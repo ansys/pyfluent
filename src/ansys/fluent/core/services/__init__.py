@@ -21,7 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to create gRPC services."""
+"""Provide high-level, transport-independent Fluent services.
+
+This layer wraps underlying service backends behind common abstractions for
+application runtime, settings, field data, events, object models, monitoring,
+and related operations. Although gRPC is one supported backend, the abstractions
+can be implemented with other service providers through the service factory.
+"""
 
 from functools import cached_property
 

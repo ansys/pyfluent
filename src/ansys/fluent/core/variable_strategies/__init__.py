@@ -21,10 +21,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""
-Provides ConversionStrategy classes for mapping VariableDescriptor to variable names used in Fluent.
+"""Map PyFluent variable descriptors to Fluent variable names.
+
+The package provides naming strategies for Fluent expressions, field-data
+variables, and solution variables. These strategies translate PyFluent
+``VariableDescriptor`` objects into the names expected by Fluent services and
+can be selected according to the type of data being accessed.
 """
 
 from .expr import FluentExprNamingStrategy  # noqa: F401
 from .field import FluentFieldDataNamingStrategy  # noqa: F401
 from .svar import FluentSVarNamingStrategy  # noqa: F401
+
+__all__ = [
+    "FluentExprNamingStrategy",
+    "FluentFieldDataNamingStrategy",
+    "FluentSVarNamingStrategy",
+]

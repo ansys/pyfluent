@@ -30,6 +30,12 @@ from ansys.fluent.core.utils.context_managers import using  # noqa: F401
 logger = logging.getLogger("pyfluent.general")
 
 try:
+    from ansys.fluent.core.generated.solver.settings_builtin import (
+        __all__ as _settings_all,
+    )
     from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
 except (ImportError, AttributeError, SyntaxError) as ex:
+    _settings_all = []
     logger.debug(ex)
+
+__all__ = ["using", *_settings_all]

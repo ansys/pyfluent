@@ -21,4 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module providing reductions functions."""
+"""Provide reduction functions for Fluent solver data.
+
+The :mod:`reduction` module computes quantities such as averages, extrema, and
+weighted sums from Fluent expressions and locations, including data gathered
+from multiple remote solver sessions.
+"""
