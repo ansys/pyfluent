@@ -78,22 +78,21 @@ Use this method when:
 Connect to an existing session
 ------------------------------
 
-The :meth:`from_connection() <ansys.fluent.core.session.utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
-
-Use this method when:
-
-- Fluent was launched externally or earlier.
-- You need to connect from a different process or system.
+The :meth:`from_connection() <ansys.fluent.core.session.utilities.SessionBase.from_connection>` method connects to an externally launched Fluent session from a local or remote Python process.
 
 **Prerequisites**
 
-Before connecting, you must launch Fluent externally with the gRPC server enabled.
+Before connecting, start Fluent with ``<fluent_executable> -sifile=<server_info_file_name>``
+to enable the Fluent gRPC server and specify the server info file path.
 
 .. note::
 
-    After starting the gRPC server, Fluent writes connection information to the server info file. The file contains the IP address, port, and password needed for connection.
-    
-    The recommended approach is to connect using the server info file path, which encapsulates all connection information.
+  Fluent writes the IP address, port, and password to the server info file. If you do not
+  specify the file path with ``-sifile``, Fluent generates the file in the directory where
+  ``fluent.exe`` resides.
+
+  The recommended approach is to connect using the server info file path, which encapsulates
+  all connection information.
 
 **Example:**
 
@@ -107,24 +106,13 @@ Before connecting, you must launch Fluent externally with the gRPC server enable
 
 .. note::
 
-    PyFluent offers two Python interfaces for meshing:
-
-    - ``Meshing``: meshing interface with an additional method to switch to solver mode.
-    - ``PureMeshing``: meshing interface without any solver switching features.
-
-    The two interfaces expose the **same meshing functionality**. The only difference is that
-    ``Meshing`` includes ``switch_to_solver()``.
-
-    When connecting to an existing Fluent session
-    via :meth:`from_connection() <ansys.fluent.core.session.utilities.SessionBase.from_connection>`:
+    For more information on meshing session types, see :ref:`ref_session_guide`.
+    When connecting to an existing Fluent session:
 
     - Use ``PureMeshing.from_connection()`` if the session was launched for **meshing only**.
     - Use ``Meshing.from_connection()`` if the session supports **meshing and solving**.
-    - You may also use ``PureMeshing.from_connection()`` with a session that supports solving,
-    if you intentionally want access **only to meshing features**.
 
-    A ``Meshing`` interface is not recommended for a **meshing-only** session, because
-    ``switch_to_solver()`` would raise an error in that case.
+    A ``Meshing`` session type is not recommended for a **meshing-only** session.
 
 
 .. _connect_to_pim_session:
