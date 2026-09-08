@@ -1,0 +1,17 @@
+{#
+  Inject a canonical link pointing at the equivalent page in the `stable`
+  version of the docs. This consolidates ranking signal across the many
+  versioned builds (/version/0.14/, /version/dev/, /version/stable/, ...)
+  onto a single authoritative URL per page.
+
+  See pyfluent-doc-plan.md §4.
+#}
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {%- if pagename %}
+  <link rel="canonical"
+        href="https://fluent.docs.pyansys.com/version/stable/{{ pagename }}.html" />
+  {%- endif %}
+{% endblock %}

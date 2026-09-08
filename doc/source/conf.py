@@ -38,9 +38,16 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "sphinx_design",
+    "sphinx_sitemap",
     "sphinxemoji.sphinxemoji",
     "sphinx_toggleprompt",
 ]
+
+# Canonical base URL used by sphinx-sitemap and by search engines to
+# consolidate ranking signal onto the `stable` version of the docs.
+# See pyfluent-doc-plan.md §4 and §5.
+html_baseurl = "https://fluent.docs.pyansys.com/version/stable/"
+sitemap_url_scheme = "{link}"
 
 toggleprompt_offset_right = 35
 
