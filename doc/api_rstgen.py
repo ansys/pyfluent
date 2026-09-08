@@ -21,6 +21,7 @@ SKIP_DIRECTORIES = {
     "ui",
 }
 SKIP_FILES = {
+    "deprecated_pyfluent_apis",
     "settings_builtin_bases",
     "settings_builtin_data",
     "settings_external",
@@ -159,6 +160,7 @@ def _write_api_index():
                 rst_file.write(f"    {child.name}/{child.name}_contents\n")
             else:
                 rst_file.write(f"    {child.stem}\n")
+        rst_file.write("    deprecated_pyfluent_apis\n")
 
 
 def generate():

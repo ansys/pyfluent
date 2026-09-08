@@ -1239,7 +1239,13 @@ class PyAction:
             )
 
     def create_instance(self) -> "PyArguments":
-        """Create an operation instance."""
+        """Create a command-argument instance for this operation.
+
+        The returned :class:`PyArguments` wrapper exposes the operation's
+        arguments for inspection and state updates. Its lifetime is registered
+        with the underlying service so command-argument resources can be
+        released when the wrapper is deleted.
+        """
         args = self._get_create_instance_args()
         if args is not None:
             return PyArguments(*args)

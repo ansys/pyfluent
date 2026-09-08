@@ -25,9 +25,8 @@ import logging
 import os
 from pathlib import Path
 
-from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
-
 from ansys.fluent.core import config
+from ansys.fluent.core.deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
@@ -198,7 +197,9 @@ def _populate_rst_from_settings(rst_dir, cls, version, path=""):
 
 
 def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
-    deprecated_rst = (Path(rst_dir).parents[2] / "deprecated_apis.rst").resolve()
+    deprecated_rst = (
+        Path(rst_dir).parents[2] / "deprecated_pyfluent_apis.rst"
+    ).resolve()
     if deprecated_rst.exists():
         deprecated_rst.unlink()
     else:

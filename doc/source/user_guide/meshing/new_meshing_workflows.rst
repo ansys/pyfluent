@@ -114,6 +114,8 @@ Switch to solution mode
 
     solver_session = meshing_session.switch_to_solver()
 
+.. _ref_fault_tolerant_meshing_workflow_example:
+
 Fault-tolerant workflow
 -----------------------
 Use the **Fault-tolerant** workflow for complex CAD geometries that need
@@ -369,6 +371,8 @@ Switch to solution mode
 
     solver_session = meshing_session.switch_to_solver()
 
+.. _ref_two_dimensional_meshing_workflow_example:
+
 2D workflow
 -----------
 Use the **2D*** workflow to perform common meshing operations on two-dimensional geometries.
@@ -507,6 +511,8 @@ Switch to solution mode
 
 Switching to solver is not allowed in 2D Meshing mode.
 
+.. _ref_create_meshing_workflow_example:
+
 Creating a new workflow
 -----------------------
 The following example shows you how to use ``CreateMeshingWorkflow`` to build a custom workflow.
@@ -549,6 +555,8 @@ Save workflow
     custom_workflow.save_workflow(file_path="full_path_to_the_file.wft")
 
 
+
+.. _ref_load_meshing_workflow_example:
 
 Loading a saved workflow
 ------------------------
