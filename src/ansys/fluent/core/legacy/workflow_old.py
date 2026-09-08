@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Workflow module that wraps and extends the core functionality."""
+"""Legacy workflow module that wraps and extends the core functionality."""
 
 from __future__ import annotations
 

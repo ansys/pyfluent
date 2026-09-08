@@ -154,7 +154,7 @@ class WatertightMeshing:
         _validate_meshing_session(session)
         legacy = _fallback_check(session, session._legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
+            from ansys.fluent.core.legacy.meshing_workflow_old import WorkflowMode
         else:
             from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         return WorkflowMode.WATERTIGHT_MESHING_MODE.value(
@@ -195,7 +195,7 @@ class FaultTolerantMeshing:
         _validate_meshing_session(session)
         legacy = _fallback_check(session, session._legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
+            from ansys.fluent.core.legacy.meshing_workflow_old import WorkflowMode
         else:
             from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         return WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
@@ -236,7 +236,7 @@ class TwoDimensionalMeshing:
         _validate_meshing_session(session)
         legacy = _fallback_check(session, session._legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
+            from ansys.fluent.core.legacy.meshing_workflow_old import WorkflowMode
         else:
             from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         return WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
@@ -277,7 +277,7 @@ class TopologyBasedMeshing:
         _validate_meshing_session(session)
         legacy = _fallback_check(session, session._legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import WorkflowMode
+            from ansys.fluent.core.legacy.meshing_workflow_old import WorkflowMode
         else:
             from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         return WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
@@ -318,7 +318,7 @@ class CreateMeshingWorkflow:
         _validate_meshing_session(session)
         legacy = _fallback_check(session, session._legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import CreatedWorkflow
+            from ansys.fluent.core.legacy.meshing_workflow_old import CreatedWorkflow
         else:
             from ansys.fluent.core.meshing.meshing_workflow import CreatedWorkflow
         return CreatedWorkflow(
@@ -364,7 +364,7 @@ class LoadMeshingWorkflow:
         _validate_meshing_session(session)
         legacy = _fallback_check(session, session._legacy)
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import LoadedWorkflow
+            from ansys.fluent.core.legacy.meshing_workflow_old import LoadedWorkflow
         else:
             from ansys.fluent.core.meshing.meshing_workflow import LoadedWorkflow
         return LoadedWorkflow(

@@ -25,7 +25,9 @@
 
 This package provides legacy support for running local parametric studies and
 reading or writing Fluent RP variables through :class:`LocalParametricStudy`
-and :class:`RPVars`.
+and :class:`RPVars`. It also contains the legacy workflow wrappers in
+:mod:`ansys.fluent.core.legacy.workflow_old` and
+:mod:`ansys.fluent.core.legacy.meshing_workflow_old`.
 """
 
 from ansys.fluent.core.legacy.local_parametric_study import LocalParametricStudy

@@ -47,6 +47,7 @@ from ansys.fluent.core.exceptions import (
     PyFluentDeprecationWarning,
 )
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
+from ansys.fluent.core.legacy.workflow_old import ClassicWorkflow
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.session._shared import (
@@ -67,7 +68,6 @@ from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
 )
-from ansys.fluent.core.workflow_old import ClassicWorkflow
 
 if TYPE_CHECKING:
     from ansys.fluent.core.fluent_connection import FluentConnection

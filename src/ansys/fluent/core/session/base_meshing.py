@@ -58,7 +58,6 @@ from ansys.fluent.core.utils.fluent_version import (
 if TYPE_CHECKING:
     from ansys.fluent.core import meshing as _meshing_workflow_type
     from ansys.fluent.core import workflow as _workflow_new
-    from ansys.fluent.core import workflow_old as _workflow_old
     from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
     from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
         Root as meshing_utilities_root,
@@ -77,6 +76,7 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
     from ansys.fluent.core.generated.meshing.tui_261 import main_menu
+    from ansys.fluent.core.legacy import workflow_old as _workflow_old
 
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
@@ -275,6 +275,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.WatertightMeshing`
+            Watertight meshing workflow.
         """
         from ansys.fluent.core.meshing import WatertightMeshing
 
@@ -303,6 +308,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.FaultTolerantMeshing`
+            Fault-tolerant meshing workflow.
         """
         from ansys.fluent.core.meshing import FaultTolerantMeshing
 
@@ -331,6 +341,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.TwoDimensionalMeshing`
+            Two-dimensional meshing workflow.
         """
         from ansys.fluent.core.meshing import TwoDimensionalMeshing
 
@@ -359,6 +374,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.TopologyBasedMeshing`
+            Topology-based meshing workflow.
         """
         from ansys.fluent.core.meshing import TopologyBasedMeshing
 
@@ -395,6 +415,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.LoadMeshingWorkflow`
+            Loaded meshing workflow.
         """
         from ansys.fluent.core.meshing import LoadMeshingWorkflow
 
@@ -426,6 +451,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.CreateMeshingWorkflow`
+            Newly created meshing workflow.
         """
         from ansys.fluent.core.meshing import CreateMeshingWorkflow
 
@@ -454,7 +484,7 @@ class BaseMeshing(BaseSession):
         }
 
         if legacy:
-            from ansys.fluent.core.meshing.meshing_workflow_old import (
+            from ansys.fluent.core.legacy.meshing_workflow_old import (
                 get_current_workflow,
             )
 
@@ -533,7 +563,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        WatertightMeshing
+        :class:`~ansys.fluent.core.meshing.WatertightMeshing`
+            Watertight meshing workflow.
         """
         return self._watertight_workflow(legacy=legacy)
 
@@ -552,7 +583,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        FaultTolerantMeshing
+        :class:`~ansys.fluent.core.meshing.FaultTolerantMeshing`
+            Fault-tolerant meshing workflow.
         """
         return self._fault_tolerant_workflow(legacy=legacy)
 
@@ -571,7 +603,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        TwoDimensionalMeshing
+        :class:`~ansys.fluent.core.meshing.TwoDimensionalMeshing`
+            Two-dimensional meshing workflow.
         """
         return self._two_dimensional_meshing_workflow(legacy=legacy)
 
@@ -595,7 +628,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        TopologyBasedMeshing
+        :class:`~ansys.fluent.core.meshing.TopologyBasedMeshing`
+            Topology-based meshing workflow.
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("Topology-based meshing")
