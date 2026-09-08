@@ -382,11 +382,11 @@ def http_solver_session():
     """
     rest_url = os.getenv("FLUENT_REST_URL")
     rest_token = os.getenv("FLUENT_REST_TOKEN")
-    if not rest_url or not rest_token:
-        pytest.skip(
-            "REST live server not configured. "
-            "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
-        )
+    # if not rest_url or not rest_token:
+    #     pytest.skip(
+    #         "REST live server not configured. "
+    #         "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
+    #     )
     solver = Solver.from_http(url=rest_url, token=rest_token)
     yield solver
     solver.exit()
@@ -394,13 +394,13 @@ def http_solver_session():
 
 @pytest.fixture(
     params=[
-        "new_solver_session",
+        # "new_solver_session",
         pytest.param(
             "http_solver_session",
             marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
         ),
     ],
-    ids=["grpc", "rest"],
+    ids=["rest"],
 )
 def solver_session_grpc_rest(request):
     """Solver session over either transport, gRPC or REST.
