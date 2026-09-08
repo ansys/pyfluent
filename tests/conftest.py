@@ -412,7 +412,7 @@ def solver_session_grpc_rest(request):
 
 
 @pytest.fixture
-def mixing_elbow_settings_session_grpc_rest(solver_session_grpc_rest):
+def mixing_elbow_grpc_rest_lightweight_session(solver_session_grpc_rest):
     solver = solver_session_grpc_rest
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(
