@@ -135,7 +135,6 @@ class FluentVersion(Enum):
                 or _version_to_integer(requested_version) > latest.number
             ):
                 warnings.warn(
-                    # should actually handle the two different scenarios separately
                     f"Fluent version '{requested_version}' is either unrecognized or newer than the highest "
                     f"supported version '{latest.value}'; using '{latest.value}' instead.",
                     PyFluentUserWarning,
