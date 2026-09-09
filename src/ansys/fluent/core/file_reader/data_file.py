@@ -43,10 +43,10 @@ from pathlib import Path
 import defusedxml.ElementTree as ET
 import numpy as np
 
-from ansys.fluent.core.variable_strategies import (
+from ansys.fluent.core._variable_strategies import (
     FluentFieldDataNamingStrategy as vector_naming,
 )
-from ansys.fluent.core.variable_strategies import (
+from ansys.fluent.core._variable_strategies import (
     FluentSVarNamingStrategy as scalar_naming,
 )
 

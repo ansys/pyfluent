@@ -22,7 +22,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from ansys.fluent.core.variable_strategies import FluentExprNamingStrategy
+from ansys.fluent.core._variable_strategies import FluentExprNamingStrategy
 from ansys.units.variable_descriptor import VariableDescriptor
 
 _NAMING = FluentExprNamingStrategy()
