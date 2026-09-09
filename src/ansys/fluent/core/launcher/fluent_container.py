@@ -245,21 +245,19 @@ def _resolve_port_mapping(port, container_dict):
 
 
 def _setup_environment(container_dict, license_server, container_grpc_port):
-    """Populate ``container_dict['environment']`` with license and remoting keys if not already set.
-
-    Any environment variables the caller has already placed in
-    ``container_dict['environment']`` (e.g. ``FLUENT_WEBSERVER_TOKEN``) are
-    preserved; only the required keys that are still missing get filled in.
-    """
-    env = container_dict.setdefault("environment", {})
-    if "ANSYSLMD_LICENSE_FILE" not in env:
+    """Populate ``container_dict['environment']`` with license and remoting keys if not already set."""
+    if "environment" not in container_dict:
         if not license_server:
             license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
         if not license_server:
             raise LicenseServerNotSpecified()
-        env["ANSYSLMD_LICENSE_FILE"] = license_server
-    env.setdefault("REMOTING_PORTS", f"{container_grpc_port}/portspan=2")
-    env.setdefault("FLUENT_ALLOW_REMOTE_GRPC_CONNECTION", "1")
+        container_dict.update(
+            environment={
+                "ANSYSLMD_LICENSE_FILE": license_server,
+                "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
+                "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
+            }
+        )
 
 
 def _resolve_server_info_file(
