@@ -304,58 +304,6 @@ def create_session(**kwargs):
         return pyfluent.launch_fluent(**kwargs)
 
 
-def create_rest_session(**kwargs):
-    """Launch Fluent with its embedded REST/web server enabled.
-
-    Mirrors ``create_session()`` but additionally picks a free port for
-    Fluent's web server (passed via the ``-ws-port`` launch argument) and a
-    freshly generated auth token (passed via the ``FLUENT_WEBSERVER_TOKEN``
-    environment variable), so no externally pre-running REST server is
-    required.
-
-    Returns
-    -------
-    tuple
-        ``(grpc_solver, rest_url, rest_token)``. ``grpc_solver`` is the
-        regular gRPC-connected session object returned by
-        ``pyfluent.launch_fluent()`` - it must be used to tear down the
-        Fluent process (``grpc_solver.exit()``), since the REST transport
-        has no launch/teardown ability of its own.
-    """
-    kwargs.update(get_grpc_launcher_args_for_gh_runs())
-    ws_port = get_free_port()
-    rest_token = secrets.token_hex(16)
-    additional_arguments = (
-        f"{kwargs.pop('additional_arguments', '')} -ws-port {ws_port}".strip()
-    )
-
-    if pyfluent.config.use_file_transfer_service:
-        file_transfer_service = ContainerFileTransferStrategy()
-        grpc_port = get_free_port()
-        container_dict = {
-            "mount_source": file_transfer_service.mount_source,
-            # gRPC port must be the first entry so the launcher picks it as
-            # the gRPC port; the ws port is published alongside it.
-            "ports": {str(grpc_port): grpc_port, str(ws_port): ws_port},
-            "environment": {"FLUENT_WEBSERVER_TOKEN": rest_token},
-        }
-        grpc_solver = pyfluent.launch_fluent(
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-            additional_arguments=additional_arguments,
-            **kwargs,
-        )
-    else:
-        grpc_solver = pyfluent.launch_fluent(
-            env={"FLUENT_WEBSERVER_TOKEN": rest_token},
-            additional_arguments=additional_arguments,
-            **kwargs,
-        )
-
-    rest_url = f"http://localhost:{ws_port}"
-    return grpc_solver, rest_url, rest_token
-
-
 @pytest.fixture
 def new_meshing_session_wo_exit():
     meshing = create_session(mode=pyfluent.FluentMode.MESHING)
@@ -432,15 +380,38 @@ def http_solver_session():
     """Solver session connected to a Fluent server over REST (HTTP).
 
     If both ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN`` are set, connects to
-    that already-running server (manual/override workflow). Otherwise, launches
-    a fresh Fluent instance with its web server enabled and connects to it.
+    that already-running server (manual/override workflow). Otherwise,
+    launches a fresh Fluent instance with its web server enabled via the
+    ``-ws-port <port>`` launch argument and the ``FLUENT_WEBSERVER_TOKEN`` env
+    var, then reads back the connection info via
+    ``solver.settings.server.web_server.get_server_info()``.
     """
     rest_url = os.getenv("FLUENT_REST_URL")
     rest_token = os.getenv("FLUENT_REST_TOKEN")
 
     grpc_solver = None
     if not rest_url or not rest_token:
-        grpc_solver, rest_url, rest_token = create_rest_session()
+        ws_port = get_free_port()
+        rest_token = secrets.token_hex(16)
+        grpc_solver = create_session(
+            env={"FLUENT_WEBSERVER_TOKEN": rest_token},
+            additional_arguments=f"-ws-port {ws_port}",
+        )
+
+        server_info = grpc_solver.settings.server.web_server.get_server_info()
+        # Exact return shape of get_server_info() is not yet confirmed against
+        # a live server; defensively handle a plain string, a dict, or an
+        # attribute-based object, falling back to the locally-chosen port/token.
+        if isinstance(server_info, str):
+            rest_url = server_info
+        elif isinstance(server_info, dict):
+            port = server_info.get("port", ws_port)
+            rest_url = server_info.get("url") or f"http://localhost:{port}"
+            rest_token = server_info.get("token", rest_token)
+        else:
+            port = getattr(server_info, "port", ws_port)
+            rest_url = getattr(server_info, "url", None) or f"http://localhost:{port}"
+            rest_token = getattr(server_info, "token", rest_token)
 
     solver = Solver.from_http(url=rest_url, token=rest_token)
     yield solver
