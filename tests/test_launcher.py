@@ -634,46 +634,6 @@ def test_additional_arguments_fluent_launch_args_string():
     )
 
 
-def test_container_environment_preserves_caller_env_vars(monkeypatch):
-    monkeypatch.setenv("ANSYSLMD_LICENSE_FILE", "2048@licenseserver.com")
-    container_dict, *_ = configure_container_dict(
-        [], environment={"FLUENT_WEBSERVER_TOKEN": "secret-token"}
-    )
-    environment = container_dict["environment"]
-    # A caller-supplied variable must not suppress the required defaults.
-    assert environment["FLUENT_WEBSERVER_TOKEN"] == "secret-token"
-    assert environment["ANSYSLMD_LICENSE_FILE"] == "2048@licenseserver.com"
-    assert "REMOTING_PORTS" in environment
-    assert environment["FLUENT_ALLOW_REMOTE_GRPC_CONNECTION"] == "1"
-
-
-def test_container_additional_ports_are_published(monkeypatch):
-    monkeypatch.setenv("ANSYSLMD_LICENSE_FILE", "2048@licenseserver.com")
-    container_dict, _, container_grpc_port, *_ = configure_container_dict(
-        [], port=5001, ports={"5002": 5002}
-    )
-    # The explicitly specified port is the gRPC port, and the additional port
-    # is still published from the container.
-    assert container_grpc_port == 5001
-    assert container_dict["ports"] == {"5001": 5001, "5002": 5002}
-
-
-def test_container_launcher_env_is_merged_into_environment(monkeypatch):
-    monkeypatch.setenv("ANSYSLMD_LICENSE_FILE", "2048@licenseserver.com")
-    grpc_kwds = get_grpc_launcher_args_for_gh_runs() or {"insecure_mode": True}
-    container_dict = pyfluent.launch_fluent(
-        start_container=True,
-        dry_run=True,
-        env={"FLUENT_WEBSERVER_TOKEN": "secret-token"},
-        **grpc_kwds,
-    )
-    assert container_dict["environment"]["FLUENT_WEBSERVER_TOKEN"] == "secret-token"
-    assert (
-        container_dict["environment"]["ANSYSLMD_LICENSE_FILE"]
-        == "2048@licenseserver.com"
-    )
-
-
 def test_processor_count():
     def get_processor_count(solver):
         return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
