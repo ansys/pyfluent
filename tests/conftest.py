@@ -398,7 +398,15 @@ def http_solver_session():
             additional_arguments=f"-ws-port {ws_port}",
         )
 
-        server_info = grpc_solver.settings.server.web_server.get_server_info()
+        get_server_info = grpc_solver.settings.server.web_server.get_server_info
+        if not get_server_info.is_active():
+            # Fluent was launched without a usable web server (e.g. the
+            # containerized Fluent images used in CI do not expose one), so
+            # there is no REST endpoint to connect to.
+            grpc_solver.exit()
+            pytest.skip(f"{SKIP_BLOCKED}: Fluent web server is not available.")
+
+        server_info = get_server_info()
         # Exact return shape of get_server_info() is not yet confirmed against
         # a live server; defensively handle a plain string, a dict, or an
         # attribute-based object, falling back to the locally-chosen port/token.
