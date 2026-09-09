@@ -129,7 +129,7 @@ class FluentVersion(Enum):
                     return member
 
             latest = next(iter(cls))
-            version_as_int = _version_to_integer(requested_version)  # requires no-raise
+            version_as_int = _version_to_integer(requested_version)
             if (
                 version_as_int is None
                 or _version_to_integer(requested_version) > latest.number
