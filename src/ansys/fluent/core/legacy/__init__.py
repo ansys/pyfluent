@@ -21,11 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Legacy PyFluent interfaces, runtime parameters, and meshing workflows.
+"""Provides access to legacy PyFluent APIs.
 
-This package contains older PyFluent features, including :class:`RPVars`,
-runtime parameter types, and legacy meshing workflow classes. New code should
-prefer the current settings and object-based meshing APIs.
+This package contains :class:`RPVars` and :class:`RPVarType`, as well as the
+old client-side meshing workflow implementation, in
+:mod:`ansys.fluent.core.legacy.meshing_workflow_old` and
+:mod:`ansys.fluent.core.legacy.workflow_old`.
 """
 
 from ansys.fluent.core.legacy.rpvars import RPVars, RPVarType
