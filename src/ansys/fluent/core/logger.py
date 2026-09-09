@@ -21,14 +21,35 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module controlling PyFluent's logging functionality."""
+"""Configure and control PyFluent logging.
+
+This module builds on Python's standard :mod:`logging` package and provides
+PyFluent-specific defaults and helpers. PyFluent messages use the ``pyfluent``
+logger hierarchy and are written to the console at warning level by default.
+File logging can be enabled with :func:`enable`, which uses a rotating file
+handler and the configuration in ``logging_config.yaml``. The
+``PYFLUENT_LOGGING`` environment variable can enable file logging
+automatically during PyFluent initialization.
+
+The public helpers support enabling file logging, changing console and file log
+levels, checking whether file logging is active, obtaining a logger, loading
+the default configuration, and providing a custom logging configuration.
+Startup and logger-discovery helpers are kept internal to the module.
+"""
 
 import logging.config
 import os
 
 from ansys.fluent.core.module_config import config
 
-__all__ = ("set_console_logging_level",)
+__all__ = (
+    "enable",
+    "get_default_config",
+    "get_logger",
+    "is_active",
+    "set_console_logging_level",
+    "set_global_level",
+)
 
 _logging_file_enabled = False
 
@@ -47,16 +68,24 @@ def root_config():
 
 
 def set_console_logging_level(level: str | int):
-    """Sets the level of PyFluent logging being output to console.
+    """Set the minimum level of PyFluent messages written to the console.
 
     Parameters
     ----------
     level : str or int
-        Specified logging level to set PyFluent loggers to.
+        Logging level, such as ``"INFO"``, ``"DEBUG"``, or ``logging.INFO``.
+        Messages below this level are filtered from the console handler.
 
     Notes
     -----
+    This changes console output only. Use :func:`set_global_level` to change
+    the levels of loggers writing to the PyFluent log file.
     See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.set_console_logging_level("INFO")
     """
     logger = logging.getLogger("pyfluent")
     logger.setLevel(level)
@@ -65,13 +94,26 @@ def set_console_logging_level(level: str | int):
 
 
 def is_active() -> bool:
-    """Returns whether PyFluent logging to file is active."""
+    """Return whether PyFluent file logging is currently enabled.
+
+    Returns
+    -------
+    bool
+        ``True`` after :func:`enable` has configured file logging; otherwise
+        ``False``.
+    """
     return _logging_file_enabled
 
 
 def get_default_config() -> dict:
-    """Returns the default configuration dictionary obtained from parsing from the
-    PyFluent ``logging_config.yaml`` file.
+    """Load PyFluent's default logging configuration.
+
+    Returns
+    -------
+    dict
+        A dictionary parsed from PyFluent's ``logging_config.yaml`` file. The
+        dictionary can be modified and passed to :func:`enable` through its
+        ``custom_config`` parameter.
 
     Examples
     --------
@@ -114,19 +156,31 @@ def get_default_config() -> dict:
 
 
 def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
-    """Enables PyFluent logging to file.
+    """Enable PyFluent logging to a rotating log file.
+
+    By default, PyFluent uses the packaged ``logging_config.yaml`` file and
+    writes to ``pyfluent.log`` in the current working directory. Calling this
+    function again reconfigures logging with the supplied configuration.
 
     Parameters
     ----------
     level : str or int, optional
-        Specified logging level to set PyFluent loggers to. If omitted, level is set to DEBUG.
+        Minimum level for PyFluent loggers writing to the file. If omitted,
+        ``"DEBUG"`` is used.
     custom_config : dict, optional
-        Used to provide a customized logging configuration file that will be used instead
-        of the ``logging_config.yaml`` file (see also :func:`get_default_config`).
+        A ``logging.config.dictConfig``-compatible configuration. Use
+        :func:`get_default_config` as a starting point when customizing the
+        default configuration.
 
     Notes
     -----
-    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+    File logging can also be enabled automatically by setting the
+    ``PYFLUENT_LOGGING`` environment variable before importing PyFluent.
+
+    See Also
+    --------
+    get_default_config
+        Load the packaged logging configuration for customization.
 
     Examples
     --------
@@ -166,24 +220,48 @@ def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
 
 
 def get_logger(*args, **kwargs):
-    """Retrieves logger.
+    """Return a standard-library logger for a PyFluent component.
 
-    Convenience wrapper for Python's :func:`logging.getLogger` function.
+    Parameters
+    ----------
+    *args, **kwargs
+        Arguments forwarded to :func:`logging.getLogger`. Passing a name such
+        as ``"pyfluent.launcher"`` is recommended for component-specific
+        logging.
+
+    Returns
+    -------
+    logging.Logger
+        The requested logger instance.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> logger = pyfluent.get_logger("pyfluent.my_component")
+    >>> logger.info("Component initialized")
     """
     return logging.getLogger(*args, **kwargs)
 
 
 def set_global_level(level: str | int):
-    """Changes the levels of all PyFluent loggers that write to log file.
+    """Set the level of all registered PyFluent file loggers.
 
     Parameters
     ----------
     level : str or int
-        Specified logging level to set PyFluent loggers to.
+        Logging level, such as ``"DEBUG"``, ``"INFO"``, or ``logging.WARNING``.
 
     Notes
     -----
-    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+    File logging must be enabled with :func:`enable` first. This function does
+    not change the console logger level; use :func:`set_console_logging_level`
+    for console output.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.enable()
+    >>> pyfluent.set_global_level("INFO")
 
     Examples
     --------
