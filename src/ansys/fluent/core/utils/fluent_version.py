@@ -83,15 +83,13 @@ def get_version_for_file_name(version: str | None = None, session=None):
     return "".join(version.split(".")[0:2])
 
 
-def _version_to_integer(version: Any) -> int:
+def _version_to_integer(version: Any) -> int | None:
     """Convert a Fluent version to its integer representation."""
     try:
         parts = str(version).split(".")
         return int(parts[0] + parts[1]) if len(parts) > 1 else int(parts[0])
-    except Exception:
-        return (
-            None  # Return None instead of raising an exception for unrecognized formats
-        )
+    except ValueError:
+        return None
 
 
 @total_ordering
@@ -130,12 +128,17 @@ class FluentVersion(Enum):
 
             latest = next(iter(cls))
             version_as_int = _version_to_integer(requested_version)
-            if (
-                version_as_int is None
-                or _version_to_integer(requested_version) > latest.number
-            ):
+            if version_as_int is None:
                 warnings.warn(
-                    f"Fluent version '{requested_version}' is either unrecognized or newer than the highest "
+                    f"Fluent version '{requested_version}' is unrecognized; using the "
+                    f"highest supported version '{latest.value}' instead.",
+                    PyFluentUserWarning,
+                    stacklevel=2,
+                )
+                return latest
+            if version_as_int > latest.number:
+                warnings.warn(
+                    f"Fluent version '{requested_version}' is newer than the highest "
                     f"supported version '{latest.value}'; using '{latest.value}' instead.",
                     PyFluentUserWarning,
                     stacklevel=2,

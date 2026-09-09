@@ -67,6 +67,11 @@ def test_newer_version_uses_latest(version):
         assert FluentVersion(version) == FluentVersion.v271
 
 
+def test_unrecognized_version_uses_latest():
+    with pytest.warns(PyFluentUserWarning, match="'invalid' is unrecognized"):
+        assert FluentVersion("invalid") == FluentVersion.v271
+
+
 def test_get_latest_installed(helpers, fs):
     helpers.mock_awp_vars()
     with pytest.raises(FileNotFoundError):
