@@ -3,21 +3,21 @@
 Transferring session data
 =========================
 
-You use the :func:`transfer_case() <ansys.fluent.core.utils.data_transfer.transfer_case>` function to transfer a case or mesh file between
+You use the :func:`transfer_case() <ansys.fluent.core.data_transfer.transfer_case>` function to transfer a case or mesh file between
 PyFluent sessions. You must specify a source session and one or more
 destination solver sessions.
 
 Sample usage
 ------------
 
-This example shows how you use the :func:`transfer_case() <ansys.fluent.core.utils.data_transfer.transfer_case>` function to read a mesh file in a
+This example shows how you use the :func:`transfer_case() <ansys.fluent.core.data_transfer.transfer_case>` function to read a mesh file in a
 meshing session and transfer it to a solver session.
 
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> from ansys.fluent.core.utils.data_transfer import transfer_case
+  >>> from ansys.fluent.core.data_transfer import transfer_case
 
   >>> mesh_file_name = download_file(
   >>>     "mixing_elbow.msh.h5",
@@ -43,5 +43,5 @@ meshing session and transfer it to a solver session.
   >>> )
 
 
-Similarly, you can use the :func:`transfer_case() <ansys.fluent.core.utils.data_transfer.transfer_case>` function to transfer a case file between PyFluent
+Similarly, you can use the :func:`transfer_case() <ansys.fluent.core.data_transfer.transfer_case>` function to transfer a case file between PyFluent
 sessions.
