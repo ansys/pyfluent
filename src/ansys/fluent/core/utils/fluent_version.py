@@ -88,8 +88,10 @@ def _version_to_integer(version: Any) -> int:
     try:
         parts = str(version).split(".")
         return int(parts[0] + parts[1]) if len(parts) > 1 else int(parts[0])
-     except Exception:
-        pass # or explicitly return None
+    except Exception:
+        return (
+            None  # Return None instead of raising an exception for unrecognized formats
+        )
 
 
 @total_ordering
@@ -127,8 +129,11 @@ class FluentVersion(Enum):
                     return member
 
             latest = next(iter(cls))
-            version_as_int = _version_to_integer(requested_version) # requires no-raise
-            if version_as_int is None or _version_to_integer(requested_version) > latest.number:
+            version_as_int = _version_to_integer(requested_version)  # requires no-raise
+            if (
+                version_as_int is None
+                or _version_to_integer(requested_version) > latest.number
+            ):
                 warnings.warn(
                     # should actually handle the two different scenarios separately
                     f"Fluent version '{requested_version}' is either unrecognized or newer than the highest "
