@@ -110,7 +110,6 @@ def test_ansys_fluent_core_public_api():
         "set_console_logging_level",
         "setup_for_fluent",
         "solver",
-        "streaming_services",
         "system_coupling",
         "using",
         "utils",
@@ -208,7 +207,6 @@ def test_star_import_exports_all_public_symbols():
         "examples",
         "generated",
         "services",
-        "streaming_services",
         "module_config",
         "utils",
     }

@@ -27,7 +27,7 @@ import os
 from ansys.api.fluent.v0 import app_utilities_pb2, app_utilities_pb2_grpc
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
 
 
 class ApplicationRuntimeService(ServiceProtocol):

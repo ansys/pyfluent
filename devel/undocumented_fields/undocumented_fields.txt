@@ -335,7 +335,7 @@
   Class: Solver
     - settings
 
-  Module: ansys.fluent.core.streaming_services.events_streaming
+  Module: ansys.fluent.core.services.streaming_services.events_streaming
   Class: AboutToLoadCaseEventInfo
     - case_file_name
   Class: AboutToLoadDataEventInfo
@@ -372,7 +372,7 @@
     - index
     - size
 
-  Module: ansys.fluent.core.streaming_services.transcript_streaming
+  Module: ansys.fluent.core.services.streaming_services.transcript_streaming
   Class: AppendToFile
     - f
   Class: Transcript

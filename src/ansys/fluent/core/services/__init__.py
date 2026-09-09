@@ -53,20 +53,24 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
-from ansys.fluent.core.services.text_interface import TextInterface
-from ansys.fluent.core.services.transcript import Transcript
-from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
+from ansys.fluent.core.services.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
-from ansys.fluent.core.streaming_services.events_streaming import EventsManager
-from ansys.fluent.core.streaming_services.field_data_streaming import (
+from ansys.fluent.core.services.streaming_services.datamodel_streaming import (
+    DatamodelStream,
+)
+from ansys.fluent.core.services.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.services.streaming_services.field_data_streaming import (
     FieldDataStreaming,
 )
-from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
-from ansys.fluent.core.streaming_services.transcript_streaming import (
+from ansys.fluent.core.services.streaming_services.monitor_streaming import (
+    MonitorsManager,
+)
+from ansys.fluent.core.services.streaming_services.transcript_streaming import (
     Transcript as TranscriptStreaming,
 )
+from ansys.fluent.core.services.text_interface import TextInterface
+from ansys.fluent.core.services.transcript import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
