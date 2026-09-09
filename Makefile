@@ -29,8 +29,12 @@ docker-clean-all-except-supported-images:
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
-PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html -n auto
-PYTESTRERUN = --last-failed --last-failed-no-failures none -n auto
+# REST tests need a Fluent web server; they are deselected here (visibly, in the
+# pytest header) and run by the dedicated 'unittest-rest-*' targets instead.
+PYTESTNOREST = -m "not rest_server"
+PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html -n auto $(PYTESTNOREST)
+PYTESTRERUN = --last-failed --last-failed-no-failures none -n auto $(PYTESTNOREST)
+PYTESTREST = --cache-clear -m rest_server
 
 unittest: unittest-dev-242
 
@@ -58,6 +62,10 @@ unittest-dev-271:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@python -m pytest --fluent-version=27.1 $(PYTESTEXTRA) || python -m pytest --fluent-version=27.1 $(PYTESTRERUN)
+
+unittest-rest-271:
+	@echo "Running REST (web server) unittests"
+	@python -m pytest --fluent-version=27.1 $(PYTESTREST)
 
 unittest-all-242:
 	@echo "Running all unittests"

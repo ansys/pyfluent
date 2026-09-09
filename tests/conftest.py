@@ -292,14 +292,17 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     kwargs.update(get_grpc_launcher_args_for_gh_runs())
+    container_dict = kwargs.pop("container_dict", None) or {}
     if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.mount_source}
+        container_dict.setdefault("mount_source", file_transfer_service.mount_source)
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
             **kwargs,
         )
+    elif container_dict:
+        return pyfluent.launch_fluent(container_dict=container_dict, **kwargs)
     else:
         return pyfluent.launch_fluent(**kwargs)
 
@@ -375,57 +378,84 @@ def new_solver_session():
     solver.exit()
 
 
-@pytest.fixture
-def http_solver_session():
-    """Solver session connected to a Fluent server over REST (HTTP).
+def web_server_launch_arguments(port: int) -> str:
+    """Fluent launch arguments that enable its web (REST) server on *port*.
 
-    If both ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN`` are set, connects to
-    that already-running server (manual/override workflow). Otherwise,
-    launches a fresh Fluent instance with its web server enabled via the
-    ``-ws-port <port>`` launch argument and the ``FLUENT_WEBSERVER_TOKEN`` env
-    var, then reads back the connection info via
-    ``solver.settings.server.web_server.get_server_info()``.
+    ``-ws`` is what actually starts the web server; ``-ws-port`` only selects
+    the port and is rejected by Fluent's argument parser when passed on its
+    own.
+    """
+    return f"-ws -ws-port={port}"
+
+
+@pytest.fixture(scope="session")
+def rest_server_connection():
+    """``(url, token)`` of a Fluent web (REST) server, started once per session.
+
+    If both ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN`` are set, that
+    already-running server is used (manual/override workflow). Otherwise a
+    single Fluent instance is launched with its web server enabled and both the
+    gRPC and web-server ports published from the container.
+
+    Any failure to obtain a usable web server is reported as a test failure
+    rather than a skip: these tests are meant to either run against a live
+    server or be deselected explicitly with ``-m "not rest_server"``.
     """
     rest_url = os.getenv("FLUENT_REST_URL")
     rest_token = os.getenv("FLUENT_REST_TOKEN")
-
-    grpc_solver = None
-    if not rest_url or not rest_token:
-        ws_port = get_free_port()
-        rest_token = secrets.token_hex(16)
-        grpc_solver = create_session(
-            env={"FLUENT_WEBSERVER_TOKEN": rest_token},
-            additional_arguments=f"-ws-port {ws_port}",
+    if bool(rest_url) != bool(rest_token):
+        pytest.fail(
+            "FLUENT_REST_URL and FLUENT_REST_TOKEN must be set together; "
+            "set both to use an external REST server, or neither to launch one."
         )
+    if rest_url:
+        yield rest_url, rest_token
+        return
 
-        get_server_info = grpc_solver.settings.server.web_server.get_server_info
+    grpc_port = get_free_port()
+    ws_port = get_free_port()
+    rest_token = secrets.token_hex(16)
+    launch_kwargs = {}
+    if pyfluent.config.launch_fluent_container:
+        # 'port' is the gRPC port; 'ports' additionally publishes the web
+        # server port from the container, so that it is reachable on the host.
+        launch_kwargs["container_dict"] = {
+            "port": grpc_port,
+            "ports": {str(ws_port): ws_port},
+        }
+    solver = create_session(
+        env={"FLUENT_WEBSERVER_TOKEN": rest_token},
+        additional_arguments=web_server_launch_arguments(ws_port),
+        **launch_kwargs,
+    )
+    try:
+        get_server_info = solver.settings.server.web_server.get_server_info
         if not get_server_info.is_active():
-            # Fluent was launched without a usable web server (e.g. the
-            # containerized Fluent images used in CI do not expose one), so
-            # there is no REST endpoint to connect to.
-            grpc_solver.exit()
-            pytest.skip(f"{SKIP_BLOCKED}: Fluent web server is not available.")
-
+            pytest.fail(
+                "Fluent was launched with "
+                f"'{web_server_launch_arguments(ws_port)}' but "
+                "'settings.server.web_server.get_server_info' is inactive, "
+                "which means no web server is running."
+            )
         server_info = get_server_info()
-        # Exact return shape of get_server_info() is not yet confirmed against
-        # a live server; defensively handle a plain string, a dict, or an
-        # attribute-based object, falling back to the locally-chosen port/token.
-        if isinstance(server_info, str):
-            rest_url = server_info
-        elif isinstance(server_info, dict):
-            port = server_info.get("port", ws_port)
-            rest_url = server_info.get("url") or f"http://localhost:{port}"
-            rest_token = server_info.get("token", rest_token)
-        else:
-            port = getattr(server_info, "port", ws_port)
-            rest_url = getattr(server_info, "url", None) or f"http://localhost:{port}"
-            rest_token = getattr(server_info, "token", rest_token)
+        print(f"Fluent web server info: {server_info!r}")
+        # The web server runs inside the container, so its self-reported host
+        # and port are not usable from the host; the published port is. Only
+        # the token is taken from the server, when it reports one.
+        if isinstance(server_info, dict) and server_info.get("token"):
+            rest_token = server_info["token"]
+        yield f"http://localhost:{ws_port}", rest_token
+    finally:
+        solver.exit()
 
+
+@pytest.fixture
+def http_solver_session(rest_server_connection):
+    """Solver session connected to a Fluent server over REST (HTTP)."""
+    rest_url, rest_token = rest_server_connection
     solver = Solver.from_http(url=rest_url, token=rest_token)
     yield solver
     solver.exit()
-    if grpc_solver is not None:
-        grpc_solver.exit()
 
 
 @pytest.fixture(
