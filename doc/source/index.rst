@@ -9,6 +9,7 @@ PyFluent documentation |version|
    user_guide/user_guide_contents
    api/api_contents
    examples/index
+   deprecated_apis
    contributing/contributing_contents
    changelog
 
