@@ -263,9 +263,6 @@ def set_global_level(level: str | int):
     >>> pyfluent.enable()
     >>> pyfluent.set_global_level("INFO")
 
-    Examples
-    --------
-    >>> import ansys.fluent.core as pyfluent
     >>> pyfluent.logger.set_global_level(10)
 
     or
