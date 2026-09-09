@@ -19,6 +19,7 @@ SKIP_DIRECTORIES = {
     "generated",
     "rest",
     "ui",
+    "utils",
 }
 SKIP_FILES = {
     "settings_builtin_bases",
