@@ -85,8 +85,11 @@ def get_version_for_file_name(version: str | None = None, session=None):
 
 def _version_to_integer(version: Any) -> int:
     """Convert a Fluent version to its integer representation."""
-    parts = str(version).split(".")
-    return int(parts[0] + parts[1]) if len(parts) > 1 else int(parts[0])
+    try:
+        parts = str(version).split(".")
+        return int(parts[0] + parts[1]) if len(parts) > 1 else int(parts[0])
+     except Exception:
+        pass # or explicitly return None
 
 
 @total_ordering
