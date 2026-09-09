@@ -25,7 +25,7 @@
 
 import logging
 
-from ansys.fluent.core.utils.context_managers import using  # noqa: F401
+from ansys.fluent.core.context_manager import using  # noqa: F401
 
 logger = logging.getLogger("pyfluent.general")
 

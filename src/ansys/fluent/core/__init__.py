@@ -33,6 +33,7 @@ from ansys.fluent.core.logger import *
 
 # isort: on
 
+from ansys.fluent.core.context_manager import *
 from ansys.fluent.core.exceptions import *
 from ansys.fluent.core.fields.field_data_interfaces import *
 from ansys.fluent.core.launcher.launch_options import *
@@ -46,7 +47,6 @@ from ansys.fluent.core.session import *
 from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
 from ansys.fluent.core.utils import *
-from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
