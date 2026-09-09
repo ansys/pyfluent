@@ -23,6 +23,7 @@
 
 import pytest
 
+from ansys.fluent.core.exceptions import PyFluentUserWarning
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
@@ -55,6 +56,9 @@ def test_version_not_found():
 
     with pytest.raises(AnsysVersionNotFound):
         FluentVersion(22)
+
+    with pytest.warns(PyFluentUserWarning, match="newer than"):
+        assert FluentVersion("28.2.0") == max(FluentVersion)
 
 
 def test_get_latest_installed(helpers, fs):

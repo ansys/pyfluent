@@ -30,8 +30,10 @@ import os
 from pathlib import Path
 import platform
 from typing import Any
+import warnings
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.exceptions import PyFluentUserWarning
 from ansys.fluent.core.module_config import config
 
 __all__ = ("FluentVersion",)
@@ -103,15 +105,40 @@ class FluentVersion(Enum):
     @classmethod
     def _missing_(cls, version: Any):
         if isinstance(version, (int, float, str)):
+            original_version = version
             version = str(version)
-            if len(version) == 3:
+            if len(version) == 3 and version.isdigit():
                 version = version[:2] + "." + version[2:]
-            version += ".0"
-            for member in cls:
-                if version == member.value:
-                    return member
+            try:
+                version_parts = tuple(int(part) for part in version.split(".")[:2])
+            except ValueError as ex:
+                raise AnsysVersionNotFound(original_version) from ex
+            if len(version_parts) == 2:
+                normalized_version = f"{version_parts[0]}.{version_parts[1]}.0"
+                for member in cls:
+                    if normalized_version == member.value:
+                        return member
 
-        raise AnsysVersionNotFound(version[:-2])
+                newest_member = max(
+                    cls,
+                    key=lambda member: tuple(
+                        int(part) for part in member.value.split(".")[:2]
+                    ),
+                )
+                newest_parts = tuple(
+                    int(part) for part in newest_member.value.split(".")[:2]
+                )
+                if version_parts > newest_parts:
+                    warnings.warn(
+                        f"Fluent version {original_version} is newer than the newest "
+                        f"version known by PyFluent ({newest_member.value}). PyFluent "
+                        f"will use {newest_member.value} compatibility behavior.",
+                        PyFluentUserWarning,
+                        stacklevel=2,
+                    )
+                    return newest_member
+
+        raise AnsysVersionNotFound(version)
 
     @classmethod
     def get_latest_installed(cls):
