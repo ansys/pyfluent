@@ -9,19 +9,19 @@ This process supports the conversion of multiple TUI journals by passing a list 
 .. code-block:: python
 
   >>> # Write the converted Python commands from journal.jou to journal.py
-  >>> solver_session = pyfluent.launch_fluent(journal_file_names="journal.jou", topy=True)
+  >>> solver_session = pyfluent.Solver.from_install(journal_file_names="journal.jou", topy=True)
   >>> solver_session.exit()
   >>>
   >>> # Write the converted Python commands from journal.jou to journal_1.py
-  >>> solver_session = pyfluent.launch_fluent(journal_file_names="journal.jou", topy="journal_1.py")
+  >>> solver_session = pyfluent.Solver.from_install(journal_file_names="journal.jou", topy="journal_1.py")
   >>> solver_session.exit()
   >>>
   >>> # Write the converted Python commands from journal_1.jou and then from journal_2.jou to a single file journal_1_journal_2.py
-  >>> solver_session = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy=True)
+  >>> solver_session = pyfluent.Solver.from_install(journal_file_names=["journal_1.jou", "journal_2.jou"], topy=True)
   >>> solver_session.exit()
   >>>
   >>> # Write the converted Python commands from journal_1.jou and then from journal_2.jou to journal_1_2.py
-  >>> solver_session = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy="journal_1_2.py")
+  >>> solver_session = pyfluent.Solver.from_install(journal_file_names=["journal_1.jou", "journal_2.jou"], topy="journal_1_2.py")
   >>> solver_session.exit()
 
 
