@@ -231,6 +231,9 @@ def _resolve_port_mapping(port, container_dict):
     if not port_mapping and config.launch_fluent_port:
         p = config.launch_fluent_port
         port_mapping = {p: p}
+    if not port_mapping:
+        p = get_free_port()
+        port_mapping = {p: p}
 
     container_dict.update(
         ports={str(x): y for x, y in port_mapping.items()}
