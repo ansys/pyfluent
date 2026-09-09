@@ -30,8 +30,8 @@ and :class:`RPVars`. It also contains the legacy workflow wrappers in
 :mod:`ansys.fluent.core.legacy.meshing_workflow_old`.
 """
 
-from ansys.fluent.core.legacy.local_parametric_study import LocalParametricStudy
 from ansys.fluent.core.legacy.rpvars import RPVars, RPVarType
+from ansys.fluent.core.local_parametric_study import LocalParametricStudy
 
 __all__ = [
     "LocalParametricStudy",

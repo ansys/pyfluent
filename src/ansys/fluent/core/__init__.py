@@ -37,7 +37,7 @@ from ansys.fluent.core.exceptions import *
 from ansys.fluent.core.fields.field_data_interfaces import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
-from ansys.fluent.core.legacy.local_parametric_study import *
+from ansys.fluent.core.local_parametric_study import *
 from ansys.fluent.core.meshing import *
 from ansys.fluent.core.search import *
 from ansys.fluent.core.services.batch_ops import *
@@ -69,11 +69,11 @@ if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
 
-from ansys.fluent.core import exceptions as _exceptions  # noqa: E402
-from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
-from ansys.fluent.core.legacy import (  # noqa: E402
+from ansys.fluent.core import (  # noqa: E402
     local_parametric_study as _local_parametric_study,
 )
+from ansys.fluent.core import exceptions as _exceptions  # noqa: E402
+from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
 from ansys.fluent.core.legacy import rpvars as _rpvars  # noqa: E402
 from ansys.fluent.core.session import file as _session_file  # noqa: E402
 

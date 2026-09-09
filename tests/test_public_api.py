@@ -98,6 +98,7 @@ def test_ansys_fluent_core_public_api():
         "fluent_connection",
         "generated",
         "journaling",
+        "local_parametric_study",
         "launch_fluent",
         "launcher",
         "logger",
