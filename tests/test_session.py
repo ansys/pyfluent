@@ -186,11 +186,91 @@ def test_base_meshing_cannot_be_instantiated_directly():
         BaseMeshing(fluent_connection=None, scheme_eval=None)
 
 
-def test_download_file():
-    with pytest.raises(examples.RemoteFileNotFoundError):
+def test_download_file_raises_on_missing_remote_file(tmp_path):
+    with pytest.raises(examples.DownloadError):
         examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
+            "pyfluent_missing_file.cas.h5",
+            "pyfluent/pyfluent_missing_dir",
+            save_path=str(tmp_path),
+            max_retries=1,
+            timeout=15.0,
         )
+
+
+def test_download_file_cache_hit_skips_downloader(tmp_path, monkeypatch):
+    (tmp_path / "cached.cas").write_bytes(b"already-here")
+
+    def _boom(*args, **kwargs):
+        raise AssertionError("downloader should not be called on cache hit")
+
+    monkeypatch.setattr(examples.downloads.download_manager, "download_file", _boom)
+
+    result = examples.download_file("cached.cas", "some/dir", save_path=str(tmp_path))
+    assert result == str(tmp_path / "cached.cas")
+
+
+def test_download_file_force_bypasses_cache(tmp_path, monkeypatch):
+    (tmp_path / "cached.cas").write_bytes(b"old")
+
+    def _fake(filename, directory, destination, force, timeout, max_retries):
+        assert force is True
+        target = Path(destination) / directory / filename
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(b"new")
+        return str(target)
+
+    monkeypatch.setattr(examples.downloads.download_manager, "download_file", _fake)
+
+    examples.download_file(
+        "cached.cas", "some/dir", save_path=str(tmp_path), force=True
+    )
+    assert (tmp_path / "cached.cas").read_bytes() == b"new"
+
+
+def test_download_file_decompresses_zip(tmp_path, monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "examples_path", str(tmp_path))
+
+    def _fake(filename, directory, destination, force, timeout, max_retries):
+        nested = Path(destination) / directory / filename
+        nested.parent.mkdir(parents=True, exist_ok=True)
+        import io
+        import zipfile as _zip
+
+        buf = io.BytesIO()
+        with _zip.ZipFile(buf, "w") as zf:
+            zf.writestr("inner.txt", "hello")
+        nested.write_bytes(buf.getvalue())
+        return str(nested)
+
+    monkeypatch.setattr(examples.downloads.download_manager, "download_file", _fake)
+
+    result = examples.download_file("archive.zip", "some/dir", save_path=str(tmp_path))
+    assert result == str(tmp_path / "archive")
+    assert (tmp_path / "inner.txt").is_file()
+
+
+def test_download_file_return_without_path(tmp_path, monkeypatch):
+    def _fake(filename, directory, destination, force, timeout, max_retries):
+        target = Path(destination) / directory / filename
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(b"x")
+        return str(target)
+
+    monkeypatch.setattr(examples.downloads.download_manager, "download_file", _fake)
+
+    result = examples.download_file(
+        "elbow.cas.h5",
+        "pyfluent/mixing_elbow",
+        save_path=str(tmp_path),
+        return_without_path=True,
+    )
+    assert result == "elbow.cas.h5"
+
+
+def test_examples_path_raises_when_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "examples_path", str(tmp_path))
+    with pytest.raises(FileNotFoundError):
+        examples.path("nope.cas")
 
 
 def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
