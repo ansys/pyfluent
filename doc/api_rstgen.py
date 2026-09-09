@@ -6,8 +6,7 @@ import shutil
 
 from doc_utils import (
     legacy_bridge_content,
-    meshing_workflow_bridge_content,
-    solver_workflows_bridge_content,
+    meshing_bridge_content,
 )
 
 from ansys.fluent.core import FluentVersion
@@ -34,8 +33,12 @@ All the public APIs for PyFluent are listed in the left hand margin. Some key AP
 Meshing mode
 ------------
 
-The :ref:`meshing workflow <ref_meshing_workflow_new>` and :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` provide the primary interface for
-creating, editing, managing, and querying mesh data.
+The :ref:`meshing node <ref_meshing>` provides the public meshing API. The
+:ref:`meshing workflow <ref_meshing_workflow>` exposes documented usability
+classes over the underlying internal workflow structure, while
+:ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` provide direct
+operations for querying and modifying mesh data. Meshing preferences and the
+underlying workflow API are also available from the meshing node.
 
 Solution mode
 -------------
@@ -49,31 +52,24 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     :caption: ansys.fluent.core
 
     docker/docker_contents
+    fields/fields_contents
     file_reader/file_reader_contents
     launcher/launcher_contents
-    meshing/meshing_workflow_new
-    meshing/meshing_utilities
+    legacy/legacy_contents
+    meshing/meshing_contents
+    solver/solver_contents
     scheduler/scheduler_contents
     services/services_contents
-    solver/error_message
-    solver/settings_root
-    solver/flicing
-    solver/preferences
-    solver_workflows/solver_workflows_contents
+    session/session_contents
     streaming_services/streaming_services_contents
     utils/utils_contents
-    legacy/legacy_contents
     data_model_cache
     exceptions
-    fields/fields_contents
     fluent_connection
     journaling
     logger
     module_config
-    parametric
-    rpvars
     search
-    session/session_contents
     system_coupling
     workflow_new
     deprecated_apis
@@ -136,8 +132,10 @@ hierarchy = {
         "watchdog",
     ],
     "meshing": [
+        "meshing_workflow",
         "meshing_workflow_new",
         "meshing_utilities",
+        "preferences",
     ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
@@ -160,6 +158,7 @@ hierarchy = {
         "error_message",
         "flobject",
         "flicing",
+        "function/reduction",
         "preferences",
         "solver_workflow",
         "workflow",
@@ -211,25 +210,23 @@ hierarchy = {
         "journaling",
         "logger",
         "parametric",
-        "rpvars",
         "search",
         "system_coupling",
         "workflow_new",
     ],
-    "legacy": [
+    "legacy": ["local_parametric_study", "rpvars"],
+}
+
+legacy_subtrees = {
+    "meshing": [
         "../meshing/datamodel/meshing/meshing_contents",
         "../meshing/datamodel/part_management/part_management_contents",
         "../meshing/datamodel/pm_file_management/pm_file_management_contents",
         "../meshing/datamodel/workflow/workflow_contents",
         "../meshing/tui/tui_contents",
-        "../solver/tui/tui_contents",
     ],
-    "solver_workflows": [
-        "../solver/solver_workflow",
-        "../solver/workflow",
-    ],
+    "solver": ["../solver/tui/tui_contents"],
 }
-
 
 # Maps a file name to additional toctree entries to append to its generated RST page.
 sub_toctrees = {
@@ -263,7 +260,6 @@ wrapper_toctree_patterns = {
     ],
 }
 
-
 # Display name overrides for entries listed in the legacy toctree.
 legacy_toctree_display_names = {
     "../meshing/datamodel/meshing/meshing_contents": "Meshing",
@@ -272,12 +268,6 @@ legacy_toctree_display_names = {
     "../meshing/datamodel/workflow/workflow_contents": "Workflow",
     "../meshing/tui/tui_contents": "Tui (meshing)",
     "../solver/tui/tui_contents": "Tui (solver)",
-}
-
-# Display name overrides for entries listed in the solver_workflows toctree.
-solver_workflows_toctree_display_names = {
-    "../solver/solver_workflow": "Solver workflow",
-    "../solver/workflow": "Workflow",
 }
 
 
@@ -303,7 +293,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
             with open(rst_file, "w", encoding="utf8") as rst:
                 if file == "flobject":
                     rst.write(":orphan:\n\n")
-                rst.write(f".. _ref_{file}:\n\n")
+                rst.write(f".. _ref_{file.replace('/', '_')}:\n\n")
                 if file in wrapper_toctree_patterns:
                     title = file
                     rst.write(f"{title}\n")
@@ -335,20 +325,27 @@ def _generate_api_source_rst_files(folder: str, files: list):
                             "\nSee :ref:`ref_flobject` for details on working with Fluent objects within the settings API.\n"
                         )
                     else:
-                        temp_file_name = file.removesuffix("_new")
-                        title = temp_file_name
+                        temp_file_name = Path(file).name.removesuffix("_new")
+                        title = (
+                            "meshing_workflow (internal)"
+                            if file == "meshing_workflow_new"
+                            else temp_file_name
+                        )
                         rst.write(f"{title}\n")
                         rst.write(f'{"="*(len(title))}\n\n')
-                        rst.write(
-                            f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
-                        )
+                        if file != "meshing_workflow_new":
+                            rst.write(
+                                f".. automodule:: ansys.fluent.core.{folder}.{file.replace('/', '.')}\n"
+                            )
                 else:
-                    temp_file_name = file.removesuffix("_new")
+                    temp_file_name = Path(file).name.removesuffix("_new")
                     title = temp_file_name
                     rst.write(f"{title}\n")
                     rst.write(f'{"="*(len(title))}\n\n')
-                    rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
-                if "root" not in file:
+                    rst.write(
+                        f".. automodule:: ansys.fluent.core.{file.replace('/', '.')}\n"
+                    )
+                if "root" not in file and file != "meshing_workflow_new":
                     _write_common_rst_members(rst_file=rst)
                 if file in sub_toctrees:
                     rst.write(".. toctree::\n")
@@ -357,8 +354,93 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     for sub_file in sub_toctrees[file]:
                         rst.write(f"    {sub_file}\n")
                     rst.write("\n")
-                if file == "meshing_workflow_new":
-                    rst.write(meshing_workflow_bridge_content)
+
+
+def _generate_legacy_index_rst_files(files: list):
+    legacy_index = _get_file_path("legacy", "legacy_contents")
+    with open(legacy_index, "w", encoding="utf8") as index:
+        index.write(".. _ref_legacy:\n\n")
+        index.write("legacy\n")
+        index.write("======\n\n")
+        index.write(".. toctree::\n")
+        index.write("    :maxdepth: 2\n")
+        index.write("    :hidden:\n\n")
+        for file in files:
+            index.write(f"    {file}\n")
+        for subtree in legacy_subtrees:
+            index.write(f"    {subtree}/{subtree}_contents\n")
+        index.write("\n")
+        index.write(legacy_bridge_content)
+
+    for subtree, files in legacy_subtrees.items():
+        subtree_folder = _get_folder_path(f"legacy/{subtree}")
+        Path(subtree_folder).mkdir(parents=True, exist_ok=True)
+        subtree_index = _get_file_path(f"legacy/{subtree}", f"{subtree}_contents")
+        with open(subtree_index, "w", encoding="utf8") as index:
+            index.write(f".. _ref_legacy_{subtree}:\n\n")
+            index.write(f"{subtree}\n")
+            index.write(f"{'=' * len(subtree)}\n\n")
+            index.write(".. toctree::\n")
+            index.write("    :maxdepth: 2\n")
+            index.write("    :hidden:\n\n")
+            for file in files:
+                if file in legacy_toctree_display_names:
+                    index.write(
+                        f"    {legacy_toctree_display_names[file]} <../{file}>\n"
+                    )
+                else:
+                    index.write(f"    ../{file}\n")
+            index.write("\n")
+
+
+def _generate_meshing_index_rst_file(files: list):
+    meshing_index = _get_file_path("meshing", "meshing_contents")
+    with open(meshing_index, "w", encoding="utf8") as index:
+        index.write(".. _ref_meshing:\n\n")
+        index.write("meshing\n")
+        index.write("=======\n\n")
+        index.write(".. automodule:: ansys.fluent.core.meshing\n")
+        _write_common_rst_members(rst_file=index)
+        index.write("\n")
+        index.write(".. toctree::\n")
+        index.write("    :maxdepth: 2\n")
+        index.write("    :hidden:\n\n")
+        for file in files:
+            index.write(f"    {file}\n")
+        index.write("\n")
+        index.write(meshing_bridge_content)
+
+
+def _generate_solver_index_rst_file(files: list):
+    solver_index = _get_file_path("solver", "solver_contents")
+    with open(solver_index, "w", encoding="utf8") as index:
+        index.write(".. _ref_solver:\n\n")
+        index.write("solver\n")
+        index.write("======\n\n")
+        index.write(".. toctree::\n")
+        index.write("    :maxdepth: 2\n")
+        index.write("    :hidden:\n\n")
+        for file in files:
+            if file == "tui/tui_contents":
+                index.write("    tui/tui_contents\n")
+            elif file == "function/reduction":
+                index.write("    function/function_contents\n")
+            else:
+                index.write(f"    {file}\n")
+        index.write("\n")
+
+
+def _generate_solver_function_index_rst_file():
+    function_index = _get_file_path("solver/function", "function_contents")
+    with open(function_index, "w", encoding="utf8") as index:
+        index.write(".. _ref_solver_function:\n\n")
+        index.write("function\n")
+        index.write("========\n\n")
+        index.write(".. toctree::\n")
+        index.write("    :maxdepth: 2\n")
+        index.write("    :hidden:\n\n")
+        index.write("    reduction\n")
+        index.write("\n")
 
 
 def _generate_api_index_rst_files():
@@ -367,8 +449,19 @@ def _generate_api_index_rst_files():
             shutil.rmtree(_get_folder_path(folder))
         if folder == "other":
             _generate_api_source_rst_files(None, files)
-        elif folder in ["meshing", "solver"]:
+        elif folder == "legacy":
             Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
+            _generate_legacy_index_rst_files(files)
+            _generate_api_source_rst_files(folder, files)
+        elif folder == "meshing":
+            Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
+            _generate_meshing_index_rst_file(files)
+            _generate_api_source_rst_files(folder, files)
+        elif folder == "solver":
+            Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
+            _generate_solver_index_rst_file(files)
+            Path(_get_folder_path("solver/function")).mkdir(parents=True, exist_ok=True)
+            _generate_solver_function_index_rst_file()
             _generate_api_source_rst_files(folder, files)
         else:
             Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
@@ -389,23 +482,13 @@ def _generate_api_index_rst_files():
                         index.write(
                             f"    {legacy_toctree_display_names[file]} <{file}>\n"
                         )
-                    elif (
-                        folder == "solver_workflows"
-                        and file in solver_workflows_toctree_display_names
-                    ):
-                        index.write(
-                            f"    {solver_workflows_toctree_display_names[file]} <{file}>\n"
-                        )
                     else:
                         index.write(f"    {file}\n")
                 index.write("\n")
                 match folder:
                     case "legacy":
                         index.write(legacy_bridge_content)
-                    case "solver_workflows":
-                        index.write(solver_workflows_bridge_content)
-            if folder != "solver_workflows":
-                _generate_api_source_rst_files(folder, files)
+            _generate_api_source_rst_files(folder, files)
 
 
 if __name__ == "__main__":
