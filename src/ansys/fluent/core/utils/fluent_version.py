@@ -124,7 +124,8 @@ class FluentVersion(Enum):
                     return member
 
             latest = next(iter(cls))
-            if _version_to_integer(requested_version) > latest.number:
+            version_as_int = _version_to_integer(requested_version) # requires no-raise
+            if version_as_int is None or _version_to_integer(requested_version) > latest.number:
                 warnings.warn(
                     f"Fluent version '{requested_version}' is newer than the highest "
                     f"supported version '{latest.value}'; using '{latest.value}' instead.",
