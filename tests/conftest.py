@@ -27,6 +27,7 @@ import inspect
 import operator
 import os
 from pathlib import Path
+import secrets
 import shutil
 import sys
 
@@ -40,6 +41,7 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.networking import get_free_port
 
 sys.path.append(Path(__file__).parent / "util")
 
@@ -302,6 +304,58 @@ def create_session(**kwargs):
         return pyfluent.launch_fluent(**kwargs)
 
 
+def create_rest_session(**kwargs):
+    """Launch Fluent with its embedded REST/web server enabled.
+
+    Mirrors ``create_session()`` but additionally picks a free port for
+    Fluent's web server (passed via the ``-ws-port`` launch argument) and a
+    freshly generated auth token (passed via the ``FLUENT_WEBSERVER_TOKEN``
+    environment variable), so no externally pre-running REST server is
+    required.
+
+    Returns
+    -------
+    tuple
+        ``(grpc_solver, rest_url, rest_token)``. ``grpc_solver`` is the
+        regular gRPC-connected session object returned by
+        ``pyfluent.launch_fluent()`` - it must be used to tear down the
+        Fluent process (``grpc_solver.exit()``), since the REST transport
+        has no launch/teardown ability of its own.
+    """
+    kwargs.update(get_grpc_launcher_args_for_gh_runs())
+    ws_port = get_free_port()
+    rest_token = secrets.token_hex(16)
+    additional_arguments = (
+        f"{kwargs.pop('additional_arguments', '')} -ws-port {ws_port}".strip()
+    )
+
+    if pyfluent.config.use_file_transfer_service:
+        file_transfer_service = ContainerFileTransferStrategy()
+        grpc_port = get_free_port()
+        container_dict = {
+            "mount_source": file_transfer_service.mount_source,
+            # gRPC port must be the first entry so the launcher picks it as
+            # the gRPC port; the ws port is published alongside it.
+            "ports": {str(grpc_port): grpc_port, str(ws_port): ws_port},
+            "environment": {"FLUENT_WEBSERVER_TOKEN": rest_token},
+        }
+        grpc_solver = pyfluent.launch_fluent(
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+            additional_arguments=additional_arguments,
+            **kwargs,
+        )
+    else:
+        grpc_solver = pyfluent.launch_fluent(
+            env={"FLUENT_WEBSERVER_TOKEN": rest_token},
+            additional_arguments=additional_arguments,
+            **kwargs,
+        )
+
+    rest_url = f"http://localhost:{ws_port}"
+    return grpc_solver, rest_url, rest_token
+
+
 @pytest.fixture
 def new_meshing_session_wo_exit():
     meshing = create_session(mode=pyfluent.FluentMode.MESHING)
@@ -375,21 +429,24 @@ def new_solver_session():
 
 @pytest.fixture
 def http_solver_session():
-    """Solver session connected to a live Fluent server over REST (HTTP).
+    """Solver session connected to a Fluent server over REST (HTTP).
 
-    Requires ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN``; the test is
-    skipped when either is unset.
+    If both ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN`` are set, connects to
+    that already-running server (manual/override workflow). Otherwise, launches
+    a fresh Fluent instance with its web server enabled and connects to it.
     """
     rest_url = os.getenv("FLUENT_REST_URL")
     rest_token = os.getenv("FLUENT_REST_TOKEN")
-    # if not rest_url or not rest_token:
-    #     pytest.skip(
-    #         "REST live server not configured. "
-    #         "Set FLUENT_REST_URL and FLUENT_REST_TOKEN environment variables."
-    #     )
+
+    grpc_solver = None
+    if not rest_url or not rest_token:
+        grpc_solver, rest_url, rest_token = create_rest_session()
+
     solver = Solver.from_http(url=rest_url, token=rest_token)
     yield solver
     solver.exit()
+    if grpc_solver is not None:
+        grpc_solver.exit()
 
 
 @pytest.fixture(

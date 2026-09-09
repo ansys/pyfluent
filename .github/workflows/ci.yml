@@ -572,8 +572,12 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         env:
           MATRIX_VERSION: ${{ matrix.version }}
-          FLUENT_REST_URL: ${{ secrets.FLUENT_REST_URL }}
-          FLUENT_REST_TOKEN: ${{ secrets.FLUENT_REST_TOKEN }}
+          # REST tests launch their own Fluent instance with its web server
+          # enabled and discover the URL/token dynamically (see
+          # create_rest_session() in tests/conftest.py). Set these secrets
+          # only to override with an already-running external REST server.
+          # FLUENT_REST_URL: ${{ secrets.FLUENT_REST_URL }}
+          # FLUENT_REST_TOKEN: ${{ secrets.FLUENT_REST_TOKEN }}
         run: |
           make install-test
           make unittest-dev-${MATRIX_VERSION}
