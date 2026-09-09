@@ -588,69 +588,6 @@ jobs:
         env:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
-  test-rest:
-    name: REST Unit Testing
-    if: ${{ always() }}
-    needs: build
-    runs-on: [public-ubuntu-latest-16-cores]
-    timeout-minutes: 60
-    env:
-      FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup Python
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: Clean Docker Data
-        run: make docker-clean-all-except-supported-images
-        env:
-          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
-      - name: Download package
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: PyFluent-packages
-          path: dist
-
-      - name: Install pyfluent
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: pip install -q --force-reinstall dist/*.whl > /dev/null
-
-      - name: Login to GitHub Container Registry
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Fluent docker image
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: make docker-pull
-
-      - name: REST Unit Testing
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        # The REST tests launch their own Fluent instance with its web server
-        # enabled and connect to the published port. Set FLUENT_REST_URL and
-        # FLUENT_REST_TOKEN to run against an already-running external server.
-        run: |
-          make install-test
-          make unittest-rest-271
-
-      - name: Clean Docker Data
-        if: always()
-        run: make docker-clean-all-except-supported-images
-        env:
-          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
   test-pyconsole:
     name: Test PyConsole
     if: ${{ always() }}

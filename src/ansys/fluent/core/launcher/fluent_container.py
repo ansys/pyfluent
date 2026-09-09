@@ -127,14 +127,14 @@ class LicenseServerNotSpecified(KeyError):
 
 
 def dict_to_str(dict: dict) -> str:
-    """Converts the dict to string while hiding the 'environment' and 'env' arguments from the
-    dictionary, if the environment variable 'PYFLUENT_HIDE_LOG_SECRETS' is '1'.
+    """Converts the dict to string while hiding the 'environment' argument from the dictionary,
+    if the environment variable 'PYFLUENT_HIDE_LOG_SECRETS' is '1'.
     This is useful for logging purposes, to avoid printing sensitive information such as license server details.
     """
 
-    secret_keys = {"environment", "env"}
-    if config.hide_log_secrets and secret_keys & set(dict):
-        modified_dict = {k: v for k, v in dict.items() if k not in secret_keys}
+    if "environment" in dict and config.hide_log_secrets:
+        modified_dict = dict.copy()
+        modified_dict.pop("environment")
         return pformat(modified_dict)
     else:
         return pformat(dict)
@@ -224,18 +224,12 @@ def _setup_volumes(container_dict, mount_source, mount_target, certificates_fold
 
 def _resolve_port_mapping(port, container_dict):
     """Determine port mapping, update ``container_dict['ports']``, and return *container_grpc_port*."""
-    # An explicitly specified 'port' is always the gRPC port and is inserted
-    # first. Any additional ports specified through 'ports' (e.g. a web server
-    # port) are preserved so that they are published from the container too.
     port_mapping = {port: port} if port else {}
-    for container_port, host_port in (container_dict.get("ports") or {}).items():
-        if host_port not in port_mapping.values():
-            port_mapping[container_port] = host_port
+    if not port_mapping and "ports" in container_dict:
+        # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
+        port_mapping = container_dict["ports"]
     if not port_mapping and config.launch_fluent_port:
         p = config.launch_fluent_port
-        port_mapping = {p: p}
-    if not port_mapping:
-        p = get_free_port()
         port_mapping = {p: p}
 
     container_dict.update(
@@ -248,21 +242,19 @@ def _resolve_port_mapping(port, container_dict):
 
 
 def _setup_environment(container_dict, license_server, container_grpc_port):
-    """Populate ``container_dict['environment']`` with license and remoting keys if not already set.
-
-    Environment variables that the caller has already placed in
-    ``container_dict['environment']`` (for example ``FLUENT_WEBSERVER_TOKEN``)
-    are preserved; only the required keys that are still missing are filled in.
-    """
-    env = container_dict.setdefault("environment", {})
-    if "ANSYSLMD_LICENSE_FILE" not in env:
+    """Populate ``container_dict['environment']`` with license and remoting keys if not already set."""
+    if "environment" not in container_dict:
         if not license_server:
             license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
         if not license_server:
             raise LicenseServerNotSpecified()
-        env["ANSYSLMD_LICENSE_FILE"] = license_server
-    env.setdefault("REMOTING_PORTS", f"{container_grpc_port}/portspan=2")
-    env.setdefault("FLUENT_ALLOW_REMOTE_GRPC_CONNECTION", "1")
+        container_dict.update(
+            environment={
+                "ANSYSLMD_LICENSE_FILE": license_server,
+                "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
+                "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
+            }
+        )
 
 
 def _resolve_server_info_file(

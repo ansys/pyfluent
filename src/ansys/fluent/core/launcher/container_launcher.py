@@ -92,10 +92,6 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
     insecure_mode: bool
     """If True, Fluent's gRPC server will be started in insecure mode without TLS. Provide this only when ``certificates_folder``(or ``ANSYS_GRPC_CERTIFICATES`` environment variable) is not set; the two are mutually exclusive. This mode is not recommended. For more details on the implications and usage of insecure mode, refer to the Fluent documentation.
     """
-    env: dict[str, Any] | None
-    """Mapping of environment variables to set for the Fluent process running inside the container.
-    These are merged into ``container_dict['environment']``.
-    """
 
 
 class ContainerArgsWithoutMode(
@@ -213,10 +209,6 @@ class DockerLauncher:
             If True, Fluent's gRPC server is started in insecure mode without TLS. Provide only this when ``certificates_folder``
             (or ``ANSYS_GRPC_CERTIFICATES``) is not set; the two are mutually exclusive. This mode is not recommended. For more
             details on the implications and usage of insecure mode, refer to the Fluent documentation.
-        env : dict[str, str], optional
-            Mapping of environment variables to set for the Fluent process running inside the
-            container. These are merged into ``container_dict['environment']`` and take precedence
-            over the defaults that PyFluent adds.
 
         Raises
         ------
@@ -266,12 +258,6 @@ class DockerLauncher:
             self.argvals["fluent_icing"] = True
         if self.argvals.get("container_dict") is None:
             self.argvals["container_dict"] = {}
-        if self.argvals.get("env"):
-            # Environment variables requested by the caller are merged into the
-            # container environment, where they take precedence over the
-            # defaults added later by 'configure_container_dict()'.
-            environment = self.argvals["container_dict"].setdefault("environment", {})
-            environment.update({str(k): str(v) for k, v in self.argvals["env"].items()})
         if self.argvals.get("product_version") is not None:
             self.argvals["container_dict"][
                 "image_tag"
