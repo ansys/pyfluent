@@ -49,7 +49,7 @@ Depending on how Fluent is launched, different file transfer strategies are avai
 
       >>> import ansys.fluent.core as pyfluent
       >>> from ansys.fluent.core import examples
-      >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+      >>> from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 
       >>> case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False)
 
@@ -76,7 +76,7 @@ Depending on how Fluent is launched, different file transfer strategies are avai
 
       >>> import ansys.fluent.core as pyfluent
       >>> from ansys.fluent.core import examples
-      >>> from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
+      >>> from ansys.fluent.core.file_transfer_service import StandaloneFileTransferStrategy
 
       >>> mesh_file = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 

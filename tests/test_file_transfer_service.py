@@ -30,7 +30,7 @@ from conftest import SKIP_BLOCKED, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import (
+from ansys.fluent.core.file_transfer_service import (
     ContainerFileTransferStrategy,
     StandaloneFileTransferStrategy,
 )
@@ -45,7 +45,7 @@ def _get_certs_folder():
 def test_remote_grpc_fts_container():
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
-    from ansys.fluent.core.utils.file_transfer_service import (
+    from ansys.fluent.core.file_transfer_service import (
         ContainerFileTransferStrategy,
     )
 

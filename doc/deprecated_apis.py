@@ -209,12 +209,12 @@ PYFLUENT_DEPRECATED_DATA = [
         "`surfaces`",
     ),
     (
-        "The `container_mount_path` argument of :py:meth:`ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy>`",
+        "The `container_mount_path` argument of :py:meth:`ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy>`",
         "0.23.dev1",
         "`mount_target`",
     ),
     (
-        "The `host_mount_path` argument of :py:meth:`ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy>`",
+        "The `host_mount_path` argument of :py:meth:`ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy <ansys.fluent.core.file_transfer_service.ContainerFileTransferStrategy>`",
         "0.23.dev1",
         "`mount_source`",
     ),

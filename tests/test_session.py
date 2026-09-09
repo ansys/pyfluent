@@ -52,6 +52,7 @@ from ansys.fluent.core.exceptions import (
     BetaFeaturesNotEnabled,
     PyFluentDeprecationWarning,
 )
+from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.services.streaming_services.events_streaming import (
@@ -64,7 +65,6 @@ from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.execution import timeout_loop
-from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 
