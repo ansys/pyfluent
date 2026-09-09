@@ -205,7 +205,12 @@ def test_download_file_cache_hit_skips_downloader(tmp_path, monkeypatch):
 
     monkeypatch.setattr(examples.downloads.download_manager, "download_file", _boom)
 
-    result = examples.download_file("cached.cas", "some/dir", save_path=str(tmp_path))
+    result = examples.download_file(
+        "cached.cas",
+        "some/dir",
+        save_path=str(tmp_path),
+        return_without_path=False,
+    )
     assert result == str(tmp_path / "cached.cas")
 
 
@@ -244,7 +249,12 @@ def test_download_file_decompresses_zip(tmp_path, monkeypatch):
 
     monkeypatch.setattr(examples.downloads.download_manager, "download_file", _fake)
 
-    result = examples.download_file("archive.zip", "some/dir", save_path=str(tmp_path))
+    result = examples.download_file(
+        "archive.zip",
+        "some/dir",
+        save_path=str(tmp_path),
+        return_without_path=False,
+    )
     assert result == str(tmp_path / "archive")
     assert (tmp_path / "inner.txt").is_file()
 
