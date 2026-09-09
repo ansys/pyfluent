@@ -21,20 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Backward-compatible interfaces for Fluent.
+"""Legacy PyFluent interfaces, runtime parameters, and meshing workflows.
 
-This package provides legacy support for running local parametric studies and
-reading or writing Fluent RP variables through :class:`LocalParametricStudy`
-and :class:`RPVars`. It also contains the legacy workflow wrappers in
-:mod:`ansys.fluent.core.legacy.workflow_old` and
-:mod:`ansys.fluent.core.legacy.meshing_workflow_old`.
+This package contains older PyFluent features, including :class:`RPVars`,
+runtime parameter types, and legacy meshing workflow classes. New code should
+prefer the current settings and object-based meshing APIs.
 """
 
 from ansys.fluent.core.legacy.rpvars import RPVars, RPVarType
-from ansys.fluent.core.local_parametric_study import LocalParametricStudy
 
-__all__ = [
-    "LocalParametricStudy",
+__all__ = (
     "RPVars",
     "RPVarType",
-]
+)
