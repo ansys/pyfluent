@@ -26,7 +26,7 @@ from collections.abc import Callable
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core._data_model_cache import DataModelCache
 from ansys.fluent.core.examples import download_file
 
 

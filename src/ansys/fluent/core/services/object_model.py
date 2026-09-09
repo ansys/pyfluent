@@ -47,7 +47,7 @@ import functools
 import logging
 from typing import Any, Iterable, TypeVar
 
-from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.abstract_object_model import AbstractObjectModel
 from ansys.fluent.core.services.object_model_utilities import (

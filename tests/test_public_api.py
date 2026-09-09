@@ -91,7 +91,6 @@ def test_ansys_fluent_core_public_api():
         "VectorFieldDataRequest",
         "config",
         "connect_to_fluent",
-        "data_model_cache",
         "docker",
         "examples",
         "exceptions",

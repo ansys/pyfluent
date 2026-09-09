@@ -9,7 +9,7 @@
     - static_info_type
     - stub_file
 
-  Module: ansys.fluent.core.data_model_cache
+  Module: ansys.fluent.core._data_model_cache
   Class: DataModelCache
     - rules_str_to_cache
     - rules_str_to_config
