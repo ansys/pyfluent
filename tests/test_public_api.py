@@ -103,7 +103,7 @@ def test_ansys_fluent_core_public_api():
         "launcher",
         "logger",
         "module_config",
-        "legacy",
+        "rpvars",
         "scheduler",
         "search",
         "services",
@@ -121,7 +121,6 @@ def test_ansys_fluent_core_public_api():
         "utils",
         "version_info",
         "warning",
-        "workflow",
     ]
 
     # Get actual public API
