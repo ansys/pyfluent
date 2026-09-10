@@ -70,7 +70,6 @@ def static_mixer_settings_file():
     return examples.download_file(
         "Static_Mixer_Params",
         "pyfluent/static_mixer",
-        return_without_path=False,
     )
 
 

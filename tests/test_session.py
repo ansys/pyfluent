@@ -209,7 +209,6 @@ def test_download_file_cache_hit_skips_downloader(tmp_path, monkeypatch):
         "cached.cas",
         "some/dir",
         save_path=str(tmp_path),
-        return_without_path=False,
     )
     assert result == str(tmp_path / "cached.cas")
 
@@ -253,28 +252,9 @@ def test_download_file_decompresses_zip(tmp_path, monkeypatch):
         "archive.zip",
         "some/dir",
         save_path=str(tmp_path),
-        return_without_path=False,
     )
     assert result == str(tmp_path / "archive")
     assert (tmp_path / "inner.txt").is_file()
-
-
-def test_download_file_return_without_path(tmp_path, monkeypatch):
-    def _fake(filename, directory, destination, force, timeout, max_retries):
-        target = Path(destination) / directory / filename
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(b"x")
-        return str(target)
-
-    monkeypatch.setattr(examples.downloads.download_manager, "download_file", _fake)
-
-    result = examples.download_file(
-        "elbow.cas.h5",
-        "pyfluent/mixing_elbow",
-        save_path=str(tmp_path),
-        return_without_path=True,
-    )
-    assert result == "elbow.cas.h5"
 
 
 def test_examples_path_raises_when_missing(tmp_path, monkeypatch):
@@ -898,7 +878,6 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     # mesh_file_2d = examples.download_file(
     #     "sample_2d_mesh.msh.h5",
     #     "pyfluent/surface_mesh",
-    #     return_without_path=False,
     # )
 
     # if fluent_version >= FluentVersion.v252:

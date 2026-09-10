@@ -51,7 +51,7 @@ Depending on how Fluent is launched, different file transfer strategies are avai
       >>> from ansys.fluent.core import examples
       >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 
-      >>> case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False)
+      >>> case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
       >>> file_transfer_service = ContainerFileTransferStrategy()
       >>> container_dict = {"mount_source": file_transfer_service.mount_source}

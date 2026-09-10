@@ -55,7 +55,6 @@ def download_file(
     file_name: str,
     directory: str | None = None,
     save_path: "PathType | None" = None,
-    return_without_path: bool | None = None,
     force: bool = False,
     timeout: float = 60.0,
     max_retries: int = 3,
@@ -78,13 +77,6 @@ def download_file(
         Path to download the file to. Defaults to
         ``pyfluent.config.container_mount_source`` if set, otherwise the current
         working directory.
-    return_without_path : bool, optional
-        When unspecified, defaults to ``False``, unless
-        ``pyfluent.config.launch_fluent_container`` is set to ``True`` and
-        ``pyfluent.config.use_file_transfer_service`` is not, in which case it
-        defaults to ``True``. This is used with Fluent Docker container images so
-        that only the file name is returned when Fluent inside the container
-        expects it to be accessed relative to its own working directory.
     force : bool, default: False
         Whether to always download the example file. The default is
         ``False``, in which case if the example file is cached, it
@@ -105,8 +97,7 @@ def download_file(
     Returns
     -------
     str
-        File path of the downloaded or already existing file, or only the file
-        name if ``return_without_path=True``.
+        File path of the downloaded or already existing file.
 
     Examples
     --------
@@ -114,27 +105,11 @@ def download_file(
     >>> file_path = examples.download_file("bracket.iges", "geometry")
     >>> file_path
     '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
-    >>> file_name = examples.download_file("bracket.iges", "geometry", return_without_path=True)
-    >>> file_name
-    'bracket.iges'
     >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='.')
     '/home/<current_folder_path>/bracket.iges'
-    >>> file_name = examples.download_file("bracket.iges", "geometry", save_path='.', return_without_path=True)
-    >>> file_name
-    'bracket.iges'
     >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
     '/home/<user_specified_path>/bracket.iges'
-    >>> file_name = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>',
-    ...                                   return_without_path=True)
-    >>> file_name
-    'bracket.iges'
     """
-    if return_without_path is None:
-        return_without_path = (
-            pyfluent.config.launch_fluent_container
-            and not pyfluent.config.use_file_transfer_service
-        )
-
     file_name = os.path.basename(file_name)
     if save_path is None:
         save_path = pyfluent.config.container_mount_source or os.getcwd()
@@ -145,7 +120,7 @@ def download_file(
 
     # DownloadManager caches under its nested path, so also check the flat path here.
     if not force and os.path.exists(unzipped_path):
-        return os.path.basename(unzipped_path) if return_without_path else unzipped_path
+        return unzipped_path
 
     downloaded_path = download_manager.download_file(
         filename=file_name,
@@ -162,7 +137,7 @@ def download_file(
     if local_path.endswith(".zip"):
         _decompress(local_path)
         local_path = unzipped_path
-    return os.path.basename(local_path) if return_without_path else local_path
+    return local_path
 
 
 def path(file_name: str):

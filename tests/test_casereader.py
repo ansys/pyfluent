@@ -88,7 +88,6 @@ def static_mixer_file():
     return examples.download_file(
         "Static_Mixer_Parameters.cas.h5",
         "pyfluent/static_mixer",
-        return_without_path=False,
     )
 
 
@@ -101,7 +100,6 @@ def test_casereader_static_mixer_binary_cas():
         case_file_name=examples.download_file(
             "Static_Mixer_Parameters_legacy_binary.cas",
             "pyfluent/static_mixer",
-            return_without_path=False,
         )
     )
 
@@ -111,7 +109,6 @@ def test_casereader_static_mixer_binary_gz():
         case_file_name=examples.download_file(
             "Static_Mixer_Parameters_legacy_binary.cas.gz",
             "pyfluent/static_mixer",
-            return_without_path=False,
         )
     )
 
@@ -121,7 +118,6 @@ def test_casereader_static_mixer_text_cas():
         case_file_name=examples.download_file(
             "Static_Mixer_Parameters_legacy_text.cas",
             "pyfluent/static_mixer",
-            return_without_path=False,
         )
     )
 
@@ -131,7 +127,6 @@ def test_casereader_static_mixer_text_gz():
         case_file_name=examples.download_file(
             "Static_Mixer_Parameters_legacy_text.cas.gz",
             "pyfluent/static_mixer",
-            return_without_path=False,
         )
     )
 
@@ -145,7 +140,6 @@ def create_dir_structure_locally(copy_1: bool = False, copy_2: bool = False):
     case_file_name = examples.download_file(
         "Static_Mixer_Parameters.cas.h5",
         "pyfluent/static_mixer/" + case_file_dir,
-        return_without_path=False,
     )
     prj_dir = join(dirname(case_file_name), case_file_dir)
     Path(prj_dir).mkdir(parents=True, exist_ok=True)
@@ -155,13 +149,12 @@ def create_dir_structure_locally(copy_1: bool = False, copy_2: bool = False):
         case_file_name_2 = examples.download_file(
             "Static_Mixer_Parameters_legacy_binary.cas.gz",
             "pyfluent/static_mixer",
-            return_without_path=False,
         )
         shutil.copy2(case_file_name_2, prj_dir)
     prj_file_dir = "Static_Mixer_Parameter_project_file"
     prj_file = r"Static_Mixer_Parameters.flprj"
     prj_file_name = examples.download_file(
-        prj_file, "pyfluent/static_mixer/" + prj_file_dir, return_without_path=False
+        prj_file, "pyfluent/static_mixer/" + prj_file_dir
     )
     prj_file_dir = join(dirname(prj_file_name), prj_file_dir)
     shutil.copy2(prj_file_name, prj_file_dir)
@@ -196,7 +189,7 @@ def test_casereader_for_project_directory_invalid_project_file():
 def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_differently():
     call_casereader(
         case_file_name=examples.download_file(
-            "mixer-ran_2019r3.cas.gz", "pyfluent/optislang", return_without_path=False
+            "mixer-ran_2019r3.cas.gz", "pyfluent/optislang"
         ),
         expected=dict(
             precision=1,
@@ -324,17 +317,14 @@ def test_mesh_reader():
     mesh_file_2d = examples.download_file(
         "sample_2d_mesh.msh.h5",
         "pyfluent/surface_mesh",
-        return_without_path=False,
     )
     mesh_file_3d = examples.download_file(
         "mixing_elbow.msh.h5",
         "pyfluent/mixing_elbow",
-        return_without_path=False,
     )
     case_file = examples.download_file(
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
-        return_without_path=False,
     )
     mesh_reader_2d = CaseFile(case_file_name=mesh_file_2d)
     mesh_reader_3d = CaseFile(case_file_name=mesh_file_3d)
@@ -376,7 +366,6 @@ def test_read_flprj_3891():
     data_zip = examples.download_file(
         "data.zip",
         "pyfluent/flprj_3891",
-        return_without_path=False,
     )
     prj_file_name = next(Path(data_zip).with_suffix("").glob("*.flprj"))
     assert (
