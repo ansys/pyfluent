@@ -59,7 +59,7 @@ from ansys.fluent.core.exceptions import (
 )
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
-from ansys.fluent.core.legacy.rpvars import RPVars
+from ansys.fluent.core.rpvars import RPVars
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.utils.deprecate import deprecate_function
 from ansys.fluent.core.utils.fluent_version import FluentVersion

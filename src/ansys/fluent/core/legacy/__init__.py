@@ -29,7 +29,7 @@ old client-side meshing workflow implementation, in
 :mod:`ansys.fluent.core.legacy.workflow_old`.
 """
 
-from ansys.fluent.core.legacy.rpvars import RPVars, RPVarType
+from ansys.fluent.core.rpvars import RPVars, RPVarType
 
 __all__ = (
     "RPVars",

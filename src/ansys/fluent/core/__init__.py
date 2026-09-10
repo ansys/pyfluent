@@ -74,11 +74,9 @@ from ansys.fluent.core import (  # noqa: E402
 )
 from ansys.fluent.core import exceptions as _exceptions  # noqa: E402
 from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
-from ansys.fluent.core.legacy import rpvars as _rpvars  # noqa: E402
 from ansys.fluent.core.session import file as _session_file  # noqa: E402
 
 _sys.modules["ansys.fluent.core.file_session"] = _session_file
-_sys.modules["ansys.fluent.core.rpvars"] = _rpvars
 _sys.modules["ansys.fluent.core.parametric"] = _local_parametric_study
 _sys.modules["ansys.fluent.core.pyfluent_warnings"] = _exceptions
 _sys.modules["ansys.fluent.core.filereader"] = _file_reader
