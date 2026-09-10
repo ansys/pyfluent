@@ -691,6 +691,7 @@ jobs:
         run: |
           source .venv/bin/activate
           python -m pip install ansys-fluent-core[reader,tests]
+          python -m pip install -q --force-reinstall dist/*.whl > /dev/null
           python -m pytest --fluent-version=27.1 tests/test_pyconsole.py
 
   nightly-dev-test:

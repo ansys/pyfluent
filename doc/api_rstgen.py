@@ -1,413 +1,184 @@
-"""Provides a module for generating PyFluent API RST files."""
+"""Generate API reference pages from the ``ansys.fluent.core`` package tree."""
 
-import os
 from pathlib import Path
 import shutil
 
-from doc_utils import (
-    legacy_bridge_content,
-    meshing_workflow_bridge_content,
-    solver_workflows_bridge_content,
-)
-
 from ansys.fluent.core import FluentVersion
 
-api_contents_path = (
-    Path(__file__).parents[0].resolve() / "source" / "api" / "api_contents.rst"
-)
-fluent_version = FluentVersion.current_release()
-
-
-def _write_rst_file(output_path: str, version: str):
-    content = f""".. _ref_api:
-
-API reference
-=============
-
-This API reference corresponds to {version}. PyFluent maintains strong backward compatibility guarantees, so scripts targeting older Ansys versions are expected to work without modification.
-
-This is PyFluent's class and function reference. Please refer to the :ref:`ref_user_guide` for
-full guidelines on their use.
-
-All the public APIs for PyFluent are listed in the left hand margin. Some key APIs are mentioned below:
-
-Meshing mode
-------------
-
-The :ref:`meshing workflow <ref_meshing_workflow_new>` and :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` provide the primary interface for
-creating, editing, managing, and querying mesh data.
-
-Solution mode
--------------
-
-The solver :ref:`settings API <ref_root>` is the main interface for controlling and running the solver.
-
-
-.. toctree::
-    :maxdepth: 2
-    :hidden:
-    :caption: ansys.fluent.core
-
-    docker/docker_contents
-    file_reader/file_reader_contents
-    launcher/launcher_contents
-    meshing/meshing_workflow_new
-    meshing/meshing_utilities
-    scheduler/scheduler_contents
-    services/services_contents
-    solver/error_message
-    solver/settings_root
-    solver/flicing
-    solver/preferences
-    solver_workflows/solver_workflows_contents
-    streaming_services/streaming_services_contents
-    utils/utils_contents
-    legacy/legacy_contents
-    data_model_cache
-    exceptions
-    fields/fields_contents
-    fluent_connection
-    journaling
-    logger
-    module_config
-    parametric
-    rpvars
-    search
-    session/session_contents
-    system_coupling
-    workflow_new
-    deprecated_apis
-"""
-
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(content)
-
-
-def _get_folder_path(folder_name: str):
-    """Get folder path.
-
-    Parameters
-    ----------
-    folder_name: str
-        Name of the folder.
-
-    Returns
-    -------
-        Path of the folder.
-    """
-    return (Path(__file__) / ".." / "source" / "api" / folder_name).resolve()
-
-
-def _get_file_path(folder_name: str, file_name: str):
-    """Get file path.
-
-    Parameters
-    ----------
-    folder_name: str
-        Name of the folder.
-
-    file_name: str
-        Name of the file.
-
-    Returns
-    -------
-        Path of the file.
-    """
-    return (
-        Path(__file__) / ".." / "source" / "api" / folder_name / f"{file_name}.rst"
-    ).resolve()
-
-
-hierarchy = {
-    "docker": ["docker_compose"],
-    "file_reader": ["case_file", "data_file", "lispy"],
-    "launcher": [
-        "container_launcher",
-        "error_handler",
-        "fluent_container",
-        "launcher_utils",
-        "launcher",
-        "pim_launcher",
-        "process_launch_string",
-        "launch_options",
-        "slurm_launcher",
-        "standalone_launcher",
-        "watchdog",
-    ],
-    "meshing": [
-        "meshing_workflow_new",
-        "meshing_utilities",
-    ],
-    "scheduler": ["load_machines", "machine_list"],
-    "services": [
-        "application_runtime",
-        "batch_ops",
-        "object_model",
-        "text_interface",
-        "events",
-        "field_data",
-        "health_check",
-        "interceptors",
-        "monitors",
-        "reduction",
-        "scheme_interpreter",
-        "settings",
-        "solution_variables",
-        "transcript",
-    ],
-    "solver": [
-        "error_message",
-        "flobject",
-        "flicing",
-        "preferences",
-        "solver_workflow",
-        "workflow",
-        "settings_root",
-        "tui/tui_contents",
-    ],
-    "streaming_services": [
-        "datamodel_event_streaming",
-        "datamodel_streaming",
-        "events_streaming",
-        "field_data_streaming",
-        "monitor_streaming",
-        "streaming",
-        "transcript_streaming",
-    ],
-    "utils": [
-        "data_transfer",
-        "deprecate",
-        "dictionary_operations",
-        "execution",
-        "file_transfer_service",
-        "fix_doc",
-        "fldoc",
-        "fluent_version",
-        "networking",
-        "setup_for_fluent",
-    ],
-    "fields": [
-        "field_data_interfaces",
-        "live_field_data",
-        "reduction",
-        "solution_variables",
-    ],
-    "session": [
-        "base_meshing",
-        "meshing",
-        "pure_meshing",
-        "solver",
-        "solver_icing",
-        "solver_aero",
-        "solver_lite",
-        "utilities",
-        "file",
-    ],
-    "other": [
-        "module_config",
-        "exceptions",
-        "fluent_connection",
-        "journaling",
-        "logger",
-        "parametric",
-        "rpvars",
-        "search",
-        "system_coupling",
-        "workflow_new",
-    ],
-    "legacy": [
-        "../meshing/datamodel/meshing/meshing_contents",
-        "../meshing/datamodel/part_management/part_management_contents",
-        "../meshing/datamodel/pm_file_management/pm_file_management_contents",
-        "../meshing/datamodel/workflow/workflow_contents",
-        "../meshing/tui/tui_contents",
-        "../solver/tui/tui_contents",
-    ],
-    "solver_workflows": [
-        "../solver/solver_workflow",
-        "../solver/workflow",
-    ],
+DOC_DIR = Path(__file__).resolve().parent
+SOURCE_PACKAGE = DOC_DIR.parent / "src" / "ansys" / "fluent" / "core"
+API_DIR = DOC_DIR / "source" / "api"
+PACKAGE_NAME = "ansys.fluent.core"
+SKIP_DIRECTORIES = {
+    "__pycache__",
+    "api_tree",
+    "docs",
+    "codegen",
+    "examples",
+    "expressions",
+    "generated",
+    "rest",
+    "ui",
+    "utils",
+}
+SKIP_FILES = {
+    "settings_builtin_bases",
+    "settings_builtin_data",
+    "settings_external",
+    "meshing_workflow_old",
+    "workflow_old",
+}
+ADDITIONAL_DOCUMENTATION = {
+    "ansys.fluent.core.meshing": (
+        "Meshing workflows use the underlying meshing workflow object. See the "
+        ":ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` "
+        "for details.\n"
+    ),
+    "ansys.fluent.core.solver": (
+        "Solver expose an underlying hierarchical settings object. See "
+        "the :ref:`settings API <ref_root>` for details.\n"
+    ),
 }
 
 
-# Maps a file name to additional toctree entries to append to its generated RST page.
-sub_toctrees = {
-    "meshing_workflow_new": [
-        "datamodel/meshing_workflow/application/application_contents",
-        "datamodel/meshing_workflow/general/general_contents",
-        "datamodel/meshing_workflow/parts/parts_contents",
-        "datamodel/meshing_workflow/parts_files/parts_files_contents",
-        "datamodel/meshing_workflow/task_object/task_object_contents",
-    ],
-}
+def _write_common_options(rst_file):
+    rst_file.write(
+        "    :members:\n"
+        "    :show-inheritance:\n"
+        "    :undoc-members:\n"
+        "    :exclude-members: __weakref__, __dict__\n"
+        "    :special-members: __init__, __new__\n"
+        "    :autosummary:\n"
+    )
 
 
-# Wrapper pages that should behave like top-level navigation nodes while
-# listing child pages directly in the same tree context.
-wrapper_toctree_patterns = {
-    "meshing_utilities": [
-        "datamodel/meshing_utilities/*/*_contents",
-    ],
-    "preferences": [
-        "datamodel/preferences/*/*_contents",
-    ],
-    "flicing": [
-        "datamodel/flicing/*/*_contents",
-    ],
-    "solver_workflow": [
-        "datamodel/solver_workflow/*/*_contents",
-    ],
-    "workflow": [
-        "datamodel/workflow/*/*_contents",
-    ],
-}
+def _write_api_page(rst_file, title, directive, module_name):
+    rst_file.write(f".. _ref_{module_name.replace('.', '_')}:\n\n")
+    rst_file.write(f"{title}\n")
+    rst_file.write(f"{'=' * len(title)}\n\n")
+    rst_file.write(f".. {directive}:: {module_name}\n")
+    _write_common_options(rst_file)
 
 
-# Display name overrides for entries listed in the legacy toctree.
-legacy_toctree_display_names = {
-    "../meshing/datamodel/meshing/meshing_contents": "Meshing",
-    "../meshing/datamodel/part_management/part_management_contents": "Part management",
-    "../meshing/datamodel/pm_file_management/pm_file_management_contents": "Part file management",
-    "../meshing/datamodel/workflow/workflow_contents": "Workflow",
-    "../meshing/tui/tui_contents": "Tui (meshing)",
-    "../solver/tui/tui_contents": "Tui (solver)",
-}
-
-# Display name overrides for entries listed in the solver_workflows toctree.
-solver_workflows_toctree_display_names = {
-    "../solver/solver_workflow": "Solver workflow",
-    "../solver/workflow": "Workflow",
-}
+def _write_additional_documentation(rst_file, module_name):
+    additional_documentation = ADDITIONAL_DOCUMENTATION.get(module_name)
+    if additional_documentation:
+        rst_file.write(f"\n{additional_documentation}\n")
 
 
-def _write_common_rst_members(rst_file):
-    rst_file.write("    :members:\n")
-    rst_file.write("    :show-inheritance:\n")
-    rst_file.write("    :undoc-members:\n")
-    rst_file.write("    :exclude-members: __weakref__, __dict__\n")
-    rst_file.write("    :special-members: __init__\n")
-    rst_file.write("    :autosummary:\n")
+def _module_name(source_path):
+    relative_path = source_path.relative_to(SOURCE_PACKAGE).with_suffix("")
+    return ".".join((PACKAGE_NAME, *relative_path.parts))
 
 
-def _generate_api_source_rst_files(folder: str, files: list):
-    for file in files:
-        if file.endswith("_contents"):
-            pass
-        else:
-            if folder:
-                rst_file = _get_file_path(folder, file)
+def _package_name(source_path):
+    relative_path = source_path.relative_to(SOURCE_PACKAGE)
+    if not relative_path.parts:
+        return PACKAGE_NAME
+    return ".".join((PACKAGE_NAME, *relative_path.parts))
+
+
+def _documented_children(source_path):
+    children = []
+    for child in source_path.iterdir():
+        if (
+            child.name in SKIP_DIRECTORIES
+            or child.name.startswith("_")
+            or child.stem in SKIP_FILES
+        ):
+            continue
+        if child.is_dir() or (child.suffix == ".py" and child.name != "__init__.py"):
+            children.append(child)
+    return sorted(children, key=lambda path: (not path.is_dir(), path.name))
+
+
+def _write_module_page(source_path):
+    module_name = _module_name(source_path)
+    output_path = API_DIR / source_path.relative_to(SOURCE_PACKAGE).with_suffix(".rst")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf8") as rst_file:
+        _write_api_page(rst_file, source_path.stem, "automodule", module_name)
+
+
+def _write_package_index(source_path):
+    package_name = _package_name(source_path)
+    relative_path = source_path.relative_to(SOURCE_PACKAGE)
+    output_directory = API_DIR / relative_path
+    output_directory.mkdir(parents=True, exist_ok=True)
+    index_name = (
+        f"{source_path.name}_contents.rst"
+        if relative_path.parts
+        else "api_contents.rst"
+    )
+    output_path = output_directory / index_name
+    title = source_path.name if relative_path.parts else PACKAGE_NAME
+
+    with output_path.open("w", encoding="utf8") as rst_file:
+        _write_api_page(rst_file, title, "automodule", package_name)
+        _write_additional_documentation(rst_file, package_name)
+        rst_file.write("\n.. toctree::\n")
+        rst_file.write("    :maxdepth: 2\n")
+        rst_file.write("    :hidden:\n\n")
+
+        for child in _documented_children(source_path):
+            if child.is_dir():
+                rst_file.write(f"    {child.name}/{child.name}_contents\n")
             else:
-                rst_file = _get_file_path("", file)
-            os.makedirs(os.path.dirname(rst_file), exist_ok=True)
-            with open(rst_file, "w", encoding="utf8") as rst:
-                if file == "flobject":
-                    rst.write(":orphan:\n\n")
-                rst.write(f".. _ref_{file}:\n\n")
-                if file in wrapper_toctree_patterns:
-                    title = file
-                    rst.write(f"{title}\n")
-                    rst.write(f'{"="*(len(title))}\n\n')
-                    rst.write(".. toctree::\n")
-                    rst.write("    :maxdepth: 2\n")
-                    rst.write("    :hidden:\n")
-                    rst.write("    :glob:\n\n")
-                    for pattern in wrapper_toctree_patterns[file]:
-                        rst.write(f"    {pattern}\n")
-                    rst.write("\n")
-                    rst.write(
-                        "Please follow the tree to access the APIs under this section.\n"
-                    )
-                    continue
-                if folder:
-                    if "root" in file:
-                        # Keep legacy references working while preserving the specific page anchor.
-                        rst.write(".. _ref_root:\n\n")
-                        rst.write("settings\n")
-                        rst.write(f'{"="*(len("settings"))}\n\n')
-                        rst.write(
-                            "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
-                        )
-                        rst.write(
-                            "other settings objects in a hierarchical structure.\n"
-                        )
-                        rst.write(
-                            "\nSee :ref:`ref_flobject` for details on working with Fluent objects within the settings API.\n"
-                        )
-                    else:
-                        temp_file_name = file.removesuffix("_new")
-                        title = temp_file_name
-                        rst.write(f"{title}\n")
-                        rst.write(f'{"="*(len(title))}\n\n')
-                        rst.write(
-                            f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
-                        )
-                else:
-                    temp_file_name = file.removesuffix("_new")
-                    title = temp_file_name
-                    rst.write(f"{title}\n")
-                    rst.write(f'{"="*(len(title))}\n\n')
-                    rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
-                if "root" not in file:
-                    _write_common_rst_members(rst_file=rst)
-                if file in sub_toctrees:
-                    rst.write(".. toctree::\n")
-                    rst.write("    :maxdepth: 2\n")
-                    rst.write("    :hidden:\n\n")
-                    for sub_file in sub_toctrees[file]:
-                        rst.write(f"    {sub_file}\n")
-                    rst.write("\n")
-                if file == "meshing_workflow_new":
-                    rst.write(meshing_workflow_bridge_content)
+                rst_file.write(f"    {child.stem}\n")
+
+        rst_file.write("\n")
 
 
-def _generate_api_index_rst_files():
-    for folder, files in hierarchy.items():
-        if Path(_get_folder_path(folder)).is_dir():
-            shutil.rmtree(_get_folder_path(folder))
-        if folder == "other":
-            _generate_api_source_rst_files(None, files)
-        elif folder in ["meshing", "solver"]:
-            Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
-            _generate_api_source_rst_files(folder, files)
+def _generate_package_tree(source_path):
+    if source_path != SOURCE_PACKAGE:
+        _write_package_index(source_path)
+    for child in _documented_children(source_path):
+        if child.is_dir():
+            _generate_package_tree(child)
         else:
-            Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
-            folder_index = _get_file_path(folder, f"{folder}_contents")
-            with open(folder_index, "w", encoding="utf8") as index:
-                index.write(f".. _ref_{folder}:\n\n")
-                folder_title = folder
-                index.write(f"{folder_title}\n")
-                index.write(f'{"="*(len(folder_title))}\n\n')
-                if folder not in ["legacy", "solver_workflows"]:
-                    index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
-                    _write_common_rst_members(rst_file=index)
-                index.write(".. toctree::\n")
-                index.write("    :maxdepth: 2\n")
-                index.write("    :hidden:\n\n")
-                for file in files:
-                    if folder == "legacy" and file in legacy_toctree_display_names:
-                        index.write(
-                            f"    {legacy_toctree_display_names[file]} <{file}>\n"
-                        )
-                    elif (
-                        folder == "solver_workflows"
-                        and file in solver_workflows_toctree_display_names
-                    ):
-                        index.write(
-                            f"    {solver_workflows_toctree_display_names[file]} <{file}>\n"
-                        )
-                    else:
-                        index.write(f"    {file}\n")
-                index.write("\n")
-                match folder:
-                    case "legacy":
-                        index.write(legacy_bridge_content)
-                    case "solver_workflows":
-                        index.write(solver_workflows_bridge_content)
-            if folder != "solver_workflows":
-                _generate_api_source_rst_files(folder, files)
+            _write_module_page(child)
+
+
+def _write_api_index():
+    version = FluentVersion.current_release()
+    output_path = API_DIR / "api_contents.rst"
+    with output_path.open("w", encoding="utf8") as rst_file:
+        rst_file.write(
+            ".. _ref_api:\n\n"
+            "API reference\n"
+            "=============\n\n"
+            f"This API reference corresponds to {version}. PyFluent maintains strong "
+            "backward compatibility guarantees, so scripts targeting older Ansys "
+            "versions are expected to work without modification.\n\n"
+            "This is PyFluent's class and function reference. Please refer to the "
+            ":ref:`ref_user_guide` for full guidelines on their use.\n\n"
+            "All public APIs for PyFluent are listed below.\n\n"
+            ".. toctree::\n"
+            "    :maxdepth: 2\n"
+            "    :hidden:\n\n"
+        )
+        for child in _documented_children(SOURCE_PACKAGE):
+            if child.is_dir():
+                rst_file.write(f"    {child.name}/{child.name}_contents\n")
+            else:
+                rst_file.write(f"    {child.stem}\n")
+
+
+def generate():
+    """Generate the API RST tree from the Python source tree.
+
+    Raises:
+        FileNotFoundError: If the source Python package directory does not exist.
+    """
+    if not SOURCE_PACKAGE.is_dir():
+        raise FileNotFoundError(f"Python package not found: {SOURCE_PACKAGE}")
+
+    if API_DIR.exists():
+        shutil.rmtree(API_DIR)
+    API_DIR.mkdir(parents=True)
+    _write_api_index()
+    _generate_package_tree(SOURCE_PACKAGE)
 
 
 if __name__ == "__main__":
-    _write_rst_file(api_contents_path, fluent_version)
-    _generate_api_index_rst_files()
+    generate()

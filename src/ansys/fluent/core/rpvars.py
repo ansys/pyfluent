@@ -25,7 +25,9 @@
 
 The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
-interfaces: solver settings objects and task-based meshing workflow.
+interfaces: solver settings objects.
+
+This is a legacy Fluent API and its use is not recommended.
 """
 from enum import Enum
 from typing import Any

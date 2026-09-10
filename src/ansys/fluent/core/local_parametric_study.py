@@ -29,7 +29,7 @@ Example
 
 Set up a local study
 
->>> from ansys.fluent.core.legacy.local_parametric_study import LocalParametricStudy
+>>> from ansys.fluent.core.local_parametric_study import LocalParametricStudy
 >>> local_study = LocalParametricStudy(case_filepath="E:/elbow1_param.cas.h5")
 >>> design_point = local_study.design_point("Base DP")
 >>> design_point.input_parameters['v1'] = 0.0

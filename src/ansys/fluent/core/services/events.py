@@ -44,7 +44,7 @@ Class hierarchy
 """
 
 from ansys.fluent.core.services.abstract_events import AbstractEvents
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
 
 
 class Events(AbstractEvents):

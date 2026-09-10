@@ -33,21 +33,20 @@ from ansys.fluent.core.logger import *
 
 # isort: on
 
+from ansys.fluent.core.context_manager import *
 from ansys.fluent.core.exceptions import *
 from ansys.fluent.core.fields.field_data_interfaces import *
-from ansys.fluent.core.get_build_details import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
-from ansys.fluent.core.legacy.local_parametric_study import *
+from ansys.fluent.core.local_parametric_study import *
 from ansys.fluent.core.meshing import *
 from ansys.fluent.core.search import *
 from ansys.fluent.core.services.batch_ops import *
+from ansys.fluent.core.services.streaming_services.events_streaming import *
 from ansys.fluent.core.session import *
 from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
-from ansys.fluent.core.streaming_services.events_streaming import *
 from ansys.fluent.core.utils import *
-from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
@@ -70,16 +69,14 @@ if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
 
-from ansys.fluent.core import exceptions as _exceptions  # noqa: E402
-from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
-from ansys.fluent.core.legacy import (  # noqa: E402
+from ansys.fluent.core import (  # noqa: E402
     local_parametric_study as _local_parametric_study,
 )
-from ansys.fluent.core.legacy import rpvars as _rpvars  # noqa: E402
+from ansys.fluent.core import exceptions as _exceptions  # noqa: E402
+from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
 from ansys.fluent.core.session import file as _session_file  # noqa: E402
 
 _sys.modules["ansys.fluent.core.file_session"] = _session_file
-_sys.modules["ansys.fluent.core.rpvars"] = _rpvars
 _sys.modules["ansys.fluent.core.parametric"] = _local_parametric_study
 _sys.modules["ansys.fluent.core.pyfluent_warnings"] = _exceptions
 _sys.modules["ansys.fluent.core.filereader"] = _file_reader

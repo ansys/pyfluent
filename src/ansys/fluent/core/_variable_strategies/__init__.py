@@ -20,3 +20,21 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+"""Map PyFluent variable descriptors to Fluent variable names.
+
+The package provides naming strategies for Fluent expressions, field-data
+variables, and solution variables. These strategies translate PyFluent
+``VariableDescriptor`` objects into the names expected by Fluent services and
+can be selected according to the type of data being accessed.
+"""
+
+from .expr import FluentExprNamingStrategy  # noqa: F401
+from .field import FluentFieldDataNamingStrategy  # noqa: F401
+from .svar import FluentSVarNamingStrategy  # noqa: F401
+
+__all__ = [
+    "FluentExprNamingStrategy",
+    "FluentFieldDataNamingStrategy",
+    "FluentSVarNamingStrategy",
+]

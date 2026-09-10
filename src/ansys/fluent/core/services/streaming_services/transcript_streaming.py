@@ -26,7 +26,7 @@
 import os
 from pathlib import Path
 
-from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
 
 class AppendToFile:

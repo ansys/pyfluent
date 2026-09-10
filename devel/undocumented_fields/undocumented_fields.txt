@@ -9,7 +9,7 @@
     - static_info_type
     - stub_file
 
-  Module: ansys.fluent.core.data_model_cache
+  Module: ansys.fluent.core._data_model_cache
   Class: DataModelCache
     - rules_str_to_cache
     - rules_str_to_config
@@ -120,7 +120,7 @@
   Class: StandaloneLauncher
     - file_transfer_service
 
-  Module: ansys.fluent.core.legacy.local_parametric_study
+  Module: ansys.fluent.core.local_parametric_study
   Class: LocalDesignPoint
     - name
   Class: LocalParametricStudy
@@ -335,7 +335,7 @@
   Class: Solver
     - settings
 
-  Module: ansys.fluent.core.streaming_services.events_streaming
+  Module: ansys.fluent.core.services.streaming_services.events_streaming
   Class: AboutToLoadCaseEventInfo
     - case_file_name
   Class: AboutToLoadDataEventInfo
@@ -372,7 +372,7 @@
     - index
     - size
 
-  Module: ansys.fluent.core.streaming_services.transcript_streaming
+  Module: ansys.fluent.core.services.streaming_services.transcript_streaming
   Class: AppendToFile
     - f
   Class: Transcript
@@ -393,7 +393,7 @@
     - quantity_type
     - tensor_type
 
-  Module: ansys.fluent.core.utils.file_transfer_service
+  Module: ansys.fluent.core.file_transfer_service
   Class: ContainerFileTransferStrategy
     - client
     - container

@@ -55,7 +55,7 @@ from ansys.fluent.core.services.object_model import (
     ReadOnlyObjectError,
     convert_path_to_se_path,
 )
-from ansys.fluent.core.streaming_services.datamodel_streaming import (
+from ansys.fluent.core.services.streaming_services.datamodel_streaming import (
     DatamodelStream,
 )
 from ansys.fluent.core.utils.execution import timeout_loop

@@ -38,27 +38,25 @@ import logging
 import os
 from typing import TYPE_CHECKING, Any, cast
 
+from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.data_transfer import transfer_case
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
+from ansys.fluent.core.services.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.session._shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
 from ansys.fluent.core.session.session import BaseSession
-from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
-from ansys.fluent.core.utils.data_transfer import transfer_case
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
 )
 
 if TYPE_CHECKING:
     from ansys.fluent.core import meshing as _meshing_workflow_type
-    from ansys.fluent.core import workflow as _workflow_new
-    from ansys.fluent.core import workflow_old as _workflow_old
     from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
     from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
         Root as meshing_utilities_root,
@@ -192,7 +190,8 @@ class BaseMeshing(BaseSession):
     @property
     def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
-        executed."""
+        executed. See the :ref:`meshing TUI <ref_meshing_tui>` documentation for
+        the complete hierarchy of menus, commands, and related TUI methods."""
         if self._tui is None:
             self._tui = _make_tui_module(self, "meshing")
 
@@ -200,7 +199,11 @@ class BaseMeshing(BaseSession):
 
     @property
     def meshing(self) -> "meshing_root":
-        """Meshing object."""
+        """Meshing object.
+
+        See the :ref:`meshing datamodel <ref_meshing_datamodel_meshing>` for
+        the complete hierarchy of meshing objects and operations.
+        """
         if self._meshing is None:
             self._meshing = _make_datamodel_module(self, "meshing")
         return cast("meshing_root", self._meshing)
@@ -214,14 +217,23 @@ class BaseMeshing(BaseSession):
 
     @property
     def meshing_utilities(self) -> "meshing_utilities_root":
-        """A wrapper over the Fluent's meshing queries."""
+        """A wrapper over Fluent's meshing queries.
+
+        See the :ref:`meshing utilities datamodel
+        <ref_meshing_datamodel_meshing_utilities>` for the complete collection
+        of available meshing operations.
+        """
         if self._meshing_utilities is None:
             self._meshing_utilities = self._meshing_utilities_root
         return self._meshing_utilities
 
     @property
     def workflow(self) -> "workflow_root":
-        """Datamodel root of workflow."""
+        """Datamodel root of workflow.
+
+        See the :ref:`workflow datamodel <ref_meshing_datamodel_workflow>` for
+        the complete hierarchy of workflow objects and operations.
+        """
         if self._old_workflow is None:
             self._old_workflow = cast(
                 "workflow_root", _make_datamodel_module(self, "workflow")
@@ -230,7 +242,12 @@ class BaseMeshing(BaseSession):
 
     @property
     def meshing_workflow(self) -> "meshing_workflow_root":
-        """Full API to meshing and meshing_workflow."""
+        """Full API to meshing and meshing_workflow.
+
+        See the :ref:`meshing workflow datamodel
+        <ref_meshing_datamodel_meshing_workflow>` for the complete hierarchy
+        of workflow tasks and operations.
+        """
         if self._meshing_workflow is None:
             self._meshing_workflow = cast(
                 "meshing_workflow_root",
@@ -256,6 +273,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.WatertightMeshing`
+            Watertight meshing workflow.
         """
         from ansys.fluent.core.meshing import WatertightMeshing
 
@@ -284,6 +306,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.FaultTolerantMeshing`
+            Fault-tolerant meshing workflow.
         """
         from ansys.fluent.core.meshing import FaultTolerantMeshing
 
@@ -312,6 +339,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.TwoDimensionalMeshing`
+            Two-dimensional meshing workflow.
         """
         from ansys.fluent.core.meshing import TwoDimensionalMeshing
 
@@ -340,6 +372,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.TopologyBasedMeshing`
+            Topology-based meshing workflow.
         """
         from ansys.fluent.core.meshing import TopologyBasedMeshing
 
@@ -376,6 +413,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.LoadMeshingWorkflow`
+            Loaded meshing workflow.
         """
         from ansys.fluent.core.meshing import LoadMeshingWorkflow
 
@@ -407,6 +449,11 @@ class BaseMeshing(BaseSession):
             If False, creates a new workflow implementation.
             If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
+
+        Returns
+        -------
+        :class:`~ansys.fluent.core.meshing.CreateMeshingWorkflow`
+            Newly created meshing workflow.
         """
         from ansys.fluent.core.meshing import CreateMeshingWorkflow
 
@@ -459,7 +506,12 @@ class BaseMeshing(BaseSession):
 
     @property
     def PartManagement(self) -> "partmanagement_root":
-        """Datamodel root of ``PartManagement``."""
+        """Datamodel root of ``PartManagement``.
+
+        See the :ref:`PartManagement datamodel
+        <ref_meshing_datamodel_part_management>` for its complete hierarchy
+        of objects and operations.
+        """
         if self._part_management is None:
             self._part_management = cast(
                 "partmanagement_root", _make_datamodel_module(self, "PartManagement")
@@ -468,7 +520,12 @@ class BaseMeshing(BaseSession):
 
     @property
     def PMFileManagement(self) -> "pmfilemanagement_root":
-        """Datamodel root of PMFileManagement."""
+        """Datamodel root of PMFileManagement.
+
+        See the :ref:`PMFileManagement datamodel
+        <ref_meshing_datamodel_pm_file_management>` for the complete hierarchy
+        of objects and operations.
+        """
         if self._pm_file_management is None:
             self._pm_file_management = cast(
                 "pmfilemanagement_root",
@@ -478,7 +535,11 @@ class BaseMeshing(BaseSession):
 
     @property
     def preferences(self) -> "preferences_root":
-        """Datamodel root of preferences."""
+        """Datamodel root of preferences.
+
+        See the :ref:`preferences datamodel <ref_meshing_datamodel_preferences>`
+        for the complete hierarchy of preference objects and operations.
+        """
         if self._preferences is None:
             self._preferences = cast(
                 "preferences_root", _make_datamodel_module(self, "preferences")
@@ -500,7 +561,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        WatertightMeshing
+        :class:`~ansys.fluent.core.meshing.WatertightMeshing`
+            Watertight meshing workflow.
         """
         return self._watertight_workflow(legacy=legacy)
 
@@ -519,7 +581,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        FaultTolerantMeshing
+        :class:`~ansys.fluent.core.meshing.FaultTolerantMeshing`
+            Fault-tolerant meshing workflow.
         """
         return self._fault_tolerant_workflow(legacy=legacy)
 
@@ -538,7 +601,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        TwoDimensionalMeshing
+        :class:`~ansys.fluent.core.meshing.TwoDimensionalMeshing`
+            Two-dimensional meshing workflow.
         """
         return self._two_dimensional_meshing_workflow(legacy=legacy)
 
@@ -562,7 +626,8 @@ class BaseMeshing(BaseSession):
 
         Returns
         -------
-        TopologyBasedMeshing
+        :class:`~ansys.fluent.core.meshing.TopologyBasedMeshing`
+            Topology-based meshing workflow.
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("Topology-based meshing")

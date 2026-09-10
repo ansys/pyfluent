@@ -27,7 +27,7 @@ import threading
 
 import numpy as np
 
-from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
 
 def _pandas():

@@ -25,13 +25,13 @@
 
 from typing import Protocol, runtime_checkable
 
+from ansys.fluent.core.context_manager import _get_active_session
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
     NamedObject,
     SettingsBase,
 )
 from ansys.fluent.core.solver.settings_builtin_data import DATA
-from ansys.fluent.core.utils.context_managers import _get_active_session
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 

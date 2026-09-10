@@ -59,7 +59,7 @@ from ansys.fluent.core.exceptions import (
 )
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
-from ansys.fluent.core.legacy.rpvars import RPVars
+from ansys.fluent.core.rpvars import RPVars
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.utils.deprecate import deprecate_function
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -896,7 +896,11 @@ class BaseSession:
 
 
 class Fields:
-    """Container for field and solution variables."""
+    """Container for field and solution variables.
+
+    See the :ref:`fields API <ref_ansys_fluent_core_fields>` for field data,
+    solution-variable information, and related reduction operations.
+    """
 
     def __init__(
         self,

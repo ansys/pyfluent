@@ -29,7 +29,7 @@ import threading
 
 from google.protobuf.json_format import MessageToDict
 
-from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 

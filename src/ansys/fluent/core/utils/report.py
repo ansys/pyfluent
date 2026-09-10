@@ -21,7 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""ansys-tools-report."""
+"""Generate a diagnostic report for PyFluent environments.
+
+The report collects installed dependency versions and relevant Ansys and
+PyFluent environment variables to help diagnose configuration and launch
+issues. Run this module as a script to print the report.
+"""
 
 from importlib.metadata import requires
 

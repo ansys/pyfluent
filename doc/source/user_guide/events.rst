@@ -5,14 +5,14 @@
 Observing events
 ================
 
-Each session object has an ``events`` child of type :obj:`~ansys.fluent.core.streaming_services.events_streaming.EventsManager`. You can call
+Each session object has an ``events`` child of type :obj:`~ansys.fluent.core.services.streaming_services.events_streaming.EventsManager`. You can call
 the ``events.register_callback()`` method in order to receive notifications of various events
-occurring in Fluent. (The :obj:`~ansys.fluent.core.streaming_services.events_streaming.EventsManager` object calls each callback whenever a Fluent
+occurring in Fluent. (The :obj:`~ansys.fluent.core.services.streaming_services.events_streaming.EventsManager` object calls each callback whenever a Fluent
 event occurs, passing the relevant session object and event information as arguments to the
-callback). The :obj:`~ansys.fluent.core.streaming_services.events_streaming.EventsManager` object is useful for solution monitoring and dynamic update
+callback). The :obj:`~ansys.fluent.core.services.streaming_services.events_streaming.EventsManager` object is useful for solution monitoring and dynamic update
 of graphics.
 
-Supported events are enumerated by the PyFluent :obj:`~ansys.fluent.core.streaming_services.events_streaming.SolverEvent` and :obj:`~ansys.fluent.core.streaming_services.events_streaming.MeshingEvent` classes.
+Supported events are enumerated by the PyFluent :obj:`~ansys.fluent.core.services.streaming_services.events_streaming.SolverEvent` and :obj:`~ansys.fluent.core.services.streaming_services.events_streaming.MeshingEvent` classes.
 
 The following code triggers a callback at the end of every iteration.
 
@@ -27,7 +27,7 @@ The following code triggers a callback at the end of every iteration.
 
 The general signature of the callback function is ``cb(session, event_info, <additional arguments>)``, where ``session`` is the session instance
 and ``event_info`` instance holds information about the event. The event information classes for each event are documented in the
-API reference of the :obj:`~ansys.fluent.core.streaming_services.events_streaming` module. See the callback function
+API reference of the :obj:`~ansys.fluent.core.services.streaming_services.events_streaming` module. See the callback function
 ``on_case_loaded_with_args()`` in the below examples for an example of how to pass additional arguments to the callback
 function.
 

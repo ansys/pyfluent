@@ -48,6 +48,9 @@ import weakref
 
 import numpy as np
 
+from ansys.fluent.core._variable_strategies import (
+    FluentFieldDataNamingStrategy as naming_strategy,
+)
 from ansys.fluent.core.exceptions import (
     DisallowedValuesError,
     PyFluentDeprecationWarning,
@@ -72,9 +75,6 @@ from ansys.fluent.core.fields.field_data_interfaces import (
     _SurfaceNames,
     _VectorFields,
     get_surfaces_from_objects,
-)
-from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataNamingStrategy as naming_strategy,
 )
 
 _naming_strategy_instance = naming_strategy()
