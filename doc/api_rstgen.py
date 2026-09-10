@@ -25,6 +25,8 @@ SKIP_FILES = {
     "settings_builtin_bases",
     "settings_builtin_data",
     "settings_external",
+    "meshing_workflow_old",
+    "workflow_old",
 }
 ADDITIONAL_DOCUMENTATION = {
     "ansys.fluent.core.meshing": (

@@ -30,10 +30,10 @@ import os
 from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.legacy.workflow_old import Workflow
 from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.session import Meshing, PureMeshing
 from ansys.fluent.core.session._shared import _make_datamodel_module
+from ansys.fluent.core.workflow_old import Workflow
 
 name_to_identifier_map = {
     "Watertight Geometry": "EnableCleanCAD",
