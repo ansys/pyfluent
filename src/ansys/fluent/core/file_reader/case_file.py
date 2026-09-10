@@ -31,7 +31,7 @@ Example
     >>> from ansys.fluent.core import examples
     >>> from ansys.fluent.core.file_reader.case_file import CaseFile
 
-    >>> case_file_name = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer", return_without_path=False)
+    >>> case_file_name = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
 
     >>> reader = CaseFile(case_file_name=case_file_name) # Instantiate a CaseFile class
     >>> input_parameters = reader.input_parameters()     # Get lists of input parameters

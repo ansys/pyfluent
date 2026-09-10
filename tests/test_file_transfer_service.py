@@ -49,9 +49,7 @@ def test_remote_grpc_fts_container():
         ContainerFileTransferStrategy,
     )
 
-    case_file = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-    )
+    case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
     source_path = Path.home() / "Downloads" / "ansys_fluent_core_examples"
     if not source_path.exists():
