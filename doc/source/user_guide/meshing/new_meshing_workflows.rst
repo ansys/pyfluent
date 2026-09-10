@@ -374,8 +374,8 @@ Switch to solution mode
 .. _ref_two_dimensional_meshing_workflow_example:
 
 Two-dimensional workflow
--------------------------
-Use the **2D*** workflow to perform common meshing operations on two-dimensional geometries.
+------------------------
+Use the **two-dimensional** workflow to perform common meshing operations on two-dimensional geometries.
 
 Import geometry
 ~~~~~~~~~~~~~~~
