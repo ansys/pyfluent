@@ -94,7 +94,6 @@ class RestSettings(BaseSettings):
             The REST client instance.
         """
         super().__init__(rest_client)
-        self._static_info_cache: dict[str, Any] | None = None
 
     @_trace
     def get_static_info(self) -> dict[str, Any]:
@@ -149,95 +148,26 @@ class RestSettings(BaseSettings):
         """
         return _unwrap_result(self.service.execute_query(path, query, **kwds))
 
-    @_trace
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
-        """Return values of given attributes.
+    # @_trace
+    # def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+    #     """Return values of given attributes.
 
-        For ``recursive=False``, delegates to the raw service unchanged (zero
-        behavior change for the common case). For ``recursive=True``, uses
-        ``_reshape_recursive_attrs`` to normalize the server's response into
-        the gRPC-compatible shape: ``{"attrs": {...}, "group_children":
-        {name: {...}}}`` for both real settings groups (whose children the
-        server nests under ``"children"``) and command-argument descendants
-        (whose children the server never nests, requiring client-side
-        recursive reconstruction).
-        """
-        raw = self.service.get_attrs(path, attrs, recursive)
-        if not recursive:
-            return raw
-        return self._reshape_recursive_attrs(raw, path, attrs)
-
-    def _cached_static_info(self) -> dict[str, Any]:
-        """Memoized call to ``get_static_info()``.
-
-        Caches the server's full schema to avoid repeated network round-trips
-        during recursive ``_schema_node_for_path()`` lookups.
-        """
-        if self._static_info_cache is None:
-            self._static_info_cache = self.get_static_info()
-        return self._static_info_cache
-
-    def _schema_node_for_path(self, path: str) -> dict[str, Any]:
-        """Walk the cached static-info schema to find the node at a given path.
-
-        Navigates the schema tree by splitting ``path`` on "/" and checking
-        ``"children"``, ``"commands"``, and ``"queries"`` containers at each
-        level.
-        """
-        schema = self._cached_static_info()
-        node = schema
-        for component in path.split("/"):
-            if not component:
-                continue
-            # Try children, commands, queries in that order
-            for container_key in ("children", "commands", "queries"):
-                if container_key in node and component in node[container_key]:
-                    node = node[container_key][component]
-                    break
-            else:
-                # No matching container found, return empty dict as fallback
-                return {}
-        return node
-
-    def _reshape_recursive_attrs(self, raw: Any, path: str, attrs: list[str]) -> Any:
-        """Reshape a recursive ``get_attrs`` response into gRPC-compatible form.
-
-        Converts the server's response (which uses ``"children"`` for real
-        settings groups) into the gRPC-compatible shape ``{"attrs": {...},
-        "group_children": {...}}``, and reconstructs ``"group_children"``
-        entries for command-argument descendants that the server never nests.
-        """
-        if not isinstance(raw, dict):
-            return raw
-
-        # Extract existing "children" (for real settings groups)
-        result = {"attrs": raw.get("attrs", {})}
-        group_children = {}
-
-        if "children" in raw:
-            for child_name, child_data in raw["children"].items():
-                # Recursively reshape each child
-                reshaped_child = self._reshape_recursive_attrs(
-                    child_data, f"{path}/{child_name}", attrs
-                )
-                group_children[child_name] = reshaped_child
-
-        # Fetch command-argument descendants (schema nodes with "arguments")
-        schema_node = self._schema_node_for_path(path)
-        if "arguments" in schema_node:
-            for arg_name in schema_node["arguments"]:
-                if arg_name not in group_children:
-                    # Recursively fetch this argument's attrs
-                    arg_attrs = self.get_attrs(
-                        f"{path}/{arg_name}", attrs, recursive=True
-                    )
-                    group_children[arg_name] = arg_attrs
-
-        # Only include group_children if non-empty (mirrors gRPC behavior)
-        if group_children:
-            result["group_children"] = group_children
-
-        return result
+    #     For ``recursive=False``, delegates to the raw service unchanged (zero
+    #     behavior change for the common case). For ``recursive=True``, uses
+    #     ``_reshape_recursive_attrs`` to normalize the server's response into
+    #     the gRPC-compatible shape: ``{"attrs": {...}, "group_children":
+    #     {name: {...}}}`` for both real settings groups (whose children the
+    #     server nests under ``"children"``) and command-argument descendants
+    #     (whose children the server never nests, requiring client-side
+    #     recursive reconstruction).
+    #     """
+    #     # import pdb
+    #     # pdb.set_trace()
+    #     raw = self.service.get_attrs(path, attrs, recursive)
+    #     # if not recursive:
+    #     #     return raw
+    #     # return self._reshape_recursive_attrs(raw, path, attrs)
+    #     return raw
 
     @property
     def supports_deprecation_echo(self) -> bool:
