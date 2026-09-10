@@ -23,7 +23,7 @@
 
 import pytest
 
-from ansys.fluent.core.exceptions import PyFluentUserWarning
+from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
