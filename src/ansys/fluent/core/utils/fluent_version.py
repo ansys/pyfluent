@@ -33,7 +33,7 @@ from typing import Any
 import warnings
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.exceptions import PyFluentUserWarning
+from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.module_config import config
 
 __all__ = ("FluentVersion",)
