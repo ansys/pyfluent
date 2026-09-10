@@ -30,9 +30,11 @@ import os
 from pathlib import Path
 import platform
 from typing import Any
+import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.module_config import config
+from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 
 __all__ = ("FluentVersion",)
 
@@ -81,6 +83,15 @@ def get_version_for_file_name(version: str | None = None, session=None):
     return "".join(version.split(".")[0:2])
 
 
+def _version_to_integer(version: Any) -> int | None:
+    """Convert a Fluent version to its integer representation."""
+    try:
+        parts = str(version).split(".")
+        return int(parts[0] + parts[1]) if len(parts) > 1 else int(parts[0])
+    except ValueError:
+        return None
+
+
 @total_ordering
 class FluentVersion(Enum):
     """An enumeration over supported Fluent versions.
@@ -103,15 +114,38 @@ class FluentVersion(Enum):
     @classmethod
     def _missing_(cls, version: Any):
         if isinstance(version, (int, float, str)):
-            version = str(version)
-            if len(version) == 3:
-                version = version[:2] + "." + version[2:]
-            version += ".0"
+            requested_version = str(version)
+            normalized_version = requested_version
+            if len(normalized_version) == 3 and "." not in normalized_version:
+                normalized_version = (
+                    normalized_version[:2] + "." + normalized_version[2:]
+                )
+            if normalized_version.count(".") == 1:
+                normalized_version += ".0"
             for member in cls:
-                if version == member.value:
+                if normalized_version == member.value:
                     return member
 
-        raise AnsysVersionNotFound(version[:-2])
+            latest = next(iter(cls))
+            version_as_int = _version_to_integer(requested_version)
+            if version_as_int is None:
+                warnings.warn(
+                    f"Fluent version '{requested_version}' is unrecognized; using the "
+                    f"highest supported version '{latest.value}' instead.",
+                    PyFluentUserWarning,
+                    stacklevel=2,
+                )
+                return latest
+            if version_as_int > latest.number:
+                warnings.warn(
+                    f"Fluent version '{requested_version}' is newer than the highest "
+                    f"supported version '{latest.value}'; using '{latest.value}' instead.",
+                    PyFluentUserWarning,
+                    stacklevel=2,
+                )
+                return latest
+
+        raise AnsysVersionNotFound(version)
 
     @classmethod
     def get_latest_installed(cls):
