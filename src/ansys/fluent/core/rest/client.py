@@ -30,7 +30,7 @@ lightweight test double — to exercise the API layer in isolation.
 
 Typical use::
 
-    >>> client = FluentRestClient.connect("http://127.0.0.1:5000", auth_token="secret")
+    >>> client = FluentRestClient.connect("http://127.0.0.1:5000", token="secret")
     >>> client.get_var("setup/models/energy/enabled")
 """
 
@@ -79,7 +79,7 @@ class FluentRestClient:
     def connect(
         cls,
         url: str,
-        auth_token: str,
+        token: str,
         *,
         component: str = "fluent_1",
         timeout: float = 60.0,
@@ -99,7 +99,7 @@ class FluentRestClient:
         url : str
             Full URL of the Fluent REST server, e.g.
             ``"http://127.0.0.1:5000"``.
-        auth_token : str
+        token : str
             Bearer token (password) set when Fluent was started.
         component : str, optional
             DataModel component name. Defaults to ``"fluent_1"``.
@@ -117,7 +117,7 @@ class FluentRestClient:
         logger.info("Connecting to Fluent REST server at %s", url)
         strategy = HttpRequestStrategy(
             url,
-            auth_token=auth_token,
+            token=token,
             timeout=timeout,
             max_retries=max_retries,
             retry_delay=retry_delay,
@@ -228,7 +228,7 @@ class FluentRestClient:
         FluentRestError
             If the request fails.
         """
-        body = dict(properties) if properties else {}
+        body: dict[str, Any] = properties.copy() if properties else {}
         if name:
             body["name"] = name
         return self._strategy.request("POST", f"{self._api_base}/{path}", body=body)
@@ -304,9 +304,9 @@ class FluentRestClient:
     # Commands / queries
     # ------------------------------------------------------------------
 
-    def _execute(self, path: str, name: str, force: bool = False, **kwds) -> Any:
+    def _execute(self, path: str, command: str, force: bool = False, **kwds) -> Any:
         """POST a command/query endpoint and return response."""
-        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(name, safe='')}"
+        endpoint = f"{self._api_base}/{path}/{urllib.parse.quote(command, safe='')}"
         if force:
             endpoint += "?force=true"
         return self._strategy.request("POST", endpoint, body=kwds)
