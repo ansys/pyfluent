@@ -72,6 +72,147 @@ def test_settings_allowed_values(new_solver_session):
     assert set(unit._allowed_values) == set(["m", "cm", "mm", "in", "ft"])
 
 
+def test_py_textual_constant_descriptor():
+    """Test _PyTextualConstant descriptor behaviour mirrors _FlStringConstant."""
+    from ansys.fluent.core.services.object_model import (
+        _PyTextualConstant,
+        _PyTextualString,
+    )
+
+    class MockPyTextual:
+        M = _PyTextualConstant("m")
+        CM = _PyTextualConstant("cm")
+        _allowed_values = ["m", "cm", "mm"]
+
+        def allowed_values(self):
+            return self._allowed_values
+
+    instance = MockPyTextual()
+
+    # Class-level access returns the plain string value
+    assert MockPyTextual.M == "m"
+    assert MockPyTextual.CM == "cm"
+
+    # Instance-level access returns a _PyTextualString (str subclass)
+    m_val = instance.M
+    assert isinstance(m_val, _PyTextualString)
+    assert str(m_val) == "m"
+
+    # is_active() reflects membership in current allowed_values()
+    assert m_val.is_active() is True
+    instance._allowed_values = ["cm", "mm"]
+    assert instance.M.is_active() is False
+
+    # Setting the constant raises AttributeError
+    with pytest.raises(AttributeError):
+        instance.M = "x"
+
+
+def test_datamodel_codegen_textual_parameter_with_allowed_values(monkeypatch):
+    """Test that PyTextual parameters with allowedValues generate _PyTextualConstant
+    class attributes and a _allowed_values list, mirroring the settings-API pattern.
+
+    Covers two locations for allowedValues in the static info:
+    - Under ``attrs`` (the real server format from Fluent 2026 R1+)
+    - At the top level of parameter_info (older / v0-proto server responses)
+    """
+    codegen_outdir = Path(tempfile.mkdtemp())
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
+    version = "271"
+    static_infos = {
+        StaticInfoType.DATAMODEL_MESHING_WORKFLOW: {
+            "singletons": {},
+            "namedobjects": {},
+            "commands": {},
+            "parameters": {
+                # Real server format: attrs["allowedValues"] is a Variant →
+                # {"stringVectorState": {"items": [...]}}  (v1 proto)
+                "length_unit": {
+                    "type": "String",
+                    "attrs": {
+                        "allowedValues": {
+                            "stringVectorState": {
+                                "items": ["m", "cm", "mm", "in", "ft"],
+                            },
+                        },
+                        "api_help_text": {"stringState": "Length unit."},
+                    },
+                },
+                # v0-style Variant: "item" instead of "items"
+                "area_unit": {
+                    "type": "String",
+                    "attrs": {
+                        "allowedValues": {
+                            "stringVectorState": {
+                                "item": ["m^2", "cm^2"],
+                            },
+                        },
+                    },
+                },
+                # Legacy/fallback: plain list at top level
+                "volume_unit": {
+                    "type": "String",
+                    "allowedValues": ["m^3", "cm^3"],
+                    "helpstring": "Volume unit.",
+                },
+                # No allowedValues — should still generate pass
+                "workflow_name": {
+                    "type": "String",
+                    "helpstring": "Workflow name.",
+                },
+            },
+        }
+    }
+    allapigen.generate(version, static_infos)
+    generated_file = codegen_outdir / f"datamodel_{version}" / "meshing_workflow.py"
+    content = generated_file.read_text()
+
+    # _PyTextualConstant must be imported
+    assert "_PyTextualConstant" in content
+
+    # --- length_unit: allowedValues from attrs Variant (v1 stringVectorState.items) ---
+    assert "M = _PyTextualConstant('m')" in content
+    assert "CM = _PyTextualConstant('cm')" in content
+    assert "MM = _PyTextualConstant('mm')" in content
+    assert "IN = _PyTextualConstant('in')" in content
+    assert "FT = _PyTextualConstant('ft')" in content
+    assert "_allowed_values = ['m', 'cm', 'mm', 'in', 'ft']" in content
+
+    # --- area_unit: allowedValues from attrs Variant (v0 stringVectorState.item) ---
+    assert "M_2 = _PyTextualConstant('m^2')" in content
+    assert "CM_2 = _PyTextualConstant('cm^2')" in content
+    assert "_allowed_values = ['m^2', 'cm^2']" in content
+
+    # --- volume_unit: allowedValues as plain list at top level (legacy fallback) ---
+    assert "M_3 = _PyTextualConstant('m^3')" in content
+    assert "CM_3 = _PyTextualConstant('cm^3')" in content
+    assert "_allowed_values = ['m^3', 'cm^3']" in content
+
+    # --- workflow_name: no allowedValues → pass ---
+    assert "pass" in content
+
+    # Generated module must be importable and constants must behave correctly
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "meshing_workflow_test", generated_file
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    assert set(mod.Root.length_unit._allowed_values) == {"m", "cm", "mm", "in", "ft"}
+    assert mod.Root.length_unit.M == "m"
+    assert mod.Root.length_unit.FT == "ft"
+
+    assert set(mod.Root.area_unit._allowed_values) == {"m^2", "cm^2"}
+    assert mod.Root.area_unit.M_2 == "m^2"
+
+    assert set(mod.Root.volume_unit._allowed_values) == {"m^3", "cm^3"}
+    assert mod.Root.volume_unit.M_3 == "m^3"
+
+    shutil.rmtree(str(codegen_outdir))
+
+
 def test_codegen_with_no_static_info(monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
@@ -239,7 +380,8 @@ from ansys.fluent.core.services.object_model import (
     PyArgumentsNumericalSubItem,
     PyArgumentsDictionarySubItem,
     PyArgumentsParameterSubItem,
-    PyArgumentsSingletonSubItem
+    PyArgumentsSingletonSubItem,
+    _PyTextualConstant
 )
 
 
