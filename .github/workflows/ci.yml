@@ -764,15 +764,15 @@ jobs:
       - name: Display package file list
         run: ls -R
 
-      - name: Upload to Private PyPi
-        run: |
-          pip install 'twine>=7.0.0' 'packaging>=26.1'
-          python -m twine upload  ./**/*.whl
-          python -m twine upload  ./**/*.tar.gz
-        env:
-          TWINE_USERNAME: PAT
-          TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
-          TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
+      # - name: Upload to Private PyPi
+      #   run: |
+      #     pip install 'twine>=7.0.0' 'packaging>=26.1'
+      #     python -m twine upload  ./**/*.whl
+      #     python -m twine upload  ./**/*.tar.gz
+      #   env:
+      #     TWINE_USERNAME: PAT
+      #     TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
+      #     TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       - name: "Upload artifacts to PyPI using trusted publisher"
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
