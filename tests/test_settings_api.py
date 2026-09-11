@@ -46,38 +46,6 @@ from ansys.fluent.core.solver.flobject import (
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-# ============================================================================
-# Helpers for transport-parametrized tests (gRPC vs REST)
-# ============================================================================
-#
-# new_solver_session (and fixtures built on it, e.g. mixing_elbow_*_session)
-# is itself parametrized over transport (params=["grpc", "rest"]) in
-# conftest.py, so every test using it automatically runs against both. The
-# "rest" param already skips itself when FLUENT_REST_URL/FLUENT_REST_TOKEN
-# aren't set, so no extra skip machinery is needed here. A couple of tests
-# still need to know the transport at runtime (isinstance(solver, HttpSolver))
-# to handle a genuine behavioral difference - that check is inlined at each
-# call site rather than via a shared helper, since it's only needed twice.
-
-
-def _contains_key_or_name(obj, key: str) -> bool:
-    """Recursively search dicts/lists for a matching dict key or ``"name"`` entry.
-
-    The REST server's exact JSON shape for some responses (e.g. recursive
-    ``get_attrs``) is not documented/confirmed. Rather than assert a single
-    guessed shape, search the whole structure for *key* - either as a dict
-    key, or as the value of a ``"name"``/``"key"`` entry.
-    """
-    if isinstance(obj, dict):
-        if key in obj:
-            return True
-        if obj.get("name") == key or obj.get("key") == key:
-            return True
-        return any(_contains_key_or_name(v, key) for v in obj.values())
-    if isinstance(obj, list):
-        return any(_contains_key_or_name(item, key) for item in obj)
-    return False
-
 
 @pytest.mark.nightly
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
@@ -414,13 +382,11 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_session):
-    """Test deprecated settings API aliases."""
-    solver = mixing_elbow_case_data_session
-
-    # Create iso_clip object
+def test_deprecated_settings_with_settings_api_aliases(
+    mixing_elbow_case_data_session_grpc_rest,
+):
+    solver = mixing_elbow_case_data_session_grpc_rest
     solver.settings.results.surfaces.iso_clip["clip-1"] = {}
-
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
         "maximum": 0,
@@ -434,12 +400,7 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
         "maximum": 0.0001,
     }
     solver.settings.results.graphics.contour["temperature"] = {}
-
-    # Build range config for the contour. The deprecated "range_option" alias
-    # (gRPC) and the current "range_options" key (REST, which does not yet
-    # resolve deprecated aliases) both round-trip to the same range_options
-    # state, exercised below.
-    base_config = {
+    solver.settings.results.graphics.contour["temperature"] = {
         "field": "temperature",
         "surfaces_list": "wall*",
         "color_map": {
@@ -460,31 +421,15 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
             "bground_color": "#CCD3E2",
             "title_elements": "Variable and Object Name",
         },
-    }
-    if isinstance(solver, HttpSolver):
-        range_config = {
-            **base_config,
-            "range_options": {
-                "auto_range": False,
+        "range_option": {
+            "option": "auto-range-off",
+            "auto_range_off": {
                 "maximum": 400.0,
                 "minimum": 300,
                 "clip_to_range": False,
             },
-        }
-    else:
-        range_config = {
-            **base_config,
-            "range_option": {
-                "option": "auto-range-off",
-                "auto_range_off": {
-                    "maximum": 400.0,
-                    "minimum": 300,
-                    "clip_to_range": False,
-                },
-            },
-        }
-
-    solver.settings.results.graphics.contour["temperature"] = range_config
+        },
+    }
     assert solver.settings.results.graphics.contour["temperature"].range_options() == {
         "global_range": True,
         "auto_range": False,
@@ -495,22 +440,14 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
 
 
 def test_command_return_type(new_solver_session):
-    """Test command return types."""
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    assert solver.settings.file.read_case_data(file_name=case_path) is None
-    solver.settings.solution.report_definitions.surface["surface-1"] = {
-        "surface_names": ["cold-inlet"]
-    }
-    try:
-        ret = solver.settings.solution.report_definitions.compute(
-            report_defs=["surface-1"]
-        )
-    except Exception:
-        if isinstance(solver, HttpSolver):
-            pytest.xfail("REST server bug: string-list command args fail with HTTP 500")
-        raise
+    assert solver.file.read_case_data(file_name=case_path) is None
+    solver.solution.report_definitions.surface["surface-1"] = dict(
+        surface_names=["cold-inlet"]
+    )
+    ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
     assert ret is not None
 
 
@@ -655,8 +592,8 @@ def test_nested_alias_till_26r1(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=27.1")
-def test_nested_alias(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_nested_alias(request, mixing_elbow_settings_session_grpc_rest):
+    solver = mixing_elbow_settings_session_grpc_rest
     solver.settings.setup.models.viscous.model = "k-omega"
     solver.settings.setup.models.viscous.k_omega_model = "standard"
     # k_omega_options is alias of k_omega
@@ -698,9 +635,8 @@ def test_nested_alias(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_commands_not_in_settings(new_solver_session):
-    """Verify that 'exit' and other top-level commands are not in settings.dir()."""
-    solver = new_solver_session
+def test_commands_not_in_settings(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
 
     assert "exit" not in dir(solver.settings)
     with pytest.raises(AttributeError):
@@ -708,8 +644,10 @@ def test_commands_not_in_settings(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_deprecated_command_arguments(mixing_elbow_case_data_session):
-    solver = mixing_elbow_case_data_session
+def test_deprecated_command_arguments(
+    request, mixing_elbow_case_data_session_grpc_rest
+):
+    solver = mixing_elbow_case_data_session_grpc_rest
     with pytest.warns(
         PyFluentUserWarning,
         match=(
@@ -741,8 +679,10 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
 # https://github.com/ansys/pyfluent/issues/4298
 @pytest.mark.fluent_version(">=25.2")
-def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_return_types_of_operations_on_named_objects(
+    mixing_elbow_settings_session_grpc_rest,
+):
+    solver = mixing_elbow_settings_session_grpc_rest
 
     var1 = solver.settings.setup.materials.fluid.create("air-created")
     assert var1 == solver.settings.setup.materials.fluid["air-created"]
@@ -909,107 +849,9 @@ def test_named_object_commands(mixing_elbow_settings_session):
         NamedObject.list_properties(inlets, object_name="hot-inlet")
 
 
-# ============================================================================
-# Phase 3: Parametrized CRUD test coverage (merged from REST file)
-# ============================================================================
-
-
-def test_named_object_create_via_setitem(mixing_elbow_case_data_session):
-    """Test creating a named object via direct assignment or REST endpoint."""
-    solver = mixing_elbow_case_data_session
-    # Create a new surface in report_definitions
-    solver.settings.solution.report_definitions.surface["test_surface"] = {
-        "surface_names": ["cold-inlet"]
-    }
-    # Verify it exists
-    assert (
-        "test_surface"
-        in solver.settings.solution.report_definitions.surface.get_object_names()
-    )
-    # Verify state round-trips
-    state = solver.settings.solution.report_definitions.surface[
-        "test_surface"
-    ].get_state()
-    assert state is not None
-
-
-def test_named_object_delete_via_delitem(mixing_elbow_case_data_session):
-    """Test deleting a named object via direct deletion or REST endpoint."""
-    solver = mixing_elbow_case_data_session
-    # Create via setitem then delete
-    solver.settings.solution.report_definitions.surface["deleteme"] = {
-        "surface_names": ["cold-inlet"]
-    }
-    assert (
-        "deleteme"
-        in solver.settings.solution.report_definitions.surface.get_object_names()
-    )
-    # Delete via delitem
-    del solver.settings.solution.report_definitions.surface["deleteme"]
-    # Verify it's gone
-    assert (
-        "deleteme"
-        not in solver.settings.solution.report_definitions.surface.get_object_names()
-    )
-
-
-def test_named_object_overwrite_existing(mixing_elbow_settings_session):
-    """Test overwriting an existing named object's state.
-
-    Uses ``cold-inlet``, an existing boundary condition from the case -
-    velocity_inlet is a physical mesh zone and is not user-creatable.
-    """
-    solver = mixing_elbow_settings_session
-    inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
-    # Set initial state via bracket assignment on the EXISTING object
-    solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"] = {
-        "momentum": {"velocity": 1.0}
-    }
-    assert inlet.momentum.velocity.value() == 1.0
-    # Overwrite with new values
-    solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"] = {
-        "momentum": {"velocity": 2.0}
-    }
-    assert inlet.momentum.velocity.value() == 2.0
-
-
-def test_named_object_rename_command(mixing_elbow_settings_session):
-    """Test renaming a named object via command or REST endpoint.
-
-    Uses ``cold-inlet`` (an existing boundary condition).
-    """
-    solver = mixing_elbow_settings_session
-    solver.settings.setup.boundary_conditions.velocity_inlet.rename(
-        new="renamed_inlet", old="cold-inlet"
-    )
-    obj_names = (
-        solver.settings.setup.boundary_conditions.velocity_inlet.get_object_names()
-    )
-    assert "cold-inlet" not in obj_names
-    assert "renamed_inlet" in obj_names
-
-
-def test_named_object_make_a_copy_command(mixing_elbow_settings_session):
-    """Test copying a named object via command or REST endpoint.
-
-    Uses ``report_definitions.surface`` (a virtual, user-creatable collection).
-    """
-    solver = mixing_elbow_settings_session
-    # Create a source object to copy
-    solver.settings.solution.report_definitions.surface["surface-1"] = {
-        "surface_names": ["cold-inlet"]
-    }
-    # Make a copy via command (same for both transports)
-    solver.settings.solution.report_definitions.surface.make_a_copy(
-        from_="surface-1", to="copy_of_surface_1"
-    )
-    obj_names = solver.settings.solution.report_definitions.surface.get_object_names()
-    assert "copy_of_surface_1" in obj_names
-
-
 @pytest.mark.fluent_version(">=26.1")
-def test_migration_adapter_for_strings(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_migration_adapter_for_strings(mixing_elbow_settings_session_grpc_rest):
+    solver = mixing_elbow_settings_session_grpc_rest
     solver.settings.setup.general.solver.time = "unsteady-2nd-order"
     solver.settings.setup.models.discrete_phase.general_settings.interaction.enabled = (
         True
@@ -1043,18 +885,15 @@ def test_migration_adapter_for_strings(mixing_elbow_settings_session):
     )
 
 
-def test_set_state_via_call(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_set_state_via_call(mixing_elbow_settings_session_grpc_rest):
+    solver = mixing_elbow_settings_session_grpc_rest
     solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
 
 
 @pytest.mark.fluent_version(">=26.1")
-def test_read_only_command_execution(mixing_elbow_case_session):
-    """Test read-only command execution."""
-    solver = mixing_elbow_case_session
-    # Create contour (same for both transports)
-    contour = solver.settings.results.graphics.contour.create("test_contour")
-
+def test_read_only_command_execution(mixing_elbow_case_session_grpc_rest):
+    solver = mixing_elbow_case_session_grpc_rest
+    contour = solver.settings.results.graphics.contour.create()
     assert contour.display.is_active() is False
     with pytest.raises(InactiveObjectError):
         contour.display.is_read_only()
@@ -1067,9 +906,8 @@ def test_read_only_command_execution(mixing_elbow_case_session):
         contour.display()
 
 
-def test_copy_accepts_sequence_types(mixing_elbow_settings_session):
-    """Test that copy operations accept sequence types."""
-    solver = mixing_elbow_settings_session
+def test_copy_accepts_sequence_types(mixing_elbow_settings_session_grpc_rest):
+    solver = mixing_elbow_settings_session_grpc_rest
     hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     hot_inlet.momentum.velocity = 1.0
@@ -1083,9 +921,8 @@ def test_copy_accepts_sequence_types(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=26.1")
-def test_action_behavior(mixing_elbow_case_session):
-    """Test action behavior (commands with parameters)."""
-    solver = mixing_elbow_case_session
+def test_action_behavior(request, mixing_elbow_case_session_grpc_rest):
+    solver = mixing_elbow_case_session_grpc_rest
     with pytest.raises(AttributeError, match="command/query object"):
         solver.settings.solution.run_calculation.iterate.get_state()
     assert isinstance(
@@ -1096,6 +933,4 @@ def test_action_behavior(mixing_elbow_case_session):
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True
     )
-    assert _contains_key_or_name(
-        result, "active?"
-    ), f"'active?' not found in: {result!r}"
+    assert "iter-count" in result["group_children"]

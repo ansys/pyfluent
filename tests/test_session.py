@@ -57,7 +57,6 @@ from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.session.base_meshing import BaseMeshing
 from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.session.solver import Solver
-from ansys.fluent.core.session_http_solver import HttpSolver
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.streaming_services.events_streaming import (
@@ -577,19 +576,14 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
     assert "solverworkflow" not in dir(new_solver_session)
 
 
-def test_server_supports_v1_by_version_solver(new_solver_session):
-    solver = new_solver_session
-    if isinstance(solver, HttpSolver):
-        pytest.skip("gRPC-channel version check is not applicable to REST transport")
-    expected = solver.get_fluent_version() >= FluentVersion.v271
-    assert _server_supports_v1(solver._fluent_connection._channel) is expected
-
-
-def test_server_supports_v1_by_version_meshing(new_meshing_session):
-    expected = new_meshing_session.get_fluent_version() >= FluentVersion.v271
-    assert (
-        _server_supports_v1(new_meshing_session._fluent_connection._channel) is expected
-    )
+@pytest.mark.parametrize(
+    "session_fixture_name",
+    ["new_solver_session", "new_meshing_session"],
+)
+def test_server_supports_v1_by_version(session_fixture_name, request):
+    fluent_session = request.getfixturevalue(session_fixture_name)
+    expected = fluent_session.get_fluent_version() >= FluentVersion.v271
+    assert _server_supports_v1(fluent_session._fluent_connection._channel) is expected
 
 
 @pytest.mark.standalone
@@ -1051,10 +1045,11 @@ def test_beta_solver_session(new_solver_session_wo_exit):
     meshing.exit()
 
 
-def test_error_raised_for_beta_feature_access_for_older_versions_meshing(
-    new_meshing_session,
+def test_error_raised_for_beta_feature_access_for_older_versions(
+    new_meshing_session, new_solver_session
 ):
     meshing = new_meshing_session
+    solver = new_solver_session
 
     if meshing.get_fluent_version() >= FluentVersion.v252:
         meshing.enable_beta_features()
@@ -1062,16 +1057,6 @@ def test_error_raised_for_beta_feature_access_for_older_versions_meshing(
     else:
         with pytest.raises(RuntimeError):
             meshing.enable_beta_features()
-
-
-def test_error_raised_for_beta_feature_access_for_older_versions_solver(
-    new_solver_session,
-):
-    solver = new_solver_session
-    if isinstance(solver, HttpSolver):
-        pytest.skip(
-            "enable_beta_features()/get_fluent_version() are not applicable to REST transport"
-        )
 
     if solver.get_fluent_version() >= FluentVersion.v252:
         solver.enable_beta_features()

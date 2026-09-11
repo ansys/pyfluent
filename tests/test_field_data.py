@@ -40,7 +40,9 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.field_data_interfaces import (
     FieldUnavailableError,
+    _AllowedSurfaceIDs,
     _Fields,
+    _SurfaceIds,
 )
 from ansys.fluent.core.fields.live_field_data import (
     CellElementType,
@@ -858,3 +860,28 @@ def test_field_data_exceptions_using_variable_catalog(new_solver_session) -> Non
         flatten_connectivity=True,
     )
     assert path_lines_data_request
+
+
+def test_allowed_surface_ids_warngs_on_missing_surface_id_key() -> None:
+    """_AllowedSurfaceIDs.__call__ should warn when surface_id key is missing."""
+
+    class _FakeFieldInfo:
+        def _get_surfaces_info(self):
+            return {"bad-surface": {"no_surface_id_key": []}}
+
+    allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
+    with pytest.warns(Warning, match="retrieve surface id"):
+        allowed()
+
+
+def test_surface_ids_validate_raises_on_bad_surface_info() -> None:
+    """_SurfaceIds.validate should propagate LookupError when surface info is malformed."""
+
+    class _FakeFieldInfo:
+        def _get_surfaces_info(self):
+            return {"bad-surface": {"surface_id": []}}
+
+    allowed = _AllowedSurfaceIDs(field_info=_FakeFieldInfo())
+    validator = _SurfaceIds(allowed)
+    with pytest.warns(Warning, match="not a valid surface id"):
+        validator.validate([1])

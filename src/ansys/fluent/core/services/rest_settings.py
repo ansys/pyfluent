@@ -96,28 +96,6 @@ class RestSettings(BaseSettings):
         super().__init__(rest_client)
 
     @_trace
-    def create(
-        self, path: str, name: str, properties: dict[str, Any] | None = None
-    ) -> Any:
-        """Create a named object child for the given path.
-
-        Parameters
-        ----------
-        path : str
-            DataModel path where the object will be created.
-        name : str
-            Name for the created object.
-        properties : dict[str, Any], optional
-            Properties to set on creation. Defaults to None.
-
-        Returns
-        -------
-        Any
-            Server response containing details of the created object.
-        """
-        return self.service.create(path, name, properties)
-
-    @_trace
     def get_static_info(self) -> dict[str, Any]:
         """Get static-info for settings.
 
@@ -135,24 +113,85 @@ class RestSettings(BaseSettings):
         return _normalize_static_info_keys(self.service.get_static_info(full=True))
 
     @_trace
-    def is_interactive_mode(self) -> bool:
-        """Checks whether commands can be executed interactively.
-
-        Returns
-        ------
-        bool
-            Always False for REST transport (REST is stateless and non-interactive).
-        """
-        return False
-
-    @_trace
     def is_wildcard(self, input: str | None = None) -> bool:
-        """Check whether a name contains fnmatch wildcard characters (*, ?, [, ])."""
+        """Check whether a name contains a wildcard pattern.
+
+        ``AbstractSettings`` requires this, but the REST API exposes no
+        equivalent of the gRPC ``Settings.IsWildcard`` endpoint, so the
+        fnmatch metacharacters are matched client-side instead.
+        """
         if input is None:
             return False
         return any(c in input for c in "*?[]")
 
     @_trace
     def has_wildcard(self, name: str) -> bool:
-        """Check whether a name contains fnmatch wildcard characters (*, ?, [, ])."""
+        """Check whether a name has a wildcard pattern."""
         return self.is_wildcard(name)
+
+    @_trace
+    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+        """Execute a given command with the provided keyword arguments.
+
+        The REST endpoint wraps the actual return value in an envelope of
+        the form ``{"result": <value>, "output": <console text>}``. Unwrap
+        it here so callers see the same plain value that the gRPC service
+        returns, instead of the raw envelope.
+        """
+        return _unwrap_result(self.service.execute_cmd(path, command, **kwds))
+
+    @_trace
+    def execute_query(self, path: str, query: str, **kwds) -> Any:
+        """Execute a given query with the provided keyword arguments.
+
+        See :meth:`execute_cmd` for why the response is unwrapped.
+        """
+        return _unwrap_result(self.service.execute_query(path, query, **kwds))
+
+    # @_trace
+    # def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+    #     """Return values of given attributes.
+
+    #     For ``recursive=False``, delegates to the raw service unchanged (zero
+    #     behavior change for the common case). For ``recursive=True``, uses
+    #     ``_reshape_recursive_attrs`` to normalize the server's response into
+    #     the gRPC-compatible shape: ``{"attrs": {...}, "group_children":
+    #     {name: {...}}}`` for both real settings groups (whose children the
+    #     server nests under ``"children"``) and command-argument descendants
+    #     (whose children the server never nests, requiring client-side
+    #     recursive reconstruction).
+    #     """
+    #     # import pdb
+    #     # pdb.set_trace()
+    #     raw = self.service.get_attrs(path, attrs, recursive)
+    #     # if not recursive:
+    #     #     return raw
+    #     # return self._reshape_recursive_attrs(raw, path, attrs)
+    #     return raw
+
+    @property
+    def supports_deprecation_echo(self) -> bool:
+        """REST has no scheme/TUI-eval endpoint to capture the deprecation echo.
+
+        Confirmed empirically: ``GET api/fluent_1/{scheme-eval,tui,console,
+        journal}`` all return HTTP 404, and the command envelope's
+        ``"output"`` field (which does carry genuine console text for
+        commands that print, e.g. ``list``) stays empty for aliased
+        commands such as ``copy``/``make-a-copy`` -- there is no channel to
+        toggle Scheme's ``api-echo-python-port`` over REST. See
+        ``_Alias._print_newer_api`` for the gRPC-side mechanism this
+        would otherwise mirror.
+        """
+        return False
+
+
+def _unwrap_result(response: Any) -> Any:
+    """Extract the ``"result"`` value from a command/query response envelope.
+
+    The REST API returns ``{"result": <value>, "output": <text>}`` for
+    command/query execution. Responses without a ``"result"`` key are
+    returned unchanged (defensive fallback).
+    """
+    if isinstance(response, dict) and "result" in response:
+        return response["result"]
+    return response

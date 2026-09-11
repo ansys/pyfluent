@@ -28,39 +28,20 @@ from __future__ import annotations
 
 from enum import Enum
 import os
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.session import Meshing, PureMeshing
 from ansys.fluent.core.session._shared import _make_datamodel_module
-from ansys.fluent.core.session.meshing import BaseMeshing
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.workflow_new import Workflow
+from ansys.fluent.core.workflow_old import Workflow
 
-
-def _validate_meshing_session(session: BaseMeshing) -> bool:
-    """Check if the session is a meshing session.
-
-    Parameters
-    ----------
-    session : BaseMeshing
-        The session to check.
-
-    Returns
-    -------
-    bool
-        True if the session is a meshing session, False otherwise.
-
-    Raises
-    ------
-    TypeError
-        If the session is not an instance of BaseMeshing.
-    """
-    if not isinstance(session, BaseMeshing):
-        raise TypeError(
-            f"Expected a BaseMeshing session, got {type(session).__name__} instead."
-        )
-    return True
+name_to_identifier_map = {
+    "Watertight Geometry": "EnableCleanCAD",
+    "Fault-tolerant Meshing": "EnableComplexMeshing",
+    "2D Meshing": "EnablePrime2dMeshing",
+    "Topology Based Meshing": "EnablePrimeMeshing",
+}
 
 
 class MeshingWorkflow(Workflow):
@@ -69,32 +50,51 @@ class MeshingWorkflow(Workflow):
 
     def __init__(
         self,
-        session: BaseMeshing,
-        workflow_type: str,
+        session: PureMeshing | Meshing,
+        workflow_type: PyMenu,
+        identifier: str,
         initialize: bool = True,
     ) -> None:
         """Initialize MeshingWorkflow.
 
         Parameters
         ----------
-        session : BaseMeshing
-            The meshing session.
-        workflow_type: str
-            Workflow type to initialize it.
+        session : PureMeshing | Meshing
+            The meshing session object.
+        workflow_type : PyMenu
+            Type of the workflow.
+        identifier : str
+            Workflow name to identify it from global settings.
         initialize: bool
             Flag to initialize the workflow, defaults to True.
         """
-        _validate_meshing_session(session)
-        self._meshing = session.meshing
         super().__init__(
-            workflow=_make_datamodel_module(session, "meshing_workflow"),
-            command_source=self._meshing,
+            workflow=_make_datamodel_module(session, "workflow"),
+            command_source=session.meshing,
             fluent_version=session.get_fluent_version(),
         )
         self._name = workflow_type
+        self._identifier = identifier
+        self._unsubscribe_root_affected_callback()
         if initialize:
-            self._new_workflow(name=self._name)
+            self._new_workflow(name=workflow_type)
+        else:
+            self._activate_dynamic_interface(dynamic_interface=True)
         self._initialized = True
+        self._meshing = session.meshing
+
+    if not TYPE_CHECKING:
+
+        def __getattribute__(self, item: str):
+            if (
+                not item.startswith("_")
+                and super().__getattribute__("_initialized")
+                and not getattr(self._meshing.GlobalSettings, self._identifier)()
+            ):
+                raise RuntimeError(
+                    f"'{self._name}' objects are inaccessible from other workflows."
+                )
+            return super().__getattribute__(item)
 
 
 class WatertightMeshingWorkflow(MeshingWorkflow):
@@ -119,6 +119,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         super().__init__(
             session=session,
             workflow_type="Watertight Geometry",
+            identifier=name_to_identifier_map["Watertight Geometry"],
             initialize=initialize,
         )
 
@@ -145,33 +146,11 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         super().__init__(
             session=session,
             workflow_type="Fault-tolerant Meshing",
+            identifier=name_to_identifier_map["Fault-tolerant Meshing"],
             initialize=initialize,
         )
-        self._parent_workflow = _make_datamodel_module(session, "meshing_workflow")
         self._part_management = session.PartManagement
         self._pm_file_management = session.PMFileManagement
-
-    @property
-    def parts(self) -> PyMenu | None:
-        """Access part-management in fault-tolerant mode.
-
-        Returns
-        -------
-        PyMenu | None
-            Part-management.
-        """
-        return self._parent_workflow.parts
-
-    @property
-    def parts_files(self):
-        """Access the part-management file-management object in fault-tolerant mode.
-
-        Returns
-        -------
-        PyMenu | None
-            File management object in the part management object.
-        """
-        return self._parent_workflow.parts_files
 
     @property
     def part_management(self) -> PyMenu | None:
@@ -182,7 +161,6 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         PyMenu | None
             Part-management.
         """
-        # TODO: Remove this after migrating to the new workflow
         return self._part_management
 
     @property
@@ -194,7 +172,6 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         PyMenu | None
             File management object in the part management object.
         """
-        # TODO: Remove this after migrating to the new workflow
         return self._pm_file_management
 
 
@@ -220,6 +197,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         super().__init__(
             session=session,
             workflow_type="2D Meshing",
+            identifier=name_to_identifier_map["2D Meshing"],
             initialize=initialize,
         )
 
@@ -246,6 +224,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
         super().__init__(
             session=session,
             workflow_type="Topology Based Meshing",
+            identifier=name_to_identifier_map["Topology Based Meshing"],
             initialize=initialize,
         )
 
@@ -281,13 +260,12 @@ class LoadedWorkflow(Workflow):
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
         """
-        _validate_meshing_session(session)
         super().__init__(
-            workflow=_make_datamodel_module(session, "meshing_workflow"),
+            workflow=_make_datamodel_module(session, "workflow"),
             command_source=session.meshing,
             fluent_version=session.get_fluent_version(),
         )
-        self._meshing = session.meshing
+        self._unsubscribe_root_affected_callback()
         if initialize:
             self._load_workflow(file_path=os.fspath(file_path))
 
@@ -312,15 +290,20 @@ class CreatedWorkflow(Workflow):
             Set this to False if you are connecting to an existing meshing session which
             has been initialized and want to avoid re-initializing the workflow.
         """
-        _validate_meshing_session(session)
         super().__init__(
-            workflow=_make_datamodel_module(session, "meshing_workflow"),
+            workflow=_make_datamodel_module(session, "workflow"),
             command_source=session.meshing,
             fluent_version=session.get_fluent_version(),
         )
-        self._meshing = session.meshing
+        self._unsubscribe_root_affected_callback()
         if initialize:
             self._create_workflow()
+        else:
+            self._activate_dynamic_interface(dynamic_interface=True)
+
+
+def _is_workflow_active(meshing_root, name: str):
+    return getattr(meshing_root.GlobalSettings, name_to_identifier_map[name])()
 
 
 def _get_current_workflow(current_workflow, name: str):
@@ -329,71 +312,46 @@ def _get_current_workflow(current_workflow, name: str):
 
 
 def get_current_workflow(
-    workflow_root, current_workflow, workflow_factories, load_workflow_handle
+    meshing_root, current_workflow, workflow_factories
 ) -> Workflow:
-    """Get the currently active workflow in new mode.
+    """Get the currently active meshing workflow (legacy mode).
+
+    Determines which workflow type is currently active by checking GlobalSettings
+    flags, and returns the appropriate workflow instance. This is the legacy
+    implementation.
 
     Parameters
     ----------
-    workflow_root : PyMenu
-        Root workflow datamodel object.
+    meshing_root : PyMenu
+        Root meshing datamodel object containing GlobalSettings and workflow state.
     current_workflow : Workflow or None
-        Currently cached workflow instance.
-    workflow_factories : dict
-        Mapping of workflow type names to factory functions.
-    load_workflow_handle : callable
-        Function to load a workflow from file.
+        Currently cached workflow instance (may be None or outdated).
+    workflow_factories : dict[str, callable]
+        Mapping of workflow type names to factory functions that create workflow instances.
 
     Returns
     -------
     Workflow
-        The currently active workflow instance.
+        The currently active workflow instance (either cached or newly created).
 
     Raises
     ------
     RuntimeError
-        If no workflow is initialized.
+        If no workflow is initialized (both watertight and fault-tolerant are active).
+
     """
-    # New mode: Check workflow type from meshing_workflow datamodel
-    workflow_type = workflow_root.general.workflow.workflow_type()
+    if _is_workflow_active(meshing_root, "Watertight Geometry") and _is_workflow_active(
+        meshing_root, "Fault-tolerant Meshing"
+    ):
+        raise RuntimeError("No workflow initialized.")
 
-    # Check if no workflow is initialized
-    if workflow_type in ["Select Workflow Type", None]:
-        return
-
-    # Handle loaded workflows (not in the factory map)
-    if workflow_type not in workflow_factories:
-        # This is a loaded workflow
-        if current_workflow and current_workflow.__class__.__name__ in [
-            "LoadWorkflow",
-            "LoadedWorkflow",
-        ]:
-            return current_workflow
-        return load_workflow_handle(initialize=False)
-
-    # Get or create workflow based on type
-    factory = workflow_factories[workflow_type]
-    return _get_current_workflow(current_workflow, workflow_type) or factory(
-        initialize=False
-    )
-
-
-# Public aliases
-
-WatertightMeshing = WatertightMeshingWorkflow
-"""Alias for :class:`WatertightMeshingWorkflow`."""
-
-FaultTolerantMeshing = FaultTolerantMeshingWorkflow
-"""Alias for :class:`FaultTolerantMeshingWorkflow`."""
-
-TwoDimensionalMeshing = TwoDimensionalMeshingWorkflow
-"""Alias for :class:`TwoDimensionalMeshingWorkflow`."""
-
-TopologyBasedMeshing = TopologyBasedMeshingWorkflow
-"""Alias for :class:`TopologyBasedMeshingWorkflow`."""
-
-CreateNewWorkflow = CreatedWorkflow
-"""Alias for :class:`CreatedWorkflow`."""
-
-LoadExistingWorkflow = LoadedWorkflow
-"""Alias for :class:`LoadedWorkflow`."""
+    # Find active workflow type
+    for workflow_name, factory in workflow_factories.items():
+        if _is_workflow_active(meshing_root, workflow_name):
+            return _get_current_workflow(current_workflow, workflow_name) or factory(
+                initialize=False, legacy=True
+            )
+    # Default to create_workflow if no specific type matches
+    return _get_current_workflow(current_workflow, "Create New") or workflow_factories[
+        "Create New"
+    ](initialize=False, legacy=True)

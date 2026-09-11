@@ -127,13 +127,22 @@ class InputPort:
             if self.line == "":
                 self.line = self.file.readline()
                 # Capture multiline string and replace newline characters with
-                # "<newline>" before passing to tokenizer
-                if count_unescaped_quotes(self.line) % 2:
-                    while True:
-                        next_line = self.file.readline()
-                        self.line = self.line.rstrip() + "<newline>" + next_line
-                        if count_unescaped_quotes(next_line) > 0:
-                            break
+                # "<newline>" before passing to tokenizer.
+                # Keep merging subsequent lines while the *cumulative* count
+                # of unescaped quotes across the whole buffer is odd (i.e.
+                # some string is still open). A newly merged line can both
+                # close one string and open another, which nets out to an
+                # even quote count for that line alone while the buffer as a
+                # whole is still unterminated, so we must recheck the total
+                # each time rather than just the newly read line.
+                while self.line != "" and count_unescaped_quotes(self.line) % 2:
+                    next_line = self.file.readline()
+                    if next_line == "":
+                        # Reached end of input while looking for the
+                        # closing quote of an unterminated string; stop
+                        # instead of looping forever.
+                        break
+                    self.line = self.line.rstrip() + "<newline>" + next_line
             if self.line == "":
                 return eof_object
             tok, self.line = re.match(InputPort.tokenizer, self.line).groups()
