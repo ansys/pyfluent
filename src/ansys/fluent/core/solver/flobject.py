@@ -172,24 +172,8 @@ class ReadOnlyActionError(RuntimeError):
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
 
-@total_ordering
-class ExposureLevel(Enum):
-    """API exposure level of a settings object."""
-
-    ALPHA = "alpha"
-    BETA = "beta"
-    STABLE = "stable"
-
-    def __lt__(self, other):
-        """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
-        if isinstance(other, ExposureLevel):
-            order = {
-                ExposureLevel.ALPHA: 0,
-                ExposureLevel.BETA: 1,
-                ExposureLevel.STABLE: 2,
-            }
-            return order[self] < order[other]
-        return NotImplemented
+# Re-export from dedicated module so existing imports still work
+from ansys.fluent.core.solver.exposure_level import ExposureLevel  # noqa: E402
 
 
 def _is_hidden_by_exposure_level(child_cls, parent_obj) -> bool:
