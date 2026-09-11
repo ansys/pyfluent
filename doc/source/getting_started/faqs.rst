@@ -16,56 +16,38 @@ libraries.
 
 What is PyFluent?
 -----------------
-PyFluent provides Python access to Ansys Fluent. Its features enable the seamless use of
-Fluent within the Python ecosystem and broad access to native Fluent features for performing
-actions such as these:
+PyFluent provides Python access to Ansys Fluent, enabling native Fluent features from within
+the Python ecosystem for automation tasks such as launching Fluent locally or connecting to a
+remote Fluent instance.
 
-- Launch Fluent using a local Ansys installation.
-- Connect to a Fluent instance running on a remote machine.
-- TODO
+PyFluent is bundled with the Fluent installation, or can be installed separately. For more
+information, see :ref:`faqs_install`, later on this page.
 
-PyFluent is bundled with the Fluent installation. You can also download and install PyFluent
-separately. For more information, see :ref:`faqs_install`, which appears later on this page.
-
-PyFluent has no GUI (graphical user interface). You interact with PyFluent through the Python
-environment of your choice.
+PyFluent has no GUI (graphical user interface) of its own. You interact with it entirely
+through the Python environment of your choice.
 
 How does PyFluent compare to Fluent user defined functions?
------------------------------------------------------------
-PyFluent is conceptually aligned with Fluent TUI console commands and
-journaling rather than with user defined functions (UDFs). In other words,
-PyFluent is primarily used for automation rather than modifying the solver
-behavior.
-
-UDFs continue to be written in C and remain important elements of Fluent
-simulations.
-
-While you cannot write UDFs in Python, you can execute PyFluent commands to
-compile and load UDFs, similar to how you use TUI commands.
+-------------------------------------------------------------
+PyFluent is closer to Fluent TUI commands and journaling than to user defined functions
+(UDFs): it automates workflows rather than modifying solver behavior. UDFs, written in C,
+remain important for customizing solver behavior. You cannot write UDFs in Python, but you
+can use PyFluent commands to compile and load them, just as you would with TUI commands.
 
 Who should use PyFluent?
 ------------------------
-PyFluent users include engineers, product designers, consultants, and academia.
+PyFluent users include engineers, product designers, consultants, and academics.
 
 .. image:: ../_static/who_why_use_PyFluent.png
   :width: 800
   :alt: PyFluent users and objectives
 
+Common uses include:
 
-- Enhance productivity with customized scripts.
-- Automate multi-product workflows.
-- Extend CFD simulations to a wider audience by creating vertical apps.
-- Create comprehensive workflows inspired by Python's increasingly broad offerings
-  in these areas of scientific computing:
-
-  - Computer vision
-  - ML (machine learning)
-  - AI (artificial intelligence)
-  - Data processing and visualization
-  - Optimization
-
-- Use widely accepted libraries and notations to compute
-  multi-dimensional arrays in the Python environment.
+- Automating repetitive or multi-product workflows with custom scripts.
+- Integrating CFD simulations into other applications.
+- Combining Fluent with Python's scientific computing libraries, for example for machine
+  learning, data processing and visualization, or optimization.
+- Using standard Python array libraries and notations to work with simulation data.
 
 
 .. image:: ../_static/libraries_notations.png
@@ -128,7 +110,7 @@ To launch Fluent with PyFluent commands, use this code:
 .. code:: python
 
    import ansys.fluent.core as pyfluent
-   session=pyfluent.launch_fluent()
+   session = pyfluent.Solver.from_install()
 
 
 This example shows you how to launch a double precision Fluent session using two
@@ -136,7 +118,7 @@ processors and activate the Fluent user interface:
 
 .. code:: python
 
-   session=pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui")
+   session = pyfluent.Solver.from_install(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui")
 
 
 For additional launch examples, see :ref:`ref_launch_guide`. For
