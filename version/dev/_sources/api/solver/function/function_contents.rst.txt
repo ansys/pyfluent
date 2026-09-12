@@ -1,0 +1,19 @@
+.. _ref_ansys_fluent_core_solver_function:
+
+function
+========
+
+.. automodule:: ansys.fluent.core.solver.function
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    reduction
+

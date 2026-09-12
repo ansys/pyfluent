@@ -1,0 +1,46 @@
+.. _ref_ansys_fluent_core_services:
+
+services
+========
+
+.. automodule:: ansys.fluent.core.services
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    streaming_services/streaming_services_contents
+    abstract_application_runtime
+    abstract_events
+    abstract_field_data
+    abstract_health_check
+    abstract_monitors
+    abstract_object_model
+    abstract_reduction
+    abstract_scheme_interpreter
+    abstract_settings
+    abstract_solution_variables
+    abstract_text_interface
+    api_upgrade
+    application_runtime
+    batch_ops
+    events
+    field_data
+    health_check
+    interceptors
+    monitors
+    object_model
+    object_model_utilities
+    reduction
+    scheme_interpreter
+    settings
+    solution_variables
+    text_interface
+    transcript
+

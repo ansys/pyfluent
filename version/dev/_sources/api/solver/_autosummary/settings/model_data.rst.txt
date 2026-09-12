@@ -1,0 +1,40 @@
+:orphan:
+
+.. _model_data:
+
+model_data
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.model_data
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ============================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                     Summary
+
+======================================================   ============================================================================================================================================================================================================================
+:ref:`option <option_22>`                                Specifies whether the auxiliary fluid inlet temperature is fixed ("fixed-inlet-temperature") or the total heat rejected is fixed ("fixed-heat-rejection"). Read-only when connectivity chains or multiple cores are present.
+
+:ref:`core_porosity_model <core_porosity_model>`                                                                                                                                                                                                           Core porosity model group.
+
+:ref:`heat_transfer_model <heat_transfer_model>`                                                                                                                                                                                               The heat transfer model for this core.
+
+:ref:`ntu_effectiveness_data <ntu_effectiveness_data>`                                                                                                                                                                                          NTU heat transfer effectiveness data.
+
+:ref:`effectiveness_curve <effectiveness_curve>`                                                                                            Velocity-effectiveness data for the Simple Effectiveness Model. Active only when the heat transfer model is "Simple Effectiveness Model".
+
+======================================================   ============================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+================================   =============================
+
+Parent                                                   Summary
+
+================================   =============================
+:ref:`cores_child <cores_child>`   'child_object_type' of cores.
+
+================================   =============================
+

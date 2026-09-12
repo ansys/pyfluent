@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_cav_p_vap_rgp_data_set:
+
+mt_cav_p_vap_rgp_data_set
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_cav_p_vap_rgp_data_set
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`mt_cav_prop <mt_cav_prop>`       Cavitation properties group.
+
+================================   ================================
+

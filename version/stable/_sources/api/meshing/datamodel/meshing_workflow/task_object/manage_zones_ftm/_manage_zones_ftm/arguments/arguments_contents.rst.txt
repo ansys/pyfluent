@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_manage_zones_ftm__manage_zones_ftm_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.manage_zones_ftm._manage_zones_ftm.arguments
+   :members: add_prefix_name, angle, area, body_label_list, complete_label_list, complete_zone_list, control_name, equal_range, face_merge, label_list, manage_cell_zone_list, manage_face_zone_list, operation, operation_name, size_filter, topology_list, type, volume, zone_filter, zone_list, zone_location, zone_or_label
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

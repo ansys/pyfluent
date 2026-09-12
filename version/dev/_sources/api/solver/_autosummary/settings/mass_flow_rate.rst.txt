@@ -1,0 +1,38 @@
+:orphan:
+
+.. _mass_flow_rate:
+
+mass_flow_rate
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mass_flow_rate
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==================================================================
+
+Attribute                                                                                                 Summary
+
+============================================   ==================================================================
+:ref:`option <option_25>`                      The profile type: constant value, polynomial, or piecewise-linear.
+
+:ref:`value <value_14>`                                                                   Constant profile value.
+
+:ref:`polynomial <polynomial_1>`                                                             Polynomial settings.
+
+:ref:`piecewise_linear <piecewise_linear_1>`                     Ranges and values for piecewise-linear property.
+
+============================================   ==================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`inlet_conditions <inlet_conditions>`   The auxiliary fluid inlet condition parameters.
+
+==========================================   ===============================================
+

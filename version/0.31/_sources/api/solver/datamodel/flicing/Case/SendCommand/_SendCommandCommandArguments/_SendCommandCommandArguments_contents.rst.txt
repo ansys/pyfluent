@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_SendCommand__SendCommandCommandArguments:
+
+_SendCommandCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.flicing.Root.Case.SendCommand._SendCommandCommandArguments
+   :members: _Command, _PythonCommand
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

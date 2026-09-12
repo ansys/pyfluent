@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_dump_face_zone_orientation_in_region__dump_face_zone_orientation_in_regionArguments:
+
+_dump_face_zone_orientation_in_regionArguments
+==============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.dump_face_zone_orientation_in_region._dump_face_zone_orientation_in_regionArguments
+   :members: _file_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

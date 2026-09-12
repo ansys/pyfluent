@@ -1,0 +1,36 @@
+:orphan:
+
+.. _particle_rotation:
+
+particle_rotation
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.particle_rotation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===========================   ==============================
+
+Attribute                                            Summary
+
+===========================   ==============================
+:ref:`enabled <enabled_20>`       Enable particle rotation?.
+
+:ref:`drag_law <drag_law>`                    The drag law:.
+
+:ref:`lift_law <lift_law>`                    The lift law:.
+
+===========================   ==============================
+
+.. rubric:: Included in:
+
+============================================   ========================================
+
+Parent                                                                          Summary
+
+============================================   ========================================
+:ref:`physical_models_1 <physical_models_1>`       Lagrangian physical models settings.
+
+============================================   ========================================
+

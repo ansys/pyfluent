@@ -1,0 +1,34 @@
+:orphan:
+
+.. _second_axis:
+
+second_axis
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.second_axis
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================
+
+Attribute                                                Summary
+
+============================   =================================
+:ref:`axis_from <axis_from>`       The initial state properties.
+
+:ref:`axis_to <axis_to>`           The initial state properties.
+
+============================   =================================
+
+.. rubric:: Included in:
+
+====================================   ========================================================
+
+Parent                                                                                  Summary
+
+====================================   ========================================================
+:ref:`orientation_1 <orientation_1>`       The orientation of the axis of your reference frame.
+
+====================================   ========================================================
+

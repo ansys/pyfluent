@@ -1,0 +1,21 @@
+:orphan:
+
+.. _outside:
+
+outside
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.outside
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================
+
+Parent                                    Summary
+
+==============================   ================
+:ref:`options_22 <options_22>`   'options' child.
+
+==============================   ================
+

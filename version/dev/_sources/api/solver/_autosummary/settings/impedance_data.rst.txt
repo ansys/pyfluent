@@ -1,0 +1,36 @@
+:orphan:
+
+.. _impedance_data:
+
+impedance_data
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.impedance_data
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   =====================================================================
+
+Argument                                                                                                     Summary
+
+============================================   =====================================================================
+:ref:`input_file <input_file>`                                Path to the experimental specific impedance data file.
+
+:ref:`pole_residue_file <pole_residue_file>`   Output file for pole/residue parameters. Leave empty to skip writing.
+
+:ref:`fitted_data_file <fitted_data_file>`                 Output file for fitted data. Leave empty to skip writing.
+
+============================================   =====================================================================
+
+.. rubric:: Included in:
+
+======================================================   ==================================
+
+Parent                                                                              Summary
+
+======================================================   ==================================
+:ref:`impedance_data_fitting <impedance_data_fitting>`   The impedance data fitting object.
+
+======================================================   ==================================
+

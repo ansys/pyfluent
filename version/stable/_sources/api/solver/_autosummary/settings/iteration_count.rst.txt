@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iteration_count:
+
+iteration_count
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.iteration_count
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===================================
+
+Parent                                                         Summary
+
+================================   ===================================
+:ref:`calculation <calculation>`       The adjoint calculation object.
+
+================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _equation_ordering:
+
+equation_ordering
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.equation_ordering
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =========================
+
+Parent                                             Summary
+
+==============================   =========================
+:ref:`controls_1 <controls_1>`   Solution controls object.
+
+==============================   =========================
+

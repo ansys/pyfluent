@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_boundary_layers_for_part_replacement__add_boundary_layers_for_part_replacement_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.add_boundary_layers_for_part_replacement._add_boundary_layers_for_part_replacement.arguments
+   :members: add_child, bl_region_list, bl_zone_list, complete_bl_label_list, complete_bl_region_list, complete_bl_zone_list, complete_label_selection_list, complete_region_scope, complete_zone_selection_list, control_name, first_aspect_ratio, first_height, label_list, max_layer_height, number_of_layers, offset_method_type, rate, read_prism_control_file, region_scope, transition_ratio, zone_location, zone_selection_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   face_scope/face_scope_contents
+   local_prism_preferences/local_prism_preferences_contents

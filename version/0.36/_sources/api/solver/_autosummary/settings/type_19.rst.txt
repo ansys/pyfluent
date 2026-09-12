@@ -1,0 +1,21 @@
+:orphan:
+
+.. _type_19:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.type_19
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`efficiency <efficiency>`       The object.
+
+==============================   ===============
+

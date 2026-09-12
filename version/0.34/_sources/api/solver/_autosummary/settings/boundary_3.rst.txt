@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_3:
+
+boundary
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.boundary_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   =============================================================================================
+
+Parent                                                                                                                                               Summary
+
+============================================================   =============================================================================================
+:ref:`knudsen_number_calculator <knudsen_number_calculator>`       Utility to compute Kudsen number based on characteristic length and boundary information.
+
+============================================================   =============================================================================================
+

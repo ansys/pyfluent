@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_describe_geometry_and_flow__describe_geometry_and_flowArguments__describe_geometry_and_flow_options:
+
+_describe_geometry_and_flow_options
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.describe_geometry_and_flow._describe_geometry_and_flowArguments._describe_geometry_and_flow_options
+   :members: _advanced_options, _close_leakages, _close_leakges, _enable_overset, _enable_prime_wrapper, _extract_edge_features, _identify_regions, _moving_objects, _porous_regions, _zero_thickness
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

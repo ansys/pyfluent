@@ -1,0 +1,21 @@
+:orphan:
+
+.. _c_shielded_des:
+
+c_shielded_des
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.c_shielded_des
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`coefficients_7 <coefficients_7>`   SBES/SDES model constants.
+
+======================================   ==========================
+

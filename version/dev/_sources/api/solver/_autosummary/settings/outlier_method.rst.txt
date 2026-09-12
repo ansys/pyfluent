@@ -1,0 +1,21 @@
+:orphan:
+
+.. _outlier_method:
+
+outlier_method
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.outlier_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`outlier <outlier>`   Configure outlier detection method and its constants.
+
+========================   =====================================================
+

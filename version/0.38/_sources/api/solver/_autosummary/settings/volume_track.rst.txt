@@ -1,0 +1,32 @@
+:orphan:
+
+.. _volume_track:
+
+volume_track
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.volume_track
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =========================================================
+
+Attribute                                                                              Summary
+
+==================================   =========================================================
+:ref:`track_volume <track_volume>`       The volume you want to attach the reference frame to.
+
+==================================   =========================================================
+
+.. rubric:: Included in:
+
+==========================   ===========================
+
+Parent                                           Summary
+
+==========================   ===========================
+:ref:`motion_1 <motion_1>`       Give motion properties.
+
+==========================   ===========================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _write_files:
+
+write_files
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_files
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   ========================================================================================
+
+Argument                                                                                                                      Summary
+
+==========================================   ========================================================================================
+:ref:`filename_prefix <filename_prefix>`                                      A prefix to prepend to all generated output file names.
+
+:ref:`write_wav <write_wav>`                              Enable this option to generate a WAV file containing the output sound data.
+
+:ref:`write_out_signal <write_out_signal>`                  Enable this option to generate an output file containing the signal data.
+
+:ref:`write_indicators <write_indicators>`       Enable this option to generate a file containing the calculated acoustic indicators.
+
+==========================================   ========================================================================================
+
+.. rubric:: Included in:
+
+==================================================   ================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                        Summary
+
+==================================================   ================================================================================================================================================================================================================
+:ref:`ansys_sound_analysis <ansys_sound_analysis>`       Configure and perform sound analysis by specifying input data, frequency response filters, receivers, and output options. Use this section to set up and manage all aspects of your sound analysis workflow.
+
+==================================================   ================================================================================================================================================================================================================
+

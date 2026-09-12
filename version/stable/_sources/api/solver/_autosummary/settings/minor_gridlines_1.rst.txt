@@ -1,0 +1,40 @@
+:orphan:
+
+.. _minor_gridlines_1:
+
+minor_gridlines
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minor_gridlines_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ==================================================================================
+
+Attribute                                                                                                             Summary
+
+========================================   ==================================================================================
+:ref:`color <color_7>`                                                                               Color of the minor rule.
+
+:ref:`weight <weight_4>`                                                                             Width of the minor rule.
+
+:ref:`auto_placement <auto_placement_2>`       Specifies whether you want minor rules to be placed automatically on the axis.
+
+:ref:`divisions <divisions_2>`                                                     No. of divisions made by minor grid lines.
+
+========================================   ==================================================================================
+
+.. rubric:: Included in:
+
+================   ==============
+
+Parent                    Summary
+
+================   ==============
+:ref:`x_8 <x_8>`       'x' child.
+
+:ref:`y_8 <y_8>`       'y' child.
+
+================   ==============
+

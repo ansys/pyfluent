@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateInitialSurfaceMesh__GenerateInitialSurfaceMeshCommandArguments__PrismDPreferences:
+
+_Prism2DPreferences
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.GenerateInitialSurfaceMesh._GenerateInitialSurfaceMeshCommandArguments._Prism2DPreferences
+   :members: _GapFactor, _LocalRemesh, _MaxAspectRatio, _MaxFaceSkew, _MinAspectRatio, _RefineStretchedQuads, _RemeshGrowthRate, _ShowPrism2DPreferences, _SplitQuads, _nOrthogonalLayers
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _airfoil_data_file:
+
+airfoil_data_file
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.airfoil_data_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ================================
+
+Parent                                                                Summary
+
+==========================================   ================================
+:ref:`geometry_6_child <geometry_6_child>`   'child_object_type' of geometry.
+
+==========================================   ================================
+

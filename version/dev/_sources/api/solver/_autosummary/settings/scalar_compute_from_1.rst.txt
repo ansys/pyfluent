@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scalar_compute_from_1:
+
+scalar_compute_from
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.scalar_compute_from_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================
+
+Parent                                                                               Summary
+
+====================================================   =====================================
+:ref:`field_entries_1_child <field_entries_1_child>`   'child_object_type' of field_entries.
+
+====================================================   =====================================
+

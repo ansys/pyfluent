@@ -1,0 +1,42 @@
+:orphan:
+
+.. _ensight_dvs:
+
+ensight_dvs
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ensight_dvs
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ==================================================================
+
+Argument                                                                                          Summary
+
+====================================   ==================================================================
+:ref:`file_name <file_name_1>`                                           The desired file name to export.
+
+:ref:`scope <scope>`                       The scope of the export (volume, surface, surface-and-volume).
+
+:ref:`cell_zones <cell_zones>`                                                       Cell zone name list.
+
+:ref:`surfaces <surfaces_1>`                                                                     Surface.
+
+:ref:`cell_centered <cell_centered>`                Specifies whether export the cell center data values.
+
+:ref:`quantities <quantities>`                                          The list of quantities to export.
+
+====================================   ==================================================================
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`export <export>`       Export files.
+
+======================   =================
+

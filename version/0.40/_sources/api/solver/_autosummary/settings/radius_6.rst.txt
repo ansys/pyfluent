@@ -1,0 +1,23 @@
+:orphan:
+
+.. _radius_6:
+
+radius
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.radius_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`style_attribute <style_attribute>`           The style attributes.
+
+:ref:`style_attribute_1 <style_attribute_1>`       The style attributes.
+
+============================================   =========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mbh_nuc_c1_exp:
+
+mbh_nuc_c1_exp
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mbh_nuc_c1_exp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ========================================
+
+Parent                                                                                        Summary
+
+==========================================================   ========================================
+:ref:`moss_brookes_hall_params <moss_brookes_hall_params>`   Moss-Brookes-Hall soot model parameters.
+
+==========================================================   ========================================
+

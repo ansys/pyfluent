@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fensapice_drop_cproptype_1:
+
+fensapice_drop_cproptype
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.fensapice_drop_cproptype_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===================================================
+
+Parent                                                                 Summary
+
+========================   ===================================================
+:ref:`icing_3 <icing_3>`   Allows to change icing model variables or settings.
+
+========================   ===================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _render_gap_regions:
+
+render_gap_regions
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.render_gap_regions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                     Summary
+
+============================   ===================================================================================================================================================================================
+:ref:`gap_model <gap_model>`   Configure the gap model for simulation of narrow passages. The gap model applies special interpolation and flow-blocking or flow-modeling treatments inside identified gap regions.
+
+============================   ===================================================================================================================================================================================
+

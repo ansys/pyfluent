@@ -1,0 +1,21 @@
+:orphan:
+
+.. _customize_inputs:
+
+customize_inputs
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.customize_inputs
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ========================================================
+
+Parent                                                                                        Summary
+
+==========================================   ========================================================
+:ref:`decelerated_flow <decelerated_flow>`   Parameters for the Decelerated Flow reduced-order model.
+
+==========================================   ========================================================
+

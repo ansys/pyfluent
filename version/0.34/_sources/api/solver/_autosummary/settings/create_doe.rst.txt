@@ -1,0 +1,36 @@
+:orphan:
+
+.. _create_doe:
+
+create_doe
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_doe
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================================   ==================================
+
+Argument                                                                                      Summary
+
+================================================================   ==================================
+:ref:`sampling_type <sampling_type>`                                                   Sampling Type.
+
+:ref:`number_of_samples_or_levels <number_of_samples_or_levels>`         Number of Samples or Levels.
+
+:ref:`delete_existing_dps <delete_existing_dps>`                       Delete Existing Design Points.
+
+================================================================   ==================================
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

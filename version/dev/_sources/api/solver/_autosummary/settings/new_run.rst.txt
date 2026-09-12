@@ -1,0 +1,21 @@
+:orphan:
+
+.. _new_run:
+
+new_run
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.new_run
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==========================================
+
+Parent                                                Summary
+
+================   ==========================================
+:ref:`run <run>`   Manage runs within the current simulation.
+
+================   ==========================================
+

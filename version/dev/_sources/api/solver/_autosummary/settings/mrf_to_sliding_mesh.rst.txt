@@ -1,0 +1,36 @@
+:orphan:
+
+.. _mrf_to_sliding_mesh:
+
+mrf_to_sliding_mesh
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mrf_to_sliding_mesh
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ====================================================
+
+Argument                                                                                Summary
+
+========================================   ====================================================
+:ref:`cell_zones <cell_zones_8>`                                     Names or IDs of MRF zones.
+
+:ref:`cell_zone_name <cell_zone_name_2>`                                Name or ID of MRF zone.
+
+:ref:`matching <matching>`                 Specifies whether each interface is matching or not.
+
+========================================   ====================================================
+
+.. rubric:: Included in:
+
+==================================================   ================================
+
+Parent                                                                        Summary
+
+==================================================   ================================
+:ref:`cell_zone_conditions <cell_zone_conditions>`   The cell zone conditions object.
+
+==================================================   ================================
+

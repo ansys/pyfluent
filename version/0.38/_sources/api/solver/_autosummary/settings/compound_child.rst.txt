@@ -1,0 +1,47 @@
+:orphan:
+
+.. _compound_child:
+
+compound_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.compound_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ========================================
+
+Attribute                                                           Summary
+
+================================   ========================================
+:ref:`name <name_5>`                                    Name of the object.
+
+:ref:`method <method_23>`                               Compounding method.
+
+:ref:`conditions <conditions_1>`       List of conditions to be compounded.
+
+================================   ========================================
+
+.. rubric:: Methods
+
+===========================   =============================
+
+Method                                              Summary
+
+===========================   =============================
+:ref:`display <display_16>`       Display design condition.
+
+===========================   =============================
+
+.. rubric:: Included in:
+
+==========================   ==================================
+
+Parent                                                  Summary
+
+==========================   ==================================
+:ref:`compound <compound>`       Compound condition definition.
+
+==========================   ==================================
+

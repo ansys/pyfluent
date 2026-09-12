@@ -1,0 +1,21 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_regions:
+
+regions
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.graphics.regions
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   draw_all/draw_all_contents
+   draw_dead/draw_dead_contents
+   draw_fluid/draw_fluid_contents
+   draw_solid/draw_solid_contents

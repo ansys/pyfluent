@@ -1,0 +1,21 @@
+:orphan:
+
+.. _monitor_2:
+
+monitor
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.monitor_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`equations_2_child <equations_2_child>`   'child_object_type' of equations.
+
+============================================   =================================
+

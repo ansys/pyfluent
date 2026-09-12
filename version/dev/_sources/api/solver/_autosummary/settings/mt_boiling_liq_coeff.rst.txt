@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_boiling_liq_coeff:
+
+mt_boiling_liq_coeff
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_liq_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================================================
+
+Parent                                                                                                      Summary
+
+============================================   ====================================================================
+:ref:`mt_boiling_params <mt_boiling_params>`   Boiling sub-model parameters: BDD, NSD, BDF, AIC, blending function.
+
+============================================   ====================================================================
+

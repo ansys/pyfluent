@@ -1,0 +1,40 @@
+:orphan:
+
+.. _bc_pressure_extrapolations:
+
+bc_pressure_extrapolations
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bc_pressure_extrapolations
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================================   ==========================================================================
+
+Attribute                                                                                                                                                   Summary
+
+======================================================================================   ==========================================================================
+:ref:`extrapolate_pressure_on_flow_inlets <extrapolate_pressure_on_flow_inlets>`                                     Extrapolate pressure on flow inlet boundaries.
+
+:ref:`extrapolate_pressure_on_all_boundaries <extrapolate_pressure_on_all_boundaries>`                                      Extrapolate pressure on all boundaries.
+
+:ref:`extrapolate_velocity_on_outflow <extrapolate_velocity_on_outflow>`                               Extrapolate velocity/total quantities on outflow boundaries.
+
+:ref:`extrapolate_pressure_on_pressure_inlet <extrapolate_pressure_on_pressure_inlet>`                           Extrapolate pressure on pressure-inlet boundaries.
+
+:ref:`pressure_outlet_advection_splitting <pressure_outlet_advection_splitting>`         Use advection splitting method for pressure on pressure-outlet boundaries.
+
+======================================================================================   ==========================================================================
+
+.. rubric:: Included in:
+
+==============================   =========================
+
+Parent                                             Summary
+
+==============================   =========================
+:ref:`controls_1 <controls_1>`   Solution controls object.
+
+==============================   =========================
+

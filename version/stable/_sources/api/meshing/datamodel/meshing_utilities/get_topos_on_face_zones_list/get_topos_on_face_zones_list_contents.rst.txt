@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_topos_on_face_zones_list:
+
+get_topos_on_face_zones_list
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.get_topos_on_face_zones_list
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _get_topos_on_face_zones_listArguments/_get_topos_on_face_zones_listArguments_contents

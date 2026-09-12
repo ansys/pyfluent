@@ -1,0 +1,36 @@
+:orphan:
+
+.. _surface_mesh:
+
+surface_mesh
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.surface_mesh
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================   ===========================
+
+Method                                           Summary
+
+==========================   ===========================
+:ref:`delete <delete_2>`            Delete surface mesh.
+
+:ref:`display <display_1>`       Display surface meshes.
+
+:ref:`read <read_3>`                Read surface meshes.
+
+==========================   ===========================
+
+.. rubric:: Included in:
+
+==================   =================
+
+Parent                         Summary
+
+==================   =================
+:ref:`mesh <mesh>`       'mesh' child.
+
+==================   =================
+

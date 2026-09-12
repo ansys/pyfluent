@@ -1,0 +1,62 @@
+:orphan:
+
+.. _display_states_child:
+
+display_states_child
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.display_states_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===========================================================================
+
+Attribute                                                                                                                      Summary
+
+========================================================   ===========================================================================
+:ref:`name <name_4>`                                                                                               Name of the object.
+
+:ref:`front_faces_transparent <front_faces_transparent>`                             Controls whether the front faces are transparent.
+
+:ref:`projection <projection_1>`                               Specifies whether the display is in a perspective or orthographic view.
+
+:ref:`axes <axes_2>`                                                              Controls whether or not the axes triad is displayed.
+
+:ref:`ruler <ruler>`                                                                   Controls whether or not the ruler is displayed.
+
+:ref:`title <title_1>`                                                            Controls whether or not the titles bar is displayed.
+
+:ref:`boundary_marker <boundary_marker>`                                       Controls whether or not boundary markers are displayed.
+
+:ref:`anti_aliasing <anti_aliasing>`                                                Controls whether or not lines and text are smooth.
+
+:ref:`reflections <reflections>`                                           Controls whether or not a reflection of the model is shown.
+
+:ref:`static_shadows <static_shadows>`                                           Controls whether or not static shadows are displayed.
+
+:ref:`dynamic_shadows <dynamic_shadows>`                                        Controls whether or not dynamic shadows are displayed.
+
+:ref:`grid_plane <grid_plane>`                                                        Controls whether or not the grid plane is shown.
+
+:ref:`headlights <headlights>`                                                            Controls whether the headlight is on or off.
+
+:ref:`lighting <lighting_1>`                                               Specifies the lighting method that is used for the display.
+
+:ref:`view_name <view_name>`                                                                                        View name setting.
+
+:ref:`light_id <light_id>`                                                                    Specifies the light id for the lighting.
+
+========================================================   ===========================================================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`display_states <display_states>`       Display state options.
+
+======================================   ==========================
+

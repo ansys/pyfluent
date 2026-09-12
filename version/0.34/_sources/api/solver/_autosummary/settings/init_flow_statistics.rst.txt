@@ -1,0 +1,21 @@
+:orphan:
+
+.. _init_flow_statistics:
+
+init_flow_statistics
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.init_flow_statistics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================================
+
+Parent                                                                   Summary
+
+==========================================   ===================================
+:ref:`initialization_1 <initialization_1>`       Solution initialization object.
+
+==========================================   ===================================
+

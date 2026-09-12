@@ -1,0 +1,38 @@
+:orphan:
+
+.. _fas_mg_controls:
+
+fas_mg_controls
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.fas_mg_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ================================================
+
+Attribute                                                                                           Summary
+
+========================================================   ================================================
+:ref:`fixed_cycle_parameters <fixed_cycle_parameters_3>`       FAS multigrid fixed cycle parameters object.
+
+:ref:`coarsening_parameters <coarsening_parameters_3>`          FAS multigrid coarsening parameters object.
+
+:ref:`relaxation_factor <relaxation_factor_2>`                      FAS multigrid relaxation factor object.
+
+:ref:`options <options_11>`                                                   FAS multigrid options object.
+
+========================================================   ================================================
+
+.. rubric:: Included in:
+
+==============================   ======================
+
+Parent                                          Summary
+
+==============================   ======================
+:ref:`multi_grid <multi_grid>`       Multi-grid object.
+
+==============================   ======================
+

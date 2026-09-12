@@ -1,0 +1,21 @@
+:orphan:
+
+.. _customize_inputs_1:
+
+customize_inputs
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.customize_inputs_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================================================
+
+Parent                                                                               Summary
+
+====================================   =====================================================
+:ref:`resisted_flow <resisted_flow>`   Parameters for the Resisted Flow reduced-order model.
+
+====================================   =====================================================
+

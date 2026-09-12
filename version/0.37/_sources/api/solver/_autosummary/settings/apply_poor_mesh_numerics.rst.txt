@@ -1,0 +1,21 @@
+:orphan:
+
+.. _apply_poor_mesh_numerics:
+
+apply_poor_mesh_numerics
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.apply_poor_mesh_numerics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`cell_registers_child <cell_registers_child>`       'child_object_type' of cell_registers.
+
+==================================================   ==========================================
+

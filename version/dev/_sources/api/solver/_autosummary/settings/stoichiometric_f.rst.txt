@@ -1,0 +1,21 @@
+:orphan:
+
+.. _stoichiometric_f:
+
+stoichiometric_f
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.stoichiometric_f
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`edit_f_grid_settings <edit_f_grid_settings>`   Editor group for flamelet f-grid settings.
+
+==================================================   ==========================================
+

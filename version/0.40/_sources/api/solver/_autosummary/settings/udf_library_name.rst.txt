@@ -1,0 +1,21 @@
+:orphan:
+
+.. _udf_library_name:
+
+udf_library_name
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.udf_library_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   =====================
+
+Parent                             Summary
+
+==================   =====================
+:ref:`load <load>`       Load UDF library.
+
+==================   =====================
+

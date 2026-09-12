@@ -1,0 +1,45 @@
+:orphan:
+
+.. _surface_cells_child:
+
+surface_cells_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.surface_cells_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   =======================
+
+Attribute                                    Summary
+
+==========================   =======================
+:ref:`name <name_4>`             Name of the object.
+
+:ref:`surface <surface_4>`                  Surface.
+
+==========================   =======================
+
+.. rubric:: Methods
+
+==========================   ======================
+
+Method                                      Summary
+
+==========================   ======================
+:ref:`display <display_8>`       Display a surface.
+
+==========================   ======================
+
+.. rubric:: Included in:
+
+====================================   ====================================================
+
+Parent                                                                              Summary
+
+====================================   ====================================================
+:ref:`surface_cells <surface_cells>`       Extract all cells intersected by a data surface.
+
+====================================   ====================================================
+

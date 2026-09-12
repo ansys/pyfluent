@@ -1,0 +1,38 @@
+:orphan:
+
+.. _electrochemistry:
+
+electrochemistry
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.electrochemistry
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =================================================
+
+Attribute                                                                                  Summary
+
+==============================================   =================================================
+:ref:`exchange_current <exchange_current>`                  The exchange current density settings.
+
+:ref:`mole_fraction_ref <mole_fraction_ref>`                 The mole fraction reference settings.
+
+:ref:`concentration_exp <concentration_exp>`                 The concentration exponents settings.
+
+:ref:`bv_symmetry_factor <bv_symmetry_factor>`       The Butler-Volmer symmetriy factors settings.
+
+==============================================   =================================================
+
+.. rubric:: Included in:
+
+==================   ========================
+
+Parent                                Summary
+
+==================   ========================
+:ref:`sofc <sofc>`       SOFC model settings.
+
+==================   ========================
+

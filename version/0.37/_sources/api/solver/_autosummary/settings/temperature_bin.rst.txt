@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temperature_bin:
+
+temperature_bin
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.temperature_bin
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   =======================================
+
+Parent                                                                                                     Summary
+
+========================================================================   =======================================
+:ref:`chemistry_agglomeration_options <chemistry_agglomeration_options>`       Chemistry agglomeration parameters.
+
+========================================================================   =======================================
+

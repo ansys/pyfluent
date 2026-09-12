@@ -1,0 +1,21 @@
+:orphan:
+
+.. _disconnect_current:
+
+disconnect_current
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.disconnect_current
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ======================
+
+Parent                                                        Summary
+
+============================================   ======================
+:ref:`compute_resources <compute_resources>`   Compute Resource List.
+
+============================================   ======================
+

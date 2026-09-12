@@ -1,0 +1,36 @@
+:orphan:
+
+.. _fuel_stream:
+
+fuel_stream
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fuel_stream
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ===========================
+
+Attribute                                                                    Summary
+
+======================================================   ===========================
+:ref:`number_of_fuel_streams <number_of_fuel_streams>`       Number of fuel streams.
+
+:ref:`fuel_stream_id <fuel_stream_id>`                       Number of fuel streams.
+
+:ref:`fuel_type <fuel_type>`                                              Fuel type.
+
+======================================================   ===========================
+
+.. rubric:: Included in:
+
+====================================   =====================
+
+Parent                                               Summary
+
+====================================   =====================
+:ref:`nox_chemistry <nox_chemistry>`       NOx model object.
+
+====================================   =====================
+

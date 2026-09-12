@@ -1,0 +1,23 @@
+:orphan:
+
+.. _compute_4:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.compute_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`field_value <field_value>`       'field_value' child.
+
+:ref:`range_2 <range_2>`                     'range' child.
+
+================================   ========================
+

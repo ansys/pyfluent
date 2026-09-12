@@ -1,0 +1,21 @@
+:orphan:
+
+.. _multi_fluid_vof:
+
+multi_fluid_vof
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.multi_fluid_vof
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================
+
+Parent                                            Summary
+
+====================================   ==================
+:ref:`hybrid_models <hybrid_models>`       Hybrid models.
+
+====================================   ==================
+

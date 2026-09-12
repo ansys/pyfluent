@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_set_object_cell_zone_type__set_object_cell_zone_typeCommandArguments:
+
+_set_object_cell_zone_typeCommandArguments
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.set_object_cell_zone_type._set_object_cell_zone_typeCommandArguments
+   :members: _cell_zone_type, _object_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

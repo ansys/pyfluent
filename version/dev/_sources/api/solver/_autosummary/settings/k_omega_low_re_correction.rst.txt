@@ -1,0 +1,40 @@
+:orphan:
+
+.. _k_omega_low_re_correction:
+
+k_omega_low_re_correction
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.k_omega_low_re_correction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ================================================
+
+Attribute                                                             Summary
+
+==========================   ================================================
+:ref:`enabled <enabled_2>`          Enable/disable the k-omega low Re option.
+
+:ref:`alpha_0 <alpha_0>`     The low-re correction model coefficient Alpha_0.
+
+:ref:`r_beta <r_beta>`        The low-re correction model coefficient R_beta.
+
+:ref:`r_k <r_k>`                 The low-re correction model coefficient R_k.
+
+:ref:`r_w <r_w>`                 The low-re correction model coefficient R_w.
+
+==========================   ================================================
+
+.. rubric:: Included in:
+
+========================   ======================
+
+Parent                                    Summary
+
+========================   ======================
+:ref:`k_omega <k_omega>`   K-omega model options.
+
+========================   ======================
+

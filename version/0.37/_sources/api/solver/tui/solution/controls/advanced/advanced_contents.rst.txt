@@ -1,0 +1,24 @@
+.. _ref_solver_tui_solution_controls_advanced:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.solution.controls.advanced
+   :members: enthalpy_reference_temperature, relaxation_method
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   anisotropic_solid_heat_transfer/anisotropic_solid_heat_transfer_contents
+   continuity_transient_term_linearization/continuity_transient_term_linearization_contents
+   correction_tolerance/correction_tolerance_contents
+   expert/expert_contents
+   fast_transient_settings/fast_transient_settings_contents
+   multi_grid/multi_grid_contents
+   multi_stage/multi_stage_contents

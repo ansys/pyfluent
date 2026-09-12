@@ -1,0 +1,12 @@
+.. _ref_ansys_fluent_core_file_transfer_service:
+
+file_transfer_service
+=====================
+
+.. automodule:: ansys.fluent.core.file_transfer_service
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:

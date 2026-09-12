@@ -1,0 +1,38 @@
+:orphan:
+
+.. _compute_from_data_file:
+
+compute_from_data_file
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.compute_from_data_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   =====================================================================
+
+Argument                                                                                                       Summary
+
+==============================================   =====================================================================
+:ref:`input_type <input_type>`                         The type of input measurement data for impedance model fitting.
+
+:ref:`input_file <input_file_3>`                                               The experimental measurement data file.
+
+:ref:`fitted_data_file <fitted_data_file_1>`                 Output file for fitted data. Leave empty to skip writing.
+
+:ref:`pole_residue_file <pole_residue_file_1>`   Output file for pole/residue parameters. Leave empty to skip writing.
+
+==============================================   =====================================================================
+
+.. rubric:: Included in:
+
+==================================================   ==============================
+
+Parent                                                                      Summary
+
+==================================================   ==============================
+:ref:`impedance_parameters <impedance_parameters>`   Impedance boundary parameters.
+
+==================================================   ==============================
+

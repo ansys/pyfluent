@@ -1,0 +1,29 @@
+:orphan:
+
+.. _system_coupling_2:
+
+system_coupling
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.system_coupling_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================================================
+
+Parent                                                                            Summary
+
+================================   ======================================================
+:ref:`momentum_1 <momentum_1>`     Allows to change momentum model variables or settings.
+
+:ref:`momentum_4 <momentum_4>`     Allows to change momentum model variables or settings.
+
+:ref:`momentum_7 <momentum_7>`     Allows to change momentum model variables or settings.
+
+:ref:`momentum_10 <momentum_10>`   Allows to change momentum model variables or settings.
+
+:ref:`momentum_11 <momentum_11>`   Allows to change momentum model variables or settings.
+
+================================   ======================================================
+

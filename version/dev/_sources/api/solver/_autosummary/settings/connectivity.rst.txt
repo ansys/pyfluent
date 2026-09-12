@@ -1,0 +1,34 @@
+:orphan:
+
+.. _connectivity:
+
+connectivity
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.connectivity
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ======================================================================================================================
+
+Attribute                                                                                                                                       Summary
+
+==============================   ======================================================================================================================
+:ref:`upstream <upstream>`                                                                             The upstream heat exchanger in the serial chain.
+
+:ref:`downstream <downstream>`   The downstream heat exchanger in the serial chain. Read-only: assigned by the downstream instance's upstream selector.
+
+==============================   ======================================================================================================================
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`macro_model <macro_model>`   Macro heat exchanger model.
+
+================================   ===========================
+

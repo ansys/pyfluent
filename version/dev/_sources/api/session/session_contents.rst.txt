@@ -1,0 +1,28 @@
+.. _ref_ansys_fluent_core_session:
+
+session
+=======
+
+.. automodule:: ansys.fluent.core.session
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    base_meshing
+    file
+    meshing
+    pure_meshing
+    session
+    solver
+    solver_aero
+    solver_icing
+    solver_lite
+    solver_pre_post
+

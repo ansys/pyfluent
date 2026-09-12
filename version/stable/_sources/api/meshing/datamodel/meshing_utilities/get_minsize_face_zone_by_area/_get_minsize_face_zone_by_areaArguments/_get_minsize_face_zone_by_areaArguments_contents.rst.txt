@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_minsize_face_zone_by_area__get_minsize_face_zone_by_areaArguments:
+
+_get_minsize_face_zone_by_areaArguments
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.get_minsize_face_zone_by_area._get_minsize_face_zone_by_areaArguments
+   :members: _zone_id_list, _zone_name_list, _zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

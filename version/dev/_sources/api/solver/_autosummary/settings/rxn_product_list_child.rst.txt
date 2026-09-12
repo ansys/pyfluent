@@ -1,0 +1,38 @@
+:orphan:
+
+.. _rxn_product_list_child:
+
+rxn_product_list_child
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rxn_product_list_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ============================================
+
+Attribute                                                                 Summary
+
+==================================   ============================================
+:ref:`prd_phase <prd_phase>`                                       Product phase.
+
+:ref:`prd_species <prd_species>`                                 Product species.
+
+:ref:`prd_stoic <prd_stoic>`         Stoichiometric coefficient for this product.
+
+:ref:`prd_rate_exp <prd_rate_exp>`         Rate exponent (not used for products).
+
+==================================   ============================================
+
+.. rubric:: Included in:
+
+==========================================   =========
+
+Parent                                         Summary
+
+==========================================   =========
+:ref:`rxn_product_list <rxn_product_list>`   Products.
+
+==========================================   =========
+

@@ -1,0 +1,54 @@
+:orphan:
+
+.. _oxidation_models:
+
+oxidation_models
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.oxidation_models
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===========================================================
+
+Attribute                                                                                  Summary
+
+====================================   ===========================================================
+:ref:`oh_mode <oh_mode>`                                                 [OH] model for oxidation.
+
+:ref:`o_mode <o_mode>`                                                    [O] model for oxidation.
+
+:ref:`oxidation_fjo <oxidation_fjo>`                        Enable Fenimore-Jones oxidation model.
+
+:ref:`fjo_comega <fjo_comega>`          Oxidation model constant C-Omega for Fenimore-Jones model.
+
+:ref:`fjo_coleff <fjo_coleff>`          Collisional efficiency for Fenimore-Jones oxidation model.
+
+:ref:`fjo_coxid <fjo_coxid>`                 Oxidation scaling parameter for Fenimore-Jones model.
+
+:ref:`oxidation_lee <oxidation_lee>`                                   Enable Lee oxidation model.
+
+:ref:`lee_c1 <lee_c1>`                            Oxidation model constant C-Omega1 for Lee model.
+
+:ref:`lee_c2 <lee_c2>`                            Oxidation model constant C-Omega2 for Lee model.
+
+:ref:`lee_t2 <lee_t2>`                 Activation temperature T-Omega2 of oxidation for Lee model.
+
+:ref:`lee_coleff <lee_coleff>`                     Collisional efficiency for Lee oxidation model.
+
+:ref:`lee_coxid <lee_coxid>`                            Oxidation scaling parameter for Lee model.
+
+====================================   ===========================================================
+
+.. rubric:: Included in:
+
+==================   =============================================
+
+Parent                                                     Summary
+
+==================   =============================================
+:ref:`soot <soot>`   Configure soot model settings and parameters.
+
+==================   =============================================
+

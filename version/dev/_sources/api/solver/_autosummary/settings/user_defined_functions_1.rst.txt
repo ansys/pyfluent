@@ -1,0 +1,56 @@
+:orphan:
+
+.. _user_defined_functions_1:
+
+user_defined_functions
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.user_defined_functions_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ==========================================================================
+
+Attribute                                                                                                                   Summary
+
+======================================================   ==========================================================================
+:ref:`scalar_update <scalar_update>`                                       Specifies a UDF to update user-defined particle scalars.
+
+:ref:`body_force <body_force>`                                                     Specifies a UDF for custom particle body forces.
+
+:ref:`erosion_accretion <erosion_accretion>`                              Specifies a UDF for custom erosion or accretion modeling.
+
+:ref:`output <output>`                                                         Specifies a UDF for custom particle sampling output.
+
+:ref:`source_terms <source_terms>`                                                Specifies a UDF for custom particle source terms.
+
+:ref:`collision <collision>`                                            Specifies a UDF for particle stochastic collision modeling.
+
+:ref:`dpm_time_step_size <dpm_time_step_size_1>`         Specifies a UDF to control particle trajectory integration time step size.
+
+:ref:`impingement_model <impingement_model>`                                Specifies a UDF for particle wall impingement modeling.
+
+:ref:`film_regime <film_regime>`                                                Specifies a UDF for selecting the wall film regime.
+
+:ref:`splashing_distribution <splashing_distribution>`                              Specifies a UDF for droplet splashing behavior.
+
+:ref:`flow_interpolation <flow_interpolation_1>`                            Specifies a UDF for custom flow variable interpolation.
+
+:ref:`number_of_scalars <number_of_scalars>`                     Sets the number of user-defined scalar values stored per particle.
+
+:ref:`max_num_udf_species <max_num_udf_species>`                          Sets the maximum number of species available in DPM UDFs.
+
+======================================================   ==========================================================================
+
+.. rubric:: Included in:
+
+======================================   =============================================================================================================
+
+Parent                                                                                                                                         Summary
+
+======================================   =============================================================================================================
+:ref:`discrete_phase <discrete_phase>`   Configures the Discrete Phase Model (DPM) to track particles, droplets, or bubbles in a Lagrangian framework.
+
+======================================   =============================================================================================================
+

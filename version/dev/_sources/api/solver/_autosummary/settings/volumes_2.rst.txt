@@ -1,0 +1,34 @@
+:orphan:
+
+.. _volumes_2:
+
+volumes
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.volumes_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ===================
+
+Attribute                                Summary
+
+==========================   ===================
+:ref:`physics <physics>`      The physics names.
+
+:ref:`geometry <geometry>`   The geometry names.
+
+==========================   ===================
+
+.. rubric:: Included in:
+
+========================================   ================================================
+
+Parent                                                                              Summary
+
+========================================   ================================================
+:ref:`calculate_patch <calculate_patch>`   Patch a value for a flow variable in the domain.
+
+========================================   ================================================
+

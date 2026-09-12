@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ngon_form:
+
+ngon_form
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ngon_form
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ==================
+
+Parent                          Summary
+
+==================   ==================
+:ref:`cgns <cgns>`   Write a CGNS file.
+
+==================   ==================
+

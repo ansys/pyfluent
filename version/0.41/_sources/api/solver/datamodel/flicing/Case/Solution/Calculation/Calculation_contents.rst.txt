@@ -1,0 +1,22 @@
+.. _ref_solver_datamodel_flicing_Case_Solution_Calculation:
+
+Calculation
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.Solution.Calculation
+   :members: AnalysisType, MaxIterationsPerTimeStep, NumberOfIterations, NumberOfTimeSteps, TimeStepSize
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Calculate/Calculate_contents
+   Initialize/Initialize_contents
+   Interrupt/Interrupt_contents
+   Pause/Pause_contents
+   Resume/Resume_contents

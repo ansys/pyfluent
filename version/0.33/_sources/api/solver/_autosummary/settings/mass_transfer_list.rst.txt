@@ -1,0 +1,39 @@
+:orphan:
+
+.. _mass_transfer_list:
+
+mass_transfer_list
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mass_transfer_list
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_1>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`mass_transfer_list_child <mass_transfer_list_child>`
+
+
+.. rubric:: Included in:
+
+============================================   ======================
+
+Parent                                                        Summary
+
+============================================   ======================
+:ref:`phase_interaction <phase_interaction>`       Phase interaction.
+
+============================================   ======================
+

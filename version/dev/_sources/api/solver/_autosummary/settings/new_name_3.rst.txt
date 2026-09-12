@@ -1,0 +1,21 @@
+:orphan:
+
+.. _new_name_3:
+
+new_name
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.new_name_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================================
+
+Parent                                                                                Summary
+
+============================================   ==============================================
+:ref:`copy_displacement <copy_displacement>`   Copy an existing periodic displacement object.
+
+============================================   ==============================================
+

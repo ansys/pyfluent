@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_Diagnostics_DiagOptions__DiagOptionsCommandArguments:
+
+_DiagOptionsCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.Diagnostics.DiagOptions._DiagOptionsCommandArguments
+   :members: _Average, _CurrentCount, _ExtentsUpdateBounds, _ExtentsXMax, _ExtentsXMin, _ExtentsYMax, _ExtentsYMin, _ExtentsZMax, _ExtentsZMin, _MarkMax, _MarkMin, _MarkRangeType, _MarkedCount, _Maximum, _Measure, _Minimum, _Option, _Selected
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

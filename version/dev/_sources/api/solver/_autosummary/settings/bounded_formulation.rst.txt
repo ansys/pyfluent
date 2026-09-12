@@ -1,0 +1,36 @@
+:orphan:
+
+.. _bounded_formulation:
+
+bounded_formulation
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bounded_formulation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   =================================================================================================
+
+Attribute                                                                                                                                                            Summary
+
+========================================================================   =================================================================================================
+:ref:`use_bounded_variant <use_bounded_variant>`                               Use bounded variant of the second-order time implicit formulation for conservative variables.
+
+:ref:`use_alternative_bounded_variant <use_alternative_bounded_variant>`   Use alternative variant of the bounded second-order implicit formulation for primitive variables.
+
+:ref:`include_combustion_variables <include_combustion_variables>`             Include PDF-combustion variables with meaningful physical bounds in time limiter calculation.
+
+========================================================================   =================================================================================================
+
+.. rubric:: Included in:
+
+============================================================   ==========================================
+
+Parent                                                                                            Summary
+
+============================================================   ==========================================
+:ref:`second_order_time_options <second_order_time_options>`   Options for second-order time formulation.
+
+============================================================   ==========================================
+

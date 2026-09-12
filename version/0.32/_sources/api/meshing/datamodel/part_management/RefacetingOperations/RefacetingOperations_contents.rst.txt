@@ -1,0 +1,21 @@
+.. _ref_meshing_datamodel_part_management_RefacetingOperations:
+
+RefacetingOperations
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.RefacetingOperations
+   :members: Children, Name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   CreateRefacet/CreateRefacet_contents
+   DeleteAllRefacets/DeleteAllRefacets_contents
+   DeleteRefacet/DeleteRefacet_contents
+   UpdateAllRefacets/UpdateAllRefacets_contents

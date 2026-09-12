@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temperature_variance:
+
+temperature_variance
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.temperature_variance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =====================================
+
+Parent                                                                                 Summary
+
+======================================================   =====================================
+:ref:`turbulence_interaction <turbulence_interaction>`       NOx-turbulence interaction model.
+
+======================================================   =====================================
+

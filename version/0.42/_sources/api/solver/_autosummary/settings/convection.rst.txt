@@ -1,0 +1,36 @@
+:orphan:
+
+.. _convection:
+
+convection
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.convection
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ======================================
+
+Attribute                                                                           Summary
+
+==================================================   ======================================
+:ref:`convective_effects <convective_effects>`           Enable/disable convective effects.
+
+:ref:`freestream_velocity <freestream_velocity>`                   The freestream velocity.
+
+:ref:`freestream_direction <freestream_direction>`                    Freestream direction.
+
+==================================================   ======================================
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`fwh_options <fwh_options>`       Entering object.
+
+================================   ====================
+

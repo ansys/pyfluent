@@ -1,0 +1,21 @@
+:orphan:
+
+.. _contour_lines_1:
+
+contour_lines
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.contour_lines_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================================
+
+Parent                                                                Summary
+
+==============================   ============================================
+:ref:`options_14 <options_14>`       Contains options for the contour object.
+
+==============================   ============================================
+

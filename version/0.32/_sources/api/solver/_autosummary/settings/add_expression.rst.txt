@@ -1,0 +1,23 @@
+:orphan:
+
+.. _add_expression:
+
+add_expression
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.add_expression
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`isentropic <isentropic>`       Calculate isentropic efficiency.
+
+:ref:`polytropic <polytropic>`       Calculate polytropic efficiency.
+
+==============================   ====================================
+

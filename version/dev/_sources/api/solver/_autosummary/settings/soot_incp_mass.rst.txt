@@ -1,0 +1,21 @@
+:orphan:
+
+.. _soot_incp_mass:
+
+soot_incp_mass
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.soot_incp_mass
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =========================================================================
+
+Parent                                                                                                                       Summary
+
+========================================================   =========================================================================
+:ref:`soot_process_parameters <soot_process_parameters>`   Soot process parameters including stoichiometry and precursor properties.
+
+========================================================   =========================================================================
+

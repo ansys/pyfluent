@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_8:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================   =============================================================================
+
+Parent                                                                                                                                       Summary
+
+====================================================================   =============================================================================
+:ref:`supplementary_auxiliary_fluid <supplementary_auxiliary_fluid>`   Configure supplementary auxiliary fluid stream for multi-core heat exchanger.
+
+====================================================================   =============================================================================
+

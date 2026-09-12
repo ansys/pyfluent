@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_import_boi_geometry__import_boi_geometryArguments__cad_import_options:
+
+_cad_import_options
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.import_boi_geometry._import_boi_geometryArguments._cad_import_options
+   :members: _create_cad_assemblies, _extract_features, _feature_angle, _import_curvature_data_from_cad, _import_named_selections, _import_part_names, _one_object_per, _one_zone_per, _open_all_cad_in_subdirectories, _save_pmdb_intermediate_file, _use_part_or_body_as_suffix
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

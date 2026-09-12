@@ -1,0 +1,23 @@
+:orphan:
+
+.. _moving_mesh_zone_motion_function:
+
+moving_mesh_zone_motion_function
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.moving_mesh_zone_motion_function
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =============================================================
+
+Parent                                                                                       Summary
+
+====================================   =============================================================
+:ref:`mesh_motion <mesh_motion>`           Allows to change mesh-motion model variables or settings.
+
+:ref:`mesh_motion_1 <mesh_motion_1>`       Allows to change mesh-motion model variables or settings.
+
+====================================   =============================================================
+

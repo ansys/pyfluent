@@ -1,0 +1,25 @@
+:orphan:
+
+.. _pole_residue_file:
+
+pole_residue_file
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pole_residue_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =======================================================================================================
+
+Parent                                                                                                                                     Summary
+
+========================================   =======================================================================================================
+:ref:`impedance_data <impedance_data>`                  Read experimental impedance data and output impedance parameters for a boundary condition.
+
+:ref:`reflection_data <reflection_data>`   Read experimental reflection coefficient data and output impedance parameters for a boundary condition.
+
+:ref:`absorption_data <absorption_data>`   Read experimental absorption coefficient data and output impedance parameters for a boundary condition.
+
+========================================   =======================================================================================================
+

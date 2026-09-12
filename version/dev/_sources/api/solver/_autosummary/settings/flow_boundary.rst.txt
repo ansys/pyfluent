@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_boundary:
+
+flow_boundary
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_boundary
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ================================================
+
+Parent                                                        Summary
+
+==================   ================================================
+:ref:`lpfm <lpfm>`   The settings for the LPFM initialization method.
+
+==================   ================================================
+

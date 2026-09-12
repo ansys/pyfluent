@@ -1,0 +1,21 @@
+:orphan:
+
+.. _consider_failed_designs:
+
+consider_failed_designs
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.consider_failed_designs
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

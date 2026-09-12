@@ -1,0 +1,38 @@
+:orphan:
+
+.. _cylinder:
+
+cylinder
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cylinder
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ======================================
+
+Attribute                                                 Summary
+
+========================   ======================================
+:ref:`axis <axis_2>`                   The axis for the cylinder.
+
+:ref:`radius <radius_2>`              The radius of the cylinder.
+
+:ref:`length <length_2>`             The length for the cylinder.
+
+:ref:`origin <origin_2>`       The origin point for the cylinder.
+
+========================   ======================================
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`primitive <primitive>`       'primitive' child.
+
+============================   ======================
+

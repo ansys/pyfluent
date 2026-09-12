@@ -1,0 +1,46 @@
+:orphan:
+
+.. _mem_zone:
+
+mem_zone
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mem_zone
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ==================================
+
+Attribute                                                         Summary
+
+====================================   ==================================
+:ref:`mem_zone_list <mem_zone_list>`              Electrolyte cell zones.
+
+:ref:`mem_locations <mem_locations>`                   The physics names.
+
+:ref:`mem_update <mem_update>`         Use Collective Boundary Condition.
+
+:ref:`mem_material <mem_material>`                  Electrolyte material.
+
+:ref:`mem_porosity <mem_porosity>`                     Membrane porosity.
+
+:ref:`mem_kr_x <mem_kr_x>`             Membrane permeability x direction.
+
+:ref:`mem_kr_y <mem_kr_y>`             Membrane permeability y direction.
+
+:ref:`mem_kr_z <mem_kr_z>`             Membrane permeability z direction.
+
+====================================   ==================================
+
+.. rubric:: Included in:
+
+================================   ===============
+
+Parent                                     Summary
+
+================================   ===============
+:ref:`electrolyte <electrolyte>`   Up electrolyte.
+
+================================   ===============
+

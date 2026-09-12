@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zones_1:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zones_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================================
+
+Parent                                                            Summary
+
+============================   ==========================================
+:ref:`display_5 <display_5>`       Display specified mesh interface zone.
+
+============================   ==========================================
+

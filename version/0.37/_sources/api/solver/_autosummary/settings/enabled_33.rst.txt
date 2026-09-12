@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_33:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_33
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`capacity_fade_model <capacity_fade_model>`       Capacity fade model.
+
+================================================   ========================
+

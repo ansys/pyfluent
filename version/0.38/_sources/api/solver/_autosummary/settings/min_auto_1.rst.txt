@@ -1,0 +1,21 @@
+:orphan:
+
+.. _min_auto_1:
+
+min_auto
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.min_auto_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================================================
+
+Parent                                                                                Summary
+
+==================================   ========================================================
+:ref:`auto_range_4 <auto_range_4>`       Modify the minimum and/or the maximum axis value(s).
+
+==================================   ========================================================
+

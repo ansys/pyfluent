@@ -1,0 +1,21 @@
+:orphan:
+
+.. _omega:
+
+omega
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.omega
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==============================================
+
+Parent                                                                              Summary
+
+==========================================   ==============================================
+:ref:`swelling_model_1 <swelling_model_1>`       Battery swelling model related parameters.
+
+==========================================   ==============================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _file_name_60:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_60
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =============================
+
+Parent                                                       Summary
+
+====================================   =============================
+:ref:`export_data_1 <export_data_1>`   Export training data to file.
+
+:ref:`import_data <import_data>`       Export training data to file.
+
+====================================   =============================
+

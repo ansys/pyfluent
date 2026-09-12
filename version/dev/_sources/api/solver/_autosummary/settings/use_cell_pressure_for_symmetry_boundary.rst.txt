@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_cell_pressure_for_symmetry_boundary:
+
+use_cell_pressure_for_symmetry_boundary
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.use_cell_pressure_for_symmetry_boundary
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =======================================================
+
+Parent                                                                           Summary
+
+==============================   =======================================================
+:ref:`advanced_4 <advanced_4>`   Advanced Direct Simulation Monte Carlo (DSMC) settings.
+
+==============================   =======================================================
+

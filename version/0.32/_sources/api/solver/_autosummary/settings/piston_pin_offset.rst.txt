@@ -1,0 +1,21 @@
+:orphan:
+
+.. _piston_pin_offset:
+
+piston_pin_offset
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.piston_pin_offset
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`in_cylinder <in_cylinder>`       'in_cylinder' child.
+
+================================   ========================
+

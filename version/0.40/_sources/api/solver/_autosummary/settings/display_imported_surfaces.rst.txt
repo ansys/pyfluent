@@ -1,0 +1,34 @@
+:orphan:
+
+.. _display_imported_surfaces:
+
+display_imported_surfaces
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.display_imported_surfaces
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ======================================
+
+Argument                                                                        Summary
+
+==============================================   ======================================
+:ref:`original_surfaces <original_surfaces>`                                   Surface.
+
+:ref:`imported_surfaces <imported_surfaces_1>`       Imported surfaces to be displayed.
+
+==============================================   ======================================
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`bounded_by_surfaces_child <bounded_by_surfaces_child>`       'child_object_type' of bounded_by_surfaces.
+
+============================================================   ===============================================
+

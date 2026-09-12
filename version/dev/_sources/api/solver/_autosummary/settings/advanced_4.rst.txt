@@ -1,0 +1,36 @@
+:orphan:
+
+.. _advanced_4:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.advanced_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================   ===================================================================================================================================
+
+Attribute                                                                                                                                                                                                              Summary
+
+========================================================================================   ===================================================================================================================================
+:ref:`use_cell_pressure_for_symmetry_boundary <use_cell_pressure_for_symmetry_boundary>`                                                                           Use cell pressure for symmetry boundary in DSMC simulation.
+
+:ref:`visualize_sampling_fields <visualize_sampling_fields>`                                                                                                                               Show advanced DSMC sampling fields.
+
+:ref:`auto_redistribute_particles <auto_redistribute_particles>`                           When enabled (default), DSMC particles are automatically redistributed across partitions after a mesh change or a partition change.
+
+========================================================================================   ===================================================================================================================================
+
+.. rubric:: Included in:
+
+==================   ==========================================================
+
+Parent                                                                  Summary
+
+==================   ==========================================================
+:ref:`dsmc <dsmc>`   Enable/disable Direct Simulation Monte Carlo (DSMC) model.
+
+==================   ==========================================================
+

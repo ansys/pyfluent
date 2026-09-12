@@ -1,0 +1,34 @@
+:orphan:
+
+.. _set_active_displacement:
+
+set_active_displacement
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_active_displacement
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ==========================================
+
+Argument                                                                            Summary
+
+==============================================   ==========================================
+:ref:`group_name <group_name_4>`                                         Name of the group.
+
+:ref:`displacement_name <displacement_name_2>`   Name of the displacement to set as active.
+
+==============================================   ==========================================
+
+.. rubric:: Included in:
+
+======================================================   ===============================
+
+Parent                                                                           Summary
+
+======================================================   ===============================
+:ref:`periodic_displacements <periodic_displacements>`   'periodic_displacements' child.
+
+======================================================   ===============================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _dual_potential_zone:
+
+dual_potential_zone
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dual_potential_zone
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   ==========================
+
+Argument                                                        Summary
+
+==========================================   ==========================
+:ref:`detect_type <detect_type>`                 Zone selection method.
+
+:ref:`dual_zone <dual_zone>`                      Dual-potential zones.
+
+:ref:`exclusion_zone <exclusion_zone>`                 Exclusion zones.
+
+:ref:`electrode_zone <electrode_zone>`                 Electrode zones.
+
+:ref:`electrolyte_zone <electrolyte_zone>`           Electrolyte zones.
+
+==========================================   ==========================
+
+.. rubric:: Included in:
+
+==================================================   ====================================
+
+Parent                                                                            Summary
+
+==================================================   ====================================
+:ref:`cell_zone_conditions <cell_zone_conditions>`       The cell zone conditions object.
+
+==================================================   ====================================
+

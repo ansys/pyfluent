@@ -1,0 +1,21 @@
+:orphan:
+
+.. _filename_1:
+
+filename
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.filename_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`fft <fft>`   Plot FFT of file data.
+
+================   ======================
+

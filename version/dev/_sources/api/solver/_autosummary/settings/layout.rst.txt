@@ -1,0 +1,36 @@
+:orphan:
+
+.. _layout:
+
+layout
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.layout
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ======================================================================
+
+Attribute                                                                                                   Summary
+
+==========================================   ======================================================================
+:ref:`number_of_passes <number_of_passes>`   Number of auxiliary fluid passes through the core. Must be at least 1.
+
+:ref:`rows_per_pass <rows_per_pass>`                              Number of tube rows per pass. Must be at least 1.
+
+:ref:`columns_per_pass <columns_per_pass>`                     Number of tube columns per pass. Must be at least 1.
+
+==========================================   ======================================================================
+
+.. rubric:: Included in:
+
+==============================   ===================================
+
+Parent                                                       Summary
+
+==============================   ===================================
+:ref:`geometry_4 <geometry_4>`   Geometry for a heat exchanger core.
+
+==============================   ===================================
+

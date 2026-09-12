@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_cell_mesh_distribution__get_cell_mesh_distributionArguments:
+
+_get_cell_mesh_distributionArguments
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_cell_mesh_distribution._get_cell_mesh_distributionArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _cell_zone_name_pattern, _measure, _partitions, _range
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

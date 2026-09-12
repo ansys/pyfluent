@@ -1,0 +1,52 @@
+:orphan:
+
+.. _coefficients_3:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coefficients_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =====================================
+
+Attribute                                                              Summary
+
+======================================   =====================================
+:ref:`c1_ps <c1_ps>`                              The model coefficient C1-PS.
+
+:ref:`c2_ps <c2_ps>`                              The model coefficient C2-PS.
+
+:ref:`c1prime_ps <c1prime_ps>`               The model coefficient C1prime-PS.
+
+:ref:`c2prime_ps <c2prime_ps>`               The model coefficient C2prime-PS.
+
+:ref:`c1_ssg_ps <c1_ssg_ps>`                  The model coefficient C1-SSG-PS.
+
+:ref:`c1prime_ssg_ps <c1prime_ssg_ps>`   The model coefficient C1prime-SSG-PS.
+
+:ref:`c2_ssg_ps <c2_ssg_ps>`                  The model coefficient C2-SSG-PS.
+
+:ref:`c3_ssg_ps <c3_ssg_ps>`                  The model coefficient C3-SSG-PS.
+
+:ref:`c3prime_ssg_ps <c3prime_ssg_ps>`   The model coefficient C3prime-SSG-PS.
+
+:ref:`c4_ssg_ps <c4_ssg_ps>`                  The model coefficient C4-SSG-PS.
+
+:ref:`c5_ssg_ps <c5_ssg_ps>`                  The model coefficient C5-SSG-PS.
+
+======================================   =====================================
+
+.. rubric:: Included in:
+
+========================   ==============================
+
+Parent                                            Summary
+
+========================   ==============================
+:ref:`rstress <rstress>`   Reynolds Stress Model options.
+
+========================   ==============================
+

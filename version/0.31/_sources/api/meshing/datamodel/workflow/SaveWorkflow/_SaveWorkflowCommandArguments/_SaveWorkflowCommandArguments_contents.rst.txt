@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_workflow_SaveWorkflow__SaveWorkflowCommandArguments:
+
+_SaveWorkflowCommandArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.workflow.Root.SaveWorkflow._SaveWorkflowCommandArguments
+   :members: _FilePath
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

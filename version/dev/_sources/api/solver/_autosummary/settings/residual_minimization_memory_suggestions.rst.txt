@@ -1,0 +1,21 @@
+:orphan:
+
+.. _residual_minimization_memory_suggestions:
+
+residual_minimization_memory_suggestions
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.residual_minimization_memory_suggestions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`diagnosis <diagnosis>`   Diagnosis utilities object.
+
+============================   ===========================
+

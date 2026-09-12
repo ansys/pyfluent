@@ -1,0 +1,61 @@
+:orphan:
+
+.. _reactions_1_child:
+
+reactions_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reactions_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ==============================================================
+
+Attribute                                                                                     Summary
+
+====================================   ==============================================================
+:ref:`name <name_5>`                                                              Name of the object.
+
+:ref:`butler_volmer <butler_volmer>`         The Butler-Volmer kinetic parameters  for this reaction.
+
+:ref:`nernst <nernst>`                 The Nernst equilibrium potential parameters for this reaction.
+
+====================================   ==============================================================
+
+.. rubric:: Methods
+
+========================================   ==============================================================
+
+Method                                                                                            Summary
+
+========================================   ==============================================================
+:ref:`add_reactant <add_reactant>`                               Add a reactant species to this reaction.
+
+:ref:`add_product <add_product>`                                  Add a product species to this reaction.
+
+:ref:`delete_reactant <delete_reactant>`   Delete the reactant at the specified index from this reaction.
+
+:ref:`delete_product <delete_product>`      Delete the product at the specified index from this reaction.
+
+:ref:`list_reactants <list_reactants>`                          List all the reactants for this reaction.
+
+:ref:`list_products <list_products>`                             List all the products for this reaction.
+
+:ref:`edit_reactant <edit_reactant>`         Modify the reactant at the specified index in this reaction.
+
+:ref:`edit_product <edit_product>`            Modify the product at the specified index in this reaction.
+
+========================================   ==============================================================
+
+.. rubric:: Included in:
+
+================================   ================================================
+
+Parent                                                                      Summary
+
+================================   ================================================
+:ref:`reactions_1 <reactions_1>`   The electrochemical reactions management object.
+
+================================   ================================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _vof_free_surface_weight:
+
+vof_free_surface_weight
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.vof_free_surface_weight
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=====================================   =========================================================
+
+Attribute                                                                                 Summary
+
+=====================================   =========================================================
+:ref:`use <use_2>`                                Use VOF free surface weights for partitioning?.
+
+:ref:`user_defined <user_defined_23>`       Use user defined value for VOF free surface weights?.
+
+:ref:`value <value_39>`                          User defined value for VOF free surface weights.
+
+=====================================   =========================================================
+
+.. rubric:: Included in:
+
+====================   ===============
+
+Parent                         Summary
+
+====================   ===============
+:ref:`set_3 <set_3>`       The object.
+
+====================   ===============
+

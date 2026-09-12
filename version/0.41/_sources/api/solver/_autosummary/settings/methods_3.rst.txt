@@ -1,0 +1,34 @@
+:orphan:
+
+.. _methods_3:
+
+methods
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.methods_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ===============================================================================
+
+Attribute                                                                                                                    Summary
+
+==================================================   ===============================================================================
+:ref:`pv_coupling_controls <pv_coupling_controls>`       Pressure-velocity coupling method change for solver stability and accuracy.
+
+:ref:`gradient_controls <gradient_controls>`                                      Gradient method for solver stability and accuracy.
+
+==================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+============================================================   =============================================
+
+Parent                                                                                               Summary
+
+============================================================   =============================================
+:ref:`contact_solution_controls <contact_solution_controls>`       Solver controls for contact marks method.
+
+============================================================   =============================================
+

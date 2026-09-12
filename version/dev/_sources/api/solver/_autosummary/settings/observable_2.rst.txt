@@ -1,0 +1,21 @@
+:orphan:
+
+.. _observable_2:
+
+observable
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.observable_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`automation <automation>`   Run sensitivity-analysis reports and result graphics.
+
+==============================   =====================================================
+

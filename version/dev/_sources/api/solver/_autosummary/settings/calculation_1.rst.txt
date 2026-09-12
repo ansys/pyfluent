@@ -1,0 +1,40 @@
+:orphan:
+
+.. _calculation_1:
+
+calculation
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.calculation_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================   ================================================================================
+
+Method                                                                                                      Summary
+
+================================   ================================================================================
+:ref:`initialize <initialize_4>`                                               Initialize gradient-based optimizer.
+
+:ref:`optimize <optimize>`         Disable warnings detecting possibly wrong settings before running the optimizer.
+
+:ref:`reset <reset_4>`                                                              Reset gradient-based optimizer.
+
+:ref:`interrupt <interrupt_3>`                                                      Interrupt optimization process.
+
+:ref:`summarize <summarize>`                                       Summarize results from gradient-based optimizer.
+
+================================   ================================================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`optimizer <optimizer>`   Gradient-based optimizer object.
+
+============================   ================================
+

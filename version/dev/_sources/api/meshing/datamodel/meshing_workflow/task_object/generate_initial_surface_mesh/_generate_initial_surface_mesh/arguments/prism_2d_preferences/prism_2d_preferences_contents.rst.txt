@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_generate_initial_surface_mesh__generate_initial_surface_mesh_arguments_prism_2d_preferences:
+
+prism_2d_preferences
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.generate_initial_surface_mesh._generate_initial_surface_mesh.arguments.prism_2d_preferences
+   :members: gap_factor, local_remesh, max_aspect_ratio, max_face_skew, min_aspect_ratio, n_orthogonal_layers, refine_stretched_quads, remesh_growth_rate, show_in_gui, split_quads
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

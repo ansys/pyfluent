@@ -1,0 +1,21 @@
+:orphan:
+
+.. _edit_distribution:
+
+edit_distribution
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.edit_distribution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`edit_f_grid_settings <edit_f_grid_settings>`   Editor group for flamelet f-grid settings.
+
+==================================================   ==========================================
+

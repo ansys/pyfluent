@@ -1,0 +1,34 @@
+:orphan:
+
+.. _settings_7:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================
+
+Attribute                                                                         Summary
+
+============================   ==========================================================
+:ref:`interior <interior_1>`       Allows to change interior model variables or settings.
+
+:ref:`phase <phase_9>`                                 Domain name to define settings on.
+
+============================   ==========================================================
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`interior_child <interior_child>`       'child_object_type' of interior.
+
+======================================   ====================================
+

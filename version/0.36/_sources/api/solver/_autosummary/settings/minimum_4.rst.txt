@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_4:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.minimum_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================================================================================================
+
+Parent                                                                                                                  Summary
+
+========================   ====================================================================================================
+:ref:`range_4 <range_4>`       Indicates the minimum and maximum value of the selected field variable in the selected surfaces.
+
+========================   ====================================================================================================
+

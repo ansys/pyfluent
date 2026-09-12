@@ -1,0 +1,38 @@
+:orphan:
+
+.. _constraint_1:
+
+constraint
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.constraint_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ============================
+
+Attribute                                                       Summary
+
+========================================   ============================
+:ref:`enabled <enabled_59>`                            'enabled' child.
+
+:ref:`reference_angle <reference_angle>`       'reference_angle' child.
+
+:ref:`angle_minimum <angle_minimum>`             'angle_minimum' child.
+
+:ref:`angle_maximum <angle_maximum>`             'angle_maximum' child.
+
+========================================   ============================
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`one_dof_rotation <one_dof_rotation>`       'one_dof_rotation' child.
+
+==========================================   =============================
+

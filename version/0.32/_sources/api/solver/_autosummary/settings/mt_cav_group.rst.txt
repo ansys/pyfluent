@@ -1,0 +1,40 @@
+:orphan:
+
+.. _mt_cav_group:
+
+mt_cav_group
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_cav_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ================================
+
+Attribute                                                                         Summary
+
+======================================================   ================================
+:ref:`mt_cav_mod_opt <mt_cav_mod_opt>`                                  Cav model option.
+
+:ref:`mt_cav_model_constants <mt_cav_model_constants>`         Cav model constants class.
+
+:ref:`mt_cav_turb_factor <mt_cav_turb_factor>`                         Turbulence factor.
+
+:ref:`mt_cav_turb_coeff <mt_cav_turb_coeff>`                            Turbulence coeff.
+
+:ref:`mt_cav_prop <mt_cav_prop>`                             Cavitation properties group.
+
+======================================================   ================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`mass_transfer_list_child <mass_transfer_list_child>`       'child_object_type' of mass_transfer_list.
+
+==========================================================   ==============================================
+

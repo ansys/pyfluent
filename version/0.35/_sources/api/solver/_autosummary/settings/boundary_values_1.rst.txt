@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_values_1:
+
+boundary_values
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.boundary_values_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================================
+
+Parent                                                                Summary
+
+==============================   ============================================
+:ref:`options_14 <options_14>`       Contains options for the contour object.
+
+==============================   ============================================
+

@@ -1,0 +1,64 @@
+:orphan:
+
+.. _forces:
+
+forces
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.forces
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   ================================================
+
+Attribute                                                                                                 Summary
+
+==============================================================   ================================================
+:ref:`lift_shaver_podowski <lift_shaver_podowski>`               Include the Shaver-Podowski correction for Lift.
+
+:ref:`vmass_implicit <vmass_implicit>`                           Enable implicit treatment of virtual mass force.
+
+:ref:`vmass_implicit_options <vmass_implicit_options>`                    Virtual mass implicit option selection.
+
+:ref:`lift_montoya <lift_montoya>`                                       Include the Montoya correction for Lift.
+
+:ref:`surface_tension_model <surface_tension_model>`                                               Sfc modeling?.
+
+:ref:`surface_tension_model_type <surface_tension_model_type>`                        Surface Tension model type.
+
+:ref:`wall_adhesion <wall_adhesion>`                                                     Wall adhesion modeling?.
+
+:ref:`jump_adhesion <jump_adhesion>`                                                     Jump adhesion modeling?.
+
+:ref:`drag <drag>`                                                                                          Drag.
+
+:ref:`lift <lift>`                                                                              Lift coefficient.
+
+:ref:`wall_lubrication <wall_lubrication>`                                          Wall lubrication coefficient.
+
+:ref:`turb_dispersion <turb_dispersion>`                                                    Turbulent dispersion.
+
+:ref:`turb_interaction <turb_interaction>`                                                Turbulence interaction.
+
+:ref:`virtual_mass <virtual_mass>`                                                      Virtual mass coefficient.
+
+:ref:`slip_velocity <slip_velocity>`                                                               Slip velocity.
+
+:ref:`surface_tension <surface_tension>`                                             Surface tension coefficient.
+
+:ref:`rest_coeff <rest_coeff>`                                       Restitution-coefficient for granular phases.
+
+==============================================================   ================================================
+
+.. rubric:: Included in:
+
+============================================   ==================
+
+Parent                                                    Summary
+
+============================================   ==================
+:ref:`phase_interaction <phase_interaction>`   Phase interaction.
+
+============================================   ==================
+

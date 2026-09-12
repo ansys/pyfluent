@@ -1,0 +1,24 @@
+.. _ref_solver_tui_solution_run_calculation:
+
+run_calculation
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu.solution.run_calculation
+   :members: calculate, dual_time_iterate, interrupt, iter_count, iterate, profile_update_interval, reporting_interval, residual_verbosity, time_step_count
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   adaptive_time_stepping/adaptive_time_stepping_contents
+   cfl_based_adaptive_time_stepping/cfl_based_adaptive_time_stepping_contents
+   data_sampling/data_sampling_contents
+   data_sampling_options/data_sampling_options_contents
+   pollutants/pollutants_contents
+   pseudo_time_settings/pseudo_time_settings_contents
+   transient_controls/transient_controls_contents

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_workflow_TaskObject__TaskObject_SetAsCurrent:
+
+SetAsCurrent
+============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.workflow.Root.TaskObject._TaskObject.SetAsCurrent
+   :members: _SetAsCurrentCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

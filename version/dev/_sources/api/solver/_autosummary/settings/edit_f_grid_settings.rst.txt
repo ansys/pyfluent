@@ -1,0 +1,49 @@
+:orphan:
+
+.. _edit_f_grid_settings:
+
+edit_f_grid_settings
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.edit_f_grid_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==========================================================
+
+Attribute                                                                                         Summary
+
+============================================   ==========================================================
+:ref:`edit_distribution <edit_distribution>`    Enable editing of the mixture fraction grid distribution.
+
+:ref:`stoichiometric_f <stoichiometric_f>`           Stoichiometric mixture fraction used for the f-grid.
+
+:ref:`grid_points <grid_points>`               Edit mixture fraction grid points for flamelet generation.
+
+============================================   ==========================================================
+
+.. rubric:: Methods
+
+================================================   =========================================
+
+Method                                                                               Summary
+
+================================================   =========================================
+:ref:`read_grid_from_file <read_grid_from_file>`   Read f-grid distribution from an XY file.
+
+:ref:`write_grid_to_file <write_grid_to_file>`      Write f-grid distribution to an XY file.
+
+================================================   =========================================
+
+.. rubric:: Included in:
+
+==============================================   =======================================
+
+Parent                                                                           Summary
+
+==============================================   =======================================
+:ref:`edit_f_grid_button <edit_f_grid_button>`   Open editor for flamelet f-grid points.
+
+==============================================   =======================================
+

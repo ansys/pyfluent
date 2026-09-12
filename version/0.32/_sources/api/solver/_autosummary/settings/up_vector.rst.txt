@@ -1,0 +1,32 @@
+:orphan:
+
+.. _up_vector:
+
+up_vector
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.up_vector
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================   ===================================================================================
+
+Argument                                                                                         Summary
+
+==================   ===================================================================================
+:ref:`xyz <xyz_2>`       Specifies the XYZ coordinates indicating which direction is "up" to the camera.
+
+==================   ===================================================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`camera <camera>`       'camera' child.
+
+======================   ===================
+

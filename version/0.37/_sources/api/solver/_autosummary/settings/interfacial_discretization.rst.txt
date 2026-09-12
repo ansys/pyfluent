@@ -1,0 +1,34 @@
+:orphan:
+
+.. _interfacial_discretization:
+
+interfacial_discretization
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.interfacial_discretization
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================   =======================================
+
+Attribute                                                                                                        Summary
+
+==============================================================================   =======================================
+:ref:`phase_localized_compressive_scheme <phase_localized_compressive_scheme>`       Phase localized compressive scheme.
+
+:ref:`slope_limiter <slope_limiter>`                                                                   Interfacial area.
+
+==============================================================================   =======================================
+
+.. rubric:: Included in:
+
+============================================   ======================
+
+Parent                                                        Summary
+
+============================================   ======================
+:ref:`phase_interaction <phase_interaction>`       Phase interaction.
+
+============================================   ======================
+

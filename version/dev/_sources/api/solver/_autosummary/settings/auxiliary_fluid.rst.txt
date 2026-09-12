@@ -1,0 +1,34 @@
+:orphan:
+
+.. _auxiliary_fluid:
+
+auxiliary_fluid
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.auxiliary_fluid
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ===============================================
+
+Attribute                                                                            Summary
+
+==========================================   ===============================================
+:ref:`method <method_3>`                                The auxiliary fluid property method.
+
+:ref:`inlet_conditions <inlet_conditions>`   The auxiliary fluid inlet condition parameters.
+
+==========================================   ===============================================
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`macro_model <macro_model>`   Macro heat exchanger model.
+
+================================   ===========================
+

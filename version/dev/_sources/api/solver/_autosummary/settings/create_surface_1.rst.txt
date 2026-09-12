@@ -1,0 +1,32 @@
+:orphan:
+
+.. _create_surface_1:
+
+create_surface
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_surface_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   =============================================================
+
+Argument                                                                     Summary
+
+====================   =============================================================
+:ref:`names <names>`   The solid regions for which wrapped surfaces will be created.
+
+====================   =============================================================
+
+.. rubric:: Included in:
+
+========================   ========================
+
+Parent                                      Summary
+
+========================   ========================
+:ref:`regions <regions>`   Solid region collection.
+
+========================   ========================
+

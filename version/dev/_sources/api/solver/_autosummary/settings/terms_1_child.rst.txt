@@ -1,0 +1,39 @@
+:orphan:
+
+.. _terms_1_child:
+
+terms_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.terms_1_child
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`terms_1_child_child <terms_1_child_child>`
+
+
+.. rubric:: Included in:
+
+========================   ================================
+
+Parent                                              Summary
+
+========================   ================================
+:ref:`terms_1 <terms_1>`   Collection of source term lists.
+
+========================   ================================
+

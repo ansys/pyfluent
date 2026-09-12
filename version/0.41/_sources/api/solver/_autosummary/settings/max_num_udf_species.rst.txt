@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_num_udf_species:
+
+max_num_udf_species
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.max_num_udf_species
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ================
+
+Parent                                                                Summary
+
+==========================================================   ================
+:ref:`user_defined_functions_1 <user_defined_functions_1>`       Main object.
+
+==========================================================   ================
+

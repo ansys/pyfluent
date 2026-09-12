@@ -1,0 +1,21 @@
+:orphan:
+
+.. _model_8:
+
+model
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.model_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===================================================
+
+Parent                                                                                             Summary
+
+====================================================   ===================================================
+:ref:`impingement_splashing <impingement_splashing>`   Wall-film model impingement / splashing parameters.
+
+====================================================   ===================================================
+

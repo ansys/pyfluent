@@ -1,0 +1,21 @@
+:orphan:
+
+.. _particle_radiation_enabled:
+
+particle_radiation_enabled
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.particle_radiation_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ================
+
+Parent                                              Summary
+
+========================================   ================
+:ref:`physical_models <physical_models>`       Main object.
+
+========================================   ================
+

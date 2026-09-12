@@ -1,0 +1,44 @@
+:orphan:
+
+.. _rows_1_child:
+
+rows_child
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rows_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ============================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                         Summary
+
+==========================================   ============================================================================================================================================================================
+:ref:`name <name_39>`                                                                                                                                    Name of the turbomachine row. Changing this will rename the row.
+
+:ref:`index <index_5>`                                                                                        Index of the row in the turbomachine (stage order, 0-based). Automatically reordered when rows are deleted.
+
+:ref:`sectors_per_360 <sectors_per_360>`                                                                                                                                   Number of sectors in 360 degrees for this row.
+
+:ref:`modeled_sectors <modeled_sectors>`                                                                                                                                           Number of modeled sectors in this row.
+
+:ref:`cell_zones <cell_zones_9>`                                                    List of cell zones belonging to this row. When set, omega and axis are automatically extracted from the first zone's motion settings.
+
+:ref:`rotational_speed <rotational_speed>`                                                                                                           Rotational speed of this row. Stored internally in SI units (rad/s).
+
+:ref:`reference_frame <reference_frame_7>`   Reference frame for virtual rows (rows without cell zones). Select a reference frame to extract omega. Axis is validated against machine axis but NOT set from virtual rows.
+
+==========================================   ============================================================================================================================================================================
+
+.. rubric:: Included in:
+
+======================   ============================================================================
+
+Parent                                                                                        Summary
+
+======================   ============================================================================
+:ref:`rows_1 <rows_1>`   Collection of turbomachine rows. Create rows and configure their properties.
+
+======================   ============================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _lpfm_initialize:
+
+lpfm_initialize
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.lpfm_initialize
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`initialization_1 <initialization_1>`   Solution initialization object.
+
+==========================================   ===============================
+

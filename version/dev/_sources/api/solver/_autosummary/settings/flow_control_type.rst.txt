@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_control_type:
+
+flow_control_type
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_control_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==========================================================
+
+Parent                                                                                                Summary
+
+================================================   ==========================================================
+:ref:`reduced_order_model <reduced_order_model>`   Settings for the Reduced Order Model flow-modeling method.
+
+================================================   ==========================================================
+

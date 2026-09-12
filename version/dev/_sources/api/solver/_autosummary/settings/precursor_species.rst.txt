@@ -1,0 +1,21 @@
+:orphan:
+
+.. _precursor_species:
+
+precursor_species
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.precursor_species
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =======================================================
+
+Parent                                                                                                       Summary
+
+==========================================================   =======================================================
+:ref:`precursor_sgs_parameters <precursor_sgs_parameters>`   Define soot precursor and surface growth species lists.
+
+==========================================================   =======================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _model_file_1:
+
+model_file
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.model_file_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`export_model <export_model>`   Write the impedance pole/residue model parameters to a file.
+
+==================================   ============================================================
+

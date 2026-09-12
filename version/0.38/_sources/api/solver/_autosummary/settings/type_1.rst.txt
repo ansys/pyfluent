@@ -1,0 +1,21 @@
+:orphan:
+
+.. _type_1:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.type_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================================================================================================================
+
+Parent                                                                                                                                            Summary
+
+================================   ======================================================================================================================
+:ref:`yplus_ystar <yplus_ystar>`       Define cell registers and adaption settings suitable for prismatic boundary layer adaption based on Yplus / Ystar.
+
+================================   ======================================================================================================================
+

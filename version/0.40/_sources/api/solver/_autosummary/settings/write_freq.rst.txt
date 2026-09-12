@@ -1,0 +1,21 @@
+:orphan:
+
+.. _write_freq:
+
+write_freq
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_freq
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ====================================
+
+Parent                                                                                  Summary
+
+========================================================   ====================================
+:ref:`write_in_cylinder_ouput <write_in_cylinder_ouput>`       'write_in_cylinder_ouput' child.
+
+========================================================   ====================================
+

@@ -1,0 +1,46 @@
+:orphan:
+
+.. _mt_boiling_quench:
+
+mt_boiling_quench
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_quench
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ====================================================================
+
+Attribute                                                                                                                 Summary
+
+==========================================================   ====================================================================
+:ref:`mt_boiling_bwt <mt_boiling_bwt>`                                                           Bubble waiting time coefficient.
+
+:ref:`mt_boiling_quench_on <mt_boiling_quench_on>`                                                Enable quench correction model.
+
+:ref:`mt_boiling_quench_method <mt_boiling_quench_method>`        Quench correction method: fixed y+ or fixed liquid temperature.
+
+:ref:`mt_boiling_yplus_far <mt_boiling_yplus_far>`                                  Y-plus far-field value for quench correction.
+
+:ref:`mt_boiling_ref_temp <mt_boiling_ref_temp>`                             Minimum reference temperature for quench correction.
+
+:ref:`mt_boiling_qfc_method <mt_boiling_qfc_method>`             Quenching flux correction (liquid reference temperature) method.
+
+:ref:`mt_boiling_qfc_constant <mt_boiling_qfc_constant>`     Constant liquid reference temperature for quenching flux correction.
+
+:ref:`mt_boiling_qfc_udf <mt_boiling_qfc_udf>`                                              UDF for liquid reference temperature.
+
+==========================================================   ====================================================================
+
+.. rubric:: Included in:
+
+==========================================   =====================================
+
+Parent                                                                     Summary
+
+==========================================   =====================================
+:ref:`mt_boiling_group <mt_boiling_group>`   Eulerian boiling mass-transfer group.
+
+==========================================   =====================================
+

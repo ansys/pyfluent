@@ -1,0 +1,21 @@
+:orphan:
+
+.. _geometry_zones:
+
+geometry_zones
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.geometry_zones
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ================================================
+
+Parent                                                        Summary
+
+==================   ================================================
+:ref:`lpfm <lpfm>`   The settings for the LPFM initialization method.
+
+==================   ================================================
+

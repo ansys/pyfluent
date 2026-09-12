@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_boundary_layers__add_boundary_layersArguments__local_prism_preferences:
+
+_local_prism_preferences
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.add_boundary_layers._add_boundary_layersArguments._local_prism_preferences
+   :members: _additional_ignored_layers, _allowed_tangency_at_invalid_normals, _continuous, _ignore_boundary_layers, _invalid_normal_method, _last_ratio, _last_ratio_num_layers, _modify_at_invalid_normals, _number_of_split_layers, _remesh_at_invalid_normals, _show_in_gui, _smooth_rings_at_invalid_normals, _sphere_radius_factor_at_invalid_normals, _split_prism
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

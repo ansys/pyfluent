@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rxn_method:
+
+rxn_method
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rxn_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ======================================
+
+Parent                                                                              Summary
+
+==================================================   ======================================
+:ref:`reactions_list_child <reactions_list_child>`   'child_object_type' of reactions_list.
+
+==================================================   ======================================
+

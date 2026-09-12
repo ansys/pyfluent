@@ -1,0 +1,1058 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tyler-Sofrin Compressor Modes Post-Processing &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/ansys_sphinx_theme.css?v=0909a4fa" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=dc9d6f0b"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/00-fluent/tyler_sofrin_modes';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.30';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Contributing to PyFluent" href="../../contributing/contributing_contents.html" />
+    <link rel="prev" title="Modeling Species Transport and Gaseous Combustion" href="species_transport.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.30.6" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/examples/00-fluent/tyler_sofrin_modes.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Simulation Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DOE_ML.html">Design of Experiments and Machine Learning model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ahmed_body_workflow.html">Ahmed Body External Aerodynamics Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brake.html">Automotive Brake Thermal Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjugate_heat_transfer.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exhaust_system_settings_api.html">Fault-tolerant meshing workflow using settings objects</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="external_compressible_flow.html">Modeling External Compressible Flow</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="lunar_lander_thermal.html">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="mixing_elbow_settings_api.html">Fluent setup and solution using settings objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_ablation.html">Modeling Ablation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_cavitation.html">Modeling Cavitation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="parametric_static_mixer_1.html">Parametric study workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="radiation_headlamp.html">Modeling Radiation in a Headlamp Using the Monte Carlo Method</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="species_transport.html">Modeling Species Transport and Gaseous Combustion</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Tyler-Sofrin Compressor Modes Post-Processing</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">Simulation Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tyler-Sofrin Compressor Modes Post-Processing</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-00-fluent-tyler-sofrin-modes-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="tyler-sofrin-compressor-modes-post-processing">
+<span id="ref-ts-mode-calculator"></span><span id="sphx-glr-examples-00-fluent-tyler-sofrin-modes-py"></span><h1>Tyler-Sofrin Compressor Modes Post-Processing<a class="headerlink" href="#tyler-sofrin-compressor-modes-post-processing" title="Link to this heading">#</a></h1>
+<section id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Link to this heading">#</a></h2>
+<p>This example demonstrates PyFluent API’s for</p>
+<ul class="simple">
+<li><p>Read a case and data file</p></li>
+<li><p>Create monitor points to calculate Fourier coefficients</p></li>
+<li><p>Write Fourier coefficients to a file</p></li>
+<li><p>Tyler-Sofrin mode Plot using the matplotlib library</p></li>
+</ul>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>Tyler and Sofrin (1961) demonstrated that interactions between a rotor and a
+stator result in an infinite set of spinning modes. Each Tyler-Sofrin (TS)
+mode exhibits an m-lobed pattern and rotates at a speed given by the
+following equation:</p>
+<p><span class="math notranslate nohighlight">\(\text{speed} = \frac{BnΩ}{m}\)</span>
+Where:</p>
+<ul class="simple">
+<li><p>m is the Tyler-Sofrin mode number, defined as ‘m = nB + kV’</p></li>
+<li><p>n is the impeller frequency harmonic</p></li>
+<li><p>k is the vane harmonic</p></li>
+<li><p>B is the number of rotating blades</p></li>
+<li><p>V is the number of stationary vanes</p></li>
+<li><p>Ω is the Rotor shaft speed, rad/s</p></li>
+</ul>
+<p>Example:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>8-blade rotor interacting with a 6-vane stator</p></li>
+<li><p>2-lobed pattern turning at (8)(1)/(2) = 4 times shaft speed</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="example-table">
+<h2>Example Table<a class="headerlink" href="#example-table" title="Link to this heading">#</a></h2>
+<img alt="Example Table" src="../../_images/ExampleTable.jpg" />
+</section>
+<section id="tyler-sofrin-modes">
+<h2>Tyler-Sofrin Modes<a class="headerlink" href="#tyler-sofrin-modes" title="Link to this heading">#</a></h2>
+<img alt="Tyler-Sofrin Modes" src="../../_images/TSmode.jpg" />
+</section>
+<section id="example-note-discrete-fourier-transform-dft">
+<h2>Example Note: Discrete Fourier Transform (DFT)<a class="headerlink" href="#example-note-discrete-fourier-transform-dft" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>In order to calculate the pressure related to each TS-mode, extend the
+simulation and perform the DFT of pressure at the desired blade passing
+frequency harmonics.</p></li>
+<li><p>Disable the Hanning windowing (specifically for periodic flows like
+this one) to avoid getting half the expected magnitudes for periodic flows.
+Make sure to set the windowing parameter to ‘None’ when specifying
+the Discrete Fourier Transform (DFT) in the graphical user interface (GUI).</p></li>
+<li><p>The DFT data will only be accurate if the sampling is done across the
+entire specified sampling period.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The .cas/.dat file provided with this example is for demonstration purposes only.
+A finer mesh is necessary for accurate acoustic analysis. This example uses data
+sets generated with Ansys Fluent V2023R2.</p>
+</div>
+</section>
+<section id="post-processing-implementation">
+<h2>Post-Processing Implementation<a class="headerlink" href="#post-processing-implementation" title="Link to this heading">#</a></h2>
+<section id="import-required-libraries-modules">
+<h3>Import required libraries/modules<a class="headerlink" href="#import-required-libraries-modules" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Path</span></a>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyfluent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">examples</span>
+</pre></div>
+</div>
+</section>
+<section id="specifying-save-path">
+<h3>Specifying save path<a class="headerlink" href="#specifying-save-path" title="Link to this heading">#</a></h3>
+<p>save_path can be specified as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Path(“E:/”, “pyfluent-examples-tests”) or</p></li>
+<li><p>Path(“E:/pyfluent-examples-tests”) in a Windows machine for example, or</p></li>
+<li><p>Path(“~/pyfluent-examples-tests”) in Linux.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">save_path</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Path</span></a><span class="p">(</span><span class="n">pyfluent</span><span class="o">.</span><span class="n">EXAMPLES_PATH</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="downloading-cas-dat-file">
+<h3>Downloading cas/dat file<a class="headerlink" href="#downloading-cas-dat-file" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">import_filename</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+    <span class="s2">&quot;axial_comp_fullWheel_DFT_23R2.cas.h5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pyfluent/examples/Tyler-Sofrin-Modes-Compressor&quot;</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><span class="n">save_path</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">examples</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+    <span class="s2">&quot;axial_comp_fullWheel_DFT_23R2.dat.h5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pyfluent/examples/Tyler-Sofrin-Modes-Compressor&quot;</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><span class="n">save_path</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="launch-fluent-session-and-print-fluent-version">
+<h3>Launch Fluent session and print Fluent version<a class="headerlink" href="#launch-fluent-session-and-print-fluent-version" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span>
+    <span class="n">ui_mode</span><span class="o">=</span><span class="s2">&quot;gui&quot;</span><span class="p">,</span> <span class="n">processor_count</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">product_version</span><span class="o">=</span><span class="s2">&quot;25.1.0&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get_fluent_version</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-case-and-data-file">
+<h3>Reading case and data file<a class="headerlink" href="#reading-case-and-data-file" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The dat file should correspond to the already completed DFT simulation.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;case-data&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">import_filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="define-user-constant-variables">
+<h3>Define User constant/variables<a class="headerlink" href="#define-user-constant-variables" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The variable names should match the ones written from the DFT and can be
+identified by manually examining the solution variables as shown below:</p>
+</div>
+<img alt="variable names" src="_static/var_names.jpg" />
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">varname</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;mean-static-pressure-dataset&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dft-static-pressure_10.00kHz-ta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dft-static-pressure-1_21.43kHz-ta&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dft-static-pressure-2_30.00kHz-ta&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">n_mode</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>  <span class="c1"># Impeller frequency harmonics</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mf">0.082</span>  <span class="c1"># meters</span>
+<span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.037</span>  <span class="c1"># meters</span>
+<span class="n">d_theta</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># degrees</span>
+<span class="n">m_max</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># maximum TS mode number</span>
+
+<span class="c1"># Plot will be from -m_max to +m_max, incremented by m_inc</span>
+<span class="n">m_inc</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># TS mode increment</span>
+</pre></div>
+</div>
+</section>
+<section id="create-monitor-points">
+<h3>Create monitor points<a class="headerlink" href="#create-monitor-points" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">d_theta</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/math.html#math.cos" title="math.cos" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/math.html#math.radians" title="math.radians" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">radians</span></a><span class="p">(</span><span class="n">angle</span><span class="p">))</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">y</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/math.html#math.sin" title="math.sin" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/math.html#math.radians" title="math.radians" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">radians</span></a><span class="p">(</span><span class="n">angle</span><span class="p">))</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">pt_name</span> <span class="o">=</span> <span class="s2">&quot;point-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">surfaces</span><span class="o">.</span><span class="n">point_surface</span><span class="p">[</span><span class="n">pt_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">surfaces</span><span class="o">.</span><span class="n">point_surface</span><span class="p">[</span><span class="n">pt_name</span><span class="p">]</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="compute-fourier-coefficients-at-each-monitor-point-an-bn">
+<h3>Compute Fourier coefficients at each monitor point (An, Bn)<a class="headerlink" href="#compute-fourier-coefficients-at-each-monitor-point-an-bn" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">An</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">varname</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">360</span> <span class="o">/</span> <span class="n">d_theta</span><span class="p">)))</span>
+<span class="n">Bn</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">varname</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mi">360</span> <span class="o">/</span> <span class="n">d_theta</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">angle_ind</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">d_theta</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">n_ind</span><span class="p">,</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">variable</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;mean&quot;</span><span class="p">:</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">surface</span><span class="p">[</span><span class="s2">&quot;mag-report&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-vertexavg&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;surface_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;point-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">angle</span><span class="p">)],</span>
+                <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">variable</span><span class="p">),</span>
+            <span class="p">}</span>
+            <span class="n">mag</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span>
+                <span class="n">report_defs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mag-report&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">mag</span> <span class="o">=</span> <span class="n">mag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;mag-report&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">An</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">angle_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">mag</span>
+            <span class="n">Bn</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">angle_ind</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">surface</span><span class="p">[</span><span class="s2">&quot;mag-report&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-vertexavg&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;surface_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;point-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">angle</span><span class="p">)],</span>
+                <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-mag&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">mag</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span>
+                <span class="n">report_defs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mag-report&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">mag</span> <span class="o">=</span> <span class="n">mag</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;mag-report&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">surface</span><span class="p">[</span><span class="s2">&quot;phase-report&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-vertexavg&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;surface_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;point-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">angle</span><span class="p">)],</span>
+                <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-phase&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">phase</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span>
+                <span class="n">report_defs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;phase-report&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;phase-report&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">An</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">angle_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">mag</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.cos" title="math.cos" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">phase</span><span class="p">)</span>
+            <span class="n">Bn</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">angle_ind</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">mag</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.sin" title="math.sin" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">phase</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="write-fourier-coefficients-to-file">
+<h3>Write Fourier coefficients to file<a class="headerlink" href="#write-fourier-coefficients-to-file" title="Link to this heading">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This step is only required if data is to be processed with other standalone
+tools. Update the path to the file accordingly.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fourier_coefficients_file</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Path</span></a><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s2">&quot;FourierCoefficients.txt&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fourier_coefficients_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;n theta An Bn </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">n_ind</span><span class="p">,</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">An</span><span class="p">[</span><span class="n">n_ind</span><span class="p">,</span> <span class="p">:]):</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">n_mode</span><span class="p">[</span><span class="n">n_ind</span><span class="p">])</span>
+                <span class="o">+</span> <span class="s2">&quot;,&quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ind</span> <span class="o">*</span> <span class="n">d_theta</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;,&quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">An</span><span class="p">[</span><span class="n">n_ind</span><span class="p">,</span> <span class="n">ind</span><span class="p">])</span>
+                <span class="o">+</span> <span class="s2">&quot;,&quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Bn</span><span class="p">[</span><span class="n">n_ind</span><span class="p">,</span> <span class="n">ind</span><span class="p">])</span>
+                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-resultant-pressure-field">
+<h3>Calculate Resultant Pressure Field<a class="headerlink" href="#calculate-resultant-pressure-field" title="Link to this heading">#</a></h3>
+<p>Create list of m values based on m_max and m_inc</p>
+<img alt="variable names" src="_static/TS_formulas.jpg" />
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">m_mode</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">m_max</span><span class="p">,</span> <span class="n">m_max</span> <span class="o">+</span> <span class="n">m_inc</span><span class="p">,</span> <span class="n">m_inc</span><span class="p">)</span>
+
+<span class="c1"># Initialize solution matrices with zeros</span>
+<span class="n">Anm</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">varname</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">m_mode</span><span class="p">)))</span>
+<span class="n">Bnm</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">varname</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">m_mode</span><span class="p">)))</span>
+<span class="n">Pnm</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">varname</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">m_mode</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">n_ind</span><span class="p">,</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">varname</span><span class="p">):</span>  <span class="c1"># loop over n modes</span>
+    <span class="k">for</span> <span class="n">m_ind</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">m_mode</span><span class="p">):</span>  <span class="c1"># loop over m modes</span>
+        <span class="k">for</span> <span class="n">angle_ind</span><span class="p">,</span> <span class="n">angle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+            <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <a href="https://docs.python.org/3/library/math.html#math.radians" title="math.radians" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">radians</span></a><span class="p">(</span><span class="mi">360</span><span class="p">),</span> <a href="https://docs.python.org/3/library/math.html#math.radians" title="math.radians" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">radians</span></a><span class="p">(</span><span class="n">d_theta</span><span class="p">))</span>
+        <span class="p">):</span>  <span class="c1"># loop over all angles, in radians</span>
+            <span class="n">Anm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">+=</span> <span class="n">An</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">angle_ind</span><span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.cos" title="math.cos" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span> <span class="o">-</span> <span class="n">Bn</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span>
+                <span class="n">angle_ind</span>
+            <span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.sin" title="math.sin" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span>
+            <span class="n">Bnm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">+=</span> <span class="n">An</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">angle_ind</span><span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.sin" title="math.sin" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">Bn</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span>
+                <span class="n">angle_ind</span>
+            <span class="p">]</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.cos" title="math.cos" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="n">Anm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">Anm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.pi" title="math.pi" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-data"><span class="n">math</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.radians" title="math.radians" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">radians</span></a><span class="p">(</span><span class="n">d_theta</span><span class="p">)</span>
+        <span class="n">Bnm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bnm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.pi" title="math.pi" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-data"><span class="n">math</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/math.html#math.radians" title="math.radians" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">radians</span></a><span class="p">(</span><span class="n">d_theta</span><span class="p">)</span>
+        <span class="n">Pnm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/math.html#math.sqrt" title="math.sqrt" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><span class="n">Anm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">Bnm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">][</span><span class="n">m_ind</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># P_00 is generally orders of magnitude larger than that of other modes.</span>
+<span class="c1"># Giving focus to other modes by setting P_00 equal to zero</span>
+<span class="n">Pnm</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m_mode</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-tyler-sofrin-modes">
+<h3>Plot Tyler-Sofrin modes<a class="headerlink" href="#plot-tyler-sofrin-modes" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Tyler-Sofrin Mode, m&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Imp Freq Harmonic, n&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Pnm [Pa]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">n_mode</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n_ind</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">n_mode</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">m_mode</span>
+    <span class="n">y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.full.html#numpy.full" title="numpy.full" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">full</span></a><span class="p">(</span><span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">n_ind</span><span class="p">]</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="p">(</span><a href="https://docs.python.org/3/library/random.html#random.random" title="random.random" class="sphx-glr-backref-module-random sphx-glr-backref-type-py-function"><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">(),</span> <a href="https://docs.python.org/3/library/random.html#random.random" title="random.random" class="sphx-glr-backref-module-random sphx-glr-backref-type-py-function"><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">(),</span> <a href="https://docs.python.org/3/library/random.html#random.random" title="random.random" class="sphx-glr-backref-module-random sphx-glr-backref-type-py-function"><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot3D</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">rgb</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>Tyler-Sofrin modes<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<img alt="Tyler-Sofrin modes" src="_static/ts_modes.png" />
+</section>
+<section id="close-the-session">
+<h3>Close the session<a class="headerlink" href="#close-the-session" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h3>
+<p>[1] J.M. Tyler and  T. G. Sofrin, Axial Flow Compressor Noise Studies,1961 Manly
+Memorial Award.</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-00-fluent-tyler-sofrin-modes-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/e68b75cacba91ab7d9a7303da5bdc300/tyler_sofrin_modes.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">tyler_sofrin_modes.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/a72f2842b853e2395a808b93e38b8174/tyler_sofrin_modes.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">tyler_sofrin_modes.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/11e7dcbfeb9c2d347fb550949ec405d5/tyler_sofrin_modes.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">tyler_sofrin_modes.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-table">Example Table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tyler-sofrin-modes">Tyler-Sofrin Modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-note-discrete-fourier-transform-dft">Example Note: Discrete Fourier Transform (DFT)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing-implementation">Post-Processing Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-required-libraries-modules">Import required libraries/modules</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-save-path">Specifying save path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-cas-dat-file">Downloading cas/dat file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-fluent-session-and-print-fluent-version">Launch Fluent session and print Fluent version</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-case-and-data-file">Reading case and data file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-user-constant-variables">Define User constant/variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-monitor-points">Create monitor points</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-fourier-coefficients-at-each-monitor-point-an-bn">Compute Fourier coefficients at each monitor point (An, Bn)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-fourier-coefficients-to-file">Write Fourier coefficients to file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-resultant-pressure-field">Calculate Resultant Pressure Field</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-tyler-sofrin-modes">Plot Tyler-Sofrin modes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Tyler-Sofrin modes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#close-the-session">Close the session</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/00-fluent/tyler_sofrin_modes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../_static/search.json";
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.3.2. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

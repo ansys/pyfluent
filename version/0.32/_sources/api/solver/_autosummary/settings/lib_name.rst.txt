@@ -1,0 +1,21 @@
+:orphan:
+
+.. _lib_name:
+
+lib_name
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.lib_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===========================
+
+Parent                                                             Summary
+
+============================================   ===========================
+:ref:`execute_on_demand <execute_on_demand>`       Execute UDFs on demand.
+
+============================================   ===========================
+

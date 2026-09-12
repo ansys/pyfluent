@@ -1,0 +1,21 @@
+:orphan:
+
+.. _design_tool_region_sensitivity:
+
+design_tool_region_sensitivity
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.design_tool_region_sensitivity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`diagnosis <diagnosis>`   Diagnosis utilities object.
+
+============================   ===========================
+

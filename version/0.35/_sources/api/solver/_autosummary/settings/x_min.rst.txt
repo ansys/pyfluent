@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_min:
+
+x_min
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.x_min
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================
+
+Parent                                                                      Summary
+
+============================================   ====================================
+:ref:`settings_31_child <settings_31_child>`       'child_object_type' of settings.
+
+============================================   ====================================
+

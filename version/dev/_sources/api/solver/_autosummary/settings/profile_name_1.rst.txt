@@ -1,0 +1,21 @@
+:orphan:
+
+.. _profile_name_1:
+
+profile_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.profile_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`terms_1_child_child <terms_1_child_child>`   'child_object_type' of child_object_type.
+
+================================================   =========================================
+

@@ -1,0 +1,47 @@
+:orphan:
+
+.. _terms:
+
+terms
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.terms
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`terms_child <terms_child>`
+
+
+.. rubric:: Included in:
+
+============================   ====================================
+
+Parent                                                      Summary
+
+============================   ====================================
+:ref:`sources_1 <sources_1>`       Source terms for this cell zone.
+
+============================   ====================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _number_of_fourier_modes:
+
+number_of_fourier_modes
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.number_of_fourier_modes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================================================
+
+Parent                                                                                Summary
+
+==================================   ========================================================
+:ref:`turbulence_3 <turbulence_3>`   Allows to change turbulence model variables or settings.
+
+:ref:`turbulence_7 <turbulence_7>`   Allows to change turbulence model variables or settings.
+
+==================================   ========================================================
+

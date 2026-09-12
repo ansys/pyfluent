@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reduce_gap_regions:
+
+reduce_gap_regions
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reduce_gap_regions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`advanced_options <advanced_options>`   Advanced and expert controls for the gap model.
+
+==========================================   ===============================================
+

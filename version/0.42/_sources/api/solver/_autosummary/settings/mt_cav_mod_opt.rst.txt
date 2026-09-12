@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_cav_mod_opt:
+
+mt_cav_mod_opt
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_cav_mod_opt
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================
+
+Parent                                                                    Summary
+
+==================================   ============================================
+:ref:`mt_cav_group <mt_cav_group>`       Group all cavitation related parameters.
+
+==================================   ============================================
+

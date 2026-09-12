@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_methods_dsmc_advanced:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.methods.dsmc.advanced
+   :members: auto_redistribute_particles, use_cell_pressure_for_symmetry_boundary, visualize_sampling_fields
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_local_refinement_regions__create_local_refinement_regionsArguments__axis:
+
+_axis
+=====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.create_local_refinement_regions._create_local_refinement_regionsArguments._axis
+   :members: _x_component, _y_component, _z_component
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

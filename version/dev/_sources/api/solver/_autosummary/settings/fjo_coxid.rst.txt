@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fjo_coxid:
+
+fjo_coxid
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.fjo_coxid
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`oxidation_models <oxidation_models>`   Soot oxidation model selection.
+
+==========================================   ===============================
+

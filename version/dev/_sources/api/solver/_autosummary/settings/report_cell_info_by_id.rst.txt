@@ -1,0 +1,32 @@
+:orphan:
+
+.. _report_cell_info_by_id:
+
+report_cell_info_by_id
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.report_cell_info_by_id
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ===========================================
+
+Argument                                                           Summary
+
+============================   ===========================================
+:ref:`cell_ids <cell_ids_1>`   List of cell IDs to report information for.
+
+============================   ===========================================
+
+.. rubric:: Included in:
+
+============================================   ============================================================================
+
+Parent                                                                                                              Summary
+
+============================================   ============================================================================
+:ref:`diagnostics_tools <diagnostics_tools>`   Configure diagnostics tools for monitoring and inspecting simulation health.
+
+============================================   ============================================================================
+

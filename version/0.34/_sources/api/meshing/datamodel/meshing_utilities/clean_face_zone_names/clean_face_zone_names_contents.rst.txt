@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_clean_face_zone_names:
+
+clean_face_zone_names
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.clean_face_zone_names
+   :members: _clean_face_zone_namesCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

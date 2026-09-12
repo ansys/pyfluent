@@ -1,0 +1,25 @@
+.. _ref_ansys_fluent_core_solver:
+
+solver
+======
+
+.. automodule:: ansys.fluent.core.solver
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:
+
+Solver expose an underlying hierarchical settings object. See the :ref:`settings API <ref_root>` for details.
+
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    function/function_contents
+    error_message
+    flobject
+    flunits
+

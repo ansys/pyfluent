@@ -1,0 +1,40 @@
+:orphan:
+
+.. _decelerated_flow:
+
+decelerated_flow
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.decelerated_flow
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   ===================================================================================================
+
+Attribute                                                                                                                                                          Summary
+
+====================================================================   ===================================================================================================
+:ref:`customize_inputs <customize_inputs>`                             Enable manual specification of inertial and viscous coefficients instead of using the scale factor.
+
+:ref:`scale_factor <scale_factor_2>`                                                                    Scale factor applied to decelerate the flow inside the gap region.
+
+:ref:`inertial_coefficient <inertial_coefficient>`                                                         Inertial resistance coefficient for the decelerated flow model.
+
+:ref:`viscous_coefficient <viscous_coefficient>`                                                            Viscous resistance coefficient for the decelerated flow model.
+
+:ref:`relative_velocity_formulation <relative_velocity_formulation>`                                  Enable relative velocity formulation for the decelerated flow model.
+
+====================================================================   ===================================================================================================
+
+.. rubric:: Included in:
+
+================================================   ==========================================================
+
+Parent                                                                                                Summary
+
+================================================   ==========================================================
+:ref:`reduced_order_model <reduced_order_model>`   Settings for the Reduced Order Model flow-modeling method.
+
+================================================   ==========================================================
+

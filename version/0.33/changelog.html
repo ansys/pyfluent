@@ -1,0 +1,922 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:site_name" content="PyAnsys" />
+    <title>Release notes &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="_static/documentation_options.js?v=99ee5e77"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=49e1bf35"></script>
+    <script src="_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changelog';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.33';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Environment Variables" href="contributing/environment_variables.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.33.1" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/changelog.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Release notes</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="release-notes">
+<span id="ref-release-notes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
+<p>This document contains the release notes for the project.</p>
+<section id="june-23-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.33.0">0.33.0</a> - June 23, 2025<a class="headerlink" href="#june-23-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="june-17-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.32.2">0.32.2</a> - June 17, 2025<a class="headerlink" href="#june-17-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="may-29-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.32.0">0.32.0</a> - May 29, 2025<a class="headerlink" href="#may-29-2025" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.31.0">0.31.0</a> - May 21, 2025</p>
+<p><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.32.dev0">0.32.dev0</a> - May 22, 2025</p>
+</section>
+<section id="dev1-april-29-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.31.dev1">0.31.dev1</a> - April 29, 2025<a class="headerlink" href="#dev1-april-29-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="april-29-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.5">0.30.5</a> - April 29, 2025<a class="headerlink" href="#april-29-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="april-24-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.4">0.30.4</a> - April 24, 2025<a class="headerlink" href="#april-24-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="april-11-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.3">0.30.3</a> - April 11, 2025<a class="headerlink" href="#april-11-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="march-18-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.2">0.30.2</a> - March 18, 2025<a class="headerlink" href="#march-18-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="id10">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.1">0.30.1</a> - March 18, 2025<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+</section>
+<section id="dev4-march-11-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev4">0.30.dev4</a> - March 11, 2025<a class="headerlink" href="#dev4-march-11-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="dev4-march-10-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev4">0.30.dev4</a> - March 10, 2025<a class="headerlink" href="#dev4-march-10-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="dev3-2025-02-28">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev3">0.30.dev3</a> - 2025-02-28<a class="headerlink" href="#dev3-2025-02-28" title="Link to this heading">#</a></h2>
+<section id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Better way to copy the current function argument values <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3751">#3751</a></p></li>
+<li><p>Minor issues in PyConsole. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3770">#3770</a></p></li>
+<li><p>Invalid surface_ids check for field_data. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3773">#3773</a></p></li>
+<li><p>Resolve MRO for _InputFile <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3774">#3774</a></p></li>
+<li><p>Support Group type argument during codegen <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3777">#3777</a></p></li>
+<li><p>update pyi files to match release <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3778">#3778</a></p></li>
+<li><p>Fix for nested alias <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3780">#3780</a></p></li>
+<li><p>input/output types for completer icons <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3781">#3781</a></p></li>
+</ul>
+</section>
+<section id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Remove vulnerabilities check <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3768">#3768</a></p></li>
+<li><p>Remove ‘rename’ from Enhanced Meshing Workflow top level. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3776">#3776</a></p></li>
+</ul>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update local doc build instructions [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3756">#3756</a></p></li>
+<li><p>search engine optimization <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3761">#3761</a></p></li>
+<li><p>clean doc strs <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3762">#3762</a></p></li>
+<li><p>Update cheat sheet link [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3772">#3772</a></p></li>
+<li><p>Update meshing docs [skip-tests]. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3779">#3779</a></p></li>
+</ul>
+</section>
+<section id="maintenance">
+<h3>Maintenance<a class="headerlink" href="#maintenance" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>update CHANGELOG for v0.30.dev2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3759">#3759</a></p></li>
+<li><p>Reduce min grpcio-status version <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3764">#3764</a></p></li>
+<li><p>Specify PyFluent package version at a single location <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3767">#3767</a></p></li>
+</ul>
+</section>
+</section>
+<section id="dev2-2025-02-20">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev2">0.30.dev2</a> - 2025-02-20<a class="headerlink" href="#dev2-2025-02-20" title="Link to this heading">#</a></h2>
+<section id="id30">
+<h3>Miscellaneous<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update PyLocalContainer to update _collection. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3757">#3757</a></p></li>
+</ul>
+</section>
+<section id="id32">
+<h3>Maintenance<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>update CHANGELOG for v0.30.dev1 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3753">#3753</a></p></li>
+</ul>
+</section>
+</section>
+<section id="dev1-2025-02-19">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev1">0.30.dev1</a> - 2025-02-19<a class="headerlink" href="#dev1-2025-02-19" title="Link to this heading">#</a></h2>
+<section id="added">
+<h3>Added<a class="headerlink" href="#added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use new data-model api. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3728">#3728</a></p></li>
+</ul>
+</section>
+<section id="id36">
+<h3>Fixed<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Enable app_utilities test for 25R2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3702">#3702</a></p></li>
+<li><p>Safely delete para env vars <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3745">#3745</a></p></li>
+</ul>
+</section>
+<section id="id39">
+<h3>Miscellaneous<a class="headerlink" href="#id39" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update docstring and check file extension in Mesh class <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3727">#3727</a></p></li>
+<li><p>Rename warnings.py to fix examples workflow <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3734">#3734</a></p></li>
+<li><p>Revert the new dm api as default. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3742">#3742</a></p></li>
+<li><p>__collection -&gt; _collection for MutableMappings. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3749">#3749</a></p></li>
+</ul>
+</section>
+<section id="id44">
+<h3>Documentation<a class="headerlink" href="#id44" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update launch_fluent snippets [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3726">#3726</a></p></li>
+<li><p>Build nightly dev docs with Fluent 25.2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3736">#3736</a></p></li>
+</ul>
+</section>
+<section id="id47">
+<h3>Maintenance<a class="headerlink" href="#id47" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>update CHANGELOG for v0.30.dev0 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3724">#3724</a></p></li>
+<li><p>Add workflow for examples [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3730">#3730</a></p></li>
+<li><p>Fix examples workflow [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3732">#3732</a></p></li>
+<li><p>Fix labels [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3741">#3741</a></p></li>
+</ul>
+</section>
+</section>
+<section id="dev0-2025-02-07">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev0">0.30.dev0</a> - 2025-02-07<a class="headerlink" href="#dev0-2025-02-07" title="Link to this heading">#</a></h2>
+<section id="id53">
+<h3>Added<a class="headerlink" href="#id53" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>remove application of mapped metadata <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3713">#3713</a></p></li>
+</ul>
+</section>
+<section id="id55">
+<h3>Fixed<a class="headerlink" href="#id55" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update dependencies [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3710">#3710</a></p></li>
+<li><p>Update token and contributing doc [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3718">#3718</a></p></li>
+</ul>
+</section>
+<section id="id58">
+<h3>Miscellaneous<a class="headerlink" href="#id58" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>some minor test improvements <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3711">#3711</a></p></li>
+</ul>
+</section>
+<section id="id60">
+<h3>Documentation<a class="headerlink" href="#id60" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update built-in settings doc and fix doc warnings [skip-tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3708">#3708</a></p></li>
+<li><p>Fix warnings in field data and reduction docs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3712">#3712</a></p></li>
+<li><p>Update docs to connect Fluent launched on Linux [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3721">#3721</a></p></li>
+</ul>
+</section>
+<section id="id64">
+<h3>Maintenance<a class="headerlink" href="#id64" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Get hanging test names by parsing the GitHub logs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3714">#3714</a></p></li>
+<li><p>update CHANGELOG for v0.29.0 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3719">#3719</a></p></li>
+</ul>
+</section>
+</section>
+<section id="id68">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.29.0">0.29.0</a> - 2025-02-06<a class="headerlink" href="#id68" title="Link to this heading">#</a></h2>
+<section id="id69">
+<h3>Added<a class="headerlink" href="#id69" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Implement automatic changelog <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3667">#3667</a></p></li>
+<li><p>Change working directory <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3691">#3691</a></p></li>
+</ul>
+</section>
+<section id="id72">
+<h3>Fixed<a class="headerlink" href="#id72" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Dimensionality correction in PIM launcher <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3673">#3673</a></p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update local doc build instructions <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3671">#3671</a></p></li>
+<li><p>bump sphinx from 7.4.7 to 8.1.3 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3696">#3696</a></p></li>
+<li><p>bump sphinx-autodoc-typehints from 2.3.0 to 3.0.1 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3697">#3697</a></p></li>
+<li><p>bump the dependencies group across 1 directory with 4 updates <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3700">#3700</a></p></li>
+<li><p>Bump version to v0.29.0 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3705">#3705</a></p></li>
+</ul>
+</section>
+<section id="id79">
+<h3>Miscellaneous<a class="headerlink" href="#id79" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update type of parameter <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3681">#3681</a></p></li>
+<li><p>Use consistent file save format in the example scripts <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3682">#3682</a></p></li>
+<li><p>Raise an exception for Python journaling in 22R2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3684">#3684</a></p></li>
+<li><p>Update mesh file format <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3686">#3686</a></p></li>
+<li><p>Add verbose option for allapigen.py <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3690">#3690</a></p></li>
+<li><p>Update launchers <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3694">#3694</a></p></li>
+</ul>
+</section>
+<section id="id86">
+<h3>Documentation<a class="headerlink" href="#id86" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Document how to launch a PIM session <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3679">#3679</a></p></li>
+<li><p>Update file transfer docs for PIM [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3689">#3689</a></p></li>
+<li><p>Update launcher docs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3698">#3698</a></p></li>
+<li><p>Fix examples gallery [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3699">#3699</a></p></li>
+<li><p>Hyperlink to key APIs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3701">#3701</a></p></li>
+<li><p>Remove parameters section for settings commands [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3703">#3703</a></p></li>
+</ul>
+</section>
+<section id="id93">
+<h3>Maintenance<a class="headerlink" href="#id93" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Integrate ansys-tools-report <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3675">#3675</a></p></li>
+<li><p>Unpin twine version <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3683">#3683</a></p></li>
+<li><p>Update license file <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3687">#3687</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#june-23-2025">0.33.0 - June 23, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#june-17-2025">0.32.2 - June 17, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#may-29-2025">0.32.0 - May 29, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev1-april-29-2025">0.31.dev1 - April 29, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#april-29-2025">0.30.5 - April 29, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#april-24-2025">0.30.4 - April 24, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#april-11-2025">0.30.3 - April 11, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#march-18-2025">0.30.2 - March 18, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">0.30.1 - March 18, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev4-march-11-2025">0.30.dev4 - March 11, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev4-march-10-2025">0.30.dev4 - March 10, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev3-2025-02-28">0.30.dev3 - 2025-02-28</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#miscellaneous">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maintenance">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev2-2025-02-20">0.30.dev2 - 2025-02-20</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev1-2025-02-19">0.30.dev1 - 2025-02-19</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev0-2025-02-07">0.30.dev0 - 2025-02-07</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id60">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id64">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id68">0.29.0 - 2025-02-06</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id69">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id72">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id79">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id86">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id93">Maintenance</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="_sources/changelog.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "_static/search.json";
+const ADVANCE_SEARCH_PATH = "search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.5.2. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

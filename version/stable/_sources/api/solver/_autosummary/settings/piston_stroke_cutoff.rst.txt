@@ -1,0 +1,21 @@
+:orphan:
+
+.. _piston_stroke_cutoff:
+
+piston_stroke_cutoff
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.piston_stroke_cutoff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`in_cylinder <in_cylinder>`       'in_cylinder' child.
+
+================================   ========================
+

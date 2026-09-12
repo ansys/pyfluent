@@ -1,0 +1,36 @@
+:orphan:
+
+.. _enable_lwf_continuity_formulation:
+
+enable_lwf_continuity_formulation
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enable_lwf_continuity_formulation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   =======================================================================================================
+
+Attribute                                                                                                                                                                Summary
+
+======================================================================   =======================================================================================================
+:ref:`enable <enable_9>`                                                                                Enable/disable the continuity formulation for Lagrangian Wall Film flow.
+
+:ref:`film_flow_stabilization_factor <film_flow_stabilization_factor>`                                               The stabilization factor for the Lagrangian wall film flow.
+
+:ref:`radial_spreading_term <radial_spreading_term>`                         Include/exclude the radial spreading term in the continuity equation for Lagrangian Wall Film flow.
+
+======================================================================   =======================================================================================================
+
+.. rubric:: Included in:
+
+============================   ================
+
+Parent                                  Summary
+
+============================   ================
+:ref:`wall_film <wall_film>`       Main object.
+
+============================   ================
+

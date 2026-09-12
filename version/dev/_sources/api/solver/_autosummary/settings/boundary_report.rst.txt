@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_report:
+
+boundary_report
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.boundary_report
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`options_26 <options_26>`   Sensitivity analysis report options.
+
+==============================   ====================================
+

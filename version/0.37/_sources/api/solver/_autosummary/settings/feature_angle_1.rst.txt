@@ -1,0 +1,21 @@
+:orphan:
+
+.. _feature_angle_1:
+
+feature_angle
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.feature_angle_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==================================
+
+Parent                                                                    Summary
+
+============================================   ==================================
+:ref:`edge_type_options <edge_type_options>`       Controls the display of edges.
+
+============================================   ==================================
+

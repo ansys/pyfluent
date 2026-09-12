@@ -1,0 +1,23 @@
+:orphan:
+
+.. _volume:
+
+volume
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.volume
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =======================
+
+Parent                                       Summary
+
+==========================   =======================
+:ref:`create_5 <create_5>`       Crate new boundary.
+
+:ref:`create_4 <create_4>`       Crate new boundary.
+
+==========================   =======================
+

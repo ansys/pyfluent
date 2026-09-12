@@ -1,0 +1,21 @@
+:orphan:
+
+.. _arrh_b:
+
+arrh_b
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.arrh_b
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================================
+
+Parent                                                              Summary
+
+================================   ========================================
+:ref:`arrh_params <arrh_params>`   Parameters for the Arrhenius rate model.
+
+================================   ========================================
+

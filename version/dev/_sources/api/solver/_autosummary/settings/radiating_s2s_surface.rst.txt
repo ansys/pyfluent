@@ -1,0 +1,25 @@
+:orphan:
+
+.. _radiating_s2s_surface:
+
+radiating_s2s_surface
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.radiating_s2s_surface
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============================================
+
+Parent                                                                     Summary
+
+================================   ===============================================
+:ref:`radiation_1 <radiation_1>`   Radiation settings for this boundary-condition.
+
+:ref:`radiation_3 <radiation_3>`   Radiation settings for this boundary-condition.
+
+:ref:`radiation_6 <radiation_6>`   Radiation settings for this boundary-condition.
+
+================================   ===============================================
+

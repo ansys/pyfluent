@@ -1,0 +1,21 @@
+:orphan:
+
+.. _interface_viscosity_factor:
+
+interface_viscosity_factor
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.interface_viscosity_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================================================================================================================
+
+Parent                                                                                                                                                   Summary
+
+====================================   =========================================================================================================================
+:ref:`flow_blocking <flow_blocking>`   Developer settings for the flow-blocking treatment (interpolation, viscous resistance, and boundary condition treatment).
+
+====================================   =========================================================================================================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_local_sizing_wtm__add_local_sizing_wtm_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.add_local_sizing_wtm._add_local_sizing_wtm.arguments
+   :members: add_child, assign_size_using, bias_factor, boi_cells_per_gap, boi_control_name, boi_curvature_normal_angle, boi_execution, boi_face_label_list, boi_face_zone_list, boi_growth_rate, boi_max_size, boi_min_size, boi_patchingtoggle, boi_scope_to, boi_size, boi_zoneor_label, complete_edge_label_list, complete_face_label_list, complete_face_zone_list, complete_topology_list, draw_size_control, edge_label_list, edge_zone_list, growth_method, growth_pattern, ignore_orientation, ignore_proximity_across_objects, numberof_layers, prime_size_control_id, reverse_edge_zone_list, reverse_edge_zone_orientation, smallest_height, topology_list, zone_location
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

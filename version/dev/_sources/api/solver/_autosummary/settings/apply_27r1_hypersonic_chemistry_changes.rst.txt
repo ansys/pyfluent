@@ -1,0 +1,21 @@
+:orphan:
+
+.. _apply_27r1_hypersonic_chemistry_changes:
+
+apply_27r1_hypersonic_chemistry_changes
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.apply_27r1_hypersonic_chemistry_changes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================================================================================
+
+Parent                                                                                                                                       Summary
+
+======================================================   ===========================================================================================
+:ref:`backward_compatibility <backward_compatibility>`   Apply or revert changes related to chemical reactions between different versions of Fluent.
+
+======================================================   ===========================================================================================
+

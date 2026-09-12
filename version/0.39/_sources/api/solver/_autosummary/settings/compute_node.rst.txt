@@ -1,0 +1,21 @@
+:orphan:
+
+.. _compute_node:
+
+compute_node
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.compute_node
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =======================================================
+
+Parent                                                                         Summary
+
+============================   =======================================================
+:ref:`kill_node <kill_node>`       Kill a compute node process on a specified machine.
+
+============================   =======================================================
+

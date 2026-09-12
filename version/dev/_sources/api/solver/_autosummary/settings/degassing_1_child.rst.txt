@@ -1,0 +1,53 @@
+:orphan:
+
+.. _degassing_1_child:
+
+degassing_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.degassing_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   =============================================================
+
+Attribute                                                                                    Summary
+
+====================================   =============================================================
+:ref:`name <name_5>`                                                             Name of the object.
+
+:ref:`phase <phase_30>`                Provides an object description for phase-specific conditions.
+
+:ref:`adjacent_zone <adjacent_zone>`             Displays the adjacent cell zone for this face zone.
+
+:ref:`shadow_zone <shadow_zone_1>`              Displays the coupled shadow zone for this wall zone.
+
+:ref:`geometry <geometry_8>`                  Allows to change geometry model variables or settings.
+
+====================================   =============================================================
+
+.. rubric:: Methods
+
+======================================   ==================================================================================================================
+
+Method                                                                                                                                              Summary
+
+======================================   ==================================================================================================================
+:ref:`display <display_2>`               Show the selected zone surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                    Create surface for selected zone.
+
+======================================   ==================================================================================================================
+
+.. rubric:: Included in:
+
+================================   =======================================
+
+Parent                                                             Summary
+
+================================   =======================================
+:ref:`degassing_1 <degassing_1>`   Settings for boundary-condition object.
+
+================================   =======================================
+

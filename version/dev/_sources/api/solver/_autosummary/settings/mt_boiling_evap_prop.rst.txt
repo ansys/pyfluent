@@ -1,0 +1,46 @@
+:orphan:
+
+.. _mt_boiling_evap_prop:
+
+mt_boiling_evap_prop
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_evap_prop
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================================   =====================================================================================
+
+Attribute                                                                                                                                                                  Summary
+
+==========================================================================================   =====================================================================================
+:ref:`mt_boiling_sat_temp <mt_boiling_sat_temp>`                                                                                                    Saturation temperature method.
+
+:ref:`mt_boiling_sat_temp_constant <mt_boiling_sat_temp_constant>`                                                                                Constant saturation temperature.
+
+:ref:`mt_boiling_sat_temp_udf <mt_boiling_sat_temp_udf>`                                                                                           UDF for saturation temperature.
+
+:ref:`mt_boiling_sat_temp_polynomial <mt_boiling_sat_temp_polynomial>`                                                                                Polynomial sat temp boiling.
+
+:ref:`mt_boiling_sat_temp_piecewise_polynomial <mt_boiling_sat_temp_piecewise_polynomial>`                                                  Piecewise-polynomial sat temp boiling.
+
+:ref:`mt_boiling_sat_temp_piecewise_linear <mt_boiling_sat_temp_piecewise_linear>`                                                              Piecewise-linear sat temp boiling.
+
+:ref:`mt_boiling_sat_temp_rgp_data_set <mt_boiling_sat_temp_rgp_data_set>`                                                                RGP table data set for boiling sat temp.
+
+:ref:`mt_boiling_vap_coeff <mt_boiling_vap_coeff>`                                           Vapor-interface mass transfer coefficient (shown for Non-Equilibrium and CHF models).
+
+==========================================================================================   =====================================================================================
+
+.. rubric:: Included in:
+
+==========================================   =====================================
+
+Parent                                                                     Summary
+
+==========================================   =====================================
+:ref:`mt_boiling_group <mt_boiling_group>`   Eulerian boiling mass-transfer group.
+
+==========================================   =====================================
+

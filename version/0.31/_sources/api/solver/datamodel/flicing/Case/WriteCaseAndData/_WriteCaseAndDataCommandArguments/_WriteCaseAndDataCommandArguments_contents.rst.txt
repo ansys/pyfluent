@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_WriteCaseAndData__WriteCaseAndDataCommandArguments:
+
+_WriteCaseAndDataCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.flicing.Root.Case.WriteCaseAndData._WriteCaseAndDataCommandArguments
+   :members: _Binary, _FileName, _Overwrite
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

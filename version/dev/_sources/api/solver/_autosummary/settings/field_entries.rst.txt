@@ -1,0 +1,39 @@
+:orphan:
+
+.. _field_entries:
+
+field_entries
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.field_entries
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`field_entries_child <field_entries_child>`
+
+
+.. rubric:: Included in:
+
+============================================   ====================================================
+
+Parent                                                                                      Summary
+
+============================================   ====================================================
+:ref:`replicate_profile <replicate_profile>`   User-configurable settings for replicating profiles.
+
+============================================   ====================================================
+

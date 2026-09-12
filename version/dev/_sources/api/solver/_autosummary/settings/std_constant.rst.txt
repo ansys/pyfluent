@@ -1,0 +1,21 @@
+:orphan:
+
+.. _std_constant:
+
+std_constant
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.std_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`outlier <outlier>`   Configure outlier detection method and its constants.
+
+========================   =====================================================
+

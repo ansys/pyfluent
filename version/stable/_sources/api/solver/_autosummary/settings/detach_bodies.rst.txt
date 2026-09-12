@@ -1,0 +1,21 @@
+:orphan:
+
+.. _detach_bodies:
+
+detach_bodies
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.detach_bodies
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ============================================================
+
+Parent                                                                  Summary
+
+================   ============================================================
+:ref:`cad <cad>`       Export specified surfaces from 3D cases as an .stl file.
+
+================   ============================================================
+

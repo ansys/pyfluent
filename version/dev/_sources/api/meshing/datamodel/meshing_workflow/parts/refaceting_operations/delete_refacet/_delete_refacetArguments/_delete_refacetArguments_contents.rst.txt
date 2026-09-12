@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_refaceting_operations_delete_refacet__delete_refacetArguments:
+
+_delete_refacetArguments
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.refaceting_operations.delete_refacet._delete_refacetArguments
+   :members: _paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

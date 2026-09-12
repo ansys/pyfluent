@@ -1,0 +1,21 @@
+:orphan:
+
+.. _materials_type:
+
+materials_type
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.materials_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ============================================
+
+Parent                                                                                Summary
+
+==============================================   ============================================
+:ref:`export_to_database <export_to_database>`   Export a case material to the user database.
+
+==============================================   ============================================
+

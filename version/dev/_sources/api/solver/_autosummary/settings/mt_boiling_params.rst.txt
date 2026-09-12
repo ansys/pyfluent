@@ -1,0 +1,60 @@
+:orphan:
+
+.. _mt_boiling_params:
+
+mt_boiling_params
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_params
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ====================================================
+
+Attribute                                                                                               Summary
+
+========================================================   ====================================================
+:ref:`mt_boiling_bdd_method <mt_boiling_bdd_method>`                          Bubble departure diameter method.
+
+:ref:`mt_boiling_bdd_constant <mt_boiling_bdd_constant>`                    Constant bubble departure diameter.
+
+:ref:`mt_boiling_bdd_udf <mt_boiling_bdd_udf>`                               UDF for bubble departure diameter.
+
+:ref:`mt_boiling_bdf_method <mt_boiling_bdf_method>`                         Bubble departure frequency method.
+
+:ref:`mt_boiling_bdf_constant <mt_boiling_bdf_constant>`                   Constant bubble departure frequency.
+
+:ref:`mt_boiling_bdf_udf <mt_boiling_bdf_udf>`                              UDF for bubble departure frequency.
+
+:ref:`mt_boiling_nsd_method <mt_boiling_nsd_method>`                            Nucleation site density method.
+
+:ref:`mt_boiling_nsd_constant <mt_boiling_nsd_constant>`                      Constant nucleation site density.
+
+:ref:`mt_boiling_nsd_udf <mt_boiling_nsd_udf>`                                 UDF for nucleation site density.
+
+:ref:`mt_boiling_aic_method <mt_boiling_aic_method>`                         Area influence coefficient method.
+
+:ref:`mt_boiling_aic_constant <mt_boiling_aic_constant>`                   Constant area influence coefficient.
+
+:ref:`mt_boiling_aic_udf <mt_boiling_aic_udf>`                              UDF for area influence coefficient.
+
+:ref:`mt_boiling_liq_coeff <mt_boiling_liq_coeff>`                  Liquid-interface mass transfer coefficient.
+
+:ref:`mt_boiling_bbf_ne <mt_boiling_bbf_ne>`               Blending function for non-equilibrium boiling model.
+
+:ref:`mt_boiling_bbf_chf <mt_boiling_bbf_chf>`                         Blending function for CHF boiling model.
+
+========================================================   ====================================================
+
+.. rubric:: Included in:
+
+==========================================   =====================================
+
+Parent                                                                     Summary
+
+==========================================   =====================================
+:ref:`mt_boiling_group <mt_boiling_group>`   Eulerian boiling mass-transfer group.
+
+==========================================   =====================================
+

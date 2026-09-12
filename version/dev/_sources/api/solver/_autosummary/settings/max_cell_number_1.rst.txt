@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_cell_number_1:
+
+max_cell_number
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.max_cell_number_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ========================================================================
+
+Parent                                                                                                                                Summary
+
+==================================================================   ========================================================================
+:ref:`report_cell_info_by_register <report_cell_info_by_register>`   Report cells information based on the provided id or name of a register.
+
+==================================================================   ========================================================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _pressure_gradient_force:
+
+pressure_gradient_force
+=======================
+
+.. deprecated:: Ansys Fluent 2024 R2
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pressure_gradient_force
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                  Summary
+
+========================================   ====================================================================================================================================================================================================================
+:ref:`particle_forces <particle_forces>`   Configures and enables forces acting on particles. Force models are critical in flows with strong gradients, ~%shear, buoyancy, or temperature differences where secondary forces significantly affect trajectories.
+
+========================================   ====================================================================================================================================================================================================================
+

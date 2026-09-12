@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_evap_cond_sat_press_ptl_tabular_sat_temp:
+
+mt_evap_cond_sat_press_ptl_tabular_sat_temp
+===========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_evap_cond_sat_press_ptl_tabular_sat_temp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ========================
+
+Parent                                                                  Summary
+
+====================================================   ========================
+:ref:`mt_evap_cond_sat_prop <mt_evap_cond_sat_prop>`       Evap cond sat props.
+
+====================================================   ========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_boiling_bbf_ne_udf:
+
+mt_boiling_bbf_ne_udf
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_bbf_ne_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================================
+
+Parent                                                                                      Summary
+
+============================================   ====================================================
+:ref:`mt_boiling_bbf_ne <mt_boiling_bbf_ne>`   Blending function for non-equilibrium boiling model.
+
+============================================   ====================================================
+

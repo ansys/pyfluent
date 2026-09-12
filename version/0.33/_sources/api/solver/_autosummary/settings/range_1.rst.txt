@@ -1,0 +1,45 @@
+:orphan:
+
+.. _range_1:
+
+range
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.range_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ===============================
+
+Attribute                                            Summary
+
+==========================   ===============================
+:ref:`minimum <minimum_1>`       Minimum value of the range.
+
+:ref:`maximum <maximum_1>`       Maximum value of the range.
+
+==========================   ===============================
+
+.. rubric:: Methods
+
+==========================   ======================
+
+Method                                      Summary
+
+==========================   ======================
+:ref:`compute <compute_5>`       Compute the range.
+
+==========================   ======================
+
+.. rubric:: Included in:
+
+==========================   ===================
+
+Parent                                   Summary
+
+==========================   ===================
+:ref:`volume_3 <volume_3>`       'volume' child.
+
+==========================   ===================
+

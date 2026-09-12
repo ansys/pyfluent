@@ -1,0 +1,21 @@
+:orphan:
+
+.. _advancing_angle_method:
+
+advancing_angle_method
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.advancing_angle_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================================   ======================================================
+
+Parent                                                                                                                      Summary
+
+==========================================================================   ======================================================
+:ref:`dynamic_contact_angle_list_child <dynamic_contact_angle_list_child>`       'child_object_type' of dynamic_contact_angle_list.
+
+==========================================================================   ======================================================
+

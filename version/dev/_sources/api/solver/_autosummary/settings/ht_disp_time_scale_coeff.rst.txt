@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ht_disp_time_scale_coeff:
+
+ht_disp_time_scale_coeff
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ht_disp_time_scale_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =========================================
+
+Parent                                                                                         Summary
+
+==========================================================   =========================================
+:ref:`ht_disp_time_scale_group <ht_disp_time_scale_group>`   Time scale sub-model for dispersed phase.
+
+==========================================================   =========================================
+

@@ -1,0 +1,24 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_XYPlot__XYPlot:
+
+_XYPlot
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.flicing.Root.Case.Results.Graphics.XYPlot._XYPlot
+   :members: Diff, ExportData, Plot, Pull, Push, SaveFlag, SaveImage, Surfaces, SyncStatus, UID, WindowId, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Axes/Axes_contents
+   Curves/Curves_contents
+   DirectionVectorInternal/DirectionVectorInternal_contents
+   Options/Options_contents
+   SaveImageOptions/SaveImageOptions_contents
+   XAxisFunction/XAxisFunction_contents
+   YAxisFunction/YAxisFunction_contents

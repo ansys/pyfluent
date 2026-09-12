@@ -1,0 +1,21 @@
+:orphan:
+
+.. _create_surface_2:
+
+create_surface
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_surface_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`regions_child <regions_child>`   'child_object_type' of regions.
+
+====================================   ===============================
+

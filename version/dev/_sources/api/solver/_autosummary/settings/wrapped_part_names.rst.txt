@@ -1,0 +1,21 @@
+:orphan:
+
+.. _wrapped_part_names:
+
+wrapped_part_names
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.wrapped_part_names
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================================   ==============================================
+
+Parent                                                                                                                  Summary
+
+==============================================================================   ==============================================
+:ref:`create_surfaces_from_wrapped_parts <create_surfaces_from_wrapped_parts>`   Create surfaces for the seleted wrapped parts.
+
+==============================================================================   ==============================================
+

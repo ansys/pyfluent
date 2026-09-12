@@ -1,0 +1,14 @@
+.. _ref_meshing_tui_file_project_beta_simulation_run:
+
+run
+===
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_261.main_menu.file.project_beta.simulation.run
+   :members: delete, new_run, set_as_current
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

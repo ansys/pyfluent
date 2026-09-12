@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solve_eulerian_max_vof_factor_udf:
+
+solve_eulerian_max_vof_factor_udf
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.solve_eulerian_max_vof_factor_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`phases_child <phases_child>`   'child_object_type' of phases.
+
+==================================   ==============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reflection_file:
+
+reflection_file
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reflection_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ======================================================
+
+Parent                                                                          Summary
+
+==============================   ======================================================
+:ref:`input_data <input_data>`   The type and file path of the experimental input data.
+
+==============================   ======================================================
+

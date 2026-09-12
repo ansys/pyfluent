@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_as_current_1:
+
+set_as_current
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_as_current_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   ================================
+
+Argument                                              Summary
+
+==========================   ================================
+:ref:`run_name <run_name>`   Name of the run to make current.
+
+==========================   ================================
+
+.. rubric:: Included in:
+
+================   ==========================================
+
+Parent                                                Summary
+
+================   ==========================================
+:ref:`run <run>`   Manage runs within the current simulation.
+
+================   ==========================================
+

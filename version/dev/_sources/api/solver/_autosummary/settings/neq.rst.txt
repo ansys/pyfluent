@@ -1,0 +1,21 @@
+:orphan:
+
+.. _neq:
+
+neq
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.neq
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ========================
+
+Parent                                  Summary
+
+====================   ========================
+:ref:`earsm <earsm>`   The EARSM model options.
+
+====================   ========================
+

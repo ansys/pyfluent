@@ -1,0 +1,23 @@
+:orphan:
+
+.. _components_2:
+
+components
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.components_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`groups_1_child <groups_1_child>`   'child_object_type' of groups.
+
+:ref:`groups_child <groups_child>`       'child_object_type' of groups.
+
+======================================   ==============================
+

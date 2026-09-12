@@ -1,0 +1,58 @@
+:orphan:
+
+.. _material_7_child:
+
+material_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.material_7_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ==========================================================================
+
+Attribute                                                                                                             Summary
+
+================================================   ==========================================================================
+:ref:`name <name_24>`                                                                                           'name' child.
+
+:ref:`diffuse_texture <diffuse_texture>`                                                             'diffuse_texture' child.
+
+:ref:`base_color <base_color>`                                                      Specifies the bulk color of the material.
+
+:ref:`specular_texture <specular_texture>`                                                          'specular_texture' child.
+
+:ref:`specular_color <specular_color>`                            Specifies the highlight color seen due to lighting effects.
+
+:ref:`environment_texture <environment_texture>`                                                 'environment_texture' child.
+
+:ref:`bump_texture <bump_texture>`                                                                      'bump_texture' child.
+
+:ref:`emissive_color <emissive_color>`                                         Specifies the color emitted from the material.
+
+:ref:`reflectivity <reflectivity>`                                             Specifies how reflective the material appears.
+
+:ref:`transparency <transparency_1>`                                          Specifies how transparent the material appears.
+
+:ref:`glossiness <glossiness>`                                                     Specifies how glossy the material appears.
+
+:ref:`texture_transform <texture_transform>`           Provides options for modifying the appearance of the material texture.
+
+:ref:`editable <editable>`                                                                                  'editable' child.
+
+:ref:`type <type_4>`                                                                                            'type' child.
+
+================================================   ==========================================================================
+
+.. rubric:: Included in:
+
+==============================   =============================================
+
+Parent                                                                 Summary
+
+==============================   =============================================
+:ref:`material_7 <material_7>`       Add, Edit, Remove materials in case file.
+
+==============================   =============================================
+

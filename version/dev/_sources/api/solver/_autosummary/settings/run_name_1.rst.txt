@@ -1,0 +1,21 @@
+:orphan:
+
+.. _run_name_1:
+
+run_name
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.run_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =======================================
+
+Parent                                                       Summary
+
+==========================   =======================================
+:ref:`delete_1 <delete_1>`   Delete the named run and all its files.
+
+==========================   =======================================
+

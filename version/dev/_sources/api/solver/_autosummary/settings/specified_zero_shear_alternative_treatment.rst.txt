@@ -1,0 +1,21 @@
+:orphan:
+
+.. _specified_zero_shear_alternative_treatment:
+
+specified_zero_shear_alternative_treatment
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.specified_zero_shear_alternative_treatment
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`advanced_5 <advanced_5>`   Solution method advanced object.
+
+==============================   ================================
+

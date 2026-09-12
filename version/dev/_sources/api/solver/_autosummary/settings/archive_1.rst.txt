@@ -1,0 +1,32 @@
+:orphan:
+
+.. _archive_1:
+
+archive
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.archive_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   =============================
+
+Argument                                                     Summary
+
+====================================   =============================
+:ref:`archive_name <archive_name_1>`   The path of the archive file.
+
+====================================   =============================
+
+.. rubric:: Included in:
+
+========================   ==============================================
+
+Parent                                                            Summary
+
+========================   ==============================================
+:ref:`project <project>`   Standalone Fluent Project management commands.
+
+========================   ==============================================
+

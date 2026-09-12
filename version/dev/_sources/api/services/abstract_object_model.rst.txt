@@ -1,0 +1,12 @@
+.. _ref_ansys_fluent_core_services_abstract_object_model:
+
+abstract_object_model
+=====================
+
+.. automodule:: ansys.fluent.core.services.abstract_object_model
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:

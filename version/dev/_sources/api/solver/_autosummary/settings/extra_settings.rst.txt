@@ -1,0 +1,42 @@
+:orphan:
+
+.. _extra_settings:
+
+extra_settings
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.extra_settings
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================================================   =======================================================================================================================================================================================
+
+Argument                                                                                                                                                                                                                                               Summary
+
+====================================================================   =======================================================================================================================================================================================
+:ref:`relaxation <relaxation>`                                                                                                                                                                                         Fourier coefficients relaxation factor.
+
+:ref:`initialization_cycles <initialization_cycles>`                                                                                                                                      Number of initialization cycles for Fourier coefficient computation.
+
+:ref:`use_default_harmonics <use_default_harmonics>`                                            Use the default number of Fourier harmonics for each fundamental frequency? When true, the number-of-harmonics value is applied uniformly to all disturbances.
+
+:ref:`number_of_harmonics <number_of_harmonics_1>`                     Default number of Fourier harmonics of each fundamental frequency. Only applied when use-default-harmonics is true. Per-disturbance customization is done in the frequency-setup table.
+
+:ref:`frequency_selection_algorithm <frequency_selection_algorithm>`                                                                                   Multi-row frequency selection algorithm (1=nearest neighbours, 2=extended neighbours, 3=user-selected).
+
+:ref:`recreate <recreate_2>`                                                           Ok to revisit (recreate) spectral content if critical settings changed? Only relevant when spectral content exists and the turbomachine is not an extended description.
+
+====================================================================   =======================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ====================================================================================================================================================
+
+Parent                                                                                                                                                                    Summary
+
+==========================   ====================================================================================================================================================
+:ref:`graphics <graphics>`   Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+==========================   ====================================================================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mgrid_toggle_mrf_mgrid_ui:
+
+mgrid_toggle_mrf_mgrid_ui
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mgrid_toggle_mrf_mgrid_ui
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =============================================================
+
+Parent                                                                                   Summary
+
+================================   =============================================================
+:ref:`mesh_motion <mesh_motion>`       Allows to change mesh-motion model variables or settings.
+
+================================   =============================================================
+

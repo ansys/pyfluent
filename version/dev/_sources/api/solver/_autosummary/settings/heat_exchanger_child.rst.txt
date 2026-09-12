@@ -1,0 +1,36 @@
+:orphan:
+
+.. _heat_exchanger_child:
+
+heat_exchanger_child
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.heat_exchanger_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =======================================================================================================
+
+Attribute                                                                                                                          Summary
+
+================================   =======================================================================================================
+:ref:`name <name_5>`                                                                                                   Name of the object.
+
+:ref:`model <model_5>`             Heat exchanger model type. Currently only "Macro" is supported. "Dual Cell" is reserved for future use.
+
+:ref:`macro_model <macro_model>`                                                                               Macro heat exchanger model.
+
+================================   =======================================================================================================
+
+.. rubric:: Included in:
+
+======================================   =======================
+
+Parent                                                   Summary
+
+======================================   =======================
+:ref:`heat_exchanger <heat_exchanger>`   Manage heat exchangers.
+
+======================================   =======================
+

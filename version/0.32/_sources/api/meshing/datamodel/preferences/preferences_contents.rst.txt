@@ -1,0 +1,31 @@
+.. _ref_meshing_datamodel_preferences:
+
+meshing.datamodel.preferences
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.preferences.Root
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   AnsysCloudBurst/AnsysCloudBurst_contents
+   Appearance/Appearance_contents
+   GPUApp/GPUApp_contents
+   General/General_contents
+   Graphics/Graphics_contents
+   MatProApp/MatProApp_contents
+   MeshingWorkflow/MeshingWorkflow_contents
+   Navigation/Navigation_contents
+   ParametricStudy/ParametricStudy_contents
+   PrjApp/PrjApp_contents
+   PythonConsole/PythonConsole_contents
+   Simulation/Simulation_contents
+   TurboSetup/TurboSetup_contents
+   TurboWorkflow/TurboWorkflow_contents

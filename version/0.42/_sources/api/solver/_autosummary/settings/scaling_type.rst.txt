@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scaling_type:
+
+scaling_type
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.scaling_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`scaling_1_child <scaling_1_child>`       'child_object_type' of scaling.
+
+========================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _go_to_optislang:
+
+go_to_optislang
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.go_to_optislang
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

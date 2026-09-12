@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_12:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_1_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================================
+
+Parent                                                                      Summary
+
+========================================   ========================================
+:ref:`read_injections <read_injections>`       Read all DPM injections from a file.
+
+========================================   ========================================
+

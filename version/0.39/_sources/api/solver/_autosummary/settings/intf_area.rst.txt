@@ -1,0 +1,39 @@
+:orphan:
+
+.. _intf_area:
+
+intf_area
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.intf_area
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`intf_area_child <intf_area_child>`
+
+
+.. rubric:: Included in:
+
+============================================   ======================
+
+Parent                                                        Summary
+
+============================================   ======================
+:ref:`phase_interaction <phase_interaction>`       Phase interaction.
+
+============================================   ======================
+

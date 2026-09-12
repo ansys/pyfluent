@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auxiliary_fluid_temperature:
+
+auxiliary_fluid_temperature
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.auxiliary_fluid_temperature
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =====================================
+
+Parent                                                                                 Summary
+
+======================================================   =====================================
+:ref:`ntu_effectiveness_data <ntu_effectiveness_data>`   NTU heat transfer effectiveness data.
+
+======================================================   =====================================
+

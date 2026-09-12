@@ -1,0 +1,21 @@
+:orphan:
+
+.. _partially_specular_wall_treatment_method:
+
+partially_specular_wall_treatment_method
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.partially_specular_wall_treatment_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================================================
+
+Parent                                                                                              Summary
+
+==============================================   ==========================================================
+:ref:`discrete_ordinates <discrete_ordinates>`       Enable/disable the discrete ordinates radiation model.
+
+==============================================   ==========================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _tolerance_4:
+
+tolerance
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.tolerance_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =========================
+
+Parent                                                             Summary
+
+==============================================   =========================
+:ref:`accuracy_control_1 <accuracy_control_1>`       Control the accuracy.
+
+==============================================   =========================
+

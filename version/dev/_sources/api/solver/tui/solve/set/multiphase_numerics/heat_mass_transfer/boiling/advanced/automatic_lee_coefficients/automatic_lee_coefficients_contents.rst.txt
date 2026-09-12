@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_set_multiphase_numerics_heat_mass_transfer_boiling_advanced_automatic_lee_coefficients:
+
+automatic_lee_coefficients
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.boiling.advanced.automatic_lee_coefficients
+   :members: beta_base_cond, beta_base_evap, beta_max_cond, beta_max_evap, beta_min_cond, beta_min_evap, cond_rho_ratio, enabled, eta, scale_factor_cond, scale_factor_evap, subcool_high, subcool_low, supht_high, supht_low
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

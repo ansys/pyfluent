@@ -1,0 +1,21 @@
+:orphan:
+
+.. _augment_1:
+
+augment
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.augment_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+==================================================   ==========================================================================================================
+:ref:`delete_invalid_cells <delete_invalid_cells>`   Permanently delete invalid cells from the simulation domain and create new symmetry thread zones for them.
+
+==================================================   ==========================================================================================================
+

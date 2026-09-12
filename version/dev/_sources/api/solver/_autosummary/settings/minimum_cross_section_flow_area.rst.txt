@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_cross_section_flow_area:
+
+minimum_cross_section_flow_area
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.minimum_cross_section_flow_area
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===========================================================
+
+Parent                                                                                   Summary
+
+==================================   ===========================================================
+:ref:`parameters_1 <parameters_1>`   Gas-Side Pressure Drop parameters of a core porosity model.
+
+==================================   ===========================================================
+

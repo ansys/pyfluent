@@ -1,0 +1,48 @@
+:orphan:
+
+.. _fwh_options:
+
+fwh_options
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fwh_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ================================================================================================
+
+Attribute                                                                                                                                                   Summary
+
+================================================================   ================================================================================================
+:ref:`on_the_fly <on_the_fly>`                                         Enable/disable computing acoustic signals simultaneously with the transient flow simulation.
+
+:ref:`far_field_density <far_field_density>`                                                                                                 The far-field density.
+
+:ref:`far_field_sound_speed <far_field_sound_speed>`                                                                                     The far-field sound speed.
+
+:ref:`reference_acoustic_pressure <reference_acoustic_pressure>`                                              The reference acoustic pressure to compute SPL in dB.
+
+:ref:`timesteps_per_revolution <timesteps_per_revolution>`                                                                  The number of timesteps per revolution.
+
+:ref:`revolutions <revolutions>`                                                                                                         The number of revolutions.
+
+:ref:`correlation_length_2d <correlation_length_2d>`                                                            The source correlation length for a 2D calculation.
+
+:ref:`convection <convection>`                                                                                                                     Entering object.
+
+:ref:`auto_prune <auto_prune>`                                                                                 Enable/disable auto-pruning of the receiver signals.
+
+================================================================   ================================================================================================
+
+.. rubric:: Included in:
+
+============================   ====================================
+
+Parent                                                      Summary
+
+============================   ====================================
+:ref:`acoustics <acoustics>`       Entering acoustics model object.
+
+============================   ====================================
+

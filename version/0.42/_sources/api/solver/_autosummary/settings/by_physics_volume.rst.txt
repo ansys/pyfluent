@@ -1,0 +1,21 @@
+:orphan:
+
+.. _by_physics_volume:
+
+by_physics_volume
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.by_physics_volume
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`automatic <automatic>`       'automatic' child.
+
+============================   ======================
+

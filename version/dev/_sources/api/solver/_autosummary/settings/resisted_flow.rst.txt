@@ -1,0 +1,42 @@
+:orphan:
+
+.. _resisted_flow:
+
+resisted_flow
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.resisted_flow
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ============================================================================================================
+
+Attribute                                                                                                                                                                     Summary
+
+======================================================================   ============================================================================================================
+:ref:`customize_inputs <customize_inputs_1>`                                                 Enable manual specification of the correction coefficient and pressure-drop formulation.
+
+:ref:`correction_coefficient <correction_coefficient>`                                                        Correction coefficient for the resisted flow pressure-drop formulation.
+
+:ref:`pressure_drop_formulation <pressure_drop_formulation>`                                                  Analytical expression used to compute the pressure drop across the gap.
+
+:ref:`gap_length <gap_length>`                                           Characteristic length of the gap cross-section used in Couette-Poiseuille or Planar-Poiseuille formulations.
+
+:ref:`gap_width <gap_width>`                                              Characteristic width of the gap cross-section used in Couette-Poiseuille or Planar-Poiseuille formulations.
+
+:ref:`relative_velocity_formulation <relative_velocity_formulation_1>`                                Enable relative velocity formulation for Local Planar-Poiseuille resisted flow.
+
+======================================================================   ============================================================================================================
+
+.. rubric:: Included in:
+
+================================================   ==========================================================
+
+Parent                                                                                                Summary
+
+================================================   ==========================================================
+:ref:`reduced_order_model <reduced_order_model>`   Settings for the Reduced Order Model flow-modeling method.
+
+================================================   ==========================================================
+

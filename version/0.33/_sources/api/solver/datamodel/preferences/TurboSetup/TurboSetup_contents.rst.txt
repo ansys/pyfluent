@@ -1,0 +1,19 @@
+.. _ref_solver_datamodel_preferences_TurboSetup:
+
+TurboSetup
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.preferences.Root.TurboSetup
+   :members: CheckpointingOption, SaveCheckpointFiles
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   FaceZoneSettings/FaceZoneSettings_contents
+   GraphicsSettings/GraphicsSettings_contents

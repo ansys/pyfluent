@@ -1,0 +1,32 @@
+:orphan:
+
+.. _smooth_partition:
+
+smooth_partition
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.smooth_partition
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================   ===========================================
+
+Argument                                                                               Summary
+
+================================================   ===========================================
+:ref:`smoothing_iteration <smoothing_iteration>`       Maximum number of smoothing iterations.
+
+================================================   ===========================================
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`partition_3 <partition_3>`       The partition domain object.
+
+================================   ================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _stoich_coeff_1:
+
+stoich_coeff
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.stoich_coeff_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===========================================================
+
+Parent                                                                                   Summary
+
+==================================   ===========================================================
+:ref:`add_product <add_product>`                         Add a product species to this reaction.
+
+:ref:`edit_product <edit_product>`   Modify the product at the specified index in this reaction.
+
+==================================   ===========================================================
+

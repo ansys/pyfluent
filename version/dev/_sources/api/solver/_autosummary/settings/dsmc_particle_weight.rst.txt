@@ -1,0 +1,36 @@
+:orphan:
+
+.. _dsmc_particle_weight:
+
+dsmc_particle_weight
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.dsmc_particle_weight
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=====================================   =========================================================
+
+Attribute                                                                                 Summary
+
+=====================================   =========================================================
+:ref:`use <use_2>`                          Enable DSMC particle number weights for partitioning.
+
+:ref:`user_defined <user_defined_23>`   Use user defined value for DSMC particle number weights?.
+
+:ref:`value <value_50>`                      User defined value for DSMC particle number weights.
+
+=====================================   =========================================================
+
+.. rubric:: Included in:
+
+====================   ===========
+
+Parent                     Summary
+
+====================   ===========
+:ref:`set_3 <set_3>`   The object.
+
+====================   ===========
+

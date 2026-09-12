@@ -1,0 +1,25 @@
+:orphan:
+
+.. _user_defined_2:
+
+user_defined
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.user_defined_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   =============================================
+
+Parent                                                                                                   Summary
+
+================================================================   =============================================
+:ref:`surface_tension_child_child <surface_tension_child_child>`       'child_object_type' of child_object_type.
+
+:ref:`intf_area_child_child <intf_area_child_child>`                   'child_object_type' of child_object_type.
+
+:ref:`slope_limiter_child_child <slope_limiter_child_child>`           'child_object_type' of child_object_type.
+
+================================================================   =============================================
+

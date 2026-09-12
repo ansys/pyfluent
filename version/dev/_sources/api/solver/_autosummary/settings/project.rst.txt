@@ -1,0 +1,53 @@
+:orphan:
+
+.. _project:
+
+project
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.project
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =====================================================
+
+Attribute                                                                      Summary
+
+==============================   =====================================================
+:ref:`simulation <simulation>`   Manage simulations within the current Fluent project.
+
+==============================   =====================================================
+
+.. rubric:: Methods
+
+====================================   ====================================================================
+
+Method                                                                                              Summary
+
+====================================   ====================================================================
+:ref:`new <new_1>`                                                  Create a new standalone Fluent project.
+
+:ref:`open <open_1>`                               Open an existing Fluent project file (.flprj or .flprz).
+
+:ref:`save <save_1>`                                                       Save the current Fluent project.
+
+:ref:`save_as <save_as_1>`                               Save the current Fluent project to a new location.
+
+:ref:`save_as_copy <save_as_copy_1>`   Export a copy of the current Fluent project without switching to it.
+
+:ref:`archive <archive_1>`                  Archive the current Fluent project to a compressed .flprz file.
+
+====================================   ====================================================================
+
+.. rubric:: Included in:
+
+==================   ==============================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                      Summary
+
+==================   ==============================================================================================================================================================================================================
+:ref:`file <file>`   Import and export several kinds of files. Files that are read include mesh, case, data, profile, Scheme, and journal files. Files that are written include case, data, profile, journal, and transcript files.
+
+==================   ==============================================================================================================================================================================================================
+

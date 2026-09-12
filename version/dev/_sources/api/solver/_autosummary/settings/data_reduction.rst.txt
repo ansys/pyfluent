@@ -1,0 +1,34 @@
+:orphan:
+
+.. _data_reduction:
+
+data_reduction
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.data_reduction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ===============================================================================
+
+Attribute                                                                                                                              Summary
+
+============================================================   ===============================================================================
+:ref:`across_injections_enabled <across_injections_enabled>`   Allows merging parcels from different injections if they use the same material.
+
+:ref:`min_parcel_count <min_parcel_count>`                       Sets the minimum number of parcels required above which reduction is applied.
+
+============================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+==================================================   ==================================================================================================
+
+Parent                                                                                                                                          Summary
+
+==================================================   ==================================================================================================
+:ref:`parcel_count_control <parcel_count_control>`   Controls automatic adjustments to the number of numerical parcels to meet resolution requirements.
+
+==================================================   ==================================================================================================
+

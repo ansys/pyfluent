@@ -1,0 +1,34 @@
+:orphan:
+
+.. _model_selection:
+
+model_selection
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.model_selection
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ====================================
+
+Attribute                                                                   Summary
+
+============================================   ====================================
+:ref:`moss_brookes <moss_brookes>`                  Enable Moss-Brookes soot model.
+
+:ref:`moss_brookes_hall <moss_brookes_hall>`   Enable Moss-Brookes-Hall soot model.
+
+============================================   ====================================
+
+.. rubric:: Included in:
+
+==================   =============================================
+
+Parent                                                     Summary
+
+==================   =============================================
+:ref:`soot <soot>`   Configure soot model settings and parameters.
+
+==================   =============================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _mt_boiling_nlbf:
+
+mt_boiling_nlbf
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_nlbf
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ==============================================
+
+Attribute                                                                                       Summary
+
+======================================================   ==============================================
+:ref:`mt_boiling_nlbf_on <mt_boiling_nlbf_on>`                   Enable non-local boundary field model.
+
+:ref:`mt_boiling_nlbf_length <mt_boiling_nlbf_length>`   Maximum line length per wall element for NLBF.
+
+:ref:`mt_boiling_nlbf_points <mt_boiling_nlbf_points>`              Number of points per line for NLBF.
+
+======================================================   ==============================================
+
+.. rubric:: Included in:
+
+==========================================   =====================================
+
+Parent                                                                     Summary
+
+==========================================   =====================================
+:ref:`mt_boiling_group <mt_boiling_group>`   Eulerian boiling mass-transfer group.
+
+==========================================   =====================================
+

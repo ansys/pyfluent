@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_WriteSkinMesh__WriteSkinMeshCommandArguments:
+
+_WriteSkinMeshCommandArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.WriteSkinMesh._WriteSkinMeshCommandArguments
+   :members: _FileName
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

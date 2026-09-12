@@ -1,0 +1,40 @@
+:orphan:
+
+.. _user_defined_disturbances_child:
+
+user_defined_disturbances_child
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.user_defined_disturbances_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =============================================================================================================================================================
+
+Attribute                                                                                                                                                                                          Summary
+
+==========================================   =============================================================================================================================================================
+:ref:`disturbance_type <disturbance_type>`                                                                                                                               Type of user-defined disturbance.
+
+:ref:`reference_frame <reference_frame_8>`                                 Reference frame used to determine the disturbance source angular velocity. Required for blade-passing and real-frequency types.
+
+:ref:`n360_ext <n360_ext>`                                                                        Number of passages in 360 degrees for the source (reference frame) row. Required for blade-passing type.
+
+:ref:`base_frequency <base_frequency_1>`     Base frequency in Hz. Editable for real-frequency type; shows computed flutter frequency for blade-flutter type; computed at creation for blade-passing type.
+
+:ref:`harmonics <harmonics_1>`                                              Space-separated list of harmonic indices (e.g., "1 2 3"). If empty, defaults to 1..N based on the number-of-harmonics setting.
+
+==========================================   =============================================================================================================================================================
+
+.. rubric:: Included in:
+
+============================================================   ===============================================================================================
+
+Parent                                                                                                                                                 Summary
+
+============================================================   ===============================================================================================
+:ref:`user_defined_disturbances <user_defined_disturbances>`   User-defined disturbances targeting this row. Added on top of the inter-row disturbances above.
+
+============================================================   ===============================================================================================
+

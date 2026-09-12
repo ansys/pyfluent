@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_modify_mesh_refinement__modify_mesh_refinementArguments:
+
+_modify_mesh_refinementArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.modify_mesh_refinement._modify_mesh_refinementArguments
+   :members: _face_zone_or_label, _local_max_size, _local_min_size, _local_size, _mesh_object, _remesh_cells_per_gap, _remesh_control_name, _remesh_curvature_normal_angle, _remesh_execution, _remesh_face_label_list, _remesh_face_zone_list, _remesh_growth_rate, _sizing_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _cfd_surface_mesh_controls/_cfd_surface_mesh_controls_contents
+   _remesh_preferences/_remesh_preferences_contents

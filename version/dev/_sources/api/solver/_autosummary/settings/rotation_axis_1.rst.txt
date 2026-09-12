@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rotation_axis_1:
+
+rotation_axis
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rotation_axis_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================================
+
+Parent                                                                                      Summary
+
+============================================   ====================================================
+:ref:`replicate_profile <replicate_profile>`   User-configurable settings for replicating profiles.
+
+============================================   ====================================================
+

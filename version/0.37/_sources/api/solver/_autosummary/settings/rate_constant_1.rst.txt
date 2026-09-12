@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rate_constant_1:
+
+rate_constant
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.rate_constant_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===============================================
+
+Parent                                                                                     Summary
+
+================================================   ===============================================
+:ref:`cathode_film_growth <cathode_film_growth>`       Up cathode film growth reaction parameters.
+
+================================================   ===============================================
+

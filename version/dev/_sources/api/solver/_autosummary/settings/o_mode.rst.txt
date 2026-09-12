@@ -1,0 +1,21 @@
+:orphan:
+
+.. _o_mode:
+
+o_mode
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.o_mode
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`oxidation_models <oxidation_models>`   Soot oxidation model selection.
+
+==========================================   ===============================
+

@@ -1,0 +1,18 @@
+.. _ref_legacy:
+
+Legacy
+======
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    Meshing <../meshing/datamodel/meshing/meshing_contents>
+    Part management <../meshing/datamodel/part_management/part_management_contents>
+    Part file management <../meshing/datamodel/pm_file_management/pm_file_management_contents>
+    Workflow <../meshing/datamodel/workflow/workflow_contents>
+    Tui (meshing) <../meshing/tui/tui_contents>
+    Tui (solver) <../solver/tui/tui_contents>
+
+
+Legacy APIs provide backward-compatible access to earlier interface versions.

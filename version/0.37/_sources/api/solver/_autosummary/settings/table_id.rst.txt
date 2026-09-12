@@ -1,0 +1,21 @@
+:orphan:
+
+.. _table_id:
+
+table_id
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.table_id
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`display_table <display_table>`       Display table data.
+
+====================================   =======================
+

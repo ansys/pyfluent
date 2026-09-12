@@ -1,0 +1,21 @@
+:orphan:
+
+.. _grid_file_1_1:
+
+grid_file
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.grid_file_1_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ========================================
+
+Parent                                                                                Summary
+
+==================================================   ========================================
+:ref:`write_grid_to_file_1 <write_grid_to_file_1>`   Write c-grid distribution to an XY file.
+
+==================================================   ========================================
+

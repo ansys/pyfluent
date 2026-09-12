@@ -1,0 +1,21 @@
+:orphan:
+
+.. _creation_method_1:
+
+creation_method
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.creation_method_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===============================================================================
+
+Parent                                                                                               Summary
+
+==========================   ===============================================================================
+:ref:`recreate <recreate>`   Recreate solid regions using either one region per part or one region per body.
+
+==========================   ===============================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sectors_in_profile:
+
+sectors_in_profile
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sectors_in_profile
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ====================================================
+
+Parent                                                                                      Summary
+
+============================================   ====================================================
+:ref:`replicate_profile <replicate_profile>`   User-configurable settings for replicating profiles.
+
+============================================   ====================================================
+

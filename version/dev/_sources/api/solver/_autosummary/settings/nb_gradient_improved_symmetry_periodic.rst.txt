@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nb_gradient_improved_symmetry_periodic:
+
+nb_gradient_improved_symmetry_periodic
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.nb_gradient_improved_symmetry_periodic
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`methods_2 <methods_2>`   The solution methods object.
+
+============================   ============================
+

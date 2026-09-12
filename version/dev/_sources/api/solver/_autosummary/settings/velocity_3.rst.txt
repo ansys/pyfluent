@@ -1,0 +1,21 @@
+:orphan:
+
+.. _velocity_3:
+
+velocity
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.velocity_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ==========================================================================
+
+Parent                                                                                                                      Summary
+
+======================================================   ==========================================================================
+:ref:`global_extrema_tracker <global_extrema_tracker>`   Monitor global maximum and minimum field extrema values during simulation.
+
+======================================================   ==========================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_boiling_qfc_udf:
+
+mt_boiling_qfc_udf
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_qfc_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ================================================
+
+Parent                                                                                  Summary
+
+============================================   ================================================
+:ref:`mt_boiling_quench <mt_boiling_quench>`   Quenching model correction for Eulerian boiling.
+
+============================================   ================================================
+

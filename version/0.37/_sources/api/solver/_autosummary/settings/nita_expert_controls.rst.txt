@@ -1,0 +1,36 @@
+:orphan:
+
+.. _nita_expert_controls:
+
+nita_expert_controls
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.nita_expert_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ===============================================================================
+
+Attribute                                                                                                                                  Summary
+
+================================================================   ===============================================================================
+:ref:`verbosity <verbosity_15>`                                                                                             NITA verbosity option.
+
+:ref:`skewness_neighbor_coupling <skewness_neighbor_coupling_1>`                                              Skewness neighbor coupling for NITA.
+
+:ref:`hybrid_nita_settings <hybrid_nita_settings>`                     A hybrid NITA settings option for faster performance and better robustness.
+
+================================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

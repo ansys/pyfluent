@@ -1,0 +1,51 @@
+:orphan:
+
+.. _macro_model:
+
+macro_model
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.macro_model
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   ======================================================================================================================
+
+Attribute                                                                                                                                                                             Summary
+
+====================================================================   ======================================================================================================================
+:ref:`connectivity <connectivity>`                                                                                       Configure serial chain connections between heat exchanger instances.
+
+:ref:`cores <cores>`                                                                                                           Heat exchanger cores. Each core corresponds to one fluid zone.
+
+:ref:`auxiliary_fluid <auxiliary_fluid>`                                                                                                     Auxiliary fluid properties for a heat exchanger.
+
+:ref:`supplementary_auxiliary_fluid <supplementary_auxiliary_fluid>`                                            Configure supplementary auxiliary fluid stream for multi-core heat exchanger.
+
+:ref:`primary_fluid_flow_direction <primary_fluid_flow_direction>`     The direction of primary fluid flow relative to the zone. Read-only for ungrouped single-core models (always "depth").
+
+====================================================================   ======================================================================================================================
+
+.. rubric:: Methods
+
+================================================   =============================================================================
+
+Method                                                                                                                   Summary
+
+================================================   =============================================================================
+:ref:`print_stream_layout <print_stream_layout>`   Display the serial chain topology for all connected heat exchanger instances.
+
+================================================   =============================================================================
+
+.. rubric:: Included in:
+
+==================================================   ======================================
+
+Parent                                                                              Summary
+
+==================================================   ======================================
+:ref:`heat_exchanger_child <heat_exchanger_child>`   'child_object_type' of heat_exchanger.
+
+==================================================   ======================================
+

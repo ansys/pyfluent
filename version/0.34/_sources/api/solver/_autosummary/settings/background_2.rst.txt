@@ -1,0 +1,21 @@
+:orphan:
+
+.. _background_2:
+
+background
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.background_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ====================================
+
+Parent                                              Summary
+
+====================   ====================================
+:ref:`video <video>`       The video window options object.
+
+====================   ====================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _vof_to_dpm_generic:
+
+vof_to_dpm_generic
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.vof_to_dpm_generic
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================================================================   =================================================
+
+Argument                                                                                                                             Summary
+
+========================================================================================   =================================================
+:ref:`number_of_cells_across_resolved_droplet <number_of_cells_across_resolved_droplet>`       The number of cells across resolved droplets.
+
+:ref:`minimum_resolved_droplet_diameter <minimum_resolved_droplet_diameter>`                          The minimum resolved droplet diameter.
+
+:ref:`minimum_cell_volume <minimum_cell_volume>`                                                               The minimum mesh cell volume.
+
+========================================================================================   =================================================
+
+.. rubric:: Included in:
+
+==============================   ==============================================
+
+Parent                                                                  Summary
+
+==============================   ==============================================
+:ref:`multiphase <multiphase>`       The multiphase predefined criteria object.
+
+==============================   ==============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _storage_dir:
+
+storage_dir
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.storage_dir
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================================
+
+Parent                                                       Summary
+
+============================   =====================================
+:ref:`create_18 <create_18>`   Create New solution animation Object.
+
+============================   =====================================
+

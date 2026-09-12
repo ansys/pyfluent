@@ -1,0 +1,21 @@
+:orphan:
+
+.. _face_scheme:
+
+face_scheme
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.face_scheme
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===========================================================
+
+Parent                                                                                     Summary
+
+====================================   ===========================================================
+:ref:`interpolation <interpolation>`   Flood filling interpolation settings for blocked gap cells.
+
+====================================   ===========================================================
+

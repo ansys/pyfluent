@@ -1,0 +1,40 @@
+:orphan:
+
+.. _particle_size:
+
+particle_size
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.particle_size
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ======================================================
+
+Attribute                                                                               Summary
+
+======================================   ======================================================
+:ref:`option <option_27>`                                    The diameter distribution option:.
+
+:ref:`diameter <diameter>`                                                            Diameter.
+
+:ref:`diameter_2 <diameter_2>`                                                   Last Diameter.
+
+:ref:`rosin_rammler <rosin_rammler>`         Rosin-Rammler particle size distribution settings.
+
+:ref:`tabulated_size <tabulated_size>`           Tabulated particle size distribution settings.
+
+======================================   ======================================================
+
+.. rubric:: Included in:
+
+======================================   ===========================================
+
+Parent                                                                       Summary
+
+======================================   ===========================================
+:ref:`initial_values <initial_values>`       Lagrangian particle initial properties.
+
+======================================   ===========================================
+

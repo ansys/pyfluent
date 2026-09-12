@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_porous_regions__create_porous_regionsArguments:
+
+_create_porous_regionsArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.create_porous_regions._create_porous_regionsArguments
+   :members: _buffer_size_ratio, _cell_size_p1_p2, _cell_size_p1_p3, _cell_size_p1_p4, _file_name, _input_method, _location, _p1, _p2, _p3, _p4, _porous_region_name, _wrapper_size_factor
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _non_rectangular_parameters/_non_rectangular_parameters_contents

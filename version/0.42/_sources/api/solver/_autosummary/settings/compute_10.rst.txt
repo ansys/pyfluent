@@ -1,0 +1,21 @@
+:orphan:
+
+.. _compute_10:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.compute_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================================
+
+Parent                                                             Summary
+
+==================================   =====================================
+:ref:`range_ribbon <range_ribbon>`       Specifies Range for Ribbon Style.
+
+==================================   =====================================
+

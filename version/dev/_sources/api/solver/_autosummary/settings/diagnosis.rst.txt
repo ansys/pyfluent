@@ -1,0 +1,44 @@
+:orphan:
+
+.. _diagnosis:
+
+diagnosis
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.diagnosis
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================================   =====================================================================
+
+Attribute                                                                                                                                                  Summary
+
+==========================================================================================   =====================================================================
+:ref:`print_residuals_by_zone <print_residuals_by_zone>`                                                Print the adjoint equation residuals sorted by zone types.
+
+:ref:`print_residuals_by_distribution <print_residuals_by_distribution>`                              Print the adjoint equation residuals sorted by distribution.
+
+:ref:`retain_cell_residuals <retain_cell_residuals>`                                                    Retain adjoint equation cell residuals for postprocessing.
+
+:ref:`adjoint_solver_diagnosis <adjoint_solver_diagnosis>`                                                                        Enable adjoint solver diagnosis.
+
+:ref:`design_tool_region_sensitivity <design_tool_region_sensitivity>`                       Enable checking design tool region encompass top sensitivity regions.
+
+:ref:`residual_minimization_memory_suggestions <residual_minimization_memory_suggestions>`                        Enable residual minimization memory suggestions.
+
+:ref:`optimizer_diagnosis <optimizer_diagnosis>`                                                                                       Enable optimizer diagnosis.
+
+==========================================================================================   =====================================================================
+
+.. rubric:: Included in:
+
+============================   ========================
+
+Parent                                          Summary
+
+============================   ========================
+:ref:`expert_14 <expert_14>`   Expert utilities object.
+
+============================   ========================
+

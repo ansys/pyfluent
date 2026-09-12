@@ -1,0 +1,21 @@
+:orphan:
+
+.. _project_file_name_1_1:
+
+project_file_name
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.project_file_name_1_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ========================================================
+
+Parent                                                                    Summary
+
+======================   ========================================================
+:ref:`open_1 <open_1>`   Open an existing Fluent project file (.flprj or .flprz).
+
+======================   ========================================================
+

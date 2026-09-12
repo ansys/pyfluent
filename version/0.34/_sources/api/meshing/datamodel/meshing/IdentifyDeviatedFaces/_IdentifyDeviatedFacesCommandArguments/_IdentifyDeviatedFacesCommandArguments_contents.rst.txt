@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_IdentifyDeviatedFaces__IdentifyDeviatedFacesCommandArguments:
+
+_IdentifyDeviatedFacesCommandArguments
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.IdentifyDeviatedFaces._IdentifyDeviatedFacesCommandArguments
+   :members: _AdvancedOptions, _DeviationMaxValue, _DeviationMinValue, _DisplayGridName, _IncludeGapCoverGeometry, _ObjectSelectionList, _Overlay, _SelectionType, _ZoneLocation, _ZoneSelectionList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

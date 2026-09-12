@@ -1,0 +1,23 @@
+:orphan:
+
+.. _cmu:
+
+cmu
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cmu
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ========================
+
+Parent                                                    Summary
+
+======================================   ========================
+:ref:`coefficients_5 <coefficients_5>`        Coefficients group.
+
+:ref:`earsm <earsm>`                     The EARSM model options.
+
+======================================   ========================
+

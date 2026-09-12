@@ -1,0 +1,20 @@
+.. _ref_solver_datamodel_preferences_Appearance:
+
+Appearance
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.preferences.Root.Appearance
+   :members: AllowInterfaceBoundsFlags, ApplicationFontSize, AxisTriad, ColorTheme, Completer, CustomTitleBar, DefaultView, GraphicsBackgroundColor1, GraphicsBackgroundColor2, GraphicsBackgroundStyle, GraphicsColorTheme, GraphicsDefaultManualFaceColor, GraphicsDefaultManualNodeColor, GraphicsEdgeColor, GraphicsForegroundColor, GraphicsPartitionBoundaryColor, GraphicsSurfaceColor, GraphicsTitleWindowFramecolor, GraphicsView, GraphicsWallFaceColor, GroupByTreeView, GroupPhysicsByTreeView, ModelColorScheme, NumberOfFilesRecentlyUsed, NumberOfPastelColors, PastelColorSaturation, PastelColorValue, PyConsoleCompleter, QuickPropertyView, Ruler, ShowDefaultInterior, ShowEnabledModels, ShowInterfaceNonOverlappingBoundaries, ShowModelEdges, SolutionModeEdgeColorInMeshingMode, SurfaceEmissivity, SurfaceSpecularity, SurfaceSpecularityForContours, Titles, TitlesBorderOffset
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   AnsysLogo/AnsysLogo_contents
+   Charts/Charts_contents
+   Selections/Selections_contents

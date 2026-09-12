@@ -1,0 +1,21 @@
+:orphan:
+
+.. _one_mass_1:
+
+one_mass
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.one_mass_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===================================
+
+Parent                                                                             Summary
+
+====================================================   ===================================
+:ref:`particle_ejecta_model <particle_ejecta_model>`       Particle ejecta model settings.
+
+====================================================   ===================================
+

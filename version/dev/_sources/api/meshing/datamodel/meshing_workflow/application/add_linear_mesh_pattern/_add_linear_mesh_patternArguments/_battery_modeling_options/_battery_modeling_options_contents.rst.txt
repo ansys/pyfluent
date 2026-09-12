@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_linear_mesh_pattern__add_linear_mesh_patternArguments__battery_modeling_options:
+
+_battery_modeling_options
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.add_linear_mesh_pattern._add_linear_mesh_patternArguments._battery_modeling_options
+   :members: _custom_pattern_string, _first_number, _invoke_battery_modeling_options, _nb_cells_per_unit, _use_custom_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

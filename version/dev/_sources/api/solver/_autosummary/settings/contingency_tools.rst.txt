@@ -1,0 +1,47 @@
+:orphan:
+
+.. _contingency_tools:
+
+contingency_tools
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.contingency_tools
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ================================================================================
+
+Attribute                                                                                                                             Summary
+
+==========================================================   ================================================================================
+:ref:`enhanced_limiter <enhanced_limiter>`                                     Enable enhanced gradient limiting to improve solver stability.
+
+:ref:`divergence_prevention <divergence_prevention_1>`       Adjust numerical settings automatically when a divergence pattern is identified.
+
+:ref:`linear_solver_adjustment <linear_solver_adjustment>`      Adjust AMG and parallel settings for improved robustness on distorted meshes.
+
+==========================================================   ================================================================================
+
+.. rubric:: Methods
+
+==================================================   ==========================================================================================================
+
+Method                                                                                                                                                  Summary
+
+==================================================   ==========================================================================================================
+:ref:`delete_invalid_cells <delete_invalid_cells>`   Permanently delete invalid cells from the simulation domain and create new symmetry thread zones for them.
+
+==================================================   ==========================================================================================================
+
+.. rubric:: Included in:
+
+================================================   =========================================================================
+
+Parent                                                                                                               Summary
+
+================================================   =========================================================================
+:ref:`stabilization_tools <stabilization_tools>`   Solver stabilization tools for robust convergence on poor quality meshes.
+
+================================================   =========================================================================
+

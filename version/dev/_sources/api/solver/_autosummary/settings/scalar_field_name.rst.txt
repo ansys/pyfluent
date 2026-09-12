@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scalar_field_name:
+
+scalar_field_name
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.scalar_field_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================
+
+Parent                                                                               Summary
+
+====================================================   =====================================
+:ref:`field_entries_1_child <field_entries_1_child>`   'child_object_type' of field_entries.
+
+====================================================   =====================================
+

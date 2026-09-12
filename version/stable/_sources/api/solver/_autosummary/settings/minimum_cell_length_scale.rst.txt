@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_cell_length_scale:
+
+minimum_cell_length_scale
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minimum_cell_length_scale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ===================================================================================================
+
+Parent                                                                                                         Summary
+
+================   ===================================================================================================
+:ref:`vof <vof>`       Define cell registers and adaption settings suitable for a standard Volume of Fluid simulation.
+
+================   ===================================================================================================
+

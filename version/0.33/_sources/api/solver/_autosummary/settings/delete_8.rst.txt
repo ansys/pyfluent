@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_8:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.delete_8
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ===================
+
+Argument                             Summary
+
+======================   ===================
+:ref:`names <names_1>`       Criterion Name.
+
+======================   ===================
+
+.. rubric:: Included in:
+
+==============================   ==================
+
+Parent                                      Summary
+
+==============================   ==================
+:ref:`criteria_1 <criteria_1>`       Criteria List.
+
+==============================   ==================
+

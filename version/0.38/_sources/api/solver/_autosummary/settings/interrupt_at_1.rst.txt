@@ -1,0 +1,21 @@
+:orphan:
+
+.. _interrupt_at_1:
+
+interrupt_at
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interrupt_at_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===================================
+
+Parent                                                         Summary
+
+================================   ===================================
+:ref:`interrupt_3 <interrupt_3>`       Interrupt optimization process.
+
+================================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _convergence_criterion:
+
+convergence_criterion
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.convergence_criterion
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`options_14 <options_14>`   Global imbalance monitor options.
+
+==============================   =================================
+

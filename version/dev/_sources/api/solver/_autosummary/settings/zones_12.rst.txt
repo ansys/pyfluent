@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zones_12:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zones_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`solution_plot <solution_plot>`   Plot the solution data.
+
+====================================   =======================
+

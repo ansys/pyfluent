@@ -1,0 +1,32 @@
+:orphan:
+
+.. _read_from_file:
+
+read_from_file
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.read_from_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   ====================================
+
+Argument                                                  Summary
+
+==========================   ====================================
+:ref:`filename <filename>`   Path to a .hxc model parameter file.
+
+==========================   ====================================
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`porosity_models <porosity_models>`   Manage core porosity model library.
+
+========================================   ===================================
+

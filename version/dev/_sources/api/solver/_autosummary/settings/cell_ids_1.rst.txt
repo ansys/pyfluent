@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cell_ids_1:
+
+cell_ids
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cell_ids_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ====================================================
+
+Parent                                                                                                Summary
+
+======================================================   ====================================================
+:ref:`report_cell_info_by_id <report_cell_info_by_id>`   Report cells information based on provided cell IDs.
+
+======================================================   ====================================================
+

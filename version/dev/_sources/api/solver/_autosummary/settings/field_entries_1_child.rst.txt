@@ -1,0 +1,40 @@
+:orphan:
+
+.. _field_entries_1_child:
+
+field_entries_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.field_entries_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =====================================
+
+Attribute                                                                          Summary
+
+==================================================   =====================================
+:ref:`scalar_quantity <scalar_quantity>`                       Is this a scalar quantity?.
+
+:ref:`vector_field_names <vector_field_names>`       List of vector component field names.
+
+:ref:`scalar_field_name <scalar_field_name>`                            Scalar field name.
+
+:ref:`vector_compute_from <vector_compute_from_1>`          Source fields for computation.
+
+:ref:`scalar_compute_from <scalar_compute_from_1>`          Source fields for computation.
+
+==================================================   =====================================
+
+.. rubric:: Included in:
+
+========================================   =============================
+
+Parent                                                           Summary
+
+========================================   =============================
+:ref:`field_entries_1 <field_entries_1>`   List of orient field entries.
+
+========================================   =============================
+

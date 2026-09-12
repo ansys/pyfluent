@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_multizone_mesh__create_multizone_mesh_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_multizone_mesh._create_multizone_mesh.arguments
+   :members: body_label_body_list, body_label_list, cell_zone_list, complete_region_scope, merge_body_labels, meshing_strategy, non_conformal, orthogonal_quality_limit, re_merge_zones, region_scope, selection_type, size_function_scale_factor
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   cfd_surface_mesh_controls/cfd_surface_mesh_controls_contents

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_gap_cover__create_gap_coverArguments:
+
+_create_gap_coverArguments
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.create_gap_cover._create_gap_coverArguments
+   :members: _advanced_options, _gap_cover_between_zones, _gap_cover_feature_imprint, _gap_cover_name, _gap_cover_refine_factor, _gap_cover_refine_factor_at_gap, _gap_size, _gap_size_ratio, _label_selection_list, _max_island_face_for_gap_cover, _object_selection_list, _refine_wrapper_before_projection, _selection_type, _sizing_method, _zone_location, _zone_selection_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

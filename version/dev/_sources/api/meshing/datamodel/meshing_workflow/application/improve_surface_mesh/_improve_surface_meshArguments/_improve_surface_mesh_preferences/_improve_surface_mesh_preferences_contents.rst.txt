@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_improve_surface_mesh__improve_surface_meshArguments__improve_surface_mesh_preferences:
+
+_improve_surface_mesh_preferences
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.improve_surface_mesh._improve_surface_meshArguments._improve_surface_mesh_preferences
+   :members: _advanced_improve, _allow_defeaturing, _show_in_gui, _si_dihedral_angle, _si_improve_dihedral_angle, _si_quality_collapse_limit, _si_quality_iterations, _si_quality_max_angle, _si_remove_step, _si_step_quality_limit, _si_step_width
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

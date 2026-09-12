@@ -1,0 +1,21 @@
+:orphan:
+
+.. _velocity:
+
+velocity
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.velocity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================================================================================================================
+
+Parent                                                                                                                                                                               Summary
+
+================================================   =========================================================================================================================================
+:ref:`effectiveness_curve <effectiveness_curve>`   Velocity-effectiveness data for the Simple Effectiveness Model. Active only when the heat transfer model is "Simple Effectiveness Model".
+
+================================================   =========================================================================================================================================
+

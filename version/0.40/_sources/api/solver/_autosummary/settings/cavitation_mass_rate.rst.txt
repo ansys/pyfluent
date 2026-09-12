@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cavitation_mass_rate:
+
+cavitation_mass_rate
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cavitation_mass_rate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

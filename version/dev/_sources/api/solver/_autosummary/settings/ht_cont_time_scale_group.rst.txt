@@ -1,0 +1,32 @@
+:orphan:
+
+.. _ht_cont_time_scale_group:
+
+ht_cont_time_scale_group
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ht_cont_time_scale_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   =====================================================
+
+Attribute                                                                                                  Summary
+
+==========================================================   =====================================================
+:ref:`ht_cont_time_scale_coeff <ht_cont_time_scale_coeff>`   Return-to-saturation time scale for continuous phase.
+
+==========================================================   =====================================================
+
+.. rubric:: Included in:
+
+====================================================   =====================================================
+
+Parent                                                                                               Summary
+
+====================================================   =====================================================
+:ref:`continuous_heat_coeff <continuous_heat_coeff>`   Continuous phase heat transfer coefficient sub-model.
+
+====================================================   =====================================================
+
