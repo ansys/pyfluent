@@ -239,6 +239,14 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_LAUNCH_CONTAINER") == "1"
     )
 
+    #: REST API component name (``"fluent_1"`` for standalone, ``"solver"`` for container), defaults to ``PYFLUENT_REST_API_COMPONENT`` env var or auto-resolves based on launch mode.
+    rest_api_component = _ConfigDescriptor["Config"](
+        lambda instance: instance._env.get(
+            "PYFLUENT_REST_API_COMPONENT",
+            "solver" if instance.launch_fluent_container else "fluent_1",
+        )
+    )
+
     #: The tag of the Fluent image to use when launching in a container, defaults to the value of ``FLUENT_IMAGE_TAG`` environment variable or the latest release version of Fluent.
     fluent_image_tag = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get(
