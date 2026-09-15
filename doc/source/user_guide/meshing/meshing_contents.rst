@@ -3,9 +3,9 @@
 ================
 Meshing workflow
 ================
-The guided workflows in Fluent meshing are designed to make it easier to generate a
-volume mesh starting from CAD geometries. You can use PyFluent to access the guided workflows.
-Workflows are divided into the new Meshing workflows and Classic meshing workflow, which align with the journal syntax.
+The new Meshing workflows in PyFluent are guided processes for generating a volume
+mesh from CAD geometry. PyFluent recommends using these workflows. PyFluent also
+provides the classic meshing workflow, which aligns with Fluent journal syntax.
 
 .. toctree::
    :maxdepth: 1
