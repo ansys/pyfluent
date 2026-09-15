@@ -103,7 +103,7 @@ jobs:
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-          FLUENT_WEBSERVER_TOKEN: test-rest-token-nightly-dev
+          FLUENT_WEBSERVER_TOKEN: ${{ secrets.FLUENT_WEBSERVER_TOKEN }}
         continue-on-error: true
 
       - name: Clean Docker Data
