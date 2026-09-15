@@ -223,41 +223,67 @@ def _setup_volumes(container_dict, mount_source, mount_target, certificates_fold
 
 
 def _resolve_port_mapping(port, container_dict):
-    """Determine port mapping, update ``container_dict['ports']``, and return *container_grpc_port*."""
-    port_mapping = {port: port} if port else {}
-    if not port_mapping and "ports" in container_dict:
-        # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
-        port_mapping = container_dict["ports"]
-    if not port_mapping and config.launch_fluent_port:
-        p = config.launch_fluent_port
-        port_mapping = {p: p}
-    if not port_mapping:
-        p = get_free_port()
-        port_mapping = {p: p}
+    """Determine port mapping, update ``container_dict['ports']``, and return *container_grpc_port*.
 
+    Merges both the ``port`` argument (gRPC) and any ``ports`` in ``container_dict``
+    (e.g., web server) instead of letting one overwrite the other. The gRPC port
+    is always explicitly returned, ensuring the contract holds even when multiple
+    ports are present.
+    """
+    port_mapping = {}
+
+    # Start with caller-supplied ports (e.g., web server port from container_dict)
+    if "ports" in container_dict and isinstance(container_dict["ports"], dict):
+        port_mapping.update(container_dict["ports"])
+
+    # Merge in the gRPC port (takes precedence in case of key collision, though
+    # gRPC and web ports should be distinct)
+    if port:
+        port_mapping[port] = port
+
+    # Default to a free port if neither was specified
+    if not port_mapping:
+        if config.launch_fluent_port:
+            p = config.launch_fluent_port
+            port_mapping = {p: p}
+        else:
+            p = get_free_port()
+            port_mapping = {p: p}
+
+    # Update container_dict with the merged mapping
     container_dict.update(
         ports={str(x): y for x, y in port_mapping.items()}
     )  # container port : host port
-    container_grpc_port = next(
-        iter(port_mapping.values())
-    )  # the first port in the mapping is chosen as the gRPC port
+
+    # Return the gRPC port explicitly
+    container_grpc_port = port if port else next(iter(port_mapping.values()))
     return container_grpc_port
 
 
 def _setup_environment(container_dict, license_server, container_grpc_port):
-    """Populate ``container_dict['environment']`` with license and remoting keys if not already set."""
+    """Populate ``container_dict['environment']`` with license and remoting keys.
+
+    Uses per-key setdefault to preserve any caller-supplied environment
+    variables (e.g. from the ``env=`` parameter) rather than wiping them out
+    with an all-or-nothing `if not in container_dict:` guard.
+    """
+    # Ensure environment dict exists
     if "environment" not in container_dict:
+        container_dict["environment"] = {}
+
+    # Set up license server
+    if "ANSYSLMD_LICENSE_FILE" not in container_dict["environment"]:
         if not license_server:
             license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
         if not license_server:
             raise LicenseServerNotSpecified()
-        container_dict.update(
-            environment={
-                "ANSYSLMD_LICENSE_FILE": license_server,
-                "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
-                "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
-            }
-        )
+        container_dict["environment"]["ANSYSLMD_LICENSE_FILE"] = license_server
+
+    # Set up remoting and gRPC settings
+    container_dict["environment"].setdefault(
+        "REMOTING_PORTS", f"{container_grpc_port}/portspan=2"
+    )
+    container_dict["environment"].setdefault("FLUENT_ALLOW_REMOTE_GRPC_CONNECTION", "1")
 
 
 def _resolve_server_info_file(
