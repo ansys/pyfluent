@@ -12,6 +12,8 @@ PyFluent provides pre-built workflows (Watertight Geometry, Fault-tolerant, and 
 as well as the ability to create custom workflows. You can insert and duplicate tasks, save your workflow to file,
 and load previously saved workflows for reuse.
 
+.. _ref_watertight_meshing_workflow_example:
+
 Watertight geometry workflow
 ----------------------------
 Use the **Watertight Geometry** workflow for watertight CAD geometries that
@@ -111,6 +113,8 @@ Switch to solution mode
 .. code:: python
 
     solver_session = meshing_session.switch_to_solver()
+
+.. _ref_fault_tolerant_meshing_workflow_example:
 
 Fault-tolerant workflow
 -----------------------
@@ -367,9 +371,11 @@ Switch to solution mode
 
     solver_session = meshing_session.switch_to_solver()
 
-2D workflow
------------
-Use the **2D*** workflow to perform common meshing operations on two-dimensional geometries.
+.. _ref_two_dimensional_meshing_workflow_example:
+
+Two-dimensional workflow
+------------------------
+Use the **two-dimensional** workflow to perform common meshing operations on two-dimensional geometries.
 
 Import geometry
 ~~~~~~~~~~~~~~~
@@ -505,6 +511,8 @@ Switch to solution mode
 
 Switching to solver is not allowed in 2D Meshing mode.
 
+.. _ref_create_meshing_workflow_example:
+
 Creating a new workflow
 -----------------------
 The following example shows you how to use ``CreateMeshingWorkflow`` to build a custom workflow.
@@ -547,6 +555,8 @@ Save workflow
     custom_workflow.save_workflow(file_path="full_path_to_the_file.wft")
 
 
+
+.. _ref_load_meshing_workflow_example:
 
 Loading a saved workflow
 ------------------------

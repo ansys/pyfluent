@@ -28,11 +28,11 @@ from ansys.api.fluent.v1 import reduction_pb2, reduction_pb2_grpc
 from ansys.fluent.core._grpc_services.object_model_service import (
     _convert_variant_to_value,
 )
-from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.solver.function.reduction import Weight
-from ansys.fluent.core.variable_strategies import (
+from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.services._protocols import ServiceProtocol
+from ansys.fluent.core.solver.function.reduction import Weight
 
 Path = list[tuple[str, str]]
 

@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Workflow module that wraps and extends the core functionality."""
+"""Legacy workflow module that wraps and extends the core functionality."""
 
 from __future__ import annotations
 
@@ -1338,6 +1338,10 @@ def _makeTask(command_source, name: str) -> BaseTask:
 class Workflow:
     """Wraps a workflow object, adding methods to discover more about the relationships
     between task objects.
+
+    The wrapped workflow is documented in the :ref:`workflow datamodel
+    <ref_meshing_datamodel_workflow>`. Commands are provided by the
+    :ref:`meshing command-source datamodel <ref_meshing_datamodel_meshing>`.
 
     Methods
     -------
