@@ -25,7 +25,7 @@ import logging
 import os
 from pathlib import Path
 
-from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
+from deprecated_apis import PYFLUENT_DEPRECATED_DATA
 
 from ansys.fluent.core import config
 from ansys.fluent.core.utils.fluent_version import (
@@ -198,7 +198,7 @@ def _populate_rst_from_settings(rst_dir, cls, version, path=""):
 
 
 def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
-    deprecated_rst = (Path(rst_dir).parents[2] / "deprecated_apis.rst").resolve()
+    deprecated_rst = (Path(rst_dir).parents[3] / "deprecated_apis.rst").resolve()
     if deprecated_rst.exists():
         deprecated_rst.unlink()
     else:
@@ -213,28 +213,41 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
 
     for class_path, deprecated_name_and_version in deprecated_class_version.items():
         cls_name, deprecated_version = deprecated_name_and_version
-        settings_with_ref = (
-            f":ref:`{class_path.replace('root.', 'solver.settings.')} <{cls_name}>`"
+        # Zero-width spaces let the long dotted path wrap inside the table cell
+        # instead of forcing a page-wide horizontal scrollbar; the reference
+        # target (<cls_name>) is left untouched so the link still resolves.
+        display_path = class_path.replace("root.", "solver.settings.").replace(
+            ".", ".\u200b"
         )
+        settings_with_ref = f":ref:`{display_path} <{cls_name}>`"
         deprecated_data.append((settings_with_ref, deprecated_version))
 
     with open(deprecated_rst, "w", encoding="utf-8") as f:
         f.write(":orphan:\n\n")
         f.write(f"{name}\n")
         f.write(f'{"="*(len(name))}\n\n')
+        f.write(
+            "This page lists PyFluent and Ansys Fluent settings APIs that "
+            "are deprecated, along with the release each was deprecated "
+            "in. For deprecated PyFluent APIs, an alternative API to use "
+            "instead is provided.\n\n"
+        )
 
         f.write(f"{pyfluent_name}\n")
         f.write(f'{"-"*(len(pyfluent_name))}\n\n')
-        f.write(".. list-table:: Deprecated PyFluent APIs\n")
-        f.write("   :header-rows: 1\n\n")
+        f.write(".. list-table::\n")
+        f.write("   :header-rows: 1\n")
+        f.write("   :widths: 45 15 40\n\n")
         f.write("   * - " + "\n     - ".join(pyflunet_header) + "\n")
         for row in PYFLUENT_DEPRECATED_DATA:
             f.write("   * - " + "\n     - ".join(row) + "\n")
+        f.write("\n")
 
         f.write(f"{fluent_name}\n")
         f.write(f'{"-"*(len(fluent_name))}\n\n')
-        f.write(".. list-table:: Deprecated Ansys Fluent APIs\n")
-        f.write("   :header-rows: 1\n\n")
+        f.write(".. list-table::\n")
+        f.write("   :header-rows: 1\n")
+        f.write("   :widths: 75 25\n\n")
         f.write("   * - " + "\n     - ".join(fluent_header) + "\n")
         sorted_data = sorted(deprecated_data, key=lambda x: len(x[0]))
         for row in sorted_data:
