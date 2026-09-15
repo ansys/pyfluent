@@ -109,3 +109,29 @@ def test_launch_timeout_environment_variable(monkeypatch):
     monkeypatch.setitem(pyfluent.config._env, "PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "120")
 
     assert pyfluent.config.launch_fluent_timeout == 120
+
+
+def test_rest_api_component_default_standalone(monkeypatch):
+    """Default component is 'fluent_1' when launch_fluent_container is False."""
+    monkeypatch.delattr(pyfluent.config, "_rest_api_component", raising=False)
+    monkeypatch.delattr(pyfluent.config, "_launch_fluent_container", raising=False)
+    monkeypatch.delitem(
+        pyfluent.config._env, "PYFLUENT_REST_API_COMPONENT", raising=False
+    )
+    monkeypatch.delitem(
+        pyfluent.config._env, "PYFLUENT_LAUNCH_CONTAINER", raising=False
+    )
+
+    assert pyfluent.config.rest_api_component == "fluent_1"
+
+
+def test_rest_api_component_default_container(monkeypatch):
+    """Default component is 'solver' when launch_fluent_container is True."""
+    monkeypatch.delattr(pyfluent.config, "_rest_api_component", raising=False)
+    monkeypatch.delattr(pyfluent.config, "_launch_fluent_container", raising=False)
+    monkeypatch.delitem(
+        pyfluent.config._env, "PYFLUENT_REST_API_COMPONENT", raising=False
+    )
+    monkeypatch.setitem(pyfluent.config._env, "PYFLUENT_LAUNCH_CONTAINER", "1")
+
+    assert pyfluent.config.rest_api_component == "solver"
