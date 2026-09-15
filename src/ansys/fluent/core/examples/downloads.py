@@ -34,12 +34,15 @@ from ansys.tools.common.example_download import download_manager
 
 
 def delete_downloads():
-    """Delete all downloaded examples from the default examples folder to free space or
-    update the files.
+    """Delete all example data cached in the default examples directory.
+
+    Use this function to free disk space or force subsequent calls to
+    :func:`download_file` to download fresh copies. This permanently removes all
+    files in ``pyfluent.config.examples_path``.
 
     Notes
     -----
-    The default examples path is given by ``pyfluent.config.examples_path``.
+    The default examples directory is ``pyfluent.config.examples_path``.
     """
     shutil.rmtree(pyfluent.config.examples_path)
     os.makedirs(pyfluent.config.examples_path)
@@ -147,7 +150,11 @@ def download_file(
 
 
 def path(file_name: str):
-    """Return path of given file name.
+    """Return the absolute path to a downloaded example data file.
+
+    Provide either an absolute path or the name of a file in
+    ``pyfluent.config.examples_path``. Use :func:`download_file` first when the
+    example data file has not yet been downloaded.
 
     Parameters
     ----------

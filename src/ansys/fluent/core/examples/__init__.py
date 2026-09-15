@@ -21,8 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to download a file."""
+"""Download and manage example data files.
 
-from ansys.tools.common.exceptions import DownloadError  # noqa: F401
+Use this module to download example data from the Ansys example-data repository
+or to obtain the path of an example file that has already been downloaded.
+"""
 
-from .downloads import download_file, path  # noqa: F401
+from ansys.tools.common.exceptions import DownloadError
+
+from .downloads import delete_downloads, download_file, path
+
+__all__ = ["DownloadError", "delete_downloads", "download_file", "path"]
