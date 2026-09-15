@@ -23,6 +23,9 @@ env:
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYTHON_VERSION: "3.12"
   FLUENT_VERSION: 271
+  VERSION: ${{ env.FLUENT_VERSION }}
+  FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+  FLUENT_WEBSERVER_TOKEN: test-rest-token-nightly-dev
 
 jobs:
   test:
@@ -100,6 +103,7 @@ jobs:
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_WEBSERVER_TOKEN: test-rest-token-nightly-dev
         continue-on-error: true
 
       - name: Clean Docker Data
