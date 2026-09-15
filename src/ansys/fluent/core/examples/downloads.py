@@ -110,6 +110,12 @@ def download_file(
     >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
     '/home/<user_specified_path>/bracket.iges'
     """
+    # Internal Fluent container tests without file transfer use the container's
+    # working directory, so return only the filename rather than the host mount path.
+    return_without_path = (
+        pyfluent.config.launch_fluent_container
+        and not pyfluent.config.use_file_transfer_service
+    )
     file_name = os.path.basename(file_name)
     if save_path is None:
         save_path = pyfluent.config.container_mount_source or os.getcwd()
@@ -120,7 +126,7 @@ def download_file(
 
     # DownloadManager caches under its nested path, so also check the flat path here.
     if not force and os.path.exists(unzipped_path):
-        return unzipped_path
+        return os.path.basename(unzipped_path) if return_without_path else unzipped_path
 
     downloaded_path = download_manager.download_file(
         filename=file_name,
@@ -137,7 +143,7 @@ def download_file(
     if local_path.endswith(".zip"):
         _decompress(local_path)
         local_path = unzipped_path
-    return local_path
+    return os.path.basename(local_path) if return_without_path else local_path
 
 
 def path(file_name: str):
