@@ -71,12 +71,12 @@ from typing import (
 import warnings
 import weakref
 
+from ansys.fluent.core._variable_strategies import (
+    FluentFieldDataNamingStrategy as naming_strategy,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.get_completer_info import (
     get_completer_info as _get_completer_info,
-)
-from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataNamingStrategy as naming_strategy,
 )
 import ansys.units
 from ansys.units import VariableDescriptor
@@ -2913,6 +2913,8 @@ def get_root(
     Returns
     -------
     root object
+        The top-level :ref:`settings root <ref_root>` used to access the Fluent
+        settings hierarchy.
 
     Raises
     ------
