@@ -23,6 +23,7 @@
 
 from contextlib import nullcontext
 import functools
+import hashlib
 import inspect
 import operator
 import os
@@ -30,10 +31,12 @@ from pathlib import Path
 import secrets
 import shutil
 import sys
+import time
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
+import requests
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
@@ -388,6 +391,91 @@ def web_server_launch_arguments(port: int) -> str:
     return f"-ws -ws-port={port}"
 
 
+def _required_webserver_token() -> str:
+    """Read FLUENT_WEBSERVER_TOKEN from environment, fail if unset.
+
+    Required for both container and standalone self-launch modes.
+    (External override via FLUENT_REST_URL/FLUENT_REST_TOKEN is separate.)
+    """
+    token = os.getenv("FLUENT_WEBSERVER_TOKEN", "").strip()
+    if not token:
+        pytest.fail(
+            "FLUENT_WEBSERVER_TOKEN environment variable must be set to enable the REST server tests."
+        )
+    return token
+
+
+def _external_rest_server_override() -> tuple[str, str] | None:
+    """(url, token) if an already-running external REST server is configured."""
+    rest_url = os.getenv("FLUENT_REST_URL")
+    rest_token = os.getenv("FLUENT_REST_TOKEN")
+    if bool(rest_url) != bool(rest_token):
+        pytest.fail(
+            "FLUENT_REST_URL and FLUENT_REST_TOKEN must be set together; "
+            "set both to use an external REST server, or neither to launch one."
+        )
+    return (rest_url, rest_token) if rest_url else None
+
+
+def _launch_container_rest_server(ws_port: int, rest_token: str):
+    """Dry-run to get a container_dict, add the web server to it, then launch."""
+    grpc_kwargs = get_grpc_launcher_args_for_gh_runs()
+    container_dict = pyfluent.launch_fluent(dry_run=True, **grpc_kwargs)
+    container_dict["command"].extend(["-ws", f"-ws-port={ws_port}"])
+    container_dict["ports"].update({str(ws_port): ws_port})
+    container_dict["environment"]["FLUENT_WEBSERVER_TOKEN"] = rest_token
+    solver = create_session(container_dict=container_dict, **grpc_kwargs)
+    return solver, container_dict
+
+
+def _launch_standalone_rest_server(ws_port: int, rest_token: str):
+    solver = create_session(
+        env={"FLUENT_WEBSERVER_TOKEN": rest_token},
+        additional_arguments=web_server_launch_arguments(ws_port),
+    )
+    return solver, None
+
+
+def _is_web_server_ready(get_server_info, ws_port: int, rest_token: str) -> bool:
+    """True once Fluent reports the server active and it responds over HTTP."""
+    try:
+        token_hash = hashlib.sha256(rest_token.encode()).hexdigest()
+        response = requests.get(
+            f"http://localhost:{ws_port}/",
+            timeout=2,
+            headers={"Authorization": f"Bearer {token_hash}"},
+        )
+    except Exception:
+        return False
+    return get_server_info.is_active() and response.status_code in (200, 401, 403)
+
+
+def _wait_for_web_server(
+    solver, ws_port: int, rest_token: str, timeout: float = 60
+) -> tuple[str, str]:
+    """Poll until Fluent's web server responds, returning (url, token)."""
+    get_server_info = solver.settings.server.web_server.get_server_info
+    deadline = time.time() + timeout
+
+    while time.time() < deadline:
+        if _is_web_server_ready(get_server_info, ws_port, rest_token):
+            server_info = get_server_info()
+            print(f"Fluent web server info: {server_info!r}")
+            # Use server-reported token if available, else use the one we provided.
+            token = (
+                server_info["token"]
+                if isinstance(server_info, dict) and server_info.get("token")
+                else rest_token
+            )
+            return f"http://localhost:{ws_port}", token
+        time.sleep(0.5)
+
+    pytest.fail(
+        f"Fluent web server did not become ready within {timeout}s. "
+        f"FLUENT_WEBSERVER_TOKEN {'set' if os.getenv('FLUENT_WEBSERVER_TOKEN') else 'NOT SET'}."
+    )
+
+
 @pytest.fixture(scope="session")
 def rest_server_connection():
     """``(url, token)`` of a Fluent web (REST) server, started once per session.
@@ -401,50 +489,20 @@ def rest_server_connection():
     rather than a skip: these tests are meant to either run against a live
     server or be deselected explicitly with ``-m "not rest_server"``.
     """
-    rest_url = os.getenv("FLUENT_REST_URL")
-    rest_token = os.getenv("FLUENT_REST_TOKEN")
-    if bool(rest_url) != bool(rest_token):
-        pytest.fail(
-            "FLUENT_REST_URL and FLUENT_REST_TOKEN must be set together; "
-            "set both to use an external REST server, or neither to launch one."
-        )
-    if rest_url:
-        yield rest_url, rest_token
+    override = _external_rest_server_override()
+    if override:
+        yield override
         return
 
-    grpc_port = get_free_port()
     ws_port = get_free_port()
-    rest_token = secrets.token_hex(16)
-    launch_kwargs = {}
+    rest_token = _required_webserver_token()
     if pyfluent.config.launch_fluent_container:
-        # 'port' is the gRPC port; 'ports' additionally publishes the web
-        # server port from the container, so that it is reachable on the host.
-        launch_kwargs["container_dict"] = {
-            "port": grpc_port,
-            "ports": {str(ws_port): ws_port},
-        }
-    solver = create_session(
-        env={"FLUENT_WEBSERVER_TOKEN": rest_token},
-        additional_arguments=web_server_launch_arguments(ws_port),
-        **launch_kwargs,
-    )
+        solver, container_dict = _launch_container_rest_server(ws_port, rest_token)
+    else:
+        solver, container_dict = _launch_standalone_rest_server(ws_port, rest_token)
+
     try:
-        get_server_info = solver.settings.server.web_server.get_server_info
-        if not get_server_info.is_active():
-            pytest.fail(
-                "Fluent was launched with "
-                f"'{web_server_launch_arguments(ws_port)}' but "
-                "'settings.server.web_server.get_server_info' is inactive, "
-                "which means no web server is running."
-            )
-        server_info = get_server_info()
-        print(f"Fluent web server info: {server_info!r}")
-        # The web server runs inside the container, so its self-reported host
-        # and port are not usable from the host; the published port is. Only
-        # the token is taken from the server, when it reports one.
-        if isinstance(server_info, dict) and server_info.get("token"):
-            rest_token = server_info["token"]
-        yield f"http://localhost:{ws_port}", rest_token
+        yield _wait_for_web_server(solver, ws_port, rest_token)
     finally:
         solver.exit()
 
