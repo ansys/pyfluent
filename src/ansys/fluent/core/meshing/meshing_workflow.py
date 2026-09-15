@@ -28,12 +28,31 @@ from __future__ import annotations
 
 from enum import Enum
 import os
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.session import Meshing, PureMeshing
 from ansys.fluent.core.session._shared import _make_datamodel_module
 from ansys.fluent.core.workflow import Workflow
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.generated.datamodel_261.meshing_workflow_tasks import (
+        FaultTolerantMeshingTasks,
+        TopologyBasedMeshingTasks,
+        TwoDMeshingTasks,
+        WatertightGeometryTasks,
+    )
+
+    _WatertightBase = WatertightGeometryTasks
+    _FaultTolerantBase = FaultTolerantMeshingTasks
+    _TwoDBase = TwoDMeshingTasks
+    _TopologyBasedBase = TopologyBasedMeshingTasks
+else:
+    _WatertightBase = object
+    _FaultTolerantBase = object
+    _TwoDBase = object
+    _TopologyBasedBase = object
 
 
 class MeshingWorkflow(Workflow):
@@ -69,7 +88,7 @@ class MeshingWorkflow(Workflow):
         self._initialized = True
 
 
-class WatertightMeshingWorkflow(MeshingWorkflow):
+class WatertightMeshingWorkflow(MeshingWorkflow, _WatertightBase):
     """Provides watertight meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -95,7 +114,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         )
 
 
-class FaultTolerantMeshingWorkflow(MeshingWorkflow):
+class FaultTolerantMeshingWorkflow(MeshingWorkflow, _FaultTolerantBase):
     """Provides fault-tolerant meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -170,7 +189,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         return self._pm_file_management
 
 
-class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
+class TwoDimensionalMeshingWorkflow(MeshingWorkflow, _TwoDBase):
     """Provides 2D meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -196,7 +215,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         )
 
 
-class TopologyBasedMeshingWorkflow(MeshingWorkflow):
+class TopologyBasedMeshingWorkflow(MeshingWorkflow, _TopologyBasedBase):
     """Provides topology-based meshing specialization of the workflow wrapper."""
 
     def __init__(
