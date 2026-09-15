@@ -26,7 +26,7 @@
 from collections.abc import Callable
 from typing import Any
 
-from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
 
 class FieldDataStreaming(StreamingService):

@@ -31,7 +31,7 @@ from typing import Generic, TypeVar
 import warnings
 
 from ansys.fluent.core.exceptions import InvalidArgument, PyFluentDeprecationWarning
-from ansys.fluent.core.streaming_services._events_info_store import (
+from ansys.fluent.core.services.streaming_services._events_info_store import (
     AboutToInitializeSolutionEventInfo,
     AboutToLoadCaseEventInfo,
     AboutToLoadDataEventInfo,
@@ -57,7 +57,7 @@ from ansys.fluent.core.streaming_services._events_info_store import (
     TimestepEndedEventInfo,
     TimestepStartedEventInfo,
 )
-from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
 network_logger = logging.getLogger("pyfluent.networking")
 

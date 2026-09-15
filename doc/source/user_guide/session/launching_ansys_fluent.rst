@@ -590,7 +590,7 @@ Run the following Python code to connect to Fluent and transfer files:
 .. code:: python
 
    from ansys.fluent.core import connect_to_fluent
-   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+   from ansys.fluent.core.file_transfer_service import RemoteFileTransferStrategy
 
    file_service = RemoteFileTransferStrategy("10.18.44.179", 50000)
    solver_session = connect_to_fluent(ip="10.18.44.179", port=51344, password="5scj6c8l", file_transfer_service=file_service)
@@ -650,7 +650,7 @@ Run the following Python code to connect to Fluent and transfer files:
 .. code:: python
 
    from ansys.fluent.core import connect_to_fluent
-   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+   from ansys.fluent.core.file_transfer_service import RemoteFileTransferStrategy
 
    file_service = RemoteFileTransferStrategy("10.18.19.150", 50000)
    solver_session = connect_to_fluent(ip="10.18.19.150", port=41429, password="u5s3iivh", file_transfer_service=file_service)

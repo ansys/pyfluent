@@ -122,6 +122,9 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
 class WatertightMeshing:
     """Provides watertight meshing specialization of the workflow wrapper.
 
+    See the :ref:`Watertight geometry workflow example
+    <ref_watertight_meshing_workflow_example>` for a sample usage example.
+
     Parameters
     ----------
     session : PureMeshing | Meshing
@@ -163,6 +166,9 @@ class WatertightMeshing:
 class FaultTolerantMeshing:
     """Provides fault tolerant meshing specialization of the workflow wrapper.
 
+    See the :ref:`Fault-tolerant workflow example
+    <ref_fault_tolerant_meshing_workflow_example>` for a sample usage example.
+
     Parameters
     ----------
     session : PureMeshing | Meshing
@@ -203,6 +209,9 @@ class FaultTolerantMeshing:
 
 class TwoDimensionalMeshing:
     """Provides 2D meshing specialization of the workflow wrapper.
+
+    See the :ref:`2D workflow example
+    <ref_two_dimensional_meshing_workflow_example>` for a sample usage example.
 
     Parameters
     ----------
@@ -286,6 +295,9 @@ class TopologyBasedMeshing:
 class CreateMeshingWorkflow:
     """Provides a specialization of the workflow wrapper for a newly created workflow.
 
+    See the :ref:`create workflow example <ref_create_meshing_workflow_example>`
+    for a sample usage example.
+
     Parameters
     ----------
     session : PureMeshing | Meshing
@@ -326,6 +338,9 @@ class CreateMeshingWorkflow:
 
 class LoadMeshingWorkflow:
     """Provides a specialization of the workflow wrapper for a loaded workflow.
+
+    See the :ref:`load workflow example <ref_load_meshing_workflow_example>` for
+    a sample usage example.
 
     Parameters
     ----------
