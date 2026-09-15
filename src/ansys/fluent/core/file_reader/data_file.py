@@ -102,6 +102,13 @@ class DataFile:
                     "Please provide a valid fluent project file path"
                 )
 
+        # Resolve a bare file name (e.g. from download_file() in container mode)
+        # against the directories example files may have been downloaded to.
+        if not os.path.isabs(data_file_name) and not os.path.isfile(data_file_name):
+            from ansys.fluent.core.examples.downloads import path as _example_path
+
+            data_file_name = _example_path(data_file_name)
+
         try:
             import h5py
         except ModuleNotFoundError as exc:

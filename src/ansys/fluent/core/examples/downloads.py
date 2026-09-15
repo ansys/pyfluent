@@ -91,11 +91,7 @@ def download_file(
         Maximum number of retry attempts for failed downloads, applied
         separately to the Git-based and HTTP-based strategies. Between
         attempts, an exponential backoff delay (1, 2, 4, ... seconds) is
-        applied. Because this method can fully exhaust retries for the
-        Git-based strategy before falling back to the HTTP-based one,
-        the worst-case total duration is roughly
-        ``2 * max_retries * timeout`` plus the backoff delays for both
-        strategies.
+        applied.
 
     Returns
     -------
@@ -152,9 +148,11 @@ def download_file(
 def path(file_name: str):
     """Return the absolute path to a downloaded example data file.
 
-    Provide either an absolute path or the name of a file in
-    ``pyfluent.config.examples_path``. Use :func:`download_file` first when the
-    example data file has not yet been downloaded.
+    Provide either an absolute path or the name of a file previously obtained
+    from :func:`download_file`. Since :func:`download_file` may return only
+    the file's name (see its ``Returns`` section), this also searches the
+    locations ``download_file`` may have saved it to, in addition to
+    ``pyfluent.config.examples_path``.
 
     Parameters
     ----------
@@ -173,8 +171,16 @@ def path(file_name: str):
     """
     if os.path.isabs(file_name):
         return file_name
-    file_path = Path(pyfluent.config.examples_path) / file_name
-    if file_path.is_file():
-        return str(file_path)
-    else:
-        raise FileNotFoundError(f"{file_name} does not exist.")
+    file_name = os.path.basename(file_name)
+    search_dirs = (
+        pyfluent.config.examples_path,
+        pyfluent.config.container_mount_source,
+        os.getcwd(),
+    )
+    for directory in search_dirs:
+        if not directory:
+            continue
+        file_path = Path(directory) / file_name
+        if file_path.is_file():
+            return str(file_path)
+    raise FileNotFoundError(f"{file_name} does not exist.")
