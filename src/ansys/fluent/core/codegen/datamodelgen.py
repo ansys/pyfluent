@@ -131,7 +131,7 @@ def _write_command_query_stub(name: str, info: Any, f: FileIO):
 
 
 def _build_singleton_docstring(name: str):
-    return f"Singleton {name}."
+    return f"{name} group."
 
 
 def _build_parameter_docstring(name: str, t: str):
@@ -174,9 +174,9 @@ def _build_command_query_docstring(
                 doc.write(f"{indent}{line.lstrip(' ')}.\n")
     else:
         doc.write(
-            f"{indent}Command {name}.\n\n"
+            f"{indent}{name} command.\n\n"
             if is_command
-            else f"{indent}Query {name}.\n\n"
+            else f"{indent}{name} query.\n\n"
         )
     if info.get("args"):
         doc.write(f"\n{indent}Parameters\n")
