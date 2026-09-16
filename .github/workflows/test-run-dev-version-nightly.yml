@@ -25,7 +25,7 @@ env:
   FLUENT_VERSION: 271
   VERSION: ${{ env.FLUENT_VERSION }}
   FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-  FLUENT_WEBSERVER_TOKEN: test-rest-token-nightly-dev
+  FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}
 
 jobs:
   test:
