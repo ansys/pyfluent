@@ -92,11 +92,6 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
     insecure_mode: bool
     """If True, Fluent's gRPC server will be started in insecure mode without TLS. Provide this only when ``certificates_folder``(or ``ANSYS_GRPC_CERTIFICATES`` environment variable) is not set; the two are mutually exclusive. This mode is not recommended. For more details on the implications and usage of insecure mode, refer to the Fluent documentation.
     """
-    env: dict[str, Any] | None
-    """Environment variables to merge into ``container_dict['environment']``. These are
-    merged per-key with other environment variables set by PyFluent (license server,
-    remoting configuration, etc.), ensuring caller-supplied variables are not dropped.
-    """
 
 
 class ContainerArgsWithoutMode(
@@ -144,7 +139,7 @@ def _get_server_info_from_container(config_dict):
 class DockerLauncher:
     """Instantiates Fluent session in container mode."""
 
-    def __init__(  # noqa: C901
+    def __init__(
         self,
         **kwargs: Unpack[ContainerArgs],
     ):
@@ -229,16 +224,6 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        # Extract and merge env parameter into container_dict['environment']
-        env_vars = kwargs.pop("env", None) or {}
-        container_dict = kwargs.get("container_dict") or {}
-        if env_vars:
-            if "environment" not in container_dict:
-                container_dict["environment"] = {}
-            container_dict["environment"].update(env_vars)
-            if "container_dict" not in kwargs or kwargs["container_dict"] is None:
-                kwargs["container_dict"] = container_dict
-
         # Note: PYFLUENT_CONTAINER_INSECURE_MODE is not exposed to users. It is used internally in
         # GitHub Actions runs to indicate that insecure mode should be used.
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"

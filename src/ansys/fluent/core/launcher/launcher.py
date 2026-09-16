@@ -463,7 +463,6 @@ def launch_fluent(
                 use_podman_compose=use_podman_compose,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
-                env=env,
             )
         case LaunchMode.PIM:
             launcher = PIMLauncher(
