@@ -37,7 +37,7 @@ from ansys.fluent.core.session._shared import _make_datamodel_module
 from ansys.fluent.core.workflow import Workflow
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.generated.datamodel_261.meshing_workflow_tasks import (
+    from ansys.fluent.core.generated.datamodel_271.meshing_workflow_tasks import (
         FaultTolerantMeshingTasks,
         TopologyBasedMeshingTasks,
         TwoDMeshingTasks,
