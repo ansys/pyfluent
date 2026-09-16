@@ -99,8 +99,8 @@ that of the ``settings`` objects:
 .. code:: python
 
   >>> field_data = fields.field_data
-  >>> transaction = field_data.new_transaction()
-  >>> add_scalar_fields = transaction.add_scalar_fields_request
+  >>> batch = field_data.new_batch()
+  >>> add_scalar_fields = batch.add_scalar_fields_request
   >>> allowed_field_names = add_scalar_fields.field_name.allowed_values()
   >>> pprint(allowed_field_names[:min([len(allowed_field_names), 5])])
   ['abs-angular-coordinate',
@@ -108,10 +108,10 @@ that of the ``settings`` objects:
    'angular-coordinate',
    'anisotropic-adaption-cells',
    'aspect-ratio']
-  >>> add_scalar_fields.surface_names.allowed_values()
+  >>> add_scalar_fields.surfaces.allowed_values()
   ['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet']
   >>> add_scalar_fields(field_name='absolute-pressure', surfaces=['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet'])
-  >>> pressure_fields = transaction.get_fields()
+  >>> pressure_fields = batch.get_fields()
   >>> solver_session.fields.reduction.sum_if(
   >>>     expression="AbsolutePressure",
   >>>     condition="AbsolutePressure > 0[Pa]",

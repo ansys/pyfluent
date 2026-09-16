@@ -5,8 +5,8 @@
 Scheme code evaluation
 ======================
 
-Each session provides an instance of :obj:`~ansys.fluent.core.services.scheme_eval.SchemeEval` on which Fluent's
-scheme code can be executed.
+Each session provides a :obj:`~ansys.fluent.core.session.base.BaseSession.scheme` property for executing Fluent's
+scheme code.
 
 Examples
 --------
