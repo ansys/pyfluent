@@ -109,12 +109,6 @@ def download_file(
     >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
     '/home/<user_specified_path>/bracket.iges'
     """
-    # Internal Fluent container tests without file transfer use the container's
-    # working directory, so return only the filename rather than the host mount path.
-    return_without_path = (
-        pyfluent.config.launch_fluent_container
-        and not pyfluent.config.use_file_transfer_service
-    )
     file_name = os.path.basename(file_name)
     if save_path is None:
         save_path = pyfluent.config.container_mount_source or os.getcwd()
@@ -125,7 +119,7 @@ def download_file(
 
     # DownloadManager caches under its nested path, so also check the flat path here.
     if not force and os.path.exists(unzipped_path):
-        return os.path.basename(unzipped_path) if return_without_path else unzipped_path
+        return unzipped_path
 
     downloaded_path = download_manager.download_file(
         filename=file_name,
@@ -142,7 +136,77 @@ def download_file(
     if local_path.endswith(".zip"):
         _decompress(local_path)
         local_path = unzipped_path
-    return os.path.basename(local_path) if return_without_path else local_path
+    return local_path
+
+
+def get_file_without_path(
+    file_name: str,
+    directory: str | None = None,
+    save_path: "PathType | None" = None,
+    force: bool = False,
+    timeout: float = 60.0,
+    max_retries: int = 3,
+) -> str:
+    """Download specified example file from the Ansys example data repository.
+
+    Internal Fluent container tests without file transfer use the container's
+    working directory, so return only the filename rather than the host mount path.
+
+    Thin wrapper around
+    :meth:`ansys.tools.common.example_download.DownloadManager.download_file`
+    that flattens the nested ``save_path/directory/file_name`` layout used by
+    ``DownloadManager`` to ``save_path/file_name`` and decompresses ``.zip``
+    archives, preserving the on-disk layout used in earlier pyfluent releases.
+
+    Parameters
+    ----------
+    file_name : str
+        Name of the example file to download.
+    directory : str
+        Path under the ``example-data`` repository.
+    save_path : str, optional
+        Path to download the file to. Defaults to
+        ``pyfluent.config.container_mount_source`` if set, otherwise the current
+        working directory.
+    force : bool, default: False
+        Whether to always download the example file. The default is
+        ``False``, in which case if the example file is cached, it
+        is reused.
+    timeout : float, default: 60.0
+        Timeout in seconds for each git or HTTP operation attempt (not
+        a bound on the total call duration). The default is 60 seconds.
+    max_retries : int, default: 3
+        Maximum number of retry attempts for failed downloads, applied
+        separately to the Git-based and HTTP-based strategies. Between
+        attempts, an exponential backoff delay (1, 2, 4, ... seconds) is
+        applied.
+
+    Returns
+    -------
+    str
+        File path of the downloaded or already existing file.
+
+    Examples
+    --------
+    >>> from ansys.fluent.core import examples
+    >>> file_name = examples.get_file_without_path("bracket.iges", "geometry")
+    >>> file_name
+    'bracket.iges'
+    >>> file_name = examples.get_file_without_path("bracket.iges", "geometry", save_path='.')
+    'bracket.iges'
+    >>> file_name = examples.get_file_without_path("bracket.iges", "geometry", save_path='<user_specified_path>')
+    'bracket.iges'
+    """
+    return os.path.basename(
+        download_file(
+            file_name=file_name,
+            directory=directory,
+            save_path=save_path,
+            force=force,
+            timeout=timeout,
+            max_retries=max_retries,
+        )
+    )
 
 
 def path(file_name: str):
@@ -171,16 +235,8 @@ def path(file_name: str):
     """
     if os.path.isabs(file_name):
         return file_name
-    file_name = os.path.basename(file_name)
-    search_dirs = (
-        pyfluent.config.examples_path,
-        pyfluent.config.container_mount_source,
-        os.getcwd(),
-    )
-    for directory in search_dirs:
-        if not directory:
-            continue
-        file_path = Path(directory) / file_name
-        if file_path.is_file():
-            return str(file_path)
-    raise FileNotFoundError(f"{file_name} does not exist.")
+    file_path = Path(pyfluent.config.examples_path) / file_name
+    if file_path.is_file():
+        return str(file_path)
+    else:
+        raise FileNotFoundError(f"{file_name} does not exist.")
