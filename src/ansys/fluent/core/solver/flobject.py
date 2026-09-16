@@ -2042,6 +2042,8 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
 
+    _state_type = DictStateType
+
 
 def _get_new_keywords(obj, *args, **kwds):
     newkwds = {}
@@ -2350,7 +2352,7 @@ _baseTypes = {
     "list-object": ListObject,
     "file": Filename,
     "file-list": FilenameList,
-    "map": Map,
+    "dict": Map,
 }
 
 

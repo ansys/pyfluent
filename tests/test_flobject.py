@@ -612,6 +612,17 @@ def test_get_cls_base_resolution_and_fallback(caplog):
     cls, _ = flobject.get_cls("create", {"type": "command"}, version="271")
     assert issubclass(cls, flobject.CommandWithPositionalArgs)
 
+    dict_cls, _ = flobject.get_cls("state", {"type": "dict"}, version="271")
+    assert issubclass(dict_cls, flobject.Map)
+    assert dict_cls._state_type == flobject.DictStateType
+
+    command_cls, _ = flobject.get_cls(
+        "restore-topology",
+        {"type": "command", "arguments": {"state": {"type": "dict"}}},
+        version="271",
+    )
+    assert "state" in command_cls.argument_names
+
     with caplog.at_level("WARNING", logger="pyfluent.settings_api"):
         fallback_cls, _ = flobject.get_cls(
             "unknown", {"type": "unknown-type"}, version="271"
