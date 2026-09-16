@@ -23,9 +23,6 @@ remote Fluent instance.
 PyFluent is bundled with the Fluent installation, or can be installed separately. For more
 information, see :ref:`faqs_install`, later on this page.
 
-PyFluent has no GUI (graphical user interface) of its own. You interact with it entirely
-through the Python environment of your choice.
-
 
 Who should use PyFluent?
 ------------------------
