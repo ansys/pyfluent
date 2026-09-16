@@ -117,9 +117,3 @@ class LauncherArgsBase(TypedDict, total=False):
     """
     file_transfer_service: Any | None
     """File transfer service. Uploads/downloads files to/from the server."""
-    env: dict[str, Any] | None
-    """Environment variables to set in the Fluent process. These are merged
-    with the default environment. Only applies to non-container launch modes;
-    for container launches, use ``container_dict['environment']`` instead
-    (or this will be merged into it in a future release).
-    """
