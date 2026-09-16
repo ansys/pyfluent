@@ -110,39 +110,14 @@ can use PyFluent commands to compile and load them, just as you would with TUI c
 
 How do you learn how to use PyFluent?
 -------------------------------------
-Depending on how you prefer to learn, you can use any or all of these methods to
-learn how to use PyFluent:
 
 - Review the examples in the documentation, working first through those provided
   in the :ref:`ref_example_gallery`, then, through those provided in the
   **Examples** sections in the `PyFluent-Visualization
   <https://visualization.fluent.docs.pyansys.com/>`_ guide.
 - Record a journal of your actions in Fluent and review the corresponding Python
-  script. For comprehensive guidance on journaling workflows, see
+  script. For comprehensive guidance on journaling, see
   :ref:`ref_journal`.
-
-  .. note::
-     In Fluent 2024 R2 or later, you can record a journal of your actions in Fluent
-     meshing to produce a Scheme script. Within that script are embedded
-     Python statements corresponding to each recorded meshing workflow
-     action. When extracted from the Scheme script, those Python statements
-     are valid in the PyFluent context.
-
-
-  Here is a Python command recorded in Fluent:
-
-  .. code:: python
-
-    (%py-exec "workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object',})")
-
-
-  Here is the manually translated equivalent command in PyFluent syntax:
-
-  .. code:: python
-
-    session.meshing.workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState(({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object’,})
-
-
 - Write scripts, using capabilities such as these:
 
   - IntelliSense to show available options for any given command. For example,
