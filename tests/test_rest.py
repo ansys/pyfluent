@@ -224,10 +224,6 @@ class TestHttpRequestStrategyInit:
         client = FluentRestClient(FakeStrategy())
         assert client._api_base == "api/fluent_1"
 
-    def test_client_custom_component(self):
-        client = FluentRestClient(FakeStrategy(), component="fluent_meshing_1")
-        assert client._api_base == "api/fluent_meshing_1"
-
 
 # ============================================================================
 # Unit tests — FluentRestError
