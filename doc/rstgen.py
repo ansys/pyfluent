@@ -22,12 +22,11 @@ def _get_attribute_classes(menu: type):
     attribute_classes: list
         Attributes of ``menu``.
     """
-    attribute_classes = []
-    attributes_dict = dict(vars(menu))
-    for attr_name, attr_value in attributes_dict.items():
-        if not attr_name.startswith("__"):
-            attribute_classes.append(attr_value)
-    return attribute_classes
+    return [
+        attr_value
+        for attr_name, attr_value in dict(vars(menu)).items()
+        if not attr_name.startswith("__")
+    ]
 
 
 def _get_attribute_classes_with_and_without_members(menu: type):
