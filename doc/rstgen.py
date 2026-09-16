@@ -24,7 +24,7 @@ def _get_attribute_classes(menu: type):
     """
     attribute_classes = []
     attributes_dict = dict(vars(menu))
-    for attr_name, attr_value in attributes_dict.items():
+    for attr_name in attributes_dict:
         if not attr_name.startswith("__"):
             attribute_classes.append(attributes_dict[attr_name])
     return attribute_classes
@@ -373,6 +373,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             f.write(".. toctree::\n")
             f.write("   :hidden:\n\n")
             for member in _get_sorted_members(menu["with_members"]):
+                if member.startswith("_"):
+                    continue
                 f.write(f"   {member}/{member}_contents\n")
 
 
