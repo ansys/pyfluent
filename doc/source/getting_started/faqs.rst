@@ -103,10 +103,10 @@ How do you disable PyFluent warnings shown in the console?
 
 How does PyFluent compare to Fluent user defined functions?
 -------------------------------------------------------------
-PyFluent is closer to Fluent TUI commands and journaling than to user defined functions
-(UDFs): it automates workflows rather than modifying solver behavior. UDFs, written in C,
+PyFluent automates workflows rather than modifying solver behavior. UDFs, written in C,
 remain important for customizing solver behavior. You cannot write UDFs in Python, but you
-can use PyFluent commands to compile and load them, just as you would with TUI commands.
+can use PyFluent's :ref:`solver settings objects <ref_solver_settings_guide>` to compile and load them.
+
 
 How do you learn how to use PyFluent?
 -------------------------------------
@@ -118,12 +118,11 @@ How do you learn how to use PyFluent?
 - Record a journal of your actions in Fluent and review the corresponding Python
   script. For comprehensive guidance on journaling, see
   :ref:`ref_journal`.
-- Write scripts, using capabilities such as these:
+- Write scripts, using:
 
-  - IntelliSense to show available options for any given command. For example,
-    in `JupyterLab <https://jupyter.org/>`_, press the tab key.
-  - Standard Python or PyAnsys tooling to print options related to a specified
-    object. For example, use ``dir (<object>)`` or ``help (<object>)``.
+  - Autocompletion features in your Python environment or IDE to show available options
+    for any given command. For example, in `JupyterLab <https://jupyter.org/>`_, press the
+    tab key.
 
 
 How to set up JupyterLab to get a better code completion for the API code in PyFluent?
