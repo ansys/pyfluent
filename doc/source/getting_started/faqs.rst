@@ -26,12 +26,6 @@ information, see :ref:`faqs_install`, later on this page.
 PyFluent has no GUI (graphical user interface) of its own. You interact with it entirely
 through the Python environment of your choice.
 
-How does PyFluent compare to Fluent user defined functions?
--------------------------------------------------------------
-PyFluent is closer to Fluent TUI commands and journaling than to user defined functions
-(UDFs): it automates workflows rather than modifying solver behavior. UDFs, written in C,
-remain important for customizing solver behavior. You cannot write UDFs in Python, but you
-can use PyFluent commands to compile and load them, just as you would with TUI commands.
 
 Who should use PyFluent?
 ------------------------
@@ -103,45 +97,6 @@ libraries. The links in this list are to the documentation for the respective
 libraries. In addition to general usage information, the documentation for a
 library includes many practical examples.
 
-How do you launch Fluent using PyFluent?
-----------------------------------------
-To launch Fluent with PyFluent commands, use this code:
-
-.. code:: python
-
-   import ansys.fluent.core as pyfluent
-   session = pyfluent.Solver.from_install()
-
-
-This example shows you how to launch a double precision Fluent session using two
-processors and activate the Fluent user interface:
-
-.. code:: python
-
-   session = pyfluent.Solver.from_install(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui")
-
-
-For additional launch examples, see :ref:`ref_launch_guide`. For
-descriptions of all parameters, see the :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` function.
-
-.. _faqs_fluentloc:
-
-How does PyFluent infer the location to launch Fluent?
-------------------------------------------------------
-PyFluent infers the Fluent location based on the following information, in
-increasing order of precedence:
-
-#. Value of ``product_version`` parameter passed to the :func:`launch_fluent() <ansys.fluent.core.launch_fluent>` function.
-
-#. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
-   when Fluent is installed, where ``<ver>`` is the Fluent release number such
-   as ``251`` for release 2025 R1.  PyFluent automatically uses this environment
-   variable to locate the latest Fluent installation. On Linux systems configure
-   ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such
-   as ``/apps/ansys_inc/v251``.
-
-
 How do you disable PyFluent warnings shown in the console?
 ----------------------------------------------------------
 .. code:: python
@@ -151,6 +106,13 @@ How do you disable PyFluent warnings shown in the console?
    pyfluent.warning.disable() # Disable all warning messages
 
 
+How does PyFluent compare to Fluent user defined functions?
+-------------------------------------------------------------
+PyFluent is closer to Fluent TUI commands and journaling than to user defined functions
+(UDFs): it automates workflows rather than modifying solver behavior. UDFs, written in C,
+remain important for customizing solver behavior. You cannot write UDFs in Python, but you
+can use PyFluent commands to compile and load them, just as you would with TUI commands.
+
 How do you learn how to use PyFluent?
 -------------------------------------
 Depending on how you prefer to learn, you can use any or all of these methods to
@@ -158,11 +120,11 @@ learn how to use PyFluent:
 
 - Review the examples in the documentation, working first through those provided
   in the :ref:`ref_example_gallery`, then, through those provided in the
-  **Examples** sections in the `PyFluent-Parametric
-  <https://parametric.fluent.docs.pyansys.com/>`_ and `PyFluent-Visusalization
-  <https://visualization.fluent.docs.pyansys.com/>`_ guides.
+  **Examples** sections in the `PyFluent-Visualization
+  <https://visualization.fluent.docs.pyansys.com/>`_ guide.
 - Record a journal of your actions in Fluent and review the corresponding Python
-  script.
+  script. For comprehensive guidance on journaling workflows, see
+  :ref:`ref_journal`.
 
   .. note::
      In Fluent 2024 R2 or later, you can record a journal of your actions in Fluent
