@@ -3,104 +3,6 @@
 Frequently asked questions
 ==========================
 
-What is PyAnsys?
-----------------
-PyAnsys is a set of open source technologies that allow you to interface with Ansys
-Fluent, Mechanical APDL, AEDT, and other Ansys products via Python. You can use PyAnsys
-libraries within a Python environment of your choice in conjunction with external Python
-libraries.
-
-.. image:: ../_static/PyAnsys_overview.png
-  :width: 800
-  :alt: PyAnsys overview
-
-What is PyFluent?
------------------
-PyFluent provides Python access to Ansys Fluent, giving you native Fluent functionality for scripting and automation. You can use it to launch Fluent locally or connect to a remote Fluent instance.
-
-PyFluent is bundled with the Fluent installation, or can be installed separately. For more
-information, see :ref:`faqs_install`, later on this page.
-
-
-Who should use PyFluent?
-------------------------
-PyFluent users include engineers, product designers, consultants, and academics.
-
-.. image:: ../_static/who_why_use_PyFluent.png
-  :width: 800
-  :alt: PyFluent users and objectives
-
-Common uses include:
-
-- Automating repetitive or multi-product workflows with custom scripts.
-- Integrating CFD simulations into other applications.
-- Combining Fluent with Python's scientific computing libraries, for example for machine
-  learning, data processing and visualization, or optimization.
-- Using standard Python array libraries and notations to work with simulation data.
-
-
-.. image:: ../_static/libraries_notations.png
-  :width: 800
-  :alt: Widely accepted libraries and notations
-
-
-What can you do with PyFluent?
-------------------------------
-You can use PyFluent to do tasks such as these:
-
-- Integrate Fluent as a solver seamlessly in your in-house design tools.
-- Customize postprocessing, perhaps by using Python's vast external library to
-  extend postprocessing capabilities or by automatically generating a PowerPoint
-  presentation to show simulation results.
-- Use a web app to access jobs running on a cluster, monitor convergence, and
-  generate graphs.
-- Leverage Python machine learning and artificial intelligence modules,
-  especially for models that are solved quickly but can be improved as
-  additional knowledge is acquired and applied.
-- Use Python to couple different Ansys products together.
-
-
-Which version of Python should you use?
----------------------------------------
-PyFluent supports Python 3.10 through Python 3.14 on Windows and Linux. Python
-3.10 is shipped with Ansys 2024 R2 and later. For example, in a 2025 R2 Windows
-installation, the executable file Python 3.10 is typically located at:
-``C:\Program Files\ANSYS Inc\v252\commonfiles\CPython\3_10\winx64\Release\python.exe``.
-If you're using Python from Ansys installation, make sure to install PyFluent
-within a Python virtual environment to prevent any possible conflicts with
-Ansys Python packages.
-
-Alternatively, you can download any compatible version of Python directly from
-the `Downloads page <https://www.python.org/downloads/>`_ of the Python web
-site.
-
-In either case, run the Python executable file as an administrator, selecting
-the **Add Python 3.10 to PATH** checkbox on the first wizard page before
-proceeding with the installation. On the last wizard page, which indicates that
-Python is installed successfully, follow the instructions for disabling the path
-length limit if you have long file paths.
-
-Where do you find source code and documentation?
-------------------------------------------------
-All PyAnsys public libraries are available from the `PyAnsys GitHub account
-<https://github.com/pyansys>`_. The **Repositories** page displays the number of
-repositories, which are searchable by name. For example, to find all PyFluent
-libraries, type ``pyfluent`` in the search option.
-
-The ``README.md`` file for the PyAnsys GitHub account lists the public PyAnsys
-libraries. The links in this list are to the documentation for the respective
-libraries. In addition to general usage information, the documentation for a
-library includes many practical examples.
-
-How do you disable PyFluent warnings shown in the console?
-----------------------------------------------------------
-.. code:: python
-
-   import ansys.fluent.core as pyfluent
-   pyfluent.set_console_logging_level("ERROR") # Disable all warning logs
-   pyfluent.warning.disable() # Disable all warning messages
-
-
 How does PyFluent compare to Fluent user defined functions?
 -------------------------------------------------------------
 PyFluent automates workflows rather than modifying solver behavior. UDFs, written in C,
@@ -137,14 +39,6 @@ along with a Python language server like
 `python-lsp-server <https://github.com/python-lsp/python-lsp-server>`_
 within your JupyterLab environment .
 
-
-How do you get help for PyFluent?
----------------------------------
-Because PyFluent libraries are open source, support for issues, bugs, and
-feature requests are available in their respective GitHub repositories.
-
-- To log an issue for PyFluent, use the `PyFluent Issues page <https://github.com/ansys/pyfluent/issues>`_.
-- To start a discussion, use the `PyFluent Discussions page <https://github.com/ansys/pyfluent/discussions>`_.
 
 For discussions about developer tools, engineering simulation, and physics for
 Ansys software, visit the `Ansys Developer portal
