@@ -8,8 +8,8 @@ Scheme code evaluation
 .. warning::
 
    PyFluent's modern, Pythonic interfaces provide stable, validated, high-level access to
-   Fluent. Scheme access circumvents those interfaces, and as such, we do not make any
-   guarantees about the outcome of making such calls. Note in particular that directly
+   Fluent. Scheme access circumvents those interfaces, and as such, guarantees cannot be
+   made about the outcome of making such calls. Note in particular that directly
    invoking a Scheme command via the interface shown here is not recorded in a Fluent
    Python journal.
 
