@@ -21,14 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Download and manage example data files.
+"""Utilities for downloading and locating Fluent example files."""
 
-Use this module to download example data from the Ansys example-data repository
-or to obtain the path of an example file that has already been downloaded.
-"""
+from .downloads import delete_downloads, download_file, get_file_without_path, path
 
-from ansys.tools.common.exceptions import DownloadError
-
-from .downloads import delete_downloads, download_file, path
-
-__all__ = ["DownloadError", "delete_downloads", "download_file", "path"]
+__all__ = [
+    "delete_downloads",
+    "download_file",
+    "get_file_without_path",
+    "path",
+]

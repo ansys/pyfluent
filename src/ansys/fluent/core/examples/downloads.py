@@ -149,14 +149,10 @@ def get_file_without_path(
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 
-    Internal Fluent container tests without file transfer use the container's
-    working directory, so return only the filename rather than the host mount path.
-
-    Thin wrapper around
-    :meth:`ansys.tools.common.example_download.DownloadManager.download_file`
-    that flattens the nested ``save_path/directory/file_name`` layout used by
-    ``DownloadManager`` to ``save_path/file_name`` and decompresses ``.zip``
-    archives, preserving the on-disk layout used in earlier pyfluent releases.
+    This function downloads the requested file using :func:`download_file` and
+    returns only the file name. Use it when Fluent needs to refer to a file in
+    its own working directory, such as in container workflows where the host
+    file path is not visible inside Fluent.
 
     Parameters
     ----------
@@ -184,7 +180,8 @@ def get_file_without_path(
     Returns
     -------
     str
-        File path of the downloaded or already existing file.
+        Name of the downloaded or already existing file, without its directory
+        path.
 
     Examples
     --------
@@ -210,13 +207,7 @@ def get_file_without_path(
 
 
 def path(file_name: str):
-    """Return the absolute path to a downloaded example data file.
-
-    Provide either an absolute path or the name of a file previously obtained
-    from :func:`download_file`. Since :func:`download_file` may return only
-    the file's name (see its ``Returns`` section), this also searches the
-    locations ``download_file`` may have saved it to, in addition to
-    ``pyfluent.config.examples_path``.
+    """Return path of given file name.
 
     Parameters
     ----------
