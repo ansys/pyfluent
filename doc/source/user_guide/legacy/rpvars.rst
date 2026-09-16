@@ -9,6 +9,13 @@ Examples
 Accessing and modifying existing rpvars
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning::
+
+   PyFluent's modern, Pythonic interfaces provide stable, validated, high-level access to
+   Fluent. RPVar access circumvents those interfaces, so we cannot guarantee the outcome of
+   setting values this way. Note in particular that directly setting an RPVar via the
+   interface shown here is not recorded in a Fluent Python journal.
+
 .. code-block:: python
 
    >>> import ansys.fluent.core as pyfluent
