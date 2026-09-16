@@ -41,6 +41,7 @@ from deprecated.sphinx import deprecated
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.fields.abstract_field_data import AbstractFieldData
 from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
 from ansys.fluent.core.launcher.launch_options import FluentMode
 
@@ -909,7 +910,7 @@ class Fields:
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
         """Initialize Fields."""
-        field_data = fluent_connection._service_factory.field_data
+        field_data: AbstractFieldData = fluent_connection._service_factory.field_data
         self._field_info = _FieldInfo(field_data)
         self.field_data = LiveFieldData(
             field_data, self._field_info, _session.scheme, get_zones_info

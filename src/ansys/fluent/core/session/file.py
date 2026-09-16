@@ -29,8 +29,16 @@ from deprecated.sphinx import deprecated
 import numpy as np
 
 from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
-from ansys.fluent.core.fields.field_data_interfaces import (
-    BaseFieldInfo,
+from ansys.fluent.core.fields._field_data_interfaces import (
+    _AllowedScalarFieldNames,
+    _AllowedSurfaceNames,
+    _BaseFieldInfo,
+    _ScalarFields,
+    _SurfaceIds,
+    _SurfaceNames,
+    _VectorFields,
+)
+from ansys.fluent.core.fields.abstract_field_data import (
     FieldBatch,
     FieldDataSource,
     PathlinesFieldDataRequest,
@@ -39,13 +47,7 @@ from ansys.fluent.core.fields.field_data_interfaces import (
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
-    _AllowedScalarFieldNames,
-    _AllowedSurfaceNames,
     _ReturnFieldData,
-    _ScalarFields,
-    _SurfaceIds,
-    _SurfaceNames,
-    _VectorFields,
 )
 from ansys.fluent.core.file_reader.case_file import CaseFile
 from ansys.fluent.core.file_reader.data_file import (
@@ -1058,7 +1060,7 @@ class FileFieldData(FieldDataSource):
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class _FileFieldInfo(BaseFieldInfo):
+class _FileFieldInfo(_BaseFieldInfo):
     """File field info."""
 
     def __init__(self, file_session):

@@ -38,7 +38,7 @@ from ansys.fluent.core import (
 )
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.fields.field_data_interfaces import (
+from ansys.fluent.core.fields._field_data_interfaces import (
     FieldUnavailableError,
     _AllowedSurfaceIDs,
     _Fields,
