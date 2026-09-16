@@ -105,7 +105,7 @@ How does PyFluent compare to Fluent user defined functions?
 -------------------------------------------------------------
 PyFluent automates workflows rather than modifying solver behavior. UDFs, written in C,
 remain important for customizing solver behavior. You cannot write UDFs in Python, but you
-can use PyFluent's :ref:`solver settings objects <ref_solver_settings_guide>` to compile and load them.
+can use PyFluent's `solver settings objects <https://fluent.docs.pyansys.com/version/dev/user_guide/solver_settings/solver_settings_contents.html>`_ to compile and load them.
 
 
 How do you learn how to use PyFluent?
