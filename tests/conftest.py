@@ -525,13 +525,13 @@ def http_solver_session(rest_server_connection):
 
 @pytest.fixture(
     params=[
-        # "new_solver_session",
+        "new_solver_session",
         pytest.param(
             "http_solver_session",
             marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
         ),
     ],
-    ids=["rest"],
+    ids=["grpc", "rest"],
 )
 def solver_session_grpc_rest(request):
     """Solver session over either transport, gRPC or REST.
