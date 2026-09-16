@@ -16,9 +16,7 @@ libraries.
 
 What is PyFluent?
 -----------------
-PyFluent provides Python access to Ansys Fluent, enabling native Fluent features from within
-the Python ecosystem for automation tasks such as launching Fluent locally or connecting to a
-remote Fluent instance.
+PyFluent provides Python access to Ansys Fluent, giving you native Fluent functionality for scripting and automation. You can use it to launch Fluent locally or connect to a remote Fluent instance.
 
 PyFluent is bundled with the Fluent installation, or can be installed separately. For more
 information, see :ref:`faqs_install`, later on this page.
