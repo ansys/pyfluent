@@ -436,11 +436,17 @@ def _launch_standalone_rest_server(ws_port: int, rest_token: str):
 
 
 def _is_web_server_ready(get_server_info, ws_port: int, rest_token: str) -> bool:
-    """True once Fluent reports the server active and it responds over HTTP."""
+    """True once Fluent reports the server active and it responds over HTTP.
+
+    Probes a real REST endpoint (api/{component}/static-info) rather than bare /,
+    matching the actual Fluent REST API routing that FluentRestClient uses.
+    The component (fluent_1 or solver) is auto-resolved per launch mode.
+    """
     try:
+        component = pyfluent.config.rest_api_component
         token_hash = hashlib.sha256(rest_token.encode()).hexdigest()
         response = requests.get(
-            f"http://localhost:{ws_port}/",
+            f"http://localhost:{ws_port}/api/{component}/static-info",
             timeout=2,
             headers={"Authorization": f"Bearer {token_hash}"},
         )
@@ -450,7 +456,7 @@ def _is_web_server_ready(get_server_info, ws_port: int, rest_token: str) -> bool
 
 
 def _wait_for_web_server(
-    solver, ws_port: int, rest_token: str, timeout: float = 60
+    solver, ws_port: int, rest_token: str, timeout: float = 30
 ) -> tuple[str, str]:
     """Poll until Fluent's web server responds, returning (url, token)."""
     get_server_info = solver.settings.server.web_server.get_server_info
