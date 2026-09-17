@@ -26,7 +26,7 @@
 import logging
 
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
