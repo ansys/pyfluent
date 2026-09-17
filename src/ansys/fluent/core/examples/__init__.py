@@ -23,7 +23,7 @@
 
 """Utilities for downloading and locating Fluent example files."""
 
-from .downloads import delete_downloads, download_file, get_file_without_path, path
+from .downloads import delete_downloads, download_file, path
 
 __all__ = [
     "delete_downloads",
