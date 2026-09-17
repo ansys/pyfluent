@@ -5,8 +5,16 @@
 Scheme code evaluation
 ======================
 
-Each session provides an instance of :obj:`~ansys.fluent.core.services.scheme_eval.SchemeEval` on which Fluent's
-scheme code can be executed.
+.. warning::
+
+   PyFluent's modern, Pythonic interfaces provide stable, validated, high-level access to
+   Fluent. Scheme access circumvents those interfaces, and as such, guarantees cannot be
+   made about the outcome of making such calls. Note in particular that directly
+   invoking a Scheme command via the interface shown here is not recorded in a Fluent
+   Python journal.
+
+Each session provides a :obj:`~ansys.fluent.core.session.base.BaseSession.scheme` property for executing Fluent's
+scheme code.
 
 Examples
 --------
