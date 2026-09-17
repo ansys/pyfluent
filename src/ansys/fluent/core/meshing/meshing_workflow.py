@@ -320,7 +320,7 @@ def _get_current_workflow(current_workflow, name: str):
 def get_current_workflow(
     workflow_root, current_workflow, workflow_factories, load_workflow_handle
 ) -> Workflow:
-    """Get the currently active workflow in new mode.
+    """Get the currently active workflow in the PyFluent-native interface.
 
     Parameters
     ----------
