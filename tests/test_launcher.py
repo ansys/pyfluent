@@ -26,7 +26,7 @@ from pathlib import Path
 import platform
 import tempfile
 from tempfile import TemporaryDirectory
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import MagicMock, Mock, call, patch
 import warnings
 
 import pytest
@@ -148,6 +148,35 @@ def test_container_launcher():
     # test run with configuration dict
     session = pyfluent.launch_fluent(container_dict=container_dict, **grpc_kwds)
     assert session.is_active()
+
+
+def test_container_launcher_transfers_case_data_files(tmp_path):
+    case_file = tmp_path / "mixing_elbow.cas.h5"
+    data_file = tmp_path / "mixing_elbow.dat.h5"
+    file_transfer_service = Mock(mount_source=str(tmp_path))
+
+    session = Mock()
+    launcher = Mock(return_value=session)
+    with patch(
+        "ansys.fluent.core.launcher.launcher.DockerLauncher",
+        return_value=launcher,
+    ) as docker_launcher:
+        result = pyfluent.launch_fluent(
+            start_container=True,
+            case_file_name=case_file,
+            case_data_file_name=data_file,
+            file_transfer_service=file_transfer_service,
+            insecure_mode=True,
+        )
+
+    assert result is session
+    assert docker_launcher.call_args.kwargs["additional_arguments"] == (
+        f' -case "{case_file.name}" -data "{data_file.name}"'
+    )
+    assert file_transfer_service.upload.call_args_list == [
+        call(file_name=str(case_file)),
+        call(file_name=str(data_file)),
+    ]
 
 
 def test_container_working_dir():
