@@ -613,7 +613,7 @@ def test_get_cls_base_resolution_and_fallback(caplog):
     assert issubclass(cls, flobject.CommandWithPositionalArgs)
 
     dict_cls, _ = flobject.get_cls("state", {"type": "dict"}, version="271")
-    assert issubclass(dict_cls, flobject.Map)
+    assert issubclass(dict_cls, flobject.Dict)
     assert dict_cls._state_type == flobject.DictStateType
 
     command_cls, _ = flobject.get_cls(
