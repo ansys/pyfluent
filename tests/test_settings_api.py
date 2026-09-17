@@ -592,7 +592,7 @@ def test_nested_alias_till_26r1(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=27.1")
-def test_nested_alias(request, mixing_elbow_settings_session):
+def test_nested_alias(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.settings.setup.models.viscous.model = "k-omega"
     solver.settings.setup.models.viscous.k_omega_model = "standard"
@@ -644,7 +644,7 @@ def test_commands_not_in_settings(solver_session_grpc_rest):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_deprecated_command_arguments(request, mixing_elbow_case_data_session):
+def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     with pytest.warns(
         PyFluentUserWarning,

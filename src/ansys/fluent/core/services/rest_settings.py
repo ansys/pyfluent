@@ -27,6 +27,9 @@ from typing import Any
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.services.settings import BaseSettings, _trace
 
+# The server returns data with hyphenated and question-mark-suffixed keys (e.g., "object-type",
+# "user-creatable?"), but flobject expects snake_case keys (e.g., "object_type",
+# "user_creatable") for proper parsing. This mapping converts server format to flobject format.
 _REST_STATIC_INFO_KEY_MAP: dict[str, str] = {
     "object-type": "object_type",
     "include-child-named-objects?": "include_child_named_objects",
