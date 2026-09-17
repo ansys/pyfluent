@@ -57,7 +57,7 @@ def _validate_meshing_session(session: BaseMeshing) -> bool:
 
 
 def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool:
-    """Determine whether to use the Fluent-native interface.
+    """Determine whether to use the legacy PyFluent-native interface.
 
     This method handles backward compatibility by automatically selecting the
     appropriate workflow implementation based on Fluent version and user preference.
