@@ -32,7 +32,6 @@ from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.exceptions import DeprecatedSettingWarning, PyFluentUserWarning
 from ansys.fluent.core.session.solver import Solver
-from ansys.fluent.core.session_http_solver import HttpSolver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
