@@ -28,6 +28,5 @@ from .downloads import delete_downloads, download_file, get_file_without_path, p
 __all__ = [
     "delete_downloads",
     "download_file",
-    "get_file_without_path",
     "path",
 ]
