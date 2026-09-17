@@ -125,7 +125,7 @@ class RestSettings(BaseSettings):
         """
         if input is None:
             return False
-        return any(c in input for c in "*?[]")
+        return any(c in input for c in "*?[|")
 
     @_trace
     def has_wildcard(self, name: str) -> bool:

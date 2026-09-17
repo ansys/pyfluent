@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 
 
 class FluentRestClient:
-    """Fluent DataModel settings API client.
+    """Fluent settings API client.
 
     The client is decoupled from HTTP mechanics via an injected
     :class:`~ansys.fluent.core.rest.transport.RequestStrategy`.  In
@@ -58,7 +58,7 @@ class FluentRestClient:
     strategy : RequestStrategy
         Responsible for executing HTTP requests (real or fake).
     component : str, optional
-        DataModel component name. If ``None``, auto-resolves based on
+        Component name. If ``None``, auto-resolves based on
         the ``rest_api_component`` configuration (``"fluent_1"`` for
         standalone, ``"solver"`` for container mode).Defaults to ``None``.
     """
