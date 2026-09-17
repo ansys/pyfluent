@@ -65,41 +65,22 @@ session that starts a second Fluent instance and is independent of your PyFluent
 
 
 A uniform interface exists across solver settings objects. For instance,
-``get_state()``, ``set_state()`` and ``is_active()`` are ubiquitous methods,
-and ``allowed_values()``, ``min()`` and ``max()`` are found on relevant items.
-Here are some examples using the ``viscous`` and ``discrete_phase`` models.
+``get_state()`` and ``set_state()`` are ubiquitous methods, and ``allowed_values()``
+is found on relevant items:
 
 .. code:: python
 
   >>> viscous_model = settings.setup.models.viscous.model
   >>> viscous_model.get_state()
 	'k-omega'
-  >>> from pprint import pprint
-  >>> pprint(viscous_model.allowed_values())
-	['inviscid',
-	 'laminar',
-	 'k-epsilon',
-	 'k-omega',
-	 'mixing-length',
-	 'spalart-allmaras',
-	 'k-kl-w',
-	 'transition-sst',
-	 'reynolds-stress',
-	 'scale-adaptive-simulation',
-	 'detached-eddy-simulation',
-	 'large-eddy-simulation']
+  >>> viscous_model.allowed_values()
+	['inviscid', 'laminar', 'k-omega', ...]  # plus additional models
   >>> viscous_model.set_state("laminar")
   >>> viscous_model.get_state()
     'laminar'
-  >>> discrete_phase = settings.setup.models.discrete_phase
-  >>> discrete_phase.is_active()
-    True
-  >>> max_num_refinements = discrete_phase.numerics.tracking.accuracy_control.max_num_refinements
-  >>> max_num_refinements.get_state()
-	20
-  >>> max_num_refinements.min(), max_num_refinements.max()
-   (0, 1000000)
-  
+
+For the full set of settings metadata methods (``is_active()``, ``min()``, ``max()``,
+and more), see :ref:`ref_solver_settings_guide`.
 
 Some items in the solver settings object tree are methods that you call to request a particular
 action in Fluent:
@@ -118,8 +99,8 @@ that of the ``settings`` objects:
 .. code:: python
 
   >>> field_data = fields.field_data
-  >>> transaction = field_data.new_transaction()
-  >>> add_scalar_fields = transaction.add_scalar_fields_request
+  >>> batch = field_data.new_batch()
+  >>> add_scalar_fields = batch.add_scalar_fields_request
   >>> allowed_field_names = add_scalar_fields.field_name.allowed_values()
   >>> pprint(allowed_field_names[:min([len(allowed_field_names), 5])])
   ['abs-angular-coordinate',
@@ -127,10 +108,10 @@ that of the ``settings`` objects:
    'angular-coordinate',
    'anisotropic-adaption-cells',
    'aspect-ratio']
-  >>> add_scalar_fields.surface_names.allowed_values()
+  >>> add_scalar_fields.surfaces.allowed_values()
   ['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet']
   >>> add_scalar_fields(field_name='absolute-pressure', surfaces=['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet'])
-  >>> pressure_fields = transaction.get_fields()
+  >>> pressure_fields = batch.get_fields()
   >>> solver_session.fields.reduction.sum_if(
   >>>     expression="AbsolutePressure",
   >>>     condition="AbsolutePressure > 0[Pa]",
