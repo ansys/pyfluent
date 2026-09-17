@@ -21,8 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Meshing workflow specialization of the Workflow module that wraps and extends the
-core functionality."""
+"""Legacy meshing workflow specialization of the legacy workflow wrapper."""
 
 from __future__ import annotations
 

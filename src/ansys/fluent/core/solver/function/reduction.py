@@ -87,10 +87,10 @@ from enum import Enum
 import numpy as np
 from numpy import array
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.variable_strategies import (
+from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
+from ansys.fluent.core.exceptions import DisallowedValuesError
 
 
 class Weight(Enum):

@@ -617,7 +617,7 @@ def connect_to_fluent(
         Session object.
 
     Raises
-    -------
+    ------
     ValueError
         Raised when neither `certificates_folder` nor `insecure_mode` are set while `allow_remote_host` is True.
         Raised when both `certificates_folder` and `insecure_mode` are set simultaneously.

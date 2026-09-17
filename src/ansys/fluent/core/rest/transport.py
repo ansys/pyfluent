@@ -109,7 +109,7 @@ class HttpRequestStrategy:
     token : str, optional
         Raw bearer token; SHA-256 hashed before transmission.
     timeout : float, optional
-        Socket timeout in seconds. Defaults to ``30.0``.
+        Socket timeout in seconds. Defaults to ``60.0``.
     max_retries : int, optional
         Maximum automatic retries on transient errors. Defaults to ``2``.
     retry_delay : float, optional
@@ -123,7 +123,7 @@ class HttpRequestStrategy:
         base_url: str,
         *,
         token: str | None = None,
-        timeout: float = 30.0,
+        timeout: float = 60.0,
         max_retries: int = 2,
         retry_delay: float = 1.0,
         ssl_context: ssl.SSLContext | None = None,

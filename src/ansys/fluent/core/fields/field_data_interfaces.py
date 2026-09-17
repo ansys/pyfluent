@@ -522,7 +522,7 @@ class _Fields:
         field_name : VariableDescriptor | str
             Field name to check. Can be a VariableDescriptor or a string.
         """
-        from ansys.fluent.core.variable_strategies import (
+        from ansys.fluent.core._variable_strategies import (
             FluentFieldDataNamingStrategy as naming_strategy,
         )
 
@@ -544,7 +544,7 @@ class _Fields:
             Fields without a corresponding VariableDescriptor are excluded,
             and a warning is issued listing them.
         """
-        from ansys.fluent.core.variable_strategies import (
+        from ansys.fluent.core._variable_strategies import (
             FluentFieldDataNamingStrategy as naming_strategy,
         )
 

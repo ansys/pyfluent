@@ -21,7 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Configuration variables for PyFluent."""
+"""Configure global PyFluent behavior.
+
+Use the global :data:`config` object to control Fluent launching, container
+and remoting options, datamodel caching, code generation, logging, timeouts,
+and other runtime settings. Prefer setting the corresponding configuration
+attributes in Python; environment variables are primarily intended for
+initializing configuration in deployment environments.
+"""
 from collections.abc import Callable
 import inspect
 import os
@@ -237,6 +244,14 @@ class Config:
     #: Whether to launch Fluent in a container, defaults to the value of ``PYFLUENT_LAUNCH_CONTAINER`` environment variable.
     launch_fluent_container = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get("PYFLUENT_LAUNCH_CONTAINER") == "1"
+    )
+
+    #: REST API component name (``"fluent_1"`` for standalone, ``"solver"`` for container), defaults to ``PYFLUENT_REST_API_COMPONENT`` env var or auto-resolves based on launch mode.
+    rest_api_component = _ConfigDescriptor["Config"](
+        lambda instance: instance._env.get(
+            "PYFLUENT_REST_API_COMPONENT",
+            "solver" if instance.launch_fluent_container else "fluent_1",
+        )
     )
 
     #: The tag of the Fluent image to use when launching in a container, defaults to the value of ``FLUENT_IMAGE_TAG`` environment variable or the latest release version of Fluent.

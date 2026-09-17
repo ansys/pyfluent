@@ -592,8 +592,8 @@ def test_nested_alias_till_26r1(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=27.1")
-def test_nested_alias(request, mixing_elbow_settings_session_grpc_rest):
-    solver = mixing_elbow_settings_session_grpc_rest
+def test_nested_alias(request, mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
     solver.settings.setup.models.viscous.model = "k-omega"
     solver.settings.setup.models.viscous.k_omega_model = "standard"
     # k_omega_options is alias of k_omega
@@ -644,10 +644,8 @@ def test_commands_not_in_settings(solver_session_grpc_rest):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_deprecated_command_arguments(
-    request, mixing_elbow_case_data_session_grpc_rest
-):
-    solver = mixing_elbow_case_data_session_grpc_rest
+def test_deprecated_command_arguments(request, mixing_elbow_case_data_session):
+    solver = mixing_elbow_case_data_session
     with pytest.warns(
         PyFluentUserWarning,
         match=(
@@ -921,8 +919,9 @@ def test_copy_accepts_sequence_types(mixing_elbow_settings_session_grpc_rest):
 
 
 @pytest.mark.fluent_version(">=26.1")
-def test_action_behavior(request, mixing_elbow_case_session_grpc_rest):
-    solver = mixing_elbow_case_session_grpc_rest
+def test_action_behavior(mixing_elbow_case_session):
+    solver = mixing_elbow_case_session
+
     with pytest.raises(AttributeError, match="command/query object"):
         solver.settings.solution.run_calculation.iterate.get_state()
     assert isinstance(

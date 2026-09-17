@@ -58,16 +58,21 @@ class FluentRestClient:
     strategy : RequestStrategy
         Responsible for executing HTTP requests (real or fake).
     component : str, optional
-        DataModel component name.  Defaults to ``"fluent_1"`` (solver).
-        Use ``"fluent_meshing_1"`` for a meshing session.
+        DataModel component name. If ``None``, auto-resolves based on
+        the ``rest_api_component`` configuration (``"fluent_1"`` for
+        standalone, ``"solver"`` for container mode).Defaults to ``None``.
     """
 
     def __init__(
         self,
         strategy: RequestStrategy,
         *,
-        component: str = "fluent_1",
+        component: str | None = None,
     ) -> None:
+        if component is None:
+            import ansys.fluent.core as pyfluent
+
+            component = pyfluent.config.rest_api_component
         self._strategy = strategy
         self._api_base = f"api/{component}"
 
@@ -81,7 +86,7 @@ class FluentRestClient:
         url: str,
         token: str,
         *,
-        component: str = "fluent_1",
+        component: str | None = None,
         timeout: float = 60.0,
         max_retries: int = 2,
         retry_delay: float = 1.0,
@@ -102,7 +107,10 @@ class FluentRestClient:
         token : str
             Bearer token (password) set when Fluent was started.
         component : str, optional
-            DataModel component name. Defaults to ``"fluent_1"``.
+            DataModel component name. If ``None``, auto-resolves based on
+            the ``rest_api_component`` configuration (``"fluent_1"`` for
+            standalone, ``"solver"`` for container mode). Defaults to
+            ``None``.
         timeout : float, optional
             Socket timeout in seconds. Defaults to ``60.0``.
         max_retries : int, optional
