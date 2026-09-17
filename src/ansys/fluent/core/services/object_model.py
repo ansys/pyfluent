@@ -479,7 +479,7 @@ class PyStateContainer(PyCallableStateObject):
     setState = set_state
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable = None
+        self, prefix: str = "", excluded: Iterable | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -1028,7 +1028,7 @@ class PyNamedObjectContainer:
     getChildObjectDisplayNames = get_object_names
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable = None
+        self, prefix: str = "", excluded: Iterable | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -1245,7 +1245,7 @@ class PyAction:
             return PyArguments(*args)
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable = None
+        self, prefix: str = "", excluded: Iterable | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 

@@ -52,6 +52,7 @@ import warnings
 __all__ = (
     "ENV_VAR",
     "PACKAGE_NAME",
+    "PyFluentTypeCheckingError",
     "install_import_hook",
     "is_type_checking_enabled",
     "no_runtime_type_check",
@@ -60,6 +61,28 @@ __all__ = (
 
 #: Environment variable which activates runtime type-checking.
 ENV_VAR = "PYFLUENT_RUNTIME_TYPE_CHECKING"
+
+
+class PyFluentTypeCheckingError(TypeError):
+    """Runtime type-checking violation in PyFluent API.
+
+    Raised when a PyFluent function or method is called with arguments that do
+    not match its declared type annotations, and runtime type-checking is
+    enabled via the ``PYFLUENT_RUNTIME_TYPE_CHECKING`` environment variable.
+
+    This exception wraps the underlying type-checking backend's exception,
+    providing a stable PyFluent API that is independent of the backend
+    implementation (e.g., ``beartype`` vs ``typeguard``).
+
+    Users should not need to know or import the specific type-checking library.
+
+    See Also
+    --------
+    :attr:`ansys.fluent.core.config.runtime_type_checking` : Configuration option
+    """
+
+    pass
+
 
 #: Package whose submodules are type-checked at import time.
 #:
@@ -94,10 +117,35 @@ def _beartype_install_hook() -> bool:
 
 
 def _beartype_decorator(obj: T) -> T:
-    """Apply the ``beartype`` decorator to ``obj``."""
-    from beartype import beartype
+    """Apply the ``beartype`` decorator to ``obj``, wrapping exceptions.
 
-    return beartype(obj)
+    Catches backend-specific exceptions and re-raises as PyFluentTypeCheckingError
+    to maintain encapsulation and API stability.
+    """
+    import functools
+
+    from beartype import beartype
+    from beartype.roar import BeartypeException
+
+    # Apply beartype decorator
+    decorated = beartype(obj)
+
+    # For callables (not classes), wrap to catch backend exceptions
+    if callable(decorated) and not isinstance(decorated, type):
+
+        @functools.wraps(decorated)
+        def wrapper(*args: typing.Any, **kwargs: typing.Any) -> typing.Any:
+            try:
+                return decorated(*args, **kwargs)
+            except BeartypeException as exc:
+                raise PyFluentTypeCheckingError(
+                    f"Type-checking violation: {exc}"
+                ) from exc
+
+        return wrapper  # type: ignore[return-value]
+
+    # For classes and other objects, return as-is (claw handles them)
+    return decorated
 
 
 def _no_op_install_hook() -> bool:

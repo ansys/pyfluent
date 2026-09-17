@@ -78,8 +78,8 @@ def test_config_reflects_hook_state(enabled):
     "enabled, expected",
     [
         # With type-checking on, the bad argument is reported at the call
-        # boundary. With it off, it surfaces later as an obscure downstream
-        # error.
+        # boundary via PyFluentTypeCheckingError. With it off, it surfaces
+        # later as an obscure downstream error.
         (True, "BeartypeCallHintParamViolation"),
         (False, "AttributeError"),
     ],
@@ -112,7 +112,7 @@ def test_runtime_type_check_is_a_no_op_when_disabled():
 
 def test_runtime_type_check_uses_the_active_backend(monkeypatch):
     pytest.importorskip("beartype")
-    from beartype.roar import BeartypeCallHintParamViolation
+    from ansys.fluent.core._type_checking import PyFluentTypeCheckingError
 
     monkeypatch.setattr(_type_checking, "_HOOK_INSTALLED", True)
 
@@ -121,7 +121,7 @@ def test_runtime_type_check_uses_the_active_backend(monkeypatch):
         return x
 
     assert fn(1) == 1
-    with pytest.raises(BeartypeCallHintParamViolation):
+    with pytest.raises(PyFluentTypeCheckingError):
         fn("1")
 
 
@@ -184,3 +184,13 @@ def test_config_warns_when_set_after_import(monkeypatch):
 def test_config_print_includes_runtime_type_checking(capsys):
     pyfluent.config.print()
     assert "runtime_type_checking" in capsys.readouterr().out
+
+
+def test_pyfluent_type_checking_error_is_exported():
+    """Verify PyFluentTypeCheckingError is accessible from the main package."""
+    assert hasattr(pyfluent, "PyFluentTypeCheckingError")
+    assert issubclass(pyfluent.PyFluentTypeCheckingError, TypeError)
+    # Verify it's the same class from _type_checking module
+    assert (
+        pyfluent.PyFluentTypeCheckingError is _type_checking.PyFluentTypeCheckingError
+    )

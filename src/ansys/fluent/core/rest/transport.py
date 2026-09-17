@@ -48,7 +48,7 @@ class RequestStrategy(Protocol):
     this protocol structurally — no inheritance required.
     """
 
-    def request(self, method: str, endpoint: str, *, body: Any = None) -> Any:
+    def request(self, method: str, endpoint: str, *, body: Any | None = None) -> Any:
         """Execute one HTTP request and return the decoded JSON response.
 
         Parameters
@@ -131,7 +131,7 @@ class HttpRequestStrategy:
         self,
         method: str,
         url: str,
-        body: Any = None,
+        body: Any | None = None,
     ) -> urllib.request.Request:
         data: bytes | None = None
         headers: dict[str, str] = dict(self._headers)
@@ -195,7 +195,7 @@ class HttpRequestStrategy:
     # RequestStrategy implementation
     # ------------------------------------------------------------------
 
-    def request(self, method: str, endpoint: str, *, body: Any = None) -> Any:
+    def request(self, method: str, endpoint: str, *, body: Any | None = None) -> Any:
         """Implement :class:`RequestStrategy` — build, send, and retry."""
         url = f"{self._base_url}/{endpoint}"
         req = self._build_request(method, url, body)
