@@ -221,8 +221,11 @@ class TestHttpRequestStrategyInit:
         assert strategy._max_retries == 5
 
     def test_client_default_component(self):
+        import ansys.fluent.core as pyfluent
+
         client = FluentRestClient(FakeStrategy())
-        assert client._api_base == "api/fluent_1"
+        expected_component = pyfluent.config.rest_api_component
+        assert client._api_base == f"api/{expected_component}"
 
 
 # ============================================================================
@@ -307,29 +310,38 @@ class TestFluentRestClientReads:
     """get_static_info / get_var / get_attrs and list/name normalization."""
 
     def test_get_static_info_path(self):
+        import ansys.fluent.core as pyfluent
+
         strategy = FakeStrategy(default={"type": "group"})
         result = FluentRestClient(strategy).get_static_info()
         method, endpoint, body = strategy.calls[0]
         assert method == "GET"
-        assert endpoint == "api/fluent_1/static-info"
+        component = pyfluent.config.rest_api_component
+        assert endpoint == f"api/{component}/static-info"
         assert result == {"type": "group"}
 
     def test_get_static_info_full_query(self):
+        import ansys.fluent.core as pyfluent
+
         strategy = FakeStrategy(default={"type": "group"})
         FluentRestClient(strategy).get_static_info(full=True)
         _, endpoint, _ = strategy.calls[0]
-        assert endpoint == "api/fluent_1/static-info?full=true"
+        component = pyfluent.config.rest_api_component
+        assert endpoint == f"api/{component}/static-info?full=true"
 
     def test_get_var_returns_value(self):
         strategy = FakeStrategy(default=True)
         assert FluentRestClient(strategy).get_var("setup/models/energy/enabled") is True
 
     def test_get_var_uses_post_and_strips_leading_slash(self):
+        import ansys.fluent.core as pyfluent
+
         strategy = FakeStrategy(default=42)
         FluentRestClient(strategy).get_var("/setup/general/setting")
         method, endpoint, body = strategy.calls[0]
         assert method == "POST"
-        assert endpoint == "api/fluent_1/get_var"
+        component = pyfluent.config.rest_api_component
+        assert endpoint == f"api/{component}/get_var"
         assert body == {"path": "setup/general/setting"}
 
     def test_get_var_raises_on_404(self):
@@ -605,11 +617,14 @@ class TestConnectToWebserver:
 
     def test_connect_factory_with_kwargs(self):
         """connect_to_webserver creates FluentRestClient with proper config."""
+        import ansys.fluent.core as pyfluent
+
         client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert isinstance(client, FluentRestClient)
         assert isinstance(client._strategy, HttpRequestStrategy)
         assert isinstance(client._strategy, RequestStrategy)
-        assert client._api_base == "api/fluent_1"
+        expected_component = pyfluent.config.rest_api_component
+        assert client._api_base == f"api/{expected_component}"
         expected_auth = hashlib.sha256(b"secret").hexdigest()
         assert client._strategy._headers["Authorization"] == "Bearer " + expected_auth
 
