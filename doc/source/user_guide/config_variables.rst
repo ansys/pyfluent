@@ -24,7 +24,7 @@ PyFluent can check the type annotations of its own APIs while they are called, s
 argument of the wrong type is reported at the call itself instead of surfacing later as an
 obscure failure. This is intended for development and testing, and is disabled by default.
 
-It relies on `beartype <https://beartype.readthedocs.io>`_, which is installed with the
+It relies on ``beartype`` <https://beartype.readthedocs.io>`_, which is installed with the
 ``type-checking`` extra:
 
 .. code-block:: bash
