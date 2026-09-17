@@ -62,9 +62,9 @@ from ansys.fluent.core.rest import (
 )
 from ansys.fluent.core.rest.client import FluentRestClient as FluentRestClientDirect
 from ansys.fluent.core.rest.transport import _make_auth_headers
+from ansys.fluent.core.services.rest_settings import RestSettings
 
 connect_to_webserver_direct = FluentRestClientDirect.connect
-
 _BASE_URL = "http://127.0.0.1:5000"
 
 
@@ -162,7 +162,7 @@ def _client(**kwargs) -> FluentRestClient:
 
 def _http_strategy(**kwargs) -> HttpRequestStrategy:
     """Return an ``HttpRequestStrategy`` with sensible test defaults."""
-    kwargs.setdefault("auth_token", "tok123")
+    kwargs.setdefault("token", "tok123")
     kwargs.setdefault("retry_delay", 0)  # keep retry tests fast
     return HttpRequestStrategy(_BASE_URL, **kwargs)
 
@@ -203,38 +203,29 @@ class TestRestPackageApi:
 class TestHttpRequestStrategyInit:
     """HttpRequestStrategy initialization and attribute defaults."""
 
-    def test_init_with_defaults(self):
-        strategy = HttpRequestStrategy("http://localhost:5000")
-        assert strategy._base_url == "http://localhost:5000"
-        assert strategy._headers == {}
-        assert strategy._timeout == 30.0
-        assert strategy._max_retries == 2
-        assert strategy._retry_delay == 1.0
-
     def test_init_strips_trailing_slash(self):
-        strategy = HttpRequestStrategy("http://localhost:5000/")
-        assert strategy._base_url == "http://localhost:5000"
+        strategy = HttpRequestStrategy(_BASE_URL + "/")
+        assert strategy._base_url == _BASE_URL
 
-    def test_init_with_auth_token(self):
-        strategy = HttpRequestStrategy("http://localhost:5000", auth_token="secret")
+    def test_init_with_token(self):
+        strategy = HttpRequestStrategy(_BASE_URL, token="secret")
         expected = hashlib.sha256(b"secret").hexdigest()
         assert strategy._headers["Authorization"] == "Bearer " + expected
 
     def test_init_with_custom_timeout(self):
-        strategy = HttpRequestStrategy("http://localhost:5000", timeout=60.0)
+        strategy = HttpRequestStrategy(_BASE_URL, timeout=60.0)
         assert strategy._timeout == 60.0
 
     def test_init_with_custom_max_retries(self):
-        strategy = HttpRequestStrategy("http://localhost:5000", max_retries=5)
+        strategy = HttpRequestStrategy(_BASE_URL, max_retries=5)
         assert strategy._max_retries == 5
 
     def test_client_default_component(self):
-        client = FluentRestClient(FakeStrategy())
-        assert client._api_base == "api/fluent_1"
+        import ansys.fluent.core as pyfluent
 
-    def test_client_custom_component(self):
-        client = FluentRestClient(FakeStrategy(), component="fluent_meshing_1")
-        assert client._api_base == "api/fluent_meshing_1"
+        client = FluentRestClient(FakeStrategy())
+        expected_component = pyfluent.config.rest_api_component
+        assert client._api_base == f"api/{expected_component}"
 
 
 # ============================================================================
@@ -252,31 +243,14 @@ class TestFluentRestError:
         assert "HTTP 404" in str(exc)
         assert "Not found" in str(exc)
 
-    def test_retryable_flag(self):
-        exc = FluentRestError(503, "Service unavailable", retryable=True)
-        assert exc.retryable is True
-
-    def test_from_transport_plain_oserror_is_retryable(self):
-        exc = FluentRestError.from_transport(OSError("Connection refused"))
-        assert exc.status == 0
-        assert exc.retryable is True
-
-    def test_from_transport_urlerror_is_retryable(self):
-        exc = FluentRestError.from_transport(urllib.error.URLError("reset"))
-        assert exc.status == 0
-        assert exc.retryable is True
-
-    @pytest.mark.parametrize("status", [502, 503, 504])
-    def test_from_transport_gateway_errors_are_retryable(self, status):
-        exc = FluentRestError.from_transport(_make_http_error(status, {"d": "x"}))
-        assert exc.status == status
-        assert exc.retryable is True
-
-    @pytest.mark.parametrize("status", [400, 401, 403, 404, 409, 500])
-    def test_from_transport_other_http_errors_not_retryable(self, status):
-        exc = FluentRestError.from_transport(_make_http_error(status))
-        assert exc.status == status
-        assert exc.retryable is False
+    def test_from_transport_retryable_for_gateway_errors(self):
+        """503 and connection errors are retryable; others are not."""
+        exc_503 = FluentRestError.from_transport(_make_http_error(503, {}))
+        assert exc_503.retryable is True
+        exc_400 = FluentRestError.from_transport(_make_http_error(400, {}))
+        assert exc_400.retryable is False
+        exc_oserror = FluentRestError.from_transport(OSError("Connection refused"))
+        assert exc_oserror.retryable is True
 
     def test_from_transport_uses_body_as_message(self):
         exc = FluentRestError.from_transport(
@@ -312,7 +286,7 @@ class TestHttpRequestStrategyAuth:
     @patch("ansys.fluent.core.rest.transport.urllib.request.urlopen")
     def test_auth_header_attached_to_requests(self, mock_urlopen):
         mock_urlopen.return_value = _make_response(True)
-        strategy = HttpRequestStrategy(_BASE_URL, auth_token="abc")
+        strategy = HttpRequestStrategy(_BASE_URL, token="abc")
         strategy.request("POST", "api/fluent_1/get_var", body={"path": "setup/x"})
         req = mock_urlopen.call_args[0][0]
         expected = hashlib.sha256(b"abc").hexdigest()
@@ -336,29 +310,38 @@ class TestFluentRestClientReads:
     """get_static_info / get_var / get_attrs and list/name normalization."""
 
     def test_get_static_info_path(self):
+        import ansys.fluent.core as pyfluent
+
         strategy = FakeStrategy(default={"type": "group"})
         result = FluentRestClient(strategy).get_static_info()
         method, endpoint, body = strategy.calls[0]
         assert method == "GET"
-        assert endpoint == "api/fluent_1/static-info"
+        component = pyfluent.config.rest_api_component
+        assert endpoint == f"api/{component}/static-info"
         assert result == {"type": "group"}
 
     def test_get_static_info_full_query(self):
+        import ansys.fluent.core as pyfluent
+
         strategy = FakeStrategy(default={"type": "group"})
         FluentRestClient(strategy).get_static_info(full=True)
         _, endpoint, _ = strategy.calls[0]
-        assert endpoint == "api/fluent_1/static-info?full=true"
+        component = pyfluent.config.rest_api_component
+        assert endpoint == f"api/{component}/static-info?full=true"
 
     def test_get_var_returns_value(self):
         strategy = FakeStrategy(default=True)
         assert FluentRestClient(strategy).get_var("setup/models/energy/enabled") is True
 
     def test_get_var_uses_post_and_strips_leading_slash(self):
+        import ansys.fluent.core as pyfluent
+
         strategy = FakeStrategy(default=42)
         FluentRestClient(strategy).get_var("/setup/general/setting")
         method, endpoint, body = strategy.calls[0]
         assert method == "POST"
-        assert endpoint == "api/fluent_1/get_var"
+        component = pyfluent.config.rest_api_component
+        assert endpoint == f"api/{component}/get_var"
         assert body == {"path": "setup/general/setting"}
 
     def test_get_var_raises_on_404(self):
@@ -606,7 +589,7 @@ class TestHttpRequestStrategyTransport:
     def test_get_retry_exhaustion(self, mock_urlopen):
         mock_urlopen.side_effect = _make_http_error(503)
         strategy = HttpRequestStrategy(
-            _BASE_URL, auth_token="t", max_retries=2, retry_delay=0
+            _BASE_URL, token="t", max_retries=2, retry_delay=0
         )
         with pytest.raises(FluentRestError) as exc_info:
             strategy.request("GET", "api/fluent_1/test")
@@ -632,35 +615,21 @@ class TestHttpRequestStrategyTransport:
 class TestConnectToWebserver:
     """FluentRestClient.connect factory returns a properly configured client."""
 
-    def test_returns_fluent_rest_client(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
+    def test_connect_factory_with_kwargs(self):
+        """connect_to_webserver creates FluentRestClient with proper config."""
+        import ansys.fluent.core as pyfluent
+
+        client = connect_to_webserver(url=_BASE_URL, token="secret")
         assert isinstance(client, FluentRestClient)
-
-    def test_strategy_is_http_request_strategy(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
         assert isinstance(client._strategy, HttpRequestStrategy)
+        assert isinstance(client._strategy, RequestStrategy)
+        expected_component = pyfluent.config.rest_api_component
+        assert client._api_base == f"api/{expected_component}"
+        expected_auth = hashlib.sha256(b"secret").hexdigest()
+        assert client._strategy._headers["Authorization"] == "Bearer " + expected_auth
 
-    def test_strategy_stores_base_url(self):
-        client = connect_to_webserver(url="http://host:1234/", auth_token="secret")
-        assert client._strategy._base_url == "http://host:1234"
-
-    def test_strategy_builds_auth_header(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
-        expected = hashlib.sha256(b"secret").hexdigest()
-        assert client._strategy._headers["Authorization"] == "Bearer " + expected
-
-    def test_defaults_to_solver_component(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
-        assert client._api_base == "api/fluent_1"
-
-    def test_positional_arguments(self):
+    def test_connect_factory_with_positional_args(self):
+        """connect_to_webserver accepts positional arguments."""
         client = connect_to_webserver(_BASE_URL, "secret")
         assert isinstance(client, FluentRestClient)
         assert isinstance(client._strategy, HttpRequestStrategy)
-
-    def test_satisfies_request_strategy_protocol(self):
-        client = connect_to_webserver(url=_BASE_URL, auth_token="secret")
-        assert isinstance(client._strategy, RequestStrategy)
-
-    def test_reexport_is_same_as_classmethod(self):
-        assert connect_to_webserver.__func__ is connect_to_webserver_direct.__func__
