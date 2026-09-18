@@ -245,7 +245,7 @@ from ansys.fluent.core.services.object_model import (
 
 class Root(PyMenu):
     """
-    Singleton Root.
+    Root group.
     """
     def __init__(self, service, rules, path):
         self.N1 = self.__class__.N1(service, rules, path + [("N1", "")])
@@ -260,7 +260,7 @@ class Root(PyMenu):
         """
         class _N1(PyMenu):
             """
-            Singleton _N1.
+            _N1 group.
             """
             def __init__(self, service, rules, path):
                 self.S3 = self.__class__.S3(service, rules, path + [("S3", "")])
@@ -268,7 +268,7 @@ class Root(PyMenu):
 
             class S3(PyMenu):
                 """
-                Singleton S3.
+                S3 group.
                 """
                 def __init__(self, service, rules, path):
                     super().__init__(service, rules, path)
@@ -278,7 +278,7 @@ class Root(PyMenu):
 
     class S1(PyMenu):
         """
-        Singleton S1.
+        S1 group.
         """
         def __init__(self, service, rules, path):
             self.S2 = self.__class__.S2(service, rules, path + [("S2", "")])
@@ -288,7 +288,7 @@ class Root(PyMenu):
 
         class S2(PyMenu):
             """
-            Singleton S2.
+            S2 group.
             """
             def __init__(self, service, rules, path):
                 super().__init__(service, rules, path)
@@ -301,7 +301,7 @@ class Root(PyMenu):
 
         class C2(PyCommand):
             """
-            Command C2.
+            C2 command.
 
 
             Parameters
@@ -335,7 +335,7 @@ class Root(PyMenu):
 
     class C1(PyCommand):
         """
-        Command C1.
+        C1 command.
 
 
         Parameters

@@ -57,7 +57,7 @@ def _validate_meshing_session(session: BaseMeshing) -> bool:
 
 
 def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool:
-    """Determine whether to use legacy workflow implementation.
+    """Determine whether to use the legacy PyFluent-native interface.
 
     This method handles backward compatibility by automatically selecting the
     appropriate workflow implementation based on Fluent version and user preference.
@@ -65,22 +65,22 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
     Parameters
     ----------
     legacy : bool or None
-        User's preference for legacy mode:
+        User's preference for legacy behavior:
         - None: Auto-detect based on Fluent version
-        - True: Force legacy mode
-        - False: Force new mode (with version check)
+        - True: Force the legacy PyFluent-native interface
+        - False: Force the PyFluent-native interface (with version check)
 
     Returns
     -------
     bool
-        True to use legacy implementation, False to use new implementation.
+        True to use the legacy PyFluent-native interface, False to use the PyFluent-native interface.
 
     Notes
     -----
     **Version compatibility:**
 
-    - Fluent < 26R1: Only legacy mode available (auto-fallback)
-    - Fluent >= 26R1: New mode available (recommended)
+    - Fluent < 26R1: Only the legacy PyFluent-native interface is available (auto-fallback)
+    - Fluent >= 26R1: The PyFluent-native interface is available (recommended)
 
     **Behavior by parameter value:**
 
@@ -88,11 +88,11 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
     - Returns True for Fluent < 26R1
     - Returns False for Fluent >= 26R1
 
-    - ``legacy=False``: Request new mode
+    - ``legacy=False``: Request the PyFluent-native interface
     - Returns False for Fluent >= 26R1 (as requested)
-    - Returns True for Fluent < 26R1 (fallback with warning)
+    - Returns True for Fluent < 26R1 (fallback to legacy PyFluent-native interface with warning)
 
-    - ``legacy=True``: Force legacy mode
+    - ``legacy=True``: Force the legacy PyFluent-native interface
     - Returns True regardless of version
     """
     fluent_version = session.get_fluent_version()
@@ -102,20 +102,20 @@ def _fallback_check(session: PureMeshing | Meshing, legacy: bool | None) -> bool
     if legacy is None:
         return only_legacy_allowed
 
-    # Case 2: User explicitly requests new mode
+    # Case 2: User explicitly requests the PyFluent-native interface
     if legacy is False:
         if only_legacy_allowed:
-            # Fluent version doesn't support new mode - warn and fallback
+            # Fluent version doesn't support the PyFluent-native interface - warn and fallback
             warnings.warn(
-                "Non-legacy workflow mode is only available from Fluent 26R1 onwards. "
-                "Falling back to legacy mode.",
+                "The PyFluent-native interface is only available from Fluent 26R1 onwards. "
+                "Falling back to the legacy PyFluent-native interface.",
                 PyFluentUserWarning,
             )
             return True
-        # New mode is available
+        # PyFluent-native interface is available
         return False
 
-    # Case 3: User explicitly requests legacy mode (legacy=True)
+    # Case 3: User explicitly requests the legacy PyFluent-native interface (legacy=True)
     return True
 
 
