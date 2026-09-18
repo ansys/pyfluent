@@ -236,21 +236,46 @@ def runtime_type_check(obj: T) -> T:
     return _BACKENDS[BACKEND]["decorator"](obj)
 
 
-def no_runtime_type_check(obj: T) -> T:
-    """Exclude ``obj`` from runtime type-checking.
+def no_runtime_type_check(obj):
+    """Disable runtime type-checking for an object, with GenericAlias support.
 
-    Use this decorator on objects whose annotations cannot be evaluated at
-    runtime, for instance because they refer to names which only exist under
-    :data:`typing.TYPE_CHECKING`.
+    Marks an object so that runtime type-checking is skipped. This is useful for
+    disabling type-checks on specific callables or classes that may cause issues
+    with the type-checking backend.
+
+    Unlike the standard library's :func:`typing.no_type_check`, this function
+    handles ``types.GenericAlias`` objects (e.g., ``SettingsBase[DictStateType]``)
+    which are commonly used in class inheritance. GenericAlias objects do not
+    support attribute assignment, so applying ``typing.no_type_check()`` directly
+    would raise ``AttributeError``. This function detects such objects and returns
+    them unchanged.
 
     Parameters
     ----------
-    obj : Callable or type
-        Object to exclude.
+    obj : Callable, type, or types.GenericAlias
+        Object to mark for skipping runtime type-checking. Can be a function,
+        class, or generic alias.
 
     Returns
     -------
-    Callable or type
-        ``obj``, marked as excluded.
+    Callable, type, or types.GenericAlias
+        The input object unchanged, or with the ``__no_type_check__`` attribute
+        set if it supports attribute assignment.
+
+    Notes
+    -----
+    This function is a no-op when runtime type-checking is disabled via
+    :func:`is_type_checking_enabled`.
+
+    See Also
+    --------
+    :func:`typing.no_type_check` : Standard library equivalent
+    :func:`runtime_type_check` : Enable runtime type-checking for an object
     """
+    # Skip applying no_type_check to GenericAlias objects (e.g., SettingsBase[Type])
+    # as they don't support attribute assignment
+    import types
+
+    if isinstance(obj, types.GenericAlias):
+        return obj
     return typing.no_type_check(obj)
