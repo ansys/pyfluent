@@ -27,10 +27,7 @@ from concurrent import futures
 import ipaddress
 import logging
 import socket
-import ssl
 from typing import Any
-import urllib.parse
-import urllib.request
 
 import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
@@ -120,74 +117,6 @@ def find_remoting_ip() -> str:
                         return ip
                 except Exception:
                     network_logger.debug(f"Cannot use {ip} as remoting ip")
-
-
-def check_url_exists(url: str) -> bool:
-    """Check if a URL exists.
-
-    Parameters
-    ----------
-    url : str
-        URL to check
-
-    Returns
-    -------
-    bool
-        True if the URL exists, False otherwise
-
-    Raises
-    ------
-    ssl.SSLError
-        If there is an SSL error while checking the URL
-    ValueError
-        If the URL scheme is not http or https
-    """
-    # Validate URL scheme to prevent security issues
-    parsed_url = urllib.parse.urlparse(url)
-    if parsed_url.scheme not in ("http", "https"):
-        raise ValueError(
-            f"Invalid URL scheme: {parsed_url.scheme}. Only http and https are allowed."
-        )
-    try:
-        with urllib.request.urlopen(
-            url
-        ) as response:  # nosec B310 (Already validated url scheme)
-            return response.status == 200
-    except urllib.error.URLError as ex:
-        if ex.__context__ and isinstance(ex.__context__, ssl.SSLError):
-            raise ex.__context__
-        else:
-            return False
-
-
-def get_url_content(url: str) -> str:
-    """Get the content of a URL.
-
-    Parameters
-    ----------
-    url : str
-        URL to get content from
-
-    Returns
-    -------
-    str
-        content of the URL
-
-    Raises
-    ------
-    ValueError
-        If the URL scheme is not http or https
-    """
-    # Validate URL scheme to prevent security issues
-    parsed_url = urllib.parse.urlparse(url)
-    if parsed_url.scheme not in ("http", "https"):
-        raise ValueError(
-            f"Invalid URL scheme: {parsed_url.scheme}. Only http and https are allowed."
-        )
-    with urllib.request.urlopen(
-        url
-    ) as response:  # nosec B310 (Already validated url scheme)
-        return response.read()
 
 
 def get_uds_path(address: str) -> str | None:

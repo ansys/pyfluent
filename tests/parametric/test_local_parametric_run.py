@@ -35,7 +35,6 @@ def test_local_parametric_run():
     case_filepath = examples.download_file(
         "Static_Mixer_Parameters.cas.h5",
         "pyfluent/static_mixer",
-        return_without_path=False,
     )
 
     local_study = LocalParametricStudy(case_filepath=case_filepath)

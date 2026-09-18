@@ -271,9 +271,7 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 def test_case_file():
-    case_path = examples.download_file(
-        "elbow_param.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-    )
+    case_path = examples.download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
     reader = CaseFile(case_file_name=case_path)
 
     assert reader.num_dimensions() == 3
