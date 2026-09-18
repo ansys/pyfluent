@@ -1,0 +1,103 @@
+:orphan:
+
+.. _boundaries_1:
+
+boundaries
+==========
+
+.. deprecated:: Ansys 2025R2
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.boundaries_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ================
+
+Attribute                                                     Summary
+
+==================================================   ================
+:ref:`axis <axis_5>`                                     Thread-type.
+
+:ref:`degassing <degassing>`                             Thread-type.
+
+:ref:`exhaust_fan <exhaust_fan>`                         Thread-type.
+
+:ref:`fan <fan>`                                         Thread-type.
+
+:ref:`geometry <geometry_5>`                             Thread-type.
+
+:ref:`inlet_vent <inlet_vent>`                           Thread-type.
+
+:ref:`intake_fan <intake_fan>`                           Thread-type.
+
+:ref:`interface <interface>`                             Thread-type.
+
+:ref:`interior <interior>`                               Thread-type.
+
+:ref:`mass_flow_inlet <mass_flow_inlet>`                 Thread-type.
+
+:ref:`mass_flow_outlet <mass_flow_outlet>`               Thread-type.
+
+:ref:`network <network>`                                 Thread-type.
+
+:ref:`network_end <network_end>`                         Thread-type.
+
+:ref:`outflow <outflow>`                                 Thread-type.
+
+:ref:`outlet_vent <outlet_vent>`                         Thread-type.
+
+:ref:`overset <overset>`                                 Thread-type.
+
+:ref:`periodic <periodic>`                               Thread-type.
+
+:ref:`porous_jump <porous_jump>`                         Thread-type.
+
+:ref:`pressure_far_field <pressure_far_field>`           Thread-type.
+
+:ref:`pressure_inlet <pressure_inlet>`                   Thread-type.
+
+:ref:`pressure_outlet <pressure_outlet>`                 Thread-type.
+
+:ref:`radiator <radiator>`                               Thread-type.
+
+:ref:`rans_les_interface <rans_les_interface>`           Thread-type.
+
+:ref:`recirculation_inlet <recirculation_inlet>`         Thread-type.
+
+:ref:`recirculation_outlet <recirculation_outlet>`       Thread-type.
+
+:ref:`shadow <shadow>`                                   Thread-type.
+
+:ref:`symmetry <symmetry>`                               Thread-type.
+
+:ref:`velocity_inlet <velocity_inlet>`                   Thread-type.
+
+:ref:`wall <wall>`                                       Thread-type.
+
+==================================================   ================
+
+.. rubric:: Methods
+
+============================   ==============================================
+
+Method                                                                Summary
+
+============================   ==============================================
+:ref:`set_type <set_type_2>`       Input boundary name(s) to change its type.
+
+============================   ==============================================
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`fluid_2_child <fluid_2_child>`       'child_object_type' of fluid.
+
+:ref:`solid_3_child <solid_3_child>`       'child_object_type' of solid.
+
+====================================   =================================
+

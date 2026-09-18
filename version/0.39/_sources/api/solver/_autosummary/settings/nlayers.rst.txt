@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nlayers:
+
+nlayers
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.nlayers
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`extract_cells_by_mark <extract_cells_by_mark>`       Extract cells based on a cell register.
+
+====================================================   ===========================================
+

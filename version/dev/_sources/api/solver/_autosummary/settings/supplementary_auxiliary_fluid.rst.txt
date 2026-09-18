@@ -1,0 +1,38 @@
+:orphan:
+
+.. _supplementary_auxiliary_fluid:
+
+supplementary_auxiliary_fluid
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.supplementary_auxiliary_fluid
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =============================================================
+
+Attribute                                                                                        Summary
+
+========================================   =============================================================
+:ref:`enable <enable_8>`                                    Enable supplementary auxiliary fluid stream.
+
+:ref:`mass_flow_rate <mass_flow_rate_1>`   The total supplementary auxiliary fluid mass flow rate value.
+
+:ref:`temperature <temperature>`                    The supplementary auxiliary fluid temperature value.
+
+:ref:`quality <quality_1>`                        Inlet quality [0, 1] for two-phase supplementary flow.
+
+========================================   =============================================================
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`macro_model <macro_model>`   Macro heat exchanger model.
+
+================================   ===========================
+

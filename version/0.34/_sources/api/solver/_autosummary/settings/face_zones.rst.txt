@@ -1,0 +1,21 @@
+:orphan:
+
+.. _face_zones:
+
+face_zones
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.face_zones
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =================================================
+
+Parent                                                                                     Summary
+
+==============================================   =================================================
+:ref:`project_face_zones <project_face_zones>`       Project a list of face zones onto a geometry.
+
+==============================================   =================================================
+

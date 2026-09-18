@@ -1,0 +1,21 @@
+:orphan:
+
+.. _disturbance_type:
+
+disturbance_type
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.disturbance_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   =================================================
+
+Parent                                                                                                               Summary
+
+========================================================================   =================================================
+:ref:`user_defined_disturbances_child <user_defined_disturbances_child>`   'child_object_type' of user_defined_disturbances.
+
+========================================================================   =================================================
+

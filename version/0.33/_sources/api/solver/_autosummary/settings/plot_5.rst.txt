@@ -1,0 +1,40 @@
+:orphan:
+
+.. _plot_5:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.plot_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =========================================================================
+
+Attribute                                                                                                    Summary
+
+========================================   =========================================================================
+:ref:`enabled <enabled_71>`                    Specifies whether you would like to write the XY plot data to a file.
+
+:ref:`x_axis_function <x_axis_function>`                                   The variable to be plotted on the X-axis.
+
+:ref:`to_file_enabled <to_file_enabled>`       Specifies whether you would like to write the XY plot data to a file.
+
+:ref:`file_name <file_name_19>`                                     The name of a file to write the XY plot data to.
+
+========================================   =========================================================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`pathline_child <pathline_child>`                         'child_object_type' of pathline.
+
+:ref:`particle_track_child <particle_track_child>`       'child_object_type' of particle_track.
+
+==================================================   ==========================================
+

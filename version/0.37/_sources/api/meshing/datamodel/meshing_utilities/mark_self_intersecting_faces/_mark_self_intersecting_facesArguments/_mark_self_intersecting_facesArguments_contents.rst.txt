@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_self_intersecting_faces__mark_self_intersecting_facesArguments:
+
+_mark_self_intersecting_facesArguments
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.mark_self_intersecting_faces._mark_self_intersecting_facesArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern, _mark_folded
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_describe_geometry_and_flow__describe_geometry_and_flow_set_as_current:
+
+set_as_current
+==============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.describe_geometry_and_flow._describe_geometry_and_flow.set_as_current
+   :members: _set_as_currentArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

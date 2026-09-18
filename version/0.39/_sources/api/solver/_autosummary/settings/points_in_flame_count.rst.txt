@@ -1,0 +1,21 @@
+:orphan:
+
+.. _points_in_flame_count:
+
+points_in_flame_count
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.points_in_flame_count
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`tfm_options <tfm_options>`       TFM model options.
+
+================================   ======================
+

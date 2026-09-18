@@ -1,0 +1,38 @@
+:orphan:
+
+.. _interpolation:
+
+interpolation
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.interpolation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =====================================================================================================================
+
+Attribute                                                                                                                                              Summary
+
+======================================   =====================================================================================================================
+:ref:`filling_method <filling_method>`      Method used to fill (interpolate) solution data into blocked gap cells: 0=Disabled, 1=Layer-by-Layer, 2=Automatic.
+
+:ref:`cell_scheme <cell_scheme>`                                                                   Interpolation scheme used for cell values in flood filling.
+
+:ref:`face_scheme <face_scheme>`         Interpolation scheme used for face values in flood filling: 0=Inverse Distance Weighted, 1=Volume Weighted, 2=Linear.
+
+:ref:`n_layers <n_layers>`                                                                        Number of cell layers used for layer-by-layer interpolation.
+
+======================================   =====================================================================================================================
+
+.. rubric:: Included in:
+
+====================================   =========================================================================================================================
+
+Parent                                                                                                                                                   Summary
+
+====================================   =========================================================================================================================
+:ref:`flow_blocking <flow_blocking>`   Developer settings for the flow-blocking treatment (interpolation, viscous resistance, and boundary condition treatment).
+
+====================================   =========================================================================================================================
+

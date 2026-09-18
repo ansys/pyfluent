@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pressure_outlet_advection_splitting:
+
+pressure_outlet_advection_splitting
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pressure_outlet_advection_splitting
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ======================================================
+
+Parent                                                                                                          Summary
+
+==============================================================   ======================================================
+:ref:`bc_pressure_extrapolations <bc_pressure_extrapolations>`   Setting pressure extrapolations schemes on boundaries.
+
+==============================================================   ======================================================
+

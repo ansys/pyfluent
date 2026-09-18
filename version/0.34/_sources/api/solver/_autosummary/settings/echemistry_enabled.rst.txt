@@ -1,0 +1,21 @@
+:orphan:
+
+.. _echemistry_enabled:
+
+echemistry_enabled
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.echemistry_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================================
+
+Parent                                                                Summary
+
+==============================   ============================================
+:ref:`echemistry <echemistry>`       The potential/echemistry model settings.
+
+==============================   ============================================
+

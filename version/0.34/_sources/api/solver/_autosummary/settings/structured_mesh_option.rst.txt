@@ -1,0 +1,21 @@
+:orphan:
+
+.. _structured_mesh_option:
+
+structured_mesh_option
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.structured_mesh_option
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =============================================
+
+Parent                                                                         Summary
+
+======================================   =============================================
+:ref:`convert_domain <convert_domain>`       Convert entire domain to polyhedra cells.
+
+======================================   =============================================
+

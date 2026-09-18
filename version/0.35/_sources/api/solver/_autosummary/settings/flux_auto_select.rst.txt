@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flux_auto_select:
+
+flux_auto_select
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.flux_auto_select
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==========================================
+
+Parent                                                                  Summary
+
+==================================   ==========================================
+:ref:`p_v_coupling <p_v_coupling>`       The pressure velocity coupling scheme.
+
+==================================   ==========================================
+

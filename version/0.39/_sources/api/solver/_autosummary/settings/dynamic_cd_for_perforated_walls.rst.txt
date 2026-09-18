@@ -1,0 +1,21 @@
+:orphan:
+
+.. _dynamic_cd_for_perforated_walls:
+
+dynamic_cd_for_perforated_walls
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dynamic_cd_for_perforated_walls
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

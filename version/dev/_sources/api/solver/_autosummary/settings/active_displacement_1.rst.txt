@@ -1,0 +1,21 @@
+:orphan:
+
+.. _active_displacement_1:
+
+active_displacement
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.active_displacement_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================================
+
+Parent                                                       Summary
+
+==============================   ===================================
+:ref:`edit_group <edit_group>`   Edit a periodic displacement group.
+
+==============================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _peters_cs_coefficient:
+
+peters_cs_coefficient
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.peters_cs_coefficient
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===============================
+
+Parent                                                                 Summary
+
+============================================   ===============================
+:ref:`flame_speed_model <flame_speed_model>`   Turbulence Flame Speed Options.
+
+============================================   ===============================
+

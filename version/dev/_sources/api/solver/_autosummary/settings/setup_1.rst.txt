@@ -1,0 +1,34 @@
+:orphan:
+
+.. _setup_1:
+
+setup
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.setup_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ====================================
+
+Argument                                                            Summary
+
+====================================   ====================================
+:ref:`species_name <species_name_1>`   Species name for membrane diffusion.
+
+:ref:`diffusivity <diffusivity>`                         Diffusivity value.
+
+====================================   ====================================
+
+.. rubric:: Included in:
+
+==============================================   ============================
+
+Parent                                                                Summary
+
+==============================================   ============================
+:ref:`membrane_diffusion <membrane_diffusion>`   Membrane diffusion settings.
+
+==============================================   ============================
+

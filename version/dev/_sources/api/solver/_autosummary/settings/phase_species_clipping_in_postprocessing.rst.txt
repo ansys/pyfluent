@@ -1,0 +1,21 @@
+:orphan:
+
+.. _phase_species_clipping_in_postprocessing:
+
+phase_species_clipping_in_postprocessing
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.phase_species_clipping_in_postprocessing
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==================================
+
+Parent                                                      Summary
+
+==============================   ==================================
+:ref:`species_15 <species_15>`   Multiphase species options object.
+
+==============================   ==================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gap_viscosity:
+
+gap_viscosity
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gap_viscosity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===================================================
+
+Parent                                                                           Summary
+
+==================================   ===================================================
+:ref:`sponge_layer <sponge_layer>`   Settings for the Sponge Layer flow-modeling method.
+
+==================================   ===================================================
+

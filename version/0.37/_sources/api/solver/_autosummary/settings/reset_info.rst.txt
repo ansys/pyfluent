@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reset_info:
+
+reset_info
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.reset_info
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ====================================
+
+Parent                                                                          Summary
+
+================================================   ====================================
+:ref:`write_or_reset_info <write_or_reset_info>`       Write or reset gRPC server file.
+
+================================================   ====================================
+

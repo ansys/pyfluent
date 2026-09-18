@@ -1,0 +1,47 @@
+:orphan:
+
+.. _reporting:
+
+reporting
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reporting
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===================
+
+Attribute                                              Summary
+
+========================================   ===================
+:ref:`boundary_choice <boundary_choice>`   Reporting boundary.
+
+:ref:`location <location_5>`               Reporting boundary.
+
+========================================   ===================
+
+.. rubric:: Methods
+
+=======================================   =================================================
+
+Method                                                                              Summary
+
+=======================================   =================================================
+:ref:`report <report_3>`                  Boundary condition sensitivity report in console.
+
+:ref:`write_to_file <write_to_file_10>`                               Write report to file.
+
+=======================================   =================================================
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`postprocessing <postprocessing>`   Adjoint postprocessing object.
+
+======================================   ==============================
+

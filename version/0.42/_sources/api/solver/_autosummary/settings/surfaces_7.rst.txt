@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surfaces_7:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surfaces_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`periodic_instances_child <periodic_instances_child>`       'child_object_type' of periodic_instances.
+
+==========================================================   ==============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _moss_brookes:
+
+moss_brookes
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.moss_brookes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ======================
+
+Parent                                                    Summary
+
+========================================   ======================
+:ref:`model_selection <model_selection>`   The soot model to use.
+
+========================================   ======================
+

@@ -1,0 +1,31 @@
+.. _ref_ansys_fluent_core_launcher:
+
+launcher
+========
+
+.. automodule:: ansys.fluent.core.launcher
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+
+    container_launcher
+    error_handler
+    error_warning_messages
+    fluent_container
+    launch_options
+    launcher
+    launcher_utils
+    pim_launcher
+    process_launch_string
+    server_info
+    slurm_launcher
+    standalone_launcher
+    watchdog
+

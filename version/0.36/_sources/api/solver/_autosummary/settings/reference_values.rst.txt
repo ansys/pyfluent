@@ -1,0 +1,69 @@
+:orphan:
+
+.. _reference_values:
+
+reference_values
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.reference_values
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ==============================================================
+
+Attribute                                                                                                         Summary
+
+========================================================   ==============================================================
+:ref:`area <area_1>`                                                                    Reference area for normalization.
+
+:ref:`depth <depth>`                                                              Reference depth for volume calculation.
+
+:ref:`density <density_9>`                                                           Reference density for normalization.
+
+:ref:`enthalpy <enthalpy>`                                     Reference enthalpy for enthalpy damping and normalization.
+
+:ref:`length <length_4>`                                                              Reference length for normalization.
+
+:ref:`pressure <pressure>`                                                          Reference pressure for normalization.
+
+:ref:`temperature <temperature_5>`                                               Reference temperature for normalization.
+
+:ref:`yplus <yplus>`                                                                   Reference yplus for normalization.
+
+:ref:`velocity <velocity_1>`                                                        Reference velocity for normalization.
+
+:ref:`viscosity <viscosity_3>`                                                     Reference viscosity for normalization.
+
+:ref:`ratio_of_specific_heats <ratio_of_specific_heats>`                                         Ratio of specific heats.
+
+:ref:`zone <zone_2>`                                                                                      Reference zone.
+
+:ref:`volume <volume_1>`                                                                                Reference volume.
+
+========================================================   ==============================================================
+
+.. rubric:: Methods
+
+================================   ==========================
+
+Method                                                Summary
+
+================================   ==========================
+:ref:`compute <compute_1>`                 'compute' command.
+
+:ref:`list_values <list_values>`       'list_values' command.
+
+================================   ==========================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`setup <setup>`       'setup' child.
+
+====================   ==================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_55:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_55
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`dynamic_mesh <dynamic_mesh>`       'dynamic_mesh' child.
+
+==================================   =========================
+

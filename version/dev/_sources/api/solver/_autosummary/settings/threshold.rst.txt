@@ -1,0 +1,21 @@
+:orphan:
+
+.. _threshold:
+
+threshold
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.threshold
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===================================================================================================
+
+Parent                                                                                                                     Summary
+
+============================   ===================================================================================================
+:ref:`create_13 <create_13>`   Create a new gap region. From PyConsole supply gap_region_name, face_zone_ids, threshold, and type.
+
+============================   ===================================================================================================
+

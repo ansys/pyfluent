@@ -1,0 +1,21 @@
+:orphan:
+
+.. _origin:
+
+origin
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.origin
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   =================
+
+Parent                         Summary
+
+==================   =================
+:ref:`cone <cone>`       'cone' child.
+
+==================   =================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _mt_cav_model_constants:
+
+mt_cav_model_constants
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_cav_model_constants
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   ===================================
+
+Attribute                                                                                    Summary
+
+==============================================================   ===================================
+:ref:`mt_cav_schnerr_bub_num_den <mt_cav_schnerr_bub_num_den>`                Bubble Number Density.
+
+:ref:`mt_cav_zwart_bub_dia <mt_cav_zwart_bub_dia>`                     Zwart bubble diameter/radius.
+
+:ref:`mt_cav_zwart_nuc_site_vof <mt_cav_zwart_nuc_site_vof>`              Zwart nucleation site VOF.
+
+:ref:`mt_cav_zwart_evap_coeff <mt_cav_zwart_evap_coeff>`              Zwart evaporation coefficient.
+
+:ref:`mt_cav_zwart_cond_coeff <mt_cav_zwart_cond_coeff>`             Zwart condensation coefficient.
+
+==============================================================   ===================================
+
+.. rubric:: Included in:
+
+==================================   ============================================
+
+Parent                                                                    Summary
+
+==================================   ============================================
+:ref:`mt_cav_group <mt_cav_group>`       Group all cavitation related parameters.
+
+==================================   ============================================
+

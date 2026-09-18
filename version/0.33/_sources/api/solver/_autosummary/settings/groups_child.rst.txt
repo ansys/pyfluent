@@ -1,0 +1,34 @@
+:orphan:
+
+.. _groups_child:
+
+groups_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.groups_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =========================
+
+Attribute                                            Summary
+
+================================   =========================
+:ref:`name <name_4>`                     Name of the object.
+
+:ref:`components <components_1>`       Input component name.
+
+================================   =========================
+
+.. rubric:: Included in:
+
+======================   ==========================
+
+Parent                                      Summary
+
+======================   ==========================
+:ref:`groups <groups>`       Define topology group.
+
+======================   ==========================
+

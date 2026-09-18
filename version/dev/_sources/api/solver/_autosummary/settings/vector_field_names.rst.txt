@@ -1,0 +1,23 @@
+:orphan:
+
+.. _vector_field_names:
+
+vector_field_names
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.vector_field_names
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================
+
+Parent                                                                               Summary
+
+====================================================   =====================================
+:ref:`field_entries_child <field_entries_child>`       'child_object_type' of field_entries.
+
+:ref:`field_entries_1_child <field_entries_1_child>`   'child_object_type' of field_entries.
+
+====================================================   =====================================
+

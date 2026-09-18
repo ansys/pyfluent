@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_start_designs_only:
+
+use_start_designs_only
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.use_start_designs_only
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

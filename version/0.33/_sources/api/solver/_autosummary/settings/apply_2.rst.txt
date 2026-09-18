@@ -1,0 +1,32 @@
+:orphan:
+
+.. _apply_2:
+
+apply
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.apply_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ================================
+
+Argument                                                    Summary
+
+================================   ================================
+:ref:`state_name <state_name_1>`       Display state name to apply.
+
+================================   ================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`display_states <display_states>`       Display state options.
+
+======================================   ==========================
+

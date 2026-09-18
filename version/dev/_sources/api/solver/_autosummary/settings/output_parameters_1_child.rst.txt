@@ -1,0 +1,21 @@
+:orphan:
+
+.. _output_parameters_1_child:
+
+output_parameters_child
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.output_parameters_1_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================================
+
+Parent                                                                              Summary
+
+================================================   ========================================
+:ref:`output_parameters_1 <output_parameters_1>`   Output Parameter Values of Design Point.
+
+================================================   ========================================
+

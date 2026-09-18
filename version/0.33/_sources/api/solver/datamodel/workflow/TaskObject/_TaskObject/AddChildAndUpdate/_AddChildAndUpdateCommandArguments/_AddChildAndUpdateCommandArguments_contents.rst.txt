@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_workflow_TaskObject__TaskObject_AddChildAndUpdate__AddChildAndUpdateCommandArguments:
+
+_AddChildAndUpdateCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.workflow.Root.TaskObject._TaskObject.AddChildAndUpdate._AddChildAndUpdateCommandArguments
+   :members: _DeferUpdate, _Force
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

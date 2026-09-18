@@ -1,0 +1,32 @@
+:orphan:
+
+.. _plot_direction:
+
+plot_direction
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.plot_direction
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =======================
+
+Argument                                                   Summary
+
+========================================   =======================
+:ref:`plot_direction <plot_direction_2>`       The plot direction.
+
+========================================   =======================
+
+.. rubric:: Included in:
+
+======================   =======================================================================================================================
+
+Parent                                                                                                                                   Summary
+
+======================   =======================================================================================================================
+:ref:`plot_4 <plot_4>`       Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+======================   =======================================================================================================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _list_properties_all:
+
+list_properties_all
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.list_properties_all
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`sdof_properties <sdof_properties>`       'sdof_properties' child.
+
+:ref:`dynamic_zones <dynamic_zones>`                     Dynamic Zones.
+
+========================================   ============================
+

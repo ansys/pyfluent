@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sheet_constant:
+
+sheet_constant
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.sheet_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

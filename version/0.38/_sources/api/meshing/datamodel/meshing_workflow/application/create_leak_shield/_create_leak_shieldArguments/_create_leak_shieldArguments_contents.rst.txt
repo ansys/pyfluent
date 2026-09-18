@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_leak_shield__create_leak_shieldArguments:
+
+_create_leak_shieldArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.create_leak_shield._create_leak_shieldArguments
+   :members: _dead_regions_list, _leak_shield_name, _live_mpt_selection_list, _max_hole_size, _merge_patches, _min_hole_size, _object_selection_list, _patch_at_live, _prompt_for_cleanup, _size_field_file_name, _specify_dead, _specify_live, _specify_obj, _use_size_field
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

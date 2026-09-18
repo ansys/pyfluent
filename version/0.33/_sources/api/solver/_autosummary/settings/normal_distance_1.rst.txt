@@ -1,0 +1,21 @@
+:orphan:
+
+.. _normal_distance_1:
+
+normal_distance
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.normal_distance_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================
+
+Parent                                                      Summary
+
+========================================   ========================
+:ref:`distance_option <distance_option>`       The distance method.
+
+========================================   ========================
+

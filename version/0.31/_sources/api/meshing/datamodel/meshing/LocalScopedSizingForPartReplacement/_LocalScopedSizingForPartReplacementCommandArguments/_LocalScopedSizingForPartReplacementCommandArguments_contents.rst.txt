@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_LocalScopedSizingForPartReplacement__LocalScopedSizingForPartReplacementCommandArguments:
+
+_LocalScopedSizingForPartReplacementCommandArguments
+====================================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.LocalScopedSizingForPartReplacement._LocalScopedSizingForPartReplacementCommandArguments
+   :members: _CompleteEdgeSelectionList, _CompleteLabelSelectionList, _CompleteObjectSelectionList, _CompleteZoneSelectionList, _EdgeSelectionList, _LabelSelectionList, _LocalSettingsName, _ObjectSelectionList, _SelectionType, _ValueChanged, _ZoneLocation, _ZoneSelectionList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _LocalSizeControlParameters/_LocalSizeControlParameters_contents

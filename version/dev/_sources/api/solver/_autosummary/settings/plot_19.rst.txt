@@ -1,0 +1,21 @@
+:orphan:
+
+.. _plot_19:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.plot_19
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================================
+
+Parent                                                        Summary
+
+============================   ======================================
+:ref:`monitor_4 <monitor_4>`   Calculation activities monitor object.
+
+============================   ======================================
+

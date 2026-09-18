@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_LoadFmdFile__LoadFmdFileCommandArguments__Options:
+
+_Options
+========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.LoadFmdFile._LoadFmdFileCommandArguments._Options
+   :members: _Line, _Solid, _Surface
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

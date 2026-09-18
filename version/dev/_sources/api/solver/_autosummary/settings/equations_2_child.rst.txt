@@ -1,0 +1,38 @@
+:orphan:
+
+.. _equations_2_child:
+
+equations_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.equations_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =============================================================================
+
+Attribute                                                                                                              Summary
+
+==============================================   =============================================================================
+:ref:`monitor <monitor_2>`                                           Enable or disable monitoring for this equation imbalance.
+
+:ref:`check_convergence <check_convergence_1>`   Enable or disable convergence checking for this monitored equation imbalance.
+
+:ref:`absolute_criteria <absolute_criteria_1>`                 The absolute convergence criterion for this equation imbalance.
+
+:ref:`relative_criteria <relative_criteria_1>`                 The relative convergence criterion for this equation imbalance.
+
+==============================================   =============================================================================
+
+.. rubric:: Included in:
+
+================================   ============================================================
+
+Parent                                                                                  Summary
+
+================================   ============================================================
+:ref:`equations_2 <equations_2>`   List of equations available for global imbalance monitoring.
+
+================================   ============================================================
+

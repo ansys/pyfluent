@@ -1,0 +1,21 @@
+:orphan:
+
+.. _grid_points_1:
+
+grid_points
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.grid_points_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`edit_c_grid_settings <edit_c_grid_settings>`   Editor group for flamelet c-grid settings.
+
+==================================================   ==========================================
+

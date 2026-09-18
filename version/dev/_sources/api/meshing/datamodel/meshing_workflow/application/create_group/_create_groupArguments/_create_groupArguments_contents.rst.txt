@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_group__create_groupArguments:
+
+_create_groupArguments
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.create_group._create_groupArguments
+   :members: _new_group_name, _selection_type, _topology_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

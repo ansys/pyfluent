@@ -1,0 +1,18 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Reports__Reports_PrintReport:
+
+PrintReport
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.flicing.Root.Case.Results.Reports._Reports.PrintReport
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _PrintReportCommandArguments/_PrintReportCommandArguments_contents

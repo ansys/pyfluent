@@ -1,0 +1,21 @@
+:orphan:
+
+.. _blade_flutter:
+
+blade_flutter
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.blade_flutter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================================================================================================================================
+
+Parent                                                                                                                                                                    Summary
+
+==========================   ====================================================================================================================================================
+:ref:`graphics <graphics>`   Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+==========================   ====================================================================================================================================================
+

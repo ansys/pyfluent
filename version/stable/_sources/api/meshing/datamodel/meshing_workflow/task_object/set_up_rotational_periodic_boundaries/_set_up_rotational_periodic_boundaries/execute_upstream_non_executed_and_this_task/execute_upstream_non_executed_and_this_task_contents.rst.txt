@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_set_up_rotational_periodic_boundaries__set_up_rotational_periodic_boundaries_execute_upstream_non_executed_and_this_task:
+
+execute_upstream_non_executed_and_this_task
+===========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.set_up_rotational_periodic_boundaries._set_up_rotational_periodic_boundaries.execute_upstream_non_executed_and_this_task
+   :members: _execute_upstream_non_executed_and_this_taskArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

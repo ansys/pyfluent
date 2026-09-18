@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mbo_talpha:
+
+mbo_talpha
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mbo_talpha
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===================================
+
+Parent                                                                             Summary
+
+====================================================   ===================================
+:ref:`moss_brookes_non_coal <moss_brookes_non_coal>`   Moss-Brookes soot model parameters.
+
+====================================================   ===================================
+

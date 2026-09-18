@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_12:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.value_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =================================
+
+Parent                                                                                 Summary
+
+==========================================================   =================================
+:ref:`turbulent_schmidt_number <turbulent_schmidt_number>`       The turbulent Schmidt number.
+
+==========================================================   =================================
+

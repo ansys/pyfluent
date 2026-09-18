@@ -1,0 +1,23 @@
+:orphan:
+
+.. _unit_1:
+
+unit
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.unit_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =============================================
+
+Parent                                                                                           Summary
+
+========================================================   =============================================
+:ref:`read_2 <read_2>`                                                                     'read' child.
+
+:ref:`named_expressions_child <named_expressions_child>`       'child_object_type' of named_expressions.
+
+========================================================   =============================================
+

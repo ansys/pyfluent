@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sources_fft:
+
+sources_fft
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.sources_fft
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =======================================
+
+Parent                                                                           Summary
+
+==============================================   =======================================
+:ref:`export_source_data <export_source_data>`       Entering source data export object.
+
+==============================================   =======================================
+

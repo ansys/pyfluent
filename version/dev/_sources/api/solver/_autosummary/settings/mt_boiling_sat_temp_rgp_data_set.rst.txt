@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_boiling_sat_temp_rgp_data_set:
+
+mt_boiling_sat_temp_rgp_data_set
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_sat_temp_rgp_data_set
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==============================================================
+
+Parent                                                                                                      Summary
+
+==================================================   ==============================================================
+:ref:`mt_boiling_evap_prop <mt_boiling_evap_prop>`   Evaporation-condensation property inputs for Eulerian boiling.
+
+==================================================   ==============================================================
+

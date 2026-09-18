@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_external_flow_boundaries__create_external_flow_boundaries_insert_next_task:
+
+insert_next_task
+================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.create_external_flow_boundaries._create_external_flow_boundaries.insert_next_task
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _insert_next_taskArguments/_insert_next_taskArguments_contents

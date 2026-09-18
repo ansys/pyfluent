@@ -1,0 +1,48 @@
+:orphan:
+
+.. _usd_export_via_connector:
+
+usd_export_via_connector
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.usd_export_via_connector
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =====================================================
+
+Argument                                                                                 Summary
+
+========================================   =====================================================
+:ref:`output_usd_path <output_usd_path>`                     The path where USD should be saved.
+
+:ref:`surface_names <surface_names_2>`                        Surface ids to be exported to USD.
+
+:ref:`object_name <object_name_3>`             The object name that needs to be exported to USD.
+
+:ref:`colormap_name <colormap_name>`                                          The colormap name.
+
+:ref:`num_levels <num_levels>`                                             The number of levels.
+
+:ref:`min_value <min_value_2>`                                                The minimum value.
+
+:ref:`max_value <max_value_2>`                                                The maximum value.
+
+:ref:`node_values <node_values_5>`                                   Whether to use node values.
+
+:ref:`field_name <field_name_1>`                                                 The field name.
+
+========================================   =====================================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`raytracing_options <raytracing_options>`       'raytracing_options' child.
+
+==============================================   ===============================
+

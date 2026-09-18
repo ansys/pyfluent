@@ -1,0 +1,32 @@
+:orphan:
+
+.. _error_based_time_stepping:
+
+error_based_time_stepping
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.error_based_time_stepping
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ================================
+
+Attribute                                                       Summary
+
+====================================   ================================
+:ref:`undo_timestep <undo_timestep>`       Undo the previous time step.
+
+====================================   ================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================
+
+Parent                                                                  Summary
+
+==============================================   ==============================
+:ref:`transient_controls <transient_controls>`       Transient controls object.
+
+==============================================   ==============================
+

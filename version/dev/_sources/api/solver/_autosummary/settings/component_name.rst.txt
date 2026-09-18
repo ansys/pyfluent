@@ -1,0 +1,21 @@
+:orphan:
+
+.. _component_name:
+
+component_name
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.component_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ======================
+
+Parent                                                                Summary
+
+====================================================   ======================
+:ref:`read_matrix_data_file <read_matrix_data_file>`   Read matrix data file.
+
+====================================================   ======================
+

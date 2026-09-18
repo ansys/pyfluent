@@ -1,0 +1,29 @@
+:orphan:
+
+.. _use_local_edge_length_factor:
+
+use_local_edge_length_factor
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.use_local_edge_length_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ===================================================================
+
+Parent                                                                                                                         Summary
+
+================================================================   ===================================================================
+:ref:`create_8 <create_8>`                                                                                     Create mesh interfaces.
+
+:ref:`interface_4_child <interface_4_child>`                                                         'child_object_type' of interface.
+
+:ref:`tolerance_2 <tolerance_2>`                                                          Specification of mapped interface tolerance.
+
+:ref:`convert_to_mapped_interface <convert_to_mapped_interface>`       Convert non-conformal mesh interface to mapped mesh interfaces.
+
+:ref:`create_7 <create_7>`                                                                                    Create a mesh interface.
+
+================================================================   ===================================================================
+

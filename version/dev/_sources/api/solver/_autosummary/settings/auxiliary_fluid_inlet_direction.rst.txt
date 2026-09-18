@@ -1,0 +1,36 @@
+:orphan:
+
+.. _auxiliary_fluid_inlet_direction:
+
+auxiliary_fluid_inlet_direction
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.auxiliary_fluid_inlet_direction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============   ==========================================================
+
+Attribute                                                         Summary
+
+============   ==========================================================
+:ref:`x <x>`   X component of the auxiliary fluid inlet direction vector.
+
+:ref:`y <y>`   Y component of the auxiliary fluid inlet direction vector.
+
+:ref:`z <z>`   Z component of the auxiliary fluid inlet direction vector.
+
+============   ==========================================================
+
+.. rubric:: Included in:
+
+========================================   ==========================================
+
+Parent                                                                        Summary
+
+========================================   ==========================================
+:ref:`flow_directions <flow_directions>`   Flow directions for a heat exchanger core.
+
+========================================   ==========================================
+

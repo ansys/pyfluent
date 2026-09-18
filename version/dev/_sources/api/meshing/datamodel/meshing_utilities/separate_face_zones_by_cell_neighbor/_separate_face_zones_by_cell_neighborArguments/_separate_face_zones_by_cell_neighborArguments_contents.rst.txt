@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_separate_face_zones_by_cell_neighbor__separate_face_zones_by_cell_neighborArguments:
+
+_separate_face_zones_by_cell_neighborArguments
+==============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.separate_face_zones_by_cell_neighbor._separate_face_zones_by_cell_neighborArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

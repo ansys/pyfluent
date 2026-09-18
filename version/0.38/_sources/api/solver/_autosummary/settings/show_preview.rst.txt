@@ -1,0 +1,21 @@
+:orphan:
+
+.. _show_preview:
+
+show_preview
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.show_preview
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================
+
+Parent                                                Summary
+
+============================   ==============================
+:ref:`preview_1 <preview_1>`       Design tool export object.
+
+============================   ==============================
+

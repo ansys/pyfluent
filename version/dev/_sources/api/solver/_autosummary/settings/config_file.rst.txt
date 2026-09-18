@@ -1,0 +1,21 @@
+:orphan:
+
+.. _config_file:
+
+config_file
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.config_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================
+
+Parent                                                                      Summary
+
+====================================================   ============================
+:ref:`pybamm_model_settings <pybamm_model_settings>`   PyBaMM echem model settings.
+
+====================================================   ============================
+

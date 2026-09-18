@@ -1,0 +1,21 @@
+:orphan:
+
+.. _radius_7:
+
+radius
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.radius_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`settings_8_child <settings_8_child>`       'child_object_type' of settings.
+
+==========================================   ====================================
+

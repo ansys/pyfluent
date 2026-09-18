@@ -1,0 +1,34 @@
+:orphan:
+
+.. _flow_directions:
+
+flow_directions
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_directions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ===================================================
+
+Attribute                                                                                                              Summary
+
+========================================================================   ===================================================
+:ref:`auxiliary_fluid_inlet_direction <auxiliary_fluid_inlet_direction>`   The direction vector of auxiliary fluid inlet flow.
+
+:ref:`pass_to_pass_direction <pass_to_pass_direction>`                             The direction vector for pass-to-pass flow.
+
+========================================================================   ===================================================
+
+.. rubric:: Included in:
+
+==============================   ===================================
+
+Parent                                                       Summary
+
+==============================   ===================================
+:ref:`geometry_4 <geometry_4>`   Geometry for a heat exchanger core.
+
+==============================   ===================================
+

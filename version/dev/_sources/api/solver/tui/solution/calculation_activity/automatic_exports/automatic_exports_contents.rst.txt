@@ -1,0 +1,23 @@
+.. _ref_solver_tui_solution_calculation_activity_automatic_exports:
+
+automatic_exports
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.calculation_activity.automatic_exports
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   ascii/ascii_contents
+   cgns/cgns_contents
+   mapdl/mapdl_contents
+   nastran/nastran_contents
+   tecplot/tecplot_contents
+   visualize/visualize_contents

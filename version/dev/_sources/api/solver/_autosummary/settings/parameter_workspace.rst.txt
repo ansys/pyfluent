@@ -1,0 +1,36 @@
+:orphan:
+
+.. _parameter_workspace:
+
+parameter_workspace
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.parameter_workspace
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ==========================================================================================
+
+Attribute                                                                                                                                       Summary
+
+==========================================================   ==========================================================================================
+:ref:`parameters <parameters_15>`                             Provides access to define, manage, and monitor input/output parameters in the simulation.
+
+:ref:`parametric_studies <parametric_studies>`               Accesses tools for creating, managing, and analyzing parametric studies and design points.
+
+:ref:`current_parametric_study <current_parametric_study>`                                                            Name of Current Parametric Study.
+
+==========================================================   ==========================================================================================
+
+.. rubric:: Included in:
+
+======================   ==================
+
+Parent                              Summary
+
+======================   ==================
+:ref:`root <ref_root>`   No help available.
+
+======================   ==================
+

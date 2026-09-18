@@ -1,0 +1,21 @@
+:orphan:
+
+.. _input_type:
+
+input_type
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.input_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =====================================================================================
+
+Parent                                                                                                                                 Summary
+
+======================================================   =====================================================================================
+:ref:`compute_from_data_file <compute_from_data_file>`   Open the impedance data fitting dialog to fit model parameters from measurement data.
+
+======================================================   =====================================================================================
+

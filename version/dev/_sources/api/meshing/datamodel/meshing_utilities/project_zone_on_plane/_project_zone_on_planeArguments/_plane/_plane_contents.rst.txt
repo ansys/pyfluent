@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_project_zone_on_plane__project_zone_on_planeArguments__plane:
+
+_plane
+======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.project_zone_on_plane._project_zone_on_planeArguments._plane
+   :members: _p1, _p2, _p3
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

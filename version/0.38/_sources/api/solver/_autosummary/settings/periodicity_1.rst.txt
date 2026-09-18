@@ -1,0 +1,40 @@
+:orphan:
+
+.. _periodicity_1:
+
+periodicity
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.periodicity_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ==========================================================
+
+Attribute                                                                           Summary
+
+==============================   ==========================================================
+:ref:`type <type_12>`                                       Specifies the periodic type . .
+
+:ref:`offset <offset_8>`                       Specifies the translation offset distance. .
+
+:ref:`angle <angle_3>`                                 The angle of rotational periodicity.
+
+:ref:`origin <origin_7>`              Specifies the origin for for rotational periodicity .
+
+:ref:`direction <direction_4>`       Specifies the axis vector for rotational periodicity .
+
+==============================   ==========================================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`interfaces_child <interfaces_child>`       'child_object_type' of interfaces.
+
+==========================================   ======================================
+

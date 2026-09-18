@@ -1,0 +1,42 @@
+:orphan:
+
+.. _optimizer:
+
+optimizer
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.optimizer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ======================================
+
+Attribute                                                                                           Summary
+
+==================================================================   ======================================
+:ref:`objectives <objectives_1>`                                                      Optimizer objectives.
+
+:ref:`settings <settings_9>`                                                            Optimizer settings.
+
+:ref:`turbulence_model_design_tool <turbulence_model_design_tool>`   Turbulence model design tool settings.
+
+:ref:`calculation_activities <calculation_activities_1>`                     Calculation activities object.
+
+:ref:`calculation <calculation_1>`                                          Optimizer calculation commands.
+
+==================================================================   ======================================
+
+.. rubric:: Included in:
+
+======================================   =====================================
+
+Parent                                                                 Summary
+
+======================================   =====================================
+:ref:`design <design>`                   Access Design and Optimization tools.
+
+:ref:`gradient_based <gradient_based>`           Gradient-based design object.
+
+======================================   =====================================
+

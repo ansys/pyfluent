@@ -1,0 +1,38 @@
+:orphan:
+
+.. _particle_relocation:
+
+particle_relocation
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.particle_relocation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================   ==============================================================================
+
+Attribute                                                                                                                                                         Summary
+
+========================================================================================   ==============================================================================
+:ref:`enhanced_method_enabled <enhanced_method_enabled>`                                                      Uses a more robust method to locate particles within cells.
+
+:ref:`support_for_std_track_data_read_enabled <support_for_std_track_data_read_enabled>`   Enables compatibility mode when reading particles from older tracking methods.
+
+:ref:`overset_robustness_level <overset_robustness_level>`                                           Sets the robustness level for particle relocation in overset meshes.
+
+:ref:`legacy_method_enabled <legacy_method_enabled>`                                                                         Uses the legacy particle location algorithm.
+
+========================================================================================   ==============================================================================
+
+.. rubric:: Included in:
+
+============================================   ==============================================================================================================
+
+Parent                                                                                                                                                Summary
+
+============================================   ==============================================================================================================
+:ref:`high_res_tracking <high_res_tracking>`   Advanced settings for high-resolution particle tracking. High-resolution tracking subdivides polyhedral cells 
+
+============================================   ==============================================================================================================
+

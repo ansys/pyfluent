@@ -1,0 +1,36 @@
+:orphan:
+
+.. _add_zone:
+
+add_zone
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_zone
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ====================================
+
+Argument                                                      Summary
+
+==============================   ====================================
+:ref:`zone_name <zone_name_5>`       Zone name in add-zone operation.
+
+:ref:`value <value_15>`                  Value in add-zone operation.
+
+==============================   ====================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`contact_resis <contact_resis>`                 Contact Resistance Regions.
+
+:ref:`contact_resistance <contact_resistance>`       Contact resistance regions.
+
+==============================================   ===============================
+

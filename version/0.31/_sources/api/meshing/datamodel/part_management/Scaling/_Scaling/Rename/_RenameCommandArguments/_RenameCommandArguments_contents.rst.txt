@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_Scaling__Scaling_Rename__RenameCommandArguments:
+
+_RenameCommandArguments
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root.Scaling._Scaling.Rename._RenameCommandArguments
+   :members: _NewName
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

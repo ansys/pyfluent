@@ -1,0 +1,22 @@
+.. _ref_meshing_datamodel_part_management_TransformOperations:
+
+TransformOperations
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root.TransformOperations
+   :members: Children, Name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   CreateTransform/CreateTransform_contents
+   CreateTransformType/CreateTransformType_contents
+   DeleteAllTransforms/DeleteAllTransforms_contents
+   DeleteTransform/DeleteTransform_contents
+   UpdateAllTransforms/UpdateAllTransforms_contents

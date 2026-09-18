@@ -1,0 +1,21 @@
+:orphan:
+
+.. _define_1:
+
+define
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.define_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`efficiency <efficiency>`       The object.
+
+==============================   ===============
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _c2_epsilon:
+
+c2_epsilon
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.c2_epsilon
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================
+
+Parent                                               Summary
+
+======================================   ===================
+:ref:`coefficients_5 <coefficients_5>`   Coefficients group.
+
+======================================   ===================
+

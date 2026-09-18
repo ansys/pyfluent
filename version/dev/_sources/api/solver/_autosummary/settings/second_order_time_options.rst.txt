@@ -1,0 +1,36 @@
+:orphan:
+
+.. _second_order_time_options:
+
+second_order_time_options
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.second_order_time_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   =======================================================================================
+
+Attribute                                                                                                                                                Summary
+
+======================================================================   =======================================================================================
+:ref:`variable_time_step_formulation <variable_time_step_formulation>`   Use variable rather than fixed time-step size formulation for transient discretization.
+
+:ref:`flexible_bso <flexible_bso>`                                                                                        Flexible bounded second-order options.
+
+:ref:`bounded_formulation <bounded_formulation>`                                                                       Bounded second-order formulation options.
+
+======================================================================   =======================================================================================
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`methods_2 <methods_2>`   The solution methods object.
+
+============================   ============================
+

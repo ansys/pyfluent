@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_get_visible_domain_bounds:
+
+get_visible_domain_bounds
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.graphics.get_visible_domain_bounds
+   :members: _get_visible_domain_boundsArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

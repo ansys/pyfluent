@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_switch_to_solution:
+
+switch_to_solution
+==================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.switch_to_solution
+   :members: _switch_to_solutionArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

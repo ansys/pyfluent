@@ -1,0 +1,21 @@
+:orphan:
+
+.. _y_axis_label_alignment:
+
+y_axis_label_alignment
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.y_axis_label_alignment
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =====================================================================
+
+Parent                                                                                                   Summary
+
+========================================   =====================================================================
+:ref:`label_alignment <label_alignment>`       Set the alignment of xy plot label to horizontal or axis aligned.
+
+========================================   =====================================================================
+

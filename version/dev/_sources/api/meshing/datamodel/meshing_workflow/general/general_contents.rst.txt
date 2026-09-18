@@ -1,0 +1,28 @@
+.. _ref_meshing_datamodel_meshing_workflow_general:
+
+general
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.general
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   create_composite_task/create_composite_task_contents
+   create_new_workflow/create_new_workflow_contents
+   delete_tasks/delete_tasks_contents
+   get_insertable_tasks/get_insertable_tasks_contents
+   initialize_workflow/initialize_workflow_contents
+   insert_new_task/insert_new_task_contents
+   load_state/load_state_contents
+   load_workflow/load_workflow_contents
+   reset_workflow/reset_workflow_contents
+   save_workflow/save_workflow_contents
+   workflow/workflow_contents

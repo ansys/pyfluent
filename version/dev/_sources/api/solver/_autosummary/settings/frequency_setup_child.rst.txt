@@ -1,0 +1,47 @@
+:orphan:
+
+.. _frequency_setup_child:
+
+frequency_setup_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.frequency_setup_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   =======================================================================================================================================
+
+Attribute                                                                                                                                                                                      Summary
+
+============================================================   =======================================================================================================================================
+:ref:`inter_row_disturbances <inter_row_disturbances>`         Inter-row disturbances affecting this row. Each entry represents a source row whose blade passing frequency is seen by this target row.
+
+:ref:`user_defined_disturbances <user_defined_disturbances>`                                           User-defined disturbances targeting this row. Added on top of the inter-row disturbances above.
+
+============================================================   =======================================================================================================================================
+
+.. rubric:: Methods
+
+========================================================================   ==========================================================================================
+
+Method                                                                                                                                                        Summary
+
+========================================================================   ==========================================================================================
+:ref:`add_user_defined_disturbance <add_user_defined_disturbance>`         Add a user-defined disturbance targeting this row. Equivalent to setup-dist-freq-manually.
+
+:ref:`remove_user_defined_disturbance <remove_user_defined_disturbance>`                                       Remove a user-defined disturbance targetting this row.
+
+========================================================================   ==========================================================================================
+
+.. rubric:: Included in:
+
+========================================   =============================================================================================================================================
+
+Parent                                                                                                                                                                           Summary
+
+========================================   =============================================================================================================================================
+:ref:`frequency_setup <frequency_setup>`   Row-based frequency configuration for graphics spectral content. Select a row to view and configure its inter-row disturbances and harmonics.
+
+========================================   =============================================================================================================================================
+

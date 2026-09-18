@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fixed_value_1:
+
+fixed_value
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fixed_value_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =======================================
+
+Parent                                                                         Summary
+
+============================================   =======================================
+:ref:`fixed_value_child <fixed_value_child>`       'child_object_type' of fixed_value.
+
+============================================   =======================================
+

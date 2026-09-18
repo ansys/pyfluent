@@ -1,0 +1,53 @@
+:orphan:
+
+.. _enabled_59:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_59
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ====================================
+
+Parent                                                                                  Summary
+
+========================================================   ====================================
+:ref:`in_cylinder <in_cylinder>`                                           'in_cylinder' child.
+
+:ref:`write_in_cylinder_ouput <write_in_cylinder_ouput>`       'write_in_cylinder_ouput' child.
+
+:ref:`six_dof <six_dof>`                                                       'six_dof' child.
+
+:ref:`one_dof_translation <one_dof_translation>`                   'one_dof_translation' child.
+
+:ref:`constraint <constraint>`                                              'constraint' child.
+
+:ref:`one_dof_rotation <one_dof_rotation>`                            'one_dof_rotation' child.
+
+:ref:`constraint_1 <constraint_1>`                                          'constraint' child.
+
+:ref:`implicit_update <implicit_update>`                               'implicit_update' child.
+
+:ref:`contact_detection <contact_detection>`                         'contact_detection' child.
+
+:ref:`six_dof_1 <six_dof_1>`                                                   'six_dof' child.
+
+:ref:`relative_motion <relative_motion>`                               'relative_motion' child.
+
+:ref:`remeshing_1 <remeshing_1>`                                             'remeshing' child.
+
+:ref:`smoothing_2 <smoothing_2>`                                             'smoothing' child.
+
+:ref:`udf_deform <udf_deform>`                                              'udf_deform' child.
+
+:ref:`feature_detection <feature_detection>`                         'feature_detection' child.
+
+:ref:`constant_color <constant_color>`                                The constant color value.
+
+:ref:`laplace_smoothing <laplace_smoothing>`                         'laplace_smoothing' child.
+
+========================================================   ====================================
+

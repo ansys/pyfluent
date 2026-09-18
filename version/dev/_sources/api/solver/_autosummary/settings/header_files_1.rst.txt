@@ -1,0 +1,23 @@
+:orphan:
+
+.. _header_files_1:
+
+header_files
+============
+
+.. deprecated:: Ansys Fluent 2027 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.header_files_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ============================================================
+
+Parent                                                                          Summary
+
+========================   ============================================================
+:ref:`compile <compile>`   Compile user-defined functions using the data in this group.
+
+========================   ============================================================
+

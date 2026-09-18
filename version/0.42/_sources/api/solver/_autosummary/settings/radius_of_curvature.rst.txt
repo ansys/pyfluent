@@ -1,0 +1,21 @@
+:orphan:
+
+.. _radius_of_curvature:
+
+radius_of_curvature
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.radius_of_curvature
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

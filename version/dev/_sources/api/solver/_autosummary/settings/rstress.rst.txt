@@ -1,0 +1,36 @@
+:orphan:
+
+.. _rstress:
+
+rstress
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rstress
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===================================================
+
+Attribute                                                                          Summary
+
+====================================   ===================================================
+:ref:`solve_tke <solve_tke>`           Enable/disable the solution of T.K.E. in RSM model.
+
+:ref:`wall_echo <wall_echo>`                Enable/disable wall-echo effects in RSM model.
+
+:ref:`coefficients <coefficients_3>`             Reynolds Stress Model coefficients group.
+
+====================================   ===================================================
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`turbulence <turbulence>`   Viscous object.
+
+==============================   ===============
+

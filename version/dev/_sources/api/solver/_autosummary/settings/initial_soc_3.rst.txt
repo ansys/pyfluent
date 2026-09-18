@@ -1,0 +1,21 @@
+:orphan:
+
+.. _initial_soc_3:
+
+initial_soc
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.initial_soc_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================
+
+Parent                                                                      Summary
+
+====================================================   ============================
+:ref:`pybamm_model_settings <pybamm_model_settings>`   PyBaMM echem model settings.
+
+====================================================   ============================
+

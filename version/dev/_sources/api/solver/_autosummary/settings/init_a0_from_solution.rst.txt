@@ -1,0 +1,21 @@
+:orphan:
+
+.. _init_a0_from_solution:
+
+init_a0_from_solution
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.init_a0_from_solution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================================================================================================================================
+
+Parent                                                                                                                                                                    Summary
+
+==========================   ====================================================================================================================================================
+:ref:`graphics <graphics>`   Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+==========================   ====================================================================================================================================================
+

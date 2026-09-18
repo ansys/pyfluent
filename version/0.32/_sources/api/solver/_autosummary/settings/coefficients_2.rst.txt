@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coefficients_2:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.coefficients_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================================================
+
+Parent                                                                       Summary
+
+============================   =====================================================
+:ref:`create_14 <create_14>`       Define a mirror plane for a non-symmetric domain.
+
+============================   =====================================================
+

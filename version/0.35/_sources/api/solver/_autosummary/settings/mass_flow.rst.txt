@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mass_flow:
+
+mass_flow
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mass_flow
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =====================
+
+Parent                                           Summary
+
+================================   =====================
+:ref:`settings_25 <settings_25>`       'settings' child.
+
+================================   =====================
+

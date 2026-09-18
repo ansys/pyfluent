@@ -1,0 +1,21 @@
+:orphan:
+
+.. _density_based:
+
+density_based
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.density_based
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================================
+
+Parent                                                                                 Summary
+
+========================================   ===================================================
+:ref:`shock_indicator <shock_indicator>`       The shock-indicator predefined criteria object.
+
+========================================   ===================================================
+

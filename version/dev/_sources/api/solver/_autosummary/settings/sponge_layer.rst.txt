@@ -1,0 +1,38 @@
+:orphan:
+
+.. _sponge_layer:
+
+sponge_layer
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sponge_layer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ======================================================================================================================================================
+
+Attribute                                                                                                                                                                                         Summary
+
+================================================   ======================================================================================================================================================
+:ref:`resistance_type <resistance_type>`           Type of viscous resistance applied in the sponge layer: real viscosity uses actual fluid viscosity; fictitious viscosity uses an artificial viscosity.
+
+:ref:`gap_reynolds_number <gap_reynolds_number>`                                                                          Target Reynolds number inside the gap used to compute the fictitious viscosity.
+
+:ref:`gap_viscosity <gap_viscosity>`                                                                   Explicit gap viscosity value used for the sponge layer when viscosity-based formulation is active.
+
+:ref:`local_stabilization <local_stabilization>`                                        Enable local stabilization for the sponge-layer approach. This applies additional damping to improve convergence.
+
+================================================   ======================================================================================================================================================
+
+.. rubric:: Included in:
+
+====================================   ========================================================
+
+Parent                                                                                  Summary
+
+====================================   ========================================================
+:ref:`flow_modeling <flow_modeling>`   Detailed settings for the selected flow-modeling method.
+
+====================================   ========================================================
+

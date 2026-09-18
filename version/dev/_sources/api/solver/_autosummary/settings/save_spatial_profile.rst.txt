@@ -1,0 +1,21 @@
+:orphan:
+
+.. _save_spatial_profile:
+
+save_spatial_profile
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.save_spatial_profile
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================
+
+Parent                                                                      Summary
+
+====================================================   ============================
+:ref:`pybamm_model_settings <pybamm_model_settings>`   PyBaMM echem model settings.
+
+====================================================   ============================
+

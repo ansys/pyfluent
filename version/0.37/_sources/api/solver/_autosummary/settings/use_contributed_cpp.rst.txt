@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_contributed_cpp:
+
+use_contributed_cpp
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.use_contributed_cpp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================================
+
+Parent                                                                                      Summary
+
+====================================================   ============================================
+:ref:`interpreted_functions <interpreted_functions>`       Load interpreted user-defined functions.
+
+====================================================   ============================================
+

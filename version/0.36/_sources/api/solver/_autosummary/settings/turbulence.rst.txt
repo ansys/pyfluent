@@ -1,0 +1,104 @@
+:orphan:
+
+.. _turbulence:
+
+turbulence
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.turbulence
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================================   ================================================
+
+Attribute                                                                                                                                 Summary
+
+==============================================================================================   ================================================
+:ref:`turbulence_specification <turbulence_specification>`                                                       Turbulence Specification Method.
+
+:ref:`backflow_modified_turbulent_viscosity <backflow_modified_turbulent_viscosity>`                                Modified Turbulent Viscosity.
+
+:ref:`backflow_laminar_kinetic_energy <backflow_laminar_kinetic_energy>`                                                  Laminar Kinetic Energy.
+
+:ref:`backflow_intermittency <backflow_intermittency>`                                                                             Intermittency.
+
+:ref:`backflow_turbulent_kinetic_energy <backflow_turbulent_kinetic_energy>`                                            Turbulent Kinetic Energy.
+
+:ref:`backflow_turbulent_dissipation_rate <backflow_turbulent_dissipation_rate>`                                      Turbulent Dissipation Rate.
+
+:ref:`backflow_specific_dissipation_rate <backflow_specific_dissipation_rate>`                                         Specific Dissipation Rate.
+
+:ref:`backflow_velocity_variance_scale <backflow_velocity_variance_scale>`                                               Velocity Variance Scale.
+
+:ref:`backflow_turbulent_intensity <backflow_turbulent_intensity>`                                                           Turbulent Intensity.
+
+:ref:`backflow_turbulent_length_scale <backflow_turbulent_length_scale>`                                                  Turbulent Length Scale.
+
+:ref:`backflow_hydraulic_diameter <backflow_hydraulic_diameter>`                                                              Hydraulic Diameter.
+
+:ref:`backflow_turbulent_viscosity_ratio <backflow_turbulent_viscosity_ratio>`                                         Turbulent Viscosity Ratio.
+
+:ref:`backflow_turbulent_viscosity_ratio_profile <backflow_turbulent_viscosity_ratio_profile>`                         Turbulent Viscosity Ratio.
+
+:ref:`reynolds_stress_specification <reynolds_stress_specification>`                                        Reynolds-Stress Specification Method.
+
+:ref:`backflow_uu_reynolds_stresses <backflow_uu_reynolds_stresses>`                                                        UU Reynolds Stresses.
+
+:ref:`backflow_vv_reynolds_stresses <backflow_vv_reynolds_stresses>`                                                        VV Reynolds Stresses.
+
+:ref:`backflow_ww_reynolds_stresses <backflow_ww_reynolds_stresses>`                                                        WW Reynolds Stresses.
+
+:ref:`backflow_uv_reynolds_stresses <backflow_uv_reynolds_stresses>`                                                        UV Reynolds Stresses.
+
+:ref:`backflow_vw_reynolds_stresses <backflow_vw_reynolds_stresses>`                                                        VW Reynolds Stresses.
+
+:ref:`backflow_uw_reynolds_stresses <backflow_uw_reynolds_stresses>`                                                        UW Reynolds Stresses.
+
+:ref:`subgrid_kinetic_energy_specification <subgrid_kinetic_energy_specification>`                   Subgrid Kinetic Energy Specification Method.
+
+:ref:`subgrid_kinetic_energy <subgrid_kinetic_energy>`                                                                    Subgrid Kinetic Energy.
+
+:ref:`subgrid_turbulent_intensity <subgrid_turbulent_intensity>`                                                     Subgrid Turbulent Intensity.
+
+==============================================================================================   ================================================
+
+.. rubric:: Included in:
+
+========================================================   ===========================================
+
+Parent                                                                                         Summary
+
+========================================================   ===========================================
+:ref:`settings_2 <settings_2>`                                      Domain name to define settings on.
+
+:ref:`phase_4_child <phase_4_child>`                                     'child_object_type' of phase.
+
+:ref:`settings_13 <settings_13>`                                    Domain name to define settings on.
+
+:ref:`phase_15_child <phase_15_child>`                                   'child_object_type' of phase.
+
+:ref:`settings_18 <settings_18>`                                    Domain name to define settings on.
+
+:ref:`phase_20_child <phase_20_child>`                                   'child_object_type' of phase.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`outlet_vent_1_child <outlet_vent_1_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`pressure_outlet_1_child <pressure_outlet_1_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`exhaust_fan_2_child <exhaust_fan_2_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`phase_29_child <phase_29_child>`                                   'child_object_type' of phase.
+
+:ref:`outlet_vent_2_child <outlet_vent_2_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`phase_40_child <phase_40_child>`                                   'child_object_type' of phase.
+
+:ref:`pressure_outlet_2_child <pressure_outlet_2_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`phase_45_child <phase_45_child>`                                   'child_object_type' of phase.
+
+========================================================   ===========================================
+

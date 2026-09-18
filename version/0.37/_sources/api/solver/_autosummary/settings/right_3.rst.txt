@@ -1,0 +1,21 @@
+:orphan:
+
+.. _right_3:
+
+right
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.right_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================================
+
+Parent                                               Summary
+
+======================   ===================================
+:ref:`axes_3 <axes_3>`       The axes window options object.
+
+======================   ===================================
+

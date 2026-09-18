@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_volume_mesh_wtm__create_volume_mesh_wtmArguments__prism_preferences:
+
+_prism_preferences
+==================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.create_volume_mesh_wtm._create_volume_mesh_wtmArguments._prism_preferences
+   :members: _ignore_inflation, _merge_boundary_layers, _normal_smooth_relaxation_factor, _prism_adjacent_angle, _prism_gap_factor, _prism_keep_first_layer, _prism_max_aspect_ratio, _prism_min_aspect_ratio, _prism_stair_step_options, _show_in_gui, _stair_step_icem_quality_limit, _stairstep_exposed_quads
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

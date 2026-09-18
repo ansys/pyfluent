@@ -1,0 +1,21 @@
+:orphan:
+
+.. _weight_treatment_at_sliding_boundary:
+
+weight_treatment_at_sliding_boundary
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.weight_treatment_at_sliding_boundary
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===================================================
+
+Parent                                                                                               Summary
+
+======================================================   ===================================================
+:ref:`green_gauss_node_based <green_gauss_node_based>`   Options for Green-Gauss Node Based gradient scheme.
+
+======================================================   ===================================================
+

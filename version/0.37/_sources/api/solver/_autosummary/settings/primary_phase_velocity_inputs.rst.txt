@@ -1,0 +1,34 @@
+:orphan:
+
+.. _primary_phase_velocity_inputs:
+
+primary_phase_velocity_inputs
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.primary_phase_velocity_inputs
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================================   =================================================
+
+Attribute                                                                                                                                    Summary
+
+================================================================================================   =================================================
+:ref:`primary_phase_velocity_specification_method <primary_phase_velocity_specification_method>`       Primary Phase: Velocity Specification Method.
+
+:ref:`primary_phase_velocity <primary_phase_velocity>`                                                            Primary Phase: Velocity Magnitude.
+
+================================================================================================   =================================================
+
+.. rubric:: Included in:
+
+================================   ==========================================================
+
+Parent                                                                                Summary
+
+================================   ==========================================================
+:ref:`momentum_10 <momentum_10>`       Allows to change momentum model variables or settings.
+
+================================   ==========================================================
+

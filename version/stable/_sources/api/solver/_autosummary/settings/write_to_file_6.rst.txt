@@ -1,0 +1,21 @@
+:orphan:
+
+.. _write_to_file_6:
+
+write_to_file
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_to_file_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =========================
+
+Parent                                       Summary
+
+========================   =========================
+:ref:`summary <summary>`       Print report summary.
+
+========================   =========================
+

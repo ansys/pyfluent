@@ -1,0 +1,47 @@
+:orphan:
+
+.. _edit_c_grid_settings:
+
+edit_c_grid_settings
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.edit_c_grid_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===========================================================
+
+Attribute                                                                                            Summary
+
+==============================================   ===========================================================
+:ref:`edit_distribution <edit_distribution_1>`    Enable editing of the progress variable grid distribution.
+
+:ref:`grid_points <grid_points_1>`               Edit progress variable grid points for flamelet generation.
+
+==============================================   ===========================================================
+
+.. rubric:: Methods
+
+==================================================   =========================================
+
+Method                                                                                 Summary
+
+==================================================   =========================================
+:ref:`read_grid_from_file <read_grid_from_file_1>`   Read c-grid distribution from an XY file.
+
+:ref:`write_grid_to_file <write_grid_to_file_1>`      Write c-grid distribution to an XY file.
+
+==================================================   =========================================
+
+.. rubric:: Included in:
+
+==============================================   =======================================
+
+Parent                                                                           Summary
+
+==============================================   =======================================
+:ref:`edit_c_grid_button <edit_c_grid_button>`   Open editor for flamelet c-grid points.
+
+==============================================   =======================================
+

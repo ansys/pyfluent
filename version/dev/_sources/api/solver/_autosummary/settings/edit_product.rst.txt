@@ -1,0 +1,42 @@
+:orphan:
+
+.. _edit_product:
+
+edit_product
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.edit_product
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ================================================
+
+Argument                                                                                  Summary
+
+==============================================   ================================================
+:ref:`index <index_4>`                                        The index of the product to modify.
+
+:ref:`phase <phase_1>`                                         The phase of this product species.
+
+:ref:`species <species_5>`                                     The species name for this product.
+
+:ref:`stoich_coeff <stoich_coeff_1>`             The stoichiometric coefficient for this product.
+
+:ref:`rate_exponent <rate_exponent_1>`                        The rate exponent for this product.
+
+:ref:`ref_concentration <ref_concentration_1>`      The reference concentration for this product.
+
+==============================================   ================================================
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`reactions_1_child <reactions_1_child>`   'child_object_type' of reactions.
+
+============================================   =================================
+

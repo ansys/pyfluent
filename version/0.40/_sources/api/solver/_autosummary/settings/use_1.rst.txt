@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_1:
+
+use
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.use_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================
+
+Parent                                                      Summary
+
+========================================   ========================
+:ref:`particle_weight <particle_weight>`       DPM particle weight.
+
+========================================   ========================
+

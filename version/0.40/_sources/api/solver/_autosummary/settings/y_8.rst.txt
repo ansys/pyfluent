@@ -1,0 +1,46 @@
+:orphan:
+
+.. _y_8:
+
+y
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.y_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ====================================================================================
+
+Attribute                                                                                                                           Summary
+
+====================================================   ====================================================================================
+:ref:`label <label_1>`                                                                                                          Axis label.
+
+:ref:`log_scale <log_scale_2>`                                                                                                 Enable log?.
+
+:ref:`number_format <number_format_1>`                     Contains controls for changing the format of the data labels on the active axis.
+
+:ref:`auto_range <auto_range_4>`                                                       Modify the minimum and/or the maximum axis value(s).
+
+:ref:`show_major_gridlines <show_major_gridlines_1>`                                                       Draw major rules for this axis?.
+
+:ref:`major_gridlines <major_gridlines_1>`                                                                            Major rules settings.
+
+:ref:`show_minor_gridlines <show_minor_gridlines_1>`                                                       Draw minor rules for this axis?.
+
+:ref:`minor_gridlines <minor_gridlines_1>`                                                                            Minor rules settings.
+
+====================================================   ====================================================================================
+
+.. rubric:: Included in:
+
+======================   ======================================================================================================
+
+Parent                                                                                                                  Summary
+
+======================   ======================================================================================================
+:ref:`axes_1 <axes_1>`       Contains check buttons that allow you to set abscissa (-axis) or ordinate (-axis) characteristics.
+
+======================   ======================================================================================================
+

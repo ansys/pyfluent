@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_zone:
+
+create_zone
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_zone
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ==============
+
+Argument                              Summary
+
+============================   ==============
+:ref:`zone <zone>`                      Zone.
+
+:ref:`new_name <new_name_2>`       Zone name.
+
+============================   ==============
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`flow_control <flow_control>`       'flow_control' child.
+
+==================================   =========================
+

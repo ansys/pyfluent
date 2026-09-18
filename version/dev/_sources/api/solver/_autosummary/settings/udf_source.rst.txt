@@ -1,0 +1,21 @@
+:orphan:
+
+.. _udf_source:
+
+udf_source
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.udf_source
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ========================================================
+
+Parent                                                                                  Summary
+
+====================================   ========================================================
+:ref:`flow_modeling <flow_modeling>`   Detailed settings for the selected flow-modeling method.
+
+====================================   ========================================================
+

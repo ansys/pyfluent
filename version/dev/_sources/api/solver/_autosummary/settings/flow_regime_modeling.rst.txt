@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_regime_modeling:
+
+flow_regime_modeling
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_regime_modeling
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================
+
+Parent                                                   Summary
+
+====================================   =========================
+:ref:`model_options <model_options>`   Multiphase model options.
+
+====================================   =========================
+

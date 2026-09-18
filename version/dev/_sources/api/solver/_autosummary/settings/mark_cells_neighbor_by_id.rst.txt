@@ -1,0 +1,32 @@
+:orphan:
+
+.. _mark_cells_neighbor_by_id:
+
+mark_cells_neighbor_by_id
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mark_cells_neighbor_by_id
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   ============================================
+
+Argument                                                          Summary
+
+==========================   ============================================
+:ref:`cell_ids <cell_ids>`   List of cell IDs to mark neighbor cells for.
+
+==========================   ============================================
+
+.. rubric:: Included in:
+
+============================================   ============================================================================
+
+Parent                                                                                                              Summary
+
+============================================   ============================================================================
+:ref:`diagnostics_tools <diagnostics_tools>`   Configure diagnostics tools for monitoring and inspecting simulation health.
+
+============================================   ============================================================================
+

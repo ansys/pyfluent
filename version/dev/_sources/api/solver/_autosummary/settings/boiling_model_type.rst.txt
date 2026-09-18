@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boiling_model_type:
+
+boiling_model_type
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.boiling_model_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================
+
+Parent                                                   Summary
+
+====================================   =========================
+:ref:`model_options <model_options>`   Multiphase model options.
+
+====================================   =========================
+

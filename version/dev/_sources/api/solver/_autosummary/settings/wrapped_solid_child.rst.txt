@@ -1,0 +1,34 @@
+:orphan:
+
+.. _wrapped_solid_child:
+
+wrapped_solid_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.wrapped_solid_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ====================================
+
+Attribute                                               Summary
+
+========================   ====================================
+:ref:`name <name_18>`      Name of this wrapped solid instance.
+
+:ref:`regions <regions>`               Solid region collection.
+
+========================   ====================================
+
+.. rubric:: Included in:
+
+====================================   ===================================================
+
+Parent                                                                             Summary
+
+====================================   ===================================================
+:ref:`wrapped_solid <wrapped_solid>`   Wrapped solid with its material region assignments.
+
+====================================   ===================================================
+

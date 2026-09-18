@@ -1,0 +1,44 @@
+:orphan:
+
+.. _network_end_1:
+
+network_end
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.network_end_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ====================
+
+Attribute                                         Summary
+
+==================================   ====================
+:ref:`thermal_bc <thermal_bc>`           Thermal BC Type.
+
+:ref:`temperature <temperature_3>`           Temperature.
+
+:ref:`q <q>`                                   Heat Flux.
+
+==================================   ====================
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`settings_11 <settings_11>`                        Domain name to define settings on.
+
+:ref:`phase_13_child <phase_13_child>`                       'child_object_type' of phase.
+
+:ref:`network_end_2_child <network_end_2_child>`       'child_object_type' of network_end.
+
+:ref:`network_end_3_child <network_end_3_child>`       'child_object_type' of network_end.
+
+:ref:`phase_38_child <phase_38_child>`                       'child_object_type' of phase.
+
+================================================   =======================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_transform_base__transform_base_rename__renameArguments:
+
+_renameArguments
+================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.transform_base._transform_base.rename._renameArguments
+   :members: _new_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

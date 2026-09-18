@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_cell_zone_volume__get_cell_zone_volumeArguments:
+
+_get_cell_zone_volumeArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_cell_zone_volume._get_cell_zone_volumeArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _cell_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

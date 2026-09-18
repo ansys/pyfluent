@@ -1,0 +1,21 @@
+:orphan:
+
+.. _viscosity_variation_factor:
+
+viscosity_variation_factor
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.viscosity_variation_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===========================================
+
+Parent                                                                       Summary
+
+======================================   ===========================================
+:ref:`sponge_layer_1 <sponge_layer_1>`   Advanced settings for the gap sponge layer.
+
+======================================   ===========================================
+

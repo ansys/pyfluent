@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_overset_mesh__create_overset_meshArguments:
+
+_create_overset_meshArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.create_overset_mesh._create_overset_meshArguments
+   :members: _object_selection_list, _overset_interfaces_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

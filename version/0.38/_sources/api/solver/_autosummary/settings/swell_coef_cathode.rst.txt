@@ -1,0 +1,21 @@
+:orphan:
+
+.. _swell_coef_cathode:
+
+swell_coef_cathode
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.swell_coef_cathode
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ======================
+
+Parent                                                  Summary
+
+======================================   ======================
+:ref:`swelling_model <swelling_model>`       Up swelling model.
+
+======================================   ======================
+

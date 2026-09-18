@@ -1,0 +1,21 @@
+.. _ref_solver_tui_solve_set_multiphase_numerics_heat_mass_transfer_boiling_advanced:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.boiling.advanced
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   automatic_lee_coefficients/automatic_lee_coefficients_contents
+   micro_channel_boiling/micro_channel_boiling_contents
+   single_phase_boiling/single_phase_boiling_contents
+   transition_film_boiling/transition_film_boiling_contents

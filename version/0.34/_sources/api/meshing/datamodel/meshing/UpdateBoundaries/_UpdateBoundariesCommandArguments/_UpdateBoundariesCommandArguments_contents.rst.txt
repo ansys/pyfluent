@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_UpdateBoundaries__UpdateBoundariesCommandArguments:
+
+_UpdateBoundariesCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.UpdateBoundaries._UpdateBoundariesCommandArguments
+   :members: _BoundaryAllowedTypeList, _BoundaryCurrentList, _BoundaryCurrentTypeList, _BoundaryLabelList, _BoundaryLabelTypeList, _BoundaryZoneList, _BoundaryZoneTypeList, _ListAllBoundariesToggle, _MeshObject, _OldBoundaryLabelList, _OldBoundaryLabelTypeList, _OldBoundaryZoneList, _OldBoundaryZoneTypeList, _OldLabelZoneList, _OldTopologyList, _OldTopologyTypeList, _SelectionType, _TopologyBodyList, _TopologyList, _TopologyTypeList, _ZoneLocation
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

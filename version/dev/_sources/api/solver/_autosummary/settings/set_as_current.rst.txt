@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_as_current:
+
+set_as_current
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_as_current
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =======================================
+
+Argument                                                                   Summary
+
+========================================   =======================================
+:ref:`simulation_name <simulation_name>`   Name of the simulation to make current.
+
+========================================   =======================================
+
+.. rubric:: Included in:
+
+==============================   =====================================================
+
+Parent                                                                         Summary
+
+==============================   =====================================================
+:ref:`simulation <simulation>`   Manage simulations within the current Fluent project.
+
+==============================   =====================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_redistribute_particles:
+
+auto_redistribute_particles
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.auto_redistribute_particles
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =======================================================
+
+Parent                                                                           Summary
+
+==============================   =======================================================
+:ref:`advanced_4 <advanced_4>`   Advanced Direct Simulation Monte Carlo (DSMC) settings.
+
+==============================   =======================================================
+

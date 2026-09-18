@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_assembly_node__assembly_node:
+
+_assembly_node
+==============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.assembly_node._assembly_node
+   :members: _name_, children, context, edge_extraction, feature_angle, is_children_settings_changed, key_id, merge_children, name, one_zone_per, parent, prefix_object_name, refacet_operation, transformations
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   change_children_settings/change_children_settings_contents
+   copy/copy_contents
+   create_child/create_child_contents
+   move/move_contents
+   re_facet/re_facet_contents
+   re_facet_now/re_facet_now_contents
+   refaceting/refaceting_contents
+   rename/rename_contents

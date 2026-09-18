@@ -1,0 +1,14 @@
+.. _ref_solver_tui_define_models_system_coupling_settings_radiation_bc_coupling:
+
+radiation_bc_coupling
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.define.models.system_coupling_settings.radiation_bc_coupling
+   :members: activate_radiation_boundary_coupling_model, specify_boundary_zones_to_activate, specify_boundary_zones_to_deactivate
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

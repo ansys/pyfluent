@@ -1,0 +1,36 @@
+:orphan:
+
+.. _ntu_effectiveness_data:
+
+ntu_effectiveness_data
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ntu_effectiveness_data
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ====================================================
+
+Attribute                                                                                                       Summary
+
+================================================================   ====================================================
+:ref:`auxiliary_fluid_temperature <auxiliary_fluid_temperature>`                     Auxiliary fluid inlet temperature.
+
+:ref:`primary_fluid_temperature <primary_fluid_temperature>`                                 Primary fluid temperature.
+
+:ref:`heat_transfer_table <heat_transfer_table>`                   2D heat transfer data structure in a 2D table class.
+
+================================================================   ====================================================
+
+.. rubric:: Included in:
+
+==============================   =====================================
+
+Parent                                                         Summary
+
+==============================   =====================================
+:ref:`model_data <model_data>`   Model data for a heat exchanger core.
+
+==============================   =====================================
+

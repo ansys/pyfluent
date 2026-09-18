@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_ObjectSettingOperations_CreateObjectSetting__CreateObjectSettingCommandArguments:
+
+_CreateObjectSettingCommandArguments
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.ObjectSettingOperations.CreateObjectSetting._CreateObjectSettingCommandArguments
+   :members: _Paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

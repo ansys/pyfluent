@@ -1,0 +1,21 @@
+:orphan:
+
+.. _command:
+
+command
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.command
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   =======================================================
+
+Parent                                                                                                                         Summary
+
+============================================================================   =======================================================
+:ref:`automatic_case_modification_child <automatic_case_modification_child>`       'child_object_type' of automatic_case_modification.
+
+============================================================================   =======================================================
+

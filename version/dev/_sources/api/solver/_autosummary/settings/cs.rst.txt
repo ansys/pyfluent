@@ -1,0 +1,23 @@
+:orphan:
+
+.. _cs:
+
+cs
+==
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cs
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`coefficients_6 <coefficients_6>`          Coefficients group.
+
+:ref:`coefficients_7 <coefficients_7>`   SBES/SDES model constants.
+
+======================================   ==========================
+

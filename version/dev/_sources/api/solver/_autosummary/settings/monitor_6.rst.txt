@@ -1,0 +1,21 @@
+:orphan:
+
+.. _monitor_6:
+
+monitor
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.monitor_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+============================   ================================================================================================================================
+:ref:`monitor_5 <monitor_5>`   Select a report file to generate the complete data for the report definitions contained within it based on the selected dataset.
+
+============================   ================================================================================================================================
+

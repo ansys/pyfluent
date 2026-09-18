@@ -1,0 +1,21 @@
+:orphan:
+
+.. _aiad:
+
+aiad
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.aiad
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================
+
+Parent                                                   Summary
+
+====================================   =========================
+:ref:`model_options <model_options>`   Multiphase model options.
+
+====================================   =========================
+

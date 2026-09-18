@@ -1,0 +1,21 @@
+:orphan:
+
+.. _combined_hessian_indicator:
+
+combined_hessian_indicator
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.combined_hessian_indicator
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============================================
+
+Parent                                                                     Summary
+
+================================   ===============================================
+:ref:`error_based <error_based>`       The error-based predefined criteria object.
+
+================================   ===============================================
+
