@@ -59,6 +59,8 @@ control the behavior of PyFluent within the same Python process. Please see the 
       - Enabled PyFluent logging and specifies the logging level. Possible values are ``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``, and ``CRITICAL``.
     * - PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN
       - Disables the return value fix for the parameter list command in settings API.
+    * - PYFLUENT_RUNTIME_TYPE_CHECKING
+      - Set to ``1`` to check the type annotations of PyFluent APIs at runtime. Requires the ``type-checking`` extra.
     * - PYFLUENT_SHOW_SERVER_GUI
       - Shows the Fluent GUI while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - PYFLUENT_SKIP_API_UPGRADE_ADVICE
