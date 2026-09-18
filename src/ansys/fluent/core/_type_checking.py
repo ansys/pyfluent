@@ -273,9 +273,16 @@ def no_runtime_type_check(obj):
     :func:`runtime_type_check` : Enable runtime type-checking for an object
     """
     # Skip applying no_type_check to GenericAlias objects (e.g., SettingsBase[Type])
-    # as they don't support attribute assignment
+    # and objects that don't support attribute assignment.
+    # Use try-except as additional safety for edge cases where attribute assignment fails.
     import types
 
     if isinstance(obj, types.GenericAlias):
         return obj
-    return typing.no_type_check(obj)
+
+    try:
+        return typing.no_type_check(obj)
+    except (AttributeError, TypeError):
+        # Gracefully handle objects that don't support __no_type_check__ attribute
+        # (e.g., generic class definitions, immutable types, etc.)
+        return obj
