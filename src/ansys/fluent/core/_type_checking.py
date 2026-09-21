@@ -237,52 +237,55 @@ def runtime_type_check(obj: T) -> T:
 
 
 def no_runtime_type_check(obj):
-    """Disable runtime type-checking for an object, with GenericAlias support.
+    """Disable runtime type-checking for an object.
 
-    Marks an object so that runtime type-checking is skipped. This is useful for
-    disabling type-checks on specific callables or classes that may cause issues
-    with the type-checking backend.
+    Marks an object so that beartype (or other type-checking backends) skip
+    validation. This is useful for disabling type-checks on specific callables
+    or classes that may cause issues with type-checking or have incompatible
+    type annotations.
 
-    Unlike the standard library's :func:`typing.no_type_check`, this function
-    handles ``types.GenericAlias`` objects (e.g., ``SettingsBase[DictStateType]``)
-    which are commonly used in class inheritance. GenericAlias objects do not
-    support attribute assignment, so applying ``typing.no_type_check()`` directly
-    would raise ``AttributeError``. This function detects such objects and returns
-    them unchanged.
+    This function directly sets the ``__no_type_check__`` attribute that beartype
+    and other type-checking libraries recognize, without relying on the standard
+    library's :func:`typing.no_type_check` which has issues with generic class
+    definitions.
 
     Parameters
     ----------
-    obj : Callable, type, or types.GenericAlias
+    obj : Callable, type, or object
         Object to mark for skipping runtime type-checking. Can be a function,
-        class, or generic alias.
+        class, method, or other callable.
 
     Returns
     -------
-    Callable, type, or types.GenericAlias
+    Callable, type, or object
         The input object unchanged, or with the ``__no_type_check__`` attribute
-        set if it supports attribute assignment.
+        set if the object supports attribute assignment.
 
     Notes
     -----
-    This function is a no-op when runtime type-checking is disabled via
-    :func:`is_type_checking_enabled`.
+    Objects that cannot have attributes assigned (e.g., types.GenericAlias,
+    built-in types) are returned unchanged. This is acceptable because these
+    objects are typically not directly callable or type-checkable anyway.
 
     See Also
     --------
-    :func:`typing.no_type_check` : Standard library equivalent
     :func:`runtime_type_check` : Enable runtime type-checking for an object
     """
-    # Skip applying no_type_check to GenericAlias objects (e.g., SettingsBase[Type])
-    # and objects that don't support attribute assignment.
-    # Use try-except as additional safety for edge cases where attribute assignment fails.
     import types
 
+    # Skip GenericAlias objects (e.g., SettingsBase[DictStateType])
+    # as they don't support attribute assignment
     if isinstance(obj, types.GenericAlias):
         return obj
 
-    try:
-        return typing.no_type_check(obj)
-    except (AttributeError, TypeError):
-        # Gracefully handle objects that don't support __no_type_check__ attribute
-        # (e.g., generic class definitions, immutable types, etc.)
-        return obj
+    # Try to set __no_type_check__ directly on objects that support it
+    # Skip objects that don't support attribute assignment
+    if hasattr(obj, "__dict__") or isinstance(obj, type):
+        try:
+            obj.__no_type_check__ = True  # type: ignore[attr-defined]
+        except (AttributeError, TypeError):
+            # Object doesn't support attribute assignment, return unchanged
+            # This is acceptable - such objects typically aren't type-checkable anyway
+            pass
+
+    return obj
