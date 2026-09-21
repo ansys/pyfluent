@@ -446,14 +446,18 @@ def launch_fluent(
             container_case_file_name = case_file_name_val
             container_case_data_file_name = case_data_file_name_val
             container_additional_arguments = additional_arguments
-            if file_transfer_service and not dry_run:
-                # Upload host files, then pass only their container-visible names to Fluent.
-                for file_name in (
-                    container_case_file_name,
-                    container_case_data_file_name,
-                ):
-                    if file_name:
-                        file_transfer_service.upload(file_name=file_name)
+            if not dry_run:
+                if file_transfer_service:
+                    # Upload host files so Fluent can see them under the mount.
+                    for file_name in (
+                        container_case_file_name,
+                        container_case_data_file_name,
+                    ):
+                        if file_name:
+                            file_transfer_service.upload(file_name=file_name)
+                # Fluent resolves case/data files by basename: they either arrive
+                # under the container's working dir via the mounted host download
+                # directory, or were just uploaded by the file transfer service.
                 if container_case_file_name:
                     container_case_file_name = os.path.basename(
                         container_case_file_name
@@ -468,7 +472,11 @@ def launch_fluent(
                 if should_disable:
                     warn(warning_msg, UserWarning)
                     lightweight_mode = False
-            if file_transfer_service and not dry_run and not lightweight_mode:
+            if (
+                not dry_run
+                and not lightweight_mode
+                and (container_case_file_name or container_case_data_file_name)
+            ):
                 container_additional_arguments += _build_case_data_arguments(
                     container_case_file_name, container_case_data_file_name
                 )
@@ -577,12 +585,15 @@ def launch_fluent(
     # Lightweight case loading requires the running session's file-transfer handling.
     if (
         fluent_launch_mode == LaunchMode.CONTAINER
-        and file_transfer_service
         and lightweight_mode
         and case_file_name_val
         and not dry_run
     ):
-        session.read_case_lightweight(case_file_name_val)
+        session.read_case_lightweight(
+            case_file_name_val
+            if file_transfer_service
+            else os.path.basename(case_file_name_val)
+        )
     return session
 
 
