@@ -35,7 +35,6 @@ from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.error_message import closest_allowed_names
 
 __all__ = ("search",)
-warnings.filterwarnings("ignore", category=UserWarning, module="nltk")
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -527,6 +526,8 @@ def search(
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
     """
+
+    warnings.filterwarnings("ignore", category=UserWarning, module="nltk")
 
     api_tree_data = _get_api_tree_data()
 
