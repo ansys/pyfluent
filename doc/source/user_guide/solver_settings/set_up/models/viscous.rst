@@ -27,19 +27,8 @@ Setting up and querying the model
      'user_defined': {'energy_prandtl': 'none',
                       'turb_visc_func': 'none',
                       'wall_prandtl': 'none'}}
-    >>> pprint(viscous.model.allowed_values(), width=1)
-    ['inviscid',
-     'laminar',
-     'k-epsilon',
-     'k-omega',
-     'mixing-length',
-     'spalart-allmaras',
-     'k-kl-w',
-     'transition-sst',
-     'reynolds-stress',
-     'scale-adaptive-simulation',
-     'detached-eddy-simulation',
-     'large-eddy-simulation']
+    >>> viscous.model.allowed_values()
+    ['inviscid', 'laminar', 'k-omega', ...]  # plus additional models
     >>> viscous.options.corner_flow_correction.is_active()
     True
     >>> viscous.model.set_state('k-epsilon')

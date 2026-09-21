@@ -572,6 +572,7 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         env:
           MATRIX_VERSION: ${{ matrix.version }}
+          FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}
         run: |
           make install-test
           make unittest-dev-${MATRIX_VERSION}
@@ -750,6 +751,7 @@ jobs:
           make unittest-all-271
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}
 
       - name: Clean Docker Data
         run: make docker-clean-all-except-supported-images
