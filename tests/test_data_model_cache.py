@@ -25,10 +25,10 @@ import pytest
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_value_to_variant,
 )
-from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 

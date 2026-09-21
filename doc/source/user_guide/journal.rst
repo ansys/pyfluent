@@ -20,37 +20,21 @@ via Python code written to the file until the ``stop()`` method is called.
 
 The following rules govern what is written to the journal:
 
-#. **PyFluent actions**:
+#. **PyFluent actions**: Interactions with solver settings, meshing and solver workflows,
+   preferences, and Python TUI commands are written to journal. Other Python code you
+   execute is not.
 
-   * Many PyFluent actions are written to journal: all interactions with solver settings, meshing and solver workflows, preferences and Python TUI commands.
+#. **Commands versus queries**: Commands (actions with a side effect, such as reading a
+   case file or changing a boundary condition) are written to journal. Queries (requests
+   for data, such as an area-averaged pressure) are not.
 
-   * Any other Python code that you execute is omitted from the journal.
+#. **Non-GUI actions in Fluent**: Calls made from the Fluent Python console, or from
+   external clients such as the Fluent Web UI, are treated the same as PyFluent calls.
+   Direct Fluent TUI commands are written to journal; Scheme calls are not.
 
-#. **Commands versus Queries**:
-
-   * Commands are written to journal but queries are omitted.
-
-   * A command is any action that causes a change or side effect such as reading a case file, modifying a boundary condition setting.
-
-   * A query is a request to get data such as computing an area average of pressure, getting a boundary condition setting.
-
-#. **Non-GUI actions in Fluent**:
-
-   * Python calls in Fluent itself, such as those made in the Fluent Python console, are treated equivalently as if they originated in PyFluent.
-
-   * Commands received from external clients, such as the Fluent Web UI, are treated equivalently as if they originated in PyFluent.
-
-   * Commands invoked directly via the Fluent TUI are written to journal.
-
-   * Calls made in the Scheme programming language are not written to journal.
-
-#. **Fluent GUI actions**:
-
-   * Guided workflow commands invoked through the GUI are written to journal. This includes meshing workflows actions in the meshing mode GUI.
-
-   * Commands invoked through the preferences panel in either meshing or solution mode are written to journal.
-
-   * Other commands invoked through the solution mode GUI are not written to journal. To journal based on solution mode GUI actions, use the Fluent Web UI.
+#. **Fluent GUI actions**: Guided workflow commands (including meshing workflows) and
+   preferences panel commands are written to journal. Other solution mode GUI commands
+   are not; use the Fluent Web UI to journal those actions.
 
 #. **Python output**:
 

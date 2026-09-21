@@ -40,7 +40,7 @@ A simple example
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, product_version=pyfluent.FluentVersion.v251)
+  >>> meshing_session = pyfluent.Meshing.from_install(product_version=pyfluent.FluentVersion.v251)
   >>> watertight = meshing_session.watertight()
   >>> watertight.import_geometry.file_name = pyfluent.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
   >>> watertight.import_geometry()

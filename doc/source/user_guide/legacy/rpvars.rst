@@ -9,10 +9,17 @@ Examples
 Accessing and modifying existing rpvars
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning::
+
+   PyFluent's modern, Pythonic interfaces provide stable, validated, high-level access to
+   Fluent. ``RPVar`` access circumvents those interfaces, and the outcome cannot be guaranteed for
+   setting values this way. Note in particular that directly setting an ``RPVar`` via the
+   interface shown here is not recorded in a Fluent Python journal.
+
 .. code-block:: python
 
    >>> import ansys.fluent.core as pyfluent
-   >>> solver_session = pyfluent.launch_fluent()
+   >>> solver_session = pyfluent.Solver.from_install()
    >>> iter_count = 100
    >>> solver_session.rp_vars("number-of-iterations", iter_count)
    'number-of-iterations'
@@ -36,8 +43,8 @@ that can hold any value type.
 
    >>> import ansys.fluent.core as pyfluent
    >>> from ansys.fluent.core.rpvars import RPVarType
-   >>> solver_session = pyfluent.launch_fluent()
-   
+   >>> solver_session = pyfluent.Solver.from_install()
+   >>> 
    >>> # Create integer rpvars using Python type
    >>> solver_session.rp_vars.create(name="my-int-var", value=55, var_type=int)
    >>> solver_session.rp_vars("my-int-var")

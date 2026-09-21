@@ -23,22 +23,27 @@
 
 from contextlib import nullcontext
 import functools
+import hashlib
 import inspect
 import operator
 import os
 from pathlib import Path
+import secrets
 import shutil
 import sys
+import time
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
+import requests
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.networking import get_free_port
 
 sys.path.append(Path(__file__).parent / "util")
 
@@ -289,14 +294,17 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     kwargs.update(get_grpc_launcher_args_for_gh_runs())
+    container_dict = kwargs.pop("container_dict", None) or {}
     if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.mount_source}
+        container_dict.setdefault("mount_source", file_transfer_service.mount_source)
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
             **kwargs,
         )
+    elif container_dict:
+        return pyfluent.launch_fluent(container_dict=container_dict, **kwargs)
     else:
         return pyfluent.launch_fluent(**kwargs)
 
@@ -370,6 +378,197 @@ def new_solver_session():
     solver = create_session()
     yield solver
     solver.exit()
+
+
+def web_server_launch_arguments(port: int) -> str:
+    """Fluent launch arguments that enable its web (REST) server on *port*.
+
+    ``-ws`` is what actually starts the web server; ``-ws-port`` only selects
+    the port and is rejected by Fluent's argument parser when passed on its
+    own.
+    """
+    return f"-ws -ws-port={port}"
+
+
+def _required_webserver_token() -> str:
+    """Read FLUENT_WEBSERVER_TOKEN from environment, fail if unset.
+
+    Required for both container and standalone self-launch modes.
+    (External override via FLUENT_REST_URL/FLUENT_REST_TOKEN is separate.)
+    """
+    token = os.getenv("FLUENT_WEBSERVER_TOKEN", "").strip()
+    if not token:
+        pytest.fail(
+            "FLUENT_WEBSERVER_TOKEN environment variable must be set to enable the REST server tests."
+        )
+    return token
+
+
+def _external_rest_server_override() -> tuple[str, str] | None:
+    """(url, token) if an already-running external REST server is configured."""
+    rest_url = os.getenv("FLUENT_REST_URL")
+    rest_token = os.getenv("FLUENT_REST_TOKEN")
+    if bool(rest_url) != bool(rest_token):
+        pytest.fail(
+            "FLUENT_REST_URL and FLUENT_REST_TOKEN must be set together; "
+            "set both to use an external REST server, or neither to launch one."
+        )
+    return (rest_url, rest_token) if rest_url else None
+
+
+def _launch_container_rest_server(ws_port: int, rest_token: str):
+    """Dry-run to get a container_dict, add the web server to it, then launch."""
+    grpc_kwargs = get_grpc_launcher_args_for_gh_runs()
+    container_dict = pyfluent.launch_fluent(dry_run=True, **grpc_kwargs)
+    container_dict["command"].extend(["-ws", f"-ws-port={ws_port}"])
+    container_dict["ports"].update({str(ws_port): ws_port})
+    container_dict["environment"]["FLUENT_WEBSERVER_TOKEN"] = rest_token
+    solver = create_session(container_dict=container_dict, **grpc_kwargs)
+    return solver, container_dict
+
+
+def _launch_standalone_rest_server(ws_port: int, rest_token: str):
+    solver = create_session(
+        env={"FLUENT_WEBSERVER_TOKEN": rest_token},
+        additional_arguments=web_server_launch_arguments(ws_port),
+    )
+    return solver, None
+
+
+def _is_web_server_ready(get_server_info, ws_port: int, rest_token: str) -> bool:
+    """True once Fluent reports the server active and it responds over HTTP.
+
+    Probes a real REST endpoint (api/{component}/static-info) rather than bare /,
+    matching the actual Fluent REST API routing that FluentRestClient uses.
+    The component (fluent_1 or solver) is auto-resolved per launch mode.
+    """
+    try:
+        component = pyfluent.config.rest_api_component
+        token_hash = hashlib.sha256(rest_token.encode()).hexdigest()
+        response = requests.get(
+            f"http://localhost:{ws_port}/api/{component}/static-info",
+            timeout=2,
+            headers={"Authorization": f"Bearer {token_hash}"},
+        )
+    except Exception:
+        return False
+    return get_server_info.is_active() and response.status_code in (200, 401, 403)
+
+
+def _wait_for_web_server(
+    solver, ws_port: int, rest_token: str, timeout: float = 30
+) -> tuple[str, str]:
+    """Poll until Fluent's web server responds, returning (url, token)."""
+    get_server_info = solver.settings.server.web_server.get_server_info
+    deadline = time.time() + timeout
+
+    while time.time() < deadline:
+        if _is_web_server_ready(get_server_info, ws_port, rest_token):
+            server_info = get_server_info()
+            print(f"Fluent web server info: {server_info!r}")
+            # Use server-reported token if available, else use the one we provided.
+            token = (
+                server_info["token"]
+                if isinstance(server_info, dict) and server_info.get("token")
+                else rest_token
+            )
+            return f"http://localhost:{ws_port}", token
+        time.sleep(0.5)
+
+    pytest.fail(
+        f"Fluent web server did not become ready within {timeout}s. "
+        f"FLUENT_WEBSERVER_TOKEN {'set' if os.getenv('FLUENT_WEBSERVER_TOKEN') else 'NOT SET'}."
+    )
+
+
+@pytest.fixture(scope="session")
+def rest_server_connection():
+    """``(url, token)`` of a Fluent web (REST) server, started once per session.
+
+    If both ``FLUENT_REST_URL`` and ``FLUENT_REST_TOKEN`` are set, that
+    already-running server is used (manual/override workflow). Otherwise a
+    single Fluent instance is launched with its web server enabled and both the
+    gRPC and web-server ports published from the container.
+
+    Any failure to obtain a usable web server is reported as a test failure
+    rather than a skip: these tests are meant to either run against a live
+    server or be deselected explicitly with ``-m "not rest_server"``.
+    """
+    override = _external_rest_server_override()
+    if override:
+        yield override
+        return
+
+    ws_port = get_free_port()
+    rest_token = _required_webserver_token()
+    if pyfluent.config.launch_fluent_container:
+        solver, container_dict = _launch_container_rest_server(ws_port, rest_token)
+    else:
+        solver, container_dict = _launch_standalone_rest_server(ws_port, rest_token)
+
+    try:
+        yield _wait_for_web_server(solver, ws_port, rest_token)
+    finally:
+        solver.exit()
+
+
+@pytest.fixture
+def http_solver_session(rest_server_connection):
+    """Solver session connected to a Fluent server over REST (HTTP)."""
+    from ansys.fluent.core.session.solver import Solver
+
+    rest_url, rest_token = rest_server_connection
+    solver = Solver.from_http(url=rest_url, token=rest_token)
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture(
+    params=[
+        "new_solver_session",
+        pytest.param(
+            "http_solver_session",
+            marks=[pytest.mark.rest_server, pytest.mark.fluent_version(">=27.1")],
+        ),
+    ],
+    ids=["grpc", "rest"],
+)
+def solver_session_grpc_rest(request):
+    """Solver session over either transport, gRPC or REST.
+
+    Use this instead of ``new_solver_session`` for settings-API tests that are
+    transport-agnostic, so the same test body runs against both backends.
+    """
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def mixing_elbow_settings_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_data_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case-data", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_session_grpc_rest(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
 
 
 @pytest.fixture

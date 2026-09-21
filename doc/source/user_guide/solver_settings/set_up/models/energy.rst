@@ -9,7 +9,7 @@ Setting up and querying the model
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    >>> solver_session = pyfluent.launch_fluent()
+    >>> solver_session = pyfluent.Solver.from_install()
     >>> solver_session.settings.file.read_case(file_name=file_name)
     >>> energy = pyfluent.solver.Energy(settings_source=solver_session)
     >>> energy.enabled.get_state()

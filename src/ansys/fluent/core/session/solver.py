@@ -49,6 +49,7 @@ from ansys.fluent.core.exceptions import (
 from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
+from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.session._shared import (
     _make_datamodel_module,
     _make_tui_module,
@@ -62,7 +63,6 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
@@ -76,6 +76,7 @@ if TYPE_CHECKING:
     )
     import ansys.fluent.core.generated.solver.settings_261 as settings_root
     from ansys.fluent.core.generated.solver.tui_261 import main_menu
+    from ansys.fluent.core.session.http_solver import HttpSolver
 
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -172,6 +173,47 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             fluent_connection, scheme_eval, launcher_args=launcher_args
         )
 
+    @classmethod
+    def from_http(
+        cls,
+        url: str,
+        token: str,
+    ) -> "HttpSolver":
+        """Create a solver session connected via REST (HTTP) transport.
+
+        Returns an :class:`~ansys.fluent.core.session.http_solver.HttpSolver`
+        instance - a standalone REST-backed session that is independent of the
+        gRPC infrastructure.
+
+        Parameters
+        ----------
+        url : str
+            REST server URL (e.g., ``"http://127.0.0.1:5000"``).
+        token : str
+            Authentication token for the REST server.
+
+        Returns
+        -------
+        HttpSolver
+            A new solver session connected via REST transport.
+
+        Examples
+        --------
+        >>> solver = Solver.from_http(
+        ...     url="http://127.0.0.1:5000",
+        ...     token="my-token"
+        ... )
+        >>> solver.settings.setup.models.energy.enabled()
+        """
+        from ansys.fluent.core.rest.client import FluentRestClient
+        from ansys.fluent.core.session.http_solver import HttpSolver
+
+        rest_client = FluentRestClient.connect(
+            url=url,
+            token=token,
+        )
+        return HttpSolver(rest_client)
+
     def _build_from_fluent_connection(
         self,
         fluent_connection: "FluentConnection",
@@ -216,7 +258,11 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def settings(self) -> "settings_root.root":
-        """Settings root handle."""
+        """Settings root handle.
+
+        See the :ref:`settings root <ref_root>` for the complete solver
+        settings hierarchy and available configuration objects.
+        """
         if self._settings is None:
             #: Root settings object.
             self._settings = flobject.get_root(
@@ -258,7 +304,8 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     @property
     def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
-        executed."""
+        executed. See the :ref:`solver TUI <ref_solver_tui>` documentation for
+        the complete hierarchy of menus, commands, and related TUI methods."""
         if self._tui is None:
             self._tui = _make_tui_module(self, "solver")
 
@@ -266,7 +313,12 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def workflow(self) -> ClassicWorkflow:
-        """Datamodel root for workflow."""
+        """Datamodel root for workflow.
+
+        See the :ref:`solver workflow datamodel
+        <ref_solver_datamodel_workflow>` for the complete hierarchy of workflow
+        objects and operations.
+        """
         if not self._workflow:
             self._workflow = ClassicWorkflow(
                 _make_datamodel_module(self, "workflow"),
@@ -305,7 +357,12 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     @property
     def preferences(self) -> "preferences_root":
-        """Datamodel root of preferences."""
+        """Datamodel root of preferences.
+
+        See the :ref:`solver preferences datamodel
+        <ref_solver_datamodel_preferences>` for the complete hierarchy of
+        preference objects and operations.
+        """
         if self._preferences is None:
             self._preferences = _make_datamodel_module(self, "preferences")
         return cast("preferences_root", self._preferences)

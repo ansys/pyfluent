@@ -21,7 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module for file transfer service."""
+"""File-transfer strategies for PyFluent sessions.
+
+PyFluent sessions use a file-transfer strategy to move case, mesh, journal, and
+data files between the Python process and Fluent. This module provides a common
+``upload`` and ``download`` protocol with implementations for the supported
+execution environments:
+
+* :class:`StandaloneFileTransferStrategy` copies files on the local machine.
+* :class:`ContainerFileTransferStrategy` transfers files through a Dockerized
+    gRPC file-transfer service.
+* :class:`RemoteFileTransferStrategy` transfers files through a remote gRPC
+    file-transfer service.
+* :class:`PimFileTransferService` transfers files through an Ansys PyPIM
+    instance.
+
+Pass an instance of the appropriate strategy to ``launch_fluent`` through the
+``file_transfer_service`` argument. Most users only need the standalone
+strategy for local Fluent processes or the container strategy for containerized
+sessions.
+"""
 
 import logging
 import os
@@ -35,6 +54,15 @@ from ansys.fluent.core.exceptions import PyFluentUserWarning
 from ansys.fluent.core.utils import get_user_data_dir
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 import ansys.platform.instancemanagement as pypim
+
+__all__ = (
+    "ContainerFileTransferStrategy",
+    "FileTransferStrategy",
+    "PimFileTransferService",
+    "PyPIMConfigurationError",
+    "RemoteFileTransferStrategy",
+    "StandaloneFileTransferStrategy",
+)
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -90,7 +118,7 @@ class StandaloneFileTransferStrategy(FileTransferStrategy):
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
+    >>> from ansys.fluent.core.file_transfer_service import StandaloneFileTransferStrategy
     >>> mesh_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
     >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=StandaloneFileTransferStrategy())
     >>> meshing_session.upload(file_name=mesh_file_name, remote_file_name="elbow.msh.h5")
@@ -148,7 +176,7 @@ class StandaloneFileTransferStrategy(FileTransferStrategy):
         --------
         >>> import ansys.fluent.core as pyfluent
         >>> from ansys.fluent.core import examples
-        >>> from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
+        >>> from ansys.fluent.core.file_transfer_service import StandaloneFileTransferStrategy
         >>> mesh_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
         >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=StandaloneFileTransferStrategy())
         >>> meshing_session.upload(file_name=mesh_file_name, remote_file_name="elbow.msh.h5")
@@ -183,7 +211,7 @@ class StandaloneFileTransferStrategy(FileTransferStrategy):
         --------
         >>> import ansys.fluent.core as pyfluent
         >>> from ansys.fluent.core import examples
-        >>> from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
+        >>> from ansys.fluent.core.file_transfer_service import StandaloneFileTransferStrategy
         >>> mesh_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
         >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=StandaloneFileTransferStrategy())
         >>> meshing_session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
@@ -224,7 +252,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+    >>> from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
     >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
     >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
@@ -358,7 +386,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         --------
         >>> import ansys.fluent.core as pyfluent
         >>> from ansys.fluent.core import examples
-        >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+        >>> from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
         >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
         >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
@@ -399,7 +427,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         --------
         >>> import ansys.fluent.core as pyfluent
         >>> from ansys.fluent.core import examples
-        >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+        >>> from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
         >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
         >>> solver_session.settings.file.write_case(file_name="write_elbow.cas.h5")
