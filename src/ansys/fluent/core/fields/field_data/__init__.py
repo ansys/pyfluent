@@ -27,10 +27,6 @@ The field-data implementation has a transport layer and a user-facing layer.
 An implementation of :class:`AbstractFieldData` can use any kind of service,
 such as gRPC or REST. :class:`LiveFieldData` wraps that implementation for users,
 and :class:`Batch` collects requests for a single service call.
-
-Related APIs include :class:`Reduction` for computing reduced quantities from
-Fluent data, and :class:`SolutionVariableInfo` and
-:class:`SolutionVariableData` for discovering and retrieving solution variables.
 """
 
 
@@ -48,11 +44,6 @@ from ansys.fluent.core.fields.field_data.live_field_data import (
     LiveFieldData as FieldData,
 )
 from ansys.fluent.core.fields.field_data.live_field_data import Batch as FieldDataBatch
-from ansys.fluent.core.fields.reduction import Reduction
-from ansys.fluent.core.fields.solution_variables import (
-    SolutionVariableData,
-    SolutionVariableInfo,
-)
 
 __all__ = [
     "AbstractFieldData",
@@ -65,7 +56,4 @@ __all__ = [
     "SurfaceDataType",
     "SurfaceFieldDataRequest",
     "VectorFieldDataRequest",
-    "Reduction",
-    "SolutionVariableInfo",
-    "SolutionVariableData",
 ]

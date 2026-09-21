@@ -31,7 +31,7 @@ can be implemented with other service providers through the service factory.
 
 from functools import cached_property
 
-from ansys.fluent.core.fields.live_field_data import (
+from ansys.fluent.core.fields.field_data.live_field_data import (
     FieldData,
     FieldDataV251,
     FieldDataV261,

@@ -43,7 +43,7 @@ import warnings
 import numpy as np
 import numpy.typing as npt
 
-from ansys.fluent.core.fields._field_data_interfaces import (
+from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     _get_surfaces_from_objects,
     _set_dataclass_field_docs,
     _transform_faces_connectivity_data,

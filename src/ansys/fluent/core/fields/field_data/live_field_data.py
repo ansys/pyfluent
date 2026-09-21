@@ -65,7 +65,7 @@ import numpy.typing as npt
 from ansys.fluent.core._variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
-from ansys.fluent.core.fields._field_data_interfaces import (
+from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     _AllowedScalarFieldNames,
     _AllowedSurfaceIDs,
     _AllowedSurfaceNames,
@@ -77,7 +77,7 @@ from ansys.fluent.core.fields._field_data_interfaces import (
     _SurfaceNames,
     _VectorFields,
 )
-from ansys.fluent.core.fields.abstract_field_data import (
+from ansys.fluent.core.fields.field_data.abstract_field_data import (
     AbstractFieldData,
     BaseFieldDataSource,
     CellElementType,

@@ -29,7 +29,7 @@ from deprecated.sphinx import deprecated
 import numpy as np
 
 from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
-from ansys.fluent.core.fields._field_data_interfaces import (
+from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     _AllowedScalarFieldNames,
     _AllowedSurfaceNames,
     _BaseFieldInfo,
@@ -38,7 +38,7 @@ from ansys.fluent.core.fields._field_data_interfaces import (
     _SurfaceNames,
     _VectorFields,
 )
-from ansys.fluent.core.fields.abstract_field_data import (
+from ansys.fluent.core.fields.field_data.abstract_field_data import (
     FieldBatch,
     FieldDataSource,
     PathlinesFieldDataRequest,

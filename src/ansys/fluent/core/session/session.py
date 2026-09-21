@@ -41,8 +41,12 @@ from deprecated.sphinx import deprecated
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.fields.abstract_field_data import AbstractFieldData
-from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
+from ansys.fluent.core.fields.field_data.abstract_field_data import AbstractFieldData
+from ansys.fluent.core.fields.field_data.live_field_data import (
+    LiveFieldData,
+    ZoneInfo,
+    _FieldInfo,
+)
 from ansys.fluent.core.launcher.launch_options import FluentMode
 
 if TYPE_CHECKING:
