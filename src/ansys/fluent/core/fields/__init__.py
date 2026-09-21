@@ -21,33 +21,39 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Public field-data APIs.
+"""Public APIs for Fluent field data, reductions, and solution variables.
 
-The field-data implementation has a transport layer and a user-facing layer.
-An implementation of :class:`AbstractFieldData` can use any kind of service,
-such as gRPC or REST. :class:`LiveFieldData` wraps that implementation for users,
-and :class:`Batch` collects requests for a single service call.
-
-Related APIs include :class:`Reduction` for computing reduced quantities from
-Fluent data, and :class:`SolutionVariableInfo` and
-:class:`SolutionVariableData` for discovering and retrieving solution variables.
+The :mod:`field_data` package provides request, response, and mesh models for
+retrieving data from Fluent. :class:`Reduction`, :class:`SolutionVariableInfo`,
+and :class:`SolutionVariableData` provide the related post-processing APIs.
 """
 
-
-from ansys.fluent.core.fields.field_data.abstract_field_data import (
+from ansys.fluent.core.fields.field_data import (
     AbstractFieldData,
+    BaseDataRequest,
     BaseFieldDataSource,
+    Batch,
+    BatchFieldData,
+    CellElementType,
+    Element,
+    Facet,
+    FieldBatch,
+    FieldData,
+    FieldDataBatch,
     FieldDataSource,
+    LiveFieldData,
+    Mesh,
+    Node,
+    PathlinesData,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
+    SurfaceData,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
+    ZoneInfo,
+    ZoneType,
 )
-from ansys.fluent.core.fields.field_data.live_field_data import (
-    LiveFieldData as FieldData,
-)
-from ansys.fluent.core.fields.field_data.live_field_data import Batch as FieldDataBatch
 from ansys.fluent.core.fields.reduction import Reduction
 from ansys.fluent.core.fields.solution_variables import (
     SolutionVariableData,
@@ -56,15 +62,29 @@ from ansys.fluent.core.fields.solution_variables import (
 
 __all__ = [
     "AbstractFieldData",
+    "BaseDataRequest",
     "BaseFieldDataSource",
+    "Batch",
+    "BatchFieldData",
+    "CellElementType",
+    "Element",
+    "Facet",
     "FieldDataSource",
     "FieldData",
     "FieldDataBatch",
+    "FieldBatch",
+    "LiveFieldData",
+    "Mesh",
+    "Node",
+    "PathlinesData",
     "PathlinesFieldDataRequest",
     "ScalarFieldDataRequest",
+    "SurfaceData",
     "SurfaceDataType",
     "SurfaceFieldDataRequest",
     "VectorFieldDataRequest",
+    "ZoneInfo",
+    "ZoneType",
     "Reduction",
     "SolutionVariableInfo",
     "SolutionVariableData",

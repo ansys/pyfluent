@@ -21,39 +21,69 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Public field-data APIs.
+"""Public APIs for retrieving Fluent field data and mesh data.
 
-The field-data implementation has a transport layer and a user-facing layer.
-An implementation of :class:`AbstractFieldData` can use any kind of service,
-such as gRPC or REST. :class:`LiveFieldData` wraps that implementation for users,
-and :class:`Batch` collects requests for a single service call.
+Use :class:`FieldData` with request models such as
+:class:`ScalarFieldDataRequest`. Response and mesh models are also available
+here for inspection and type annotations.
 """
-
 
 from ansys.fluent.core.fields.field_data.abstract_field_data import (
     AbstractFieldData,
     BaseFieldDataSource,
+    FieldBatch,
     FieldDataSource,
+)
+from ansys.fluent.core.fields.field_data.data_types import PathlinesData, SurfaceData
+from ansys.fluent.core.fields.field_data.live_field_data import (
+    Batch,
+    BatchFieldData,
+    LiveFieldData,
+)
+from ansys.fluent.core.fields.field_data.mesh import (
+    CellElementType,
+    Element,
+    Facet,
+    Mesh,
+    Node,
+    ZoneInfo,
+    ZoneType,
+)
+from ansys.fluent.core.fields.field_data.requests import (
+    BaseDataRequest,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
 )
-from ansys.fluent.core.fields.field_data.live_field_data import (
-    LiveFieldData as FieldData,
-)
-from ansys.fluent.core.fields.field_data.live_field_data import Batch as FieldDataBatch
 
 __all__ = [
     "AbstractFieldData",
+    "BaseDataRequest",
     "BaseFieldDataSource",
+    "Batch",
+    "BatchFieldData",
+    "CellElementType",
+    "Element",
+    "Facet",
     "FieldDataSource",
+    "FieldBatch",
     "FieldData",
     "FieldDataBatch",
+    "LiveFieldData",
+    "Mesh",
+    "Node",
+    "PathlinesData",
     "PathlinesFieldDataRequest",
     "ScalarFieldDataRequest",
+    "SurfaceData",
     "SurfaceDataType",
     "SurfaceFieldDataRequest",
     "VectorFieldDataRequest",
+    "ZoneInfo",
+    "ZoneType",
 ]
+
+FieldData = LiveFieldData
+FieldDataBatch = Batch

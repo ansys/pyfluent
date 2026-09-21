@@ -38,16 +38,18 @@ from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     _SurfaceNames,
     _VectorFields,
 )
+from ansys.fluent.core.fields.field_data._return_data import _ReturnFieldData
 from ansys.fluent.core.fields.field_data.abstract_field_data import (
     FieldBatch,
     FieldDataSource,
+)
+from ansys.fluent.core.fields.field_data.data_types import SurfaceData
+from ansys.fluent.core.fields.field_data.requests import (
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
-    SurfaceData,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
-    _ReturnFieldData,
 )
 from ansys.fluent.core.file_reader.case_file import CaseFile
 from ansys.fluent.core.file_reader.data_file import (
