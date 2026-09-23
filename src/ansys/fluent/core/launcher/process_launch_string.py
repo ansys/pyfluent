@@ -214,11 +214,13 @@ def _build_fluent_launch_args(shell: bool = True, **kwargs) -> str | list[str]:
 
 def _build_fluent_launch_args_string(**kwargs) -> str:
     """Build Fluent's launch arguments as a shell string (compatibility wrapper)."""
+    kwargs.pop("shell", None)
     return _build_fluent_launch_args(shell=True, **kwargs)
 
 
 def _build_fluent_launch_args_list(**kwargs) -> list[str]:
     """Build Fluent's launch arguments as a list of tokens (compatibility wrapper)."""
+    kwargs.pop("shell", None)
     return _build_fluent_launch_args(shell=False, **kwargs)
 
 
@@ -253,8 +255,8 @@ def _generate_launch_command(
     that construct shell commands continue to see the exact same output.
     """
     exe_path = str(get_fluent_exe_path(**argvals))
-    # ``argvals`` already carries a ``shell`` key that we control here;
-    # drop it so the explicit ``shell=`` isn't a duplicate keyword.
+    # Drop the ``shell`` key from ``argvals`` before spreading so the explicit
+    # ``shell=`` keyword below is not duplicated.
     args_kwargs = {k: v for k, v in argvals.items() if k != "shell"}
     args = _build_fluent_launch_args(shell=shell, **args_kwargs)
     mode_extra = _mode_extra_args(argvals["mode"], shell)
