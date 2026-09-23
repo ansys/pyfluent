@@ -269,10 +269,10 @@ class BaseMeshing(BaseSession):
             configuration before starting.
 
         legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If True, creates the legacy PyFluent-native interface.
+            If False, creates the PyFluent-native interface.
+            If None (default), uses the legacy PyFluent-native interface for Fluent versions up to 25R2
+            and uses the PyFluent-native interface for later versions (since 26R1).
 
         Returns
         -------
@@ -302,10 +302,10 @@ class BaseMeshing(BaseSession):
             configuration before starting.
 
         legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If True, creates the legacy PyFluent-native interface.
+            If False, creates the PyFluent-native interface.
+            If None (default), uses the legacy PyFluent-native interface for Fluent versions up to 25R2
+            and uses the PyFluent-native interface for later versions (since 26R1).
 
         Returns
         -------
@@ -335,10 +335,10 @@ class BaseMeshing(BaseSession):
             configuration before starting.
 
         legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If True, creates the legacy PyFluent-native interface.
+            If False, creates the PyFluent-native interface.
+            If None (default), uses the legacy PyFluent-native interface for Fluent versions up to 25R2
+            and uses the PyFluent-native interface for later versions (since 26R1).
 
         Returns
         -------
@@ -368,10 +368,10 @@ class BaseMeshing(BaseSession):
             configuration before starting.
 
         legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If True, creates the legacy PyFluent-native interface.
+            If False, creates the PyFluent-native interface.
+            If None (default), uses the legacy PyFluent-native interface for Fluent versions up to 25R2
+            and uses the PyFluent-native interface for later versions (since 26R1).
 
         Returns
         -------
@@ -409,10 +409,10 @@ class BaseMeshing(BaseSession):
             configuration before starting.
 
         legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If True, creates the legacy PyFluent-native interface.
+            If False, creates the PyFluent-native interface.
+            If None (default), uses the legacy PyFluent-native interface for Fluent versions up to 25R2
+            and uses the PyFluent-native interface for later versions (since 26R1).
 
         Returns
         -------
@@ -445,10 +445,10 @@ class BaseMeshing(BaseSession):
             configuration before starting.
 
         legacy : bool, optional
-            If True, creates a legacy workflow implementation.
-            If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
-            and uses the new workflow implementation for later versions (since 26R1).
+            If True, creates the legacy PyFluent-native interface.
+            If False, creates the PyFluent-native interface.
+            If None (default), uses the legacy PyFluent-native interface for Fluent versions up to 25R2
+            and uses the PyFluent-native interface for later versions (since 26R1).
 
         Returns
         -------
@@ -549,15 +549,15 @@ class BaseMeshing(BaseSession):
     def watertight(
         self, legacy: bool | None = None
     ) -> "_meshing_workflow_type.WatertightMeshing":
-        """Get a new watertight meshing workflow.
+        """Get the watertight meshing workflow.
 
         Parameters
         ----------
         legacy : bool, optional
-            If True, returns the legacy workflow implementation.
-            If False, returns the new workflow implementation.
-            If None (default), auto-selects based on Fluent version: legacy for
-            versions up to 25R2, new implementation from 26R1 onwards.
+            If True, returns the legacy PyFluent-native interface.
+            If False, returns the PyFluent-native interface.
+            If None (default), auto-selects based on Fluent version: legacy PyFluent-native for
+            versions up to 25R2, PyFluent-native from 26R1 onwards.
 
         Returns
         -------
@@ -569,15 +569,15 @@ class BaseMeshing(BaseSession):
     def fault_tolerant(
         self, legacy: bool | None = None
     ) -> "_meshing_workflow_type.FaultTolerantMeshing":
-        """Get a new fault-tolerant meshing workflow.
+        """Get the fault-tolerant meshing workflow.
 
         Parameters
         ----------
         legacy : bool, optional
-            If True, returns the legacy workflow implementation.
-            If False, returns the new workflow implementation.
-            If None (default), auto-selects based on Fluent version: legacy for
-            versions up to 25R2, new implementation from 26R1 onwards.
+            If True, returns the legacy PyFluent-native interface.
+            If False, returns the PyFluent-native interface.
+            If None (default), auto-selects based on Fluent version: legacy PyFluent-native for
+            versions up to 25R2, PyFluent-native from 26R1 onwards.
 
         Returns
         -------
@@ -589,15 +589,15 @@ class BaseMeshing(BaseSession):
     def two_dimensional_meshing(
         self, legacy: bool | None = None
     ) -> "_meshing_workflow_type.TwoDimensionalMeshing":
-        """Get a new 2D meshing workflow.
+        """Get the 2D meshing workflow.
 
         Parameters
         ----------
         legacy : bool, optional
-            If True, returns the legacy workflow implementation.
-            If False, returns the new workflow implementation.
-            If None (default), auto-selects based on Fluent version: legacy for
-            versions up to 25R2, new implementation from 26R1 onwards.
+            If True, returns the legacy PyFluent-native interface.
+            If False, returns the PyFluent-native interface.
+            If None (default), auto-selects based on Fluent version: legacy PyFluent-native for
+            versions up to 25R2, PyFluent-native from 26R1 onwards.
 
         Returns
         -------
@@ -609,15 +609,15 @@ class BaseMeshing(BaseSession):
     def topology_based(
         self, legacy: bool | None = None
     ) -> "_meshing_workflow_type.TopologyBasedMeshing":
-        """Get a new topology-based meshing workflow (beta feature).
+        """Get the topology-based meshing workflow (beta feature).
 
         Parameters
         ----------
         legacy : bool, optional
-            If True, returns the legacy workflow implementation.
-            If False, returns the new workflow implementation.
-            If None (default), auto-selects based on Fluent version: legacy for
-            versions up to 25R2, new implementation from 26R1 onwards.
+            If True, returns the legacy PyFluent-native interface.
+            If False, returns the PyFluent-native interface.
+            If None (default), auto-selects based on Fluent version: legacy PyFluent-native for
+            versions up to 25R2, PyFluent-native from 26R1 onwards.
 
         Raises
         ------
