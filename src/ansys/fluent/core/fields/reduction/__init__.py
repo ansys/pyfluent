@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 #
 #
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -21,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High-level user-facing API for retrieving reduction data from Fluent."""
+"""Public Fluent reduction APIs and their implementation contracts."""
 
+from ansys.fluent.core.fields.reduction.abstract_reduction import AbstractReduction
+from ansys.fluent.core.fields.reduction.reduction import Reduction
 
-from ansys.fluent.core.services.reduction import Reduction
-
-__all__ = ["Reduction"]
+__all__ = ("AbstractReduction", "Reduction")

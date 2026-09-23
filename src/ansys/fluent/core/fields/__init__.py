@@ -26,6 +26,8 @@
 The :mod:`field_data` package provides request, response, and mesh models for
 retrieving data from Fluent. :class:`Reduction`, :class:`SolutionVariableInfo`,
 and :class:`SolutionVariableData` provide the related post-processing APIs.
+The ``reduction`` and ``solution_variables`` packages also expose their
+abstract contracts, response containers, and user-facing validation errors.
 """
 
 from ansys.fluent.core.fields.field_data import (
@@ -54,14 +56,25 @@ from ansys.fluent.core.fields.field_data import (
     ZoneInfo,
     ZoneType,
 )
-from ansys.fluent.core.fields.reduction import Reduction
+from ansys.fluent.core.fields.reduction import AbstractReduction, Reduction
 from ansys.fluent.core.fields.solution_variables import (
+    AbstractData,
+    AbstractSolutionVariableData,
+    AbstractSolutionVariableInfo,
+    Data,
+    DomainError,
+    InvalidSolutionVariableNameError,
     SolutionVariableData,
     SolutionVariableInfo,
+    ZoneError,
 )
 
 __all__ = [
     "AbstractFieldData",
+    "AbstractReduction",
+    "AbstractData",
+    "AbstractSolutionVariableData",
+    "AbstractSolutionVariableInfo",
     "BaseDataRequest",
     "BaseFieldDataSource",
     "Batch",
@@ -86,6 +99,10 @@ __all__ = [
     "ZoneInfo",
     "ZoneType",
     "Reduction",
+    "Data",
+    "DomainError",
+    "InvalidSolutionVariableNameError",
     "SolutionVariableInfo",
     "SolutionVariableData",
+    "ZoneError",
 ]
