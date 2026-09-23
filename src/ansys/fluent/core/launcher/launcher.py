@@ -334,7 +334,7 @@ def launch_fluent(
     processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
     start_timeout: int | None = None,
-    additional_arguments: str = "",
+    additional_arguments: str | list[str] = "",
     env: dict[str, Any] | None = None,
     start_container: bool | None = None,
     container_dict: dict[str, Any] | None = None,
@@ -361,6 +361,7 @@ def launch_fluent(
     use_podman_compose: bool = False,
     certificates_folder: str | None = None,
     insecure_mode: bool = False,
+    shell: bool = True,
 ) -> (
     Meshing
     | PureMeshing
@@ -463,6 +464,7 @@ def launch_fluent(
                 use_podman_compose=use_podman_compose,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
+                shell=shell,
             )
         case LaunchMode.PIM:
             launcher = PIMLauncher(
@@ -480,6 +482,7 @@ def launch_fluent(
                 gpu=gpu,
                 start_watchdog=start_watchdog,
                 file_transfer_service=file_transfer_service,
+                shell=shell,
             )
         case LaunchMode.SLURM:
             launcher = SlurmLauncher(
@@ -511,6 +514,7 @@ def launch_fluent(
                 file_transfer_service=file_transfer_service,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
+                shell=shell,
             )
         case LaunchMode.STANDALONE:
             launcher = StandaloneLauncher(
@@ -538,6 +542,7 @@ def launch_fluent(
                 topy=topy,
                 start_watchdog=start_watchdog,
                 file_transfer_service=file_transfer_service,
+                shell=shell,
             )
         case _:
             assert_never(fluent_launch_mode)

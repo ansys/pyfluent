@@ -103,6 +103,7 @@ def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str,
 
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
+    shell = argvals.get("shell", True)
     kwargs: dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
@@ -113,12 +114,12 @@ def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str,
         )
     if is_windows():
         kwargs.update(
-            shell=True,
+            shell=shell,
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
             | subprocess.CREATE_NO_WINDOW,
         )
     else:
-        kwargs.update(shell=True, start_new_session=True)
+        kwargs.update(shell=shell, start_new_session=True)
     fluent_env = os.environ.copy()
     if env:
         fluent_env.update({k: str(v) for k, v in env.items()})
@@ -246,6 +247,32 @@ def _build_journal_argument(
     return _impl(topy, journal_file_names)
 
 
+def _build_journal_argument_list(
+    topy: None | bool | str, journal_file_names: None | str | list[str]
+) -> list[str]:
+    """Build Fluent commandline journal argument as a list of tokens."""
+    if journal_file_names and not isinstance(journal_file_names, (str, list)):
+        raise TypeError(
+            "Use 'journal_file_names' to specify and convert journal files."
+        )
+    if topy and not journal_file_names:
+        raise InvalidArgument(
+            "Use 'journal_file_names' to specify and convert journal files."
+        )
+    tokens: list[str] = []
+    if isinstance(journal_file_names, str):
+        journal_file_names = [journal_file_names]
+    if journal_file_names:
+        for journal in journal_file_names:
+            tokens.extend(["-i", str(journal)])
+    if topy:
+        if isinstance(topy, str):
+            tokens.append(f"-topy={topy}")
+        else:
+            tokens.append("-topy")
+    return tokens
+
+
 def _validate_lightweight_with_journal(
     lightweight_mode: bool | None, journal_file_names: None | str | list[str]
 ) -> tuple[bool, str | None]:
@@ -328,3 +355,19 @@ def _build_case_data_arguments(
     if case_data_file_name:
         fluent_case_data_arg += f' -data "{str(case_data_file_name)}"'
     return fluent_case_data_arg
+
+
+def _build_case_data_arguments_list(
+    case_file_name: None | str, case_data_file_name: None | str
+) -> list[str]:
+    """Build Fluent commandline case and data file arguments as a list of tokens."""
+    if case_data_file_name and not case_file_name:
+        raise InvalidArgument(
+            "'case_data_file_name' requires 'case_file_name' to also be provided."
+        )
+    tokens: list[str] = []
+    if case_file_name:
+        tokens.extend(["-case", str(case_file_name)])
+    if case_data_file_name:
+        tokens.extend(["-data", str(case_data_file_name)])
+    return tokens
