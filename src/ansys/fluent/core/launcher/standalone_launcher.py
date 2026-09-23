@@ -58,11 +58,10 @@ from ansys.fluent.core.launcher.launch_options import (
     _get_standalone_launch_fluent_version,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
+    FluentLaunchCmdBuilder,
     _await_fluent_launch,
     _build_case_data_arguments,
-    _build_case_data_arguments_list,
     _build_journal_argument,
-    _build_journal_argument_list,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
     _validate_lightweight_with_case_data,
@@ -70,8 +69,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
-    _generate_launch_command_list,
-    _generate_launch_string,
+    _generate_launch_command,
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
@@ -244,7 +242,12 @@ class StandaloneLauncher:
         self._shell = self.argvals.get("shell", True)
         self._validate_shell_additional_arguments()
 
-        self._init_launch_command(server_info_file_name_for_server)
+        self._cmd_builder = FluentLaunchCmdBuilder(self._shell)
+        self._cmd_builder.extend(
+            _generate_launch_command(
+                self.argvals, server_info_file_name_for_server, shell=self._shell
+            )
+        )
         self._append_timeout_arg()
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
@@ -256,7 +259,7 @@ class StandaloneLauncher:
 
         self._append_case_data_args()
         self._append_journal_args()
-        self._finalize_launch_cmd()
+        self._launch_cmd = self._final_launch_cmd()
 
     def _configure_argvals(self, kwargs, pyfluent) -> None:
         """Apply the UI-mode override from config and defaults for ``lightweight_mode``."""
@@ -314,23 +317,6 @@ class StandaloneLauncher:
                 "'additional_arguments' must be a list of strings when 'shell=False'."
             )
 
-    def _init_launch_command(self, server_info_file_name_for_server: str) -> None:
-        """Build the initial Fluent launch command as a string or a token list.
-
-        Only one of ``self._launch_string`` / ``self._launch_tokens`` is populated;
-        the other is left as ``None`` and is selected downstream via ``self._shell``.
-        """
-        if self._shell:
-            self._launch_string = _generate_launch_string(
-                self.argvals, server_info_file_name_for_server
-            )
-            self._launch_tokens = None
-        else:
-            self._launch_string = None
-            self._launch_tokens = _generate_launch_command_list(
-                self.argvals, server_info_file_name_for_server
-            )
-
     def _append_timeout_arg(self) -> None:
         """Append the session-idle-timeout argument to the launch command."""
         if self.argvals.get("start_timeout") is None:
@@ -339,10 +325,9 @@ class StandaloneLauncher:
         # Negative start_timeout values are treated as "no timeout".
         if start_timeout < 0:
             return
-        if self._shell:
-            self._launch_string += self._construct_timeout_arg(start_timeout)
-        else:
-            self._launch_tokens.append(self._construct_timeout_token(start_timeout))
+        self._cmd_builder.extend(
+            self._construct_timeout(start_timeout, shell=self._shell)
+        )
 
     def _append_case_data_args(self) -> None:
         """Append ``-case`` / ``-data`` CLI args unless lightweight_mode defers case reading."""
@@ -350,54 +335,63 @@ class StandaloneLauncher:
             # Case reading is deferred to post-connection for lightweight_mode
             # to support background session orchestration.
             return
-        case_file_name = self.argvals.get("case_file_name")
-        case_data_file_name = self.argvals.get("case_data_file_name")
-        if self._shell:
-            self._launch_string += _build_case_data_arguments(
-                case_file_name, case_data_file_name
+        self._cmd_builder.extend(
+            _build_case_data_arguments(
+                self.argvals.get("case_file_name"),
+                self.argvals.get("case_data_file_name"),
+                shell=self._shell,
             )
-        else:
-            self._launch_tokens.extend(
-                _build_case_data_arguments_list(case_file_name, case_data_file_name)
-            )
+        )
 
     def _append_journal_args(self) -> None:
         """Append ``-i`` / ``-topy`` journal-file CLI args to the launch command."""
-        topy = self.argvals.get("topy", [])
-        journal_file_names = self.argvals.get("journal_file_names")
-        if self._shell:
-            self._launch_string += _build_journal_argument(topy, journal_file_names)
-        else:
-            self._launch_tokens.extend(
-                _build_journal_argument_list(topy, journal_file_names)
+        self._cmd_builder.extend(
+            _build_journal_argument(
+                self.argvals.get("topy", []),
+                self.argvals.get("journal_file_names"),
+                shell=self._shell,
             )
+        )
 
-    def _finalize_launch_cmd(self) -> None:
-        """Store the command form that will be handed to ``subprocess.Popen``."""
-        if not self._shell:
-            # shell=False: pass tokens list directly to subprocess.Popen.
-            self._launch_cmd = list(self._launch_tokens)
-            return
-        if is_windows() or self.argvals.get("ui_mode") in (
-            UIMode.GUI,
-            UIMode.HIDDEN_GUI,
+    def _final_launch_cmd(self) -> str | list[str]:
+        """Return the command form that will be handed to ``subprocess.Popen``."""
+        cmd = self._cmd_builder.get_cmd()
+        if (
+            self._shell
+            and not is_windows()
+            and self.argvals.get("ui_mode") not in (UIMode.GUI, UIMode.HIDDEN_GUI)
         ):
-            self._launch_cmd = self._launch_string
-            return
-        # Linux + no visible GUI: nohup + '&' detaches Fluent from the current terminal.
-        self._launch_cmd = "nohup " + self._launch_string + " &"
+            # Linux + no visible GUI: nohup + '&' detaches Fluent from the current terminal.
+            cmd = "nohup " + cmd + " &"
+        return cmd
+
+    @staticmethod
+    def _construct_timeout(
+        idle_timeout_seconds: int, shell: bool = True
+    ) -> str | list[str]:
+        """Return the session-idle-timeout CLI argument.
+
+        The shell form is byte-identical to the historical hand-written
+        fragment (``' -command="(...)"'``); the token form is a single
+        ``-command=(...)`` element with the same effect after shell parsing.
+        """
+        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
+        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
+        if shell:
+            return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+        return [f"-command=(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"]
 
     @staticmethod
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
-        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
-        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
-        return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+        """Compatibility wrapper returning the previous shell-formatted timeout arg."""
+        return StandaloneLauncher._construct_timeout(idle_timeout_seconds, shell=True)
 
     @staticmethod
     def _construct_timeout_token(idle_timeout_seconds: int) -> str:
-        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
-        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
-        return f"-command=(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"
+        """Compatibility wrapper returning the previous single-token timeout arg."""
+        return StandaloneLauncher._construct_timeout(idle_timeout_seconds, shell=False)[
+            0
+        ]
 
     @staticmethod
     def _disable_idle_timeout_guard(session):
@@ -415,12 +409,10 @@ class StandaloneLauncher:
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
         if self.argvals.get("dry_run"):
-            if self._shell:
-                print(f"Fluent launch string: {self._launch_string}")
-                return self._launch_string, self._server_info_file_name
-            else:
-                print(f"Fluent launch command: {self._launch_tokens}")
-                return list(self._launch_tokens), self._server_info_file_name
+            base_cmd = self._cmd_builder.get_cmd()
+            label = "string" if self._shell else "command"
+            print(f"Fluent launch {label}: {base_cmd}")
+            return base_cmd, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
@@ -435,7 +427,8 @@ class StandaloneLauncher:
             except TimeoutError as ex:
                 if is_windows() and self._shell:
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = self._launch_string.replace('"', "", 2)
+                    # Fall back to unquoted shell string so cmd.exe can locate the exe.
+                    launch_cmd = self._cmd_builder.get_cmd().replace('"', "", 2)
                     self._kwargs.update(shell=False)
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"

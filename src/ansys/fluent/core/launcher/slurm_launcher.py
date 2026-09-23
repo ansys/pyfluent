@@ -86,18 +86,16 @@ from ansys.fluent.core.launcher.launch_options import (
     get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
+    FluentLaunchCmdBuilder,
     _await_fluent_launch,
     _build_case_data_arguments,
-    _build_case_data_arguments_list,
     _build_journal_argument,
-    _build_journal_argument_list,
     _get_subprocess_kwargs_for_fluent,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
-    _generate_launch_command_list,
-    _generate_launch_string,
+    _generate_launch_command,
 )
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.module_config import config
@@ -644,63 +642,57 @@ class SlurmLauncher:
         self._server_info_file_name = server_info_file_name_for_client
         self._argvals.update(self._argvals["scheduler_options"])
         shell = self._argvals.get("shell", True)
-        if (
-            not shell
-            and isinstance(self._argvals.get("additional_arguments"), str)
-            and self._argvals.get("additional_arguments")
-        ):
+        additional_arguments = self._argvals.get("additional_arguments")
+        if not shell and isinstance(additional_arguments, str) and additional_arguments:
             raise InvalidArgument(
                 "'additional_arguments' must be a list of strings when 'shell=False'."
             )
+
+        builder = FluentLaunchCmdBuilder(shell)
+        builder.extend(
+            _generate_launch_command(
+                self._argvals, server_info_file_name_for_server, shell=shell
+            )
+        )
+        builder.extend(
+            _build_case_data_arguments(
+                self._argvals.get("case_file_name"),
+                self._argvals.get("case_data_file_name"),
+                shell=shell,
+            )
+        )
+        builder.extend(
+            _build_journal_argument(
+                self._argvals["topy"],
+                self._argvals["journal_file_names"],
+                shell=shell,
+            )
+        )
+        # Extra Slurm gRPC/env-forwarding flags share byte-identical form
+        # with the historical shell string.
         if shell:
-            launch_cmd = _generate_launch_string(
-                self._argvals,
-                server_info_file_name_for_server,
-            )
+            builder.append(' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"')
+            if self._argvals["insecure_mode"]:
+                builder.append(" -grpc-allow-remote-host -grpc-insecure-mode")
+            elif self._argvals["certificates_folder"]:
+                builder.append(
+                    f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
+                )
         else:
-            launch_tokens = _generate_launch_command_list(
-                self._argvals,
-                server_info_file_name_for_server,
-            )
+            builder.extend(["-setenv=FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"])
+            if self._argvals["insecure_mode"]:
+                builder.extend(["-grpc-allow-remote-host", "-grpc-insecure-mode"])
+            elif self._argvals["certificates_folder"]:
+                builder.extend(
+                    [
+                        "-grpc-allow-remote-host",
+                        f"-grpc-certs-folder={self._argvals['certificates_folder']}",
+                    ]
+                )
+        launch_cmd = builder.get_cmd()
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         kwargs = _get_subprocess_kwargs_for_fluent(self._argvals["env"], self._argvals)
-
-        if shell:
-            # Add case/data files via CLI
-            launch_cmd += _build_case_data_arguments(
-                self._argvals.get("case_file_name"),
-                self._argvals.get("case_data_file_name"),
-            )
-            launch_cmd += _build_journal_argument(
-                self._argvals["topy"], self._argvals["journal_file_names"]
-            )
-            launch_cmd += ' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
-            if self._argvals["insecure_mode"]:
-                launch_cmd += " -grpc-allow-remote-host -grpc-insecure-mode"
-            elif self._argvals["certificates_folder"]:
-                launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
-        else:
-            launch_tokens.extend(
-                _build_case_data_arguments_list(
-                    self._argvals.get("case_file_name"),
-                    self._argvals.get("case_data_file_name"),
-                )
-            )
-            launch_tokens.extend(
-                _build_journal_argument_list(
-                    self._argvals["topy"], self._argvals["journal_file_names"]
-                )
-            )
-            launch_tokens.append("-setenv=FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1")
-            if self._argvals["insecure_mode"]:
-                launch_tokens.extend(["-grpc-allow-remote-host", "-grpc-insecure-mode"])
-            elif self._argvals["certificates_folder"]:
-                launch_tokens.append("-grpc-allow-remote-host")
-                launch_tokens.append(
-                    f"-grpc-certs-folder={self._argvals['certificates_folder']}"
-                )
-            launch_cmd = launch_tokens
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)

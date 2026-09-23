@@ -98,9 +98,9 @@ def _apply_fluent_map(argval: Any, option_spec: dict[str, Any]) -> Any:
 def _iter_option_fragments(kwargs) -> Iterator[str]:
     """Yield the formatted fragment for each JSON-defined launcher option.
 
-    The fragment preserves the leading space defined in ``fluent_format``
-    (e.g. ``" -py"``). Callers can concatenate as-is for a shell string, or
-    strip+split each fragment to produce individual tokens.
+    Each fragment preserves the leading space defined in ``fluent_format``
+    (e.g. ``" -py"``). Callers can concatenate as-is for the shell string
+    form, or split each fragment to produce individual list tokens.
     """
     for name, spec in _load_launcher_options().items():
         argval = _resolve_option_argval(name, kwargs.get(name), spec)
@@ -134,134 +134,161 @@ def _graphics_driver_tokens(graphics_driver) -> list[str]:
     return ["-driver", value] if value else []
 
 
-def _validate_additional_arguments_list(additional_arguments) -> list[str]:
-    """Validate and normalize ``additional_arguments`` for ``shell=False``."""
+def _normalize_additional_arguments(
+    additional_arguments, shell: bool
+) -> str | list[str]:
+    """Validate and normalise the ``additional_arguments`` argument.
+
+    When ``shell=True`` the value is returned as a string (defaults to
+    ``""``). When ``shell=False`` a list of tokens is required and returned.
+    """
     if not additional_arguments:
-        return []
+        return "" if shell else []
+    if isinstance(additional_arguments, list):
+        return additional_arguments
     if isinstance(additional_arguments, str):
-        raise TypeError(
-            "'additional_arguments' must be a list of strings when 'shell=False'."
-        )
-    return list(additional_arguments)
+        if not shell:
+            raise TypeError(
+                "'additional_arguments' must be a list of strings when 'shell=False'."
+            )
+        return additional_arguments
+    raise TypeError("'additional_arguments' must be a string or a list of strings.")
 
 
-def _parallel_tokens(joined_additional: str, kwargs) -> list[str]:
-    """Return parallel (``-t`` / ``-cnf=``) tokens when not already supplied."""
-    if "-t" in joined_additional or "-cnf=" in joined_additional:
-        return []
-    parallel_options = build_parallel_options(
-        load_machines(ncores=kwargs.get("processor_count"))
-    )
-    return parallel_options.strip().split() if parallel_options else []
+def _parallel_options_string(kwargs) -> str:
+    """Return Fluent's ``-t`` / ``-cnf=`` parallel options (may be empty)."""
+    return build_parallel_options(load_machines(ncores=kwargs.get("processor_count")))
 
 
-def _build_fluent_launch_args_string(**kwargs) -> str:
-    """Build Fluent's launch arguments string from keyword arguments.
+def _build_fluent_launch_args(shell: bool = True, **kwargs) -> str | list[str]:
+    """Build Fluent's launch arguments in either shell string or token list form.
 
-    Returns
-    -------
-    str
-        Fluent's launch arguments string.
+    The two branches share every helper that resolves option values; they
+    differ only in whether they emit leading-space-prefixed fragments (shell
+    string form) or standalone tokens (list form).
     """
-    launch_args_string = f" {_dimension_precision_flag(kwargs)}"
-    for fragment in _iter_option_fragments(kwargs):
-        launch_args_string += fragment
-    additional_arguments = kwargs.get("additional_arguments", "")
-    if additional_arguments:
-        launch_args_string += " " + additional_arguments
-    if "-t" not in additional_arguments and "-cnf=" not in additional_arguments:
-        parallel_options = build_parallel_options(
-            load_machines(ncores=kwargs.get("processor_count"))
-        )
-        if parallel_options:
-            launch_args_string += " " + parallel_options
-    for token in _gpu_tokens(kwargs.get("gpu")):
-        launch_args_string += f" {token}"
-    for token in _ui_mode_tokens(kwargs.get("ui_mode")):
-        launch_args_string += f" {token}"
+    additional_arguments = _normalize_additional_arguments(
+        kwargs.get("additional_arguments"), shell
+    )
+    dp_flag = _dimension_precision_flag(kwargs)
+    gpu_tokens = _gpu_tokens(kwargs.get("gpu"))
+    ui_tokens = _ui_mode_tokens(kwargs.get("ui_mode"))
     driver_tokens = _graphics_driver_tokens(kwargs.get("graphics_driver"))
-    if driver_tokens:
-        launch_args_string += " " + " ".join(driver_tokens)
-    return launch_args_string
-
-
-def _build_fluent_launch_args_list(**kwargs) -> list[str]:
-    """Build Fluent's launch arguments as a list of tokens (for ``shell=False``).
-
-    ``additional_arguments`` must be a list of individual command-line tokens
-    (never a single space-separated string) so that ``subprocess.Popen`` can
-    forward them verbatim without shell parsing.
-
-    Returns
-    -------
-    list[str]
-        Fluent's launch arguments as a list of tokens.
-    """
-    additional_arguments = _validate_additional_arguments_list(
-        kwargs.get("additional_arguments")
+    joined_additional = (
+        additional_arguments
+        if isinstance(additional_arguments, str)
+        else " ".join(additional_arguments)
     )
-    tokens: list[str] = [_dimension_precision_flag(kwargs)]
+    need_parallel = "-t" not in joined_additional and "-cnf=" not in joined_additional
+    parallel_options = _parallel_options_string(kwargs) if need_parallel else ""
+
+    if shell:
+        # Byte-identical to the historical hand-written string form. Every
+        # fragment already carries its own leading space.
+        launch_args = f" {dp_flag}"
+        for fragment in _iter_option_fragments(kwargs):
+            launch_args += fragment
+        if additional_arguments:
+            launch_args += " " + additional_arguments
+        if parallel_options:
+            launch_args += " " + parallel_options
+        for token in gpu_tokens + ui_tokens:
+            launch_args += f" {token}"
+        if driver_tokens:
+            launch_args += " " + " ".join(driver_tokens)
+        return launch_args
+
+    tokens: list[str] = [dp_flag]
     # Each JSON-defined option formats to a whitespace-separated fragment;
-    # split it so every CLI flag is its own token.
+    # split so every CLI flag is its own token.
     for fragment in _iter_option_fragments(kwargs):
         tokens.extend(fragment.split())
     tokens.extend(additional_arguments)
-    tokens.extend(_parallel_tokens(" ".join(additional_arguments), kwargs))
-    tokens.extend(_gpu_tokens(kwargs.get("gpu")))
-    tokens.extend(_ui_mode_tokens(kwargs.get("ui_mode")))
-    tokens.extend(_graphics_driver_tokens(kwargs.get("graphics_driver")))
+    if parallel_options:
+        tokens.extend(parallel_options.strip().split())
+    tokens.extend(gpu_tokens)
+    tokens.extend(ui_tokens)
+    tokens.extend(driver_tokens)
     return tokens
 
 
-def _generate_launch_string(
-    argvals,
-    server_info_file_name: str,
-):
-    """Generates the launch string to launch fluent."""
-    if launcher_utils.is_windows():
-        exe_path = str(get_fluent_exe_path(**argvals))
-        if " " in exe_path:
-            exe_path = '"' + exe_path + '"'
-    else:
-        exe_path = str(get_fluent_exe_path(**argvals))
-    launch_string = exe_path
-    launch_string += _build_fluent_launch_args_string(**argvals)
-    if argvals["mode"] == FluentMode.SOLVER_ICING:
-        launch_string += " -flicing -license=enterprise"
-    if argvals["mode"] == FluentMode.SOLVER_AERO:
-        launch_string += " -flaero_server -license=enterprise"
-    if argvals["mode"] == FluentMode.PRE_POST:
-        launch_string += " -post"
-    if FluentMode.is_meshing(argvals["mode"]):
-        launch_string += " -meshing"
-    if " " in server_info_file_name:
-        server_info_file_name = '"' + server_info_file_name + '"'
-    launch_string += f" -sifile={server_info_file_name}"
-    if not pyfluent.config.fluent_show_mesh_after_case_read:
-        launch_string += " -nm"
-    return launch_string
+def _build_fluent_launch_args_string(**kwargs) -> str:
+    """Build Fluent's launch arguments as a shell string (compatibility wrapper)."""
+    return _build_fluent_launch_args(shell=True, **kwargs)
 
 
-def _generate_launch_command_list(
-    argvals,
-    server_info_file_name: str,
-) -> list[str]:
-    """Generate the launch command as a list of tokens (for ``shell=False``)."""
+def _build_fluent_launch_args_list(**kwargs) -> list[str]:
+    """Build Fluent's launch arguments as a list of tokens (compatibility wrapper)."""
+    return _build_fluent_launch_args(shell=False, **kwargs)
+
+
+def _mode_extra_args(mode, shell: bool) -> str | list[str]:
+    """Return the mode-specific CLI flags for ``mode`` (may be empty)."""
+    if mode == FluentMode.SOLVER_ICING:
+        return (
+            " -flicing -license=enterprise"
+            if shell
+            else ["-flicing", "-license=enterprise"]
+        )
+    if mode == FluentMode.SOLVER_AERO:
+        return (
+            " -flaero_server -license=enterprise"
+            if shell
+            else ["-flaero_server", "-license=enterprise"]
+        )
+    if mode == FluentMode.PRE_POST:
+        return " -post" if shell else ["-post"]
+    if FluentMode.is_meshing(mode):
+        return " -meshing" if shell else ["-meshing"]
+    return "" if shell else []
+
+
+def _generate_launch_command(
+    argvals, server_info_file_name: str, shell: bool = True
+) -> str | list[str]:
+    """Generate the Fluent launch command as either a shell string or token list.
+
+    The shell-string form is byte-identical to the original hand-crafted
+    string (including the exe/``-sifile`` path quoting rules), so callers
+    that construct shell commands continue to see the exact same output.
+    """
     exe_path = str(get_fluent_exe_path(**argvals))
+    # ``argvals`` already carries a ``shell`` key that we control here;
+    # drop it so the explicit ``shell=`` isn't a duplicate keyword.
+    args_kwargs = {k: v for k, v in argvals.items() if k != "shell"}
+    args = _build_fluent_launch_args(shell=shell, **args_kwargs)
+    mode_extra = _mode_extra_args(argvals["mode"], shell)
+
+    if shell:
+        # On Windows, quote the exe path only if it contains a space; the
+        # ``-sifile`` path is quoted under the same rule.
+        if launcher_utils.is_windows() and " " in exe_path:
+            exe_path = f'"{exe_path}"'
+        sifile = server_info_file_name
+        if " " in sifile:
+            sifile = f'"{sifile}"'
+        launch_string = exe_path + args + mode_extra + f" -sifile={sifile}"
+        if not pyfluent.config.fluent_show_mesh_after_case_read:
+            launch_string += " -nm"
+        return launch_string
+
     tokens: list[str] = [exe_path]
-    tokens.extend(_build_fluent_launch_args_list(**argvals))
-    if argvals["mode"] == FluentMode.SOLVER_ICING:
-        tokens.extend(["-flicing", "-license=enterprise"])
-    if argvals["mode"] == FluentMode.SOLVER_AERO:
-        tokens.extend(["-flaero_server", "-license=enterprise"])
-    if argvals["mode"] == FluentMode.PRE_POST:
-        tokens.append("-post")
-    if FluentMode.is_meshing(argvals["mode"]):
-        tokens.append("-meshing")
+    tokens.extend(args)
+    tokens.extend(mode_extra)
     tokens.append(f"-sifile={server_info_file_name}")
     if not pyfluent.config.fluent_show_mesh_after_case_read:
         tokens.append("-nm")
     return tokens
+
+
+def _generate_launch_string(argvals, server_info_file_name: str) -> str:
+    """Generate the Fluent launch command as a shell string (compatibility wrapper)."""
+    return _generate_launch_command(argvals, server_info_file_name, shell=True)
+
+
+def _generate_launch_command_list(argvals, server_info_file_name: str) -> list[str]:
+    """Generate the Fluent launch command as a token list (compatibility wrapper)."""
+    return _generate_launch_command(argvals, server_info_file_name, shell=False)
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
