@@ -58,6 +58,7 @@ from ansys.fluent.core.launcher.launch_options import (
     _get_standalone_launch_fluent_version,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
+    FluentLaunchCmdBuilder,
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
@@ -67,7 +68,9 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _validate_lightweight_with_journal,
     is_windows,
 )
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
+from ansys.fluent.core.launcher.process_launch_string import (
+    _generate_launch_command,
+)
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_names,
@@ -174,8 +177,10 @@ class StandaloneLauncher:
             Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``.
         start_timeout : int, optional
             Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 100 seconds.
-        additional_arguments : str, optional
-            Additional command-line arguments for Fluent, formatted as they would be on the command line.
+        additional_arguments: str | list[str]
+            Additional arguments to send to Fluent. When ``shell=True`` (default) this must
+            be a string in the same format as arguments passed to Fluent on the command line.
+            When ``shell=False`` this must be a list of individual command-line tokens.
         env : dict[str, str], optional
             A mapping for modifying environment variables in Fluent. Defaults to ``None``.
         cleanup_on_exit : bool, optional
@@ -210,6 +215,10 @@ class StandaloneLauncher:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any
             Service for uploading/downloading files to/from the server.
+        shell: bool
+            Whether to run the Fluent launch subprocess call with ``shell=True`` (default)
+            or ``shell=False``. When ``shell=False``, the Fluent launch command is constructed
+            as a list of arguments and ``additional_arguments`` must be a list of strings.
 
         Raises
         ------
@@ -225,62 +234,25 @@ class StandaloneLauncher:
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = kwargs.get("file_transfer_service")
-        if pyfluent.config.show_fluent_gui:
-            kwargs["ui_mode"] = UIMode.GUI
-        self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-        if self.argvals.get("lightweight_mode") is None:
-            self.argvals["lightweight_mode"] = False
 
-        # case_data_file_name is not supported in meshing mode.
-        if FluentMode.is_meshing(self.argvals.get("mode")) and self.argvals.get(
-            "case_data_file_name"
-        ):
-            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
-
-        # Validate lightweight_mode + journal_file_names combination
-        should_disable, warning_msg = _validate_lightweight_with_journal(
-            self.argvals.get("lightweight_mode"),
-            self.argvals.get("journal_file_names"),
-        )
-        if should_disable:
-            warnings.warn(warning_msg, UserWarning)
-            self.argvals["lightweight_mode"] = False
-
-        # Validate lightweight_mode + case_data_file_name combination
-        should_disable, warning_msg = _validate_lightweight_with_case_data(
-            self.argvals.get("lightweight_mode"),
-            self.argvals.get("case_data_file_name"),
-        )
-        if should_disable:
-            warnings.warn(warning_msg, UserWarning)
-            self.argvals["lightweight_mode"] = False
-
-        fluent_version = _get_standalone_launch_fluent_version(self.argvals)
-
-        if (
-            fluent_version
-            and fluent_version >= FluentVersion.v251
-            and self.argvals.get("py") is None
-        ):
-            self.argvals["py"] = True
-
+        self._configure_argvals(kwargs, pyfluent)
+        self._validate_argvals()
+        self._apply_version_dependent_defaults()
         if pyfluent.config.fluent_debug:
             self.argvals["fluent_debug"] = True
 
-        server_info_file_name_for_server, server_info_file_name_for_client = (
+        server_info_file_name_for_server, self._server_info_file_name = (
             _get_server_info_file_names()
         )
-        self._server_info_file_name = server_info_file_name_for_client
-        self._launch_string = _generate_launch_string(
-            self.argvals,
-            server_info_file_name_for_server,
+
+        self._shell = self.argvals.get("shell", True)
+        self._validate_shell_additional_arguments()
+
+        self._cmd_builder = FluentLaunchCmdBuilder(self._shell)
+        _generate_launch_command(
+            self.argvals, server_info_file_name_for_server, self._cmd_builder
         )
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 100
-        # Negative start_timeout values are treated as "no timeout".
-        start_timeout = self.argvals.get("start_timeout")
-        if start_timeout >= 0:
-            self._launch_string += self._construct_timeout_arg(start_timeout)
+        self._append_timeout_arg()
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         self._kwargs = _get_subprocess_kwargs_for_fluent(
@@ -289,34 +261,137 @@ class StandaloneLauncher:
         if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
 
-        # For lightweight_mode with case file, defer case reading to post-connection
-        # to support background session orchestration. Otherwise pass via CLI.
-        if not (
-            self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name")
-        ):
-            self._launch_string += _build_case_data_arguments(
-                self.argvals.get("case_file_name"),
-                self.argvals.get("case_data_file_name"),
-            )
+        self._append_case_data_args()
+        self._append_journal_args()
+        self._launch_cmd = self._final_launch_cmd()
 
-        self._launch_string += _build_journal_argument(
-            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
+    def _configure_argvals(self, kwargs, pyfluent) -> None:
+        """Apply the UI-mode override from config and defaults for ``lightweight_mode``."""
+        if pyfluent.config.show_fluent_gui:
+            kwargs["ui_mode"] = UIMode.GUI
+        self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
+        if self.argvals.get("lightweight_mode") is None:
+            self.argvals["lightweight_mode"] = False
+
+    def _validate_argvals(self) -> None:
+        """Validate mode combinations and downgrade ``lightweight_mode`` on conflict."""
+        # case_data_file_name is not supported in meshing mode.
+        if FluentMode.is_meshing(self.argvals.get("mode")) and self.argvals.get(
+            "case_data_file_name"
+        ):
+            raise InvalidArgument("Case and data file cannot be read in meshing mode.")
+
+        self._downgrade_lightweight_on_conflict(
+            _validate_lightweight_with_journal,
+            self.argvals.get("journal_file_names"),
+        )
+        self._downgrade_lightweight_on_conflict(
+            _validate_lightweight_with_case_data,
+            self.argvals.get("case_data_file_name"),
         )
 
-        if is_windows():
-            self._launch_cmd = self._launch_string
-        else:
-            if self.argvals.get("ui_mode") not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
-                # Using nohup to hide Fluent output from the current terminal
-                self._launch_cmd = "nohup " + self._launch_string + " &"
-            else:
-                self._launch_cmd = self._launch_string
+    def _downgrade_lightweight_on_conflict(self, validator, conflicting_value) -> None:
+        """Disable ``lightweight_mode`` with a warning when ``validator`` reports a conflict."""
+        should_disable, warning_msg = validator(
+            self.argvals.get("lightweight_mode"), conflicting_value
+        )
+        if should_disable:
+            warnings.warn(warning_msg, UserWarning)
+            self.argvals["lightweight_mode"] = False
+
+    def _apply_version_dependent_defaults(self) -> None:
+        """Enable ``py`` mode by default when running Fluent v25.1 or newer."""
+        fluent_version = _get_standalone_launch_fluent_version(self.argvals)
+        if (
+            fluent_version
+            and fluent_version >= FluentVersion.v251
+            and self.argvals.get("py") is None
+        ):
+            self.argvals["py"] = True
+
+    def _validate_shell_additional_arguments(self) -> None:
+        """Reject a string ``additional_arguments`` when ``shell=False`` is in effect."""
+        additional_arguments = self.argvals.get("additional_arguments")
+        if (
+            not self._shell
+            and isinstance(additional_arguments, str)
+            and additional_arguments
+        ):
+            raise InvalidArgument(
+                "'additional_arguments' must be a list of strings when 'shell=False'."
+            )
+
+    def _append_timeout_arg(self) -> None:
+        """Append the session-idle-timeout argument to the launch command."""
+        if self.argvals.get("start_timeout") is None:
+            self.argvals["start_timeout"] = 100
+        start_timeout = self.argvals["start_timeout"]
+        # Negative start_timeout values are treated as "no timeout".
+        if start_timeout < 0:
+            return
+        self._cmd_builder.extend(
+            self._construct_timeout(start_timeout, shell=self._shell)
+        )
+
+    def _append_case_data_args(self) -> None:
+        """Append ``-case`` / ``-data`` CLI args unless lightweight_mode defers case reading."""
+        if self.argvals.get("lightweight_mode") and self.argvals.get("case_file_name"):
+            # Case reading is deferred to post-connection for lightweight_mode
+            # to support background session orchestration.
+            return
+        _build_case_data_arguments(
+            self.argvals.get("case_file_name"),
+            self.argvals.get("case_data_file_name"),
+            self._cmd_builder,
+        )
+
+    def _append_journal_args(self) -> None:
+        """Append ``-i`` / ``-topy`` journal-file CLI args to the launch command."""
+        _build_journal_argument(
+            self.argvals.get("topy", []),
+            self.argvals.get("journal_file_names"),
+            self._cmd_builder,
+        )
+
+    def _final_launch_cmd(self) -> str | list[str]:
+        """Return the command form that will be handed to ``subprocess.Popen``."""
+        cmd = self._cmd_builder.get_cmd()
+        if (
+            self._shell
+            and not is_windows()
+            and self.argvals.get("ui_mode") not in (UIMode.GUI, UIMode.HIDDEN_GUI)
+        ):
+            # Linux + no visible GUI: nohup + '&' detaches Fluent from the current terminal.
+            cmd = "nohup " + cmd + " &"
+        return cmd
+
+    @staticmethod
+    def _construct_timeout(
+        idle_timeout_seconds: int, shell: bool = True
+    ) -> str | list[str]:
+        """Return the session-idle-timeout CLI argument.
+
+        The shell form is byte-identical to the historical hand-written
+        fragment (``' -command="(...)"'``); the token form is a single
+        ``-command=(...)`` element with the same effect after shell parsing.
+        """
+        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
+        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
+        if shell:
+            return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+        return [f"-command=(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"]
 
     @staticmethod
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
-        # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
-        _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
-        return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+        """Compatibility wrapper returning the previous shell-formatted timeout arg."""
+        return StandaloneLauncher._construct_timeout(idle_timeout_seconds, shell=True)
+
+    @staticmethod
+    def _construct_timeout_token(idle_timeout_seconds: int) -> str:
+        """Compatibility wrapper returning the previous single-token timeout arg."""
+        return StandaloneLauncher._construct_timeout(idle_timeout_seconds, shell=False)[
+            0
+        ]
 
     @staticmethod
     def _disable_idle_timeout_guard(session):
@@ -334,8 +409,10 @@ class StandaloneLauncher:
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
         if self.argvals.get("dry_run"):
-            print(f"Fluent launch string: {self._launch_string}")
-            return self._launch_string, self._server_info_file_name
+            base_cmd = self._cmd_builder.get_cmd()
+            label = "string" if self._shell else "command"
+            print(f"Fluent launch {label}: {base_cmd}")
+            return base_cmd, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
@@ -348,9 +425,10 @@ class StandaloneLauncher:
                     process.pid,
                 )
             except TimeoutError as ex:
-                if is_windows():
+                if is_windows() and self._shell:
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = self._launch_string.replace('"', "", 2)
+                    # Fall back to unquoted shell string so cmd.exe can locate the exe.
+                    launch_cmd = self._cmd_builder.get_cmd().replace('"', "", 2)
                     self._kwargs.update(shell=False)
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"

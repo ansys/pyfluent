@@ -53,6 +53,7 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     ComposeConfig,
+    FluentLaunchCmdBuilder,
     _build_case_data_arguments,
     _build_journal_argument,
     _validate_lightweight_with_case_data,
@@ -60,7 +61,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
-    _build_fluent_launch_args_string,
+    _build_fluent_launch_args,
     get_fluent_exe_path,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -271,7 +272,7 @@ def test_case_data_load():
 
 def test_gpu_launch_arg():
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             gpu=True, additional_arguments="", processor_count=None
         ).strip()
         == "3ddp -gpu -hidden"
@@ -279,7 +280,7 @@ def test_gpu_launch_arg():
         else "3ddp -gpu -gu"
     )
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             gpu=[1, 2, 4], additional_arguments="", processor_count=None
         ).strip()
         == "3ddp -gpu=1,2,4 -hidden"
@@ -290,7 +291,7 @@ def test_gpu_launch_arg():
 
 def test_gpu_launch_arg_additional_arg():
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             additional_arguments="-gpu", processor_count=None
         ).strip()
         == "3ddp -gpu -hidden"
@@ -298,7 +299,7 @@ def test_gpu_launch_arg_additional_arg():
         else "3ddp -gpu -gu"
     )
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             additional_arguments="-gpu=1,2,4", processor_count=None
         ).strip()
         == "3ddp -gpu=1,2,4 -hidden"
@@ -600,7 +601,7 @@ def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
     for m in UIMode:
-        string1 = _build_fluent_launch_args_string(
+        string1 = _build_fluent_launch_args(
             ui_mode=m, additional_arguments="", processor_count=None
         ).strip()
         string2 = (
@@ -609,7 +610,7 @@ def test_exposure_and_graphics_driver_arguments():
         assert string1 == string2
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
-            msg = _build_fluent_launch_args_string(
+            msg = _build_fluent_launch_args(
                 graphics_driver=m, additional_arguments="", processor_count=None
             ).strip()
             if is_windows():
@@ -628,7 +629,7 @@ def test_exposure_and_graphics_driver_arguments():
 
 def test_additional_arguments_fluent_launch_args_string():
     additional_arguments = "-ws -ws-port=5000 -i test.jou"
-    assert additional_arguments in _build_fluent_launch_args_string(
+    assert additional_arguments in _build_fluent_launch_args(
         additional_arguments=additional_arguments,
         processor_count=4,
     )
@@ -1056,3 +1057,264 @@ def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
         assert (
             not server_info_file.exists()
         ), "File should be deleted by default when cleanup_on_exit is not specified"
+
+
+# ---------------------------------------------------------------------------
+# Tests for the ``shell=False`` code path (list-based launch command).
+# ---------------------------------------------------------------------------
+
+
+def test_build_fluent_launch_args_list_basic():
+    tokens = _build_fluent_launch_args(
+        False,
+        additional_arguments=["-ws", "-ws-port=5000"],
+        processor_count=4,
+    )
+    assert isinstance(tokens, list)
+    assert all(isinstance(t, str) for t in tokens)
+    # No whitespace inside any single token.
+    assert all(" " not in t for t in tokens)
+    # Dimension/precision come first as a single token.
+    assert tokens[0] == "3ddp"
+    assert "-ws" in tokens
+    assert "-ws-port=5000" in tokens
+    assert "-t4" in tokens
+
+
+def test_build_fluent_launch_args_list_rejects_str_additional_arguments():
+    with pytest.raises(TypeError):
+        _build_fluent_launch_args(
+            False,
+            additional_arguments="-ws",
+            processor_count=4,
+        )
+
+
+def test_build_fluent_launch_args_list_gpu_and_ui_and_driver():
+    tokens = _build_fluent_launch_args(
+        False,
+        gpu=True,
+        additional_arguments=[],
+        processor_count=None,
+    )
+    assert "-gpu" in tokens
+    tokens = _build_fluent_launch_args(
+        False,
+        gpu=[1, 2, 4],
+        additional_arguments=[],
+        processor_count=None,
+    )
+    assert "-gpu=1,2,4" in tokens
+    tokens = _build_fluent_launch_args(
+        False,
+        ui_mode=UIMode.NO_GUI,
+        additional_arguments=[],
+        processor_count=None,
+    )
+    assert "-g" in tokens or "-gu" in tokens or "-hidden" in tokens
+    driver_enum = (
+        FluentWindowsGraphicsDriver if is_windows() else FluentLinuxGraphicsDriver
+    )
+    # Pick a driver whose ``get_fluent_value()`` yields a non-empty flag value.
+    non_null_driver = next(d for d in driver_enum if d.get_fluent_value()[0])
+    driver_value = non_null_driver.get_fluent_value()[0]
+    tokens = _build_fluent_launch_args(
+        False,
+        graphics_driver=non_null_driver,
+        additional_arguments=[],
+        processor_count=None,
+    )
+    assert "-driver" in tokens
+    assert driver_value in tokens
+    # ``-driver`` and its value must be adjacent, separate tokens.
+    idx = tokens.index("-driver")
+    assert tokens[idx + 1] == driver_value
+
+
+def test_build_fluent_launch_args_appends_onto_existing_builder():
+    """An existing ``FluentLaunchCmdBuilder`` can be shared across build calls."""
+    builder = FluentLaunchCmdBuilder(shell=False)
+    builder.append("fluent.exe")
+    _build_fluent_launch_args(
+        builder, additional_arguments=["-ws"], processor_count=None
+    )
+    cmd = builder.get_cmd()
+    assert cmd[0] == "fluent.exe"
+    assert "-ws" in cmd
+
+
+@pytest.mark.parametrize(
+    "topy,journal_file_names,expected",
+    [
+        (None, "a.jou", ["-i", "a.jou"]),
+        (None, ["a.jou", "b.jou"], ["-i", "a.jou", "-i", "b.jou"]),
+        (True, "a.jou", ["-i", "a.jou", "-topy"]),
+        ("c.py", "a.jou", ["-i", "a.jou", "-topy=c.py"]),
+        (None, "path with space.jou", ["-i", "path with space.jou"]),
+    ],
+)
+def test_build_journal_argument_list(topy, journal_file_names, expected):
+    assert _build_journal_argument(topy, journal_file_names, False) == expected
+
+
+def test_build_journal_argument_list_raises():
+    with pytest.raises(TypeError):
+        _build_journal_argument(None, 5, False)
+    with pytest.raises(InvalidArgument):
+        _build_journal_argument(True, None, False)
+
+
+def test_build_case_data_arguments_list():
+    assert _build_case_data_arguments(None, None, False) == []
+    assert _build_case_data_arguments("case.cas", None, False) == [
+        "-case",
+        "case.cas",
+    ]
+    assert _build_case_data_arguments("case.cas", "data.dat", False) == [
+        "-case",
+        "case.cas",
+        "-data",
+        "data.dat",
+    ]
+    # Paths with spaces stay as single tokens (no shell quoting required).
+    assert _build_case_data_arguments("case with space.cas", None, False) == [
+        "-case",
+        "case with space.cas",
+    ]
+    with pytest.raises(InvalidArgument):
+        _build_case_data_arguments(None, "data.dat", False)
+
+
+def test_construct_timeout_token_shell_false():
+    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+    token = StandaloneLauncher._construct_timeout_token(60)
+    assert token == "-command=(set-session-idle-timeoutPLF+2)"
+    # A single token: no embedded whitespace, no shell-style quoting.
+    assert " " not in token
+    assert '"' not in token
+    assert (
+        StandaloneLauncher._construct_timeout_token(200)
+        == "-command=(set-session-idle-timeoutPLF+5)"
+    )
+
+
+def test_standalone_launcher_dry_run_shell_false(monkeypatch):
+    """dry_run with ``shell=False`` returns the launch command as a list of tokens."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launch_cmd, server_info_file_name = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+        ui_mode="no_gui",
+        shell=False,
+        additional_arguments=[],
+    )
+    assert isinstance(launch_cmd, list)
+    assert all(isinstance(t, str) for t in launch_cmd)
+    # No token contains embedded spaces or shell-style quoting.
+    assert all('"' not in t for t in launch_cmd)
+    assert launch_cmd[0] == fluent_path
+    assert "3ddp" in launch_cmd
+    assert f"-sifile={server_info_file_name}" in launch_cmd
+    assert "-nm" in launch_cmd
+    # Timeout arg is a single un-quoted token.
+    timeout_tokens = [t for t in launch_cmd if t.startswith("-command=")]
+    assert len(timeout_tokens) == 1
+    assert timeout_tokens[0].startswith("-command=(set-session-idle-timeoutPLF+")
+
+
+def test_standalone_launcher_dry_run_shell_false_additional_args_list(monkeypatch):
+    """``additional_arguments`` as a list are passed as separate tokens."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launch_cmd, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+        ui_mode="no_gui",
+        shell=False,
+        additional_arguments=["-ws", "-ws-port=5000", "-i", "test.jou"],
+    )
+    assert isinstance(launch_cmd, list)
+    for expected in ("-ws", "-ws-port=5000", "-i", "test.jou"):
+        assert expected in launch_cmd
+
+
+def test_standalone_launcher_dry_run_shell_false_case_data(monkeypatch):
+    """Case/data files with spaces stay as single tokens under ``shell=False``."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    case_path = "case with space.cas"
+    data_path = "data.dat"
+    launch_cmd, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+        ui_mode="no_gui",
+        shell=False,
+        additional_arguments=[],
+        case_file_name=case_path,
+        case_data_file_name=data_path,
+    )
+    assert "-case" in launch_cmd
+    assert case_path in launch_cmd
+    assert launch_cmd[launch_cmd.index("-case") + 1] == case_path
+    assert "-data" in launch_cmd
+    assert launch_cmd[launch_cmd.index("-data") + 1] == data_path
+
+
+def test_standalone_launcher_dry_run_shell_false_journal(monkeypatch):
+    """Journal files are passed via separate ``-i`` tokens under ``shell=False``."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launch_cmd, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+        ui_mode="no_gui",
+        shell=False,
+        additional_arguments=[],
+        journal_file_names=["a.jou", "b with space.jou"],
+    )
+    assert launch_cmd.count("-i") == 2
+    assert "a.jou" in launch_cmd
+    assert "b with space.jou" in launch_cmd
+
+
+def test_standalone_launcher_shell_false_rejects_str_additional_arguments(monkeypatch):
+    """``shell=False`` requires a list ``additional_arguments``."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    with pytest.raises(InvalidArgument):
+        pyfluent.launch_fluent(
+            fluent_path=fluent_path,
+            dry_run=True,
+            ui_mode="no_gui",
+            shell=False,
+            additional_arguments="-ws",
+        )
+
+
+def test_standalone_launcher_dry_run_shell_true_still_returns_string(monkeypatch):
+    """Sanity check: default ``shell=True`` still returns a string launch command."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launch, _ = pyfluent.launch_fluent(
+        fluent_path=fluent_path,
+        dry_run=True,
+        ui_mode="no_gui",
+    )
+    assert isinstance(launch, str)
+
+
+@pytest.mark.standalone
+def test_launch_fluent_shell_false_live():
+    """Launch a real Fluent session with ``shell=False`` and a list ``additional_arguments``."""
+    session = pyfluent.launch_fluent(
+        shell=False,
+        additional_arguments=[],
+        ui_mode=UIMode.NO_GUI,
+    )
+    try:
+        assert session is not None
+        assert session.health_check.is_serving
+    finally:
+        session.exit()

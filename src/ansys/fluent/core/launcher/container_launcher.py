@@ -60,9 +60,7 @@ from ansys.fluent.core.launcher.launch_options import (
     get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig, is_windows
-from ansys.fluent.core.launcher.process_launch_string import (
-    _build_fluent_launch_args_string,
-)
+from ansys.fluent.core.launcher.process_launch_string import _build_fluent_launch_args
 from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -173,8 +171,10 @@ class DockerLauncher:
             In job scheduler environments, this value limits the total number of allocated cores.
         start_timeout : int, optional
             Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 100 seconds.
-        additional_arguments : str, optional
-            Additional command-line arguments for Fluent, formatted as they would be on the command line.
+        additional_arguments : str | list[str], optional
+            Additional command-line arguments for Fluent. When ``shell=True`` (default) this must
+            be a string in the same format as arguments passed to Fluent on the command line.
+            When ``shell=False`` this must be a list of individual command-line tokens.
         container_dict : dict, optional
             Configuration dictionary for launching Fluent inside a Docker container. See also
             :mod:`~ansys.fluent.core.launcher.fluent_container`.
@@ -209,6 +209,10 @@ class DockerLauncher:
             If True, Fluent's gRPC server is started in insecure mode without TLS. Provide only this when ``certificates_folder``
             (or ``ANSYS_GRPC_CERTIFICATES``) is not set; the two are mutually exclusive. This mode is not recommended. For more
             details on the implications and usage of insecure mode, refer to the Fluent documentation.
+        shell: bool, optional
+            Whether to run the Fluent launch subprocess call with ``shell=True`` (default)
+            or ``shell=False``. When ``shell=False``, the Fluent launch command is constructed
+            as a list of arguments and ``additional_arguments`` must be a list of strings.
 
         Raises
         ------
@@ -263,7 +267,10 @@ class DockerLauncher:
                 "image_tag"
             ] = f"v{FluentVersion(self.argvals['product_version']).value}"
 
-        self._args = _build_fluent_launch_args_string(**self.argvals).split()
+        if self.argvals.get("shell", True):
+            self._args = _build_fluent_launch_args(True, **self.argvals).split()
+        else:
+            self._args = _build_fluent_launch_args(False, **self.argvals)
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
 

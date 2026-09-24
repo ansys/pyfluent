@@ -23,6 +23,7 @@
 
 """Provides a module for launching utilities."""
 
+from collections.abc import Iterable
 import logging
 import os
 from pathlib import Path
@@ -43,6 +44,90 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")
+
+
+class FluentLaunchCmdBuilder:
+    """Build a Fluent launch command for a Python ``subprocess`` call.
+
+    Accumulates command-line elements into either a shell string
+    (``shell=True``) or a list of tokens (``shell=False``). The class does
+    not add any quoting or spacing beyond what the caller supplies; each
+    call site is expected to pass fragments that are already correctly
+    formatted for the currently-selected mode.
+
+    Functions that build a piece of the launch command (journal args, case/data
+    args, ...) accept either a ``bool`` (to create a fresh builder) or an
+    existing ``FluentLaunchCmdBuilder`` instance (to append onto a command
+    that is already being assembled), and return ``builder.get_cmd()``::
+
+        builder = FluentLaunchCmdBuilder(shell=True)
+        _build_journal_argument(topy, journals, builder=builder)
+        _build_case_data_arguments(case, data, builder=builder)
+        cmd = builder.get_cmd()
+    """
+
+    def __init__(self, shell: bool) -> None:
+        self._shell = shell
+        # For shell mode we accumulate a single string. For list mode we
+        # accumulate a list of tokens that will be passed as-is to
+        # ``subprocess.Popen``.
+        self._cmd: str | list[str] = "" if shell else []
+
+    @property
+    def shell(self) -> bool:
+        """Whether this builder targets a shell string (True) or a token list (False)."""
+        return self._shell
+
+    def append(self, elem: str) -> "FluentLaunchCmdBuilder":
+        """Append a single element.
+
+        In shell mode ``elem`` is concatenated verbatim (the caller supplies
+        any needed leading whitespace and quoting). In list mode ``elem``
+        becomes a single token.
+        """
+        if self._shell:
+            self._cmd += elem
+        else:
+            self._cmd.append(elem)
+        return self
+
+    def extend(self, elems: str | Iterable[str] | None) -> "FluentLaunchCmdBuilder":
+        """Append multiple elements.
+
+        - In shell mode: a ``str`` is concatenated verbatim; a non-string
+          iterable has its items joined with a single space and concatenated
+          (with a leading space).
+        - In list mode: a ``str`` is added as a single token; a non-string
+          iterable is extended token-by-token.
+
+        ``None`` and empty inputs are no-ops.
+        """
+        if not elems:
+            return self
+        if self._shell:
+            if isinstance(elems, str):
+                self._cmd += elems
+            else:
+                self._cmd += " " + " ".join(elems)
+        else:
+            if isinstance(elems, str):
+                self._cmd.append(elems)
+            else:
+                self._cmd.extend(elems)
+        return self
+
+    def get_cmd(self) -> str | list[str]:
+        """Return the accumulated command in the form matching ``shell``."""
+        return self._cmd if self._shell else list(self._cmd)
+
+    @staticmethod
+    def as_builder(
+        builder: "FluentLaunchCmdBuilder | bool",
+    ) -> "FluentLaunchCmdBuilder":
+        """Return ``builder`` unchanged, or wrap a bare ``shell`` bool in a new instance."""
+        if isinstance(builder, FluentLaunchCmdBuilder):
+            return builder
+        return FluentLaunchCmdBuilder(builder)
 
 
 class ComposeConfig:
@@ -103,6 +188,7 @@ def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str,
 
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
+    shell = argvals.get("shell", True)
     kwargs: dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
@@ -113,12 +199,12 @@ def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str,
         )
     if is_windows():
         kwargs.update(
-            shell=True,
+            shell=shell,
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
             | subprocess.CREATE_NO_WINDOW,
         )
     else:
-        kwargs.update(shell=True, start_new_session=True)
+        kwargs.update(shell=shell, start_new_session=True)
     fluent_env = os.environ.copy()
     if env:
         fluent_env.update({k: str(v) for k, v in env.items()})
@@ -214,36 +300,38 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
 
 
 def _build_journal_argument(
-    topy: None | bool | str, journal_file_names: None | str | list[str]
-) -> str:
-    """Build Fluent commandline journal argument."""
+    topy: None | bool | str,
+    journal_file_names: None | str | list[str],
+    builder: "FluentLaunchCmdBuilder | bool" = True,
+) -> str | list[str]:
+    """Build Fluent's commandline journal argument.
 
-    def _impl(
-        topy: None | bool | str, journal_file_names: None | str | list[str]
-    ) -> str:
-        if journal_file_names and not isinstance(journal_file_names, (str, list)):
-            raise TypeError(
-                "Use 'journal_file_names' to specify and convert journal files."
-            )
-        if topy and not journal_file_names:
-            raise InvalidArgument(
-                "Use 'journal_file_names' to specify and convert journal files."
-            )
-        fluent_jou_arg = ""
-        if isinstance(journal_file_names, str):
-            journal_file_names = [journal_file_names]
-        if journal_file_names:
-            fluent_jou_arg += "".join(
-                [f' -i "{journal}"' for journal in journal_file_names]
-            )
-        if topy:
-            if isinstance(topy, str):
-                fluent_jou_arg += f' -topy="{topy}"'
-            else:
-                fluent_jou_arg += " -topy"
-        return fluent_jou_arg
-
-    return _impl(topy, journal_file_names)
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. Returns ``builder.get_cmd()``.
+    """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
+    if journal_file_names and not isinstance(journal_file_names, (str, list)):
+        raise TypeError(
+            "Use 'journal_file_names' to specify and convert journal files."
+        )
+    if topy and not journal_file_names:
+        raise InvalidArgument(
+            "Use 'journal_file_names' to specify and convert journal files."
+        )
+    if isinstance(journal_file_names, str):
+        journal_file_names = [journal_file_names]
+    for journal in journal_file_names or []:
+        if builder.shell:
+            builder.append(f' -i "{journal}"')
+        else:
+            builder.extend(["-i", str(journal)])
+    if topy:
+        if builder.shell:
+            builder.append(f' -topy="{topy}"' if isinstance(topy, str) else " -topy")
+        else:
+            builder.append(f"-topy={topy}" if isinstance(topy, str) else "-topy")
+    return builder.get_cmd()
 
 
 def _validate_lightweight_with_journal(
@@ -295,36 +383,34 @@ def _validate_lightweight_with_case_data(
 
 
 def _build_case_data_arguments(
-    case_file_name: None | str, case_data_file_name: None | str
-) -> str:
-    """Build Fluent commandline case and data file arguments.
+    case_file_name: None | str,
+    case_data_file_name: None | str,
+    builder: "FluentLaunchCmdBuilder | bool" = True,
+) -> str | list[str]:
+    """Build Fluent's commandline case and data file arguments.
 
-    Parameters
-    ----------
-    case_file_name : None | str
-        Path to the case file.
-    case_data_file_name : None | str
-        Path to the case-data file. Must be provided together with
-        ``case_file_name``; a data file on its own is not a valid Fluent CLI
-        input.
-
-    Returns
-    -------
-    str
-        Fluent's case/data arguments string.
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. Returns ``builder.get_cmd()``.
 
     Raises
     ------
     InvalidArgument
         If ``case_data_file_name`` is provided without ``case_file_name``.
     """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
     if case_data_file_name and not case_file_name:
         raise InvalidArgument(
             "'case_data_file_name' requires 'case_file_name' to also be provided."
         )
-    fluent_case_data_arg = ""
     if case_file_name:
-        fluent_case_data_arg += f' -case "{str(case_file_name)}"'
+        if builder.shell:
+            builder.append(f' -case "{str(case_file_name)}"')
+        else:
+            builder.extend(["-case", str(case_file_name)])
     if case_data_file_name:
-        fluent_case_data_arg += f' -data "{str(case_data_file_name)}"'
-    return fluent_case_data_arg
+        if builder.shell:
+            builder.append(f' -data "{str(case_data_file_name)}"')
+        else:
+            builder.extend(["-data", str(case_data_file_name)])
+    return builder.get_cmd()

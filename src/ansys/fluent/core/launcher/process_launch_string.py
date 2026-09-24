@@ -23,9 +23,11 @@
 
 """Provides a module to process launch string."""
 
+from collections.abc import Iterator
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
@@ -35,6 +37,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
 )
+from ansys.fluent.core.launcher.launcher_utils import FluentLaunchCmdBuilder
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -42,100 +45,228 @@ _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 
 
-def _build_fluent_launch_args_string(**kwargs) -> str:
-    """Build Fluent's launch arguments string from keyword arguments.
-
-    Returns
-    -------
-    str
-        Fluent's launch arguments string.
-    """
-    all_options = None
+def _load_launcher_options() -> dict[str, dict[str, Any]]:
+    """Load the JSON-defined Fluent launcher options."""
     with open(_OPTIONS_FILE, encoding="utf-8") as fp:
-        all_options = json.load(fp)
-    launch_args_string = ""
+        return json.load(fp)
+
+
+def _dimension_precision_flag(kwargs) -> str:
+    """Return the combined dimension + precision Fluent flag (e.g. ``3ddp``)."""
     dimension = Dimension(kwargs.get("dimension"))
-    launch_args_string += f" {dimension.get_fluent_value()[0]}"
     precision = Precision(kwargs.get("precision"))
-    launch_args_string += f"{precision.get_fluent_value()[0]}"
-    for k, v in all_options.items():
-        argval = kwargs.get(k)
-        default = v.get("default")
-        if argval is None and v.get("fluent_required") is True:
-            argval = default
-        if argval is not None:
-            allowed_values = v.get("allowed_values")
-            if allowed_values and argval not in allowed_values:
-                if default is not None:
-                    old_argval = argval
-                    argval = default
-                    launcher_utils.logger.warning(
-                        f"Specified value '{old_argval}' for argument '{k}' is not an allowed value ({allowed_values})."
-                        f" Default value '{argval}' is going to be used instead."
-                    )
-                else:
-                    launcher_utils.logger.warning(
-                        f"{k} = {argval} is discarded as it is not an allowed value. Allowed values: {allowed_values}"
-                    )
-                    continue
-            fluent_map = v.get("fluent_map")
-            if fluent_map:
-                if isinstance(argval, str):
-                    json_key = argval
-                else:
-                    json_key = json.dumps(argval)
-                argval = fluent_map[json_key]
-            launch_args_string += v["fluent_format"].replace("{}", str(argval))
-    additional_arguments = kwargs.get("additional_arguments", "")
-    if additional_arguments:
-        launch_args_string += " " + additional_arguments
-    if "-t" not in additional_arguments and "-cnf=" not in additional_arguments:
-        parallel_options = build_parallel_options(
-            load_machines(ncores=kwargs.get("processor_count"))
+    return f"{dimension.get_fluent_value()[0]}{precision.get_fluent_value()[0]}"
+
+
+def _resolve_option_argval(
+    name: str, argval: Any, option_spec: dict[str, Any]
+) -> Any | None:
+    """Apply ``allowed_values`` / default fallback to an option value.
+
+    Returns ``None`` when the option should be skipped entirely.
+    """
+    default = option_spec.get("default")
+    if argval is None and option_spec.get("fluent_required") is True:
+        argval = default
+    if argval is None:
+        return None
+    allowed_values = option_spec.get("allowed_values")
+    if allowed_values and argval not in allowed_values:
+        if default is None:
+            launcher_utils.logger.warning(
+                f"{name} = {argval} is discarded as it is not an allowed value."
+                f" Allowed values: {allowed_values}"
+            )
+            return None
+        launcher_utils.logger.warning(
+            f"Specified value '{argval}' for argument '{name}' is not an allowed"
+            f" value ({allowed_values}). Default value '{default}' is going to"
+            " be used instead."
         )
-        if parallel_options:
-            launch_args_string += " " + parallel_options
-    gpu = kwargs.get("gpu")
+        argval = default
+    return argval
+
+
+def _apply_fluent_map(argval: Any, option_spec: dict[str, Any]) -> Any:
+    """Translate ``argval`` through the option's ``fluent_map`` if present."""
+    fluent_map = option_spec.get("fluent_map")
+    if not fluent_map:
+        return argval
+    json_key = argval if isinstance(argval, str) else json.dumps(argval)
+    return fluent_map[json_key]
+
+
+def _iter_option_fragments(kwargs) -> Iterator[str]:
+    """Yield the formatted fragment for each JSON-defined launcher option.
+
+    Each fragment preserves the leading space defined in ``fluent_format``
+    (e.g. ``" -py"``). Callers can concatenate as-is for the shell string
+    form, or split each fragment to produce individual list tokens.
+    """
+    for name, spec in _load_launcher_options().items():
+        argval = _resolve_option_argval(name, kwargs.get(name), spec)
+        if argval is None:
+            continue
+        argval = _apply_fluent_map(argval, spec)
+        yield spec["fluent_format"].replace("{}", str(argval))
+
+
+def _gpu_tokens(gpu) -> list[str]:
+    """Return the ``-gpu`` tokens (empty when the GPU solver is not requested)."""
     if gpu is True:
-        launch_args_string += " -gpu"
-    elif isinstance(gpu, list):
-        launch_args_string += f" -gpu={','.join(map(str, gpu))}"
-    ui_mode = UIMode(kwargs.get("ui_mode"))
-    if ui_mode and ui_mode.get_fluent_value()[0]:
-        launch_args_string += f" -{ui_mode.get_fluent_value()[0]}"
-    graphics_driver = kwargs.get("graphics_driver")
-    if graphics_driver and graphics_driver.get_fluent_value()[0]:
-        launch_args_string += f" -driver {graphics_driver.get_fluent_value()[0]}"
-    return launch_args_string
+        return ["-gpu"]
+    if isinstance(gpu, list):
+        return [f"-gpu={','.join(map(str, gpu))}"]
+    return []
 
 
-def _generate_launch_string(
+def _ui_mode_tokens(ui_mode_arg) -> list[str]:
+    """Return the UI-mode flag token (empty when no explicit flag is required)."""
+    ui_mode = UIMode(ui_mode_arg)
+    flag = ui_mode.get_fluent_value()[0] if ui_mode else None
+    return [f"-{flag}"] if flag else []
+
+
+def _graphics_driver_tokens(graphics_driver) -> list[str]:
+    """Return the ``-driver <value>`` tokens (empty when the driver flag is empty)."""
+    if not graphics_driver:
+        return []
+    value = graphics_driver.get_fluent_value()[0]
+    return ["-driver", value] if value else []
+
+
+def _normalize_additional_arguments(
+    additional_arguments, shell: bool
+) -> str | list[str]:
+    """Validate and normalise the ``additional_arguments`` argument.
+
+    When ``shell=True`` the value is returned as a string (defaults to
+    ``""``). When ``shell=False`` a list of tokens is required and returned.
+    """
+    if not additional_arguments:
+        return "" if shell else []
+    if isinstance(additional_arguments, list):
+        return additional_arguments
+    if isinstance(additional_arguments, str):
+        if not shell:
+            raise TypeError(
+                "'additional_arguments' must be a list of strings when 'shell=False'."
+            )
+        return additional_arguments
+    raise TypeError("'additional_arguments' must be a string or a list of strings.")
+
+
+def _parallel_options_string(kwargs) -> str:
+    """Return Fluent's ``-t`` / ``-cnf=`` parallel options (may be empty)."""
+    return build_parallel_options(load_machines(ncores=kwargs.get("processor_count")))
+
+
+def _build_fluent_launch_args(
+    builder: "FluentLaunchCmdBuilder | bool" = True, **kwargs
+) -> str | list[str]:
+    """Build Fluent's launch arguments, appending onto ``builder``.
+
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. Every helper below resolves an option's value once;
+    only the final append/extend call differs between shell and list mode.
+    Returns ``builder.get_cmd()``.
+    """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
+    additional_arguments = _normalize_additional_arguments(
+        kwargs.get("additional_arguments"), builder.shell
+    )
+    joined_additional = (
+        additional_arguments
+        if isinstance(additional_arguments, str)
+        else " ".join(additional_arguments)
+    )
+    need_parallel = "-t" not in joined_additional and "-cnf=" not in joined_additional
+    parallel_options = _parallel_options_string(kwargs) if need_parallel else ""
+    gpu_tokens = _gpu_tokens(kwargs.get("gpu"))
+    ui_tokens = _ui_mode_tokens(kwargs.get("ui_mode"))
+    driver_tokens = _graphics_driver_tokens(kwargs.get("graphics_driver"))
+
+    if builder.shell:
+        # Byte-identical to the historical hand-written string form. Every
+        # fragment already carries its own leading space.
+        builder.append(f" {_dimension_precision_flag(kwargs)}")
+        for fragment in _iter_option_fragments(kwargs):
+            builder.append(fragment)
+        if additional_arguments:
+            builder.append(" " + additional_arguments)
+        if parallel_options:
+            builder.append(" " + parallel_options)
+        for token in gpu_tokens + ui_tokens:
+            builder.append(f" {token}")
+        if driver_tokens:
+            builder.append(" " + " ".join(driver_tokens))
+    else:
+        builder.append(_dimension_precision_flag(kwargs))
+        # Each JSON-defined option formats to a whitespace-separated fragment;
+        # split so every CLI flag is its own token.
+        for fragment in _iter_option_fragments(kwargs):
+            builder.extend(fragment.split())
+        builder.extend(additional_arguments)
+        if parallel_options:
+            builder.extend(parallel_options.strip().split())
+        builder.extend(gpu_tokens)
+        builder.extend(ui_tokens)
+        builder.extend(driver_tokens)
+    return builder.get_cmd()
+
+
+def _mode_extra_args(mode, shell: bool) -> str | list[str]:
+    """Return the mode-specific CLI flags for ``mode`` (may be empty)."""
+    if mode == FluentMode.SOLVER_ICING:
+        return (
+            " -flicing -license=enterprise"
+            if shell
+            else ["-flicing", "-license=enterprise"]
+        )
+    if mode == FluentMode.SOLVER_AERO:
+        return (
+            " -flaero_server -license=enterprise"
+            if shell
+            else ["-flaero_server", "-license=enterprise"]
+        )
+    if mode == FluentMode.PRE_POST:
+        return " -post" if shell else ["-post"]
+    if FluentMode.is_meshing(mode):
+        return " -meshing" if shell else ["-meshing"]
+    return "" if shell else []
+
+
+def _generate_launch_command(
     argvals,
     server_info_file_name: str,
-):
-    """Generates the launch string to launch fluent."""
-    if launcher_utils.is_windows():
-        exe_path = str(get_fluent_exe_path(**argvals))
-        if " " in exe_path:
-            exe_path = '"' + exe_path + '"'
-    else:
-        exe_path = str(get_fluent_exe_path(**argvals))
-    launch_string = exe_path
-    launch_string += _build_fluent_launch_args_string(**argvals)
-    if argvals["mode"] == FluentMode.SOLVER_ICING:
-        launch_string += " -flicing -license=enterprise"
-    if argvals["mode"] == FluentMode.SOLVER_AERO:
-        launch_string += " -flaero_server -license=enterprise"
-    if argvals["mode"] == FluentMode.PRE_POST:
-        launch_string += " -post"
-    if FluentMode.is_meshing(argvals["mode"]):
-        launch_string += " -meshing"
-    if " " in server_info_file_name:
-        server_info_file_name = '"' + server_info_file_name + '"'
-    launch_string += f" -sifile={server_info_file_name}"
+    builder: "FluentLaunchCmdBuilder | bool" = True,
+) -> str | list[str]:
+    """Generate the Fluent launch command, appending onto ``builder``.
+
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. The shell-string form is byte-identical to the
+    original hand-crafted string (including the exe/``-sifile`` path quoting
+    rules). Returns ``builder.get_cmd()``.
+    """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
+    exe_path = str(get_fluent_exe_path(**argvals))
+    # On Windows, quote the exe path only if it contains a space.
+    if builder.shell and launcher_utils.is_windows() and " " in exe_path:
+        exe_path = f'"{exe_path}"'
+    builder.append(exe_path)
+
+    _build_fluent_launch_args(builder, **argvals)
+    builder.extend(_mode_extra_args(argvals["mode"], builder.shell))
+
+    sifile = server_info_file_name
+    if builder.shell and " " in sifile:
+        sifile = f'"{sifile}"'
+    builder.append(f" -sifile={sifile}" if builder.shell else f"-sifile={sifile}")
     if not pyfluent.config.fluent_show_mesh_after_case_read:
-        launch_string += " -nm"
-    return launch_string
+        builder.append(" -nm" if builder.shell else "-nm")
+    return builder.get_cmd()
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:

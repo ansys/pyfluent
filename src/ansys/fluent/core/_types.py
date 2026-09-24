@@ -87,9 +87,10 @@ class LauncherArgsBase(TypedDict, total=False):
     server. The default is ``100`` if Fluent is launched outside a Slurm environment,
     no timeout if Fluent is launched within a Slurm environment.
     """
-    additional_arguments: str
-    """Additional arguments to send to Fluent as a string in the same
-    format they are normally passed to Fluent on the command line.
+    additional_arguments: str | list[str]
+    """Additional arguments to send to Fluent. When ``shell=True`` (default) this must
+    be a string in the same format as arguments passed to Fluent on the command line.
+    When ``shell=False`` this must be a list of individual command-line tokens.
     """
     cleanup_on_exit: bool
     """Whether to shut down the connected Fluent session when PyFluent is
@@ -117,3 +118,8 @@ class LauncherArgsBase(TypedDict, total=False):
     """
     file_transfer_service: Any | None
     """File transfer service. Uploads/downloads files to/from the server."""
+    shell: bool
+    """Whether to run the Fluent launch subprocess call with ``shell=True`` (default)
+    or ``shell=False``. When ``shell=False``, the Fluent launch command is constructed
+    as a list of arguments and ``additional_arguments`` must be a list of strings.
+    """
