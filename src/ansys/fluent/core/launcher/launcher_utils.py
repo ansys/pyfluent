@@ -55,11 +55,14 @@ class FluentLaunchCmdBuilder:
     call site is expected to pass fragments that are already correctly
     formatted for the currently-selected mode.
 
-    Typical use in a launcher::
+    Functions that build a piece of the launch command (journal args, case/data
+    args, ...) accept either a ``bool`` (to create a fresh builder) or an
+    existing ``FluentLaunchCmdBuilder`` instance (to append onto a command
+    that is already being assembled), and return ``builder.get_cmd()``::
 
-        builder = FluentLaunchCmdBuilder(shell=self._shell)
-        builder.append(exe_path)
-        builder.extend(_build_journal_argument(topy, journals, shell=builder.shell))
+        builder = FluentLaunchCmdBuilder(shell=True)
+        _build_journal_argument(topy, journals, builder=builder)
+        _build_case_data_arguments(case, data, builder=builder)
         cmd = builder.get_cmd()
     """
 
@@ -116,6 +119,15 @@ class FluentLaunchCmdBuilder:
     def get_cmd(self) -> str | list[str]:
         """Return the accumulated command in the form matching ``shell``."""
         return self._cmd if self._shell else list(self._cmd)
+
+    @staticmethod
+    def as_builder(
+        builder: "FluentLaunchCmdBuilder | bool",
+    ) -> "FluentLaunchCmdBuilder":
+        """Return ``builder`` unchanged, or wrap a bare ``shell`` bool in a new instance."""
+        if isinstance(builder, FluentLaunchCmdBuilder):
+            return builder
+        return FluentLaunchCmdBuilder(builder)
 
 
 class ComposeConfig:
@@ -290,14 +302,15 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
 def _build_journal_argument(
     topy: None | bool | str,
     journal_file_names: None | str | list[str],
-    shell: bool = True,
+    builder: "FluentLaunchCmdBuilder | bool" = True,
 ) -> str | list[str]:
     """Build Fluent's commandline journal argument.
 
-    Returns the pre-existing shell string form when ``shell=True`` and an
-    equivalent list of tokens otherwise. Empty output for both forms is an
-    empty string / empty list.
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. Returns ``builder.get_cmd()``.
     """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
     if journal_file_names and not isinstance(journal_file_names, (str, list)):
         raise TypeError(
             "Use 'journal_file_names' to specify and convert journal files."
@@ -308,26 +321,17 @@ def _build_journal_argument(
         )
     if isinstance(journal_file_names, str):
         journal_file_names = [journal_file_names]
-    if shell:
-        fragment = ""
-        for journal in journal_file_names or []:
-            fragment += f' -i "{journal}"'
-        if topy:
-            fragment += f' -topy="{topy}"' if isinstance(topy, str) else " -topy"
-        return fragment
-    tokens: list[str] = []
     for journal in journal_file_names or []:
-        tokens.extend(["-i", str(journal)])
+        if builder.shell:
+            builder.append(f' -i "{journal}"')
+        else:
+            builder.extend(["-i", str(journal)])
     if topy:
-        tokens.append(f"-topy={topy}" if isinstance(topy, str) else "-topy")
-    return tokens
-
-
-def _build_journal_argument_list(
-    topy: None | bool | str, journal_file_names: None | str | list[str]
-) -> list[str]:
-    """Backwards-compatible wrapper returning the token list form."""
-    return _build_journal_argument(topy, journal_file_names, shell=False)
+        if builder.shell:
+            builder.append(f' -topy="{topy}"' if isinstance(topy, str) else " -topy")
+        else:
+            builder.append(f"-topy={topy}" if isinstance(topy, str) else "-topy")
+    return builder.get_cmd()
 
 
 def _validate_lightweight_with_journal(
@@ -381,39 +385,32 @@ def _validate_lightweight_with_case_data(
 def _build_case_data_arguments(
     case_file_name: None | str,
     case_data_file_name: None | str,
-    shell: bool = True,
+    builder: "FluentLaunchCmdBuilder | bool" = True,
 ) -> str | list[str]:
     """Build Fluent's commandline case and data file arguments.
 
-    Returns the pre-existing shell string form when ``shell=True`` and an
-    equivalent list of tokens otherwise.
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. Returns ``builder.get_cmd()``.
 
     Raises
     ------
     InvalidArgument
         If ``case_data_file_name`` is provided without ``case_file_name``.
     """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
     if case_data_file_name and not case_file_name:
         raise InvalidArgument(
             "'case_data_file_name' requires 'case_file_name' to also be provided."
         )
-    if shell:
-        fragment = ""
-        if case_file_name:
-            fragment += f' -case "{str(case_file_name)}"'
-        if case_data_file_name:
-            fragment += f' -data "{str(case_data_file_name)}"'
-        return fragment
-    tokens: list[str] = []
     if case_file_name:
-        tokens.extend(["-case", str(case_file_name)])
+        if builder.shell:
+            builder.append(f' -case "{str(case_file_name)}"')
+        else:
+            builder.extend(["-case", str(case_file_name)])
     if case_data_file_name:
-        tokens.extend(["-data", str(case_data_file_name)])
-    return tokens
-
-
-def _build_case_data_arguments_list(
-    case_file_name: None | str, case_data_file_name: None | str
-) -> list[str]:
-    """Backwards-compatible wrapper returning the token list form."""
-    return _build_case_data_arguments(case_file_name, case_data_file_name, shell=False)
+        if builder.shell:
+            builder.append(f' -data "{str(case_data_file_name)}"')
+        else:
+            builder.extend(["-data", str(case_data_file_name)])
+    return builder.get_cmd()

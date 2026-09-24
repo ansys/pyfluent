@@ -60,10 +60,7 @@ from ansys.fluent.core.launcher.launch_options import (
     get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig, is_windows
-from ansys.fluent.core.launcher.process_launch_string import (
-    _build_fluent_launch_args_list,
-    _build_fluent_launch_args_string,
-)
+from ansys.fluent.core.launcher.process_launch_string import _build_fluent_launch_args
 from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -271,9 +268,9 @@ class DockerLauncher:
             ] = f"v{FluentVersion(self.argvals['product_version']).value}"
 
         if self.argvals.get("shell", True):
-            self._args = _build_fluent_launch_args_string(**self.argvals).split()
+            self._args = _build_fluent_launch_args(True, **self.argvals).split()
         else:
-            self._args = _build_fluent_launch_args_list(**self.argvals)
+            self._args = _build_fluent_launch_args(False, **self.argvals)
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
 

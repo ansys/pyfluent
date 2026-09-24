@@ -249,10 +249,8 @@ class StandaloneLauncher:
         self._validate_shell_additional_arguments()
 
         self._cmd_builder = FluentLaunchCmdBuilder(self._shell)
-        self._cmd_builder.extend(
-            _generate_launch_command(
-                self.argvals, server_info_file_name_for_server, shell=self._shell
-            )
+        _generate_launch_command(
+            self.argvals, server_info_file_name_for_server, self._cmd_builder
         )
         self._append_timeout_arg()
 
@@ -341,22 +339,18 @@ class StandaloneLauncher:
             # Case reading is deferred to post-connection for lightweight_mode
             # to support background session orchestration.
             return
-        self._cmd_builder.extend(
-            _build_case_data_arguments(
-                self.argvals.get("case_file_name"),
-                self.argvals.get("case_data_file_name"),
-                shell=self._shell,
-            )
+        _build_case_data_arguments(
+            self.argvals.get("case_file_name"),
+            self.argvals.get("case_data_file_name"),
+            self._cmd_builder,
         )
 
     def _append_journal_args(self) -> None:
         """Append ``-i`` / ``-topy`` journal-file CLI args to the launch command."""
-        self._cmd_builder.extend(
-            _build_journal_argument(
-                self.argvals.get("topy", []),
-                self.argvals.get("journal_file_names"),
-                shell=self._shell,
-            )
+        _build_journal_argument(
+            self.argvals.get("topy", []),
+            self.argvals.get("journal_file_names"),
+            self._cmd_builder,
         )
 
     def _final_launch_cmd(self) -> str | list[str]:

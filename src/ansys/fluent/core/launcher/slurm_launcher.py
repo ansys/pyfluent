@@ -654,24 +654,18 @@ class SlurmLauncher:
             )
 
         builder = FluentLaunchCmdBuilder(shell)
-        builder.extend(
-            _generate_launch_command(
-                self._argvals, server_info_file_name_for_server, shell=shell
-            )
+        _generate_launch_command(
+            self._argvals, server_info_file_name_for_server, builder
         )
-        builder.extend(
-            _build_case_data_arguments(
-                self._argvals.get("case_file_name"),
-                self._argvals.get("case_data_file_name"),
-                shell=shell,
-            )
+        _build_case_data_arguments(
+            self._argvals.get("case_file_name"),
+            self._argvals.get("case_data_file_name"),
+            builder,
         )
-        builder.extend(
-            _build_journal_argument(
-                self._argvals["topy"],
-                self._argvals["journal_file_names"],
-                shell=shell,
-            )
+        _build_journal_argument(
+            self._argvals["topy"],
+            self._argvals["journal_file_names"],
+            builder,
         )
         # Extra Slurm gRPC/env-forwarding flags share byte-identical form
         # with the historical shell string.

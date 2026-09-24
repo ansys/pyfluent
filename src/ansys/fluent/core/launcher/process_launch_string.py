@@ -37,6 +37,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
 )
+from ansys.fluent.core.launcher.launcher_utils import FluentLaunchCmdBuilder
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -160,20 +161,21 @@ def _parallel_options_string(kwargs) -> str:
     return build_parallel_options(load_machines(ncores=kwargs.get("processor_count")))
 
 
-def _build_fluent_launch_args(shell: bool = True, **kwargs) -> str | list[str]:
-    """Build Fluent's launch arguments in either shell string or token list form.
+def _build_fluent_launch_args(
+    builder: "FluentLaunchCmdBuilder | bool" = True, **kwargs
+) -> str | list[str]:
+    """Build Fluent's launch arguments, appending onto ``builder``.
 
-    The two branches share every helper that resolves option values; they
-    differ only in whether they emit leading-space-prefixed fragments (shell
-    string form) or standalone tokens (list form).
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. Every helper below resolves an option's value once;
+    only the final append/extend call differs between shell and list mode.
+    Returns ``builder.get_cmd()``.
     """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
     additional_arguments = _normalize_additional_arguments(
-        kwargs.get("additional_arguments"), shell
+        kwargs.get("additional_arguments"), builder.shell
     )
-    dp_flag = _dimension_precision_flag(kwargs)
-    gpu_tokens = _gpu_tokens(kwargs.get("gpu"))
-    ui_tokens = _ui_mode_tokens(kwargs.get("ui_mode"))
-    driver_tokens = _graphics_driver_tokens(kwargs.get("graphics_driver"))
     joined_additional = (
         additional_arguments
         if isinstance(additional_arguments, str)
@@ -181,47 +183,37 @@ def _build_fluent_launch_args(shell: bool = True, **kwargs) -> str | list[str]:
     )
     need_parallel = "-t" not in joined_additional and "-cnf=" not in joined_additional
     parallel_options = _parallel_options_string(kwargs) if need_parallel else ""
+    gpu_tokens = _gpu_tokens(kwargs.get("gpu"))
+    ui_tokens = _ui_mode_tokens(kwargs.get("ui_mode"))
+    driver_tokens = _graphics_driver_tokens(kwargs.get("graphics_driver"))
 
-    if shell:
+    if builder.shell:
         # Byte-identical to the historical hand-written string form. Every
         # fragment already carries its own leading space.
-        launch_args = f" {dp_flag}"
+        builder.append(f" {_dimension_precision_flag(kwargs)}")
         for fragment in _iter_option_fragments(kwargs):
-            launch_args += fragment
+            builder.append(fragment)
         if additional_arguments:
-            launch_args += " " + additional_arguments
+            builder.append(" " + additional_arguments)
         if parallel_options:
-            launch_args += " " + parallel_options
+            builder.append(" " + parallel_options)
         for token in gpu_tokens + ui_tokens:
-            launch_args += f" {token}"
+            builder.append(f" {token}")
         if driver_tokens:
-            launch_args += " " + " ".join(driver_tokens)
-        return launch_args
-
-    tokens: list[str] = [dp_flag]
-    # Each JSON-defined option formats to a whitespace-separated fragment;
-    # split so every CLI flag is its own token.
-    for fragment in _iter_option_fragments(kwargs):
-        tokens.extend(fragment.split())
-    tokens.extend(additional_arguments)
-    if parallel_options:
-        tokens.extend(parallel_options.strip().split())
-    tokens.extend(gpu_tokens)
-    tokens.extend(ui_tokens)
-    tokens.extend(driver_tokens)
-    return tokens
-
-
-def _build_fluent_launch_args_string(**kwargs) -> str:
-    """Build Fluent's launch arguments as a shell string (compatibility wrapper)."""
-    kwargs.pop("shell", None)
-    return _build_fluent_launch_args(shell=True, **kwargs)
-
-
-def _build_fluent_launch_args_list(**kwargs) -> list[str]:
-    """Build Fluent's launch arguments as a list of tokens (compatibility wrapper)."""
-    kwargs.pop("shell", None)
-    return _build_fluent_launch_args(shell=False, **kwargs)
+            builder.append(" " + " ".join(driver_tokens))
+    else:
+        builder.append(_dimension_precision_flag(kwargs))
+        # Each JSON-defined option formats to a whitespace-separated fragment;
+        # split so every CLI flag is its own token.
+        for fragment in _iter_option_fragments(kwargs):
+            builder.extend(fragment.split())
+        builder.extend(additional_arguments)
+        if parallel_options:
+            builder.extend(parallel_options.strip().split())
+        builder.extend(gpu_tokens)
+        builder.extend(ui_tokens)
+        builder.extend(driver_tokens)
+    return builder.get_cmd()
 
 
 def _mode_extra_args(mode, shell: bool) -> str | list[str]:
@@ -246,51 +238,35 @@ def _mode_extra_args(mode, shell: bool) -> str | list[str]:
 
 
 def _generate_launch_command(
-    argvals, server_info_file_name: str, shell: bool = True
+    argvals,
+    server_info_file_name: str,
+    builder: "FluentLaunchCmdBuilder | bool" = True,
 ) -> str | list[str]:
-    """Generate the Fluent launch command as either a shell string or token list.
+    """Generate the Fluent launch command, appending onto ``builder``.
 
-    The shell-string form is byte-identical to the original hand-crafted
-    string (including the exe/``-sifile`` path quoting rules), so callers
-    that construct shell commands continue to see the exact same output.
+    ``builder`` may be an existing :class:`FluentLaunchCmdBuilder` to append
+    onto, or a bool selecting shell-string (``True``, default) vs token-list
+    (``False``) output. The shell-string form is byte-identical to the
+    original hand-crafted string (including the exe/``-sifile`` path quoting
+    rules). Returns ``builder.get_cmd()``.
     """
+    builder = FluentLaunchCmdBuilder.as_builder(builder)
     exe_path = str(get_fluent_exe_path(**argvals))
-    # Drop the ``shell`` key from ``argvals`` before spreading so the explicit
-    # ``shell=`` keyword below is not duplicated.
-    args_kwargs = {k: v for k, v in argvals.items() if k != "shell"}
-    args = _build_fluent_launch_args(shell=shell, **args_kwargs)
-    mode_extra = _mode_extra_args(argvals["mode"], shell)
+    # On Windows, quote the exe path only if it contains a space.
+    if builder.shell and launcher_utils.is_windows() and " " in exe_path:
+        exe_path = f'"{exe_path}"'
+    builder.append(exe_path)
 
-    if shell:
-        # On Windows, quote the exe path only if it contains a space; the
-        # ``-sifile`` path is quoted under the same rule.
-        if launcher_utils.is_windows() and " " in exe_path:
-            exe_path = f'"{exe_path}"'
-        sifile = server_info_file_name
-        if " " in sifile:
-            sifile = f'"{sifile}"'
-        launch_string = exe_path + args + mode_extra + f" -sifile={sifile}"
-        if not pyfluent.config.fluent_show_mesh_after_case_read:
-            launch_string += " -nm"
-        return launch_string
+    _build_fluent_launch_args(builder, **argvals)
+    builder.extend(_mode_extra_args(argvals["mode"], builder.shell))
 
-    tokens: list[str] = [exe_path]
-    tokens.extend(args)
-    tokens.extend(mode_extra)
-    tokens.append(f"-sifile={server_info_file_name}")
+    sifile = server_info_file_name
+    if builder.shell and " " in sifile:
+        sifile = f'"{sifile}"'
+    builder.append(f" -sifile={sifile}" if builder.shell else f"-sifile={sifile}")
     if not pyfluent.config.fluent_show_mesh_after_case_read:
-        tokens.append("-nm")
-    return tokens
-
-
-def _generate_launch_string(argvals, server_info_file_name: str) -> str:
-    """Generate the Fluent launch command as a shell string (compatibility wrapper)."""
-    return _generate_launch_command(argvals, server_info_file_name, shell=True)
-
-
-def _generate_launch_command_list(argvals, server_info_file_name: str) -> list[str]:
-    """Generate the Fluent launch command as a token list (compatibility wrapper)."""
-    return _generate_launch_command(argvals, server_info_file_name, shell=False)
+        builder.append(" -nm" if builder.shell else "-nm")
+    return builder.get_cmd()
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:

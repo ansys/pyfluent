@@ -53,6 +53,7 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     ComposeConfig,
+    FluentLaunchCmdBuilder,
     _build_case_data_arguments,
     _build_journal_argument,
     _validate_lightweight_with_case_data,
@@ -60,7 +61,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
-    _build_fluent_launch_args_string,
+    _build_fluent_launch_args,
     get_fluent_exe_path,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -271,7 +272,7 @@ def test_case_data_load():
 
 def test_gpu_launch_arg():
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             gpu=True, additional_arguments="", processor_count=None
         ).strip()
         == "3ddp -gpu -hidden"
@@ -279,7 +280,7 @@ def test_gpu_launch_arg():
         else "3ddp -gpu -gu"
     )
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             gpu=[1, 2, 4], additional_arguments="", processor_count=None
         ).strip()
         == "3ddp -gpu=1,2,4 -hidden"
@@ -290,7 +291,7 @@ def test_gpu_launch_arg():
 
 def test_gpu_launch_arg_additional_arg():
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             additional_arguments="-gpu", processor_count=None
         ).strip()
         == "3ddp -gpu -hidden"
@@ -298,7 +299,7 @@ def test_gpu_launch_arg_additional_arg():
         else "3ddp -gpu -gu"
     )
     assert (
-        _build_fluent_launch_args_string(
+        _build_fluent_launch_args(
             additional_arguments="-gpu=1,2,4", processor_count=None
         ).strip()
         == "3ddp -gpu=1,2,4 -hidden"
@@ -600,7 +601,7 @@ def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
     for m in UIMode:
-        string1 = _build_fluent_launch_args_string(
+        string1 = _build_fluent_launch_args(
             ui_mode=m, additional_arguments="", processor_count=None
         ).strip()
         string2 = (
@@ -609,7 +610,7 @@ def test_exposure_and_graphics_driver_arguments():
         assert string1 == string2
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
-            msg = _build_fluent_launch_args_string(
+            msg = _build_fluent_launch_args(
                 graphics_driver=m, additional_arguments="", processor_count=None
             ).strip()
             if is_windows():
@@ -628,7 +629,7 @@ def test_exposure_and_graphics_driver_arguments():
 
 def test_additional_arguments_fluent_launch_args_string():
     additional_arguments = "-ws -ws-port=5000 -i test.jou"
-    assert additional_arguments in _build_fluent_launch_args_string(
+    assert additional_arguments in _build_fluent_launch_args(
         additional_arguments=additional_arguments,
         processor_count=4,
     )
@@ -1064,11 +1065,8 @@ def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
 
 
 def test_build_fluent_launch_args_list_basic():
-    from ansys.fluent.core.launcher.process_launch_string import (
-        _build_fluent_launch_args_list,
-    )
-
-    tokens = _build_fluent_launch_args_list(
+    tokens = _build_fluent_launch_args(
+        False,
         additional_arguments=["-ws", "-ws-port=5000"],
         processor_count=4,
     )
@@ -1084,35 +1082,31 @@ def test_build_fluent_launch_args_list_basic():
 
 
 def test_build_fluent_launch_args_list_rejects_str_additional_arguments():
-    from ansys.fluent.core.launcher.process_launch_string import (
-        _build_fluent_launch_args_list,
-    )
-
     with pytest.raises(TypeError):
-        _build_fluent_launch_args_list(
+        _build_fluent_launch_args(
+            False,
             additional_arguments="-ws",
             processor_count=4,
         )
 
 
 def test_build_fluent_launch_args_list_gpu_and_ui_and_driver():
-    from ansys.fluent.core.launcher.process_launch_string import (
-        _build_fluent_launch_args_list,
-    )
-
-    tokens = _build_fluent_launch_args_list(
+    tokens = _build_fluent_launch_args(
+        False,
         gpu=True,
         additional_arguments=[],
         processor_count=None,
     )
     assert "-gpu" in tokens
-    tokens = _build_fluent_launch_args_list(
+    tokens = _build_fluent_launch_args(
+        False,
         gpu=[1, 2, 4],
         additional_arguments=[],
         processor_count=None,
     )
     assert "-gpu=1,2,4" in tokens
-    tokens = _build_fluent_launch_args_list(
+    tokens = _build_fluent_launch_args(
+        False,
         ui_mode=UIMode.NO_GUI,
         additional_arguments=[],
         processor_count=None,
@@ -1124,7 +1118,8 @@ def test_build_fluent_launch_args_list_gpu_and_ui_and_driver():
     # Pick a driver whose ``get_fluent_value()`` yields a non-empty flag value.
     non_null_driver = next(d for d in driver_enum if d.get_fluent_value()[0])
     driver_value = non_null_driver.get_fluent_value()[0]
-    tokens = _build_fluent_launch_args_list(
+    tokens = _build_fluent_launch_args(
+        False,
         graphics_driver=non_null_driver,
         additional_arguments=[],
         processor_count=None,
@@ -1134,6 +1129,18 @@ def test_build_fluent_launch_args_list_gpu_and_ui_and_driver():
     # ``-driver`` and its value must be adjacent, separate tokens.
     idx = tokens.index("-driver")
     assert tokens[idx + 1] == driver_value
+
+
+def test_build_fluent_launch_args_appends_onto_existing_builder():
+    """An existing ``FluentLaunchCmdBuilder`` can be shared across build calls."""
+    builder = FluentLaunchCmdBuilder(shell=False)
+    builder.append("fluent.exe")
+    _build_fluent_launch_args(
+        builder, additional_arguments=["-ws"], processor_count=None
+    )
+    cmd = builder.get_cmd()
+    assert cmd[0] == "fluent.exe"
+    assert "-ws" in cmd
 
 
 @pytest.mark.parametrize(
@@ -1147,40 +1154,35 @@ def test_build_fluent_launch_args_list_gpu_and_ui_and_driver():
     ],
 )
 def test_build_journal_argument_list(topy, journal_file_names, expected):
-    from ansys.fluent.core.launcher.launcher_utils import _build_journal_argument_list
-
-    assert _build_journal_argument_list(topy, journal_file_names) == expected
+    assert _build_journal_argument(topy, journal_file_names, False) == expected
 
 
 def test_build_journal_argument_list_raises():
-    from ansys.fluent.core.launcher.launcher_utils import _build_journal_argument_list
-
     with pytest.raises(TypeError):
-        _build_journal_argument_list(None, 5)
+        _build_journal_argument(None, 5, False)
     with pytest.raises(InvalidArgument):
-        _build_journal_argument_list(True, None)
+        _build_journal_argument(True, None, False)
 
 
 def test_build_case_data_arguments_list():
-    from ansys.fluent.core.launcher.launcher_utils import (
-        _build_case_data_arguments_list,
-    )
-
-    assert _build_case_data_arguments_list(None, None) == []
-    assert _build_case_data_arguments_list("case.cas", None) == ["-case", "case.cas"]
-    assert _build_case_data_arguments_list("case.cas", "data.dat") == [
+    assert _build_case_data_arguments(None, None, False) == []
+    assert _build_case_data_arguments("case.cas", None, False) == [
+        "-case",
+        "case.cas",
+    ]
+    assert _build_case_data_arguments("case.cas", "data.dat", False) == [
         "-case",
         "case.cas",
         "-data",
         "data.dat",
     ]
     # Paths with spaces stay as single tokens (no shell quoting required).
-    assert _build_case_data_arguments_list("case with space.cas", None) == [
+    assert _build_case_data_arguments("case with space.cas", None, False) == [
         "-case",
         "case with space.cas",
     ]
     with pytest.raises(InvalidArgument):
-        _build_case_data_arguments_list(None, "data.dat")
+        _build_case_data_arguments(None, "data.dat", False)
 
 
 def test_construct_timeout_token_shell_false():
