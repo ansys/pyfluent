@@ -484,9 +484,10 @@ class SlurmLauncher:
         start_timeout : int, optional
             Maximum allowable time in seconds for connecting to the Fluent
             server. The default is ``60``.
-        additional_arguments : str, optional
-            Additional arguments to send to Fluent as a string in the same
-            format they are normally passed to Fluent on the command line.
+        additional_arguments: str | list[str]
+            Additional arguments to send to Fluent. When ``shell=True`` (default) this must
+            be a string in the same format as arguments passed to Fluent on the command line.
+            When ``shell=False`` this must be a list of individual command-line tokens.
         env : dict[str, str], optional
             Mapping to modify environment variables in Fluent. The default
             is ``None``.
@@ -548,6 +549,10 @@ class SlurmLauncher:
             ``certificates_folder`` (or ``ANSYS_GRPC_CERTIFICATES``) is not set; the two are mutually exclusive.
             This mode is not recommended. For more details on the implications and usage of insecure mode,
             refer to the Fluent documentation.
+        shell: bool
+            Whether to run the Fluent launch subprocess call with ``shell=True`` (default)
+            or ``shell=False``. When ``shell=False``, the Fluent launch command is constructed
+            as a list of arguments and ``additional_arguments`` must be a list of strings.
 
         Returns
         -------

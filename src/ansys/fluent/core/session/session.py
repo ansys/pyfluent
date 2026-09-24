@@ -584,8 +584,10 @@ class BaseSession:
             Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``.
         start_timeout : int, optional
             Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 100 seconds.
-        additional_arguments : str, optional
-            Additional command-line arguments for Fluent, formatted as they would be on the command line.
+        additional_arguments : str | list[str], optional
+            Additional command-line arguments for Fluent. When ``shell=True`` (default) this must
+            be a string in the same format as arguments passed to Fluent on the command line.
+            When ``shell=False`` this must be a list of individual command-line tokens.
         env : dict[str, str], optional
             A mapping for modifying environment variables in Fluent. Defaults to ``None``.
         cleanup_on_exit : bool, optional
@@ -620,6 +622,10 @@ class BaseSession:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any
             Service for uploading/downloading files to/from the server.
+        shell : bool, optional
+            Whether to run the Fluent launch subprocess call with ``shell=True`` (default)
+            or ``shell=False``. When ``shell=False``, the Fluent launch command is constructed
+            as a list of arguments and ``additional_arguments`` must be a list of strings.
 
         Raises
         ------
@@ -695,8 +701,10 @@ class BaseSession:
             In job scheduler environments, this value limits the total number of allocated cores.
         start_timeout : int, optional
             Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 100 seconds.
-        additional_arguments : str, optional
-            Additional command-line arguments for Fluent, formatted as they would be on the command line.
+        additional_arguments : str | list[str], optional
+            Additional command-line arguments for Fluent. When ``shell=True`` (default) this must
+            be a string in the same format as arguments passed to Fluent on the command line.
+            When ``shell=False`` this must be a list of individual command-line tokens.
         container_dict : dict, optional
             Configuration dictionary for launching Fluent inside a Docker container. See also
             :mod:`~ansys.fluent.core.launcher.fluent_container`.
@@ -728,6 +736,10 @@ class BaseSession:
             If True, Fluent's gRPC server will be started in insecure mode without TLS.
             This mode is not recommended. For more details on the implications
             and usage of insecure mode, refer to the Fluent documentation.
+        shell : bool, optional
+            Whether to run the Fluent launch subprocess call with ``shell=True`` (default)
+            or ``shell=False``. When ``shell=False``, the Fluent launch command is constructed
+            as a list of arguments and ``additional_arguments`` must be a list of strings.
 
         Returns
         -------
