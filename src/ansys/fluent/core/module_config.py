@@ -415,6 +415,11 @@ class Config:
         for k, v in cast(list[tuple[str, Any]], members):
             if isinstance(v, (_ConfigDescriptor, property)):
                 config_dict[k] = v.__get__(self, self.__class__)
+
+        if not config_dict:
+            print("PyFluent Configuration: (no configuration items found)")
+            return
+
         max_key_length = max(len(k) for k in config_dict)
         print("PyFluent Configuration:")
         print("-" * (max_key_length + 20))
