@@ -20,15 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Abstract reduction wrapper."""
+"""Abstract contract for Fluent reduction operations."""
 
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Any
 
+__all__ = ("AbstractReduction",)
+
 
 class AbstractReduction(ABC):
-    """Abstract base class for the health check."""
+    """Abstract interface for area, volume, force, and statistical reductions."""
 
     @abstractmethod
     def area(self, locations, ctxt=None) -> Any:
