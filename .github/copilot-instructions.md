@@ -5,17 +5,13 @@ This file is intentionally minimal. The canonical project guidance lives in @AGE
 ## Required behavior
 
 - Read @AGENTS.md first for project orientation.
-- Start with one targeted search and the smallest relevant reads.
-- Prefer the closest existing test coverage over new assumptions.
-- Keep fixes narrow and root-cause focused.
-- Do not hand-edit generated API files without a clear, justified reason.
+- Follow the repo rules in @AGENTS.md before expanding to deeper docs.
+- Keep this file short; do not duplicate the root guidance.
 
-## Repo-specific overrides
+## Repo-specific override
 
 - Treat `src/ansys/fluent/core` as the main runtime package.
-- Treat `codegen` and generated modules as schema-driven or generation-managed code unless explicitly required otherwise.
-- Use the smallest relevant pytest target; do not default to a broad suite for a small fix.
-- For deeper architecture or workflow guidance, follow the links in @AGENTS.md to the docs under `devel/agents`.
+- Treat generated modules as schema-driven or generation-managed code unless a task explicitly requires otherwise.
 
 ## Documentation hierarchy
 
@@ -24,4 +20,4 @@ This file is intentionally minimal. The canonical project guidance lives in @AGE
 - @devel/agents/testing.md — validation strategy
 - @devel/agents/workflows.md — contribution workflow
 
-This file should stay short and point to the canonical guidance rather than re-describing it.
+This file should stay brief and point to the canonical guidance rather than repeating it.

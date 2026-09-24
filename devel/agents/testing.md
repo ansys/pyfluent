@@ -37,12 +37,21 @@ The `tests` tree covers:
 
 Use this as a quick routing guide before choosing a test target:
 
-- Launch and session lifecycle: `test_launcher.py`, `test_launcher_remote.py`, `test_fluent_session.py`, `test_session.py`
-- Settings and datamodel API: `test_settings_api.py`, `test_settings_reader.py`, `test_datamodel_api.py`, `test_datamodel_service.py`
-- Field data and solution variables: `test_field_data.py`, `test_solution_variables.py`, `test_physical_quantities.py`
+- Launch and session lifecycle: `test_launcher.py`, `test_launcher_remote.py`, `test_fluent_session.py`, `test_session.py`, `test_pre_post_session.py`
 - Meshing workflows: `test_meshing_workflow.py`, `test_new_meshing_workflow.py`, `test_meshing_utilities.py`, `test_pure_mesh_vs_mesh_workflow.py`, `test_server_meshing_workflow.py`
+- Solver and solver-mode behavior: `test_solution_variables.py`, `test_solvermode`, `test_tui_api.py`, `test_public_api.py`
+- Fields and reduction: `test_field_data.py`, `test_reduction.py`, `test_solution_variables.py`, `test_physical_quantities.py`
+- Settings and datamodel API: `test_settings_api.py`, `test_settings_reader.py`, `test_datamodel_api.py`, `test_datamodel_service.py`, `test_builtin_settings.py`
 - File and transfer behavior: `test_file_session.py`, `test_file_transfer_service.py`, `test_datareader.py`, `test_casereader.py`
-- API and object surfaces: `test_flobject.py`, `test_tui_api.py`, `test_rp_vars.py`, `test_public_api.py`
+- Search and API browsing: `test_search.py`
+- API and object surfaces: `test_flobject.py`, `test_rp_vars.py`, `test_public_api.py`
+
+Concrete examples:
+
+- Reduction work first checks `src/ansys/fluent/core/fields/reduction.py` and then `tests/test_reduction.py`.
+- Field-data work first checks `src/ansys/fluent/core/fields/live_field_data.py` and then `tests/test_field_data.py`.
+- Search work first checks `src/ansys/fluent/core/search.py` and then `tests/test_search.py`.
+- File transfer work first checks `src/ansys/fluent/core/file_transfer_service.py` and then `tests/test_file_transfer_service.py`.
 
 This is not exhaustive, but it gives a stable map from feature area to the most likely test cluster.
 
