@@ -71,11 +71,11 @@ from ansys.fluent.core.workflow_old import ClassicWorkflow
 
 if TYPE_CHECKING:
     from ansys.fluent.core.fluent_connection import FluentConnection
-    from ansys.fluent.core.generated.datamodel_261.preferences import (
+    from ansys.fluent.core.generated.v261.datamodel.preferences import (
         Root as preferences_root,
     )
-    import ansys.fluent.core.generated.solver.settings_261 as settings_root
-    from ansys.fluent.core.generated.solver.tui_261 import main_menu
+    import ansys.fluent.core.generated.v261.solver.settings as settings_root
+    from ansys.fluent.core.generated.v261.solver.tui import main_menu
     from ansys.fluent.core.session.http_solver import HttpSolver
 
 

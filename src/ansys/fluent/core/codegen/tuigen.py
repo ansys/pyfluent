@@ -70,7 +70,8 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (pyfluent.config.codegen_outdir / mode / f"tui_{version}.py").resolve()
+    version_dir = pyfluent.codegen.get_codegen_version_dir(version, pyfluent.config.codegen_outdir)
+    return (version_dir / mode / "tui.py").resolve()
 
 
 _INDENT_STEP = 4
@@ -197,7 +198,7 @@ class TUIGenerator:
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
         self._tui_heading = mode + ".tui"
-        self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
+        self._tui_module = "ansys.fluent.core." + self._tui_heading
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
         self._main_menu = _TUIMenu([], "")

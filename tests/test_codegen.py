@@ -39,28 +39,28 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 def test_allapigen_files(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
-    importlib.import_module(f"ansys.fluent.core.generated.fluent_version_{version}")
-    importlib.import_module(f"ansys.fluent.core.generated.meshing.tui_{version}")
-    importlib.import_module(f"ansys.fluent.core.generated.solver.tui_{version}")
-    importlib.import_module(f"ansys.fluent.core.generated.datamodel_{version}.meshing")
-    importlib.import_module(f"ansys.fluent.core.generated.datamodel_{version}.workflow")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.fluent_version")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.meshing.tui")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.solver.tui")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.datamodel.meshing")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.datamodel.workflow")
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.preferences"
+        f"ansys.fluent.core.generated.v{version}.datamodel.preferences"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.part_management"
+        f"ansys.fluent.core.generated.v{version}.datamodel.part_management"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.pm_file_management"
+        f"ansys.fluent.core.generated.v{version}.datamodel.pm_file_management"
     )
-    importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.solver.settings")
 
 
 @pytest.mark.fluent_version(">=26.1")
 def test_settings_allowed_values(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
     module = importlib.import_module(
-        f"ansys.fluent.core.generated.solver.settings_{version}"
+        f"ansys.fluent.core.generated.v{version}.solver.settings"
     )
 
     file_type_1 = getattr(module, "file_type_1")
@@ -79,7 +79,7 @@ def test_codegen_with_no_static_info(monkeypatch):
     allapigen.generate(version, {})
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle"}
+    assert set(p.name for p in generated_paths) == {"api_tree.pickle"}
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
@@ -169,13 +169,14 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
         "help": "Root",
     }
     allapigen.generate(version, static_infos)
-    generated_paths = list(codegen_outdir.iterdir())
+    version_dir = codegen_outdir / f"v{version}"
+    generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle", mode}
-    solver_paths = list((codegen_outdir / mode).iterdir())
+    assert set(p.name for p in generated_paths) == {"api_tree.pickle", mode}
+    solver_paths = list((version_dir / mode).iterdir())
     assert len(solver_paths) == 1
-    assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
-    with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
+    assert set(p.name for p in solver_paths) == {"tui.py"}
+    with open(version_dir / mode / "tui.py", "r") as f:
         assert f.read().strip() == _get_expected_tui_api_output(mode)
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
@@ -398,20 +399,22 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
         "help": "Root",
     }
     allapigen.generate(version, static_infos)
-    generated_paths = list(codegen_outdir.iterdir())
+    version_dir = codegen_outdir / f"v{version}"
+    generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
     assert set(p.name for p in generated_paths) == {
-        f"api_tree_{version}.pickle",
-        f"datamodel_{version}",
+        "api_tree.pickle",
+        "datamodel",
     }
-    datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
+    datamodel_paths = list((version_dir / "datamodel").iterdir())
     assert len(datamodel_paths) == 1 or 2
     assert set(p.name for p in datamodel_paths) == {
         f"{datamodel_file_name_map[rules]}.py"
     } or {f"{datamodel_file_name_map[rules]}.pyi"}
     with open(
         codegen_outdir
-        / f"datamodel_{version}"
+        / f"v{version}"
+        / "datamodel"
         / f"{datamodel_file_name_map[rules]}.py",
         "r",
     ) as f:
@@ -738,17 +741,18 @@ def test_codegen_with_settings_static_info(monkeypatch):
     static_infos = {}
     static_infos[StaticInfoType.SETTINGS] = _settings_static_info
     allapigen.generate(version, static_infos)
-    generated_paths = list(codegen_outdir.iterdir())
+    version_dir = codegen_outdir / f"v{version}"
+    generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
     assert set(p.name for p in generated_paths) == {
-        f"api_tree_{version}.pickle",
+        "api_tree.pickle",
         "solver",
     }
-    assert {p.name for p in (codegen_outdir / "solver").glob("*.py*")} == {
-        f"settings_{version}.py",
-        f"settings_{version}.pyi",
+    assert {p.name for p in (version_dir / "solver").glob("*.py*")} == {
+        "settings.py",
+        "settings.pyi",
     }
-    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+    with open(version_dir / "solver" / "settings.py", "r") as f:
         expected_settings_api_output = _expected_settings_api_output
         assert f.read().strip() == expected_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
@@ -872,7 +876,7 @@ def test_codegen_with_settings_static_info_edge_cases(
     static_infos = {}
     static_infos[StaticInfoType.SETTINGS] = settings_static_info
     allapigen.generate(version, static_infos)
-    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+    with open(codegen_outdir / f"v{version}" / "solver" / "settings.py", "r") as f:
         module_def = ast.parse(f.read())
         class_names_from_file = [
             x.name for x in module_def.body if isinstance(x, ast.ClassDef)

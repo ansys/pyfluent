@@ -54,6 +54,6 @@ def create_root_using_datamodelgen(service, app_name):
             datamodelgen.generate(
                 version, static_infos={StaticInfoType.DATAMODEL_WORKFLOW: static_info}
             )
-            gen_file = Path(temp_dir) / f"datamodel_{version}" / "workflow.py"
+            gen_file = Path(temp_dir) / f"v{version}" / "datamodel" / "workflow.py"
             module = load_module("datamodel", gen_file)
             return module.Root(service, app_name, [])

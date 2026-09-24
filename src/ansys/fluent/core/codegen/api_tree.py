@@ -28,6 +28,7 @@ import os
 from pathlib import Path
 import pickle
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -37,12 +38,14 @@ from ansys.fluent.core.utils.fluent_version import (
 
 def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
-    return (config.codegen_outdir / f"api_tree_{version}.pickle").resolve()
+    version_dir = pyfluent.codegen.get_codegen_version_dir(version, config.codegen_outdir)
+    return (version_dir / "api_tree.pickle").resolve()
 
 
 def get_api_tree_data_file_path():
     """Get API tree data file."""
-    return (config.codegen_outdir / "api_tree" / "api_objects.json").resolve()
+    version_dir = Path(config.codegen_outdir)
+    return (version_dir / "api_tree" / "api_objects.json").resolve()
 
 
 def _remove_suffix(input: str, suffix):

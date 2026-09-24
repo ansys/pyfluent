@@ -26,6 +26,7 @@
 import re
 from typing import Literal, cast
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.solver.flobject import (
     CreatableNamedObjectMixin,
@@ -36,8 +37,14 @@ from ansys.fluent.core.solver.flobject import (
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 from ansys.fluent.core.utils.fluent_version import FluentVersion, all_versions
 
-_PY_FILE = config.codegen_outdir / "solver" / "settings_builtin.py"
-_PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
+def _get_builtin_settings_paths(version: str):
+    version_dir = config.codegen_outdir
+    if version:
+        version_dir = pyfluent.codegen.get_codegen_version_dir(version, config.codegen_outdir)
+    return (
+        version_dir / "solver" / "settings_builtin.py",
+        version_dir / "solver" / "settings_builtin.pyi",
+    )
 
 _CLASS_NAME_OVERRIDES = {
     "ReadCaseData": "ReadCaseAndData",
@@ -50,9 +57,10 @@ SettingKind = Literal["Singleton", "NamedObject", "Command"]
 def _get_settings_root(version: str):
     from ansys.fluent.core.utils import load_module as _load_module
 
+    version_dir = pyfluent.codegen.get_codegen_version_dir(version, config.codegen_outdir)
     settings = _load_module(
         f"settings_{version}",
-        config.codegen_outdir / "solver" / f"settings_{version}.py",
+        version_dir / "solver" / "settings.py",
     )
     return settings.root
 
@@ -118,11 +126,12 @@ def _get_named_objects_in_path(
 def generate(version: str):
     """Generate builtin setting classes."""
     print("Generating builtin settings...")
-    config.codegen_outdir.mkdir(exist_ok=True)
+    version_dir = pyfluent.codegen.get_codegen_version_dir(version, config.codegen_outdir)
+    version_dir.mkdir(parents=True, exist_ok=True)
     root = _get_settings_root(version)
     version = FluentVersion(version)
     _generate_py_file(root, version)
-    _generate_pyi_file()
+    _generate_pyi_file(version)
 
 
 def _write_name_to_all(f, name: str) -> None:
@@ -271,7 +280,9 @@ def _write_pyi_entry(f, legacy_name: str, kind: str, path, name: str) -> None:
 
 def _generate_py_file(root, version) -> None:
     """Write ``settings_builtin.py``."""
-    with open(_PY_FILE, "w") as f:
+    py_file, _ = _get_builtin_settings_paths(str(version))
+    py_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(py_file, "w") as f:
         f.write('"""Solver settings."""\n\n')
         f.write(
             "from ansys.fluent.core.solver.settings_builtin_bases import"
@@ -292,12 +303,14 @@ def _generate_py_file(root, version) -> None:
             _write_py_entry(f, legacy_name, v, root, version)
 
 
-def _generate_pyi_file() -> None:
+def _generate_pyi_file(version) -> None:
     """Write ``settings_builtin.pyi``."""
-    with open(_PYI_FILE, "w") as f:
+    _, pyi_file = _get_builtin_settings_paths(str(version))
+    pyi_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(pyi_file, "w") as f:
         for version in FluentVersion:
             f.write(
-                f"from ansys.fluent.core.generated.solver.settings_{version.number}"
+                f"from ansys.fluent.core.generated.v{version.number}.solver.settings_{version.number}"
                 f" import root as settings_root_{version.number}\n"
             )
         f.write("\n\n")

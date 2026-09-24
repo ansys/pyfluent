@@ -234,7 +234,8 @@ class DataModelStaticInfo:
         if rules_save_name == "":
             rules_save_name = rules
         datamodel_dir = (
-            pyfluent.config.codegen_outdir / f"datamodel_{version}"
+            pyfluent.codegen.get_codegen_version_dir(version, pyfluent.config.codegen_outdir)
+            / "datamodel"
         ).resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (
@@ -774,7 +775,10 @@ def _generate_workflow_task_stubs(
         except Exception as exc:
             print(f"Warning: could not enumerate tasks for {cls_name}: {exc}")
 
-    datamodel_dir = (pyfluent.config.codegen_outdir / f"datamodel_{version}").resolve()
+    datamodel_dir = (
+        pyfluent.codegen.get_codegen_version_dir(version, pyfluent.config.codegen_outdir)
+        / "datamodel"
+    ).resolve()
     _write_workflow_task_stub(
         datamodel_dir / "meshing_workflow_tasks.pyi",
         "TaskObject-type inventory per PyFluent-native meshing workflow interface (Fluent 27R1+).\n"

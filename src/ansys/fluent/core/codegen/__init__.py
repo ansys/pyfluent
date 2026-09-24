@@ -24,6 +24,22 @@
 """This module contains the code generation logic for Fluent's Python API."""
 
 from enum import Enum, auto
+from pathlib import Path
+
+
+def get_codegen_version_dir(version: str | None = None, outdir: Path | None = None) -> Path:
+    """Return the generated code directory for a specific Fluent version.
+
+    The output tree is organized as ``<CODEGEN_OUTDIR>/vNNN/...`` so that older
+    generated versions can be removed as a single unit during packaging.
+    """
+    from ansys.fluent.core.module_config import config
+
+    base_dir = Path(outdir) if outdir is not None else Path(config.codegen_outdir)
+    if version is None:
+        return base_dir.resolve()
+    normalized = "".join(str(version).split("."))
+    return (base_dir / f"v{normalized}").resolve()
 
 
 class StaticInfoType(Enum):

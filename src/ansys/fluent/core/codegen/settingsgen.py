@@ -386,10 +386,11 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     sinfo = static_infos.get(StaticInfoType.SETTINGS)
     if not sinfo:
         return {"<solver_session>": api_tree}
-    output_dir = (pyfluent.config.codegen_outdir / "solver").resolve()
+    version_dir = pyfluent.codegen.get_codegen_version_dir(version, pyfluent.config.codegen_outdir)
+    output_dir = (version_dir / "solver").resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_file = output_dir / f"settings_{version}.py"
-    output_stub_file = output_dir / f"settings_{version}.pyi"
+    output_file = output_dir / "settings.py"
+    output_stub_file = output_dir / "settings.pyi"
     cls, _ = get_cls("", sinfo, version=version)
     # _populate_data() collects all strings to write to the file in a nested dict.
     # which is then written to the file using _write_data().
