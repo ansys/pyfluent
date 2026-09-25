@@ -3,7 +3,10 @@
 Meshing workflows
 =================
 
-PyFluent provides access to Fluent’s meshing workflows.
+This guide describes the PyFluent-native meshing workflow interface for creating,
+organizing, and running Fluent meshing workflows directly from Python. It covers
+workflow creation, task management, and the built-in watertight, fault-tolerant,
+and two-dimensional meshing workflows available in PyFluent.
 
 Overview
 --------

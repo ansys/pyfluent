@@ -21,60 +21,45 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Public APIs for Fluent field data, reductions, and solution variables.
+"""Public APIs for retrieving Fluent field data and mesh data.
 
-The :mod:`field_data` package provides request, response, and mesh models for
-retrieving data from Fluent. :class:`Reduction`, :class:`SolutionVariableInfo`,
-and :class:`SolutionVariableData` provide the related post-processing APIs.
-The ``reduction`` and ``solution_variables`` packages also expose their
-abstract contracts, response containers, and user-facing validation errors.
+Use :class:`FieldData` with request models such as
+:class:`ScalarFieldDataRequest`. Response and mesh models are also available
+here for inspection and type annotations.
 """
 
-from ansys.fluent.core.fields.field_data import (
+from ansys.fluent.core.fields.field_data.abstract_field_data import (
     AbstractFieldData,
-    BaseDataRequest,
     BaseFieldDataSource,
+    FieldBatch,
+    FieldDataSource,
+)
+from ansys.fluent.core.fields.field_data.data_types import PathlinesData, SurfaceData
+from ansys.fluent.core.fields.field_data.live_field_data import (
     Batch,
     BatchFieldData,
+    LiveFieldData,
+)
+from ansys.fluent.core.fields.field_data.mesh import (
     CellElementType,
     Element,
     Facet,
-    FieldBatch,
-    FieldData,
-    FieldDataBatch,
-    FieldDataSource,
-    LiveFieldData,
     Mesh,
     Node,
-    PathlinesData,
-    PathlinesFieldDataRequest,
-    ScalarFieldDataRequest,
-    SurfaceData,
-    SurfaceDataType,
-    SurfaceFieldDataRequest,
-    VectorFieldDataRequest,
     ZoneInfo,
     ZoneType,
 )
-from ansys.fluent.core.fields.reduction import AbstractReduction, Reduction
-from ansys.fluent.core.fields.solution_variables import (
-    AbstractData,
-    AbstractSolutionVariableData,
-    AbstractSolutionVariableInfo,
-    Data,
-    DomainError,
-    InvalidSolutionVariableNameError,
-    SolutionVariableData,
-    SolutionVariableInfo,
-    ZoneError,
+from ansys.fluent.core.fields.field_data.requests import (
+    BaseDataRequest,
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
 )
 
 __all__ = [
     "AbstractFieldData",
-    "AbstractReduction",
-    "AbstractData",
-    "AbstractSolutionVariableData",
-    "AbstractSolutionVariableInfo",
     "BaseDataRequest",
     "BaseFieldDataSource",
     "Batch",
@@ -83,9 +68,9 @@ __all__ = [
     "Element",
     "Facet",
     "FieldDataSource",
+    "FieldBatch",
     "FieldData",
     "FieldDataBatch",
-    "FieldBatch",
     "LiveFieldData",
     "Mesh",
     "Node",
@@ -98,11 +83,7 @@ __all__ = [
     "VectorFieldDataRequest",
     "ZoneInfo",
     "ZoneType",
-    "Reduction",
-    "Data",
-    "DomainError",
-    "InvalidSolutionVariableNameError",
-    "SolutionVariableInfo",
-    "SolutionVariableData",
-    "ZoneError",
 ]
+
+FieldData = LiveFieldData
+FieldDataBatch = Batch

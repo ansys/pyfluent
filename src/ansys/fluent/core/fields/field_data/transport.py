@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 #
 #
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -21,51 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High-level field data wrappers.
-
-This module owns the business-logic layer on top of the FieldData gRPC
-service. The grpc service implementation lives in:
-
-* ``ansys.fluent.core._grpc_services.field_data_service`` (v1 proto API)
-* ``ansys.fluent.core._grpc_services.field_data_service_v0`` (v0 proto API)
-
-Class hierarchy
----------------
-``FieldDataBase``
-    Shared implementation for all versions. Delegates the core field-data
-    operations (scalar/vector/surface/pathlines retrieval, batching, etc.)
-    to the underlying gRPC service.
-
-``FieldDataV251(FieldDataBase)``
-    Used for Fluent 24R2 and 25R1 (v0 proto API). ``is_data_valid``
-    is evaluated eagerly via the Scheme interpreter
-    (``(data-valid?)``), because the ``IsSolutionDataAvailable`` RPC
-    was not yet available in the AppUtilities service for these versions.
-
-``FieldDataV261(FieldDataBase)``
-    Used for Fluent 25R2 and 26R1 (v0 proto API). ``is_data_valid``
-    is a callable bound to ``ApplicationRuntimeServiceV0.is_solution_data_available``,
-    which became available from 25R2 onward.
-
-``FieldData(FieldDataBase)``
-    Used from Fluent 27R1 onward (v1 proto API). ``is_data_valid``
-    is a callable bound to the v1 field-data service's
-    ``is_solution_data_available``.
-"""
+"""Internal transport adapters that connect field-data APIs to Fluent services."""
 
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 
-from ansys.fluent.core.fields.field_data_interfaces import (
-    SurfaceDataType,
+from ansys.fluent.core.fields.field_data.abstract_field_data import (
+    AbstractFieldData,
 )
-from ansys.fluent.core.services.abstract_field_data import AbstractFieldData
+from ansys.fluent.core.fields.field_data.requests import SurfaceDataType
 
 
 class FieldDataBase(AbstractFieldData):
-    """Shared base class for FieldData and FieldDataV261 classes."""
+    """Shared transport adapter for Fluent field-data service versions.
+
+    This class implements
+    :class:`~ansys.fluent.core.fields.field_data.abstract_field_data.AbstractFieldData` by
+    forwarding calls to ``service`` and parsing responses with ``chunk_parser``.
+    :class:`FieldData`, :class:`FieldDataV251`, and :class:`FieldDataV261`
+    provide version-specific service details while preserving the same contract
+    for :class:`LiveFieldData`.
+    """
 
     def __init__(
         self,
@@ -222,7 +199,9 @@ class FieldDataBase(AbstractFieldData):
             surface_ids=surfaces,
         )
 
-    def _add_vector_fields_request(self, field_name: str, surfaces: list[int | str]):
+    def _add_vector_fields_request(
+        self, field_name: str, surfaces: list[int | str]
+    ) -> None:
         """Add a vector field request to the batched fields request."""
         return self._service._add_vector_fields_request(
             field_name=field_name,
@@ -245,7 +224,7 @@ class FieldDataBase(AbstractFieldData):
         coarsen: int | None = 1,
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
-    ) -> dict:
+    ) -> dict[Any, Any]:
         """Get the pathlines field data on a surface."""
         return self._service._get_pathlines_field_data(
             field_name=field_name,
@@ -311,7 +290,7 @@ class FieldDataBase(AbstractFieldData):
 
 
 class FieldDataV261(FieldDataBase):
-    """Class for FieldDataV261 service."""
+    """Field-data transport adapter for Fluent 26.1 and later."""
 
     def __init__(
         self,
@@ -328,7 +307,7 @@ class FieldDataV261(FieldDataBase):
 
 
 class FieldDataV251(FieldDataBase):
-    """Class for FieldDataV251 service."""
+    """Field-data transport adapter for Fluent 25.1."""
 
     def __init__(
         self,
@@ -346,7 +325,7 @@ class FieldDataV251(FieldDataBase):
 
 
 class FieldData(FieldDataBase):
-    """Class for FieldData service."""
+    """Default field-data transport adapter for the base Fluent service API."""
 
     def __init__(
         self,
