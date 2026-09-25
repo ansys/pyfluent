@@ -35,7 +35,7 @@ from ansys.fluent.core.logger import *
 
 from ansys.fluent.core.context_manager import *
 from ansys.fluent.core.exceptions import *
-from ansys.fluent.core.fields.field_data_interfaces import *
+from ansys.fluent.core.fields.field_data import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
 from ansys.fluent.core.local_parametric_study import *

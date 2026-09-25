@@ -46,7 +46,7 @@ from ansys.fluent.core.exceptions import (
     DeprecatedSettingWarning,
     PyFluentDeprecationWarning,
 )
-from ansys.fluent.core.fields.live_field_data import ZoneInfo, ZoneType
+from ansys.fluent.core.fields.field_data.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent

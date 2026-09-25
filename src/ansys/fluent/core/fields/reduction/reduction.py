@@ -21,26 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High-level reduction wrappers.
+"""High-level user-facing API for retrieving reduction data from Fluent."""
 
-This module owns the business-logic layer on top of the Reduction gRPC
-service. The grpc service implementation lives in:
-
-* ``ansys.fluent.core._grpc_services.reduction_service`` (v1 proto API)
-* ``ansys.fluent.core._grpc_services.reduction_service_v0`` (v0 proto API)
-
-Class hierarchy
----------------
-``Reduction``
-    gRPC-based implementation (v1 and v0 proto API).
-"""
+__all__ = ["Reduction"]
 
 from collections.abc import Iterable
 from typing import Any
 import weakref
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.services.abstract_reduction import AbstractReduction
+from ansys.fluent.core.fields.reduction.abstract_reduction import AbstractReduction
 from ansys.fluent.core.solver.function.reduction import Weight
 
 Path = list[tuple[str, str]]
