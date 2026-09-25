@@ -49,7 +49,20 @@ current process:
     >>> config.runtime_type_checking
     True
 
-Passing an argument of the wrong type then raises a ``beartype.roar.BeartypeCallHintParamViolation``.
+Passing an argument of the wrong type then raises a ``PyFluentTypeCheckingError``:
+
+.. code-block:: python
+
+    >>> from ansys.fluent.core import PyFluentTypeCheckingError
+    >>> try:
+    ...     some_function(wrong_type_argument)
+    ... except PyFluentTypeCheckingError as e:
+    ...     print(f"Type check failed: {e}")
+    Type check failed: ...
+
+The ``PyFluentTypeCheckingError`` is a subclass of ``TypeError`` and wraps the underlying
+beartype validation errors to provide a consistent PyFluent-specific exception that can be
+caught and handled predictably.
 
 If the ``type-checking`` extra is not installed, PyFluent warns and continues with
 type-checking disabled.
