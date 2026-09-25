@@ -1,9 +1,9 @@
 .. _ref_meshing_workflows_guide:
 
-Classic meshing workflow
-========================
-You can use PyFluent to access the classic meshing workflows
-which align with the journal syntax.
+Fluent-native interface
+=======================
+You can use PyFluent to access the Fluent-native interface for meshing workflows,
+which aligns with the journal syntax.
 
 Watertight geometry meshing workflow
 ------------------------------------

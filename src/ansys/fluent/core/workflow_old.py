@@ -820,7 +820,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         cmd_args = self._task._command_arguments
         for key, val in args.items():
             camel_arg = self._snake_to_camel_map[key] if key.islower() else key
-            # TODO: Implement enhanced meshing workflow to hide away internal info.
+            # TODO: Implement the PyFluent-native meshing workflow interface to hide away internal info.
             if isinstance(getattr(cmd_args, camel_arg), PyArgumentsSingletonSubItem):
                 updated_dict = {}
                 for attr, attr_val in val.items():
