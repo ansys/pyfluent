@@ -328,7 +328,7 @@ jobs:
   build:
     name: Build
     if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-    runs-on: [self-hosted, pyfluent-ci-2]
+    runs-on: [self-hosted, pyfluent]
     env:
       PYTHONDONTWRITEBYTECODE: 1
 
