@@ -1,0 +1,38 @@
+:orphan:
+
+.. _high_speed_numerics:
+
+high_speed_numerics
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.high_speed_numerics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================   ===============================================================
+
+Attribute                                                                                                                                          Summary
+
+========================================================================================   ===============================================================
+:ref:`enable <enable_24>`                                                                                              Enable/disable high-speed-numerics.
+
+:ref:`expert <expert_8>`                                                                                                          High-Speed-Numerics set.
+
+:ref:`robust_fluxes <robust_fluxes>`                                                                     Enable/disable high-speed-numerics robust fluxes.
+
+:ref:`visualize_pressure_discontinuity_sensor <visualize_pressure_discontinuity_sensor>`       Enable/disable pressure-discontinuity-sensor visualization.
+
+========================================================================================   ===============================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

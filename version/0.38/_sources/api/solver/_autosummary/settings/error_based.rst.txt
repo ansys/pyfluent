@@ -1,0 +1,40 @@
+:orphan:
+
+.. _error_based:
+
+error_based
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.error_based
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==============================================================   ============================================================================================================================================
+
+Method                                                                                                                                                                                                Summary
+
+==============================================================   ============================================================================================================================================
+:ref:`pressure_hessian_indicator <pressure_hessian_indicator>`                                                 Define cell registers and settings suitable for adaption using the pressure Hessian indicator.
+
+:ref:`mach_hessian_indicator <mach_hessian_indicator>`                                                             Define cell registers and settings suitable for adaption using the Mach Hessian indicator.
+
+:ref:`velocity_hessian_indicator <velocity_hessian_indicator>`                                                 Define cell registers and settings suitable for adaption using the velocity Hessian indicator.
+
+:ref:`combined_hessian_indicator <combined_hessian_indicator>`       Define cell registers and settings suitable for adaption using the combined Hessian indicator of the primitive variables and turbulence.
+
+:ref:`goal_based_error_indicator <goal_based_error_indicator>`                                                 Define cell registers and settings suitable for adaption using the goal based error indicator.
+
+==============================================================   ============================================================================================================================================
+
+.. rubric:: Included in:
+
+==================================   ================================================
+
+Parent                                                                        Summary
+
+==================================   ================================================
+:ref:`aerodynamics <aerodynamics>`       The aerodynamics predefined criteria object.
+
+==================================   ================================================
+

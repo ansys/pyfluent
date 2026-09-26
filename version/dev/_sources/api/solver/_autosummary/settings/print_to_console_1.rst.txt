@@ -1,0 +1,21 @@
+:orphan:
+
+.. _print_to_console_1:
+
+print_to_console
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.print_to_console_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`options_14 <options_14>`   Global imbalance monitor options.
+
+==============================   =================================
+

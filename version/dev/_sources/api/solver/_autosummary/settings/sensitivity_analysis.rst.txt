@@ -1,0 +1,42 @@
+:orphan:
+
+.. _sensitivity_analysis:
+
+sensitivity_analysis
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sensitivity_analysis
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =====================================================
+
+Attribute                                                                              Summary
+
+======================================   =====================================================
+:ref:`methods <methods_4>`                                The adjoint solution methods object.
+
+:ref:`controls <controls_2>`                                      The adjoint controls object.
+
+:ref:`monitors <monitors>`                                       The residual monitors object.
+
+:ref:`calculation <calculation>`                               The adjoint calculation object.
+
+:ref:`postprocessing <postprocessing>`                          Adjoint postprocessing object.
+
+:ref:`automation <automation>`           Run sensitivity-analysis reports and result graphics.
+
+======================================   =====================================================
+
+.. rubric:: Included in:
+
+======================   =====================================
+
+Parent                                                 Summary
+
+======================   =====================================
+:ref:`design <design>`   Access Design and Optimization tools.
+
+======================   =====================================
+

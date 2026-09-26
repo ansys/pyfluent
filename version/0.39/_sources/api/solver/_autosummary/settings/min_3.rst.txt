@@ -1,0 +1,21 @@
+:orphan:
+
+.. _min_3:
+
+min
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.min_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================
+
+Parent                                         Summary
+
+==================================   =================
+:ref:`add_datasets <add_datasets>`       Add datasets.
+
+==================================   =================
+

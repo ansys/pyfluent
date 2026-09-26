@@ -1,0 +1,21 @@
+:orphan:
+
+.. _orphan_adaption:
+
+orphan_adaption
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.orphan_adaption
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================================================
+
+Parent                                                                              Summary
+
+========================   ================================================================
+:ref:`overset <overset>`       Define adaption settings suitable for an overset simulation.
+
+========================   ================================================================
+

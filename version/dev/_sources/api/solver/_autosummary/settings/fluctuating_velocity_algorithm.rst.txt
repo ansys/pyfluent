@@ -1,0 +1,23 @@
+:orphan:
+
+.. _fluctuating_velocity_algorithm:
+
+fluctuating_velocity_algorithm
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.fluctuating_velocity_algorithm
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================================================
+
+Parent                                                                                Summary
+
+==================================   ========================================================
+:ref:`turbulence_3 <turbulence_3>`   Allows to change turbulence model variables or settings.
+
+:ref:`turbulence_7 <turbulence_7>`   Allows to change turbulence model variables or settings.
+
+==================================   ========================================================
+

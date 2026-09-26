@@ -1,0 +1,21 @@
+:orphan:
+
+.. _save_time_history_profile:
+
+save_time_history_profile
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.save_time_history_profile
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================
+
+Parent                                                                      Summary
+
+====================================================   ============================
+:ref:`pybamm_model_settings <pybamm_model_settings>`   PyBaMM echem model settings.
+
+====================================================   ============================
+

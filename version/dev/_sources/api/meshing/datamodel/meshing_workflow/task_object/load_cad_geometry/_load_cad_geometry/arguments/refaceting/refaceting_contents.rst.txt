@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_load_cad_geometry__load_cad_geometry_arguments_refaceting:
+
+refaceting
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.load_cad_geometry._load_cad_geometry.arguments.refaceting
+   :members: custom_deviation, custom_normal_angle, deviation, facet_max_edge_length, facet_resolution, max_edge_length, max_edge_length_factor, normal_angle, refacet
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

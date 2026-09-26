@@ -1,0 +1,23 @@
+:orphan:
+
+.. _log_scale:
+
+log_scale
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.log_scale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`x_6 <x_6>`       X-axis properties.
+
+:ref:`y_6 <y_6>`       Y-axis properties.
+
+================   ======================
+

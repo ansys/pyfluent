@@ -1,0 +1,32 @@
+:orphan:
+
+.. _turbo_interface_health_check:
+
+turbo_interface_health_check
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.turbo_interface_health_check
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   ============================
+
+Argument                                     Summary
+
+=====================   ============================
+:ref:`name <name_20>`       The mesh interface name.
+
+=====================   ============================
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`mesh_interfaces <mesh_interfaces>`       The mesh interfaces object.
+
+========================================   ===============================
+

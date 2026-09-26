@@ -1,0 +1,24 @@
+.. _ref_meshing_datamodel_meshing_File:
+
+File
+====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.File
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   ReadCase/ReadCase_contents
+   ReadJournal/ReadJournal_contents
+   ReadMesh/ReadMesh_contents
+   StartJournal/StartJournal_contents
+   StopJournal/StopJournal_contents
+   WriteCase/WriteCase_contents
+   WriteMesh/WriteMesh_contents

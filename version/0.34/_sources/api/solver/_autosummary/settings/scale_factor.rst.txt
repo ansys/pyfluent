@@ -1,0 +1,25 @@
+:orphan:
+
+.. _scale_factor:
+
+scale_factor
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scale_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =========================================================
+
+Parent                                                                                         Summary
+
+==========================================   =========================================================
+:ref:`units_child <units_child>`                                         'child_object_type' of units.
+
+:ref:`thermal_6 <thermal_6>`                     Allows to change thermal model variables or settings.
+
+:ref:`style_attributes <style_attributes>`                   Specifies Track Style for graphic object.
+
+==========================================   =========================================================
+

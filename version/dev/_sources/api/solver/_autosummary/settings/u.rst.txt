@@ -1,0 +1,36 @@
+:orphan:
+
+.. _u:
+
+u
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.u
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============   ===============
+
+Attribute                Summary
+
+==============   ===============
+:ref:`x <x_4>`   X-Position (U).
+
+:ref:`y <y_4>`   Y-Position (U).
+
+:ref:`z <z_4>`   Z-Position (U).
+
+==============   ===============
+
+.. rubric:: Included in:
+
+======================   =====================================
+
+Parent                                                 Summary
+
+======================   =====================================
+:ref:`matrix <matrix>`   Lagrangian matrix injection settings.
+
+======================   =====================================
+

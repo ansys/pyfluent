@@ -1,0 +1,38 @@
+:orphan:
+
+.. _disk_id:
+
+disk_id
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.disk_id
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ===============================
+
+Attribute                                                                        Summary
+
+======================================================   ===============================
+:ref:`embedded_face_zone <embedded_face_zone>`                   The embedded-face zone.
+
+:ref:`floating_surface_name <floating_surface_name>`          The floating-surface name.
+
+:ref:`embedded_face_id <embedded_face_id>`                         The embedded-face id.
+
+:ref:`floating_surface_index <floating_surface_index>`       The floating-surface index.
+
+======================================================   ===============================
+
+.. rubric:: Included in:
+
+============================   =================================================
+
+Parent                                                                   Summary
+
+============================   =================================================
+:ref:`general_1 <general_1>`       Menu to define the rotor general information.
+
+============================   =================================================
+

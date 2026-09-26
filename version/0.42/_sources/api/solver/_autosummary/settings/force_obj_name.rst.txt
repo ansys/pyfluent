@@ -1,0 +1,21 @@
+:orphan:
+
+.. _force_obj_name:
+
+force_obj_name
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.force_obj_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`aeromechanics_child <aeromechanics_child>`       'child_object_type' of aeromechanics.
+
+================================================   =========================================
+

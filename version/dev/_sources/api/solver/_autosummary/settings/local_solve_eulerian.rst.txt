@@ -1,0 +1,21 @@
+:orphan:
+
+.. _local_solve_eulerian:
+
+local_solve_eulerian
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.local_solve_eulerian
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`phases_child <phases_child>`   'child_object_type' of phases.
+
+==================================   ==============================
+

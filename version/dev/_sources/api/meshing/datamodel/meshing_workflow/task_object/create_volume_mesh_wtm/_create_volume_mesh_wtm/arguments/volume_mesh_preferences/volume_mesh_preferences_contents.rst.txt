@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_volume_mesh_wtm__create_volume_mesh_wtm_arguments_volume_mesh_preferences:
+
+volume_mesh_preferences
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_volume_mesh_wtm._create_volume_mesh_wtm.arguments.volume_mesh_preferences
+   :members: add_multiple_quality_methods, avoid_1_8_transition, check_self_proximity, max_cell_size_change, merge_body_labels, min_edge_length, min_face_area, min_poly_size, poly_feature_angle, poly_in_solids, prepare_zone_names, quality_method, quality_warning_limit, show_in_gui, size_field_periodicity, solid_growth_rate, tet_in_solids, use_size_field, use_size_field_in_solids, write_prism_control_file
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_29:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================================
+
+Parent                                                                          Summary
+
+==============================================   ======================================
+:ref:`import_sensitivity <import_sensitivity>`       Read sensitivities from data file.
+
+==============================================   ======================================
+

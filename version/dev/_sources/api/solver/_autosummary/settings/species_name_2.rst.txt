@@ -1,0 +1,23 @@
+:orphan:
+
+.. _species_name_2:
+
+species_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.species_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ============================================
+
+Parent                                                                            Summary
+
+==========================================   ============================================
+:ref:`delete_species <delete_species>`       Delete species from membrane diffusion list.
+
+:ref:`delete_species_1 <delete_species_1>`               Delete species-real-pair object.
+
+==========================================   ============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _expression_5:
+
+expression
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.expression_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ===============================================
+
+Parent                                                         Summary
+
+====================   ===============================================
+:ref:`ccurv <ccurv>`       The curvature correction coefficient CCURV.
+
+====================   ===============================================
+

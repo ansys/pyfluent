@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_File_StartJournal__StartJournalCommandArguments:
+
+_StartJournalCommandArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.File.StartJournal._StartJournalCommandArguments
+   :members: _FileName
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

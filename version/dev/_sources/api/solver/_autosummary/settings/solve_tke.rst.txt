@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solve_tke:
+
+solve_tke
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.solve_tke
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==============================
+
+Parent                                            Summary
+
+========================   ==============================
+:ref:`rstress <rstress>`   Reynolds Stress Model options.
+
+========================   ==============================
+

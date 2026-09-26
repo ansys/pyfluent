@@ -1,0 +1,21 @@
+:orphan:
+
+.. _write_to_file:
+
+write_to_file
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.write_to_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   =================================================================
+
+Parent                                                                                                                       Summary
+
+================================================================   =================================================================
+:ref:`heat_exchanger_macro_report <heat_exchanger_macro_report>`   Print heat exchanger per-macro report for this core's fluid zone.
+
+================================================================   =================================================================
+

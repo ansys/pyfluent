@@ -1,0 +1,38 @@
+:orphan:
+
+.. _mt_boiling_bbf_chf:
+
+mt_boiling_bbf_chf
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_boiling_bbf_chf
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ========================================================
+
+Attribute                                                                                                       Summary
+
+============================================================   ========================================================
+:ref:`mt_boiling_bbf_chf_method <mt_boiling_bbf_chf_method>`            Blending function method for CHF boiling model.
+
+:ref:`mt_boiling_chf_coeff1 <mt_boiling_chf_coeff1>`           CHF blending function vapor volume fraction lower bound.
+
+:ref:`mt_boiling_chf_coeff2 <mt_boiling_chf_coeff2>`           CHF blending function vapor volume fraction upper bound.
+
+:ref:`mt_boiling_bbf_chf_udf <mt_boiling_bbf_chf_udf>`                                   UDF for CHF blending function.
+
+============================================================   ========================================================
+
+.. rubric:: Included in:
+
+============================================   ====================================================================
+
+Parent                                                                                                      Summary
+
+============================================   ====================================================================
+:ref:`mt_boiling_params <mt_boiling_params>`   Boiling sub-model parameters: BDD, NSD, BDF, AIC, blending function.
+
+============================================   ====================================================================
+

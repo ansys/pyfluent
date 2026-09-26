@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zonal_mp_scheme_spec:
+
+zonal_mp_scheme_spec
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zonal_mp_scheme_spec
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==========================
+
+Parent                                                  Summary
+
+==================================   ==========================
+:ref:`zonal_models <zonal_models>`   Zonal flow model settings.
+
+==================================   ==========================
+

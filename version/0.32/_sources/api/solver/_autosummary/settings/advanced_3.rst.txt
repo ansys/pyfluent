@@ -1,0 +1,48 @@
+:orphan:
+
+.. _advanced_3:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.advanced_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================   ============================================
+
+Attribute                                                                                                                       Summary
+
+========================================================================================   ============================================
+:ref:`multi_grid <multi_grid>`                                                                                       Multi-grid object.
+
+:ref:`multi_stage <multi_stage>`                                                                           Multi-stage settings object.
+
+:ref:`expert <expert_10>`                                                                                        Expert options object.
+
+:ref:`fast_transient_settings <fast_transient_settings>`                                            The fast transient settings object.
+
+:ref:`relaxation_method <relaxation_method_1>`                                                            The solver relaxation method.
+
+:ref:`correction_tolerance <correction_tolerance>`                                                         Correction tolerance object.
+
+:ref:`anisotropic_solid_heat_transfer <anisotropic_solid_heat_transfer>`                        Anisotropic solid heat transfer object.
+
+:ref:`continuity_transient_term_linearization <continuity_transient_term_linearization>`       Continuity transient term linearization.
+
+:ref:`enthalpy_reference_temperature <enthalpy_reference_temperature>`                                  Enthalpy reference temperature.
+
+========================================================================================   ============================================
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`controls_1 <controls_1>`       Solution controls object.
+
+==============================   =============================
+

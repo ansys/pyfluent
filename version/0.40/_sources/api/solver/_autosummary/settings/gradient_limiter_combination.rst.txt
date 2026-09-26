@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gradient_limiter_combination:
+
+gradient_limiter_combination
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.gradient_limiter_combination
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================================
+
+Parent                                                                        Summary
+
+==============================   ====================================================
+:ref:`options_10 <options_10>`       Turbomachinery-specific numerics options object.
+
+==============================   ====================================================
+

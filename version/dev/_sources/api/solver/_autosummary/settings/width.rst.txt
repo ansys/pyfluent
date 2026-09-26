@@ -1,0 +1,21 @@
+:orphan:
+
+.. _width:
+
+width
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.width
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================================
+
+Parent                                                                    Summary
+
+==============================   ================================================
+:ref:`dimensions <dimensions>`   Check the auto-computed dimensions of this core.
+
+==============================   ================================================
+

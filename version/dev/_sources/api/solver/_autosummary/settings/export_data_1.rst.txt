@@ -1,0 +1,32 @@
+:orphan:
+
+.. _export_data_1:
+
+export_data
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.export_data_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ========================
+
+Argument                                           Summary
+
+===============================   ========================
+:ref:`file_name <file_name_60>`   Training data file name.
+
+===============================   ========================
+
+.. rubric:: Included in:
+
+====================================   ========================
+
+Parent                                                  Summary
+
+====================================   ========================
+:ref:`manage_data_1 <manage_data_1>`   The training parameters.
+
+====================================   ========================
+

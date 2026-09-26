@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_SetUpPeriodicBoundaries__SetUpPeriodicBoundariesCommandArguments__LCSVector:
+
+_LCSVector
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.SetUpPeriodicBoundaries._SetUpPeriodicBoundariesCommandArguments._LCSVector
+   :members: _VectorX, _VectorY, _VectorZ
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

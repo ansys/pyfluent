@@ -1,0 +1,12 @@
+.. _ref_ansys_fluent_core_services_streaming_services_datamodel_streaming:
+
+datamodel_streaming
+===================
+
+.. automodule:: ansys.fluent.core.services.streaming_services.datamodel_streaming
+    :members:
+    :show-inheritance:
+    :undoc-members:
+    :exclude-members: __weakref__, __dict__
+    :special-members: __init__, __new__
+    :autosummary:

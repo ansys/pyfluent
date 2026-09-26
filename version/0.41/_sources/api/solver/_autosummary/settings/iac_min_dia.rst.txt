@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iac_min_dia:
+
+iac_min_dia
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.iac_min_dia
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`iac_props <iac_props>`       IAC properties group.
+
+============================   =========================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_SetUpPeriodicBoundaries__SetUpPeriodicBoundariesCommandArguments__TransShift:
+
+_TransShift
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.SetUpPeriodicBoundaries._SetUpPeriodicBoundariesCommandArguments._TransShift
+   :members: _ShiftX, _ShiftY, _ShiftZ
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

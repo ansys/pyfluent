@@ -1,0 +1,34 @@
+:orphan:
+
+.. _porosity_models_child:
+
+porosity_models_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.porosity_models_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ===========================================================
+
+Attribute                                                                              Summary
+
+================================   ===========================================================
+:ref:`name <name_6>`                                          Name of the core porosity model.
+
+:ref:`parameters <parameters_1>`   Gas-Side Pressure Drop parameters of a core porosity model.
+
+================================   ===========================================================
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`porosity_models <porosity_models>`   Manage core porosity model library.
+
+========================================   ===================================
+

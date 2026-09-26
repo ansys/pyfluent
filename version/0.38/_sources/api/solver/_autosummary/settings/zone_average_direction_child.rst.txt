@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zone_average_direction_child:
+
+zone_average_direction_child
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.zone_average_direction_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ======================================
+
+Parent                                                                                  Summary
+
+======================================================   ======================================
+:ref:`zone_average_direction <zone_average_direction>`       Zone Average direction components.
+
+======================================================   ======================================
+

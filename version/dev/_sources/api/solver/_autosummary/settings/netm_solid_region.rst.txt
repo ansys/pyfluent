@@ -1,0 +1,52 @@
+:orphan:
+
+.. _netm_solid_region:
+
+netm_solid_region
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.netm_solid_region
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==================================================================
+
+Attribute                                                                                                       Summary
+
+==================================================   ==================================================================
+:ref:`name <name_5>`                                                                                Name of the object.
+
+:ref:`general <general_3>`                                        Allows to change general model variables or settings.
+
+:ref:`reference_frame <reference_frame_3>`                Allows to change reference-frame model variables or settings.
+
+:ref:`mesh_motion <mesh_motion_1>`                            Allows to change mesh-motion model variables or settings.
+
+:ref:`solid_motion <solid_motion>`                           Allows to change solid-motion model variables or settings.
+
+:ref:`sources <sources_1>`                                                             Source terms for this cell zone.
+
+:ref:`fixed_values <fixed_values>`                           Allows to change fixed-values model variables or settings.
+
+:ref:`material_orientation <material_orientation>`   Allows to change material-orientation model variables or settings.
+
+:ref:`disabled <disabled_1>`                                     Allows to change disabled model variables or settings.
+
+:ref:`internal <internal>`                                       Allows to change internal model variables or settings.
+
+==================================================   ==================================================================
+
+.. rubric:: Included in:
+
+====================================   =============================
+
+Parent                                                       Summary
+
+====================================   =============================
+:ref:`fluid_2_child <fluid_2_child>`   'child_object_type' of fluid.
+
+:ref:`solid_3_child <solid_3_child>`   'child_object_type' of solid.
+
+====================================   =============================
+

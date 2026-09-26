@@ -1,0 +1,21 @@
+:orphan:
+
+.. _maximum_number_grids:
+
+maximum_number_grids
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.maximum_number_grids
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =========================
+
+Parent                                         Summary
+
+==========================   =========================
+:ref:`flamelet <flamelet>`       PDF Flamelet Options.
+
+==========================   =========================
+

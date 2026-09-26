@@ -1,0 +1,36 @@
+:orphan:
+
+.. _pixel_size:
+
+pixel_size
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pixel_size
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ============================================
+
+Attribute                                                       Summary
+
+========================   ============================================
+:ref:`width <width_2>`          Define the video frame width in pixels.
+
+:ref:`height <height_1>`       Define the video frame height in pixels.
+
+:ref:`margin <margin_1>`              Margin space around video frames.
+
+========================   ============================================
+
+.. rubric:: Included in:
+
+====================   ====================================
+
+Parent                                              Summary
+
+====================   ====================================
+:ref:`video <video>`       The video window options object.
+
+====================   ====================================
+

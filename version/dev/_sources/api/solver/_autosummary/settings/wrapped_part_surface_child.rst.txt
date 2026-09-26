@@ -1,0 +1,45 @@
+:orphan:
+
+.. _wrapped_part_surface_child:
+
+wrapped_part_surface_child
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.wrapped_part_surface_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ===================
+
+Attribute                                                          Summary
+
+====================================================   ===================
+:ref:`name <name_5>`                                   Name of the object.
+
+:ref:`expression_definition <expression_definition>`       The expression.
+
+====================================================   ===================
+
+.. rubric:: Methods
+
+===========================   ==================
+
+Method                                   Summary
+
+===========================   ==================
+:ref:`display <display_12>`   Display a surface.
+
+===========================   ==================
+
+.. rubric:: Included in:
+
+==================================================   =========================================================================
+
+Parent                                                                                                                 Summary
+
+==================================================   =========================================================================
+:ref:`wrapped_part_surface <wrapped_part_surface>`   Provides access to creating new and editing existing expression-surfaces.
+
+==================================================   =========================================================================
+

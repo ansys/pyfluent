@@ -1,0 +1,21 @@
+:orphan:
+
+.. _primary_fluid_flow_direction:
+
+primary_fluid_flow_direction
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.primary_fluid_flow_direction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`macro_model <macro_model>`   Macro heat exchanger model.
+
+================================   ===========================
+

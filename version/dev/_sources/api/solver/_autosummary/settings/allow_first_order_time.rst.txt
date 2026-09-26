@@ -1,0 +1,21 @@
+:orphan:
+
+.. _allow_first_order_time:
+
+allow_first_order_time
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.allow_first_order_time
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ======================================
+
+Parent                                                              Summary
+
+==================================   ======================================
+:ref:`flexible_bso <flexible_bso>`   Flexible bounded second-order options.
+
+==================================   ======================================
+

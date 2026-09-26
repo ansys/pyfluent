@@ -1,0 +1,38 @@
+:orphan:
+
+.. _options_14:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.options_14
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =============================================================================================
+
+Attribute                                                                                                                                    Summary
+
+====================================================   =============================================================================================
+:ref:`print_to_console <print_to_console_1>`                                                          Console reporting level for global imbalances.
+
+:ref:`plot <plot_2>`                                                           Specifies whether to plot global imbalances during iterations or not.
+
+:ref:`normalize_imbalance <normalize_imbalance>`       Specifies whether to report global imbalance normalized by maximum flow rate as a percentage.
+
+:ref:`convergence_criterion <convergence_criterion>`                                                                     Convergence criterion type.
+
+====================================================   =============================================================================================
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`imbalance <imbalance>`   Global imbalance monitoring.
+
+============================   ============================
+

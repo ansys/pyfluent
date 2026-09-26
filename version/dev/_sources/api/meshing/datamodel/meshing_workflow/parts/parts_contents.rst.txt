@@ -1,0 +1,55 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts:
+
+parts
+=====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   append_fmd_files/append_fmd_files_contents
+   assembly_node/assembly_node_contents
+   change_file_length_unit/change_file_length_unit_contents
+   change_length_unit/change_length_unit_contents
+   create_obj_for_each_part/create_obj_for_each_part_contents
+   create_objects/create_objects_contents
+   delete/delete_contents
+   delete_paths/delete_paths_contents
+   global_settings/global_settings_contents
+   initialize_template/initialize_template_contents
+   input_file_changed/input_file_changed_contents
+   list_meshing_operations/list_meshing_operations_contents
+   load_fmd_file/load_fmd_file_contents
+   load_template/load_template_contents
+   mark_objects_outof_date/mark_objects_outof_date_contents
+   meshing_operations/meshing_operations_contents
+   mirror/mirror_contents
+   move_cad_components_to_new_object/move_cad_components_to_new_object_contents
+   move_to_new_subobject/move_to_new_subobject_contents
+   move_to_object/move_to_object_contents
+   node/node_contents
+   object_setting/object_setting_contents
+   object_setting_operations/object_setting_operations_contents
+   redo_all_transforms/redo_all_transforms_contents
+   refaceting/refaceting_contents
+   refaceting_operations/refaceting_operations_contents
+   reset_template/reset_template_contents
+   rotate/rotate_contents
+   rotate_about_axis/rotate_about_axis_contents
+   save_fmd_file/save_fmd_file_contents
+   save_template/save_template_contents
+   scaling/scaling_contents
+   suppress_node_objects/suppress_node_objects_contents
+   transform/transform_contents
+   transform_base/transform_base_contents
+   transform_operations/transform_operations_contents
+   translate/translate_contents
+   undo_all_transforms/undo_all_transforms_contents

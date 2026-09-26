@@ -1,0 +1,21 @@
+:orphan:
+
+.. _explicit_boundary_condition:
+
+explicit_boundary_condition
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.explicit_boundary_condition
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================================================================================================================
+
+Parent                                                                                                                                                   Summary
+
+====================================   =========================================================================================================================
+:ref:`flow_blocking <flow_blocking>`   Developer settings for the flow-blocking treatment (interpolation, viscous resistance, and boundary condition treatment).
+
+====================================   =========================================================================================================================
+

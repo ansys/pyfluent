@@ -1,0 +1,40 @@
+:orphan:
+
+.. _read_rgp_file:
+
+read_rgp_file
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.read_rgp_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================================   =====================================================================================
+
+Argument                                                                                                                                       Summary
+
+==============================================================   =====================================================================================
+:ref:`file_name <file_name_1_6>`                                                                                                Filename for RGP file.
+
+:ref:`component <component>`                                                                                                The RGP component to read.
+
+:ref:`table_name <table_name>`                                                                                    The table name to store RGP data in.
+
+:ref:`save_in_case_file <save_in_case_file_1>`                                                   Specifies whether to store RGP data in the case file.
+
+:ref:`create_update_rgp_material <create_update_rgp_material>`   Specifies whether to create/update RGP material with the data read from the RGP file.
+
+==============================================================   =====================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================
+
+Parent                                                                  Summary
+
+==============================================   ==============================
+:ref:`table_file_manager <table_file_manager>`   The table file manager object.
+
+==============================================   ==============================
+

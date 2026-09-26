@@ -1,0 +1,21 @@
+:orphan:
+
+.. _hydraulic_pressure_enabled:
+
+hydraulic_pressure_enabled
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.hydraulic_pressure_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================================================================================
+
+Parent                                                                                                       Summary
+
+============================   =====================================================================================
+:ref:`wall_film <wall_film>`   Controls physical modeling and numerical treatment of the Lagrangian thin-film model.
+
+============================   =====================================================================================
+

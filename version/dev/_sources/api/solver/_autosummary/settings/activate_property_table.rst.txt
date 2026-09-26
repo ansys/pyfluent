@@ -1,0 +1,32 @@
+:orphan:
+
+.. _activate_property_table:
+
+activate_property_table
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.activate_property_table
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ==============================================================
+
+Argument                                                                                      Summary
+
+====================================   ==============================================================
+:ref:`material_name <material_name>`   Material name for which to activate saturation property table.
+
+====================================   ==============================================================
+
+.. rubric:: Included in:
+
+============================================================   ======================================================================================================================
+
+Parent                                                                                                                                                                        Summary
+
+============================================================   ======================================================================================================================
+:ref:`rgp_saturation_properties <rgp_saturation_properties>`   RGP Material Saturation Properties Interface - Read and manage RGP material names for saturation property computation.
+
+============================================================   ======================================================================================================================
+

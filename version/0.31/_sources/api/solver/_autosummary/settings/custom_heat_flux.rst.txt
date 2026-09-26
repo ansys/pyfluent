@@ -1,0 +1,36 @@
+:orphan:
+
+.. _custom_heat_flux:
+
+custom_heat_flux
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.custom_heat_flux
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ===================================================
+
+Argument                                                                                     Summary
+
+==============================================   ===================================================
+:ref:`file_name <file_name_1>`                                      The desired file name to export.
+
+:ref:`wall_function <wall_function>`                 Specifies whether to include the wall function.
+
+:ref:`surface_name_list <surface_name_list_2>`                       The list of surfaces to export.
+
+==============================================   ===================================================
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`export <export>`       Export files.
+
+======================   =================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _mt_evap_cond_boiling_par:
+
+mt_evap_cond_boiling_par
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_evap_cond_boiling_par
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ===============================================
+
+Attribute                                                                                              Summary
+
+============================================================   ===============================================
+:ref:`sbm_bulk_temp <sbm_bulk_temp>`                                    Fluid bulk temperature away from wall.
+
+:ref:`sbm_length_scale <sbm_length_scale>`                         Reference length scale for Reynolds number.
+
+:ref:`sbm_length_scale_constant <sbm_length_scale_constant>`                            Length scale constant.
+
+:ref:`sbm_length_scale_udf <sbm_length_scale_udf>`                                           Length scale udf.
+
+============================================================   ===============================================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

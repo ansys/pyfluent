@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreateGroup__CreateGroupCommandArguments:
+
+_CreateGroupCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreateGroup._CreateGroupCommandArguments
+   :members: _NewGroupName, _SelectionType, _TopologyList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

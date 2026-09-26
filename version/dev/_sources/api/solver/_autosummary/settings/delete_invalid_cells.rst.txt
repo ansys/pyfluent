@@ -1,0 +1,34 @@
+:orphan:
+
+.. _delete_invalid_cells:
+
+delete_invalid_cells
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_invalid_cells
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   ==========================================================================================================================
+
+Argument                                                                                                                                        Summary
+
+==========================   ==========================================================================================================================
+:ref:`mode <mode_3>`         Full: current stabilization singularity criteria. Light: non-positive volume, left-handed faces, and zero-area faces only.
+
+:ref:`augment <augment_1>`                                            Augment the cell list to avoid otherwise dangling cells because of cell deletion.
+
+==========================   ==========================================================================================================================
+
+.. rubric:: Included in:
+
+============================================   ======================================================
+
+Parent                                                                                        Summary
+
+============================================   ======================================================
+:ref:`contingency_tools <contingency_tools>`   Contingency tools for reactive robustness adjustments.
+
+============================================   ======================================================
+

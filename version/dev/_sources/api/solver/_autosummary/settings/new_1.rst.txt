@@ -1,0 +1,32 @@
+:orphan:
+
+.. _new_1:
+
+new
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.new_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ========================================
+
+Argument                                                                          Summary
+
+==============================================   ========================================
+:ref:`project_file_name <project_file_name_4>`   The path of the new Fluent project file.
+
+==============================================   ========================================
+
+.. rubric:: Included in:
+
+========================   ==============================================
+
+Parent                                                            Summary
+
+========================   ==============================================
+:ref:`project <project>`   Standalone Fluent Project management commands.
+
+========================   ==============================================
+

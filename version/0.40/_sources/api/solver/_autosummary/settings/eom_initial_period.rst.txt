@@ -1,0 +1,21 @@
+:orphan:
+
+.. _eom_initial_period:
+
+eom_initial_period
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.eom_initial_period
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==========================================================
+
+Parent                                                                                Summary
+
+================================   ==========================================================
+:ref:`momentum_11 <momentum_11>`       Allows to change momentum model variables or settings.
+
+================================   ==========================================================
+

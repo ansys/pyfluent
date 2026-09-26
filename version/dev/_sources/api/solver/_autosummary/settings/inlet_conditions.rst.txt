@@ -1,0 +1,44 @@
+:orphan:
+
+.. _inlet_conditions:
+
+inlet_conditions
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inlet_conditions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ========================================================================
+
+Attribute                                                                                                           Summary
+
+================================================   ========================================================================
+:ref:`mass_flow_rate <mass_flow_rate>`                                      The total auxiliary fluid mass flow rate value.
+
+:ref:`heat_rejection <heat_rejection>`                                The total heat rejected by the auxiliary fluid value.
+
+:ref:`inlet_temperature <inlet_temperature>`                                   The auxiliary fluid inlet temperature value.
+
+:ref:`initial_temperature <initial_temperature>`                             The auxiliary fluid initial temperature value.
+
+:ref:`inlet_pressure <inlet_pressure>`                                            The auxiliary fluid inlet pressure value.
+
+:ref:`inlet_quality <inlet_quality>`               The auxiliary fluid inlet vapour quality value (0 = liquid, 1 = vapour).
+
+:ref:`pressure_drop <pressure_drop>`                     The auxiliary fluid pressure drop across the heat exchanger value.
+
+================================================   ========================================================================
+
+.. rubric:: Included in:
+
+========================================   ================================================
+
+Parent                                                                              Summary
+
+========================================   ================================================
+:ref:`auxiliary_fluid <auxiliary_fluid>`   Auxiliary fluid properties for a heat exchanger.
+
+========================================   ================================================
+

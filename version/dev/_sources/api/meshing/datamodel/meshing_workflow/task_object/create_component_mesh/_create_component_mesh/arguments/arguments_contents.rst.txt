@@ -1,0 +1,22 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_component_mesh__create_component_mesh_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_component_mesh._create_component_mesh.arguments
+   :members: boi_max_size, boi_size_name, creation_method, cylinder_length, cylinder_method, label_selection_list, object_selection_list, object_selection_single, refinement_regions_name, selection_type, topology_list, volume_fill, zone_location, zone_selection_list, zone_selection_single
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   axis/axis_contents
+   bounding_box_object/bounding_box_object_contents
+   cylinder_object/cylinder_object_contents
+   geometry_tools_properties/geometry_tools_properties_contents
+   offset_object/offset_object_contents

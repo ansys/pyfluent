@@ -1,0 +1,21 @@
+:orphan:
+
+.. _negative_electrode_locations:
+
+negative_electrode_locations
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.negative_electrode_locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================
+
+Parent                                                  Summary
+
+========================================   ====================
+:ref:`zone_assignment <zone_assignment>`       Zone assignment.
+
+========================================   ====================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _inspection:
+
+inspection
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inspection
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =======================================================
+
+Argument                                                                           Summary
+
+================================   =======================================================
+:ref:`grid_rfname <grid_rfname>`          Filename for grid inspection diagnostics output.
+
+:ref:`case_rfname <case_rfname>`          Filename for case inspection diagnostics output.
+
+:ref:`vel_rfname <vel_rfname>`        Filename for velocity inspection diagnostics output.
+
+:ref:`temp_rfname <temp_rfname>`   Filename for temperature inspection diagnostics output.
+
+================================   =======================================================
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`inspector <inspector>`   Inspect mesh and case data.
+
+============================   ===========================
+

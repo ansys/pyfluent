@@ -1,0 +1,55 @@
+:orphan:
+
+.. _degassing_1_child:
+
+degassing_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.degassing_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ==========================================================
+
+Attribute                                                                           Summary
+
+==============================   ==========================================================
+:ref:`name <name_4>`                                                    Name of the object.
+
+:ref:`locations <locations_2>`                                         Input location name.
+
+:ref:`geometry <geometry_6>`         Allows to change geometry model variables or settings.
+
+:ref:`phase <phase_3>`                                   Domain name to define settings on.
+
+==============================   ==========================================================
+
+.. rubric:: Methods
+
+==================================   ===============================================
+
+Method                                                                       Summary
+
+==================================   ===============================================
+:ref:`display <display_4>`                                   Display physics object.
+
+:ref:`split <split_1>`                   Input boundary and location names to split.
+
+:ref:`set_location <set_location>`                              Input location name.
+
+:ref:`set_type <set_type_3>`                      Change the type for this boundary.
+
+==================================   ===============================================
+
+.. rubric:: Included in:
+
+================================   ================
+
+Parent                                      Summary
+
+================================   ================
+:ref:`degassing_1 <degassing_1>`       Thread-type.
+
+================================   ================
+

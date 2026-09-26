@@ -1,0 +1,21 @@
+:orphan:
+
+.. _lift_stroke:
+
+lift_stroke
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.lift_stroke
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================
+
+Parent                                                                Summary
+
+============================================   ==============================
+:ref:`in_cylinder_props <in_cylinder_props>`       'in_cylinder_props' child.
+
+============================================   ==============================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _get_number_of_designs:
+
+get_number_of_designs
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.get_number_of_designs
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   =====================
+
+Argument                                                   Summary
+
+==========================================   =====================
+:ref:`sampling_type <sampling_type>`                Sampling Type.
+
+:ref:`number_of_levels <number_of_levels>`       Number of Levels.
+
+==========================================   =====================
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _bulk_temperature:
+
+bulk_temperature
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.bulk_temperature
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================================
+
+Parent                                                                                  Summary
+
+================================================   ============================================
+:ref:`periodic_conditions <periodic_conditions>`       The periodic boundary conditions object.
+
+================================================   ============================================
+

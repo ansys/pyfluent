@@ -1,0 +1,63 @@
+:orphan:
+
+.. _table_voc:
+
+table_voc
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.table_voc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ================================
+
+Attribute                                                         Summary
+
+======================================   ================================
+:ref:`interp_method <interp_method>`                Interpolation method.
+
+:ref:`z_value <z_value>`                           Z value in a 2D table.
+
+:ref:`column_number <column_number_1>`   Number of columns in a 2D table.
+
+:ref:`row_number <row_number_1>`            Number of rows in a 2D table.
+
+:ref:`column_value <column_value_1>`         Column values in a 2D table.
+
+:ref:`row_value <row_value_1>`                  Row values in a 2D table.
+
+:ref:`table_value <table_value_1>`            Table values in a 2D table.
+
+:ref:`z_label <z_label>`                                    Show z label.
+
+:ref:`table_label <table_label_1>`                Show table value label.
+
+======================================   ================================
+
+.. rubric:: Methods
+
+==================================   ==========================
+
+Method                                                  Summary
+
+==================================   ==========================
+:ref:`write_table <write_table_2>`   2D table writting command.
+
+:ref:`read_table <read_table_2>`      2D table reading command.
+
+:ref:`print_table <print_table_2>`   2D table printing command.
+
+==================================   ==========================
+
+.. rubric:: Included in:
+
+==============================================   ===================
+
+Parent                                                       Summary
+
+==============================================   ===================
+:ref:`ecm_model_settings <ecm_model_settings>`   ECM model settings.
+
+==============================================   ===================
+

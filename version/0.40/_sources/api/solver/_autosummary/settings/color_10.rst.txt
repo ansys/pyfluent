@@ -1,0 +1,21 @@
+:orphan:
+
+.. _color_10:
+
+color
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.color_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =============================
+
+Parent                                                         Summary
+
+======================================   =============================
+:ref:`constant_color <constant_color>`       The constant color value.
+
+======================================   =============================
+

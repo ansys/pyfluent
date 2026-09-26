@@ -1,0 +1,32 @@
+:orphan:
+
+.. _export_designs:
+
+export_designs
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.export_designs
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   =============================
+
+Argument                                             Summary
+
+============================   =============================
+:ref:`filepath <filepath_2>`       Export Path to save JSON.
+
+============================   =============================
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

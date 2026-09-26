@@ -1,0 +1,55 @@
+:orphan:
+
+.. _discrete_phase:
+
+discrete_phase
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.discrete_phase
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ==============================================================================
+
+Attribute                                                                                                                         Summary
+
+========================================================   ==============================================================================
+:ref:`general_settings <general_settings>`                                    General configuration options for the discrete phase model.
+
+:ref:`physical_models <physical_models>`                                Enables and configures physical submodels for the discrete phase.
+
+:ref:`tracking <tracking>`                                                                 Controls integration of particle trajectories.
+
+:ref:`numerics <numerics>`                                                             Configures numerical options for DPM calculations.
+
+:ref:`parallel <parallel_1>`                                                              Configures parallel particle tracking behavior.
+
+:ref:`user_defined_functions <user_defined_functions_1>`   Registers user-defined functions (UDFs) for customizing the particle behavior.
+
+:ref:`injections <injections>`                                                                          Injection named object container.
+
+========================================================   ==============================================================================
+
+.. rubric:: Methods
+
+================================================   ================================================================
+
+Method                                                                                                      Summary
+
+================================================   ================================================================
+:ref:`clear_all_particles <clear_all_particles>`   Remove all currently tracked unsteady particles from the domain.
+
+================================================   ================================================================
+
+.. rubric:: Included in:
+
+======================   =============================================================================================
+
+Parent                                                                                                         Summary
+
+======================   =============================================================================================
+:ref:`models <models>`   Enables and configures physical models such as turbulence, energy, multiphase, and radiation.
+
+======================   =============================================================================================
+

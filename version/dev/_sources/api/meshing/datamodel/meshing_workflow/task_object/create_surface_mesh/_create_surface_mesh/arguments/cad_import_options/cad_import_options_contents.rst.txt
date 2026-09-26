@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_surface_mesh__create_surface_mesh_arguments_cad_import_options:
+
+cad_import_options
+==================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_surface_mesh._create_surface_mesh.arguments.cad_import_options
+   :members: create_cad_assemblies, extract_features, feature_angle, import_curvature_data_from_cad, import_named_selections, import_part_names, one_object_per, one_zone_per, open_all_cad_in_subdirectories, save_pmdb_intermediate_file, use_part_or_body_as_suffix
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

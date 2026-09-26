@@ -1,0 +1,21 @@
+:orphan:
+
+.. _study_name:
+
+study_name
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.study_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =====================
+
+Parent                                                     Summary
+
+==========================================   =====================
+:ref:`set_as_current_2 <set_as_current_2>`   Set As Current Study.
+
+==========================================   =====================
+

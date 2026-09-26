@@ -1,0 +1,34 @@
+:orphan:
+
+.. _matrix:
+
+matrix
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.matrix
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============   ===========================================
+
+Attribute                                          Summary
+
+============   ===========================================
+:ref:`r <r>`       Lagrangian matrix injection u settings.
+
+:ref:`u <u>`       Lagrangian matrix injection r settings.
+
+============   ===========================================
+
+.. rubric:: Included in:
+
+======================================   ===========================================
+
+Parent                                                                       Summary
+
+======================================   ===========================================
+:ref:`initial_values <initial_values>`       Lagrangian particle initial properties.
+
+======================================   ===========================================
+

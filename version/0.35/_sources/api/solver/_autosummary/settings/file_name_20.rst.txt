@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_20:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_20
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===================================
+
+Parent                                                 Summary
+
+========================   ===================================
+:ref:`write_2 <write_2>`       Write display states to a file.
+
+========================   ===================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _show_morphable_surfaces:
+
+show_morphable_surfaces
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.show_morphable_surfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================================
+
+Parent                                                                                                    Summary
+
+==================================   ============================================================================
+:ref:`fix_surfaces <fix_surfaces>`   Fix surfaces in the morphing region and away from applied moving conditions.
+
+==================================   ============================================================================
+

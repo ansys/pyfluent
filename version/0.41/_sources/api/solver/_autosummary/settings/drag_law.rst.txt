@@ -1,0 +1,21 @@
+:orphan:
+
+.. _drag_law:
+
+drag_law
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.drag_law
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==========================================
+
+Parent                                                                            Summary
+
+============================================   ==========================================
+:ref:`particle_rotation <particle_rotation>`       Lagrangian particle rotation settings.
+
+============================================   ==========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _write_merge_profiles:
+
+write_merge_profiles
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.write_merge_profiles
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ======================================================================================================
+
+Parent                                                                                                                                Summary
+
+====================================   ======================================================================================================
+:ref:`write_profile <write_profile>`   Write surface data as a boundary profile file. To use \*.csv format specify filename with .csv suffix.
+
+====================================   ======================================================================================================
+

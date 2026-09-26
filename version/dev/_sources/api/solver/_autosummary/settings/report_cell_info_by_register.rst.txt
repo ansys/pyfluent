@@ -1,0 +1,34 @@
+:orphan:
+
+.. _report_cell_info_by_register:
+
+report_cell_info_by_register
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.report_cell_info_by_register
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   =========================================================
+
+Argument                                                                                       Summary
+
+==========================================   =========================================================
+:ref:`register <register_4>`                      Register ID or name to report cell information from.
+
+:ref:`max_cell_number <max_cell_number_1>`   Maximum number of cells to report per computational node.
+
+==========================================   =========================================================
+
+.. rubric:: Included in:
+
+============================================   ============================================================================
+
+Parent                                                                                                              Summary
+
+============================================   ============================================================================
+:ref:`diagnostics_tools <diagnostics_tools>`   Configure diagnostics tools for monitoring and inspecting simulation health.
+
+============================================   ============================================================================
+

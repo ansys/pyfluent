@@ -1,0 +1,21 @@
+:orphan:
+
+.. _extrapolate_velocity_on_outflow:
+
+extrapolate_velocity_on_outflow
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.extrapolate_velocity_on_outflow
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ======================================================
+
+Parent                                                                                                          Summary
+
+==============================================================   ======================================================
+:ref:`bc_pressure_extrapolations <bc_pressure_extrapolations>`   Setting pressure extrapolations schemes on boundaries.
+
+==============================================================   ======================================================
+

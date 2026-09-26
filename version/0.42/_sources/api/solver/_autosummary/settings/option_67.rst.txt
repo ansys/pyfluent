@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_67:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.option_67
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================================
+
+Parent                                                         Summary
+
+==============================   =====================================
+:ref:`options_20 <options_20>`       The options Constant or Variable.
+
+==============================   =====================================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _vof:
+
+vof
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.vof
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================================   =======================================
+
+Argument                                                                                       Summary
+
+============================================================   =======================================
+:ref:`minimum_cell_length_scale <minimum_cell_length_scale>`       The minimum mesh cell length scale.
+
+============================================================   =======================================
+
+.. rubric:: Included in:
+
+==============================   ==============================================
+
+Parent                                                                  Summary
+
+==============================   ==============================================
+:ref:`multiphase <multiphase>`       The multiphase predefined criteria object.
+
+==============================   ==============================================
+

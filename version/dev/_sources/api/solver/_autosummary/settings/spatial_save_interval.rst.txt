@@ -1,0 +1,21 @@
+:orphan:
+
+.. _spatial_save_interval:
+
+spatial_save_interval
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.spatial_save_interval
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ============================
+
+Parent                                                                      Summary
+
+====================================================   ============================
+:ref:`pybamm_model_settings <pybamm_model_settings>`   PyBaMM echem model settings.
+
+====================================================   ============================
+

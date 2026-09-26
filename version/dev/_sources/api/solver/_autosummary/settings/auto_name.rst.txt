@@ -1,0 +1,27 @@
+:orphan:
+
+.. _auto_name:
+
+auto_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.auto_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================================   ==============================================
+
+Parent                                                                                                                    Summary
+
+================================================================================   ==============================================
+:ref:`split_surface <split_surface>`                                                                               Split Surface.
+
+:ref:`external_surface <external_surface>`                                                                      External Surface.
+
+:ref:`create_surfaces_from_wrapped_bodies <create_surfaces_from_wrapped_bodies>`   Create surfaces for the selected wrapped body.
+
+:ref:`create_surfaces_from_wrapped_parts <create_surfaces_from_wrapped_parts>`     Create surfaces for the seleted wrapped parts.
+
+================================================================================   ==============================================
+

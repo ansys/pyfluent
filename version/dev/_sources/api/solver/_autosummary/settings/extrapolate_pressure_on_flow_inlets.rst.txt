@@ -1,0 +1,21 @@
+:orphan:
+
+.. _extrapolate_pressure_on_flow_inlets:
+
+extrapolate_pressure_on_flow_inlets
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.extrapolate_pressure_on_flow_inlets
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ======================================================
+
+Parent                                                                                                          Summary
+
+==============================================================   ======================================================
+:ref:`bc_pressure_extrapolations <bc_pressure_extrapolations>`   Setting pressure extrapolations schemes on boundaries.
+
+==============================================================   ======================================================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _boundary:
+
+boundary
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.boundary
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ========================================
+
+Attribute                                                                                             Summary
+
+==================================================================   ========================================
+:ref:`fuel_temperature <fuel_temperature>`                                           Fuel Stream Temperature.
+
+:ref:`oxidizer_temperature <oxidizer_temperature>`                               Oxidizer Stream Temperature.
+
+:ref:`species_boundary <species_boundary>`                               Species Fuel and Oxidizer Fractions.
+
+:ref:`specify_species_in <specify_species_in>`                              Species in Mass or Mole Fraction.
+
+:ref:`progress_variable_definition <progress_variable_definition>`                      PDF Boundary Options.
+
+==================================================================   ========================================
+
+.. rubric:: Included in:
+
+==========================================================================   =====================================
+
+Parent                                                                                                     Summary
+
+==========================================================================   =====================================
+:ref:`partially_premixed_model_options <partially_premixed_model_options>`       Partially Premixed Model Options.
+
+==========================================================================   =====================================
+

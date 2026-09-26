@@ -1,0 +1,38 @@
+:orphan:
+
+.. _reduced_order_model:
+
+reduced_order_model
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reduced_order_model
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ========================================================================
+
+Attribute                                                                                                       Summary
+
+============================================   ========================================================================
+:ref:`flow_control_type <flow_control_type>`               Type of reduced-order flow model applied in this gap region.
+
+:ref:`decelerated_flow <decelerated_flow>`                     Parameters for the Decelerated Flow reduced-order model.
+
+:ref:`resisted_flow <resisted_flow>`                              Parameters for the Resisted Flow reduced-order model.
+
+:ref:`gap_flow <gap_flow>`                     Prescribed gap velocity components for the Gap Flow reduced-order model.
+
+============================================   ========================================================================
+
+.. rubric:: Included in:
+
+====================================   ========================================================
+
+Parent                                                                                  Summary
+
+====================================   ========================================================
+:ref:`flow_modeling <flow_modeling>`   Detailed settings for the selected flow-modeling method.
+
+====================================   ========================================================
+

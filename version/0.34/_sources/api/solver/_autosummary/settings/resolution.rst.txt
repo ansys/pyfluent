@@ -1,0 +1,21 @@
+:orphan:
+
+.. _resolution:
+
+resolution
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.resolution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`viewfactor_settings <viewfactor_settings>`       Viewfactor related settings.
+
+================================================   ================================
+

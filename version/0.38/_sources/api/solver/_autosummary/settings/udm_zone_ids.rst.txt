@@ -1,0 +1,21 @@
+:orphan:
+
+.. _udm_zone_ids:
+
+udm_zone_ids
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.udm_zone_ids
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =================================
+
+Parent                                             Summary
+
+======================   =================================
+:ref:`memory <memory>`       Allocate user-defined memory.
+
+======================   =================================
+

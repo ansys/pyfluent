@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pressure_gradient:
+
+pressure_gradient
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pressure_gradient
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================================
+
+Parent                                                                                  Summary
+
+================================================   ============================================
+:ref:`periodic_conditions <periodic_conditions>`       The periodic boundary conditions object.
+
+================================================   ============================================
+

@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_calculation_activity_auto_save_append_file_name_with:
+
+append_file_name_with
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solution.calculation_activity.auto_save.append_file_name_with
+   :members: file_decimal_digit, file_suffix_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

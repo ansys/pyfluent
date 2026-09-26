@@ -1,0 +1,21 @@
+:orphan:
+
+.. _gap_length:
+
+gap_length
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.gap_length
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================================================
+
+Parent                                                                               Summary
+
+====================================   =====================================================
+:ref:`resisted_flow <resisted_flow>`   Parameters for the Resisted Flow reduced-order model.
+
+====================================   =====================================================
+

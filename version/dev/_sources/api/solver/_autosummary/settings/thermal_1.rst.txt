@@ -1,0 +1,54 @@
+:orphan:
+
+.. _thermal_1:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.thermal_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   ============
+
+Attribute                                                             Summary
+
+==============================================================   ============
+:ref:`backflow_total_temperature <backflow_total_temperature>`   Temperature.
+
+==============================================================   ============
+
+.. rubric:: Included in:
+
+========================================================   =======================================
+
+Parent                                                                                     Summary
+
+========================================================   =======================================
+:ref:`exhaust_fan_child <exhaust_fan_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`phase_7_child <phase_7_child>`                                 'child_object_type' of phase.
+
+:ref:`outlet_vent_child <outlet_vent_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`phase_18_child <phase_18_child>`                               'child_object_type' of phase.
+
+:ref:`pressure_outlet_child <pressure_outlet_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`phase_23_child <phase_23_child>`                               'child_object_type' of phase.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`               'child_object_type' of exhaust_fan.
+
+:ref:`phase_31_child <phase_31_child>`                               'child_object_type' of phase.
+
+:ref:`outlet_vent_1_child <outlet_vent_1_child>`               'child_object_type' of outlet_vent.
+
+:ref:`phase_42_child <phase_42_child>`                               'child_object_type' of phase.
+
+:ref:`pressure_outlet_1_child <pressure_outlet_1_child>`   'child_object_type' of pressure_outlet.
+
+:ref:`phase_47_child <phase_47_child>`                               'child_object_type' of phase.
+
+========================================================   =======================================
+

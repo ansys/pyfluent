@@ -1,0 +1,84 @@
+:orphan:
+
+.. _four_equation:
+
+four_equation
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.four_equation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ======================================================
+
+Attribute                                                                         Summary
+
+================================   ======================================================
+:ref:`a_sei <a_sei>`                         A-sei value in the 4-eq thermal abuse model.
+
+:ref:`e_sei <e_sei>`                         E-sei value in the 4-eq thermal abuse model.
+
+:ref:`m_sei <m_sei>`                         M-sei value in the 4-eq thermal abuse model.
+
+:ref:`h_sei <h_sei>`                         H-sei value in the 4-eq thermal abuse model.
+
+:ref:`w_sei <w_sei>`                         W-sei value in the 4-eq thermal abuse model.
+
+:ref:`sei0 <sei0>`                           W-sei value in the 4-eq thermal abuse model.
+
+:ref:`a_ne <a_ne>`                            A-ne value in the 4-eq thermal abuse model.
+
+:ref:`e_ne <e_ne>`                            E-ne value in the 4-eq thermal abuse model.
+
+:ref:`m_ne <m_ne>`                            M-ne value in the 4-eq thermal abuse model.
+
+:ref:`h_ne <h_ne>`                            H-ne value in the 4-eq thermal abuse model.
+
+:ref:`w_ne <w_ne>`                            W-ne value in the 4-eq thermal abuse model.
+
+:ref:`ne0 <ne0>`                               Ne0 value in the 4-eq thermal abuse model.
+
+:ref:`ne_tsei_ref <ne_tsei_ref>`       Ne-tsei-ref value in the 4-eq thermal abuse model.
+
+:ref:`ne_tsei0 <ne_tsei0>`                Ne-tsei0 value in the 4-eq thermal abuse model.
+
+:ref:`a_pe <a_pe>`                            A-pe value in the 4-eq thermal abuse model.
+
+:ref:`e_pe <e_pe>`                            E-pe value in the 4-eq thermal abuse model.
+
+:ref:`m1_pe <m1_pe>`                         M1-pe value in the 4-eq thermal abuse model.
+
+:ref:`m2_pe <m2_pe>`                         M2-pe value in the 4-eq thermal abuse model.
+
+:ref:`h_pe <h_pe>`                            H-pe value in the 4-eq thermal abuse model.
+
+:ref:`w_pe <w_pe>`                            W-pe value in the 4-eq thermal abuse model.
+
+:ref:`pe0 <pe0>`                               Pe0 value in the 4-eq thermal abuse model.
+
+:ref:`a_e <a_e>`                               A-e value in the 4-eq thermal abuse model.
+
+:ref:`e_e <e_e>`                               E-e value in the 4-eq thermal abuse model.
+
+:ref:`m_e <m_e>`                               M-e value in the 4-eq thermal abuse model.
+
+:ref:`h_e <h_e>`                               H-e value in the 4-eq thermal abuse model.
+
+:ref:`w_e <w_e>`                               W-e value in the 4-eq thermal abuse model.
+
+:ref:`e0 <e0>`                                  E0 value in the 4-eq thermal abuse model.
+
+================================   ======================================================
+
+.. rubric:: Included in:
+
+================================================   ===========================================
+
+Parent                                                                                 Summary
+
+================================================   ===========================================
+:ref:`thermal_abuse_model <thermal_abuse_model>`       Thermal abuse model related parameters.
+
+================================================   ===========================================
+

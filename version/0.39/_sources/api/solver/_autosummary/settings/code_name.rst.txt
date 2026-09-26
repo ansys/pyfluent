@@ -1,0 +1,21 @@
+:orphan:
+
+.. _code_name:
+
+code_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.code_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ====================
+
+Parent                                              Summary
+
+====================================   ====================
+:ref:`oned_coupling <oned_coupling>`       Load 1D library.
+
+====================================   ====================
+

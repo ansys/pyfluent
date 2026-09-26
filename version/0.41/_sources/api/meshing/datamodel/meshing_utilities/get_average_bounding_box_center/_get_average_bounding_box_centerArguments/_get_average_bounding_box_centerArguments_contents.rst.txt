@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_average_bounding_box_center__get_average_bounding_box_centerArguments:
+
+_get_average_bounding_box_centerArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.get_average_bounding_box_center._get_average_bounding_box_centerArguments
+   :members: _face_zone_id_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

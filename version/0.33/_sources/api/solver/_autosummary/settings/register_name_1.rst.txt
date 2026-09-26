@@ -1,0 +1,21 @@
+:orphan:
+
+.. _register_name_1:
+
+register_name
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.register_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===============================================================
+
+Parent                                                                                                 Summary
+
+============================================   ===============================================================
+:ref:`list_properties_4 <list_properties_4>`       List the properties of a definition for poor mesh numerics.
+
+============================================   ===============================================================
+

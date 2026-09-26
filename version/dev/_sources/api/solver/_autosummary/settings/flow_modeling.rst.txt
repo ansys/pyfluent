@@ -1,0 +1,38 @@
+:orphan:
+
+.. _flow_modeling:
+
+flow_modeling
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_modeling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ==============================================================================================
+
+Attribute                                                                                                                                 Summary
+
+================================================   ==============================================================================================
+:ref:`method <method_16>`                                                                   Method used to model the flow inside this gap region.
+
+:ref:`sponge_layer <sponge_layer>`                                                            Settings for the Sponge Layer flow-modeling method.
+
+:ref:`reduced_order_model <reduced_order_model>`                                       Settings for the Reduced Order Model flow-modeling method.
+
+:ref:`udf_source <udf_source>`                     Name of the UDF defining the gap source terms. The UDF must be compiled and loaded before use.
+
+================================================   ==============================================================================================
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`gap_regions_child <gap_regions_child>`   'child_object_type' of gap_regions.
+
+============================================   ===================================
+

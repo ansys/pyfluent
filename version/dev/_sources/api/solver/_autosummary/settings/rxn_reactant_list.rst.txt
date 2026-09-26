@@ -1,0 +1,39 @@
+:orphan:
+
+.. _rxn_reactant_list:
+
+rxn_reactant_list
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rxn_reactant_list
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`list_properties <list_properties_2>`      List properties of selected object.
+
+:ref:`resize <resize>`                       Set number of objects for list-object.
+
+==========================================   ======================================
+
+.. rubric:: Named object type
+
+:ref:`rxn_reactant_list_child <rxn_reactant_list_child>`
+
+
+.. rubric:: Included in:
+
+==================================================   ======================================
+
+Parent                                                                              Summary
+
+==================================================   ======================================
+:ref:`reactions_list_child <reactions_list_child>`   'child_object_type' of reactions_list.
+
+==================================================   ======================================
+

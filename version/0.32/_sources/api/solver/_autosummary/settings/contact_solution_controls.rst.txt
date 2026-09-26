@@ -1,0 +1,59 @@
+:orphan:
+
+.. _contact_solution_controls:
+
+contact_solution_controls
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.contact_solution_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===========================================================================================
+
+Attribute                                                                                                                                      Summary
+
+========================================================   ===========================================================================================
+:ref:`solution_stabilization <solution_stabilization_2>`       Automatic solver settings adjustment for solution stabilization during contact process.
+
+:ref:`verbosity <verbosity_16>`                                                                         Verbosity level for contact solution controls.
+
+:ref:`parameters <parameters_7>`                                                                         Flexible numerics controls parameters object.
+
+:ref:`spatial <spatial>`                                                                                                     Flexible numerics object.
+
+:ref:`transient <transient>`                                                                                                 Flexible numerics object.
+
+:ref:`amg <amg>`                                                                                                             Flexible numerics object.
+
+:ref:`models <models_1>`                                                                                                     Flexible numerics object.
+
+:ref:`methods <methods_3>`                                                                                                   Flexible numerics object.
+
+:ref:`miscellaneous <miscellaneous>`                                                                                          Flexible numeris object.
+
+========================================================   ===========================================================================================
+
+.. rubric:: Methods
+
+========================================================   ==================================================
+
+Method                                                                                                Summary
+
+========================================================   ==================================================
+:ref:`set_settings_to_default <set_settings_to_default>`       Set contact solution stabilization to default.
+
+========================================================   ==================================================
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`controls_1 <controls_1>`       Solution controls object.
+
+==============================   =============================
+

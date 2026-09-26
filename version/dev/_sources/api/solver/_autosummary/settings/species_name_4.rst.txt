@@ -1,0 +1,21 @@
+:orphan:
+
+.. _species_name_4:
+
+species_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.species_name_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`init_value_child <init_value_child>`   'child_object_type' of init_value.
+
+==========================================   ==================================
+

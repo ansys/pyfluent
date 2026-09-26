@@ -1,0 +1,38 @@
+:orphan:
+
+.. _rxn_reactant_list_child:
+
+rxn_reactant_list_child
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rxn_reactant_list_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =============================================
+
+Attribute                                                                  Summary
+
+==================================   =============================================
+:ref:`rct_phase <rct_phase>`                                       Reactant phase.
+
+:ref:`rct_species <rct_species>`                                 Reactant species.
+
+:ref:`rct_stoic <rct_stoic>`         Stoichiometric coefficient for this reactant.
+
+:ref:`rct_rate_exp <rct_rate_exp>`                Rate exponent for this reactant.
+
+==================================   =============================================
+
+.. rubric:: Included in:
+
+============================================   ==========
+
+Parent                                            Summary
+
+============================================   ==========
+:ref:`rxn_reactant_list <rxn_reactant_list>`   Reactants.
+
+============================================   ==========
+

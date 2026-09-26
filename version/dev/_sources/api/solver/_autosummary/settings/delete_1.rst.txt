@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_1:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ==========================
+
+Argument                                          Summary
+
+============================   ==========================
+:ref:`run_name <run_name_1>`   Name of the run to delete.
+
+============================   ==========================
+
+.. rubric:: Included in:
+
+================   ==========================================
+
+Parent                                                Summary
+
+================   ==========================================
+:ref:`run <run>`   Manage runs within the current simulation.
+
+================   ==========================================
+

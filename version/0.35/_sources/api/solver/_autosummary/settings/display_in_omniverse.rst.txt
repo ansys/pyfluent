@@ -1,0 +1,32 @@
+:orphan:
+
+.. _display_in_omniverse:
+
+display_in_omniverse
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.display_in_omniverse
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =================================================
+
+Argument                                                                             Summary
+
+========================================   =================================================
+:ref:`usd_output_file <usd_output_file>`       The file path where USD file should be saved.
+
+========================================   =================================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`raytracing_options <raytracing_options>`       'raytracing_options' child.
+
+==============================================   ===============================
+

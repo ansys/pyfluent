@@ -1,0 +1,21 @@
+:orphan:
+
+.. _average:
+
+average
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.average
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`field_value <field_value>`       'field_value' child.
+
+================================   ========================
+

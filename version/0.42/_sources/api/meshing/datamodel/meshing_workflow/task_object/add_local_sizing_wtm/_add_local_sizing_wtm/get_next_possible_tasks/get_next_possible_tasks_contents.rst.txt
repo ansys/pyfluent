@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_local_sizing_wtm__add_local_sizing_wtm_get_next_possible_tasks:
+
+get_next_possible_tasks
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.add_local_sizing_wtm._add_local_sizing_wtm.get_next_possible_tasks
+   :members: _get_next_possible_tasksArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

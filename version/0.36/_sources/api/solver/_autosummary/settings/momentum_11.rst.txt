@@ -1,0 +1,110 @@
+:orphan:
+
+.. _momentum_11:
+
+momentum
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.momentum_11
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ===============================================================================
+
+Attribute                                                                                                                                          Summary
+
+========================================================================   ===============================================================================
+:ref:`wall_motion <wall_motion>`                                                                                                              Wall Motion.
+
+:ref:`moving <moving>`                                                                                                     Apply a velocity to this wall?.
+
+:ref:`relative <relative>`                                                                              Define wall motion relative to adjacent cell zone.
+
+:ref:`rotating <rotating>`                                                                                       Apply a rotational velocity to this wall.
+
+:ref:`components <components_2>`                                                                                          Define wall velocity components.
+
+:ref:`velocity_spec <velocity_spec>`                                                                                            Motion specification type.
+
+:ref:`speed <speed>`                                                                                                                   Velocity Magnitude.
+
+:ref:`rotation_speed <rotation_speed>`                                                                                                     Rotation Speed.
+
+:ref:`rotation_axis_origin <rotation_axis_origin>`                                                                        Rotation axis origin components.
+
+:ref:`rotation_axis_direction <rotation_axis_direction>`                                                               Rotation axis direction components.
+
+:ref:`direction <direction_3>`                                                                                                Wall translation components.
+
+:ref:`velocity_components <velocity_components>`                                                                                      Velocity components.
+
+:ref:`shear_condition <shear_condition>`                                                                                                  Shear Condition.
+
+:ref:`fsi_interface <fsi_interface>`                                                                                                        FSI Interface.
+
+:ref:`periodic_displacement <periodic_displacement>`                                                                     Periodic displacement components.
+
+:ref:`periodic_imaginary_displacement <periodic_imaginary_displacement>`                                       Periodic imaginary displacement components.
+
+:ref:`frequency <frequency_1>`                                                                                         Frequency of Periodic Displacement.
+
+:ref:`amplitude <amplitude_1>`                                                                                         Amplitude of Periodic Displacement.
+
+:ref:`nodal_diam <nodal_diam>`                                                                                   Nodal Diameter for Periodic Displacement.
+
+:ref:`passage_number <passage_number>`                                                                           Passage Number for Periodic Displacement.
+
+:ref:`fwd <fwd>`                                                                                                      Forward or Backward Travelling Wave.
+
+:ref:`aero <aero>`                                                                                                         Enable Aerodamping Monitoring?.
+
+:ref:`cmplx <cmplx>`                                                                                                                  Complex Mode Shape?.
+
+:ref:`norm <norm>`                                                                                                                    Normalized profile?.
+
+:ref:`method <method_6>`                                                                                                           Travelling Wave Method.
+
+:ref:`force_real_component <force_real_component>`                                  Generalized Forces object real components (from Displacement Profile).
+
+:ref:`force_imaginary_component <force_imaginary_component>`                   Generalized Forces object imaginary components (from Displacement Profile).
+
+:ref:`force_cmplx <force_cmplx>`                                                                                                      Complex Mode Shape?.
+
+:ref:`force_norm <force_norm>`                                                                                                        Normalized profile?.
+
+:ref:`shear_stress <shear_stress>`                                                                                                Shear stress components.
+
+:ref:`fslip <fslip>`                                                                                                                       Fslip constant.
+
+:ref:`eslip <eslip>`                                                                                                                       Eslip constant.
+
+:ref:`surface_tension_gradient <surface_tension_gradient>`                                                                       Surface Tension Gradient.
+
+:ref:`specified_shear <specified_shear>`                                                                                                    Shear stress?.
+
+:ref:`specularity_coeff <specularity_coeff>`                                                                                      Specularity Coefficient.
+
+:ref:`mom_accommodation_coeff <mom_accommodation_coeff>`                                                               Momentum Accommodation Coefficient.
+
+========================================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+======================================   ======================================
+
+Parent                                                                  Summary
+
+======================================   ======================================
+:ref:`settings_24 <settings_24>`             Domain name to define settings on.
+
+:ref:`phase_26_child <phase_26_child>`            'child_object_type' of phase.
+
+:ref:`wall_1_child <wall_1_child>`                 'child_object_type' of wall.
+
+:ref:`wall_2_child <wall_2_child>`                 'child_object_type' of wall.
+
+:ref:`phase_51_child <phase_51_child>`            'child_object_type' of phase.
+
+======================================   ======================================
+

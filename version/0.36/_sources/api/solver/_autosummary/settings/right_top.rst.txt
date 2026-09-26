@@ -1,0 +1,21 @@
+:orphan:
+
+.. _right_top:
+
+right_top
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.right_top
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===============================
+
+Parent                                           Summary
+
+======================   ===============================
+:ref:`titles <titles>`       Settings related to titles.
+
+======================   ===============================
+

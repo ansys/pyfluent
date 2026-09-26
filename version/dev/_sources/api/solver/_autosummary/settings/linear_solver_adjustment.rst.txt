@@ -1,0 +1,21 @@
+:orphan:
+
+.. _linear_solver_adjustment:
+
+linear_solver_adjustment
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.linear_solver_adjustment
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ======================================================
+
+Parent                                                                                        Summary
+
+============================================   ======================================================
+:ref:`contingency_tools <contingency_tools>`   Contingency tools for reactive robustness adjustments.
+
+============================================   ======================================================
+

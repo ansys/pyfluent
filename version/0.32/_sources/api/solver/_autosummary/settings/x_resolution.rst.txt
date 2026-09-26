@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_resolution:
+
+x_resolution
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.x_resolution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =============================================
+
+Parent                                                           Summary
+
+========================   =============================================
+:ref:`picture <picture>`       The hardcopy/save-picture options object.
+
+========================   =============================================
+

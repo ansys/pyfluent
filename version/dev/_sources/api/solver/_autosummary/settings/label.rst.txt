@@ -1,0 +1,23 @@
+:orphan:
+
+.. _label:
+
+label
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.label
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==================
+
+Parent                        Summary
+
+================   ==================
+:ref:`x_7 <x_7>`   X-axis properties.
+
+:ref:`y_7 <y_7>`   Y-axis properties.
+
+================   ==================
+

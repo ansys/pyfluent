@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_adjacent_zones_by_edge_connectivity__get_adjacent_zones_by_edge_connectivityArguments:
+
+_get_adjacent_zones_by_edge_connectivityArguments
+=================================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.get_adjacent_zones_by_edge_connectivity._get_adjacent_zones_by_edge_connectivityArguments
+   :members: _zone_id_list, _zone_name_list, _zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

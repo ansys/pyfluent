@@ -1,0 +1,50 @@
+:orphan:
+
+.. _camera:
+
+camera
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.camera
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==============================   ============================================================================
+
+Method                                                                                                Summary
+
+==============================   ============================================================================
+:ref:`dolly <dolly>`                                                   Adjust the camera position and target.
+
+:ref:`field <field_12>`                         Settings for specifying the field of view (width and height).
+
+:ref:`orbit <orbit>`                 Settings for adjusting the camera position without modifying the target.
+
+:ref:`pan <pan>`                     Settings for adjusting the camera position without modifying the target.
+
+:ref:`position <position_1>`                                     Settings for specifying the camera position.
+
+:ref:`projection <projection>`                                   Options for setting the camera's projection.
+
+:ref:`roll <roll>`                                               Settings for adjusting the camera up-vector.
+
+:ref:`target <target_1>`                                       Specifies the center point of the camera view.
+
+:ref:`up_vector <up_vector>`                                    Settings for specifying the camera up-vector.
+
+:ref:`zoom <zoom>`                    Settings for controlling the zoom level (field of view for the camera).
+
+==============================   ============================================================================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`views <views>`       'views' child.
+
+====================   ==================
+

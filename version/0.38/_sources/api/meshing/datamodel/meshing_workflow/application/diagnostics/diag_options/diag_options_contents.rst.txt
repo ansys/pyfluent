@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_diagnostics_diag_options:
+
+diag_options
+============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.diagnostics.diag_options
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _diag_optionsArguments/_diag_optionsArguments_contents

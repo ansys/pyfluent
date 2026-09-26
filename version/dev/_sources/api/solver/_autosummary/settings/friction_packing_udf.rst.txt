@@ -1,0 +1,21 @@
+:orphan:
+
+.. _friction_packing_udf:
+
+friction_packing_udf
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.friction_packing_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`granular_props <granular_props>`   Granular phase properties.
+
+======================================   ==========================
+

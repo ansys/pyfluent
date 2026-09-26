@@ -1,0 +1,46 @@
+:orphan:
+
+.. _pybamm_model_settings:
+
+pybamm_model_settings
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pybamm_model_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   =============================================================================
+
+Attribute                                                                                                                            Summary
+
+============================================================   =============================================================================
+:ref:`installation_folder <installation_folder>`               Path to user-installed PyBaMM environment. Leave empty to use bundled PyBaMM.
+
+:ref:`config_file <config_file>`                                                                      Path to the PyBaMM configuration file.
+
+:ref:`initial_soc <initial_soc_3>`                                                   Initial state of charge used for PyBaMM initialization.
+
+:ref:`reference_capacity <reference_capacity_1>`                                                         PyBaMM-reported reference capacity.
+
+:ref:`memory_num_per_cell <memory_num_per_cell_1>`                                                        PyBaMM state memory size per cell.
+
+:ref:`save_time_history_profile <save_time_history_profile>`                            Enable time-history CSV output from PyBaMM coupling.
+
+:ref:`save_spatial_profile <save_spatial_profile>`                                        Enable spatial CSV snapshots from PyBaMM coupling.
+
+:ref:`spatial_save_interval <spatial_save_interval>`                            Snapshot interval in seconds (0 means every committed step).
+
+============================================================   =============================================================================
+
+.. rubric:: Included in:
+
+========================   =======================
+
+Parent                                     Summary
+
+========================   =======================
+:ref:`battery <battery>`   Battery model settings.
+
+========================   =======================
+

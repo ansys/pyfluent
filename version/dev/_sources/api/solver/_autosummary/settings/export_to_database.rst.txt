@@ -1,0 +1,36 @@
+:orphan:
+
+.. _export_to_database:
+
+export_to_database
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.export_to_database
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ========================================================
+
+Argument                                                                                  Summary
+
+======================================   ========================================================
+:ref:`user_db_name <user_db_name_1>`                                  User-defined database name.
+
+:ref:`materials_type <materials_type>`                                   Material type to export.
+
+:ref:`materials_name <materials_name>`   The name of the material to export to the user database.
+
+======================================   ========================================================
+
+.. rubric:: Included in:
+
+============================   ================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+============================   ================================================================================================================================
+:ref:`materials <materials>`   Accesses the material database and configuration tools for defining fluid, solid, and particle materials used in the simulation.
+
+============================   ================================================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _animate:
+
+animate
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.animate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ========================================================================================================
+
+Parent                                                                                                                          Summary
+
+============================   ========================================================================================================
+:ref:`animation <animation>`       Create one or more transient animations from defined animation definitions, using the selected data.
+
+============================   ========================================================================================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _phase_48_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.phase_48_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ======================================================
+
+Attribute                                                                                 Summary
+
+========================================   ======================================================
+:ref:`radiator <radiator_1>`               Allows to change radiator model variables or settings.
+
+:ref:`discrete_phase <discrete_phase_3>`                                 Discrete Phase settings.
+
+:ref:`geometry <geometry_8>`               Allows to change geometry model variables or settings.
+
+========================================   ======================================================
+
+.. rubric:: Included in:
+
+==========================   =============================================================
+
+Parent                                                                             Summary
+
+==========================   =============================================================
+:ref:`phase_48 <phase_48>`   Provides an object description for phase-specific conditions.
+
+==========================   =============================================================
+

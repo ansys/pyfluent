@@ -1,0 +1,36 @@
+:orphan:
+
+.. _flow_blocking:
+
+flow_blocking
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flow_blocking
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ================================================================================
+
+Attribute                                                                                                                                   Summary
+
+================================================================   ================================================================================
+:ref:`interface_viscosity_factor <interface_viscosity_factor>`     Scaling factor for the viscous resistance applied at the gap interface boundary.
+
+:ref:`explicit_boundary_condition <explicit_boundary_condition>`                 Enable explicit treatment of the gap interface boundary condition.
+
+:ref:`interpolation <interpolation>`                                                    Flood filling interpolation settings for blocked gap cells.
+
+================================================================   ================================================================================
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`gap_regions_child <gap_regions_child>`   'child_object_type' of gap_regions.
+
+============================================   ===================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _zone:
+
+zone
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`create_zone <create_zone>`           Create a flow control zone.
+
+:ref:`delete_zone_2 <delete_zone_2>`       Delete a flow control zone.
+
+====================================   ===============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _accuracy_controls:
+
+accuracy_controls
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.accuracy_controls
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================
+
+Parent                                                Summary
+
+============================   ==============================
+:ref:`option_59 <option_59>`       Check the control options.
+
+============================   ==============================
+

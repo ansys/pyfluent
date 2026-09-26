@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_collar_mesh__create_collar_mesh_arguments_geometry_tools_properties:
+
+geometry_tools_properties
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.create_collar_mesh._create_collar_mesh.arguments.geometry_tools_properties
+   :members: box_center_x, box_center_y, box_center_z, box_x_length, box_y_length, box_z_length, cylinder_radius_1, cylinder_radius_2, cylinder_x1, cylinder_x2, cylinder_y1, cylinder_y2, cylinder_z1, cylinder_z2
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
