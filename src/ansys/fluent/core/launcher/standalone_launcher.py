@@ -336,6 +336,34 @@ class StandaloneLauncher:
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
+        if is_windows():
+            cwd = self._kwargs.get("cwd")
+            if cwd and (str(cwd).startswith(r"\\") or str(cwd).startswith("//")):
+                import base64
+
+                # 1. Clean the original string
+                clean_launch = self._launch_string.replace('"', "", 2)
+
+                # 2. Extract the executable path and wrap it in quotes to handle spaces
+                # Split at the first .exe occurrence to separate the path from arguments
+                if ".exe" in clean_launch.lower():
+                    exe_part, args_part = clean_launch.split(".exe", 1)
+                    exe_path = f'"{exe_part.strip()}.exe"'
+                    ps_payload = f"& {exe_path} {args_part.strip()}"
+                else:
+                    ps_payload = clean_launch
+
+                # 3. Base64 encode the command string for PowerShell's -EncodedCommand
+                # This completely bypasses any downstream string/quote parsing bugs.
+                encoded_cmd = base64.b64encode(ps_payload.encode("utf-16-le")).decode(
+                    "ascii"
+                )
+
+                # 4. Formulate the final command array
+                self._launch_cmd = ["powershell.exe", "-EncodedCommand", encoded_cmd]
+
+                self._kwargs.update(shell=False)
+
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
