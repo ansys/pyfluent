@@ -386,7 +386,9 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     sinfo = static_infos.get(StaticInfoType.SETTINGS)
     if not sinfo:
         return {"<solver_session>": api_tree}
-    version_dir = pyfluent.codegen.get_codegen_version_dir(version, pyfluent.config.codegen_outdir)
+    version_dir = pyfluent.codegen.get_codegen_version_dir(
+        version, pyfluent.config.codegen_outdir
+    )
     output_dir = (version_dir / "solver").resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "settings.py"
