@@ -46,16 +46,8 @@ def get_api_tree_file_name(version: str) -> Path:
 
 def get_api_tree_data_file_path(version: str | None = None) -> Path:
     """Get the versioned API tree data file path."""
-    if version is None:
-        for fluent_version in FluentVersion:
-            version = get_version_for_file_name(fluent_version.value)
-            path = get_api_tree_data_file_path(version)
-            if path.exists():
-                return path
-        version = get_version_for_file_name(next(iter(FluentVersion)).value)
-    version_dir = pyfluent.codegen.get_codegen_version_dir(
-        version, config.codegen_outdir
-    )
+    """Get API tree data file."""
+    version_dir = Path(config.codegen_outdir)
     return (version_dir / "api_tree" / "api_objects.json").resolve()
 
 
@@ -143,8 +135,10 @@ def generate_api_data(
     api_tree_data["api_object_name_map"] = api_object_name_map
 
     def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
-        api_tree_file_path = get_api_tree_data_file_path(version)
-        api_tree_file_path.parent.mkdir(parents=True, exist_ok=True)
+        json_file_folder = Path(os.path.join(config.codegen_outdir, "api_tree"))
+        json_file_folder.mkdir(parents=True, exist_ok=True)
+
+        api_tree_file_path = get_api_tree_data_file_path()
         api_tree_file_path.touch()
         with open(api_tree_file_path, "w") as json_file:
             json.dump(api_tree_data, json_file)
