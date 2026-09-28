@@ -21,11 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Abstract solution variables wrapper."""
+"""Abstract contracts for Fluent solution-variable services."""
 
 from abc import ABC, abstractmethod
 
 import numpy as np
+
+__all__ = (
+    "AbstractData",
+    "AbstractSolutionVariableData",
+    "AbstractSolutionVariableInfo",
+)
 
 
 class AbstractSolutionVariableInfo(ABC):

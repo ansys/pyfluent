@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 #
 #
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -21,12 +20,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High-level user-facing API for retrieving field data from Fluent surfaces and zones."""
+"""Public APIs for Fluent solution-variable metadata and zone data."""
 
-
-from ansys.fluent.core.services.solution_variables import (
+from ansys.fluent.core.fields.solution_variables.abstract_solution_variables import (
+    AbstractData,
+    AbstractSolutionVariableData,
+    AbstractSolutionVariableInfo,
+)
+from ansys.fluent.core.fields.solution_variables.solution_variables import (
+    Data,
+    DomainError,
+    InvalidSolutionVariableNameError,
     SolutionVariableData,
     SolutionVariableInfo,
+    ZoneError,
 )
 
-__all__ = ["SolutionVariableInfo", "SolutionVariableData"]
+__all__ = (
+    "AbstractData",
+    "AbstractSolutionVariableData",
+    "AbstractSolutionVariableInfo",
+    "Data",
+    "DomainError",
+    "InvalidSolutionVariableNameError",
+    "SolutionVariableData",
+    "SolutionVariableInfo",
+    "ZoneError",
+)

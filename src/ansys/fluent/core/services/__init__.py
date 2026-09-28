@@ -31,6 +31,16 @@ can be implemented with other service providers through the service factory.
 
 from functools import cached_property
 
+from ansys.fluent.core.fields.field_data.transport import (
+    FieldData,
+    FieldDataV251,
+    FieldDataV261,
+)
+from ansys.fluent.core.fields.reduction import Reduction
+from ansys.fluent.core.fields.solution_variables import (
+    SolutionVariableData,
+    SolutionVariableInfo,
+)
 from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntime,
     ApplicationRuntimeOld,
@@ -38,21 +48,11 @@ from ansys.fluent.core.services.application_runtime import (
     ApplicationRuntimeV261,
 )
 from ansys.fluent.core.services.events import Events, EventsV251, EventsV261
-from ansys.fluent.core.services.field_data import (
-    FieldData,
-    FieldDataV251,
-    FieldDataV261,
-)
 from ansys.fluent.core.services.health_check import HealthCheck
 from ansys.fluent.core.services.monitors import Monitor
 from ansys.fluent.core.services.object_model import ObjectModel, ObjectModelV261
-from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.settings import Settings, SettingsV251, SettingsV261
-from ansys.fluent.core.services.solution_variables import (
-    SolutionVariableData,
-    SolutionVariableInfo,
-)
 from ansys.fluent.core.services.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )

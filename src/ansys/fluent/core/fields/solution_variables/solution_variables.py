@@ -24,16 +24,22 @@
 """High-level solution-variable wrappers.
 
 This module owns the business-logic layer on top of the SolutionVariable
-gRPC service. The grpc service implementation lives in:
-
-* ``ansys.fluent.core._grpc_services.solution_variable_service`` (v1 proto API)
-* ``ansys.fluent.core._grpc_services.solution_variable_service_v0`` (v0 proto API)
+service.
 
 The public API is centered around:
 
 * ``SolutionVariableInfo`` for zone and SVAR metadata access.
 * ``SolutionVariableData`` for reading and writing SVAR data arrays.
 """
+
+__all__ = [
+    "Data",
+    "DomainError",
+    "InvalidSolutionVariableNameError",
+    "SolutionVariableInfo",
+    "SolutionVariableData",
+    "ZoneError",
+]
 
 from typing import Any
 
@@ -43,8 +49,7 @@ import numpy.typing as npt
 from ansys.fluent.core._variable_strategies import (
     FluentSVarNamingStrategy as naming_strategy,
 )
-from ansys.fluent.core.fields.live_field_data import override_help_text
-from ansys.fluent.core.services.abstract_solution_variables import (
+from ansys.fluent.core.fields.solution_variables.abstract_solution_variables import (
     AbstractData,
     AbstractSolutionVariableData,
     AbstractSolutionVariableInfo,
@@ -53,6 +58,14 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 
 _to_field_name_str = naming_strategy().to_string
+
+
+def override_help_text(func, func_to_be_wrapped):
+    """Override function help text."""
+    if func_to_be_wrapped.__doc__:
+        func.__doc__ = "\n" + func_to_be_wrapped.__doc__
+    func.__name__ = func_to_be_wrapped.__qualname__
+    return func
 
 
 class Data(AbstractData):

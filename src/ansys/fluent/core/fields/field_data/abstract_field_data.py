@@ -20,16 +20,146 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Abstract field data wrapper."""
+"""Abstract contracts for Fluent field-data transports and sources."""
+
+from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
-import numpy as np
-import numpy.typing as npt
-
 if TYPE_CHECKING:
-    from ansys.fluent.core.fields.field_data_interfaces import SurfaceDataType
+    import numpy as np
+    import numpy.typing as npt
+
+    from ansys.fluent.core.fields.field_data.data_types import (
+        PathlinesData,
+        SurfaceData,
+    )
+    from ansys.fluent.core.fields.field_data.requests import (
+        PathlinesFieldDataRequest,
+        ScalarFieldDataRequest,
+        SurfaceDataType,
+        SurfaceFieldDataRequest,
+        VectorFieldDataRequest,
+    )
+
+
+__all__ = (
+    "AbstractFieldData",
+    "BaseFieldDataSource",
+    "FieldBatch",
+    "FieldDataSource",
+)
+
+
+class BaseFieldDataSource(ABC):
+    """Abstract contract for a user-facing field-data source.
+
+    This contract belongs to the wrapper layer, not to a transport service. It
+    describes how callers resolve surfaces and retrieve data after a transport
+    specific :class:`AbstractFieldData` implementation has been connected.
+
+    :class:`~ansys.fluent.core.fields.field_data.live_field_data.LiveFieldData` is the
+    standard implementation.
+    """
+
+    @abstractmethod
+    def get_surface_ids(self, surfaces: list[str | int | object]) -> list[int]:
+        """Retrieve a list of surface IDs based on input surface names or numerical identifiers."""
+        pass
+
+    @abstractmethod
+    def get_field_data(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> "dict[int | str, SurfaceData | PathlinesData | np.ndarray]":
+        """
+        Retrieve the field data for a given request.
+
+        This method processes the specified request and returns the corresponding
+        field data in a structured format.
+
+        Returns
+        -------
+            Dict[int | str, SurfaceData | PathlinesData | np.ndarray]: A dictionary where keys represent surface
+            IDs or names, and values contain the corresponding field data.
+        """
+        pass
+
+
+class FieldDataSource(BaseFieldDataSource, ABC):
+    """Abstract contract for a field-data source that supports batching.
+
+    This extends :class:`BaseFieldDataSource` with the factory method needed to
+    create a :class:`FieldBatch`. The concrete source uses that batch to collect
+    requests and return a batched response.
+
+    :class:`~ansys.fluent.core.fields.field_data.live_field_data.LiveFieldData` fulfills
+    this contract and returns a
+    :class:`~ansys.fluent.core.fields.field_data.live_field_data.Batch` from
+    :meth:`~ansys.fluent.core.fields.field_data.live_field_data.LiveFieldData.new_batch`.
+    """
+
+    @abstractmethod
+    def new_batch(self) -> FieldBatch:
+        """Create a new field batch."""
+        pass
+
+
+class FieldBatch(ABC):
+    """Abstract contract for collecting and executing field-data requests.
+
+    A batch belongs to a :class:`FieldDataSource`. It accepts request models,
+    sends them through the source's transport adapter, and returns a field-data
+    source containing the response.
+
+    :class:`~ansys.fluent.core.fields.field_data.live_field_data.Batch` is the standard
+    implementation and
+    :class:`~ansys.fluent.core.fields.field_data.live_field_data.BatchFieldData` is its
+    response container.
+    """
+
+    @abstractmethod
+    def get_surface_ids(self, surfaces: list[str | int | object]) -> list[int]:
+        """Retrieve a list of surface IDs based on input surface names or numerical identifiers."""
+        pass
+
+    @abstractmethod
+    def add_requests(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+        *args: SurfaceFieldDataRequest
+        | ScalarFieldDataRequest
+        | VectorFieldDataRequest
+        | PathlinesFieldDataRequest,
+    ) -> FieldBatch:
+        """
+        Add field data requests for surfaces, scalars, vectors, or pathlines.
+
+        This method allows users to specify multiple field data requests, which will
+        later be processed when retrieving responses.
+        """
+        pass
+
+    @abstractmethod
+    def get_response(self) -> FieldDataSource:
+        """
+        Retrieve the response containing data for previously added field requests.
+
+        This method processes all pending requests and returns the corresponding
+        field data.
+        """
+        pass
 
 
 class AbstractFieldData(ABC):
