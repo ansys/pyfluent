@@ -27,7 +27,7 @@ import random
 import grpc
 import pytest
 
-from ansys.fluent.core.exceptions import InsecureGrpcWarning
+from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,

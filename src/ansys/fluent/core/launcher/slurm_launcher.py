@@ -75,7 +75,7 @@ from warnings import warn
 from typing_extensions import TypeVar, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
-from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
