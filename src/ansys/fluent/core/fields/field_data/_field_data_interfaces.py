@@ -31,7 +31,7 @@ import dataclasses
 from typing import TYPE_CHECKING, Iterable
 import warnings
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 
 if TYPE_CHECKING:
 
@@ -356,7 +356,7 @@ class _AllowedFieldNames(_AllowedNames):
         FieldUnavailableError
             If field name is valid but not currently available.
         """
-        from ansys.fluent.core.exceptions import DisallowedValuesError
+        from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 
         if validate_inputs:
             names = self
@@ -387,7 +387,7 @@ class _AllowedSurfaceNames(_AllowedNames):
         DisallowedValuesError
             If surface name is invalid.
         """
-        from ansys.fluent.core.exceptions import DisallowedValuesError
+        from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 
         try:
             valid_names = self()  # Fetch once, upfront

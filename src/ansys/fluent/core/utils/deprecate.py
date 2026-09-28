@@ -31,7 +31,7 @@ import warnings
 
 from deprecated.sphinx import deprecated
 
-from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 
 
 def deprecate_arguments(

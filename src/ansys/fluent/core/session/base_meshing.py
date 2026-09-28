@@ -41,7 +41,7 @@ from typing import TYPE_CHECKING, Any, cast
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.data_transfer import transfer_case
-from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
+from ansys.fluent.core.diagnostics.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
