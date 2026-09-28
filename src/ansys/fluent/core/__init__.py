@@ -34,6 +34,7 @@ from ansys.fluent.core.diagnostics.logger import *
 # isort: on
 
 from ansys.fluent.core.context_manager import *
+from ansys.fluent.core.diagnostics import logger  # noqa: E402
 from ansys.fluent.core.diagnostics.exceptions import *
 from ansys.fluent.core.diagnostics.search import *
 from ansys.fluent.core.fields.field_data import *
