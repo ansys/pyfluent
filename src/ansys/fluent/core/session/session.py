@@ -58,12 +58,12 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.launcher.pim_launcher import PIMArgsWithoutMode
 
-from ansys.fluent.core.exceptions import (
+from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
+from ansys.fluent.core.diagnostics.journaling import Journal
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.rpvars import RPVars
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.utils.deprecate import deprecate_function

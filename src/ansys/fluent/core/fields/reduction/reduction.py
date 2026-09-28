@@ -29,7 +29,7 @@ from collections.abc import Iterable
 from typing import Any
 import weakref
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.reduction.abstract_reduction import AbstractReduction
 from ansys.fluent.core.solver.function.reduction import Weight
 

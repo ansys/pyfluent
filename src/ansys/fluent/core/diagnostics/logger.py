@@ -291,7 +291,7 @@ def list_loggers():
     -------
     list of str
         Each list element is a PyFluent logger name that can be individually controlled
-        through :func:`ansys.fluent.core.logging.get_logger`.
+        through :func:`ansys.fluent.core.diagnostics.logging.get_logger`.
 
     Notes
     -----

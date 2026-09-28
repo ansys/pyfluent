@@ -33,9 +33,12 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import PyFluentDeprecationWarning, PyFluentUserWarning
+from ansys.fluent.core.diagnostics.exceptions import (
+    DisallowedValuesError,
+    InvalidArgument,
+)
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
     InvalidIpPort,
