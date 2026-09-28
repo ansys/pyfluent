@@ -335,29 +335,9 @@ class StandaloneLauncher:
     def __call__(
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
-        # Detect if we are on Windows and the working directory is a UNC network path
-        if is_windows():
-            cwd = self._kwargs.get("cwd")
-            if cwd and (str(cwd).startswith(r"\\") or str(cwd).startswith("//")):
-                import shlex
-
-                # 1. Force shell=False so Python talks directly to powershell.exe
-                # self._kwargs["shell"] = False
-                # self._launch_cmd
-                self._launch_cmd = self._launch_string.replace('"', "", 2)
-                self._launch_cmd = f"""powershell -command '{self._launch_cmd}'"""
-                self._kwargs.update(shell=False)
-
-                # self._kwargs["creationflags"] = self._kwargs.get("creationflags", 0) | subprocess.CREATE_NEW_PROCESS_GROUP
-
-                # Use shlex.split to structure the outer process token list perfectly
-                # self._launch_cmd = shlex.split(
-                # self._launch_cmd
-                # )
-
         if self.argvals.get("dry_run"):
-            print(f"Fluent launch string: {self._launch_cmd}")
-            return self._launch_cmd, self._server_info_file_name
+            print(f"Fluent launch string: {self._launch_string}")
+            return self._launch_string, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
