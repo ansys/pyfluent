@@ -298,7 +298,7 @@ def test_match_whole_word(monkeypatch):
         "all_api_object_names": ["parent", "child", "first_last", "none"],
     }
 
-    search_module = sys.modules["ansys.fluent.core.search"]
+    search_module = sys.modules["ansys.fluent.core.diagnostics.search"]
     monkeypatch.setattr(search_module, "_get_api_tree_data", lambda: api_tree_data)
 
     assert _search_whole_word("parent", api_tree_data=api_tree_data) == [
