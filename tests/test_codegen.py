@@ -31,29 +31,87 @@ import tempfile
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen import (
+    StaticInfoType,
+    allapigen,
+    get_codegen_datamodel_dir,
+    get_codegen_tui_dir,
+)
 from ansys.fluent.core.codegen.api_tree import get_api_tree_file_name
+from ansys.fluent.core.codegen.builtin_settingsgen import (
+    _generate_pyi_file,
+    _get_builtin_settings_paths,
+)
 from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
+
+
+def test_builtin_settings_generation_paths_and_imports(monkeypatch, tmp_path):
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+
+    py_file, pyi_file = _get_builtin_settings_paths(FluentVersion.v271)
+    assert py_file == tmp_path / "v271" / "solver" / "settings_builtin.py"
+    assert pyi_file == tmp_path / "v271" / "solver" / "settings_builtin.pyi"
+
+    _generate_pyi_file(FluentVersion.v271)
+    pyi_contents = pyi_file.read_text(encoding="utf-8")
+    assert "ansys.fluent.core.generated.v271.solver.settings_271" in pyi_contents
 
 
 def test_allapigen_files(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
+    version_dir = pyfluent.codegen.get_codegen_version_dir(
+        version, pyfluent.config.codegen_outdir
+    )
     importlib.import_module(f"ansys.fluent.core.generated.v{version}.fluent_version")
     importlib.import_module(f"ansys.fluent.core.generated.v{version}.meshing.tui")
     importlib.import_module(f"ansys.fluent.core.generated.v{version}.solver.tui")
-    importlib.import_module(f"ansys.fluent.core.generated.v{version}.datamodel.meshing")
-    importlib.import_module(f"ansys.fluent.core.generated.v{version}.datamodel.workflow")
+    importlib.import_module(f"ansys.fluent.core.generated.v{version}.meshing.meshing")
     importlib.import_module(
-        f"ansys.fluent.core.generated.v{version}.datamodel.preferences"
+        f"ansys.fluent.core.generated.v{version}.object_model.workflow"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.v{version}.datamodel.part_management"
+        f"ansys.fluent.core.generated.v{version}.meshing.meshing_utilities"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.v{version}.datamodel.pm_file_management"
+        f"ansys.fluent.core.generated.v{version}.object_model.preferences"
+    )
+    importlib.import_module(
+        f"ansys.fluent.core.generated.v{version}.meshing.part_management"
+    )
+    importlib.import_module(
+        f"ansys.fluent.core.generated.v{version}.meshing.pm_file_management"
     )
     importlib.import_module(f"ansys.fluent.core.generated.v{version}.solver.settings")
+    assert get_codegen_tui_dir(version_dir, "meshing").name == "meshing"
+
+
+@pytest.mark.parametrize(
+    "module_name,expected_dir",
+    [
+        ("meshing", "meshing"),
+        ("meshing_workflow", "meshing"),
+        ("part_management", "meshing"),
+        ("pm_file_management", "meshing"),
+        ("meshing_utilities", "meshing"),
+        ("workflow", "object_model"),
+        ("preferences", "object_model"),
+    ],
+)
+def test_codegen_datamodel_directory_routing(tmp_path, module_name, expected_dir):
+    assert get_codegen_datamodel_dir(tmp_path, module_name) == tmp_path / expected_dir
+
+
+def test_api_tree_data_path_is_versioned(tmp_path, monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
+    from ansys.fluent.core.codegen.api_tree import get_api_tree_data_file_path
+
+    assert get_api_tree_data_file_path("271") == (
+        tmp_path / "v271" / "api_tree" / "api_objects.json"
+    )
 
 
 @pytest.mark.fluent_version(">=26.1")
@@ -79,7 +137,7 @@ def test_codegen_with_no_static_info(monkeypatch):
     allapigen.generate(version, {})
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
-    assert set(p.name for p in generated_paths) == {"api_tree.pickle"}
+    assert set(p.name for p in generated_paths) == {f"v{version}"}
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
@@ -172,11 +230,12 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     version_dir = codegen_outdir / f"v{version}"
     generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {"api_tree.pickle", mode}
-    solver_paths = list((version_dir / mode).iterdir())
+    output_dir = "object_model" if mode == "meshing" else mode
+    assert set(p.name for p in generated_paths) == {"api_tree.pickle", output_dir}
+    solver_paths = list((version_dir / output_dir).iterdir())
     assert len(solver_paths) == 1
     assert set(p.name for p in solver_paths) == {"tui.py"}
-    with open(version_dir / mode / "tui.py", "r") as f:
+    with open(version_dir / output_dir / "tui.py", "r") as f:
         assert f.read().strip() == _get_expected_tui_api_output(mode)
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
@@ -400,13 +459,14 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     }
     allapigen.generate(version, static_infos)
     version_dir = codegen_outdir / f"v{version}"
+    output_dir = get_codegen_datamodel_dir(version_dir, datamodel_file_name_map[rules])
     generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
     assert set(p.name for p in generated_paths) == {
         "api_tree.pickle",
-        "datamodel",
+        output_dir.name,
     }
-    datamodel_paths = list((version_dir / "datamodel").iterdir())
+    datamodel_paths = list(output_dir.iterdir())
     assert len(datamodel_paths) == 1 or 2
     assert set(p.name for p in datamodel_paths) == {
         f"{datamodel_file_name_map[rules]}.py"
@@ -414,7 +474,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     with open(
         codegen_outdir
         / f"v{version}"
-        / "datamodel"
+        / output_dir.name
         / f"{datamodel_file_name_map[rules]}.py",
         "r",
     ) as f:

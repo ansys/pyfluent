@@ -51,7 +51,7 @@ from defusedxml.ElementTree import parse
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen import StaticInfoType, get_codegen_tui_dir
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.services.text_interface import (
@@ -70,8 +70,10 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    version_dir = pyfluent.codegen.get_codegen_version_dir(version, pyfluent.config.codegen_outdir)
-    return (version_dir / mode / "tui.py").resolve()
+    version_dir = pyfluent.codegen.get_codegen_version_dir(
+        version, pyfluent.config.codegen_outdir
+    )
+    return (get_codegen_tui_dir(version_dir, mode) / "tui.py").resolve()
 
 
 _INDENT_STEP = 4

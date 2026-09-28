@@ -26,6 +26,7 @@
 import logging
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.codegen import get_codegen_datamodel_dir, get_codegen_tui_dir
 from ansys.fluent.core.exceptions import warning_for_fluent_dev_version
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.text_interface import TUIMenu
@@ -48,7 +49,7 @@ def _make_tui_module(session, module_name):
         )
         tui_module = load_module(
             f"{module_name}_tui_{session._version}",
-            version_dir / module_name / "tui.py",
+            get_codegen_tui_dir(version_dir, module_name) / "tui.py",
         )
         warning_for_fluent_dev_version(session._version)
         return tui_module.main_menu(
@@ -70,7 +71,7 @@ def _make_datamodel_module(session, module_name):
         )
         module = load_module(
             f"{module_name}_{session._version}",
-            version_dir / "datamodel" / f"{file_name}.py",
+            get_codegen_datamodel_dir(version_dir, file_name) / f"{file_name}.py",
         )
         warning_for_fluent_dev_version(session._version)
         return module.Root(session._se_service, module_name, [])

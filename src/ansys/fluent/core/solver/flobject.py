@@ -2931,6 +2931,8 @@ def get_root(
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
+            import ansys.fluent.core as pyfluent
+
             version_dir = pyfluent.codegen.get_codegen_version_dir(
                 version, config.codegen_outdir
             )
