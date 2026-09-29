@@ -47,7 +47,7 @@ import warnings
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
 from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
 )

@@ -35,7 +35,7 @@ from warnings import warn
 from typing_extensions import Required, Unpack, assert_never
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
-from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.execution.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,

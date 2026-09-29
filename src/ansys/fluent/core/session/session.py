@@ -58,7 +58,7 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.execution.launcher.pim_launcher import PIMArgsWithoutMode
 
-from ansys.fluent.core.exceptions import (
+from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
