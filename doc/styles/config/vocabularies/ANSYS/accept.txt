@@ -11,6 +11,7 @@
 [Ss]ettings
 [Ss]treaming
 API
+beartype
 batch_ops
 CAD
 caf
