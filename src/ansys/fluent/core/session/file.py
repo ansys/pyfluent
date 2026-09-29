@@ -28,7 +28,7 @@ import warnings
 from deprecated.sphinx import deprecated
 import numpy as np
 
-from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
+from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     _AllowedScalarFieldNames,
     _AllowedSurfaceNames,

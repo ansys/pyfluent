@@ -33,7 +33,7 @@ import threading
 from typing import Any
 import warnings
 
-from ansys.fluent.core.exceptions import (
+from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
 )
 from ansys.fluent.core.services.object_model import (

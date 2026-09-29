@@ -29,18 +29,19 @@
 from ansys.fluent.core.module_config import *
 
 # Logging has to be imported before importing other PyFluent modules
-from ansys.fluent.core.logger import *
+from ansys.fluent.core.diagnostics.logger import *
 
 # isort: on
 
 from ansys.fluent.core.context_manager import *
-from ansys.fluent.core.exceptions import *
+from ansys.fluent.core.diagnostics import logger  # noqa: E402
+from ansys.fluent.core.diagnostics.exceptions import *
+from ansys.fluent.core.diagnostics.search import *
 from ansys.fluent.core.fields.field_data import *
 from ansys.fluent.core.launcher.launch_options import *
 from ansys.fluent.core.launcher.launcher import *
 from ansys.fluent.core.local_parametric_study import *
 from ansys.fluent.core.meshing import *
-from ansys.fluent.core.search import *
 from ansys.fluent.core.services.batch_ops import *
 from ansys.fluent.core.services.streaming_services.events_streaming import *
 from ansys.fluent.core.session import *
@@ -72,8 +73,8 @@ if _os.path.exists(_README_FILE):
 from ansys.fluent.core import (  # noqa: E402
     local_parametric_study as _local_parametric_study,
 )
-from ansys.fluent.core import exceptions as _exceptions  # noqa: E402
 from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
+from ansys.fluent.core.diagnostics import exceptions as _exceptions  # noqa: E402
 from ansys.fluent.core.session import file as _session_file  # noqa: E402
 
 _sys.modules["ansys.fluent.core.file_session"] = _session_file

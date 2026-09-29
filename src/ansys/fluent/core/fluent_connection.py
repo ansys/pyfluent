@@ -44,7 +44,7 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
-from ansys.fluent.core.exceptions import InsecureGrpcWarning
+from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
 from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
