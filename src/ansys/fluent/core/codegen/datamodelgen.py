@@ -239,7 +239,7 @@ class DataModelStaticInfo:
             ),
             datamodel_file_name_map[rules_save_name],
         ).resolve()
-        datamodel_dir.mkdir(exist_ok=True)
+        datamodel_dir.mkdir(parents=True, exist_ok=True)
         self.file_name = (
             datamodel_dir / f"{datamodel_file_name_map[rules_save_name]}.py"
         ).resolve()
