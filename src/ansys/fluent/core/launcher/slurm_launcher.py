@@ -75,7 +75,6 @@ from warnings import warn
 from typing_extensions import TypeVar, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
-from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
@@ -93,6 +92,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _get_subprocess_kwargs_for_fluent,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
+    is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
