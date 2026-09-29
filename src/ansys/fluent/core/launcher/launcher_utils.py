@@ -23,6 +23,7 @@
 
 """Provides a module for launching utilities."""
 
+import base64
 import logging
 import os
 from pathlib import Path
@@ -331,3 +332,36 @@ def _build_case_data_arguments(
     if case_data_file_name:
         fluent_case_data_arg += f' -data "{str(case_data_file_name)}"'
     return fluent_case_data_arg
+
+
+def prepare_windows_unc_cmd(
+    launch_string: str, cwd: str | None
+) -> tuple[list[str], bool] | None:
+    """
+    Checks if the context is a Windows UNC path and converts the launch string
+    into a PowerShell EncodedCommand array.
+
+    Returns:
+        A tuple of (launch_cmd_array, shell_bool) if it's a UNC path, or None otherwise.
+    """
+    # Note: Keep external is_windows() check before calling, or include it here if preferred
+    if not cwd or not (str(cwd).startswith(r"\\") or str(cwd).startswith("//")):
+        return None
+
+    # 1. Clean the original string (Matches original logic precisely)
+    clean_launch = launch_string.replace('"', "", 2)
+
+    # 2. Extract the executable path and wrap it in quotes to handle spaces
+    if ".exe" in clean_launch.lower():
+        exe_part, args_part = clean_launch.split(".exe", 1)
+        exe_path = f'"{exe_part.strip()}.exe"'
+        ps_payload = f"& {exe_path} {args_part.strip()}"
+    else:
+        ps_payload = clean_launch
+
+    # 3. Base64 encode the command string for PowerShell's -EncodedCommand
+    encoded_cmd = base64.b64encode(ps_payload.encode("utf-16-le")).decode("ascii")
+
+    # 4. Return the new command array and the shell configuration
+    launch_cmd = ["powershell.exe", "-EncodedCommand", encoded_cmd]
+    return launch_cmd, False
