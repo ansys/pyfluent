@@ -80,13 +80,13 @@ import tempfile
 from typing import Any
 import warnings
 
-from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
-from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
-from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
-from ansys.fluent.core.launcher.error_handler import (
+from ansys.fluent.core.exceptions import PyFluentDeprecationWarning
+from ansys.fluent.core.execution.docker.docker_compose import ComposeBasedLauncher
+from ansys.fluent.core.execution.docker.utils import get_ghcr_fluent_image_name
+from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.execution.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_arguments

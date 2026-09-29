@@ -47,17 +47,17 @@ import warnings
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.error_handler import (
+from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
 )
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.execution.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
@@ -67,12 +67,14 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _validate_lightweight_with_journal,
     is_windows,
 )
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.server_info import (
+from ansys.fluent.core.execution.launcher.process_launch_string import (
+    _generate_launch_string,
+)
+from ansys.fluent.core.execution.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_names,
 )
-import ansys.fluent.core.launcher.watchdog as watchdog
+import ansys.fluent.core.execution.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:

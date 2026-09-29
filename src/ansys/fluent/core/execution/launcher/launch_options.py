@@ -37,15 +37,12 @@ if TYPE_CHECKING:
     from ansys.fluent.core.session.solver_icing import SolverIcing
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.diagnostics.exceptions import (
-    DisallowedValuesError,
-    PyFluentUserWarning,
-)
-import ansys.fluent.core.launcher.error_handler as exceptions
-from ansys.fluent.core.launcher.error_warning_messages import (
+from ansys.fluent.core.exceptions import DisallowedValuesError, PyFluentUserWarning
+import ansys.fluent.core.execution.launcher.error_handler as exceptions
+from ansys.fluent.core.execution.launcher.error_warning_messages import (
     BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
 )
-from ansys.fluent.core.launcher.launcher_utils import is_windows
+from ansys.fluent.core.execution.launcher.launcher_utils import is_windows
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 

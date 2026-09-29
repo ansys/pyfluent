@@ -44,15 +44,15 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
-from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
-from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
-from ansys.fluent.core.launcher.error_warning_messages import (
+from ansys.fluent.core.exceptions import InsecureGrpcWarning
+from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
     CONNECTING_TO_LOCALHOST_INSECURE_MODE,
     INSECURE_MODE_WARNING,
 )
-from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.execution.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop

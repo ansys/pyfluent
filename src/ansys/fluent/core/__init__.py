@@ -34,12 +34,11 @@ from ansys.fluent.core.diagnostics.logger import *
 # isort: on
 
 from ansys.fluent.core.context_manager import *
-from ansys.fluent.core.diagnostics import logger  # noqa: E402
 from ansys.fluent.core.diagnostics.exceptions import *
 from ansys.fluent.core.diagnostics.search import *
+from ansys.fluent.core.execution.launcher.launch_options import *
+from ansys.fluent.core.execution.launcher.launcher import *
 from ansys.fluent.core.fields.field_data import *
-from ansys.fluent.core.launcher.launch_options import *
-from ansys.fluent.core.launcher.launcher import *
 from ansys.fluent.core.local_parametric_study import *
 from ansys.fluent.core.meshing import *
 from ansys.fluent.core.services.batch_ops import *

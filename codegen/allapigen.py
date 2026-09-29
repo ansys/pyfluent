@@ -7,7 +7,7 @@ from ansys.fluent.core import FluentMode, FluentVersion, config, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
 from ansys.fluent.core.codegen.api_tree import generate_api_data
 from ansys.fluent.core.codegen.print_fluent_version import print_fluent_version
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 if __name__ == "__main__":
