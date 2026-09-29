@@ -76,6 +76,7 @@ from typing_extensions import TypeVar, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.execution.launcher.launcher_utils import is_windows
 from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
@@ -659,6 +660,34 @@ class SlurmLauncher:
             launch_cmd += " -grpc-allow-remote-host -grpc-insecure-mode"
         elif self._argvals["certificates_folder"]:
             launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
+
+        if is_windows():
+            cwd = self._kwargs.get("cwd")
+            if cwd and (str(cwd).startswith(r"\\") or str(cwd).startswith("//")):
+                import base64
+
+                # 1. Clean the original string
+                clean_launch = self._launch_string.replace('"', "", 2)
+
+                # 2. Extract the executable path and wrap it in quotes to handle spaces
+                # Split at the first .exe occurrence to separate the path from arguments
+                if ".exe" in clean_launch.lower():
+                    exe_part, args_part = clean_launch.split(".exe", 1)
+                    exe_path = f'"{exe_part.strip()}.exe"'
+                    ps_payload = f"& {exe_path} {args_part.strip()}"
+                else:
+                    ps_payload = clean_launch
+
+                # 3. Base64 encode the command string for PowerShell's -EncodedCommand
+                # This completely bypasses any downstream string/quote parsing bugs.
+                encoded_cmd = base64.b64encode(ps_payload.encode("utf-16-le")).decode(
+                    "ascii"
+                )
+
+                # 4. Formulate the final command array
+                self._launch_cmd = ["powershell.exe", "-EncodedCommand", encoded_cmd]
+
+                self._kwargs.update(shell=False)
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)
