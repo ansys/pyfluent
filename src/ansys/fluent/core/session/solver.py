@@ -41,7 +41,7 @@ import warnings
 import weakref
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.exceptions import (
+from ansys.fluent.core.diagnostics.exceptions import (
     BetaFeaturesNotEnabled,
     DeprecatedSettingWarning,
     PyFluentDeprecationWarning,

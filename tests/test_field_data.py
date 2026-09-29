@@ -36,8 +36,8 @@ from ansys.fluent.core import (
     VectorFieldDataRequest,
     examples,
 )
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     FieldUnavailableError,
     _AllowedSurfaceIDs,

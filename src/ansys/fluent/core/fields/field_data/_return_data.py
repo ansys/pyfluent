@@ -68,7 +68,7 @@ class _ReturnFieldData:
                             surface_ids[count]
                         ][SurfaceDataType.FacesConnectivity.value]
                     else:
-                        from ansys.fluent.core.exceptions import (
+                        from ansys.fluent.core.diagnostics.exceptions import (
                             PyFluentDeprecationWarning,
                         )
 
@@ -121,7 +121,7 @@ class _ReturnFieldData:
             if flatten_connectivity:
                 lines_data = pathlines_data[surface_ids[count]]["lines"]
             else:
-                from ansys.fluent.core.exceptions import (
+                from ansys.fluent.core.diagnostics.exceptions import (
                     PyFluentDeprecationWarning,
                 )
 

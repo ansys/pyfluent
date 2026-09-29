@@ -24,10 +24,9 @@
 """Provides a module for codegen messages."""
 
 import logging
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import get_codegen_datamodel_dir, get_codegen_tui_dir
-from ansys.fluent.core.exceptions import warning_for_fluent_dev_version
+from ansys.fluent.core.diagnostics.exceptions import warning_for_fluent_dev_version
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.text_interface import TUIMenu
 from ansys.fluent.core.utils import load_module

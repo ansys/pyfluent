@@ -90,7 +90,7 @@ from numpy import array
 from ansys.fluent.core._variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
-from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 
 
 class Weight(Enum):
