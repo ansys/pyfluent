@@ -90,10 +90,10 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_case_data_arguments,
     _build_journal_argument,
     _get_subprocess_kwargs_for_fluent,
+    _prepare_windows_unc_cmd,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
-    prepare_windows_unc_cmd,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
@@ -663,7 +663,7 @@ class SlurmLauncher:
             launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
 
         if is_windows():
-            unc_config = prepare_windows_unc_cmd(launch_cmd, kwargs.get("cwd"))
+            unc_config = _prepare_windows_unc_cmd(launch_cmd, kwargs.get("cwd"))
             if unc_config:
                 launch_cmd, shell_flag = unc_config
                 kwargs.update(shell=shell_flag)

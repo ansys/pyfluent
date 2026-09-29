@@ -334,7 +334,7 @@ def _build_case_data_arguments(
     return fluent_case_data_arg
 
 
-def prepare_windows_unc_cmd(
+def _prepare_windows_unc_cmd(
     launch_string: str, cwd: str | None
 ) -> tuple[list[str], bool] | None:
     """

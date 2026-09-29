@@ -63,10 +63,10 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
+    _prepare_windows_unc_cmd,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
-    prepare_windows_unc_cmd,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import (
@@ -338,7 +338,7 @@ class StandaloneLauncher:
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
         if is_windows():
-            unc_config = prepare_windows_unc_cmd(
+            unc_config = _prepare_windows_unc_cmd(
                 self._launch_string, self._kwargs.get("cwd")
             )
             if unc_config:

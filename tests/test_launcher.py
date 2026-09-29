@@ -21,6 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import base64
 import os
 from pathlib import Path
 import platform
@@ -58,6 +59,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     ComposeConfig,
     _build_case_data_arguments,
     _build_journal_argument,
+    _prepare_windows_unc_cmd,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -1059,3 +1061,68 @@ def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
         assert (
             not server_info_file.exists()
         ), "File should be deleted by default when cleanup_on_exit is not specified"
+
+
+def test_exceptional_and_extreme_edge_cases():
+    """
+    Stress-test the method against multiple exceptional scenarios in a single run:
+    - Mixed capitalization of '.EXE'
+    - Multiple instances of '.exe' in the same string
+    - Excess inner spaces and trailing spaces
+    - Extreme characters (unicode, commas, semicolons, shell pipes)
+    - Empty strings and malformed UNC paths
+    """
+
+    # -------------------------------------------------------------------------
+    # Scenario A: The "Nightmare" String
+    # -------------------------------------------------------------------------
+    nightmare_cmd = '  "C:\\Path\\To\\App.ExE" --arg1="sub.exe" --user="🚀" ; & |  '
+    unc_cwd = r"\\NetworkShare\Folder"
+
+    result_a = _prepare_windows_unc_cmd(nightmare_cmd, unc_cwd)
+    assert result_a is not None
+
+    launch_cmd, shell_flag = result_a
+
+    assert launch_cmd[0] == "powershell.exe"
+    assert launch_cmd[1] == "-EncodedCommand"
+    assert shell_flag is False
+
+    # Decode the base64 payload to verify exact behavior of your string manipulation
+    encoded_payload = launch_cmd[2]
+    decoded_payload = base64.b64decode(encoded_payload.encode("ascii")).decode(
+        "utf-16-le"
+    )
+
+    # EXACT behavioral match of your original logic splitting on the inner '.exe'
+    expected_payload = '& "C:\\Path\\To\\App.ExE --arg1="sub.exe" " --user="🚀" ; & |'
+    assert decoded_payload == expected_payload
+
+    # -------------------------------------------------------------------------
+    # Scenario B: Empty & Minimal Values
+    # -------------------------------------------------------------------------
+    # Completely empty command string
+    result_empty_cmd = _prepare_windows_unc_cmd("", unc_cwd)
+    assert result_empty_cmd is not None
+
+    launch_cmd, shell_flag = result_empty_cmd
+    assert shell_flag is False
+
+    # Extract the encoded command from index 2 of the launch_cmd list
+    encoded_empty = launch_cmd[2]
+    decoded_empty = base64.b64decode(encoded_empty.encode("ascii")).decode("utf-16-le")
+
+    assert decoded_empty == ""  # Evaluates cleanly to an empty string payload
+
+    # -------------------------------------------------------------------------
+    # Scenario C: Malformed UNC / Network Path Edge Cases
+    # -------------------------------------------------------------------------
+    # Only slashes, no actual server domain
+    assert _prepare_windows_unc_cmd("calc.exe", r"\\") is not None
+    assert _prepare_windows_unc_cmd("calc.exe", "///") is not None
+
+    # Looks like a UNC path but starts with a leading space (should fail your startswith condition)
+    assert _prepare_windows_unc_cmd("calc.exe", r" \\Server\Share") is None
+
+    # Local Windows drive letter that accidentally includes double slashes later
+    assert _prepare_windows_unc_cmd("calc.exe", r"C:\\Server\Share") is None
