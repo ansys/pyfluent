@@ -100,12 +100,8 @@ def test_use_variable_catalog_offline():
     """
     A test of `PhysicalQuantity` objects for offline data.
     """
-    case_file_name = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
-    )
-    data_file_name = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
-    )
+    case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+    data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
     file_session = FileSession()
 
     # backward compatibility check
@@ -192,12 +188,10 @@ def test_field_data_exceptions_using_variable_catalog():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_without_path=False,
     )
     data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_without_path=False,
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)

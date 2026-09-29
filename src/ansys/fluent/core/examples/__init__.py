@@ -21,6 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a module to download a file."""
+"""Utilities for downloading and locating Fluent example files."""
 
-from .downloads import RemoteFileNotFoundError, download_file, path  # noqa: F401
+from .downloads import delete_downloads, download_file, path
+
+__all__ = [
+    "delete_downloads",
+    "download_file",
+    "path",
+]

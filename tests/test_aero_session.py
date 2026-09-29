@@ -47,7 +47,6 @@ def test_sample_setup():
     mesh_filepath = examples.download_file(
         "wing.msh.h5",
         "pyfluent/aero",
-        return_without_path=False,
     )
     solver_aero_path = str(Path(pyfluent.config.examples_path) / "solver_aero")
     if os.path.exists(solver_aero_path + ".cffdb"):

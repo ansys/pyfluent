@@ -14,7 +14,6 @@ SKIP_DIRECTORIES = {
     "api_tree",
     "docs",
     "codegen",
-    "examples",
     "expressions",
     "generated",
     "rest",
