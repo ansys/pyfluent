@@ -38,7 +38,7 @@ import time
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.execution import timeout_loop
 
-logger = pyfluent.logger.get_logger("pyfluent.launcher")
+logger = pyfluent.diagnostics.logger.get_logger("pyfluent.launcher")
 
 IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
