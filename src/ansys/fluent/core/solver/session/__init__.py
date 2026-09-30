@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 #
 #
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -20,32 +19,3 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-"""Module for context managers used in PyFluent."""
-
-from contextlib import contextmanager
-from contextvars import ContextVar
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ansys.fluent.core.execution.session import BaseSession
-
-__all__ = ("using",)
-
-_active_session: ContextVar["BaseSession | None"] = ContextVar(
-    "active_session", default=None
-)
-
-
-@contextmanager
-def using(session):
-    """Context manager to use a Fluent session."""
-    token = _active_session.set(session)
-    try:
-        yield
-    finally:
-        _active_session.reset(token)
-
-
-def _get_active_session():
-    return _active_session.get()

@@ -21,27 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Meshing-only Fluent session (:class:`PureMeshing`).
+"""Meshing sessions."""
 
-Inheritance
------------
-::
-
-    BaseSession (private)
-    └── BaseMeshing (private)
-        └── PureMeshing          ← this class
-"""
-
-from ansys.fluent.core.session.base_meshing import BaseMeshing
-
-
-class PureMeshing(BaseMeshing):
-    """Fluent meshing session without solver-switching capability.
-
-    Designed for deployments where meshing and solving run as separate
-    processes (e.g. containerised pipelines).  All public API is provided
-    by :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing`.
-
-    Use :class:`~ansys.fluent.core.session.meshing.Meshing` when you also
-    need :meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
-    """
+from ansys.fluent.core.meshing.session.meshing import Meshing
+from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing

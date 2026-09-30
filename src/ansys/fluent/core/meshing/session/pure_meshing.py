@@ -21,23 +21,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-"""Encapsulates a Fluent server for pre-post session connection (:class:`PrePost`).
+"""Meshing-only Fluent session (:class:`PureMeshing`).
 
 Inheritance
 -----------
 ::
 
     BaseSession (private)
-    └── Solver
-        └── PrePost      ← this class
+    └── BaseMeshing (private)
+        └── PureMeshing          ← this class
 """
 
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
 
 
-class PrePost(Solver):
-    """Fluent pre-post session.
+class PureMeshing(BaseMeshing):
+    """Fluent meshing session without solver-switching capability.
 
-    All public API is provided by :class:`~ansys.fluent.core.session.solver.Solver`.
+    Designed for deployments where meshing and solving run as separate
+    processes (e.g. containerised pipelines).  All public API is provided
+    by :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing`.
+
+    Use :class:`~ansys.fluent.core.session.meshing.Meshing` when you also
+    need :meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
     """

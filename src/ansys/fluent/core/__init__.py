@@ -38,13 +38,13 @@ from ansys.fluent.core.diagnostics.exceptions import *
 from ansys.fluent.core.diagnostics.search import *
 from ansys.fluent.core.execution.launcher.launch_options import *
 from ansys.fluent.core.execution.launcher.launcher import *
+from ansys.fluent.core.execution.session import *
+from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.fields.field_data import *
 from ansys.fluent.core.local_parametric_study import *
 from ansys.fluent.core.meshing import *
 from ansys.fluent.core.services.batch_ops import *
 from ansys.fluent.core.services.streaming_services.events_streaming import *
-from ansys.fluent.core.session import *
-from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
 from ansys.fluent.core.utils import *
 from ansys.fluent.core.utils.fluent_version import *
@@ -77,7 +77,7 @@ from ansys.fluent.core.diagnostics import exceptions as _exceptions  # noqa: E40
 from ansys.fluent.core.diagnostics import journaling as _journaling  # noqa: E402
 from ansys.fluent.core.diagnostics import logger as _logger  # noqa: E402
 from ansys.fluent.core.diagnostics.search import search as _search  # noqa: E402
-from ansys.fluent.core.session import file as _session_file  # noqa: E402
+from ansys.fluent.core.execution.session import file as _session_file  # noqa: E402
 
 _sys.modules["ansys.fluent.core.file_session"] = _session_file
 _sys.modules["ansys.fluent.core.parametric"] = _local_parametric_study

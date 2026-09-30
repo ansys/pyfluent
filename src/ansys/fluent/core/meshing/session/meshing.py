@@ -34,9 +34,9 @@ Inheritance
 
 from typing import TYPE_CHECKING, Any
 
-from ansys.fluent.core.session.base_meshing import BaseMeshing
-from ansys.fluent.core.session.session import BaseSession
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.execution.session.session import BaseSession
+from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
+from ansys.fluent.core.solver.session.solver import Solver
 
 
 class Meshing(BaseMeshing):

@@ -26,8 +26,8 @@
 import warnings
 
 from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
-from ansys.fluent.core.session import Meshing, PureMeshing
-from ansys.fluent.core.session.meshing import BaseMeshing
+from ansys.fluent.core.meshing.session import Meshing, PureMeshing
+from ansys.fluent.core.meshing.session.meshing import BaseMeshing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 

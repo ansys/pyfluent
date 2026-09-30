@@ -97,12 +97,12 @@ from ansys.fluent.core.execution.launcher.process_launch_string import (
     _generate_launch_string,
 )
 from ansys.fluent.core.execution.launcher.server_info import _get_server_info_file_names
+from ansys.fluent.core.meshing.session.meshing import Meshing
+from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.session.meshing import Meshing
-from ansys.fluent.core.session.pure_meshing import PureMeshing
-from ansys.fluent.core.session.solver import Solver
-from ansys.fluent.core.session.solver_aero import SolverAero
-from ansys.fluent.core.session.solver_icing import SolverIcing
+from ansys.fluent.core.solver.session.solver import Solver
+from ansys.fluent.core.solver.session.solver_aero import SolverAero
+from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
 logger = logging.getLogger("pyfluent.launcher")
 

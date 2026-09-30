@@ -46,15 +46,15 @@ from ansys.fluent.core.diagnostics.exceptions import (
     DeprecatedSettingWarning,
     PyFluentDeprecationWarning,
 )
+from ansys.fluent.core.execution.session._shared import (
+    _make_datamodel_module,
+    _make_tui_module,
+)
+from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.fields.field_data.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
-from ansys.fluent.core.session._shared import (
-    _make_datamodel_module,
-    _make_tui_module,
-)
-from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     Group,
@@ -477,7 +477,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("switch_to_meshing")
-        from ansys.fluent.core.session.meshing import Meshing
+        from ansys.fluent.core.meshing.session.meshing import Meshing
 
         self.settings.switch_to_meshing_mode()
         for cb in self._fluent_connection.finalizer_cbs:

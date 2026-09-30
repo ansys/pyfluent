@@ -56,14 +56,14 @@ compatibility and convenience:
 """
 
 
-from ansys.fluent.core.session.file import FileSession
-from ansys.fluent.core.session.meshing import Meshing
-from ansys.fluent.core.session.pure_meshing import PureMeshing
-from ansys.fluent.core.session.solver import Solver
-from ansys.fluent.core.session.solver_aero import SolverAero
-from ansys.fluent.core.session.solver_icing import SolverIcing
-from ansys.fluent.core.session.solver_lite import SolverLite
-from ansys.fluent.core.session.solver_pre_post import PrePost
+from ansys.fluent.core.execution.session.file import FileSession
+from ansys.fluent.core.meshing.session.meshing import Meshing
+from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+from ansys.fluent.core.solver.session.solver import Solver
+from ansys.fluent.core.solver.session.solver_aero import SolverAero
+from ansys.fluent.core.solver.session.solver_icing import SolverIcing
+from ansys.fluent.core.solver.session.solver_lite import SolverLite
+from ansys.fluent.core.solver.session.solver_pre_post import PrePost
 
 __all__ = [
     "Meshing",

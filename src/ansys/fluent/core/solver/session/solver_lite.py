@@ -34,7 +34,7 @@ Inheritance
 
 from typing import Any
 
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.solver.session.solver import Solver
 
 
 class SolverLite(Solver):
