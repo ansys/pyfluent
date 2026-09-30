@@ -99,7 +99,7 @@ class Fluent(BaseSession):
 
     Attributes
     ----------
-    Inherits all attributes from :class:`~ansys.fluent.core.session.session.BaseSession`.
+    Inherits all attributes from :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
     """
 
 

@@ -46,13 +46,13 @@ Session aliases
 Each concrete class is re-exported here with a ``Session`` suffix for backward
 compatibility and convenience:
 
-- :class:`Solver`       → :class:`~ansys.fluent.core.session.solver.Solver`
-- :class:`SolverAero`   → :class:`~ansys.fluent.core.session.solver_aero.SolverAero`
-- :class:`SolverIcing`  → :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`
-- :class:`SolverLite`   → :class:`~ansys.fluent.core.session.solver_lite.SolverLite`
-- :class:`PureMeshing`  → :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`
-- :class:`Meshing`      → :class:`~ansys.fluent.core.session.meshing.Meshing`
-- :class:`FileSession`         → :class:`~ansys.fluent.core.session.file.FileSession`
+- :class:`Solver`       → :class:`~ansys.fluent.core.solver.session.solver.Solver`
+- :class:`SolverAero`   → :class:`~ansys.fluent.core.solver.session.solver_aero.SolverAero`
+- :class:`SolverIcing`  → :class:`~ansys.fluent.core.solver.session.solver_icing.SolverIcing`
+- :class:`SolverLite`   → :class:`~ansys.fluent.core.solver.session.solver_lite.SolverLite`
+- :class:`PureMeshing`  → :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing`
+- :class:`Meshing`      → :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
+- :class:`FileSession`         → :class:`~ansys.fluent.core.execution.session.file.FileSession`
 """
 
 

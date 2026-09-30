@@ -24,7 +24,7 @@
 """Internal base class for all Fluent sessions.
 
 This module is private.  Do not import from it directly; use the concrete
-session classes exposed by :mod:`ansys.fluent.core.session`.
+session classes exposed by :mod:`ansys.fluent.core.execution.session`.
 """
 
 from collections.abc import Callable

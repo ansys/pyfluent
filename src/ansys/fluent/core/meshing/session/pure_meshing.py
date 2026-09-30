@@ -40,8 +40,8 @@ class PureMeshing(BaseMeshing):
 
     Designed for deployments where meshing and solving run as separate
     processes (e.g. containerised pipelines).  All public API is provided
-    by :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing`.
+    by :class:`~ansys.fluent.core.meshing.session.base_meshing.BaseMeshing`.
 
-    Use :class:`~ansys.fluent.core.session.meshing.Meshing` when you also
-    need :meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
+    Use :class:`~ansys.fluent.core.meshing.session.meshing.Meshing` when you also
+    need :meth:`~ansys.fluent.core.meshing.session.meshing.Meshing.switch_to_solver`.
     """

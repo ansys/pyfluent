@@ -24,13 +24,13 @@
 """Internal base class for all meshing sessions.
 
 This module is private.  Do not import from it directly; use
-:class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` or
-:class:`~ansys.fluent.core.session.meshing.Meshing` instead.
+:class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` or
+:class:`~ansys.fluent.core.meshing.session.meshing.Meshing` instead.
 
 Both leaf classes are lightweight and add no further public API beyond what
 is defined here.  ``PureMeshing`` targets deployments where meshing and
 solving run as separate processes; ``Meshing`` additionally exposes
-:meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
+:meth:`~ansys.fluent.core.meshing.session.meshing.Meshing.switch_to_solver`.
 """
 
 import functools
@@ -84,8 +84,8 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 class BaseMeshing(BaseSession):
     """Base class providing the full public API for all meshing sessions.
 
-    Both :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` and
-    :class:`~ansys.fluent.core.session.meshing.Meshing` inherit from this
+    Both :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` and
+    :class:`~ansys.fluent.core.meshing.session.meshing.Meshing` inherit from this
     class and add no further public methods.
     """
 

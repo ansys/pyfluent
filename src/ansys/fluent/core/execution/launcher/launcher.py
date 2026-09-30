@@ -379,10 +379,11 @@ def launch_fluent(
 
     Returns
     -------
-    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session.meshing.Meshing>`, \
-    :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`, \
-    :class:`~ansys.fluent.core.session.solver.Solver`, \
-    :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`, tuple[str, str] | dict[str, Any]]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.meshing.session.meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.solver.session.solver.Solver`, \
+    :class:`~ansys.fluent.core.solver.session.solver_icing.SolverIcing`, \
+    :class:`~ansys.fluent.core.solver.session.solver_aero.SolverAero`, tuple[str, str] | dict[str, Any]]
         Session object or configuration ``dict[str, Any]`` if ``dry_run = True`` for docker or a tuple of
         (fluent executable path, startup arguments) if ``dry_run = True`` for standalone launch.
 
@@ -613,10 +614,11 @@ def connect_to_fluent(
 
     Returns
     -------
-    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session.meshing.Meshing>`, \
-    :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing`, \
-    :class:`~ansys.fluent.core.session.solver.Solver`, \
-    :class:`~ansys.fluent.core.session.solver_icing.SolverIcing`]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.meshing.session.meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.solver.session.solver.Solver`, \
+    :class:`~ansys.fluent.core.solver.session.solver_icing.SolverIcing`, \
+    :class:`~ansys.fluent.core.solver.session.solver_aero.SolverAero`]
         Session object.
 
     Raises

@@ -39,5 +39,5 @@ from ansys.fluent.core.solver.session.solver import Solver
 class PrePost(Solver):
     """Fluent pre-post session.
 
-    All public API is provided by :class:`~ansys.fluent.core.session.solver.Solver`.
+    All public API is provided by :class:`~ansys.fluent.core.solver.session.solver.Solver`.
     """
