@@ -668,7 +668,7 @@ class SlurmLauncher:
         if is_windows():
             if _is_windows_unc_path(self._argvals.get("cwd")):
                 launch_cmd = _build_windows_unc_cmd(exe_path, launch_cmd)
-                self._argvals.update(shell=False)
+                kwargs.update(shell=False)
             else:
                 launch_cmd = self._process_exe_path(exe_path) + launch_cmd
         else:
