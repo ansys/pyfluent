@@ -41,12 +41,12 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import config, examples
+from ansys.fluent.core.execution.launcher import launcher
 from ansys.fluent.core.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
     UnsupportedRemoteFluentInstance,
 )
-from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.session.pure_meshing import PureMeshing
 from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.session.solver import Solver

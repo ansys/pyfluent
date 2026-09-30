@@ -76,16 +76,16 @@ from typing_extensions import TypeVar, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.error_warning_messages import (
+from ansys.fluent.core.execution.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
     _get_argvals_and_session,
     get_remote_grpc_options,
 )
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.execution.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
@@ -93,8 +93,10 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
 )
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
+from ansys.fluent.core.execution.launcher.process_launch_string import (
+    _generate_launch_string,
+)
+from ansys.fluent.core.execution.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session.meshing import Meshing
 from ansys.fluent.core.session.pure_meshing import PureMeshing

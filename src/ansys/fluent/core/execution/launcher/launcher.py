@@ -36,16 +36,15 @@ from typing_extensions import Required, Unpack, assert_never
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.error_warning_messages import (
+from ansys.fluent.core.execution.launcher.container_launcher import DockerLauncher
+from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
     CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
     INSECURE_MODE_PROVIDED_IN_STANDALONE,
 )
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -57,17 +56,19 @@ from ansys.fluent.core.launcher.launch_options import (
     _get_running_session_mode,
     get_remote_grpc_options,
 )
-from ansys.fluent.core.launcher.launcher_utils import (
-    _build_case_data_arguments,
+from ansys.fluent.core.execution.launcher.launcher_utils import (
     _confirm_watchdog_start,
-    _validate_lightweight_with_case_data,
     is_windows,
 )
-from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
-from ansys.fluent.core.launcher.server_info import _get_server_info
-from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
-from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
-import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.execution.launcher.pim_launcher import PIMLauncher
+from ansys.fluent.core.execution.launcher.server_info import _get_server_info
+from ansys.fluent.core.execution.launcher.slurm_launcher import (
+    SlurmFuture,
+    SlurmLauncher,
+)
+from ansys.fluent.core.execution.launcher.standalone_launcher import StandaloneLauncher
+import ansys.fluent.core.execution.launcher.watchdog as watchdog
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.session.meshing import Meshing
 from ansys.fluent.core.session.pure_meshing import PureMeshing
@@ -443,43 +444,6 @@ def launch_fluent(
 
     match fluent_launch_mode:
         case LaunchMode.CONTAINER:
-            container_case_file_name = case_file_name_val
-            container_case_data_file_name = case_data_file_name_val
-            container_additional_arguments = additional_arguments
-            if not dry_run:
-                if file_transfer_service:
-                    # Upload host files so Fluent can see them under the mount.
-                    for file_name in (
-                        container_case_file_name,
-                        container_case_data_file_name,
-                    ):
-                        if file_name:
-                            file_transfer_service.upload(file_name=file_name)
-                # Fluent resolves case/data files by basename: they either arrive
-                # under the container's working dir via the mounted host download
-                # directory, or were just uploaded by the file transfer service.
-                if container_case_file_name:
-                    container_case_file_name = os.path.basename(
-                        container_case_file_name
-                    )
-                if container_case_data_file_name:
-                    container_case_data_file_name = os.path.basename(
-                        container_case_data_file_name
-                    )
-                should_disable, warning_msg = _validate_lightweight_with_case_data(
-                    lightweight_mode, container_case_data_file_name
-                )
-                if should_disable:
-                    warn(warning_msg, UserWarning)
-                    lightweight_mode = False
-            if (
-                not dry_run
-                and not lightweight_mode
-                and (container_case_file_name or container_case_data_file_name)
-            ):
-                container_additional_arguments += _build_case_data_arguments(
-                    container_case_file_name, container_case_data_file_name
-                )
             launcher = DockerLauncher(
                 mode=mode,
                 ui_mode=ui_mode,
@@ -489,7 +453,7 @@ def launch_fluent(
                 precision=precision,
                 processor_count=processor_count,
                 start_timeout=start_timeout_val,
-                additional_arguments=container_additional_arguments,
+                additional_arguments=additional_arguments,
                 container_dict=container_dict,
                 dry_run=dry_run,
                 cleanup_on_exit=cleanup_on_exit,
@@ -581,20 +545,7 @@ def launch_fluent(
         case _:
             assert_never(fluent_launch_mode)
 
-    session = launcher()
-    # Lightweight case loading requires the running session's file-transfer handling.
-    if (
-        fluent_launch_mode == LaunchMode.CONTAINER
-        and lightweight_mode
-        and case_file_name_val
-        and not dry_run
-    ):
-        session.read_case_lightweight(
-            case_file_name_val
-            if file_transfer_service
-            else os.path.basename(case_file_name_val)
-        )
-    return session
+    return launcher()
 
 
 def connect_to_fluent(

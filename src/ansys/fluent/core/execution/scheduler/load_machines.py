@@ -33,7 +33,7 @@ import os
 from pathlib import Path
 import subprocess
 
-from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
+from ansys.fluent.core.execution.scheduler.machine_list import Machine, MachineList
 
 
 def load_machines(
