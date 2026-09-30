@@ -1,0 +1,8 @@
+ARG BID
+ARG baseImage=ghcr.io/ansys/fluent:v27.1.${BID}
+
+FROM ${baseImage} as fluidsonebuilder
+COPY fluidsone.tgz /ansys_inc/
+RUN tar -xzf /ansys_inc/fluidsone.tgz --directory /ansys_inc/ && rm -f /ansys_inc/fluidsone.tgz
+
+ENTRYPOINT [ "/entrypoint_xvfb.sh" ]
