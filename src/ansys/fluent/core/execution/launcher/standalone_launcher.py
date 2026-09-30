@@ -275,7 +275,7 @@ class StandaloneLauncher:
             _get_server_info_file_names()
         )
         self._server_info_file_name = server_info_file_name_for_client
-        self._launch_string = _generate_launch_string(
+        self._exe_path, self._launch_string = _generate_launch_string(
             self.argvals,
             server_info_file_name_for_server,
         )
@@ -308,13 +308,28 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            self._launch_cmd = self._launch_string
+            if _is_windows_unc_path(self._kwargs.get("cwd")):
+                self._launch_cmd = _build_windows_unc_cmd(
+                    self._exe_path, self._launch_string
+                )
+                self._kwargs.update(shell=False)
+            else:
+                self._launch_cmd = (
+                    self._process_exe_path(self._exe_path) + self._launch_string
+                )
         else:
+            self._launch_string = str(self._exe_path) + self._launch_string
             if self.argvals.get("ui_mode") not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
+
+    @staticmethod
+    def _process_exe_path(exe_path: Path) -> str:
+        if " " in str(exe_path):
+            return '"' + str(exe_path) + '"'
+        return str(exe_path)
 
     @staticmethod
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
@@ -338,19 +353,11 @@ class StandaloneLauncher:
         self,
     ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
         if self.argvals.get("dry_run"):
-            print(f"Fluent launch string: {self._launch_string}")
-            return self._launch_string, self._server_info_file_name
-        if (
-            is_windows()
-            and _is_windows_unc_path(self._kwargs.get("cwd"))
-            and bool(self._launch_cmd)
-        ):
-            self._launch_cmd, shell = _build_windows_unc_cmd(self._launch_cmd)
-            self._kwargs.update(shell=shell)
+            print(f"Fluent launch string: {self._launch_cmd}")
+            return self._launch_cmd, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
-
             try:
                 _await_fluent_launch(
                     self._server_info_file_name,
@@ -361,7 +368,11 @@ class StandaloneLauncher:
             except TimeoutError as ex:
                 if is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = self._launch_string.replace('"', "", 2)
+                    launch_cmd = (
+                        self._launch_cmd.replace('"', "", 2)
+                        if type(self._launch_cmd) is str
+                        else self._launch_cmd
+                    )
                     self._kwargs.update(shell=False)
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"

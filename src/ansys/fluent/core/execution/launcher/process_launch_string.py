@@ -112,16 +112,10 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 def _generate_launch_string(
     argvals,
     server_info_file_name: str,
-):
+) -> tuple[Path, str]:
     """Generates the launch string to launch fluent."""
-    if launcher_utils.is_windows():
-        exe_path = str(get_fluent_exe_path(**argvals))
-        if " " in exe_path:
-            exe_path = '"' + exe_path + '"'
-    else:
-        exe_path = str(get_fluent_exe_path(**argvals))
-    launch_string = exe_path
-    launch_string += _build_fluent_launch_args_string(**argvals)
+    exe_path = get_fluent_exe_path(**argvals)
+    launch_string = _build_fluent_launch_args_string(**argvals)
     if argvals["mode"] == FluentMode.SOLVER_ICING:
         launch_string += " -flicing -license=enterprise"
     if argvals["mode"] == FluentMode.SOLVER_AERO:
@@ -135,7 +129,7 @@ def _generate_launch_string(
     launch_string += f" -sifile={server_info_file_name}"
     if not pyfluent.config.fluent_show_mesh_after_case_read:
         launch_string += " -nm"
-    return launch_string
+    return exe_path, launch_string
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
@@ -163,7 +157,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     if fluent_path:
         # Return the fluent_path string verbatim. The path may not even exist
         # in the current machine if user wants to launch fluent externally (dry_run use case).
-        return fluent_path
+        return Path(fluent_path)
 
     # 2. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")

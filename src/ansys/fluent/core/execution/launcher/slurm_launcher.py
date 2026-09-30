@@ -89,9 +89,12 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
+    _build_windows_unc_cmd,
     _get_subprocess_kwargs_for_fluent,
+    _is_windows_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
+    is_windows,
 )
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _generate_launch_string,
@@ -640,7 +643,7 @@ class SlurmLauncher:
         )
         self._server_info_file_name = server_info_file_name_for_client
         self._argvals.update(self._argvals["scheduler_options"])
-        launch_cmd = _generate_launch_string(
+        exe_path, launch_cmd = _generate_launch_string(
             self._argvals,
             server_info_file_name_for_server,
         )
@@ -662,12 +665,26 @@ class SlurmLauncher:
         elif self._argvals["certificates_folder"]:
             launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
 
+        if is_windows():
+            if _is_windows_unc_path(self._argvals.get("cwd")):
+                launch_cmd = _build_windows_unc_cmd(exe_path, launch_cmd)
+                self._argvals.update(shell=False)
+            else:
+                launch_cmd = self._process_exe_path(exe_path) + launch_cmd
+        else:
+            launch_cmd = str(exe_path) + launch_cmd
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)
         slurm_job_id = _get_slurm_job_id(proc)
         logger.info(f"Slurm job id = {slurm_job_id}")
         self._argvals["slurm_job_id"] = slurm_job_id
         return slurm_job_id
+
+    @staticmethod
+    def _process_exe_path(exe_path: Path) -> str:
+        if " " in str(exe_path):
+            return '"' + str(exe_path) + '"'
+        return str(exe_path)
 
     def _launch(self, slurm_job_id) -> Meshing | PureMeshing | Solver | SolverIcing:
         _await_fluent_launch(

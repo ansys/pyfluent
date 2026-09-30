@@ -1079,38 +1079,30 @@ def test_is_windows_unc_path():
 
 
 def test_encode_powershell_command_with_exe():
-    launch_str = r"C:\Program Files\App.exe 3ddp -meshing -py"
-    encoded = _encode_powershell_command(launch_str)
+    launch_str = Path(r"C:\Program Files\App.exe")
+    arguments = " 3ddp -meshing -py"
+    encoded = _encode_powershell_command(launch_str, arguments)
 
     decoded = base64.b64decode(encoded.encode("ascii")).decode("utf-16-le")
     assert decoded == r'& "C:\Program Files\App.exe" 3ddp -meshing -py'
 
 
-def test_encode_powershell_command_without_exe():
-    launch_str = "dir C:\\"
-    encoded = _encode_powershell_command(launch_str)
-    decoded = base64.b64decode(encoded.encode("ascii")).decode("utf-16-le")
-    assert decoded == "dir C:\\"
-
-
 def test_build_windows_unc_cmd():
-    cmd_array, shell_bool = _build_windows_unc_cmd("whoami")
+    cmd_array = _build_windows_unc_cmd(Path("whoami"), "arg_1 arg_2")
     assert cmd_array[0] == "powershell.exe"
     assert cmd_array[1] == "-EncodedCommand"
-    assert not shell_bool
 
 
 def test_launcher_behavior_with_windows_unc_path():
-    _launch_cmd = r"C:\Program Files\App.exe 3ddp -meshing -py"
+    exe_path = Path(r"C:\Program Files\App.exe")
+    launch_cmd = r" 3ddp -meshing -py"
     _kwargs = {"cwd": r"\\server\share\path"}
 
-    if is_windows() and _is_windows_unc_path(_kwargs.get("cwd")) and bool(_launch_cmd):
-        _launch_cmd, shell = _build_windows_unc_cmd(_launch_cmd)
-        _kwargs.update(shell=shell)
+    if is_windows() and _is_windows_unc_path(_kwargs.get("cwd")):
+        launch_cmd = _build_windows_unc_cmd(exe_path, launch_cmd)
         assert (
-            base64.b64decode(_launch_cmd[-1].encode("ascii")).decode("utf-16-le")
+            base64.b64decode(launch_cmd[-1].encode("ascii")).decode("utf-16-le")
             == r'& "C:\Program Files\App.exe" 3ddp -meshing -py'
         )
-        assert _launch_cmd[0] == "powershell.exe"
-        assert _launch_cmd[1] == "-EncodedCommand"
-        assert _kwargs["shell"] is False
+        assert launch_cmd[0] == "powershell.exe"
+        assert launch_cmd[1] == "-EncodedCommand"

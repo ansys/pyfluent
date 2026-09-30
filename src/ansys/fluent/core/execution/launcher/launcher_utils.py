@@ -344,28 +344,18 @@ def _is_windows_unc_path(path: str | None) -> bool:
     return normalized.startswith(r"\\")
 
 
-def _encode_powershell_command(launch_string: str) -> str:
-    """Cleans a command string and encodes it into a UTF-16LE Base64 payload."""
-    # Strip unnecessary enclosing or leading quotes reliably
-    cleaned_string = launch_string.strip().strip('"')
-
-    # Safely separate the executable from arguments using regex
-    # Matches everything up to '.exe' (case-insensitive) as the executable
-    match = re.match(r"^(.*?\.exe)\b(.*)$", cleaned_string, re.IGNORECASE)
-
-    if match:
-        exe_path, arguments = match.groups()
-        # Wrap the executable path in quotes to safely handle space paths in PowerShell
-        powershell_payload = f'& "{exe_path.strip()}" {arguments.strip()}'
-    else:
-        powershell_payload = cleaned_string
+def _encode_powershell_command(exe_path: Path, arguments: str = "") -> str:
+    """Encodes an executable path and its arguments into a UTF-16LE Base64 PowerShell payload."""
+    # Use PowerShell's call operator '&' and format the path safely in double quotes
+    # The arguments string is cleanly appended
+    powershell_payload = f'& "{exe_path}" {arguments.strip()}'.strip()
 
     # Base64 encode using UTF-16LE for PowerShell compatibility
     utf16_bytes = powershell_payload.encode("utf-16-le")
     return base64.b64encode(utf16_bytes).decode("ascii")
 
 
-def _build_windows_unc_cmd(launch_string: str) -> tuple[list[str], bool]:
+def _build_windows_unc_cmd(exe_path: Path, launch_string: str = "") -> list[str]:
     """Constructs the PowerShell process array execution syntax."""
-    encoded_command = _encode_powershell_command(launch_string)
-    return ["powershell.exe", "-EncodedCommand", encoded_command], False
+    encoded_command = _encode_powershell_command(exe_path, launch_string)
+    return ["powershell.exe", "-EncodedCommand", encoded_command]
