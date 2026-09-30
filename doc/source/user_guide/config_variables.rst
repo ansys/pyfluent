@@ -20,49 +20,53 @@ The following code demonstrates how to access and modify the path within the Flu
 Runtime type-checking
 ---------------------
 
-PyFluent can check the type annotations of its own APIs while they are called, so that an
-argument of the wrong type is reported at the call itself instead of surfacing later as an
-obscure failure. This is intended for development and testing, and is disabled by default.
+PyFluent's public APIs carry accurate type annotations, so you can check them at runtime with
+the type-checker of your choice, the same way you would for any other dependency. PyFluent does
+not install or activate a type-checker itself.
 
-It relies on ``beartype`` <https://beartype.readthedocs.io>`_, which is installed with the
+For example, with `beartype <https://beartype.readthedocs.io>`_, installed with the
 ``type-checking`` extra:
 
 .. code-block:: bash
 
     pip install ansys-fluent-core[type-checking]
 
-Type-checking is applied by an import hook, so it has to be requested through the
-``PYFLUENT_RUNTIME_TYPE_CHECKING`` environment variable **before** PyFluent is imported.
-Setting ``config.runtime_type_checking`` afterwards has no effect and issues a warning, because
-modules which are already imported cannot be checked retrospectively.
-
-.. code-block:: bash
-
-    export PYFLUENT_RUNTIME_TYPE_CHECKING=1
-
-The ``config.runtime_type_checking`` variable reports whether type-checking is active in the
-current process:
+apply its import hook to the module or subpackage you want checked **before** importing it:
 
 .. code-block:: python
 
-    >>> from ansys.fluent.core import config
-    >>> config.runtime_type_checking
-    True
+    >>> from beartype.claw import beartype_package
+    >>> beartype_package("ansys.fluent.core.utils.fluent_version")
+    >>> import ansys.fluent.core
 
-Passing an argument of the wrong type then raises a ``PyFluentTypeCheckingError``:
+.. note::
+
+    ``ansys`` and ``ansys.fluent`` are :pep:`420` namespace packages, so
+    ``beartype_this_package()`` cannot be used from within PyFluent itself, and
+    ``beartype_package("ansys")`` or ``beartype_package("ansys.fluent")`` will not work either.
+    Target ``ansys.fluent.core`` or one of its submodules explicitly.
+
+.. warning::
+
+    Applying the hook to the whole ``ansys.fluent.core`` package is not yet
+    supported: some modules contain ``TYPE_CHECKING``-only forward references
+    that a runtime checker cannot resolve eagerly, and checking a descriptor's
+    ``__set_name__`` can be called before the owning class is fully defined.
+    Target the specific module or subpackage whose APIs you want checked
+    instead. Broadening safe coverage across the whole package is tracked as
+    future work.
+
+A call with an argument of the wrong type then raises beartype's own exception, for example
+``BeartypeCallHintParamViolation``, at the call site instead of surfacing later as an obscure
+failure:
 
 .. code-block:: python
 
-    >>> from ansys.fluent.core import PyFluentTypeCheckingError
-    >>> try:
-    ...     some_function(wrong_type_argument)
-    ... except PyFluentTypeCheckingError as e:
-    ...     print(f"Type check failed: {e}")
-    Type check failed: ...
+    >>> some_function(wrong_type_argument)
+    Traceback (most recent call last):
+        ...
+    beartype.roar.BeartypeCallHintParamViolation: ...
 
-The ``PyFluentTypeCheckingError`` is a subclass of ``TypeError`` and wraps the underlying
-beartype validation errors to provide a consistent PyFluent-specific exception that can be
-caught and handled predictably.
-
-If the ``type-checking`` extra is not installed, PyFluent warns and continues with
-type-checking disabled.
+Some PyFluent classes rely on dynamic attribute proxying or are parameterized generics that most
+runtime type-checkers cannot check safely; these are marked internally so that any checker you
+apply skips them.

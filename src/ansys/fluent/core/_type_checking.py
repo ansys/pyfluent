@@ -21,219 +21,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Runtime type-checking support for PyFluent.
+"""Support for marking PyFluent objects as incompatible with runtime type-checking.
 
-This module is the single integration point for the third-party runtime
-type-checking library, so that the library can be swapped without touching any
-call site. ``beartype`` is the default backend.
+PyFluent does not install or activate any runtime type-checker itself. Users who
+want runtime type-checking apply their own checker (e.g. ``beartype.claw`` or
+``typeguard``'s import hook) across their own environment, the same way they
+would for any other dependency, for example::
 
-Runtime type-checking is **disabled by default**. It is activated by setting the
-``PYFLUENT_RUNTIME_TYPE_CHECKING`` environment variable to ``"1"`` before
-importing PyFluent, and is reflected by
-:attr:`ansys.fluent.core.config.runtime_type_checking`.
-
-Notes
------
-The hook has to be installed before any PyFluent submodule is imported, because
-it works by transforming module source at import time. Modules which are
-already imported are never checked. This is why the switch is read from the
-environment here instead of from the configuration object, which itself lives in
-a PyFluent submodule.
-
-This module must only depend on the standard library so that it can be imported
-as the very first statement of ``ansys.fluent.core``.
-"""
-
-from collections.abc import Callable
-import os
-import typing
-import warnings
-
-__all__ = (
-    "ENV_VAR",
-    "PACKAGE_NAME",
-    "PyFluentTypeCheckingError",
-    "install_import_hook",
-    "is_type_checking_enabled",
-    "no_runtime_type_check",
-    "runtime_type_check",
-)
-
-#: Environment variable which activates runtime type-checking.
-ENV_VAR = "PYFLUENT_RUNTIME_TYPE_CHECKING"
-
-
-class PyFluentTypeCheckingError(TypeError):
-    """Runtime type-checking violation in PyFluent API.
-
-    Raised when a PyFluent function or method is called with arguments that do
-    not match its declared type annotations, and runtime type-checking is
-    enabled via the ``PYFLUENT_RUNTIME_TYPE_CHECKING`` environment variable.
-
-    This exception wraps the underlying type-checking backend's exception,
-    providing a stable PyFluent API that is independent of the backend
-    implementation (e.g., ``beartype`` vs ``typeguard``).
-
-    Users should not need to know or import the specific type-checking library.
-
-    See Also
-    --------
-    :attr:`ansys.fluent.core.config.runtime_type_checking` : Configuration option
-    """
-
-    pass
-
-
-#: Package whose submodules are type-checked at import time.
-#:
-#: ``ansys`` and ``ansys.fluent`` are :pep:`420` namespace packages, so the
-#: package has to be named explicitly. ``beartype_this_package()`` must not be
-#: used here: it derives its target from the parent of ``__name__``, which
-#: resolves to the ``ansys.fluent`` namespace package and fails.
-PACKAGE_NAME = "ansys.fluent.core"
-
-#: Name of the active backend.
-BACKEND = "beartype"
-
-_HOOK_INSTALLED = False
-
-T = typing.TypeVar("T")
-
-
-def _beartype_install_hook() -> bool:
-    """Install the ``beartype`` import hook on the PyFluent package."""
-    from beartype import BeartypeConf
     from beartype.claw import beartype_package
 
-    beartype_package(
-        PACKAGE_NAME,
-        conf=BeartypeConf(
-            # Do not check :pep:`526` annotated variable assignments. Only
-            # callable parameters and return values are checked.
-            claw_is_pep526=False,
-        ),
-    )
-    return True
+    beartype_package("ansys.fluent.core")
 
+    import ansys.fluent.core
 
-def _beartype_decorator(obj: T) -> T:
-    """Apply the ``beartype`` decorator to ``obj``, wrapping exceptions.
+Note that ``ansys`` and ``ansys.fluent`` are :pep:`420` namespace packages, so
+``beartype_this_package()`` cannot be used for this: it derives its target from
+the parent of ``__name__``, which resolves to the ``ansys.fluent`` namespace
+package and fails. Call ``beartype_package("ansys.fluent.core")`` (or the
+equivalent for another checker) explicitly instead.
 
-    Catches backend-specific exceptions and re-raises as PyFluentTypeCheckingError
-    to maintain encapsulation and API stability.
-    """
-    import functools
+Some PyFluent classes rely on dynamic ``__getattr__``/``__setattr__`` proxying or
+are parameterized generics, which most runtime type-checkers cannot check
+safely. :func:`no_runtime_type_check` marks such objects so that any checker a
+user applies skips them.
+"""
 
-    from beartype import beartype
-    from beartype.roar import BeartypeException
-
-    # Apply beartype decorator
-    decorated = beartype(obj)
-
-    # For callables (not classes), wrap to catch backend exceptions
-    if callable(decorated) and not isinstance(decorated, type):
-
-        @functools.wraps(decorated)
-        def wrapper(*args: typing.Any, **kwargs: typing.Any) -> typing.Any:
-            try:
-                return decorated(*args, **kwargs)
-            except BeartypeException as exc:
-                raise PyFluentTypeCheckingError(
-                    f"Type-checking violation: {exc}"
-                ) from exc
-
-        return wrapper  # type: ignore[return-value]
-
-    # For classes and other objects, return as-is (claw handles them)
-    return decorated
-
-
-def _no_op_install_hook() -> bool:
-    """Do not install any import hook."""
-    return False
-
-
-def _no_op_decorator(obj: T) -> T:
-    """Return ``obj`` unchanged."""
-    return obj
-
-
-#: Supported backends. Each entry maps a backend name to its import-hook
-#: installer and its decorator, which is the only pair of operations the rest of
-#: PyFluent relies on.
-_BACKENDS: dict[str, dict[str, Callable]] = {
-    "beartype": {
-        "install_hook": _beartype_install_hook,
-        "decorator": _beartype_decorator,
-    },
-    "none": {
-        "install_hook": _no_op_install_hook,
-        "decorator": _no_op_decorator,
-    },
-}
-
-
-def is_type_checking_enabled() -> bool:
-    """Whether runtime type-checking is active in the current process.
-
-    Returns
-    -------
-    bool
-        ``True`` if the import hook has been installed.
-    """
-    return _HOOK_INSTALLED
-
-
-def install_import_hook() -> bool:
-    """Install the runtime type-checking import hook.
-
-    This is a no-op unless the ``PYFLUENT_RUNTIME_TYPE_CHECKING`` environment
-    variable is set to ``"1"``. It never raises: if the backend is not
-    installed, a warning is emitted and type-checking stays disabled.
-
-    Returns
-    -------
-    bool
-        ``True`` if the hook was installed by this call.
-    """
-    global _HOOK_INSTALLED
-    if _HOOK_INSTALLED:
-        return False
-    if os.environ.get(ENV_VAR) != "1":
-        return False
-    try:
-        _HOOK_INSTALLED = _BACKENDS[BACKEND]["install_hook"]()
-    except ImportError:
-        warnings.warn(
-            f"{ENV_VAR} is set but the '{BACKEND}' package is not installed, so "
-            "runtime type-checking is disabled. Install it with "
-            "'pip install ansys-fluent-core[type-checking]'.",
-            UserWarning,
-        )
-        _HOOK_INSTALLED = False
-    return _HOOK_INSTALLED
-
-
-def runtime_type_check(obj: T) -> T:
-    """Type-check the annotations of ``obj`` at runtime.
-
-    Use this decorator for objects which the import hook cannot reach, such as
-    classes created dynamically. It is a no-op when runtime type-checking is
-    disabled.
-
-    Parameters
-    ----------
-    obj : Callable or type
-        Object to type-check.
-
-    Returns
-    -------
-    Callable or type
-        The type-checked object, or ``obj`` unchanged when disabled.
-    """
-    if not _HOOK_INSTALLED:
-        return obj
-    return _BACKENDS[BACKEND]["decorator"](obj)
+__all__ = ("no_runtime_type_check",)
 
 
 def no_runtime_type_check(obj):
@@ -266,10 +79,6 @@ def no_runtime_type_check(obj):
     Objects that cannot have attributes assigned (e.g., types.GenericAlias,
     built-in types) are returned unchanged. This is acceptable because these
     objects are typically not directly callable or type-checkable anyway.
-
-    See Also
-    --------
-    :func:`runtime_type_check` : Enable runtime type-checking for an object
     """
     import types
 
