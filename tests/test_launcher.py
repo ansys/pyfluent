@@ -1079,11 +1079,11 @@ def test_is_windows_unc_path():
 
 
 def test_encode_powershell_command_with_exe():
-    launch_str = r'"C:\Program Files\App.exe" --config test.exe'
+    launch_str = r"C:\Program Files\App.exe 3ddp -meshing -py"
     encoded = _encode_powershell_command(launch_str)
 
     decoded = base64.b64decode(encoded.encode("ascii")).decode("utf-16-le")
-    assert decoded == r'& "C:\Program Files\App.exe" " --config test.exe'
+    assert decoded == r'& "C:\Program Files\App.exe" 3ddp -meshing -py'
 
 
 def test_encode_powershell_command_without_exe():
@@ -1107,6 +1107,10 @@ def test_launcher_behavior_with_windows_unc_path():
     if is_windows() and _is_windows_unc_path(_kwargs.get("cwd")) and bool(_launch_cmd):
         _launch_cmd, shell = _build_windows_unc_cmd(_launch_cmd)
         _kwargs.update(shell=shell)
+        assert (
+            base64.b64decode(_launch_cmd[-1].encode("ascii")).decode("utf-16-le")
+            == r'& "C:\Program Files\App.exe" 3ddp -meshing -py'
+        )
         assert _launch_cmd[0] == "powershell.exe"
         assert _launch_cmd[1] == "-EncodedCommand"
         assert _kwargs["shell"] is False
