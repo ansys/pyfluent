@@ -515,7 +515,7 @@ def rest_server_connection():
 @pytest.fixture
 def http_solver_session(rest_server_connection):
     """Solver session connected to a Fluent server over REST (HTTP)."""
-    from ansys.fluent.core.session.solver import Solver
+    from ansys.fluent.core.solver.session.solver import Solver
 
     rest_url, rest_token = rest_server_connection
     solver = Solver.from_http(url=rest_url, token=rest_token)
