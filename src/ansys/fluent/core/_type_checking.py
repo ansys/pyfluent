@@ -46,6 +46,7 @@ safely. :func:`no_runtime_type_check` marks such objects so that any checker a
 user applies skips them.
 """
 
+
 __all__ = ("no_runtime_type_check",)
 
 
