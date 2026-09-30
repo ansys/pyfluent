@@ -44,7 +44,7 @@ repos:
     args: [
       -r,
       -c, pyproject.toml,
-      src, doc, examples
+      src, doc, examples, tests
     ]
     additional_dependencies: ["tomli"]
 
