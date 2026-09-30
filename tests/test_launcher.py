@@ -21,6 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import base64
 import os
 from pathlib import Path
 import platform
@@ -60,6 +61,9 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
     _build_case_data_arguments,
     _build_journal_argument,
+    _build_windows_unc_cmd,
+    _encode_powershell_command,
+    _is_windows_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -1065,3 +1069,44 @@ def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
         assert (
             not server_info_file.exists()
         ), "File should be deleted by default when cleanup_on_exit is not specified"
+
+
+def test_is_windows_unc_path():
+    assert _is_windows_unc_path(r"\\server\share\path")
+    assert _is_windows_unc_path(r"//server/share/path")
+    assert not _is_windows_unc_path("C:\\local\\path")
+    assert not _is_windows_unc_path(None)
+
+
+def test_encode_powershell_command_with_exe():
+    launch_str = r'"C:\Program Files\App.exe" --config test.exe'
+    encoded = _encode_powershell_command(launch_str)
+
+    decoded = base64.b64decode(encoded.encode("ascii")).decode("utf-16-le")
+    assert decoded == r'& "C:\Program Files\App.exe" " --config test.exe'
+
+
+def test_encode_powershell_command_without_exe():
+    launch_str = "dir C:\\"
+    encoded = _encode_powershell_command(launch_str)
+    decoded = base64.b64decode(encoded.encode("ascii")).decode("utf-16-le")
+    assert decoded == "dir C:\\"
+
+
+def test_build_windows_unc_cmd():
+    cmd_array, shell_bool = _build_windows_unc_cmd("whoami")
+    assert cmd_array[0] == "powershell.exe"
+    assert cmd_array[1] == "-EncodedCommand"
+    assert not shell_bool
+
+
+def test_launcher_behavior_with_windows_unc_path():
+    _launch_cmd = r"C:\Program Files\App.exe 3ddp -meshing -py"
+    _kwargs = {"cwd": r"\\server\share\path"}
+
+    if is_windows() and _is_windows_unc_path(_kwargs.get("cwd")) and bool(_launch_cmd):
+        _launch_cmd, shell = _build_windows_unc_cmd(_launch_cmd)
+        _kwargs.update(shell=shell)
+        assert _launch_cmd[0] == "powershell.exe"
+        assert _launch_cmd[1] == "-EncodedCommand"
+        assert _kwargs["shell"] is False

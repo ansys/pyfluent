@@ -23,10 +23,12 @@
 
 """Provides a module for launching utilities."""
 
+import base64
 import logging
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import socket
 import subprocess
@@ -331,3 +333,39 @@ def _build_case_data_arguments(
     if case_data_file_name:
         fluent_case_data_arg += f' -data "{str(case_data_file_name)}"'
     return fluent_case_data_arg
+
+
+def _is_windows_unc_path(path: str | None) -> bool:
+    """Checks if a given path is a Windows Universal Naming Convention (UNC) path."""
+    if not path:
+        return False
+    # Normalize slashes to handle both standard and flipped UNC strings
+    normalized = str(path).replace("/", "\\")
+    return normalized.startswith(r"\\")
+
+
+def _encode_powershell_command(launch_string: str) -> str:
+    """Cleans a command string and encodes it into a UTF-16LE Base64 payload."""
+    # Strip unnecessary enclosing or leading quotes reliably
+    cleaned_string = launch_string.strip().strip('"')
+
+    # Safely separate the executable from arguments using regex
+    # Matches everything up to '.exe' (case-insensitive) as the executable
+    match = re.match(r"^(.*?\.exe)\b(.*)$", cleaned_string, re.IGNORECASE)
+
+    if match:
+        exe_path, arguments = match.groups()
+        # Wrap the executable path in quotes to safely handle space paths in PowerShell
+        powershell_payload = f'& "{exe_path.strip()}" {arguments.strip()}'
+    else:
+        powershell_payload = cleaned_string
+
+    # Base64 encode using UTF-16LE for PowerShell compatibility
+    utf16_bytes = powershell_payload.encode("utf-16-le")
+    return base64.b64encode(utf16_bytes).decode("ascii")
+
+
+def _build_windows_unc_cmd(launch_string: str) -> tuple[list[str], bool]:
+    """Constructs the PowerShell process array execution syntax."""
+    encoded_command = _encode_powershell_command(launch_string)
+    return ["powershell.exe", "-EncodedCommand", encoded_command], False

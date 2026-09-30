@@ -61,8 +61,10 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_case_data_arguments,
     _build_journal_argument,
+    _build_windows_unc_cmd,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
+    _is_windows_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -338,6 +340,13 @@ class StandaloneLauncher:
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
+        if (
+            is_windows()
+            and _is_windows_unc_path(self._kwargs.get("cwd"))
+            and bool(self._launch_cmd)
+        ):
+            self._launch_cmd, shell = _build_windows_unc_cmd(self._launch_cmd)
+            self._kwargs.update(shell=shell)
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
