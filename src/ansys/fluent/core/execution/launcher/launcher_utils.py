@@ -335,7 +335,7 @@ def _build_case_data_arguments(
     return fluent_case_data_arg
 
 
-def _is_windows_unc_path(path: str | None) -> bool:
+def _is_windows_unc_path(path: str | Path | None) -> bool:
     """Checks if a given path is a Windows Universal Naming Convention (UNC) path."""
     if not path:
         return False
