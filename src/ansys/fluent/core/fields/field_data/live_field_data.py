@@ -20,11 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""User-facing Fluent field-data access and batch request orchestration."""
+"""User-facing Fluent field-data access and batch request orchestration.
 
-from __future__ import annotations
-
-"""High-level user-facing API for retrieving field data from Fluent surfaces.
+High-level user-facing API for retrieving field data from Fluent surfaces.
 
 This module provides the primary interface for querying scalar fields, vector fields,
 surface data, and pathlines from Ansys Fluent simulations. It wraps the low-level

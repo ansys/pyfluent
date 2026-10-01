@@ -133,25 +133,25 @@ if _os.path.exists(_README_FILE):
 # Maps public name -> (module_path, attribute_name)
 # ──────────────────────────────────────────────────────────────────────────────
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
-    # fields.field_data_interfaces
+    # fields.field_data
     "PathlinesFieldDataRequest": (
-        "ansys.fluent.core.fields.field_data_interfaces",
+        "ansys.fluent.core.fields.field_data",
         "PathlinesFieldDataRequest",
     ),
     "ScalarFieldDataRequest": (
-        "ansys.fluent.core.fields.field_data_interfaces",
+        "ansys.fluent.core.fields.field_data",
         "ScalarFieldDataRequest",
     ),
     "SurfaceDataType": (
-        "ansys.fluent.core.fields.field_data_interfaces",
+        "ansys.fluent.core.fields.field_data",
         "SurfaceDataType",
     ),
     "SurfaceFieldDataRequest": (
-        "ansys.fluent.core.fields.field_data_interfaces",
+        "ansys.fluent.core.fields.field_data",
         "SurfaceFieldDataRequest",
     ),
     "VectorFieldDataRequest": (
-        "ansys.fluent.core.fields.field_data_interfaces",
+        "ansys.fluent.core.fields.field_data",
         "VectorFieldDataRequest",
     ),
     # get_build_details
@@ -163,42 +163,42 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "ansys.fluent.core.get_build_details",
         "get_build_version_string",
     ),
-    # launcher.launch_options
+    # execution.launcher.launch_options
     "FluentMode": (
-        "ansys.fluent.core.launcher.launch_options",
+        "ansys.fluent.core.execution.launcher.launch_options",
         "FluentMode",
     ),
     "UIMode": (
-        "ansys.fluent.core.launcher.launch_options",
+        "ansys.fluent.core.execution.launcher.launch_options",
         "UIMode",
     ),
     "Dimension": (
-        "ansys.fluent.core.launcher.launch_options",
+        "ansys.fluent.core.execution.launcher.launch_options",
         "Dimension",
     ),
     "Precision": (
-        "ansys.fluent.core.launcher.launch_options",
+        "ansys.fluent.core.execution.launcher.launch_options",
         "Precision",
     ),
     "FluentWindowsGraphicsDriver": (
-        "ansys.fluent.core.launcher.launch_options",
+        "ansys.fluent.core.execution.launcher.launch_options",
         "FluentWindowsGraphicsDriver",
     ),
     "FluentLinuxGraphicsDriver": (
-        "ansys.fluent.core.launcher.launch_options",
+        "ansys.fluent.core.execution.launcher.launch_options",
         "FluentLinuxGraphicsDriver",
     ),
-    # launcher.launcher
+    # execution.launcher.launcher
     "create_launcher": (
-        "ansys.fluent.core.launcher.launcher",
+        "ansys.fluent.core.execution.launcher.launcher",
         "create_launcher",
     ),
     "launch_fluent": (
-        "ansys.fluent.core.launcher.launcher",
+        "ansys.fluent.core.execution.launcher.launcher",
         "launch_fluent",
     ),
     "connect_to_fluent": (
-        "ansys.fluent.core.launcher.launcher",
+        "ansys.fluent.core.execution.launcher.launcher",
         "connect_to_fluent",
     ),
     # parametric
@@ -225,34 +225,34 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "ansys.fluent.core.session",
         "BaseSession",
     ),
-    # session_utilities
+    # session
     "Meshing": (
-        "ansys.fluent.core.session_utilities",
+        "ansys.fluent.core.session",
         "Meshing",
     ),
     "PureMeshing": (
-        "ansys.fluent.core.session_utilities",
+        "ansys.fluent.core.session",
         "PureMeshing",
     ),
     "PrePost": (
-        "ansys.fluent.core.session_utilities",
+        "ansys.fluent.core.session",
         "PrePost",
     ),
     "Solver": (
-        "ansys.fluent.core.session_utilities",
+        "ansys.fluent.core.session",
         "Solver",
     ),
     "SolverAero": (
-        "ansys.fluent.core.session_utilities",
+        "ansys.fluent.core.session",
         "SolverAero",
     ),
     "SolverIcing": (
-        "ansys.fluent.core.session_utilities",
+        "ansys.fluent.core.session",
         "SolverIcing",
     ),
-    # solver.exposure_level (lightweight, no ansys.units dependency)
+    # solver.flobject
     "ExposureLevel": (
-        "ansys.fluent.core.solver.exposure_level",
+        "ansys.fluent.core.solver.flobject",
         "ExposureLevel",
     ),
     # streaming_services.events_streaming
