@@ -313,7 +313,7 @@ def _generate_pyi_file(version) -> None:
     with open(pyi_file, "w") as f:
         for version in FluentVersion:
             f.write(
-                f"from ansys.fluent.core.generated.v{version.number}.solver.settings_{version.number}"
+                f"from ansys.fluent.core.generated.v{version.number}.solver.settings"
                 f" import root as settings_root_{version.number}\n"
             )
         f.write("\n\n")

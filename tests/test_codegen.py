@@ -58,7 +58,9 @@ def test_builtin_settings_generation_paths_and_imports(monkeypatch, tmp_path):
 
     _generate_pyi_file(FluentVersion.v271)
     pyi_contents = pyi_file.read_text(encoding="utf-8")
-    assert "ansys.fluent.core.generated.v271.solver.settings_271" in pyi_contents
+    assert (
+        "ansys.fluent.core.generated.v271.solver.settings import root" in pyi_contents
+    )
 
 
 def test_allapigen_files(new_solver_session):

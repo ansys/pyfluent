@@ -71,7 +71,7 @@ from ansys.fluent.core.workflow_old import ClassicWorkflow
 
 if TYPE_CHECKING:
     from ansys.fluent.core.fluent_connection import FluentConnection
-    from ansys.fluent.core.generated.v261.datamodel.preferences import (
+    from ansys.fluent.core.generated.v261.object_model.preferences import (
         Root as preferences_root,
     )
     import ansys.fluent.core.generated.v261.solver.settings as settings_root
