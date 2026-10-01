@@ -101,6 +101,16 @@ def is_windows():
     return platform.system() == "Windows"
 
 
+def _is_windows_unc_path(path: str | os.PathLike | None) -> bool:
+    """Check if a path is a Windows UNC path."""
+    if not path:
+        return False
+    path_str = os.fspath(path).strip()
+    return path_str.startswith(("\\\\", "//")) and not path_str.startswith(
+        ("\\\\?\\", "\\\\.\\")
+    )
+
+
 def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:
     import ansys.fluent.core as pyfluent
 
