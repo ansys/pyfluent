@@ -52,10 +52,7 @@ __all__ = ("no_runtime_type_check",)
 def no_runtime_type_check(obj):
     """Disable runtime type-checking for an object.
 
-    This function directly sets the ``__no_type_check__`` attribute that beartype
-    and other type-checking libraries recognize, without relying on the standard
-    library's :func:`typing.no_type_check` which has issues with generic class
-    definitions.
+    Uses :func:`typing.no_type_check` to mark an object so type-checkers skip it.
 
     Parameters
     ----------
@@ -65,19 +62,14 @@ def no_runtime_type_check(obj):
     Returns
     -------
     obj
-        The input object unchanged (or with ``__no_type_check__`` set if supported).
+        The input object unchanged.
     """
-    import types
+    import typing
 
-    # Skip GenericAlias objects (e.g., SettingsBase[DictStateType])
-    if isinstance(obj, types.GenericAlias):
-        return obj
-
-    # Try to set the marker; silently skip objects that don't support it
     try:
-        obj.__no_type_check__ = True  # type: ignore[attr-defined]
+        typing.no_type_check(obj)
     except (AttributeError, TypeError):
-        # Object doesn't support attribute assignment (e.g., immutable types, built-ins)
+        # Object doesn't support attribute assignment, return unchanged
         pass
 
     return obj
