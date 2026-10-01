@@ -918,7 +918,7 @@ _show_warning_orig = warnings.showwarning
 
 
 def _show_warning(message, category, *args, **kwargs):
-    from ansys.fluent.core.exceptions import DeprecatedSettingWarning
+    from ansys.fluent.core.diagnostics.exceptions import DeprecatedSettingWarning
 
     if category == DeprecatedSettingWarning:
         print(message)
@@ -947,7 +947,9 @@ class _Alias:
                 journal_str = scheme_eval(
                     "(close-output-port pyfluent-journal-str-port)"
                 )
-                from ansys.fluent.core.exceptions import DeprecatedSettingWarning
+                from ansys.fluent.core.diagnostics.exceptions import (
+                    DeprecatedSettingWarning,
+                )
 
                 if isinstance(journal_str, str):
                     warnings.warn(
@@ -1034,7 +1036,7 @@ class SettingsBase(Base, Generic[StateT]):
         if kwargs:
             # Send value of the first key only
             if len(kwargs) > 1:
-                from ansys.fluent.core.exceptions import PyFluentUserWarning
+                from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
 
                 warnings.warn(
                     f"Only the first keyword argument is used when setting state at {self.python_path}.",
@@ -2060,7 +2062,7 @@ def _get_new_keywords(obj, *args, **kwds):
                 unknown_keywords.add(k)
     for k in unknown_keywords:
         # Noisily ignore unknown keywords
-        from ansys.fluent.core.exceptions import PyFluentUserWarning
+        from ansys.fluent.core.diagnostics.exceptions import PyFluentUserWarning
 
         warnings.warn(
             f"Unknown keyword '{k}' for command '{obj.python_path}'. "
@@ -2920,7 +2922,7 @@ def get_root(
                 config.codegen_outdir / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
-            from ..exceptions import warning_for_fluent_dev_version
+            from ..diagnostics.exceptions import warning_for_fluent_dev_version
 
             warning_for_fluent_dev_version(version)
         except FileNotFoundError:

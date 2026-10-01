@@ -41,24 +41,29 @@ from deprecated.sphinx import deprecated
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.fields.live_field_data import LiveFieldData, ZoneInfo, _FieldInfo
-from ansys.fluent.core.launcher.launch_options import FluentMode
+from ansys.fluent.core.execution.launcher.launch_options import FluentMode
+from ansys.fluent.core.fields.field_data.abstract_field_data import AbstractFieldData
+from ansys.fluent.core.fields.field_data.live_field_data import (
+    LiveFieldData,
+    ZoneInfo,
+    _FieldInfo,
+)
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.launcher.standalone_launcher import (
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
         StandaloneArgsWithoutDryRunMode,
     )
-    from ansys.fluent.core.launcher.container_launcher import (
+    from ansys.fluent.core.execution.launcher.container_launcher import (
         ContainerArgsWithoutDryRunMode,
     )
-    from ansys.fluent.core.launcher.pim_launcher import PIMArgsWithoutMode
+    from ansys.fluent.core.execution.launcher.pim_launcher import PIMArgsWithoutMode
 
-from ansys.fluent.core.exceptions import (
+from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
+from ansys.fluent.core.diagnostics.journaling import Journal
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.rpvars import RPVars
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.utils.deprecate import deprecate_function
@@ -635,7 +640,9 @@ class BaseSession:
         and core counts are queried from these environments before being passed to Fluent.
         """
         cls._validate_mode_not_in_kwargs(kwargs, "from_install")
-        from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+        from ansys.fluent.core.execution.launcher.standalone_launcher import (
+            StandaloneLauncher,
+        )
 
         launcher = StandaloneLauncher(
             **kwargs, dry_run=dry_run, mode=FluentMode.from_session_class(cls)
@@ -748,7 +755,9 @@ class BaseSession:
         and core counts are queried from these environments before being passed to Fluent.
         """
         cls._validate_mode_not_in_kwargs(kwargs, "from_container")
-        from ansys.fluent.core.launcher.container_launcher import DockerLauncher
+        from ansys.fluent.core.execution.launcher.container_launcher import (
+            DockerLauncher,
+        )
 
         launcher = DockerLauncher(
             **kwargs, dry_run=dry_run, mode=FluentMode.from_session_class(cls)
@@ -822,7 +831,7 @@ class BaseSession:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
+        from ansys.fluent.core.execution.launcher.pim_launcher import PIMLauncher
 
         launcher = PIMLauncher(**kwargs, mode=FluentMode.from_session_class(cls))
         return launcher()
@@ -872,7 +881,7 @@ class BaseSession:
         TypeError
             If the session type does not match the expected session type.
         """
-        from ansys.fluent.core.launcher.launcher import connect_to_fluent
+        from ansys.fluent.core.execution.launcher.launcher import connect_to_fluent
 
         session = connect_to_fluent(
             ip=ip,
@@ -909,7 +918,7 @@ class Fields:
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
         """Initialize Fields."""
-        field_data = fluent_connection._service_factory.field_data
+        field_data: AbstractFieldData = fluent_connection._service_factory.field_data
         self._field_info = _FieldInfo(field_data)
         self.field_data = LiveFieldData(
             field_data, self._field_info, _session.scheme, get_zones_info

@@ -335,7 +335,7 @@ class LocalParametricStudy:
         capture_report_data: bool = False,
     ):
         """Run the local study in fluent."""
-        from ansys.fluent.core.launcher.launcher import launch_fluent
+        from ansys.fluent.core.execution.launcher.launcher import launch_fluent
 
         if launcher is None:
             launcher = launch_fluent

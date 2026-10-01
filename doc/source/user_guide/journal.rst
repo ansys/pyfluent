@@ -44,4 +44,4 @@ The following rules govern what is written to the journal:
 
    * Any such TUI call that does not have a settings object equivalent is written to journal as a call to a Python TUI command object.
 
-   * Meshing workflow calls are written to journal according to the classic meshing workflow Python interface.
+   * Meshing workflow calls are written to journal according to the Fluent-native meshing workflow interface.

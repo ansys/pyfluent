@@ -47,14 +47,14 @@ from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_g
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, session
 from ansys.fluent.core._grpc_services import _server_supports_v1
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.exceptions import (
+from ansys.fluent.core.diagnostics.exceptions import (
     BetaFeaturesNotEnabled,
     PyFluentDeprecationWarning,
 )
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
-from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.services.streaming_services.events_streaming import (
     IterationEndedEventInfo,
     SolverEvent,

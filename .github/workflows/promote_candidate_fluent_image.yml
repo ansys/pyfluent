@@ -101,7 +101,7 @@ jobs:
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
-          FLUENT_WEBSERVER_TOKEN: ${{ secrets.FLUENT_WEBSERVER_TOKEN }}
+          FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}
         continue-on-error: true
 
       - name: Update Fluent image

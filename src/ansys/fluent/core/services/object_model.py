@@ -511,7 +511,7 @@ class PyStateContainer(PyCallableStateObject):
                 # will fail for paths/attributes
                 # that the server does not support event subscriptions on (e.g.
                 # isReadOnly at the workflow datamodel root)
-                logger.warning(ex)
+                logger.debug(ex)
         return cached_val
 
     def get_attr(self, attrib: str) -> Any:
