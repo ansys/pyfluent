@@ -284,7 +284,7 @@ class BatchFieldData(BaseFieldData):
     >>> batch.add_requests(
     ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
     ... )
-    >>> result: BatchFieldData = batch.get_response()
+    >>> result: FieldDataSource = batch.get_response()
     >>> pressure = result.get_field_data(
     ...     ScalarFieldDataRequest(field_name="pressure", surfaces=["wall"])
     ... )
@@ -477,7 +477,7 @@ class Batch(FieldBatch):
         | ScalarFieldDataRequest
         | VectorFieldDataRequest
         | PathlinesFieldDataRequest,
-    ):
+    ) -> FieldBatch:
         """Add one or more field data requests to the batch queue.
 
         Accepts requests for surface geometry, scalar fields, vector fields, or
@@ -556,7 +556,7 @@ class Batch(FieldBatch):
             self._cache_requests.append(req)
         return self
 
-    def get_response(self) -> BatchFieldData:
+    def get_response(self) -> FieldDataSource:
         """Send all queued requests to Fluent and return the retrieved field data.
 
         Executes all requests added via :meth:`add_requests` in a single server
@@ -566,9 +566,9 @@ class Batch(FieldBatch):
 
         Returns
         -------
-        BatchFieldData
-            Container holding the retrieved field data for all requested surfaces
-            and field types.
+        FieldDataSource
+            Abstract field-data source contract implemented by the returned
+            response container.
 
         Examples
         --------
@@ -687,7 +687,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         )
         self._returned_data = _ReturnFieldData()
 
-    def new_batch(self) -> Batch:
+    def new_batch(self) -> FieldBatch:
         """Create a new :class:`Batch` for queuing multiple field data requests.
 
         Use a batch to accumulate several field data requests (scalar, vector,

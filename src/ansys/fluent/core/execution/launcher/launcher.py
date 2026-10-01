@@ -203,13 +203,13 @@ class LaunchFluentArgs(LaunchFluentArgsNoContainer, TypedDict, total=False):
 
     start_container: Literal[False] | None
     """Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-    :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
     """
     container_dict: None
     """Dictionary for Fluent Docker container configuration. If specified,
     setting ``start_container = True`` as well is redundant.
     Will launch Fluent inside a Docker container using the configuration changes specified.
-    See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    See also :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
     """
 
 

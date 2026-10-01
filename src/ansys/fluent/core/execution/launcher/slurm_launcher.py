@@ -38,7 +38,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 ...   additional_arguments="-t16 -cnf=m1:8,m2:8",
 ... )
 >>> type(slurm)
-<class 'ansys.fluent.core.launcher.slurm_launcher.SlurmFuture'>
+<class 'ansys.fluent.core.execution.launcher.slurm_launcher.SlurmFuture'>
 >>> slurm.pending(), slurm.running(), slurm.done() # before Fluent is launched
 (True, False, False)
 >>> slurm.pending(), slurm.running(), slurm.done() # after Fluent is launched
@@ -52,8 +52,8 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 
 # Callable slurm launcher
 
->>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
+>>> from ansys.fluent.core.execution.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.execution.launcher.launch_options import LaunchMode, FluentMode
 
 >>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING)
 >>> slurm_meshing_session = slurm_meshing_launcher()

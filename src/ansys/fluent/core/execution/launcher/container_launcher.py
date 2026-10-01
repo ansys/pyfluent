@@ -26,8 +26,8 @@
 Examples
 --------
 
->>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
+>>> from ansys.fluent.core.execution.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.execution.launcher.launch_options import LaunchMode, FluentMode
 
 >>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING)
 >>> container_meshing_session = container_meshing_launcher()
@@ -82,7 +82,7 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
 
     container_dict: dict[str, Any] | None
     """Configuration dictionary for launching Fluent inside a Docker container. See also
-    :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
     """
     py: bool | None
     """If True, runs Fluent in Python mode. Defaults to None."""
@@ -180,7 +180,7 @@ class DockerLauncher:
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         container_dict : dict, optional
             Configuration dictionary for launching Fluent inside a Docker container. See also
-            :mod:`~ansys.fluent.core.launcher.fluent_container`.
+            :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
         dry_run : bool, optional
             If True, does not launch Fluent but prints configuration information instead. If dry running a
             container start, this method will return the configured ``container_dict``. Defaults to False.

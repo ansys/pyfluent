@@ -19,3 +19,22 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+"""Solver session classes for full, add-on, and specialized Fluent workflows.
+
+The :class:`Solver` session provides the standard Fluent solver API and
+inherits from :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
+The :class:`SolverAero`, :class:`SolverIcing`, :class:`SolverLite`, and
+:class:`PrePost` session classes specialize ``Solver`` for their respective
+workflows. These concrete session classes are re-exported by
+:mod:`ansys.fluent.core.execution.session` and the top-level
+``ansys.fluent.core`` package.
+"""
+
+from ansys.fluent.core.solver.session.solver import Solver
+from ansys.fluent.core.solver.session.solver_aero import SolverAero
+from ansys.fluent.core.solver.session.solver_icing import SolverIcing
+from ansys.fluent.core.solver.session.solver_lite import SolverLite
+from ansys.fluent.core.solver.session.solver_pre_post import PrePost
+
+__all__ = ("Solver", "SolverAero", "SolverIcing", "SolverLite", "PrePost")

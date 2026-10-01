@@ -21,7 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Meshing module for managing Fluent meshing workflows."""
+"""Fluent meshing sessions and workflow helpers.
+
+This package exposes the :class:`Meshing` and :class:`PureMeshing` session
+classes, along with helpers for creating and loading Fluent meshing workflows.
+Both session classes inherit from the internal ``BaseMeshing`` class, which
+extends :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
+"""
 
 import warnings
 
@@ -387,6 +393,8 @@ class LoadMeshingWorkflow:
 
 
 __all__ = [
+    "Meshing",
+    "PureMeshing",
     "WatertightMeshing",
     "FaultTolerantMeshing",
     "TwoDimensionalMeshing",
