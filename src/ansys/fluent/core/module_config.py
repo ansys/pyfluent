@@ -37,9 +37,7 @@ import sys
 from typing import Any, Generic, TypeVar, cast
 import warnings
 
-from ansys.fluent.core._type_checking import (
-    no_runtime_type_check,
-)
+from ansys.fluent.core._type_checking import no_runtime_type_check
 
 __all__ = ("config",)
 

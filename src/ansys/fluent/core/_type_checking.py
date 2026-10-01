@@ -21,17 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Support for marking PyFluent objects as incompatible with runtime type-checking.
+"""Mark PyFluent objects to skip runtime type-checking.
 
-PyFluent does not install or activate any runtime type-checker itself. Users who
-want runtime type-checking apply their own checker (e.g. ``beartype.claw`` or
-``typeguard``'s import hook) across their own environment, the same way they
-would for any other dependency, for example::
+PyFluent ships type annotations but does not auto-install type-checkers.
+Users apply their own checker (e.g., ``beartype.claw`` or ``typeguard``)
+and can mark incompatible objects with :func:`no_runtime_type_check`.
+
+Example::
 
     from beartype.claw import beartype_package
-
     beartype_package("ansys.fluent.core")
-
     import ansys.fluent.core
 
 Note that ``ansys`` and ``ansys.fluent`` are :pep:`420` namespace packages, so
@@ -53,11 +52,6 @@ __all__ = ("no_runtime_type_check",)
 def no_runtime_type_check(obj):
     """Disable runtime type-checking for an object.
 
-    Marks an object so that beartype (or other type-checking backends) skip
-    validation. This is useful for disabling type-checks on specific callables
-    or classes that may cause issues with type-checking or have incompatible
-    type annotations.
-
     This function directly sets the ``__no_type_check__`` attribute that beartype
     and other type-checking libraries recognize, without relying on the standard
     library's :func:`typing.no_type_check` which has issues with generic class
@@ -65,37 +59,25 @@ def no_runtime_type_check(obj):
 
     Parameters
     ----------
-    obj : Callable, type, or object
-        Object to mark for skipping runtime type-checking. Can be a function,
-        class, method, or other callable.
+    obj
+        Object to mark (function, class, method, etc.).
 
     Returns
     -------
-    Callable, type, or object
-        The input object unchanged, or with the ``__no_type_check__`` attribute
-        set if the object supports attribute assignment.
-
-    Notes
-    -----
-    Objects that cannot have attributes assigned (e.g., types.GenericAlias,
-    built-in types) are returned unchanged. This is acceptable because these
-    objects are typically not directly callable or type-checkable anyway.
+    obj
+        The input object unchanged (or with ``__no_type_check__`` set if supported).
     """
     import types
 
     # Skip GenericAlias objects (e.g., SettingsBase[DictStateType])
-    # as they don't support attribute assignment
     if isinstance(obj, types.GenericAlias):
         return obj
 
-    # Try to set __no_type_check__ directly on objects that support it
-    # Skip objects that don't support attribute assignment
-    if hasattr(obj, "__dict__") or isinstance(obj, type):
-        try:
-            obj.__no_type_check__ = True  # type: ignore[attr-defined]
-        except (AttributeError, TypeError):
-            # Object doesn't support attribute assignment, return unchanged
-            # This is acceptable - such objects typically aren't type-checkable anyway
-            pass
+    # Try to set the marker; silently skip objects that don't support it
+    try:
+        obj.__no_type_check__ = True  # type: ignore[attr-defined]
+    except (AttributeError, TypeError):
+        # Object doesn't support attribute assignment (e.g., immutable types, built-ins)
+        pass
 
     return obj
