@@ -276,7 +276,7 @@ class TUIGenerator:
     def generate(self) -> None:
         """Generate TUI API classes."""
         api_tree = {}
-        Path(self._tui_file).parent.mkdir(exist_ok=True)
+        Path(self._tui_file).parent.mkdir(parents=True, exist_ok=True)
         if self._verbose:
             print(f"{str(self._tui_file)}")
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:

@@ -52,9 +52,9 @@ from ansys.fluent.core.utils.fluent_version import (
 def test_builtin_settings_generation_paths_and_imports(monkeypatch, tmp_path):
     monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
 
-    py_file, pyi_file = _get_builtin_settings_paths(FluentVersion.v271)
-    assert py_file == tmp_path / "v271" / "solver" / "settings_builtin.py"
-    assert pyi_file == tmp_path / "v271" / "solver" / "settings_builtin.pyi"
+    py_file, pyi_file = _get_builtin_settings_paths()
+    assert py_file == tmp_path / "solver" / "settings_builtin.py"
+    assert pyi_file == tmp_path / "solver" / "settings_builtin.pyi"
 
     _generate_pyi_file(FluentVersion.v271)
     pyi_contents = pyi_file.read_text(encoding="utf-8")
@@ -105,13 +105,11 @@ def test_codegen_datamodel_directory_routing(tmp_path, module_name, expected_dir
     assert get_codegen_datamodel_dir(tmp_path, module_name) == tmp_path / expected_dir
 
 
-def test_api_tree_data_path_is_versioned(tmp_path, monkeypatch):
+def test_api_tree_data_path_is_shared(tmp_path, monkeypatch):
     monkeypatch.setattr(pyfluent.config, "codegen_outdir", tmp_path)
     from ansys.fluent.core.codegen.api_tree import get_api_tree_data_file_path
 
-    assert get_api_tree_data_file_path("271") == (
-        tmp_path / "v271" / "api_tree" / "api_objects.json"
-    )
+    assert get_api_tree_data_file_path() == tmp_path / "api_tree" / "api_objects.json"
 
 
 @pytest.mark.fluent_version(">=26.1")
@@ -230,7 +228,7 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     version_dir = codegen_outdir / f"v{version}"
     generated_paths = list(version_dir.iterdir())
     assert len(generated_paths) == 2
-    output_dir = "object_model" if mode == "meshing" else mode
+    output_dir = mode
     assert set(p.name for p in generated_paths) == {"api_tree.pickle", output_dir}
     solver_paths = list((version_dir / output_dir).iterdir())
     assert len(solver_paths) == 1
