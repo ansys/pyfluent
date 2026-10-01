@@ -57,24 +57,26 @@ from ansys.fluent.core.utils.fluent_version import (
 
 if TYPE_CHECKING:
     from ansys.fluent.core import meshing as _meshing_workflow_type
-    from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
-    from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
+    from ansys.fluent.core.generated.v261.meshing.meshing import Root as meshing_root
+    from ansys.fluent.core.generated.v261.meshing.meshing_utilities import (
         Root as meshing_utilities_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.meshing_workflow import (
+    from ansys.fluent.core.generated.v261.meshing.meshing_workflow import (
         Root as meshing_workflow_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.part_management import (
+    from ansys.fluent.core.generated.v261.meshing.part_management import (
         Root as partmanagement_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.pm_file_management import (
+    from ansys.fluent.core.generated.v261.meshing.pm_file_management import (
         Root as pmfilemanagement_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.preferences import (
+    from ansys.fluent.core.generated.v261.meshing.tui import main_menu
+    from ansys.fluent.core.generated.v261.object_model.preferences import (
         Root as preferences_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
-    from ansys.fluent.core.generated.meshing.tui_261 import main_menu
+    from ansys.fluent.core.generated.v261.object_model.workflow import (
+        Root as workflow_root,
+    )
 
 
 pyfluent_logger = logging.getLogger("pyfluent.general")

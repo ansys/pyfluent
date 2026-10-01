@@ -33,7 +33,7 @@ from typing import Any
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen import StaticInfoType, get_codegen_datamodel_dir
 from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
@@ -233,10 +233,13 @@ class DataModelStaticInfo:
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (
-            pyfluent.config.codegen_outdir / f"datamodel_{version}"
+        datamodel_dir = get_codegen_datamodel_dir(
+            pyfluent.codegen.get_codegen_version_dir(
+                version, pyfluent.config.codegen_outdir
+            ),
+            datamodel_file_name_map[rules_save_name],
         ).resolve()
-        datamodel_dir.mkdir(exist_ok=True)
+        datamodel_dir.mkdir(parents=True, exist_ok=True)
         self.file_name = (
             datamodel_dir / f"{datamodel_file_name_map[rules_save_name]}.py"
         ).resolve()
@@ -774,7 +777,12 @@ def _generate_workflow_task_stubs(
         except Exception as exc:
             print(f"Warning: could not enumerate tasks for {cls_name}: {exc}")
 
-    datamodel_dir = (pyfluent.config.codegen_outdir / f"datamodel_{version}").resolve()
+    datamodel_dir = get_codegen_datamodel_dir(
+        pyfluent.codegen.get_codegen_version_dir(
+            version, pyfluent.config.codegen_outdir
+        ),
+        "meshing_workflow",
+    ).resolve()
     _write_workflow_task_stub(
         datamodel_dir / "meshing_workflow_tasks.pyi",
         "TaskObject-type inventory per PyFluent-native meshing workflow interface (Fluent 27R1+).\n"
