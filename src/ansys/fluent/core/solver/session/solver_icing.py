@@ -37,15 +37,15 @@ from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.solver.session.solver import Solver
 
 
 class SolverIcing(Solver):
     """Fluent solver session with the Icing add-on loaded.
 
-    Extends :class:`~ansys.fluent.core.session.solver.Solver` by loading the
+    Extends :class:`~ansys.fluent.core.solver.session.solver.Solver` by loading the
     ``flicing`` datamodel module and exposing the Icing application object.
-    All attributes of :class:`~ansys.fluent.core.session.solver.Solver` are
+    All attributes of :class:`~ansys.fluent.core.solver.session.solver.Solver` are
     available here. See the :ref:`flicing datamodel
     <ref_solver_datamodel_flicing>` for its complete hierarchy and operations.
 

@@ -37,16 +37,16 @@ from typing import Any
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.object_model import PySimpleMenuGeneric
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.solver.session.solver import Solver
 
 
 class SolverAero(Solver):
     """Fluent solver session with the Aero add-on loaded.
 
-    Extends :class:`~ansys.fluent.core.session.solver.Solver` by loading the
+    Extends :class:`~ansys.fluent.core.solver.session.solver.Solver` by loading the
     ``aero`` Scheme add-on at construction time and exposing the Aero project
     and simulation management API.  All attributes of
-    :class:`~ansys.fluent.core.session.solver.Solver` are available here.
+    :class:`~ansys.fluent.core.solver.session.solver.Solver` are available here.
 
     Attributes
     ----------

@@ -21,23 +21,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+"""Fluent meshing session classes.
 
-"""Encapsulates a Fluent server for pre-post session connection (:class:`PrePost`).
+This package exposes two meshing session types:
 
-Inheritance
------------
-::
+* :class:`~ansys.fluent.core.meshing.session.meshing.Meshing` supports switching
+    the running Fluent process to solver mode with ``switch_to_solver()``.
+* :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` provides
+    meshing capabilities without solver switching, for workflows where meshing
+    and solving run separately.
 
-    BaseSession (private)
-    └── Solver
-        └── PrePost      ← this class
+Both classes inherit the common meshing API from the internal ``BaseMeshing``
+class, which extends :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
 """
 
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.meshing.session.meshing import Meshing
+from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
 
-
-class PrePost(Solver):
-    """Fluent pre-post session.
-
-    All public API is provided by :class:`~ansys.fluent.core.session.solver.Solver`.
-    """
+__all__ = ("Meshing", "PureMeshing")

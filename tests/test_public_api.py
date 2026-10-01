@@ -101,7 +101,6 @@ def test_ansys_fluent_core_public_api():
         "rpvars",
         "search",
         "services",
-        "session",
         "enable",
         "get_default_config",
         "get_logger",

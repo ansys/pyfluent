@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 #
 #
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -21,27 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Meshing-only Fluent session (:class:`PureMeshing`).
+"""Solver session classes for full, add-on, and specialized Fluent workflows.
 
-Inheritance
------------
-::
-
-    BaseSession (private)
-    └── BaseMeshing (private)
-        └── PureMeshing          ← this class
+The :class:`Solver` session provides the standard Fluent solver API and
+inherits from :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
+The :class:`SolverAero`, :class:`SolverIcing`, :class:`SolverLite`, and
+:class:`PrePost` session classes specialize ``Solver`` for their respective
+workflows. These concrete session classes are re-exported by
+:mod:`ansys.fluent.core.execution.session` and the top-level
+``ansys.fluent.core`` package.
 """
 
-from ansys.fluent.core.session.base_meshing import BaseMeshing
+from ansys.fluent.core.solver.session.solver import Solver
+from ansys.fluent.core.solver.session.solver_aero import SolverAero
+from ansys.fluent.core.solver.session.solver_icing import SolverIcing
+from ansys.fluent.core.solver.session.solver_lite import SolverLite
+from ansys.fluent.core.solver.session.solver_pre_post import PrePost
 
-
-class PureMeshing(BaseMeshing):
-    """Fluent meshing session without solver-switching capability.
-
-    Designed for deployments where meshing and solving run as separate
-    processes (e.g. containerised pipelines).  All public API is provided
-    by :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing`.
-
-    Use :class:`~ansys.fluent.core.session.meshing.Meshing` when you also
-    need :meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
-    """
+__all__ = ("Solver", "SolverAero", "SolverIcing", "SolverLite", "PrePost")
