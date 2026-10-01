@@ -68,7 +68,7 @@ def no_runtime_type_check(obj):
 
     try:
         typing.no_type_check(obj)
-    except (AttributeError, TypeError):
+    except (AttributeError, TypeError, ValueError):
         # Object doesn't support attribute assignment, return unchanged
         pass
 
