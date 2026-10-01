@@ -39,7 +39,7 @@ from ansys.fluent.core.diagnostics.exceptions import (
     InvalidArgument,
     PyFluentDeprecationWarning,
 )
-from ansys.fluent.core.launcher.error_warning_messages import (
+from ansys.fluent.core.execution.launcher.error_warning_messages import (
     LIGHTWEIGHT_MODE_IGNORED_WITH_CASE_DATA,
     LIGHTWEIGHT_MODE_IGNORED_WITH_JOURNAL,
 )

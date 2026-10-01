@@ -28,14 +28,14 @@ import os
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher import launcher_utils
+from ansys.fluent.core.execution.launcher.launch_options import (
     Dimension,
     FluentMode,
     Precision,
     UIMode,
 )
-from ansys.fluent.core.scheduler import build_parallel_options, load_machines
+from ansys.fluent.core.execution.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)

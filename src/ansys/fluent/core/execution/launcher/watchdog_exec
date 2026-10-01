@@ -27,17 +27,17 @@ if __name__ == "__main__":  # noqa: C901
         launcher_pid = int(sys.argv[1])
 
         # Configure logger for Watchdog process
-        log_config = pyfluent.logger.get_default_config()
+        log_config = pyfluent.diagnostics.logger.get_default_config()
         log_config["handlers"]["pyfluent_file"][
             "filename"
         ] = f"pyfluent_watchdog_{watchdog_id}.log"
 
-        logger = pyfluent.logger.get_logger("pyfluent.watchdog")
+        logger = pyfluent.diagnostics.logger.get_logger("pyfluent.watchdog")
 
         if pyfluent.config.watchdog_debug:
-            pyfluent.logger.enable(custom_config=log_config)
+            pyfluent.diagnostics.logger.enable(custom_config=log_config)
             logger.setLevel("DEBUG")
-            logger.handlers = pyfluent.logger.get_logger(
+            logger.handlers = pyfluent.diagnostics.logger.get_logger(
                 "pyfluent.general"
             ).handlers  # using same handlers as already defined
 

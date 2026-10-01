@@ -29,7 +29,7 @@ container setup helpers, remote launch support, executable discovery, and the
 Fluent version information used by launchers.
 """
 
-from ..utils.fluent_version import FluentVersion  # noqa: F401
+from ...utils.fluent_version import FluentVersion  # noqa: F401
 from .fluent_container import (  # noqa: F401
     configure_container_dict,
     start_fluent_container,

@@ -44,25 +44,28 @@ from typing import TYPE_CHECKING, Any, TypedDict
 from typing_extensions import Required, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.error_warning_messages import (
+from ansys.fluent.core.execution.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
-from ansys.fluent.core.launcher.fluent_container import (
+from ansys.fluent.core.execution.launcher.fluent_container import (
     configure_container_dict,
     dict_to_str,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     UIMode,
     _get_argvals_and_session,
     get_remote_grpc_options,
 )
-from ansys.fluent.core.launcher.launcher_utils import ComposeConfig, is_windows
-from ansys.fluent.core.launcher.process_launch_string import (
+from ansys.fluent.core.execution.launcher.launcher_utils import (
+    ComposeConfig,
+    is_windows,
+)
+from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -365,7 +368,7 @@ class DockerLauncher:
                 self.argvals["start_watchdog"] = True
             if self.argvals["start_watchdog"]:
                 logger.debug("Launching Watchdog for Fluent container...")
-                import ansys.fluent.core.launcher.watchdog as watchdog
+                import ansys.fluent.core.execution.launcher.watchdog as watchdog
 
                 watchdog.launch(
                     os.getpid(),

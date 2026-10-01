@@ -45,13 +45,13 @@ from typing import TYPE_CHECKING, Any, TypedDict
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.file_transfer_service import PimFileTransferService
-from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.launch_options import (
     Dimension,
     FluentMode,
     _get_argvals_and_session,
 )
+from ansys.fluent.core.file_transfer_service import PimFileTransferService
+from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim

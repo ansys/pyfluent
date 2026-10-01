@@ -27,8 +27,10 @@ import os
 import socket
 import sys
 
-from ansys.fluent.core.scheduler.load_machines import load_machines  # noqa: F401
-from ansys.fluent.core.scheduler.machine_list import MachineList
+from ansys.fluent.core.execution.scheduler.load_machines import (  # noqa: F401
+    load_machines,
+)
+from ansys.fluent.core.execution.scheduler.machine_list import MachineList
 
 _ncoresOpt = "-t%n%"
 _machinesOpt = " -cnf=%machineList%"
