@@ -747,7 +747,7 @@ def _generate_workflow_task_stubs(
     from ansys.fluent.core import meshing as meshing_module
 
     # Enables the 'TopologyBasedMeshing' workflow.
-    meshing.enable_beta_features()
+    meshing.enable_fluent_beta_features()
 
     # Look up api_help_text per task once from the meshing_workflow static info.
     task_help: dict[str, str] = {}
