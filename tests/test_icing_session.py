@@ -25,7 +25,7 @@ from types import SimpleNamespace
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.session.solver_icing import SolverIcing
+from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
 
 def test_icing_datamodel_module_path(monkeypatch):
