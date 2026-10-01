@@ -700,8 +700,6 @@ def _write_workflow_task_stub(
     task_help: dict[str, str] | None = None,
 ) -> None:
     """Write a ``.py`` stub with one task-mixin class per workflow wrapper."""
-    if not tasks_by_workflow:
-        return
     task_help = task_help or {}
     stub_file.parent.mkdir(parents=True, exist_ok=True)
     with open(stub_file, "w", encoding="utf8") as f:
@@ -765,7 +763,11 @@ def _generate_workflow_task_stubs(
         if help_text:
             task_help[task_name] = help_text
 
-    tasks_by_workflow: dict[str, list[str]] = {}
+    # Pre-seed every workflow so the stub is always written, even if some
+    # (or all) workflows below fail to enumerate tasks.
+    tasks_by_workflow: dict[str, list[str]] = {
+        alias_prefix: [] for _, alias_prefix in _ENHANCED_MESHING_WORKFLOWS
+    }
     for cls_name, alias_prefix in _ENHANCED_MESHING_WORKFLOWS:
         wf_cls = getattr(meshing_module, cls_name, None)
         if wf_cls is None:

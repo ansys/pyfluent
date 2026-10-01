@@ -62,6 +62,8 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> slurm_solver_session = slurm_solver_launcher()
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor
 import logging
@@ -69,7 +71,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
-from typing import Any, Generic, TypedDict
+from typing import TYPE_CHECKING, Any, Generic, TypedDict
 from warnings import warn
 
 from typing_extensions import TypeVar, Unpack
@@ -97,12 +99,14 @@ from ansys.fluent.core.execution.launcher.process_launch_string import (
     _generate_launch_string,
 )
 from ansys.fluent.core.execution.launcher.server_info import _get_server_info_file_names
-from ansys.fluent.core.meshing.session.meshing import Meshing
-from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.solver.session.solver import Solver
-from ansys.fluent.core.solver.session.solver_aero import SolverAero
-from ansys.fluent.core.solver.session.solver_icing import SolverIcing
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.meshing.session.meshing import Meshing
+    from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.solver.session.solver import Solver
+    from ansys.fluent.core.solver.session.solver_aero import SolverAero
+    from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
 logger = logging.getLogger("pyfluent.launcher")
 

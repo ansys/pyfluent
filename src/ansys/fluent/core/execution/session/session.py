@@ -106,11 +106,6 @@ from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.utils.deprecate import deprecate_function
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-try:
-    from ansys.fluent.core.solver.settings import root
-except Exception:
-    root = Any
-
 logger = logging.getLogger("pyfluent.general")
 
 

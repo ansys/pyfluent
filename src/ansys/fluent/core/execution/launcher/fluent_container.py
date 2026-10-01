@@ -87,7 +87,6 @@ from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import ComposeConfig
-from ansys.fluent.core.execution.session.session import _parse_server_info_file
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -641,6 +640,10 @@ def start_fluent_container(
                         " The container was stopped."
                     )
             else:
+                from ansys.fluent.core.execution.session.session import (
+                    _parse_server_info_file,
+                )
+
                 _, _, password = _parse_server_info_file(str(host_server_info_file))
 
                 return port, password, container

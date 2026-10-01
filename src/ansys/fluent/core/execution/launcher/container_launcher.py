@@ -65,7 +65,6 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
-from ansys.fluent.core.execution.session.session import _parse_server_info_file
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -126,6 +125,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 def _get_server_info_from_container(config_dict):
     """Retrieve the server info from a specified file in a container."""
+    from ansys.fluent.core.execution.session.session import _parse_server_info_file
 
     host_server_info_file = config_dict["host_server_info_file"]
 

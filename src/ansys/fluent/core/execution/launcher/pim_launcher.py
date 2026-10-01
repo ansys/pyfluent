@@ -50,7 +50,6 @@ from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
     _get_argvals_and_session,
 )
-from ansys.fluent.core.execution.session.session import _parse_server_info_file
 from ansys.fluent.core.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -232,6 +231,10 @@ def get_ip_port_password(
                         f"with {wait_time_between_retries}s between retries."
                     ) from ex
                 time.sleep(wait_time_between_retries)
+
+        from ansys.fluent.core.execution.session.session import (
+            _parse_server_info_file,
+        )
 
         return _parse_server_info_file(os.path.join(tmpdir, filename))
 
