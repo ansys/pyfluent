@@ -67,11 +67,11 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
+    no_type_check,
 )
 import warnings
 import weakref
 
-from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -479,7 +479,7 @@ def _is_deprecated(obj) -> bool | None:
     )
 
 
-@no_runtime_type_check
+@no_type_check
 class Base:
     """Provides the base class for settings and command objects.
 
@@ -1019,7 +1019,7 @@ def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None)
     return cls(name, parent)
 
 
-@no_runtime_type_check
+@no_type_check
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -1273,7 +1273,7 @@ _type_name_map = {
 }
 
 
-@no_runtime_type_check
+@no_type_check
 class Group(SettingsBase[DictStateType]):
     """A ``Group`` container object.
 
@@ -1451,7 +1451,7 @@ class Group(SettingsBase[DictStateType]):
                 raise
 
 
-@no_runtime_type_check
+@no_type_check
 class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on flproxy."""
 
@@ -1548,7 +1548,7 @@ class NamedObjectWildcardPath(WildcardPath):
 ChildTypeT = TypeVar("ChildTypeT")
 
 
-@no_runtime_type_check
+@no_type_check
 class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     """A ``NamedObject`` container is a container object similar to a Python dictionary
     object. Generally, many such objects can be created with different names.
@@ -1875,7 +1875,7 @@ def _convert_to_target_units(path, state, quantity, target_units):
         raise UnhandledQuantity(path, state) from ex
 
 
-@no_runtime_type_check
+@no_type_check
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
@@ -2095,7 +2095,7 @@ def _get_new_keywords(obj, *args, **kwds):
     return newkwds
 
 
-@no_runtime_type_check
+@no_type_check
 class Action(Base):
     """Intermediate Base class for Command and Query class."""
 

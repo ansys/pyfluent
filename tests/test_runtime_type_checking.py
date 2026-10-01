@@ -21,42 +21,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Tests for the ``no_runtime_type_check`` marker.
+"""Tests for runtime type-checking with external checkers.
 
-PyFluent does not install or activate any runtime type-checker itself; a user
-who wants one applies it themselves (e.g. via ``beartype.claw``) over their own
-environment. These tests only cover the marker that lets such a checker skip
-PyFluent's dynamic proxy/generic classes, plus a smoke test simulating that
-user-applied workflow.
+PyFluent does not install or activate any runtime type-checker itself. Users who
+want runtime type-checking apply their own checker (e.g. via ``beartype.claw``)
+over their own environment. PyFluent's proxy classes are marked with
+``@typing.no_type_check`` to skip validation by external checkers.
 """
 
 import subprocess
 import sys
 
 import pytest
-
-from ansys.fluent.core import _type_checking
-
-
-def test_no_runtime_type_check_marks_a_function():
-    def fn(x: int) -> int:
-        return x
-
-    assert _type_checking.no_runtime_type_check(fn).__no_type_check__ is True
-
-
-def test_no_runtime_type_check_marks_a_class():
-    @_type_checking.no_runtime_type_check
-    class Foo:
-        pass
-
-    assert Foo.__no_type_check__ is True
-
-
-def test_no_runtime_type_check_skips_generic_alias():
-    # e.g. SettingsBase[DictStateType], which does not support attribute assignment.
-    alias = list[int]
-    assert _type_checking.no_runtime_type_check(alias) is alias
 
 
 def _run(source: str) -> str:
@@ -77,7 +53,7 @@ def test_user_applied_checker_does_not_crash_on_a_checked_submodule():
     ``ansys.fluent.core`` package: some other modules still contain
     ``TYPE_CHECKING``-only forward references that a runtime checker cannot
     resolve eagerly, which is a pre-existing, tracked limitation independent
-    of this marker mechanism.
+    of the ``@typing.no_type_check`` markers.
     """
     pytest.importorskip("beartype")
     source = (

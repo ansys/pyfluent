@@ -34,10 +34,8 @@ import inspect
 import os
 from pathlib import Path
 import sys
-from typing import Any, Generic, TypeVar, cast
+from typing import Any, Generic, TypeVar, cast, no_type_check
 import warnings
-
-from ansys.fluent.core._type_checking import no_runtime_type_check
 
 __all__ = ("config",)
 
@@ -48,7 +46,7 @@ TConfig = TypeVar("TConfig", bound="Config")
 # ``TConfig`` is bound to a forward reference which cannot be resolved while the
 # ``Config`` class body is still executing, which is exactly when
 # ``__set_name__`` runs.
-@no_runtime_type_check
+@no_type_check
 class _ConfigDescriptor(Generic[TConfig]):
     """Descriptor for managing configuration attributes."""
 
