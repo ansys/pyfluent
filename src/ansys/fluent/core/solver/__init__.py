@@ -45,7 +45,7 @@ try:
         __all__ as _settings_all,
     )
     from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
-except (ImportError, AttributeError, SyntaxError) as ex:
+except (ImportError, AttributeError, SyntaxError, ValueError) as ex:
     _settings_all = []
     logger.debug(ex)
 

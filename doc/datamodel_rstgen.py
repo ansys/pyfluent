@@ -2,8 +2,11 @@
 
 import importlib
 import logging
+from pathlib import Path
 
 from rstgen import _get_file_or_folder, _write_datamodel_index_doc, generate
+
+from ansys.fluent.core.codegen import get_codegen_datamodel_dir
 
 logger = logging.getLogger("pyfluent.datamodel")
 
@@ -23,8 +26,10 @@ def generate_meshing_datamodels():
     ]
     for meshing_datamodel in meshing_datamodels:
         try:
+            version_dir = _get_file_or_folder(mode="meshing", is_datamodel=True)
+            output_dir = get_codegen_datamodel_dir(Path(version_dir), meshing_datamodel)
             datamodel = importlib.import_module(
-                f"ansys.fluent.core.generated.{_get_file_or_folder(mode='meshing', is_datamodel=True)}.{meshing_datamodel}"
+                f"ansys.fluent.core.generated.{output_dir}.{meshing_datamodel}"
             )
             if datamodel:
                 meshing_datamodel_roots.append(datamodel.Root)
@@ -44,7 +49,7 @@ def generate_solver_datamodels():
     for solver_datamodel in solver_datamodels:
         try:
             datamodel = importlib.import_module(
-                f"ansys.fluent.core.generated.{_get_file_or_folder(mode='solver', is_datamodel=True)}.{solver_datamodel}"
+                f"ansys.fluent.core.generated.{_get_file_or_folder(mode='solver', is_datamodel=True)}.object_model.{solver_datamodel}"
             )
             if datamodel:
                 solver_datamodel_roots.append(datamodel.Root)

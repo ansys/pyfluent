@@ -34,7 +34,7 @@ def test_settings_stub():
     # intellisense engine while typing in editors like vscode. This test validates the
     # information contained in a type-stub file.
     version = "252"
-    stub_file = config.codegen_outdir / "solver" / f"settings_{version}.pyi"
+    stub_file = config.codegen_outdir / f"v{version}" / "solver" / "settings.pyi"
     assert stub_file.exists()
     with open(stub_file) as f:
         module_def = ast.parse(f.read())
