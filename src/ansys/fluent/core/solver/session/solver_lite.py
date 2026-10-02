@@ -34,19 +34,19 @@ Inheritance
 
 from typing import Any
 
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.solver.session.solver import Solver
 
 
 class SolverLite(Solver):
     """Lightweight Fluent solver session.
 
     Currently provides the same interface as
-    :class:`~ansys.fluent.core.session.solver.Solver` plus
+    :class:`~ansys.fluent.core.solver.session.solver.Solver` plus
     :meth:`switch_to_full_solver` to upgrade to a full solver session.
 
     .. note::
         This class is a work-in-progress.  Its feature set is expected to
-        differ from :class:`~ansys.fluent.core.session.solver.Solver` in a
+        differ from :class:`~ansys.fluent.core.solver.session.solver.Solver` in a
         future release.
     """
 

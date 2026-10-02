@@ -18,6 +18,7 @@ SKIP_DIRECTORIES = {
     "expressions",
     "generated",
     "rest",
+    "services",
     "ui",
     "utils",
 }

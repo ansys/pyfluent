@@ -33,7 +33,6 @@ from ansys.fluent.core.execution.launcher.error_handler import (
     IpPortNotProvided,
 )
 from ansys.fluent.core.fluent_connection import PortNotProvided
-from ansys.fluent.core.session.session import _parse_server_info_file
 
 
 def _get_server_info_file_names(use_tmpdir=True) -> tuple[str, str]:
@@ -102,6 +101,7 @@ def _get_server_info(
 ):
     """Get server connection information of an already running session.
     Returns (ip, port, password) or (unix_socket, password)"""
+    from ansys.fluent.core.execution.session.session import _parse_server_info_file
     from ansys.fluent.core.module_config import config
 
     if not (ip and port) and not server_info_file_name:

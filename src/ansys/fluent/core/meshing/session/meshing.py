@@ -34,21 +34,21 @@ Inheritance
 
 from typing import TYPE_CHECKING, Any
 
-from ansys.fluent.core.session.base_meshing import BaseMeshing
-from ansys.fluent.core.session.session import BaseSession
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.execution.session.session import BaseSession
+from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
+from ansys.fluent.core.solver.session.solver import Solver
 
 
 class Meshing(BaseMeshing):
     """Fluent meshing session with the ability to switch to a solver.
 
-    Extends :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing` by
+    Extends :class:`~ansys.fluent.core.meshing.session.base_meshing.BaseMeshing` by
     adding :meth:`switch_to_solver`, which transitions the running Fluent
     process from meshing mode to solver mode and returns a
-    :class:`~ansys.fluent.core.session.solver.Solver` instance.
+    :class:`~ansys.fluent.core.solver.session.solver.Solver` instance.
 
     All attributes and workflow factory methods of
-    :class:`~ansys.fluent.core.session.base_meshing.BaseMeshing` are available
+    :class:`~ansys.fluent.core.meshing.session.base_meshing.BaseMeshing` are available
     here.  After :meth:`switch_to_solver` is called this object is deactivated
     and must not be used.
     """

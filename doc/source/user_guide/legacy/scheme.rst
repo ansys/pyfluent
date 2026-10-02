@@ -13,7 +13,7 @@ Scheme code evaluation
    invoking a Scheme command via the interface shown here is not recorded in a Fluent
    Python journal.
 
-Each session provides a :obj:`~ansys.fluent.core.session.base.BaseSession.scheme` property for executing Fluent's
+Each session provides a :obj:`~ansys.fluent.core.execution.session.session.BaseSession.scheme` property for executing Fluent's
 scheme code.
 
 Examples

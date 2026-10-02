@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Fluent solver session with Aero add-on (:class:`SolverAero`).
+"""Fluent solver session with Icing add-on (:class:`SolverIcing`).
 
 Inheritance
 -----------
@@ -29,29 +29,30 @@ Inheritance
 
     BaseSession (private)
     └── Solver
-        └── SolverAero      ← this class
+        └── SolverIcing     ← this class
 """
 
+import importlib
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.object_model import PySimpleMenuGeneric
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.solver.session.solver import Solver
 
 
-class SolverAero(Solver):
-    """Fluent solver session with the Aero add-on loaded.
+class SolverIcing(Solver):
+    """Fluent solver session with the Icing add-on loaded.
 
-    Extends :class:`~ansys.fluent.core.session.solver.Solver` by loading the
-    ``aero`` Scheme add-on at construction time and exposing the Aero project
-    and simulation management API.  All attributes of
-    :class:`~ansys.fluent.core.session.solver.Solver` are available here.
+    Extends :class:`~ansys.fluent.core.solver.session.solver.Solver` by loading the
+    ``flicing`` datamodel module and exposing the Icing application object.
+    All attributes of :class:`~ansys.fluent.core.solver.session.solver.Solver` are
+    available here. See the :ref:`flicing datamodel
+    <ref_solver_datamodel_flicing>` for its complete hierarchy and operations.
 
     Attributes
     ----------
-    aero
-        Root of the Aero datamodel application object (``Case.App``).
+    icing
+        Root of the Icing datamodel application object (``Case.App``).
     """
 
     def __init__(
@@ -62,7 +63,7 @@ class SolverAero(Solver):
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
     ):
-        """SolverAero session.
+        """SolverIcing session.
 
         Parameters
         ----------
@@ -86,40 +87,19 @@ class SolverAero(Solver):
             launcher_args=launcher_args,
         )
         self._flserver_root = None
-        # TODO: Update Aero DM
-        scheme_eval.eval("(aero-load-addon)")
-
-    def new_project(self, project_name: str):
-        """Define a new project."""
-        # TODO: Update Aero DM
-        self.scheme.eval(f"""(prjapp-new-project-cb #f "{project_name}")""")
-
-    def open_project(self, project_name: str):
-        """Open a saved project."""
-        # TODO: Update Aero DM
-        self.scheme.eval(f"""(prjapp-project-open-project-cb #f "{project_name}")""")
-
-    def new_simulation(self, case_file_name: str):
-        """Add a new simulation by loading a case-file."""
-        # TODO: Update Aero DM
-        self.scheme.eval(
-            f"""(gui-aero-project-add-workflow-cb #f "{case_file_name}" #f #f)"""
-        )
-
-    def open_simulation(self, simulation_file_name: str):
-        """Open a saved simulation."""
-        # TODO: Update Aero DM
-        self.scheme.eval(
-            f"""(aero-server-project-open-simulation "{simulation_file_name}")"""
-        )
 
     @property
     def _flserver(self):
         """Root datamodel object."""
-        # TODO: Have the generated files for this first before implementing this property
-        return PySimpleMenuGeneric(service=self._se_service, rules="flserver")
+        if self._flserver_root is None:
+            se = self._datamodel_service_se
+            dm_module = importlib.import_module(
+                f"ansys.fluent.core.generated.v{self._version}.object_model.flicing"
+            )
+            self._flserver_root = dm_module.Root(se, "flserver", [])
+        return self._flserver_root
 
     @property
-    def aero(self):
-        """Instance of aero (Case.App) -> root datamodel object."""
+    def icing(self):
+        """Instance of icing (Case.App) -> root datamodel object."""
         return self._flserver.Case.App
