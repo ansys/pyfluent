@@ -34,7 +34,7 @@ Inheritance
 
 from typing import Any
 
-from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.services.object_model import PySimpleMenuGeneric
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.solver.session.solver import Solver

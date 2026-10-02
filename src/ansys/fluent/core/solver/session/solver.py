@@ -70,7 +70,7 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow_old import ClassicWorkflow
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.fluent_connection import FluentConnection
+    from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.generated.v261.object_model.preferences import (
         Root as preferences_root,
     )

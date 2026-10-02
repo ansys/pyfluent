@@ -44,6 +44,7 @@ from typing import TYPE_CHECKING, Any, TypedDict
 from typing_extensions import Required, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
+from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
@@ -65,7 +66,6 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
-from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:

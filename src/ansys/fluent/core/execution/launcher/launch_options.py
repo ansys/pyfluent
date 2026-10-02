@@ -29,7 +29,7 @@ from typing import TYPE_CHECKING, TypeVar
 import warnings
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.fluent_connection import FluentConnection
+    from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.meshing.session.meshing import Meshing
     from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
     from ansys.fluent.core.solver.session.solver import Solver
