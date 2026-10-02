@@ -26,8 +26,8 @@
 Examples
 --------
 
->>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
+>>> from ansys.fluent.core.execution.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.execution.launcher.launch_options import LaunchMode, FluentMode
 
 >>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode=FluentMode.MESHING)
 >>> standalone_meshing_session = standalone_meshing_launcher()
@@ -78,11 +78,11 @@ import ansys.fluent.core.execution.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.session.meshing import Meshing
-    from ansys.fluent.core.session.pure_meshing import PureMeshing
-    from ansys.fluent.core.session.solver import Solver
-    from ansys.fluent.core.session.solver_aero import SolverAero
-    from ansys.fluent.core.session.solver_icing import SolverIcing
+    from ansys.fluent.core.meshing.session.meshing import Meshing
+    from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.solver.session.solver import Solver
+    from ansys.fluent.core.solver.session.solver_aero import SolverAero
+    from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
 
 class StandaloneArgsWithoutDryRunMode(

@@ -26,8 +26,8 @@
 Examples
 --------
 
->>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
+>>> from ansys.fluent.core.execution.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.execution.launcher.launch_options import LaunchMode, FluentMode
 
 >>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING)
 >>> pim_meshing_session = pim_meshing_launcher()
@@ -45,23 +45,25 @@ from typing import TYPE_CHECKING, Any, TypedDict
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
+from ansys.fluent.core.connectivity.file_transfer_service import PimFileTransferService
+from ansys.fluent.core.connectivity.fluent_connection import (
+    FluentConnection,
+    _get_max_c_int_limit,
+)
 from ansys.fluent.core.execution.launcher.launch_options import (
     Dimension,
     FluentMode,
     _get_argvals_and_session,
 )
-from ansys.fluent.core.file_transfer_service import PimFileTransferService
-from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
-from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.session.meshing import Meshing
-    from ansys.fluent.core.session.pure_meshing import PureMeshing
-    from ansys.fluent.core.session.solver import Solver
-    from ansys.fluent.core.session.solver_aero import SolverAero
-    from ansys.fluent.core.session.solver_icing import SolverIcing
+    from ansys.fluent.core.meshing.session.meshing import Meshing
+    from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.solver.session.solver import Solver
+    from ansys.fluent.core.solver.session.solver_aero import SolverAero
+    from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
 
 class PIMArgsWithoutMode(
@@ -232,6 +234,10 @@ def get_ip_port_password(
                         f"with {wait_time_between_retries}s between retries."
                     ) from ex
                 time.sleep(wait_time_between_retries)
+
+        from ansys.fluent.core.execution.session.session import (
+            _parse_server_info_file,
+        )
 
         return _parse_server_info_file(os.path.join(tmpdir, filename))
 

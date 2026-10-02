@@ -94,7 +94,7 @@ jobs:
         env:
           VERSION: ${{ matrix.version }}
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
+          cat src/ansys/fluent/core/generated/v${VERSION}/fluent_version.py
 
       - name: Install again after codegen
         run: |

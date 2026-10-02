@@ -19,3 +19,32 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+"""Launch Fluent processes and manage their execution environment.
+
+This package groups the lower-level components used to start Fluent, connect
+to running instances, create PyFluent sessions, and configure parallel or
+container-based execution:
+
+* :mod:`launcher` handles local, remote, and scheduler-based launch workflows.
+* :mod:`session` provides :class:`BaseSession` and :class:`FileSession`; solver
+    and meshing session classes are defined in their respective packages.
+* :mod:`docker` provides Docker and Podman Compose support.
+* :mod:`scheduler` builds parallel execution options from allocated resources.
+
+Most applications can use the public launch API from
+``ansys.fluent.core``. The subpackages here are available for lower-level
+workflows and are loaded on demand.
+"""
+
+from importlib import import_module
+
+__all__ = ("docker", "launcher", "scheduler", "session")
+
+
+def __getattr__(name: str):
+    if name not in __all__:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    module = import_module(f".{name}", __name__)
+    globals()[name] = module
+    return module

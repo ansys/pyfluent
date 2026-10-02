@@ -26,8 +26,8 @@
 Examples
 --------
 
->>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
+>>> from ansys.fluent.core.execution.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.execution.launcher.launch_options import LaunchMode, FluentMode
 
 >>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING)
 >>> container_meshing_session = container_meshing_launcher()
@@ -44,6 +44,7 @@ from typing import TYPE_CHECKING, Any, TypedDict
 from typing_extensions import Required, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
+from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
@@ -65,16 +66,14 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.session.meshing import Meshing
-    from ansys.fluent.core.session.pure_meshing import PureMeshing
-    from ansys.fluent.core.session.solver import Solver
-    from ansys.fluent.core.session.solver_aero import SolverAero
-    from ansys.fluent.core.session.solver_icing import SolverIcing
+    from ansys.fluent.core.meshing.session.meshing import Meshing
+    from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.solver.session.solver import Solver
+    from ansys.fluent.core.solver.session.solver_aero import SolverAero
+    from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
 
 class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
@@ -82,7 +81,7 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
 
     container_dict: dict[str, Any] | None
     """Configuration dictionary for launching Fluent inside a Docker container. See also
-    :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
     """
     py: bool | None
     """If True, runs Fluent in Python mode. Defaults to None."""
@@ -126,6 +125,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 def _get_server_info_from_container(config_dict):
     """Retrieve the server info from a specified file in a container."""
+    from ansys.fluent.core.execution.session.session import _parse_server_info_file
 
     host_server_info_file = config_dict["host_server_info_file"]
 
@@ -180,7 +180,7 @@ class DockerLauncher:
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         container_dict : dict, optional
             Configuration dictionary for launching Fluent inside a Docker container. See also
-            :mod:`~ansys.fluent.core.launcher.fluent_container`.
+            :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
         dry_run : bool, optional
             If True, does not launch Fluent but prints configuration information instead. If dry running a
             container start, this method will return the configured ``container_dict``. Defaults to False.

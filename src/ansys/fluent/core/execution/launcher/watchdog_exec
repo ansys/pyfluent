@@ -15,7 +15,7 @@ if __name__ == "__main__":  # noqa: C901
         from watchdog import IDLE_PERIOD, WATCHDOG_INIT_FILE
 
         import ansys.fluent.core as pyfluent
-        from ansys.fluent.core.fluent_connection import (
+        from ansys.fluent.core.connectivity.fluent_connection import (
             FluentConnection,
             _pid_exists,
             get_container,
