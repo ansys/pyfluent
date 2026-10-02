@@ -24,7 +24,7 @@
 """Module to launch the PyFluent Watchdog to monitor PyFluent and the Fluent server.
 
 Should not be used manually, PyFluent automatically manages it.
-See :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()` `start_watchdog` argument for more details.
+See :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent()` `start_watchdog` argument for more details.
 """
 
 import os

@@ -24,6 +24,7 @@
 """Abstract contracts for Fluent solution-variable services."""
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 import numpy as np
 
@@ -40,7 +41,7 @@ class AbstractSolutionVariableInfo(ABC):
     @abstractmethod
     def get_variables_info(
         self, zone_names: list[str], domain_name: str | None = "mixture"
-    ):
+    ) -> Any:
         """Get SVARs info for zones in the domain.
 
         Parameters
@@ -58,7 +59,7 @@ class AbstractSolutionVariableInfo(ABC):
         pass
 
     @abstractmethod
-    def get_zones_info(self):
+    def get_zones_info(self) -> Any:
         """Get Zones info.
 
         Parameters
@@ -131,18 +132,18 @@ class AbstractData(ABC):
 
     @property
     @abstractmethod
-    def domain(self):
+    def domain(self) -> str | None:
         """Domain name."""
         pass
 
     @property
     @abstractmethod
-    def zone_names(self):
+    def zone_names(self) -> list[str]:
         """Zone names."""
         pass
 
     @property
     @abstractmethod
-    def data(self):
+    def data(self) -> dict[str, np.ndarray]:
         """Solution variable data."""
         pass

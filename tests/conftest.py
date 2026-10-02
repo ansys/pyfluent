@@ -39,9 +39,11 @@ import pytest
 import requests
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.connectivity.file_transfer_service import (
+    ContainerFileTransferStrategy,
+)
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -515,7 +517,7 @@ def rest_server_connection():
 @pytest.fixture
 def http_solver_session(rest_server_connection):
     """Solver session connected to a Fluent server over REST (HTTP)."""
-    from ansys.fluent.core.session.solver import Solver
+    from ansys.fluent.core.solver.session.solver import Solver
 
     rest_url, rest_token = rest_server_connection
     solver = Solver.from_http(url=rest_url, token=rest_token)

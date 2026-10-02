@@ -28,7 +28,7 @@ Notes
 
 For configuration details, see :func:`configure_container_dict`, and for a list of additional Docker container run
 configuration options that can also be specified through the
-``container_dict`` argument for :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`,
+``container_dict`` argument for :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent()`,
 see documentation for `Docker run`_.
 
 For the Fluent Docker container to be able to find license information, the license file or server needs to be specified
@@ -88,7 +88,6 @@ from ansys.fluent.core.execution.launcher.error_handler import (
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
-from ansys.fluent.core.session.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
@@ -433,7 +432,7 @@ def configure_container_dict(
     Notes
     -----
     This function should usually not be called directly, it is automatically used by
-    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
+    :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent()`.
 
     For a list of additional Docker container run configuration options that can also be specified using
     ``container_dict``, see `Docker run`_ documentation.
@@ -550,7 +549,7 @@ def start_fluent_container(
     Uses :func:`configure_container_dict` to parse the optional ``container_dict`` configuration.
 
     This function should usually not be called directly, it is automatically used by
-    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
+    :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent()`.
     """
 
     compose_config = compose_config if compose_config else ComposeConfig()
@@ -641,6 +640,10 @@ def start_fluent_container(
                         " The container was stopped."
                     )
             else:
+                from ansys.fluent.core.execution.session.session import (
+                    _parse_server_info_file,
+                )
+
                 _, _, password = _parse_server_info_file(str(host_server_info_file))
 
                 return port, password, container

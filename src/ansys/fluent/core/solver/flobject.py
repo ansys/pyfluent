@@ -2933,9 +2933,14 @@ def get_root(
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
+            import ansys.fluent.core as pyfluent
+
+            version_dir = pyfluent.codegen.get_codegen_version_dir(
+                version, config.codegen_outdir
+            )
             settings = _load_module(
                 f"settings_{version}",
-                config.codegen_outdir / "solver" / f"settings_{version}.py",
+                version_dir / "solver" / "settings.py",
             )
             root_cls = settings.root
             from ..diagnostics.exceptions import warning_for_fluent_dev_version

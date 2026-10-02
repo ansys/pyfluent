@@ -24,13 +24,13 @@
 """Internal base class for all meshing sessions.
 
 This module is private.  Do not import from it directly; use
-:class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` or
-:class:`~ansys.fluent.core.session.meshing.Meshing` instead.
+:class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` or
+:class:`~ansys.fluent.core.meshing.session.meshing.Meshing` instead.
 
 Both leaf classes are lightweight and add no further public API beyond what
 is defined here.  ``PureMeshing`` targets deployments where meshing and
 solving run as separate processes; ``Meshing`` additionally exposes
-:meth:`~ansys.fluent.core.session.meshing.Meshing.switch_to_solver`.
+:meth:`~ansys.fluent.core.meshing.session.meshing.Meshing.switch_to_solver`.
 """
 
 import functools
@@ -40,41 +40,43 @@ from typing import TYPE_CHECKING, Any, cast
 
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.data_transfer import transfer_case
+from ansys.fluent.core.connectivity.data_transfer import transfer_case
+from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import BetaFeaturesNotEnabled
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.module_config import config
-from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
-from ansys.fluent.core.services.streaming_services.events_streaming import MeshingEvent
-from ansys.fluent.core.session._shared import (
+from ansys.fluent.core.execution.session._shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
-from ansys.fluent.core.session.session import BaseSession
+from ansys.fluent.core.execution.session.session import BaseSession
+from ansys.fluent.core.module_config import config
+from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
+from ansys.fluent.core.services.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
 )
 
 if TYPE_CHECKING:
     from ansys.fluent.core import meshing as _meshing_workflow_type
-    from ansys.fluent.core.generated.datamodel_261.meshing import Root as meshing_root
-    from ansys.fluent.core.generated.datamodel_261.meshing_utilities import (
+    from ansys.fluent.core.generated.v261.meshing.meshing import Root as meshing_root
+    from ansys.fluent.core.generated.v261.meshing.meshing_utilities import (
         Root as meshing_utilities_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.meshing_workflow import (
+    from ansys.fluent.core.generated.v261.meshing.meshing_workflow import (
         Root as meshing_workflow_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.part_management import (
+    from ansys.fluent.core.generated.v261.meshing.part_management import (
         Root as partmanagement_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.pm_file_management import (
+    from ansys.fluent.core.generated.v261.meshing.pm_file_management import (
         Root as pmfilemanagement_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.preferences import (
+    from ansys.fluent.core.generated.v261.meshing.tui import main_menu
+    from ansys.fluent.core.generated.v261.object_model.preferences import (
         Root as preferences_root,
     )
-    from ansys.fluent.core.generated.datamodel_261.workflow import Root as workflow_root
-    from ansys.fluent.core.generated.meshing.tui_261 import main_menu
+    from ansys.fluent.core.generated.v261.object_model.workflow import (
+        Root as workflow_root,
+    )
 
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
@@ -84,8 +86,8 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 class BaseMeshing(BaseSession):
     """Base class providing the full public API for all meshing sessions.
 
-    Both :class:`~ansys.fluent.core.session.pure_meshing.PureMeshing` and
-    :class:`~ansys.fluent.core.session.meshing.Meshing` inherit from this
+    Both :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` and
+    :class:`~ansys.fluent.core.meshing.session.meshing.Meshing` inherit from this
     class and add no further public methods.
     """
 
