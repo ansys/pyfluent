@@ -21,8 +21,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from types import SimpleNamespace
+
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.solver.session.solver_icing import SolverIcing
+
+
+def test_icing_datamodel_module_path(monkeypatch):
+    imports = []
+    root = object()
+
+    def import_module(name):
+        imports.append(name)
+        return SimpleNamespace(Root=lambda service, rules, path: root)
+
+    monkeypatch.setattr(
+        "ansys.fluent.core.solver.session.solver_icing.importlib.import_module",
+        import_module,
+    )
+    session = SimpleNamespace(
+        _flserver_root=None, _datamodel_service_se=object(), _version="271"
+    )
+
+    assert SolverIcing._flserver.fget(session) is root
+    assert imports == ["ansys.fluent.core.generated.v271.object_model.flicing"]
 
 
 def test_icing_session():
