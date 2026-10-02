@@ -1,168 +1,124 @@
-# Architecture map for AI agents
+# Architecture map
 
-This document is intentionally small but repo-specific. It gives agents the fastest path to the right feature area and the most relevant validation target.
+Follow `AGENTS.md`. Source paths below are relative to `src/ansys/fluent/core`; test targets and execution requirements live in `devel/agents/testing.md`.
 
-## 1. Product shape
+## Project orchestration
 
-PyFluent exposes a Pythonic API on top of Ansys Fluent. The major layers are:
+Read the diagrams for relationships, then use the owner table for exact edit locations. Arrows show conceptual control/data flow, not class inheritance or every import; dashed arrows show supporting inputs. Fluent itself is an external process, not Python code in this repository.
 
-1. Fluent launch and session management
-2. Meshing and solver sessions
-3. Settings and datamodel surfaces
-4. Generated API layer
-5. Field data, reduction, and solution-variable workflows
-6. File transfer, file sessions, and reader workflows
-7. Search, workflows, scheduling, remote execution, and API utilities
+### Runtime paths
 
-## 2. Core package map
+```mermaid
+flowchart TB
+	user["User scripts / examples / integrations"] --> public["Public exports: ansys.fluent.core"]
+	public --> launch["execution/launcher: launch or connect"]
+	platforms["Standalone / containers / PIM / Slurm"] --> launch
+	resources["execution/docker + scheduler: containers / machine allocation"] -.-> launch
+	launch --> connection["connectivity: FluentConnection / channel / cleanup"]
+	launch --> sessions["execution/session: BaseSession / active context"]
+	connection --> factories["Version-aware gRPC and high-level service factories"]
+	factories --> sessions
+	sessions --> meshing["meshing/session: Meshing / PureMeshing"]
+	sessions --> solver["solver/session: Solver and variants"]
+	meshing --> workflows["Pre-set meshing workflows + shared workflow wrappers"]
+	meshing --> model["Datamodel / TUI wrappers + datamodel cache"]
+	workflows --> model
+	solver --> settings["solver/flobject: settings objects / built-ins"]
+	solver --> model
+	sessions --> fields["fields: field data / solver reductions and solution variables"]
+	sessions --> streaming["Events / monitors / transcript / data streaming"]
+	settings --> services["services: abstractions and high-level wrappers"]
+	model --> services
+	fields --> services
+	streaming --> services
+	services --> grpc["_grpc_services: backend implementations / protocol versions"]
+	proto["External ansys-api-fluent: generated protobuf / gRPC schemas"] -.-> grpc
+	grpc --> channel["gRPC channel managed by FluentConnection"]
+	channel --> fluent["External Fluent server"]
+	user --> http["REST client + independent HttpSolver"]
+	http --> restsettings["services/rest_settings + shared flobject settings runtime"]
+	restsettings --> transport["rest: client / HTTP transport"]
+	transport --> web["External Fluent web server: 27.1+"]
+	user --> offline["FileSession + file_reader: case/data-backed APIs"]
+	files["Case / data assets"] --> offline
+	transfer["connectivity: file/data transfer strategies"] -.-> sessions
+	transfer -.-> files
+```
 
-- `src/ansys/fluent/core/__init__.py` — top-level package exports and public entry points
-- `src/ansys/fluent/core/launcher` — launch orchestration and mode selection
-- `src/ansys/fluent/core/session` — concrete session classes: solver, meshing, file, pre/post
-- `src/ansys/fluent/core/meshing` — meshing workflows and workflow wrappers
-- `src/ansys/fluent/core/solver` — solver API surface and generated settings entry points
-- `src/ansys/fluent/core/fields` — field data, reduction, solution variables
-- `src/ansys/fluent/core/services` — service interfaces and backend wrappers
-- `src/ansys/fluent/core/file_transfer_service.py` — file transfer service
-- `src/ansys/fluent/core/file_reader` — case/data file readers
-- `src/ansys/fluent/core/search.py` — search API across object hierarchy
-- `src/ansys/fluent/core/workflow.py`, `workflow_old.py` — workflow wrappers and compatibility paths
-- `src/ansys/fluent/core/local_parametric_study.py` — parametric study support
-- `src/ansys/fluent/core/scheduler` — scheduler integration
-- `src/ansys/fluent/core/rest` and `src/ansys/fluent/core/ui` — REST / UI helpers
-- `src/ansys/fluent/core/utils` — general utilities and setup helpers
-- `src/ansys/fluent/core/generated` — generated API layer; treat as generation-managed unless a task explicitly requires otherwise
-- `codegen` — generation scripts and schema-driven workflows
+- Settings, datamodel and TUI are distinct surfaces; they share session/service infrastructure but have different wrappers and schemas. Fields use runtime APIs, not generated settings wrappers.
+- Expression/naming helpers support variable access; RP/Scheme helpers use services. Parametric studies orchestrate sessions; system coupling integrates solver operations with external coupled workflows.
+- UI integrates session web/Jupyter presentation. Configuration, diagnostics, utilities, shared types and example downloads support the runtime across layers; search reads the generated API index rather than being a transport.
 
-## 3. Feature-to-entry-point map
+### Generation and repository tooling
 
-Use this as the first-stop lookup before reading code. Each section follows the same repo-aligned template:
+Paths in this diagram are repository-relative. Detailed commands and prerequisites remain in `devel/agents/workflows.md` rather than being duplicated here.
 
-- module path
-- public entry point
-- feature intent
-- tests to run
-- generated/version-specific notes
+```mermaid
+flowchart LR
+	driver["codegen/allapigen.py: live generation driver"] --> live["Meshing + solver-icing sessions: static info / workflow tasks"]
+	live --> generators["src/ansys/fluent/core/codegen: schema generators"]
+	generators --> output["generated: versioned settings / datamodel / TUI / task stubs + shared built-ins / API index"]
+	output -.-> runtime["Runtime wrappers / built-in settings / search"]
+	output -.-> docs["doc: API RST generators + Sphinx sources / gallery"]
+	examples["examples: end-to-end user workflows"] --> runtime
+	examples --> docs
+	tests["tests: unit / live Fluent / version-mode / external integration"] --> runtime
+	tests --> generators
+	packaging["pyproject.toml + requirements: dependencies / extras / build and tool config"] -.-> runtime
+	packaging -.-> tests
+	ci[".github/workflows + .ci + Makefile: build / generate / test / docs / release lanes"] --> driver
+	ci --> tests
+	ci --> docs
+	ci --> packaging
+	guidance["AGENTS.md + devel/agents: routing / validation / operating rules"] -.-> work["Agent / contributor work"]
+	notes["devel: engineering notes / investigations"] -.-> work
+	work --> runtime
+	work --> generators
+	work --> tests
+```
 
-### 3.1 Launch and session lifecycle
+## Source owners and entry points
 
-- module path: `src/ansys/fluent/core/launcher`, `src/ansys/fluent/core/session`, `src/ansys/fluent/core/__init__.py`
-- public entry point: `pyfluent.launch_fluent()`, session classes such as `Solver`, `Meshing`, `PureMeshing`, `FileSession`, and `PrePost`
-- feature intent: create Fluent sessions, switch runtime modes, and manage lifecycle, health checks, and command routing
-- tests to run: `tests/test_launcher.py`, `tests/test_launcher_remote.py`, `tests/test_fluent_session.py`, `tests/test_session.py`, `tests/test_pre_post_session.py`
-- generated/version-specific notes: session behavior is runtime-sensitive and often depends on Fluent version and launch mode; prefer the session and launcher entry points before reading the generated tree
+| Feature / public surface | Source owner |
+| --- | --- |
+| Public exports, legacy aliases; configuration/environment defaults | `__init__.py`; `module_config.py` |
+| `launch_fluent()`, `connect_to_fluent()`; standalone/container/PIM/Slurm | `execution/launcher/launcher.py`; `execution/launcher/standalone_launcher.py`, `execution/launcher/container_launcher.py`, `execution/launcher/pim_launcher.py`, `execution/launcher/slurm_launcher.py` |
+| Base session, `using()`, file-backed `FileSession` | `execution/session/session.py`; `execution/session/file.py` |
+| gRPC connection lifetime, health checks, cleanup; file/data transfer | `connectivity/fluent_connection.py`; `connectivity/file_transfer_service.py`, `connectivity/data_transfer.py` |
+| `Meshing`, `PureMeshing`; pre-set workflows and solver transitions | `meshing/session`; `meshing/meshing_workflow.py`, `meshing/meshing_workflow_old.py`; shared `workflow.py`, `workflow_old.py` |
+| `Solver`, `SolverAero`, `SolverIcing`, `SolverLite`, `PrePost`; solve-mode APIs | `solver/session`; settings runtime in `solver/flobject.py` |
+| `solver.settings`; built-in settings exports from `ansys.fluent.core.solver` | `solver/flobject.py`, `solver/settings_builtin_bases.py`, `solver/settings_builtin_data.py`; `services/settings.py` |
+| Meshing datamodel roots; `session.tui` | `services/object_model.py`, `_data_model_cache.py`; `services/text_interface.py` |
+| `session.fields.field_data`, `.new_batch()`; solver fields: `.reduction`, `.solution_variable_data`, `.solution_variable_info` | `fields/field_data/live_field_data.py`; `fields/reduction/reduction.py`; `fields/solution_variables/solution_variables.py` |
+| Service abstractions/wrappers; events, monitors, transcripts and datamodel/field streaming | `services`; `services/streaming_services`; gRPC implementations in `_grpc_services` |
+| Case/data readers and file-backed fields | `file_reader`; `execution/session/file.py` |
+| `search(...)`, logging, journaling, exceptions | `diagnostics`; search implementation `diagnostics/search.py`, API index generator `codegen/api_tree.py` |
+| Parametric studies; coupled simulation | `local_parametric_study.py`; `system_coupling.py` |
+| Batch service calls; separately, queued/remote execution | `services/batch_ops.py`; `execution/scheduler`, `execution/docker`, launchers above |
+| Expression construction/evaluation, RP variables, Scheme, file S-expressions | `expressions`; `rpvars.py`; `services/scheme_interpreter.py`; `file_reader/lispy.py` |
+| `rest.connect_to_webserver()`, `FluentRestClient`, `HttpSolver` | `rest/client.py`, `rest/transport.py`, `services/rest_settings.py`, `solver/session/http_solver.py` |
+| Web/Jupyter UI; utilities/setup; example downloads/assets | `ui`; `utils`; `examples` |
+| Generated settings/datamodel/TUI/built-ins/search index; generation implementation | `generated`; `codegen/settingsgen.py`, `codegen/datamodelgen.py`, `codegen/tuigen.py`, `codegen/builtin_settingsgen.py`, `codegen/api_tree.py` (repository-root `codegen/allapigen.py` is the live-Fluent driver) |
+| Shared types/launcher arguments; descriptor naming for expressions/fields/solution variables | `_types.py`; `_variable_strategies` |
+| Legacy standalone datamodel-server helper, not a normal session entry point | `_stand_alone_datamodel_client/_datamodel_client.py`; verify its old imports/dependencies before use |
 
-### 3.2 Meshing workflows
+### Runtime contracts
 
-- module path: `src/ansys/fluent/core/meshing`, `src/ansys/fluent/core/session/meshing.py`
-- public entry point: `pyfluent.launch_fluent(mode="meshing")`, `Meshing`, `PureMeshing`
-- feature intent: meshing mode workflows, meshing-specific operations, and transitions between mesh and solver workflows
-- tests to run: `tests/test_meshing_workflow.py`, `tests/test_new_meshing_workflow.py`, `tests/test_meshing_utilities.py`, `tests/test_pure_mesh_vs_mesh_workflow.py`, `tests/test_server_meshing_workflow.py`
-- generated/version-specific notes: workflow implementation may vary by Fluent packaging and mesh mode compatibility; validate against the nearest meshing tests before assuming a single path
+- `FluentMode` in `execution/launcher/launch_options.py` accepts `meshing`, `pure_meshing`, `solver` (default), `solver_icing`, `solver_aero`, `pre_post`. The first five route to their corresponding sessions; `pre_post` currently maps to `Solver`. Do not infer launch support from the existence of a session class.
+- `BaseSession` and `using()` live in execution; mode-specific sessions live in meshing/solver. `FileSession` is file-backed, not a live solver subclass; `HttpSolver` is independent of `BaseSession` and gRPC infrastructure.
+- Solver settings objects use `solver/flobject.py` over a settings service. `get_root()` builds classes from static info when `config.use_runtime_python_classes` is enabled or the generated settings file is missing; otherwise it loads version-specific generated classes.
+- Generated output uses version directories under `generated`, plus shared `generated/solver` and `generated/api_tree` data. Versions present in a local checkout depend on generation/install state; do not assume every supported version is generated locally.
+- Legacy names registered in `__init__.py` are compatibility aliases, not current source locations. Start from the implementation path and check exports separately.
 
-### 3.3 Solver and solver variants
-
-- module path: `src/ansys/fluent/core/solver`, `src/ansys/fluent/core/session/solver.py`, `src/ansys/fluent/core/generated`
-- public entry point: `pyfluent.launch_fluent(mode="solver")`, `Solver`, `SolverAero`, `SolverIcing`, `PrePost`
-- feature intent: solve-mode sessions, solver-specific APIs, and generated object-model surfaces
-- tests to run: `tests/test_solution_variables.py`, `tests/test_solvermode`, `tests/test_tui_api.py`, `tests/test_public_api.py`, `tests/test_settings_api.py`
-- generated/version-specific notes: many solver and settings entry points are generation-managed; treat the generated layer as authoritative unless the task explicitly requires a runtime wrapper change
-
-### 3.4 Field data, reduction, and solution variables
-
-- module path: `src/ansys/fluent/core/fields`, `src/ansys/fluent/core/services`
-- public entry point: `ansys.fluent.core.fields.FieldData`, `FieldDataBatch`, `Reduction`, `SolutionVariableData`, `SolutionVariableInfo`
-- feature intent: access live field data, compute reductions, and inspect solution-variable metadata and values
-- tests to run: `tests/test_field_data.py`, `tests/test_reduction.py`, `tests/test_solution_variables.py`, `tests/test_physical_quantities.py`
-- generated/version-specific notes: field and solution-variable paths are usually part of the runtime API surface rather than generated model wrappers, but they can still depend on service behavior and Fluent schema versioning
-
-### 3.5 Settings and datamodel
-
-- module path: `src/ansys/fluent/core/generated`, `src/ansys/fluent/core/services/object_model.py`, session settings surfaces
-- public entry point: runtime session settings object tree and datamodel interfaces
-- feature intent: expose Fluent settings and object-model navigation in a Pythonic, structured form
-- tests to run: `tests/test_settings_api.py`, `tests/test_settings_reader.py`, `tests/test_datamodel_api.py`, `tests/test_datamodel_service.py`, `tests/test_builtin_settings.py`
-- generated/version-specific notes: this is a core generation-managed area; if the behavior is schema-driven, inspect the generated code before editing runtime wrappers
-
-### 3.6 File transfer and file sessions
-
-- module path: `src/ansys/fluent/core/file_transfer_service.py`, `src/ansys/fluent/core/session/file.py`, `src/ansys/fluent/core/file_reader`
-- public entry point: `FileSession`, file-transfer strategies, and case/data readers
-- feature intent: read and transfer Fluent case/data files and operate against file-backed session workflows
-- tests to run: `tests/test_file_session.py`, `tests/test_file_transfer_service.py`, `tests/test_datareader.py`, `tests/test_casereader.py`
-- generated/version-specific notes: file behavior is often environment-sensitive and may depend on Fluent runtime setup; treat reader/service tests as the primary validation target before broader integration tests
-
-### 3.7 Search and API lookup
-
-- module path: `src/ansys/fluent/core/search.py`
-- public entry point: `search(...)`
-- feature intent: discover Fluent objects and APIs by name or object path across the exposed model surface
-- tests to run: `tests/test_search.py`
-- generated/version-specific notes: search is usually layer-aware and object-model dependent, so it should be validated against the nearest public lookup tests when schema or object names change
-
-### 3.8 Workflow and parametric study
-
-- module path: `src/ansys/fluent/core/workflow.py`, `src/ansys/fluent/core/workflow_old.py`, `src/ansys/fluent/core/local_parametric_study.py`
-- public entry point: workflow objects and parametric-study helpers
-- feature intent: hold automation workflows, batch operations, and parametric study orchestration over Fluent sessions
-- tests to run: `tests/test_batch_ops.py`, `tests/test_scheduler.py`, `tests/test_slurm_future.py`, `tests/test_systemcoupling.py`, `tests/test_parametric` if present in the repo
-- generated/version-specific notes: these workflows often mix runtime orchestration and generated API behavior; prefer the specific workflow test cluster rather than broad session tests
-
-### 3.9 Streaming, events, and service plumbing
-
-- module path: `src/ansys/fluent/core/services`, `src/ansys/fluent/core/services/streaming_services`
-- public entry point: streaming services, event managers, monitor hooks, and transcript integrations
-- feature intent: provide asynchronous service and event plumbing for Fluent runtime interactions
-- tests to run: `tests/test_events_manager.py`, `tests/test_streaming_services.py`
-- generated/version-specific notes: event and streaming behavior is usually service-layer specific and should be validated near the service/monitor path rather than broad session tests
-
-### 3.10 Batch operations and remote execution
-
-- module path: `src/ansys/fluent/core/services/batch_ops.py`, `src/ansys/fluent/core/scheduler`, `src/ansys/fluent/core/docker`
-- public entry point: batch operation helpers and remote scheduler launch flows
-- feature intent: orchestrate remote or queued Fluent execution patterns for larger automation work
-- tests to run: `tests/test_batch_ops.py`, `tests/test_scheduler.py`, `tests/test_slurm_future.py`, `tests/test_launcher_remote.py`
-- generated/version-specific notes: remote execution can change significantly by environment and Fluent packaging; start with the scheduler and batch tests before any broad integration path
-
-### 3.11 Expressions, variables, and utility APIs
-
-- module path: `src/ansys/fluent/core/expressions`, `src/ansys/fluent/core/rpvars.py`, `src/ansys/fluent/core/utils`
-- public entry point: expression helpers, RP variables, and general utility wrappers
-- feature intent: provide expression evaluation, variable access, and generic helper logic around Fluent operations
-- tests to run: `tests/test_rp_vars.py`, `tests/test_lispy.py`, `tests/test_pyconsole.py`, `tests/test_type_stub.py`
-- generated/version-specific notes: this area is often runtime helper-driven rather than schema-driven, but some behavior may still reflect Fluent version-specific naming or object semantics
-
-### 3.12 REST and UI helpers
-
-- module path: `src/ansys/fluent/core/rest`, `src/ansys/fluent/core/ui`
-- public entry point: REST client interfaces and UI integration helpers
-- feature intent: support REST and UI-oriented interactions around Fluent sessions and tooling
-- tests to run: `tests/test_rest.py`, `tests/test_pyconsole.py`, and any UI/web tests present in the repository
-- generated/version-specific notes: REST/UI integrations are usually not generation-managed; they are more likely to be compatibility wrappers and environment-dependent adapters
-
-## 4. High-value architectural rules
+## Architectural rules
 
 - The runtime package and session layer are the primary user-facing entry points.
 - Generated code is authoritative for many schema-driven APIs; do not hand-edit it lightly.
 - Field-data, reduction, settings, and datamodel access are higher-value feature areas than TUI-only command wrappers.
 - For any version-specific path, prefer the generated or compatibility-aware implementation and confirm with the closest tests.
 - If a feature is unclear, ask the user before assuming the route or test target.
+- Fix runtime navigation/behavior in its owning wrapper or service; change generation logic for schema-output defects rather than hand-editing generated output.
 
-## 5. Validation strategy
+Session, workflow, service and schema behavior varies by Fluent version, mode, packaging and environment. Check the closest compatibility-aware implementation and test rather than assuming one path.
 
-Prefer the closest relevant test target before escalating:
-
-1. import / syntax check
-2. nearest feature test file
-3. nearest subsystem suite
-4. broader integration or Fluent-session tests only when required
-
-Examples:
-
-- reduction bug: start at `src/ansys/fluent/core/fields/reduction.py` and `tests/test_reduction.py`
-- file transfer bug: start at `src/ansys/fluent/core/file_transfer_service.py` and `tests/test_file_transfer_service.py`
-- launch/session issue: start at `src/ansys/fluent/core/launcher` and `tests/test_launcher.py`
-- settings/datamodel bug: start at the generated settings surface and `tests/test_settings_api.py` / `tests/test_datamodel_api.py`
-- search bug: start at `src/ansys/fluent/core/search.py` and `tests/test_search.py`
-
-This map is intentionally compact but broad enough to route an agent quickly across the main PyFluent subsystems without scanning the whole repo.
+File-backed APIs need no live server themselves; reader tests may need assets/downloads or Fluent. Search consumes generated API-index data and semantic search needs NLTK data. `HttpSolver` targets Fluent 27.1+; REST settings can use runtime classes without generated files. UI needs `ui` / `ui-jupyter` extras; Python-console tests are not UI-rendering coverage.
