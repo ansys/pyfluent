@@ -20,32 +20,35 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Diagnostics and observability utilities for PyFluent.
+"""Connect to Ansys Fluent and transfer files and cases between sessions.
 
-This package provides tools for inspecting and recording PyFluent activity:
-
-* :mod:`logger` configures PyFluent logging and provides logger helpers.
-* :mod:`journaling` records supported Fluent interactions as Python journals.
-* :mod:`search` searches Fluent's solver and meshing API hierarchy.
-* :mod:`exceptions` defines PyFluent-specific exceptions and warning classes.
-
-For example, enable PyFluent file logging with::
-
-    import ansys.fluent.core as pyfluent
-
-    pyfluent.diagnostics.logger.enable()
-
-The submodules are available as attributes of ``ansys.fluent.core.diagnostics``.
+This package provides the gRPC connection to a running Fluent process
+(:class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`),
+file transfer strategies for standalone, containerized, and remote (PyPIM)
+Fluent deployments, and helpers for transferring case/data files between
+solver sessions.
 """
 
-from importlib import import_module
+from ansys.fluent.core.connectivity.data_transfer import transfer_case  # noqa: F401
+from ansys.fluent.core.connectivity.file_transfer_service import (  # noqa: F401
+    ContainerFileTransferStrategy,
+    FileTransferStrategy,
+    PimFileTransferService,
+    RemoteFileTransferStrategy,
+    StandaloneFileTransferStrategy,
+)
+from ansys.fluent.core.connectivity.fluent_connection import (  # noqa: F401
+    FluentConnection,
+    PortNotProvided,
+)
 
-__all__ = ("exceptions", "journaling", "logger", "search")
-
-
-def __getattr__(name: str):
-    if name not in __all__:
-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-    module = import_module(f".{name}", __name__)
-    globals()[name] = module
-    return module
+__all__ = [
+    "transfer_case",
+    "ContainerFileTransferStrategy",
+    "FileTransferStrategy",
+    "PimFileTransferService",
+    "RemoteFileTransferStrategy",
+    "StandaloneFileTransferStrategy",
+    "FluentConnection",
+    "PortNotProvided",
+]

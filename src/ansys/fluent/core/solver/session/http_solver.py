@@ -30,7 +30,7 @@ completely independent of the gRPC infrastructure (``BaseSession``,
 
 Usage::
 
-    >>> from ansys.fluent.core.session.http_solver import HttpSolver
+    >>> from ansys.fluent.core.solver.session.http_solver import HttpSolver
     >>> from ansys.fluent.core.rest.client import FluentRestClient
     >>>
     >>> client = FluentRestClient.connect(
@@ -51,7 +51,7 @@ _DEFAULT_VERSION = "271"
 class HttpSolver:
     """Standalone solver session backed by the Fluent REST API.
 
-    Unlike the gRPC-based :class:`~ansys.fluent.core.session.solver.Solver`,
+    Unlike the gRPC-based :class:`~ansys.fluent.core.solver.session.solver.Solver`,
     this class has **no** dependency on ``BaseSession``, ``FluentConnection``,
     or any gRPC service.  Settings classes are built at runtime from
     ``get_static_info()`` — no generated settings module is required.

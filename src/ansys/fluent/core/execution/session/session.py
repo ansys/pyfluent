@@ -21,13 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Internal base class for all Fluent sessions.
+"""Base implementation and active-session context manager for Fluent sessions.
 
-This module is private.  Do not import from it directly; use the concrete
-session classes exposed by :mod:`ansys.fluent.core.session`.
+``BaseSession`` is an internal base class; use the concrete session classes
+exposed by :mod:`ansys.fluent.core.execution.session`. The module-level
+:func:`using` context manager makes a session active for top-level settings
+objects and is re-exported as ``ansys.fluent.core.using`` for compatibility.
 """
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from enum import Enum
 from functools import cached_property
 import json
@@ -42,12 +46,45 @@ from typing_extensions import Unpack
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.execution.launcher.launch_options import FluentMode
-from ansys.fluent.core.fields.field_data.abstract_field_data import AbstractFieldData
+from ansys.fluent.core.fields.field_data.abstract_field_data import (
+    AbstractFieldData,
+    FieldDataSource,
+)
 from ansys.fluent.core.fields.field_data.live_field_data import (
     LiveFieldData,
     ZoneInfo,
     _FieldInfo,
 )
+
+_active_session: ContextVar["BaseSession | None"] = ContextVar(
+    "active_session", default=None
+)
+
+
+def _get_active_session():
+    return _active_session.get()
+
+
+@contextmanager
+def using(session: "BaseSession") -> Iterator[None]:
+    """Make a Fluent session active within a ``with`` block.
+
+    Top-level settings objects use this session when no ``settings_source`` is
+    provided. The previous active session is restored when the block exits,
+    including when an exception is raised.
+
+    Examples
+    --------
+    >>> from ansys.fluent.core import using
+    >>> with using(solver_session):
+    ...     Viscous().model.set_state("laminar")
+    """
+    token = _active_session.set(session)
+    try:
+        yield
+    finally:
+        _active_session.reset(token)
+
 
 if TYPE_CHECKING:
     from ansys.fluent.core.execution.launcher.standalone_launcher import (
@@ -58,26 +95,21 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.execution.launcher.pim_launcher import PIMArgsWithoutMode
 
+from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
 from ansys.fluent.core.diagnostics.journaling import Journal
-from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.rpvars import RPVars
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.utils.deprecate import deprecate_function
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-try:
-    from ansys.fluent.core.solver.settings import root
-except Exception:
-    root = Any
-
 logger = logging.getLogger("pyfluent.general")
 
 
-__all__ = ("BaseSession",)
+__all__ = ("BaseSession", "using")
 
 
 def _parse_server_info_file(file_name: str):
@@ -346,7 +378,7 @@ class BaseSession:
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``.
-            See :func:`FluentConnection initialization <ansys.fluent.core.fluent_connection.FluentConnection.__init__>`
+            See :func:`FluentConnection initialization <ansys.fluent.core.connectivity.fluent_connection.FluentConnection.__init__>`
             for more details and possible arguments.
 
         Returns
@@ -706,7 +738,7 @@ class BaseSession:
             Additional command-line arguments for Fluent, formatted as they would be on the command line.
         container_dict : dict, optional
             Configuration dictionary for launching Fluent inside a Docker container. See also
-            :mod:`~ansys.fluent.core.launcher.fluent_container`.
+            :mod:`~ansys.fluent.core.execution.launcher.fluent_container`.
         dry_run : bool, optional
             If True, does not launch Fluent but prints configuration information instead. If dry running a
             container start, this method will return the configured ``container_dict``. Defaults to False.
@@ -920,7 +952,7 @@ class Fields:
         """Initialize Fields."""
         field_data: AbstractFieldData = fluent_connection._service_factory.field_data
         self._field_info = _FieldInfo(field_data)
-        self.field_data = LiveFieldData(
+        self.field_data: FieldDataSource = LiveFieldData(
             field_data, self._field_info, _session.scheme, get_zones_info
         )
         self.field_data_streaming = (

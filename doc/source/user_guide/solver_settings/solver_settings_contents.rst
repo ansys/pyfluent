@@ -7,7 +7,7 @@ Solver settings objects
 
 Solver settings objects provide a natural way to access and modify Fluent solver
 settings and issue commands to be executed.
-An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
+An appropriate call to the :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent`
 function returns an object whose interface directly exposes the :ref:`ref_root` of the solver settings hierarchy.
 
 .. vale Google.Spacing = YES
