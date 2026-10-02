@@ -37,6 +37,7 @@ from warnings import warn
 from typing_extensions import Required, Unpack, assert_never
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
+from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.execution.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
@@ -70,7 +71,6 @@ from ansys.fluent.core.execution.launcher.slurm_launcher import (
 )
 from ansys.fluent.core.execution.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.execution.launcher.watchdog as watchdog
-from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion

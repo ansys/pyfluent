@@ -95,12 +95,12 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.execution.launcher.pim_launcher import PIMArgsWithoutMode
 
+from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
 from ansys.fluent.core.diagnostics.journaling import Journal
-from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.rpvars import RPVars
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.utils.deprecate import deprecate_function
@@ -378,7 +378,7 @@ class BaseSession:
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``.
-            See :func:`FluentConnection initialization <ansys.fluent.core.fluent_connection.FluentConnection.__init__>`
+            See :func:`FluentConnection initialization <ansys.fluent.core.connectivity.fluent_connection.FluentConnection.__init__>`
             for more details and possible arguments.
 
         Returns

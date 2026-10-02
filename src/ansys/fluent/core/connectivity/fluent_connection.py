@@ -44,6 +44,9 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
+from ansys.fluent.core.connectivity.file_transfer_service import (
+    ContainerFileTransferStrategy,
+)
 from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
@@ -52,7 +55,6 @@ from ansys.fluent.core.execution.launcher.error_warning_messages import (
     INSECURE_MODE_WARNING,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import ComposeConfig
-from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
