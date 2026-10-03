@@ -92,8 +92,10 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _build_case_data_arguments,
     _build_journal_argument,
     _get_subprocess_kwargs_for_fluent,
+    _is_windows_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
+    is_windows,
 )
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _generate_launch_string,
@@ -653,6 +655,11 @@ class SlurmLauncher:
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         kwargs = _get_subprocess_kwargs_for_fluent(self._argvals["env"], self._argvals)
+        if self._argvals.get("cwd"):
+            cwd = self._argvals.get("cwd")
+            kwargs.update(cwd=cwd)
+            if is_windows() and _is_windows_unc_path(cwd):
+                kwargs.update(shell=False)
 
         # Add case/data files via CLI
         launch_cmd += _build_case_data_arguments(

@@ -60,6 +60,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
     _build_case_data_arguments,
     _build_journal_argument,
+    _is_windows_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -1065,3 +1066,57 @@ def test_standalone_launcher_cleanup_on_exit_default_deletes_file():
         assert (
             not server_info_file.exists()
         ), "File should be deleted by default when cleanup_on_exit is not specified"
+
+
+def test_is_windows_unc_path():
+    """Verify _is_windows_unc_path correctly identifies Windows UNC paths."""
+    # Valid UNC paths
+    assert _is_windows_unc_path(r"\\server\share")
+    assert _is_windows_unc_path(r"\\server\share\subfolder\file.cas")
+    assert _is_windows_unc_path("//server/share")
+    assert _is_windows_unc_path("//server/share/subfolder")
+    assert _is_windows_unc_path(Path(r"\\server\share"))
+
+    # Non-UNC paths
+    assert not _is_windows_unc_path(r"C:\folder\file.cas")
+    assert not _is_windows_unc_path(r"D:\data")
+    assert not _is_windows_unc_path("/home/user/data")
+    assert not _is_windows_unc_path("./relative/path")
+    assert not _is_windows_unc_path(r".\relative\path")
+    assert not _is_windows_unc_path(r"\\?\C:\folder")
+    assert not _is_windows_unc_path(r"\\.\COM1")
+    assert not _is_windows_unc_path("")
+    assert not _is_windows_unc_path(None)
+
+
+def test_standalone_launcher_unc_cwd_shell_false(monkeypatch, tmp_path):
+    """Verify that StandaloneLauncher sets shell=False when cwd is a UNC path on Windows."""
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneLauncher,
+    )
+
+    sifile = tmp_path / "server_info.txt"
+    sifile.write_text("test")
+
+    monkeypatch.setattr(
+        "ansys.fluent.core.execution.launcher.standalone_launcher.is_windows",
+        lambda: True,
+    )
+    monkeypatch.setattr(
+        "ansys.fluent.core.execution.launcher.standalone_launcher._generate_launch_string",
+        lambda *args, **kwargs: "fluent.exe",
+    )
+    monkeypatch.setattr(
+        "ansys.fluent.core.execution.launcher.standalone_launcher._get_server_info_file_names",
+        lambda: (str(sifile), str(sifile)),
+    )
+
+    # UNC path cwd -> shell=False
+    launcher_unc = StandaloneLauncher(cwd=r"\\server\share\workdir", ui_mode="no_gui")
+    assert launcher_unc._kwargs.get("cwd") == r"\\server\share\workdir"
+    assert launcher_unc._kwargs.get("shell") is False
+
+    # Normal drive cwd -> shell=True (default on Windows)
+    launcher_normal = StandaloneLauncher(cwd=r"C:\workdir", ui_mode="no_gui")
+    assert launcher_normal._kwargs.get("cwd") == r"C:\workdir"
+    assert launcher_normal._kwargs.get("shell") is True

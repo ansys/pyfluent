@@ -63,6 +63,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
+    _is_windows_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -289,7 +290,10 @@ class StandaloneLauncher:
             self.argvals.get("env") or {}, self.argvals
         )
         if self.argvals.get("cwd"):
-            self._kwargs.update(cwd=self.argvals.get("cwd"))
+            cwd = self.argvals.get("cwd")
+            self._kwargs.update(cwd=cwd)
+            if is_windows() and _is_windows_unc_path(cwd):
+                self._kwargs.update(shell=False)
 
         # For lightweight_mode with case file, defer case reading to post-connection
         # to support background session orchestration. Otherwise pass via CLI.
