@@ -6,7 +6,7 @@ Beta features
 PyFluent provides access to experimental Fluent capabilities through **beta features**. These features
 are intended for early access, evaluation, and feedback, and may be subject to change in future releases.
 
-Beta features are not enabled by default. To access them, call the ``enable_beta_features()`` method
+Beta features are not enabled by default. To access them, call the ``enable_fluent_beta_features()`` method
 on a session object. After doing so, additional methods specific to that session type become usable.
 
 Beta features differ between **Meshing** and **Solver** sessions. Each session exposes a distinct
@@ -31,10 +31,10 @@ Example usage:
   >>> assert "topology_based" in dir(meshing_session)
 
   >>> topo_meshing = meshing_session.topology_based()
-  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: The feature 'topology_based' requires 'enable_beta_features' flag to be enabled.
+  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: 'Topology-based meshing' is a Fluent beta feature. To enable it from Python call '<session>.enable_fluent_beta_features()'.
 
   >>> # Enable beta features
-  >>> meshing_session.enable_beta_features()
+  >>> meshing_session.enable_fluent_beta_features()
 
   >>> # Feature is now usable
   >>> topo_meshing = meshing_session.topology_based()
@@ -59,10 +59,10 @@ Example usage:
   >>> assert hasattr(solver_session, "switch_to_meshing")
 
   >>> switched_meshing_session = solver_session.switch_to_meshing()
-  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: The feature 'switch_to_meshing' requires 'enable_beta_features' flag to be enabled.
+  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: 'switch_to_meshing' is a Fluent beta feature. To enable it from Python call '<session>.enable_fluent_beta_features()'.
 
   >>> # Enable beta features
-  >>> solver_session.enable_beta_features()
+  >>> solver_session.enable_fluent_beta_features()
 
   >>> # Method is now usable
   >>> switched_meshing_session = solver_session.switch_to_meshing()
