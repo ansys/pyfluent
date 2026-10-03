@@ -136,7 +136,7 @@ def _write_rst_header(r, cls, cls_name, cls_orig_name, version, current_path):
         r.write(f".. deprecated:: {release_version}\n\n")
         deprecated_class_version.update({current_path: (cls_name, release_version)})
     r.write(
-        f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{cls_name}\n"
+        f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
     )
     r.write(f"{istr1}:show-inheritance:\n\n")
 
@@ -276,7 +276,7 @@ if __name__ == "__main__":
     print("Selecting Fluent version:", version)
     print("Set the environment variable FLUENT_IMAGE_TAG to change the version.")
     settings = importlib.import_module(
-        f"ansys.fluent.core.generated.solver.settings_{version}"
+        f"ansys.fluent.core.generated.v{version}.solver.settings"
     )
     _populate_parents_list(settings.root)
     _populate_rst_from_settings(rst_dir, settings.root, version)

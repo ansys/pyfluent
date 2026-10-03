@@ -118,7 +118,7 @@ def get_default_config() -> dict:
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logger.get_default_config()
+    >>> pyfluent.diagnostics.logger.get_default_config()
     {'disable_existing_loggers': False,
      'formatters': {'logfile_fmt': {'format': '%(asctime)s %(name)-21s '
                                               '%(levelname)-8s %(message)s'}},
@@ -187,14 +187,14 @@ def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
     Using the default logging setup:
 
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logger.enable()
+    >>> pyfluent.diagnostics.logger.enable()
 
     Customizing logging configuration (see also :func:`get_default_config`):
 
     >>> import ansys.fluent.core as pyfluent
-    >>> config_dict = pyfluent.logger.get_default_config()
+    >>> config_dict = pyfluent.diagnostics.logger.get_default_config()
     >>> config_dict['handlers']['pyfluent_file']['filename'] = 'test.log'
-    >>> pyfluent.logger.enable(custom_config=config_dict)
+    >>> pyfluent.diagnostics.logger.enable(custom_config=config_dict)
     """
     global _logging_file_enabled
 
@@ -263,11 +263,11 @@ def set_global_level(level: str | int):
     >>> pyfluent.enable()
     >>> pyfluent.set_global_level("INFO")
 
-    >>> pyfluent.logger.set_global_level(10)
+    >>> pyfluent.diagnostics.logger.set_global_level(10)
 
     or
 
-    >>> pyfluent.logger.set_global_level('DEBUG')
+    >>> pyfluent.diagnostics.logger.set_global_level('DEBUG')
     """
     if not is_active():
         print("Logging is not active, enable it first.")
@@ -291,7 +291,7 @@ def list_loggers():
     -------
     list of str
         Each list element is a PyFluent logger name that can be individually controlled
-        through :func:`ansys.fluent.core.diagnostics.logging.get_logger`.
+        through :func:`ansys.fluent.core.diagnostics.logger.get_logger`.
 
     Notes
     -----
@@ -301,10 +301,10 @@ def list_loggers():
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logger.enable()
-    >>> pyfluent.logger.list_loggers()
+    >>> pyfluent.diagnostics.logger.enable()
+    >>> pyfluent.diagnostics.logger.list_loggers()
     ['pyfluent.general', 'pyfluent.launcher', 'pyfluent.networking', ...]
-    >>> logger = pyfluent.logger.get_logger('pyfluent.networking')
+    >>> logger = pyfluent.diagnostics.logger.get_logger('pyfluent.networking')
     >>> logger
     <Logger pyfluent.networking (DEBUG)>
     >>> logger.setLevel('ERROR')
