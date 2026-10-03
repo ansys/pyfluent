@@ -330,7 +330,7 @@ class LocalParametricStudy:
     def run_in_fluent(
         self,
         num_servers: int,
-        launcher: Any = None,
+        launcher: Any | None = None,
         start_transcript: bool = False,
         capture_report_data: bool = False,
     ):
