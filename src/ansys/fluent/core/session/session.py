@@ -526,33 +526,9 @@ class BaseSession:
         }
         return sorted(dir_list)
 
-    def enable_fluent_beta_features(self):
-        """Enable access to Fluent beta features.
-
-        Beta features are experimental and subject to change. This method enables
-        access to both session-level beta methods (e.g., topology_based meshing,
-        switch_to_meshing) and beta settings API objects.
-        """
-        from ansys.fluent.core.solver.flobject import ExposureLevel
-
-        self.application_runtime.enable_beta()
-
-        # Also raise settings exposure level to BETA if settings exist
-        if hasattr(self, "settings") and self._settings is not None:
-            try:
-                self.settings.set_exposure_level(ExposureLevel.BETA)
-            except (AttributeError, RuntimeError):
-                # settings may not be fully initialized yet
-                pass
-
-    @deprecate_function(version="0.43", new_func="enable_fluent_beta_features")
     def enable_beta_features(self):
-        """Enable access to Fluent beta-features.
-
-        .. deprecated:: 0.43
-            Use :meth:`enable_fluent_beta_features` instead.
-        """
-        self.enable_fluent_beta_features()
+        """Enable access to Fluent beta-features"""
+        self.application_runtime.enable_beta()
 
     @property
     def _is_beta_enabled(self):
