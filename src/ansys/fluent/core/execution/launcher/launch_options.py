@@ -47,7 +47,6 @@ from ansys.fluent.core.execution.launcher.error_warning_messages import (
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import is_windows
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-import ansys.platform.instancemanagement as pypim
 
 __all__ = (
     "FluentMode",
@@ -301,6 +300,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         Fluent launch mode.
     """
     from ansys.fluent.core.module_config import config
+    import ansys.platform.instancemanagement as pypim
 
     if pypim.is_configured():
         fluent_launch_mode = LaunchMode.PIM
