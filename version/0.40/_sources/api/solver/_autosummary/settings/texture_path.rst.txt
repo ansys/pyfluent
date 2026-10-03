@@ -1,0 +1,27 @@
+:orphan:
+
+.. _texture_path:
+
+texture_path
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.texture_path
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`diffuse_texture <diffuse_texture>`                   'diffuse_texture' child.
+
+:ref:`specular_texture <specular_texture>`                'specular_texture' child.
+
+:ref:`environment_texture <environment_texture>`       'environment_texture' child.
+
+:ref:`bump_texture <bump_texture>`                            'bump_texture' child.
+
+================================================   ================================
+

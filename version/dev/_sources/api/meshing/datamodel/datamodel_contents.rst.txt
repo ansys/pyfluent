@@ -1,0 +1,8 @@
+.. _ref_meshing_datamodel:
+
+meshing.datamodel
+=================
+
+.. toctree::
+   :hidden:
+

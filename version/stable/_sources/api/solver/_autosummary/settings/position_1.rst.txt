@@ -1,0 +1,21 @@
+:orphan:
+
+.. _position_1:
+
+position
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.position_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ====================================================================================
+
+Parent                                                                                                Summary
+
+======================   ====================================================================================
+:ref:`camera <camera>`       Camera settings for adjusting the camera position, target, and other parameters.
+
+======================   ====================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _timesteps_per_asd_file:
+
+timesteps_per_asd_file
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.timesteps_per_asd_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =======================================
+
+Parent                                                                           Summary
+
+==============================================   =======================================
+:ref:`export_source_data <export_source_data>`       Entering source data export object.
+
+==============================================   =======================================
+

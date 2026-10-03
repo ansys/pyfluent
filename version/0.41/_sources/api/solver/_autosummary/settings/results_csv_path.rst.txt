@@ -1,0 +1,21 @@
+:orphan:
+
+.. _results_csv_path:
+
+results_csv_path
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.results_csv_path
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

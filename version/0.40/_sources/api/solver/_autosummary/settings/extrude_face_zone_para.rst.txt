@@ -1,0 +1,36 @@
+:orphan:
+
+.. _extrude_face_zone_para:
+
+extrude_face_zone_para
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.extrude_face_zone_para
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================================   =====================================================================
+
+Argument                                                                                                               Summary
+
+======================================================   =====================================================================
+:ref:`face_zone <face_zone>`                                                                                    The zone name.
+
+:ref:`normal_distance <normal_distance>`                     Specifies the normal distance for parametric face zone extrusion.
+
+:ref:`parametric_coordinates <parametric_coordinates>`                 Defines parametric coordinates for face zone extrusion.
+
+======================================================   =====================================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

@@ -1,0 +1,21 @@
+.. _ref_meshing_datamodel_meshing_Graphics_Regions:
+
+Regions
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.Graphics.Regions
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   DrawAll/DrawAll_contents
+   DrawDead/DrawDead_contents
+   DrawFluid/DrawFluid_contents
+   DrawSolid/DrawSolid_contents

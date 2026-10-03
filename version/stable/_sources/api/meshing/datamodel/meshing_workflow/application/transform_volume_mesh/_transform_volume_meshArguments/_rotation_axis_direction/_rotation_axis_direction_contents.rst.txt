@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_transform_volume_mesh__transform_volume_meshArguments__rotation_axis_direction:
+
+_rotation_axis_direction
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.transform_volume_mesh._transform_volume_meshArguments._rotation_axis_direction
+   :members: _x, _y, _z
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

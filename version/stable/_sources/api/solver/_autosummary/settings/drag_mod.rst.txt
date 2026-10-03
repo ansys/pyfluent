@@ -1,0 +1,23 @@
+:orphan:
+
+.. _drag_mod:
+
+drag_mod
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.drag_mod
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`drag_mixture_child <drag_mixture_child>`       'child_object_type' of drag_mixture.
+
+:ref:`drag_euler_child <drag_euler_child>`             'child_object_type' of drag_euler.
+
+==============================================   ========================================
+

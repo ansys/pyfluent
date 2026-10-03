@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_calculation_activity_case_modification_automatic_case_modification:
+
+automatic_case_modification
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solution.calculation_activity.case_modification.automatic_case_modification
+   :members: add_edit, create, delete, disable, edit, enable, list, list_properties, make_a_copy, rename
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

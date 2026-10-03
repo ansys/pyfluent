@@ -1,0 +1,21 @@
+:orphan:
+
+.. _method_3:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.method_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ================================================
+
+Parent                                                                                            Summary
+
+======================================================   ================================================
+:ref:`integration_parameters <integration_parameters>`       Species model integration parameters option.
+
+======================================================   ================================================
+

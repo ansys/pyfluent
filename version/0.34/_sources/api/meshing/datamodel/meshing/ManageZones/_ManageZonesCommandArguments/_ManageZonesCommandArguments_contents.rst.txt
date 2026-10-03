@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_ManageZones__ManageZonesCommandArguments:
+
+_ManageZonesCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.ManageZones._ManageZonesCommandArguments
+   :members: _AddPrefixName, _Angle, _Area, _BodyLabelList, _CompleteLabelList, _CompleteZoneList, _EqualRange, _FaceMerge, _LabelList, _MZChildName, _ManageCellZoneList, _ManageFaceZoneList, _Operation, _OperationName, _SizeFilter, _TopologyList, _Type, _Volume, _ZoneFilter, _ZoneList, _ZoneLocation, _ZoneOrLabel
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

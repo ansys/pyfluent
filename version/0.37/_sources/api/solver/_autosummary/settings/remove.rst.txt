@@ -1,0 +1,21 @@
+:orphan:
+
+.. _remove:
+
+remove
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.remove
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =============================================
+
+Parent                                                               Summary
+
+============================   =============================================
+:ref:`view_sync <view_sync>`       Settings related to view synchronization.
+
+============================   =============================================
+

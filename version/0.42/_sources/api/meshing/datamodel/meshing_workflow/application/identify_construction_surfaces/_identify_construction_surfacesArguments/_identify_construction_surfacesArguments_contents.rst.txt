@@ -1,0 +1,22 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_identify_construction_surfaces__identify_construction_surfacesArguments:
+
+_identify_construction_surfacesArguments
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.identify_construction_surfaces._identify_construction_surfacesArguments
+   :members: _creation_method, _cylinder_method, _defeaturing_size, _label_selection_list, _label_selection_single, _name, _object_selection_list, _object_selection_single, _offset_height, _selection_type, _zone_location, _zone_selection_list, _zone_selection_single
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _axis/_axis_contents
+   _bounding_box_object/_bounding_box_object_contents
+   _cylinder_object/_cylinder_object_contents
+   _pivot/_pivot_contents
+   _rotation/_rotation_contents

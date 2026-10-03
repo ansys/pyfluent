@@ -1,0 +1,38 @@
+:orphan:
+
+.. _histogram_selections:
+
+histogram_selections
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.histogram_selections
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==========================================================================================
+
+Attribute                                                                                                                               Summary
+
+==================================================   ==========================================================================================
+:ref:`sample <sample>`                                                                       Pick a loaded sample to then pick a variable from.
+
+:ref:`variable_to_sample <variable_to_sample>`                                      Pick a variable to calculate a distribution histogram from.
+
+:ref:`weighting_variable <weighting_variable>`                         Pick a weighting variable for the distribution histogram to be computed.
+
+:ref:`correlation_variable <correlation_variable>`       Pick a second variable to calculate a histogram of its correlation with the first one.
+
+==================================================   ==========================================================================================
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`histogram_1 <histogram_1>`       'histogram' child.
+
+================================   ======================
+

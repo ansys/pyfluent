@@ -1,0 +1,21 @@
+:orphan:
+
+.. _equilibrium_potential:
+
+equilibrium_potential
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.equilibrium_potential
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============================
+
+Parent                                                   Summary
+
+==============================   ===============================
+:ref:`sei_growth <sei_growth>`   Up SEI layer growth parameters.
+
+==============================   ===============================
+

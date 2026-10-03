@@ -1,0 +1,63 @@
+:orphan:
+
+.. _histogram:
+
+histogram
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.histogram
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ================================================================
+
+Attribute                                                                                         Summary
+
+======================================   ================================================================
+:ref:`cell_function <cell_function_1>`                                       The field to plot histogram.
+
+:ref:`auto_range <auto_range_4>`                    Specifies whether to compute the range automatically.
+
+:ref:`minimum <minimum_9>`                         The minimum value of the field variable to be plotted.
+
+:ref:`maximum <maximum_8>`                         The maximum value of the field variable to be plotted.
+
+:ref:`num_divisions <num_divisions>`         The number of divisions of the field variable to be plotted.
+
+:ref:`zones <zones_3>`                                                                    Zone name list.
+
+:ref:`physics <physics_4>`                                                 Physics boundary/volume names.
+
+:ref:`axes <axes>`                                                                       Axes-properties.
+
+:ref:`curves <curves>`                                                             Parameters for curves.
+
+======================================   ================================================================
+
+.. rubric:: Methods
+
+======================   =====================================================
+
+Method                                                                 Summary
+
+======================   =====================================================
+:ref:`print <print_5>`                 Print a histogram of a scalar quantity.
+
+:ref:`plot <plot_7>`                    Plot a histogram of a scalar quantity.
+
+:ref:`write <write_4>`       Write a histogram of a scalar quantity to a file.
+
+======================   =====================================================
+
+.. rubric:: Included in:
+
+======================   =======================================================================================================================
+
+Parent                                                                                                                                   Summary
+
+======================   =======================================================================================================================
+:ref:`plot_4 <plot_4>`       Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+======================   =======================================================================================================================
+

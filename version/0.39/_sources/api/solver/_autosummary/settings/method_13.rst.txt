@@ -1,0 +1,21 @@
+:orphan:
+
+.. _method_13:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.method_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`mg_controls_1_child <mg_controls_1_child>`       'child_object_type' of mg_controls.
+
+================================================   =======================================
+

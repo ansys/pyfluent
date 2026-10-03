@@ -1,0 +1,21 @@
+:orphan:
+
+.. _vof_interface_refinement_volume:
+
+vof_interface_refinement_volume
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.vof_interface_refinement_volume
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =============================================================================================================
+
+Parent                                                                                                                                                   Summary
+
+================================================   =============================================================================================================
+:ref:`vof_to_dpm_advanced <vof_to_dpm_advanced>`       Define cell registers, expressions, and adaption settings suitable for an advanced VOF-to-DPM simulation.
+
+================================================   =============================================================================================================
+

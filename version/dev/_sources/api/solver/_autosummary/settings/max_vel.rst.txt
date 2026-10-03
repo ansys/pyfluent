@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_vel:
+
+max_vel
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_vel
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================================
+
+Parent                                                                                            Summary
+
+==============================================   ========================================================
+:ref:`divergence_tracker <divergence_tracker>`   Stop simulation after a divergence incident is detected.
+
+==============================================   ========================================================
+

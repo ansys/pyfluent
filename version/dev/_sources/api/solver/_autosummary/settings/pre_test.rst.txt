@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pre_test:
+
+pre_test
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.pre_test
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ===========
+
+Parent                   Summary
+
+==================   ===========
+:ref:`auto <auto>`   The object.
+
+==================   ===========
+

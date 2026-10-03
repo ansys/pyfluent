@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_8:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.minimum_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================================
+
+Parent                                                         Summary
+
+==================================   =================================
+:ref:`range_ribbon <range_ribbon>`   Specifies Range for Ribbon Style.
+
+==================================   =================================
+

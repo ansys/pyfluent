@@ -1,0 +1,31 @@
+:orphan:
+
+.. _frequency_6:
+
+frequency
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.frequency_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =====================================
+
+Parent                                                                   Summary
+
+========================================   =====================================
+:ref:`ascii_1_child <ascii_1_child>`               'child_object_type' of ascii.
+
+:ref:`cgns_1_child <cgns_1_child>`                  'child_object_type' of cgns.
+
+:ref:`visualize_child <visualize_child>`       'child_object_type' of visualize.
+
+:ref:`mapdl_child <mapdl_child>`                   'child_object_type' of mapdl.
+
+:ref:`nastran_1_child <nastran_1_child>`         'child_object_type' of nastran.
+
+:ref:`tecplot_1_child <tecplot_1_child>`         'child_object_type' of tecplot.
+
+========================================   =====================================
+

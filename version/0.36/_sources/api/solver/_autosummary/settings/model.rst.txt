@@ -1,0 +1,21 @@
+:orphan:
+
+.. _model:
+
+model
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`multiphase <multiphase>`       Multiphase model.
+
+==============================   =====================
+

@@ -1,0 +1,56 @@
+:orphan:
+
+.. _location_1:
+
+location
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.location_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ============================================
+
+Attribute                                                                                                 Summary
+
+==================================================================   ============================================
+:ref:`injection_surfaces <injection_surfaces>`                                         The injection surface(s):.
+
+:ref:`from_location <from_location>`                                                        Help  utl locations .
+
+:ref:`randomized_positions_enabled <randomized_positions_enabled>`                    Randomize starting points?.
+
+:ref:`number_of_streams <number_of_streams>`                                              The number of streams:.
+
+:ref:`x <x>`                                                                                          X-Position.
+
+:ref:`x_2 <x_2>`                                                                                 Last X-Position.
+
+:ref:`y <y>`                                                                                          Y-Position.
+
+:ref:`y_2 <y_2>`                                                                                 Last Y-Position.
+
+:ref:`z <z>`                                                                                          Z-Position.
+
+:ref:`z_2 <z_2>`                                                                                 Last Z-Position.
+
+:ref:`azimuthal_start_angle <azimuthal_start_angle>`                                       Azimuthal Start Angle.
+
+:ref:`azimuthal_stop_angle <azimuthal_stop_angle>`                                          Azimuthal Stop Angle.
+
+:ref:`spatial_staggering <spatial_staggering>`                           Enable and configure spatial staggering.
+
+==================================================================   ============================================
+
+.. rubric:: Included in:
+
+======================================   ===========================================
+
+Parent                                                                       Summary
+
+======================================   ===========================================
+:ref:`initial_values <initial_values>`       Lagrangian particle initial properties.
+
+======================================   ===========================================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _phase_13_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_13_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =============================================================
+
+Attribute                                                                                  Summary
+
+==================================   =============================================================
+:ref:`network_end <network_end_1>`       Allows to change network-end model variables or settings.
+
+==================================   =============================================================
+
+.. rubric:: Included in:
+
+==========================   ======================================
+
+Parent                                                      Summary
+
+==========================   ======================================
+:ref:`phase_13 <phase_13>`       Domain name to define settings on.
+
+==========================   ======================================
+

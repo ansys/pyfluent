@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sectors_per_360:
+
+sectors_per_360
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.sectors_per_360
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`rows_1_child <rows_1_child>`   'child_object_type' of rows.
+
+==================================   ============================
+

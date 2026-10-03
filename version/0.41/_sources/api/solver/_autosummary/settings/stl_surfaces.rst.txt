@@ -1,0 +1,36 @@
+:orphan:
+
+.. _stl_surfaces:
+
+stl_surfaces
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.stl_surfaces
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ============================================================
+
+Argument                                                                                      Summary
+
+======================================   ============================================================
+:ref:`surfaces <surfaces_21>`                                   Surfaces to be exported as .stl file.
+
+:ref:`file_name <file_name_53>`              Export specified surfaces from 3D cases as an .stl file.
+
+:ref:`merge_surfaces <merge_surfaces>`                      Merge STL surfaces (Used for CAD export).
+
+======================================   ============================================================
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`export_2 <export_2>`       Design tool export object.
+
+==========================   ==============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _method_4:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.method_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===========================================================================================
+
+Parent                                                                                                                                 Summary
+
+================================================   ===========================================================================================
+:ref:`statistics_controls <statistics_controls>`       Specify statistics parameters of sampling and averaging of flow and optical quantities.
+
+================================================   ===========================================================================================
+

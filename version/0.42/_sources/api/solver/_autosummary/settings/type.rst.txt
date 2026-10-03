@@ -1,0 +1,36 @@
+:orphan:
+
+.. _type:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.type
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ===================================================
+
+Attribute                                                                    Summary
+
+==============================   ===================================================
+:ref:`option <option_1>`             The type for this automatic adaption criterion.
+
+:ref:`predicate <predicate>`                                      'predicate' child.
+
+:ref:`expression <expression>`                                   'expression' child.
+
+==============================   ===================================================
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`manage_criteria_child <manage_criteria_child>`       'child_object_type' of manage_criteria.
+
+====================================================   ===========================================
+

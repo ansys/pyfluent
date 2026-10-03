@@ -1,0 +1,49 @@
+:orphan:
+
+.. _symmetry_2_child:
+
+symmetry_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.symmetry_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================
+
+Attribute                                                                         Summary
+
+============================   ==========================================================
+:ref:`name <name_4>`                                                  Name of the object.
+
+:ref:`phase <phase_28>`                                                    'phase' child.
+
+:ref:`geometry <geometry_6>`       Allows to change geometry model variables or settings.
+
+============================   ==========================================================
+
+.. rubric:: Methods
+
+======================================   ========================================================================================================================
+
+Method                                                                                                                                                    Summary
+
+======================================   ========================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone's surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                          Create surface for selected zone.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ===========================================
+
+Parent                                                               Summary
+
+==============================   ===========================================
+:ref:`symmetry_2 <symmetry_2>`       Settings for boundary-condition object.
+
+==============================   ===========================================
+

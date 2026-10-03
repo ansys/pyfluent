@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_47:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_47
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ======================================================
+
+Parent                                                                    Summary
+
+========================   ======================================================
+:ref:`video_1 <video_1>`       Generate video output from the animation playback.
+
+========================   ======================================================
+

@@ -1,0 +1,24 @@
+.. _ref_meshing_datamodel_part_management_Transform__Transform:
+
+_Transform
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.Transform._Transform
+   :members: Applied, Children, Context, Global, Name, RotateX, RotateY, RotateZ, TranslateX, TranslateY, TranslateZ, Type, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Add/Add_contents
+   Apply/Apply_contents
+   Delete/Delete_contents
+   Remove/Remove_contents
+   Rename/Rename_contents
+   Undo/Undo_contents
+   Update/Update_contents

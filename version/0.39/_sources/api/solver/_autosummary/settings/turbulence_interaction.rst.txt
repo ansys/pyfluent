@@ -1,0 +1,48 @@
+:orphan:
+
+.. _turbulence_interaction:
+
+turbulence_interaction
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.turbulence_interaction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==========================================
+
+Attribute                                                                               Summary
+
+==================================================   ==========================================
+:ref:`enable <enable_10>`                                Enable/disable turbulence interaction.
+
+:ref:`pdf_mode <pdf_mode>`                                                       Pdf mode type.
+
+:ref:`pdf_points <pdf_points>`                                            Number of PDF points.
+
+:ref:`type_of_pdf <type_of_pdf>`                                                      Pdf type.
+
+:ref:`temperature_variance <temperature_variance>`                        Temperature variance.
+
+:ref:`tmax_option <tmax_option>`                                                   Tmax option.
+
+:ref:`local_tmax_factor <local_tmax_factor>`                                 Local tmax factor.
+
+:ref:`species <species_3>`                                                        Species name.
+
+:ref:`tmax <tmax>`                                                                 Tmax in [K].
+
+==================================================   ==========================================
+
+.. rubric:: Included in:
+
+================   =====================
+
+Parent                           Summary
+
+================   =====================
+:ref:`nox <nox>`       NOx model object.
+
+================   =====================
+

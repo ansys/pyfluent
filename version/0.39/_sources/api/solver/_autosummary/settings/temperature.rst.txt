@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temperature:
+
+temperature
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.temperature
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================================
+
+Parent                                                                                    Summary
+
+==========================================   ====================================================
+:ref:`input_parameters <input_parameters>`       Input parameters in water chemistry calculation.
+
+==========================================   ====================================================
+

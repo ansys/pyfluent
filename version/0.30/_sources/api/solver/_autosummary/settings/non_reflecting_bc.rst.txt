@@ -1,0 +1,34 @@
+:orphan:
+
+.. _non_reflecting_bc:
+
+non_reflecting_bc
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.non_reflecting_bc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =======================================
+
+Attribute                                                                          Summary
+
+================================================   =======================================
+:ref:`general_nrbc <general_nrbc>`                                             The object.
+
+:ref:`turbo_sepcific_nrbc <turbo_sepcific_nrbc>`       The turbo-specific n.r.b.c. object.
+
+================================================   =======================================
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

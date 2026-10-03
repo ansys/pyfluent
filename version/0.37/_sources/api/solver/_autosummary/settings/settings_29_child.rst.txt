@@ -1,0 +1,40 @@
+:orphan:
+
+.. _settings_29_child:
+
+settings_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_29_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =============================================================
+
+Attribute                                                                                                      Summary
+
+======================================================   =============================================================
+:ref:`active <active_3>`                                     Provide whether to enable or disable this row of options.
+
+:ref:`min_value <min_value_1>`                                  The minimum field value to use for transparency range.
+
+:ref:`max_value <max_value_1>`                                  The maximum field value to use for transparency range.
+
+:ref:`min_transparency_value <min_transparency_value>`                       Provide min value for transparency range.
+
+:ref:`max_transparency_value <max_transparency_value>`                       Provide max value for transparency range.
+
+======================================================   =============================================================
+
+.. rubric:: Included in:
+
+================================   ================================================================
+
+Parent                                                                                      Summary
+
+================================   ================================================================
+:ref:`settings_29 <settings_29>`       Provide custom transparency ranges and values for filtering.
+
+================================   ================================================================
+

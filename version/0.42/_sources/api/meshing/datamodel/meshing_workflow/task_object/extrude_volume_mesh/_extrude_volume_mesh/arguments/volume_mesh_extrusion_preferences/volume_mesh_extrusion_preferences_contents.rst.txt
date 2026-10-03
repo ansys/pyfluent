@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_extrude_volume_mesh__extrude_volume_mesh_arguments_volume_mesh_extrusion_preferences:
+
+volume_mesh_extrusion_preferences
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.extrude_volume_mesh._extrude_volume_mesh.arguments.volume_mesh_extrusion_preferences
+   :members: bias_method, max_layer_height, merge_cell_zones, show_in_gui
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

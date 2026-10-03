@@ -1,0 +1,21 @@
+:orphan:
+
+.. _non_participating_boundary_zones:
+
+non_participating_boundary_zones
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.non_participating_boundary_zones
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`viewfactor_settings <viewfactor_settings>`       Viewfactor related settings.
+
+================================================   ================================
+

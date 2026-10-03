@@ -1,0 +1,21 @@
+:orphan:
+
+.. _combusting_particles:
+
+combusting_particles
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.combusting_particles
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ===============================================================================================
+
+Parent                                                                                                                                                   Summary
+
+==============================================================   ===============================================================================================
+:ref:`coupled_heat_mass_solution <coupled_heat_mass_solution>`       Options to enable coupled calculation of heat and mass exchange for various particle types.
+
+==============================================================   ===============================================================================================
+

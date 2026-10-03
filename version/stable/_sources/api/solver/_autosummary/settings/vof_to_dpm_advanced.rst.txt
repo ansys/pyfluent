@@ -1,0 +1,40 @@
+:orphan:
+
+.. _vof_to_dpm_advanced:
+
+vof_to_dpm_advanced
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.vof_to_dpm_advanced
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================================================   =============================================
+
+Argument                                                                                                             Summary
+
+============================================================================   =============================================
+:ref:`bulk_secondary_phase_edge_length <bulk_secondary_phase_edge_length>`             The bulk secondary phase edge length.
+
+:ref:`interface_refinement_edge_length <interface_refinement_edge_length>`         The VOF interface refinement edge length.
+
+:ref:`secondary_phase_refinement_volume <secondary_phase_refinement_volume>`          The secondary phase refinement volume.
+
+:ref:`vof_interface_refinement_volume <vof_interface_refinement_volume>`                The VOF interface refinement volume.
+
+:ref:`secondary_phase_coarsening_volume <secondary_phase_coarsening_volume>`          The secondary phase coarsening volume.
+
+============================================================================   =============================================
+
+.. rubric:: Included in:
+
+==============================   ==============================================
+
+Parent                                                                  Summary
+
+==============================   ==============================================
+:ref:`multiphase <multiphase>`       The multiphase predefined criteria object.
+
+==============================   ==============================================
+

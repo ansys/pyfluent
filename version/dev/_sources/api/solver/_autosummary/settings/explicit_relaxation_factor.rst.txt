@@ -1,0 +1,21 @@
+:orphan:
+
+.. _explicit_relaxation_factor:
+
+explicit_relaxation_factor
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.explicit_relaxation_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =======
+
+Parent                         Summary
+
+============================   =======
+:ref:`expert_12 <expert_12>`   Object.
+
+============================   =======
+

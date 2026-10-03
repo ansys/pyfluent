@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_TransformVolumeMesh__TransformVolumeMeshCommandArguments__LCSOrigin:
+
+_LCSOrigin
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.TransformVolumeMesh._TransformVolumeMeshCommandArguments._LCSOrigin
+   :members: _OriginX, _OriginY, _OriginZ
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cathode_interface_locations:
+
+cathode_interface_locations
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cathode_interface_locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================================
+
+Parent                                                                              Summary
+
+==============================================   ==========================================
+:ref:`electrolyte_porous <electrolyte_porous>`       Electrolyte and porous zones settings.
+
+==============================================   ==========================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _plane_def:
+
+plane_def
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.plane_def
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ===================
+
+Attribute                              Summary
+
+========================   ===================
+:ref:`point <point_1>`          'point' child.
+
+:ref:`normal <normal_2>`       'normal' child.
+
+========================   ===================
+
+.. rubric:: Included in:
+
+================================   =====================
+
+Parent                                           Summary
+
+================================   =====================
+:ref:`geometry_10 <geometry_10>`       'geometry' child.
+
+================================   =====================
+

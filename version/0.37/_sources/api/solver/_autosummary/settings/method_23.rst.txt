@@ -1,0 +1,21 @@
+:orphan:
+
+.. _method_23:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.method_23
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================================
+
+Parent                                                                        Summary
+
+==============================   ====================================================
+:ref:`evaluation <evaluation>`       Optimizer observable evaluation settings object.
+
+==============================   ====================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _viscous_work:
+
+viscous_work
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.viscous_work
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ====================================
+
+Parent                                                Summary
+
+======================   ====================================
+:ref:`energy <energy>`   The energy transport model settings.
+
+======================   ====================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _profile_points:
+
+profile_points
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.profile_points
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================================
+
+Parent                                                       Summary
+
+============================   =====================================
+:ref:`fan_model <fan_model>`       Configure user-defined fan model.
+
+============================   =====================================
+

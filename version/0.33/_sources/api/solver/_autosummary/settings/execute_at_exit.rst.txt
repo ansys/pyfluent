@@ -1,0 +1,21 @@
+:orphan:
+
+.. _execute_at_exit:
+
+execute_at_exit
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.execute_at_exit
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

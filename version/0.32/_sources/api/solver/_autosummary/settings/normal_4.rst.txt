@@ -1,0 +1,21 @@
+:orphan:
+
+.. _normal_4:
+
+normal
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.normal_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`automatic <automatic>`       'automatic' child.
+
+============================   ======================
+

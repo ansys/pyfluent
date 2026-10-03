@@ -1,0 +1,21 @@
+:orphan:
+
+.. _count_2:
+
+count
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.count_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================
+
+Parent                                       Summary
+
+============================   =====================
+:ref:`method_31 <method_31>`   Partition the domain.
+
+============================   =====================
+

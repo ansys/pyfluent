@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coarsen_3:
+
+coarsen
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coarsen_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================
+
+Parent                                            Summary
+
+============================   ==========================
+:ref:`option_77 <option_77>`   Check the control options.
+
+============================   ==========================
+

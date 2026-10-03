@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iqr_constant:
+
+iqr_constant
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.iqr_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`outlier <outlier>`   Configure outlier detection method and its constants.
+
+========================   =====================================================
+

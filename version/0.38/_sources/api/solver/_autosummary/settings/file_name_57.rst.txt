@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_57:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_57
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =======================================
+
+Parent                                                                         Summary
+
+============================================   =======================================
+:ref:`write_all_to_file <write_all_to_file>`       Write all parameters value to file.
+
+============================================   =======================================
+

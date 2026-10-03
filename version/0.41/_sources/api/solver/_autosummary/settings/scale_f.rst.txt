@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scale_f:
+
+scale_f
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.scale_f
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ======================================================
+
+Parent                                                                    Summary
+
+========================   ======================================================
+:ref:`scale_4 <scale_4>`       A number by which the vector size would be scaled.
+
+========================   ======================================================
+

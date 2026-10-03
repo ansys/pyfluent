@@ -1,0 +1,36 @@
+:orphan:
+
+.. _histogram_parameters:
+
+histogram_parameters
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.histogram_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =======================================================================================
+
+Attribute                                                                                                                Summary
+
+======================================   =======================================================================================
+:ref:`number_of_bins <number_of_bins>`                                                                       The number of bins.
+
+:ref:`minimum_val <minimum_val>`             The minimum value of the abscissa (histogram variable axis) for the histogram plot.
+
+:ref:`maximum_val <maximum_val>`             The maximum value of the abscissa (histogram variable axis) for the histogram plot.
+
+======================================   =======================================================================================
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`histogram_1 <histogram_1>`       'histogram' child.
+
+================================   ======================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_TransformOperations_CreateTransform__CreateTransformCommandArguments:
+
+_CreateTransformCommandArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.TransformOperations.CreateTransform._CreateTransformCommandArguments
+   :members: _Paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

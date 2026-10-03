@@ -1,0 +1,21 @@
+:orphan:
+
+.. _table_name_1:
+
+table_name
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.table_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==============================================
+
+Parent                                                                          Summary
+
+======================================   ==============================================
+:ref:`tabulated_size <tabulated_size>`   Tabulated particle size distribution settings.
+
+======================================   ==============================================
+

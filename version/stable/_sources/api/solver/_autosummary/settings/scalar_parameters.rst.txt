@@ -1,0 +1,36 @@
+:orphan:
+
+.. _scalar_parameters:
+
+scalar_parameters
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.scalar_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===============================================================================================
+
+Attribute                                                                                                                                          Summary
+
+========================================================   ===============================================================================================
+:ref:`fixed_cycle_parameters <fixed_cycle_parameters_1>`       Configures fixed-cycle parameters for scalar equations in algebraic multigrid (AMG) solver.
+
+:ref:`coarsening_parameters <coarsening_parameters_1>`          Configures coarsening parameters for scalar equations in algebraic multigrid (AMG) solver.
+
+:ref:`smoother_type <smoother_type>`                                                                                                        Smoother type.
+
+========================================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`amg_controls <amg_controls>`       AMG controls object.
+
+==================================   ========================
+

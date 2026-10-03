@@ -1,0 +1,23 @@
+:orphan:
+
+.. _limit:
+
+limit
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.limit
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`add_constraint <add_constraint>`                            Add Constraint.
+
+:ref:`criteria_1_child <criteria_1_child>`       'child_object_type' of criteria.
+
+==========================================   ====================================
+

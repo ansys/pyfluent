@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cdiff:
+
+cdiff
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cdiff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ========================
+
+Parent                                  Summary
+
+====================   ========================
+:ref:`earsm <earsm>`   The EARSM model options.
+
+====================   ========================
+

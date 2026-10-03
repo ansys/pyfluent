@@ -1,0 +1,21 @@
+:orphan:
+
+.. _alpha_inf:
+
+alpha_inf
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.alpha_inf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================
+
+Parent                                                   Summary
+
+======================================   =======================
+:ref:`coefficients_2 <coefficients_2>`       Coefficients group.
+
+======================================   =======================
+

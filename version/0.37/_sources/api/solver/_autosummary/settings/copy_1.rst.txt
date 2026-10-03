@@ -1,0 +1,38 @@
+:orphan:
+
+.. _copy_1:
+
+copy
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.copy_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   =====================================================
+
+Argument                                                                       Summary
+
+==============================   =====================================================
+:ref:`from_ <from__1>`                             Copy boundary conditions from zone.
+
+:ref:`to <to_1>`                                     Copy boundary conditions to zone.
+
+:ref:`verbosity <verbosity_4>`       Copy boundary conditions: Print more information.
+
+==============================   =====================================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================
+
+Parent                                                                            Summary
+
+==================================================   ====================================
+:ref:`cell_zone_conditions <cell_zone_conditions>`       The cell zone conditions object.
+
+:ref:`boundary_conditions <boundary_conditions>`          The boundary conditions object.
+
+==================================================   ====================================
+

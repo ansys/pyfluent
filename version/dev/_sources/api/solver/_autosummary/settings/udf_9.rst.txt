@@ -1,0 +1,21 @@
+:orphan:
+
+.. _udf_9:
+
+udf
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.udf_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ==================
+
+Parent                                        Summary
+
+================================   ==================
+:ref:`frequency_2 <frequency_2>`   'frequency' child.
+
+================================   ==================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _start_1:
+
+start
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.start_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ==============================================================
+
+Argument                                                                                Summary
+
+==============================   ==============================================================
+:ref:`file_name <file_name_5>`       Name of the file which will store gRPC server information.
+
+==============================   ==============================================================
+
+.. rubric:: Included in:
+
+==================   ========================================
+
+Parent                                                Summary
+
+==================   ========================================
+:ref:`grpc <grpc>`       Start, stop or manage a gRPC server.
+
+==================   ========================================
+

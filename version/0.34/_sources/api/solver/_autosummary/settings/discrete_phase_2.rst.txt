@@ -1,0 +1,66 @@
+:orphan:
+
+.. _discrete_phase_2:
+
+discrete_phase
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.discrete_phase_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ===============================
+
+Attribute                                                                            Summary
+
+==========================================================   ===============================
+:ref:`bc_type <bc_type_1>`                                           Discrete Phase BC Type.
+
+:ref:`reinject_using_injection <reinject_using_injection>`                Use Settings from.
+
+:ref:`bc_user_function <bc_user_function>`                       Discrete Phase BC Function.
+
+:ref:`dem_collision_partner <dem_collision_partner>`                  DEM Collision Partner.
+
+==========================================================   ===============================
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`settings_3 <settings_3>`                          Domain name to define settings on.
+
+:ref:`phase_5_child <phase_5_child>`                         'child_object_type' of phase.
+
+:ref:`settings_15 <settings_15>`                        Domain name to define settings on.
+
+:ref:`phase_17_child <phase_17_child>`                       'child_object_type' of phase.
+
+:ref:`settings_19 <settings_19>`                        Domain name to define settings on.
+
+:ref:`phase_21_child <phase_21_child>`                       'child_object_type' of phase.
+
+:ref:`fan_1_child <fan_1_child>`                               'child_object_type' of fan.
+
+:ref:`porous_jump_2_child <porous_jump_2_child>`       'child_object_type' of porous_jump.
+
+:ref:`radiator_2_child <radiator_2_child>`                'child_object_type' of radiator.
+
+:ref:`fan_2_child <fan_2_child>`                               'child_object_type' of fan.
+
+:ref:`phase_30_child <phase_30_child>`                       'child_object_type' of phase.
+
+:ref:`porous_jump_3_child <porous_jump_3_child>`       'child_object_type' of porous_jump.
+
+:ref:`phase_42_child <phase_42_child>`                       'child_object_type' of phase.
+
+:ref:`radiator_3_child <radiator_3_child>`                'child_object_type' of radiator.
+
+:ref:`phase_46_child <phase_46_child>`                       'child_object_type' of phase.
+
+================================================   =======================================
+

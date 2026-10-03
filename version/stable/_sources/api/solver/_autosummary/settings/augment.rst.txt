@@ -1,0 +1,21 @@
+:orphan:
+
+.. _augment:
+
+augment
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.augment
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`delete_cells_by_mark <delete_cells_by_mark>`       Delete cells based on a cell register.
+
+==================================================   ==========================================
+

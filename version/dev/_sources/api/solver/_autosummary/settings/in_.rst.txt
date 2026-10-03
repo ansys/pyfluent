@@ -1,0 +1,21 @@
+:orphan:
+
+.. _in_:
+
+in_
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.in_
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ======================================
+
+Parent                                                Summary
+
+====================   ======================================
+:ref:`dolly <dolly>`   Adjust the camera position and target.
+
+====================   ======================================
+

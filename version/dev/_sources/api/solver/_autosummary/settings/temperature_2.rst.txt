@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temperature_2:
+
+temperature
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.temperature_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================================
+
+Parent                                                                   Summary
+
+======================================   =======================================
+:ref:`initial_values <initial_values>`   Lagrangian particle initial properties.
+
+======================================   =======================================
+

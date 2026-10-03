@@ -1,0 +1,48 @@
+:orphan:
+
+.. _periodic_instances_child:
+
+periodic_instances_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.periodic_instances_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =====================================================
+
+Attribute                                                                                              Summary
+
+======================================================   =====================================================
+:ref:`name <name_2>`                                                                       Name of the object.
+
+:ref:`periodic_type <periodic_type>`                         Either translational or rotational periodic type.
+
+:ref:`surfaces <surfaces_13>`                                  The list of surfaces for the periodic instance.
+
+:ref:`translation <translation>`                                         X y z directional translation values.
+
+:ref:`axis_origin <axis_origin_4>`                                                Rotation axis origin values.
+
+:ref:`axis_direction <axis_direction_4>`                                       Rotation axis direction values.
+
+:ref:`angle <angle_3>`                                                                         Rotation angle.
+
+:ref:`repeats <repeats>`                                      The number of repeats for the periodic instance.
+
+:ref:`repeats_in_360_degrees <repeats_in_360_degrees>`        The number of repeats for the periodic instance.
+
+======================================================   =====================================================
+
+.. rubric:: Included in:
+
+==============================================   ==================================================================================
+
+Parent                                                                                                                      Summary
+
+==============================================   ==================================================================================
+:ref:`periodic_instances <periodic_instances>`       Periodic instance objects are used to specify periodic repetition of surfaces.
+
+==============================================   ==================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _evaporating_species:
+
+evaporating_species
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.evaporating_species
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================================
+
+Parent                                                                   Summary
+
+====================================   =========================================
+:ref:`interaction_1 <interaction_1>`       Lagrangian two-way coupling settings.
+
+====================================   =========================================
+

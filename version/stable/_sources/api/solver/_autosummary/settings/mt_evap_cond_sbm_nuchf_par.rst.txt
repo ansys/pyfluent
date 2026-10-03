@@ -1,0 +1,48 @@
+:orphan:
+
+.. _mt_evap_cond_sbm_nuchf_par:
+
+mt_evap_cond_sbm_nuchf_par
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_evap_cond_sbm_nuchf_par
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ========================================================
+
+Attribute                                                                                                       Summary
+
+============================================================   ========================================================
+:ref:`nuc_hflux_mult <nuc_hflux_mult>`                                           Nucleate boiling heat flux multiplier.
+
+:ref:`nuc_hflux_mult_constant <nuc_hflux_mult_constant>`                Nucleate boiling heat flux multiplier constant.
+
+:ref:`nuc_hflux_mult_udf <nuc_hflux_mult_udf>`                               Nucleate boiling heat flux multiplier udf.
+
+:ref:`nuc_boil_sup_fac <nuc_boil_sup_fac>`                         Boiling suppression factor due to forced convection.
+
+:ref:`nuc_boil_sup_fac_constant <nuc_boil_sup_fac_constant>`                       Boiling suppression factor constant.
+
+:ref:`nuc_boil_sup_fac_udf <nuc_boil_sup_fac_udf>`                                      Boiling suppression factor udf.
+
+:ref:`nuc_htc <nuc_htc>`                                                     Nucleate boiling heat transfer coefficent.
+
+:ref:`nuc_htc_constant <nuc_htc_constant>`                          Nucleate boiling heat transfer coefficent constant.
+
+:ref:`nuc_htc_udf <nuc_htc_udf>`                                         Nucleate boiling heat transfer coefficent udf.
+
+============================================================   ========================================================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

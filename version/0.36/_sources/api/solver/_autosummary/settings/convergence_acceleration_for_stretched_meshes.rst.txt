@@ -1,0 +1,36 @@
+:orphan:
+
+.. _convergence_acceleration_for_stretched_meshes:
+
+convergence_acceleration_for_stretched_meshes
+=============================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.convergence_acceleration_for_stretched_meshes
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   =============================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                      Summary
+
+======================================================================   =============================================================================================================================================================
+:ref:`enable <enable_18>`                                                    Enable convergence acceleration for stretched meshes to improve the convergence of the implicit density based solver on meshes with high cell stretching.
+
+:ref:`convergence_acceleration_type <convergence_acceleration_type_1>`                                                                                                                          'convergence_acceleration_type' child.
+
+:ref:`casm_cutoff_multiplier <casm_cutoff_multiplier_1>`                                                                                                                                                    CASM cut-off multiplier :.
+
+======================================================================   =============================================================================================================================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

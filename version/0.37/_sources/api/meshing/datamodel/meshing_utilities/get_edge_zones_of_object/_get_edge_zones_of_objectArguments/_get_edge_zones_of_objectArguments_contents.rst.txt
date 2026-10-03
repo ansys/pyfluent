@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_edge_zones_of_object__get_edge_zones_of_objectArguments:
+
+_get_edge_zones_of_objectArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_edge_zones_of_object._get_edge_zones_of_objectArguments
+   :members: _object_name, _objects
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _elements:
+
+elements
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.elements
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ============================
+
+Attribute                                                       Summary
+
+========================================   ============================
+:ref:`global_settings <global_settings>`       'global_settings' child.
+
+:ref:`smooth_elements <smooth_elements>`       'smooth_elements' child.
+
+========================================   ============================
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`smoothing_2 <smoothing_2>`       'smoothing' child.
+
+================================   ======================
+

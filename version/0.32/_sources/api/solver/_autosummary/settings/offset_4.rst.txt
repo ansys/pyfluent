@@ -1,0 +1,21 @@
+:orphan:
+
+.. _offset_4:
+
+offset
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.offset_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================
+
+Parent                                                Summary
+
+==========================   ================================
+:ref:`new_unit <new_unit>`       Set unit conversion factors.
+
+==========================   ================================
+

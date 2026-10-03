@@ -1,0 +1,21 @@
+:orphan:
+
+.. _append_quantity:
+
+append_quantity
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.append_quantity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`annotation_child <annotation_child>`       'child_object_type' of annotation.
+
+==========================================   ======================================
+

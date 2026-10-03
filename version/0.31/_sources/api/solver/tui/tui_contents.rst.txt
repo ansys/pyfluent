@@ -1,0 +1,39 @@
+.. _ref_solver_tui:
+
+solver.tui
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu
+   :members: close_fluent, print_license_usage, switch_to_meshing_mode
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   adjoint/adjoint_contents
+   define/define_contents
+   display/display_contents
+   file/file_contents
+   icing/icing_contents
+   mesh/mesh_contents
+   parallel/parallel_contents
+   parameters/parameters_contents
+   parametric_study/parametric_study_contents
+   plot/plot_contents
+   preferences/preferences_contents
+   report/report_contents
+   results/results_contents
+   server/server_contents
+   setup/setup_contents
+   solution/solution_contents
+   solve/solve_contents
+   surface/surface_contents
+   transient_post_processing/transient_post_processing_contents
+   turbo_post/turbo_post_contents
+   turbo_workflow/turbo_workflow_contents
+   views/views_contents

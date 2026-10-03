@@ -1,0 +1,21 @@
+:orphan:
+
+.. _singhal_cavitation_model:
+
+singhal_cavitation_model
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.singhal_cavitation_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================
+
+Parent                                            Summary
+
+============================   ==========================
+:ref:`expert_10 <expert_10>`       Expert options object.
+
+============================   ==========================
+

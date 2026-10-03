@@ -1,0 +1,21 @@
+:orphan:
+
+.. _design_points_3:
+
+design_points
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.design_points_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==============================
+
+Parent                                                            Summary
+
+========================================   ==============================
+:ref:`update_selected <update_selected>`   Update Selected Design Points.
+
+========================================   ==============================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _ambient_radiation_modeling:
+
+ambient_radiation_modeling
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ambient_radiation_modeling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ======================================
+
+Attribute                                                                                   Summary
+
+==========================================================   ======================================
+:ref:`enable_ambient_radiation <enable_ambient_radiation>`       Enable Ambient Radiation Modeling.
+
+:ref:`ambient_temperature <ambient_temperature>`                         Ambient temperature value.
+
+==========================================================   ======================================
+
+.. rubric:: Included in:
+
+================   ==========================================================
+
+Parent                                                                Summary
+
+================   ==========================================================
+:ref:`s2s <s2s>`       Enable/disable the Surface to Surface radiation model.
+
+================   ==========================================================
+
