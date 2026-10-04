@@ -21,6 +21,16 @@ Python. It enables engineers and developers to automate, customize, and
 streamline CFD workflows using the flexibility of Python.
 
 
+Official documentation
+-----------------------
+
+.. important::
+   `fluent.docs.pyansys.com <https://fluent.docs.pyansys.com/version/stable/>`_ is the only
+   maintained and up-to-date source for PyFluent documentation. Unofficial cheat sheets,
+   handouts, and other third-party write-ups may be outdated or incorrect, so rely only on
+   this documentation rather than on any conflicting unofficial source.
+
+
 Why use PyFluent?
 -----------------
 
