@@ -28,6 +28,8 @@ import os
 from typing import TYPE_CHECKING, TypeVar
 import warnings
 
+import grpc
+
 if TYPE_CHECKING:
     from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.meshing.session.meshing import Meshing
@@ -360,7 +362,13 @@ def _get_running_session_mode(
         try:
             session_mode = fluent_connection._connection_interface.get_mode()
         except Exception as ex:
-            raise exceptions.InvalidPassword() from ex
+            rpc_error = ex if isinstance(ex, grpc.RpcError) else ex.__context__
+            if (
+                isinstance(rpc_error, grpc.RpcError)
+                and rpc_error.code() == grpc.StatusCode.UNAUTHENTICATED
+            ):
+                raise exceptions.InvalidPassword() from ex
+            raise
     return session_mode.get_fluent_value()
 
 
