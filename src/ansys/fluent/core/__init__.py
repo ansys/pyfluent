@@ -33,22 +33,11 @@ from ansys.fluent.core.diagnostics.logger import *
 
 # isort: on
 
-from ansys.fluent.core.context_manager import *
+# Only cheap, dependency-free modules are imported eagerly here. Everything
+# else is deferred via the PEP 562 __getattr__ defined below to keep
+# `import ansys.fluent.core` fast (see issue #4924 - avoid eager imports
+# where possible).
 from ansys.fluent.core.diagnostics.exceptions import *
-from ansys.fluent.core.diagnostics.search import *
-from ansys.fluent.core.execution.launcher.launch_options import *
-from ansys.fluent.core.execution.launcher.launcher import *
-from ansys.fluent.core.fields.field_data import *
-from ansys.fluent.core.local_parametric_study import *
-from ansys.fluent.core.meshing import *
-from ansys.fluent.core.services.batch_ops import *
-from ansys.fluent.core.services.streaming_services.events_streaming import *
-from ansys.fluent.core.session import *
-from ansys.fluent.core.session.session import BaseSession
-from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
-from ansys.fluent.core.utils import *
-from ansys.fluent.core.utils.fluent_version import *
-from ansys.fluent.core.utils.setup_for_fluent import *
 
 __version__ = "0.43.dev0"
 
@@ -58,8 +47,10 @@ Global variable indicating the version info of the PyFluent package.
 Build timestamp and commit hash are added to this variable during packaging.
 """
 
+import importlib as _importlib  # noqa: E402
 import os as _os  # noqa: E402
 import sys as _sys  # noqa: E402
+from typing import TYPE_CHECKING as _TYPE_CHECKING  # noqa: E402
 import warnings as _warnings  # noqa: E402
 
 _THIS_DIRNAME = _os.path.dirname(__file__)
@@ -69,38 +60,183 @@ if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
 
-from ansys.fluent.core import (  # noqa: E402
-    local_parametric_study as _local_parametric_study,
-)
-from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
+# ──────────────────────────────────────────────────────────────────────────────
+# Backward-compat module path aliases. These targets are all cheap (stdlib-only
+# or already-imported) so registering them eagerly costs nothing; unlike
+# `session.file`/`file_reader`/`local_parametric_study`, which pull in numpy,
+# `ansys.units` (and therefore pandas) transitively, so those old flat-path
+# aliases are no longer provided (see issue #4924 - avoid eager imports).
+# `ansys.fluent.core.generated.solver.settings_builtin` imports from
+# `ansys.fluent.core.exceptions`, so that alias must exist before `solver` is
+# ever touched, even lazily.
+# ──────────────────────────────────────────────────────────────────────────────
 from ansys.fluent.core.diagnostics import exceptions as _exceptions  # noqa: E402
 from ansys.fluent.core.diagnostics import journaling as _journaling  # noqa: E402
 from ansys.fluent.core.diagnostics import logger as _logger  # noqa: E402
-from ansys.fluent.core.diagnostics.search import search as _search  # noqa: E402
-from ansys.fluent.core.session import file as _session_file  # noqa: E402
 
-_sys.modules["ansys.fluent.core.file_session"] = _session_file
-_sys.modules["ansys.fluent.core.parametric"] = _local_parametric_study
-_sys.modules["ansys.fluent.core.pyfluent_warnings"] = _exceptions
-_sys.modules["ansys.fluent.core.filereader"] = _file_reader
-
-_sys.modules["ansys.fluent.core.logger"] = _logger
-_sys.modules["ansys.fluent.core.journaling"] = _journaling
 _sys.modules["ansys.fluent.core.exceptions"] = _exceptions
-_sys.modules["ansys.fluent.core.search"] = _search
+_sys.modules["ansys.fluent.core.journaling"] = _journaling
+_sys.modules["ansys.fluent.core.logger"] = _logger
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Static type-checking / IDE support only. Nothing in this block executes at
+# runtime; the PEP 562 __getattr__ further below performs the actual lazy
+# import. This keeps autocomplete and static analysis (mypy/pyright/Pylance)
+# fully working while avoiding the runtime cost of eagerly importing every
+# submodule.
+# ──────────────────────────────────────────────────────────────────────────────
+if _TYPE_CHECKING:
+    from ansys.fluent.core._get_build_details import (
+        get_build_version as get_build_version,
+    )
+    from ansys.fluent.core._get_build_details import (
+        get_build_version_string as get_build_version_string,
+    )
+    from ansys.fluent.core.context_manager import using as using
+    from ansys.fluent.core.diagnostics.search import search as search
+    from ansys.fluent.core.execution.launcher.launch_options import (
+        Dimension as Dimension,
+    )
+    from ansys.fluent.core.execution.launcher.launch_options import (
+        FluentLinuxGraphicsDriver as FluentLinuxGraphicsDriver,
+    )
+    from ansys.fluent.core.execution.launcher.launch_options import (
+        FluentMode as FluentMode,
+    )
+    from ansys.fluent.core.execution.launcher.launch_options import (
+        FluentWindowsGraphicsDriver as FluentWindowsGraphicsDriver,
+    )
+    from ansys.fluent.core.execution.launcher.launch_options import (
+        Precision as Precision,
+    )
+    from ansys.fluent.core.execution.launcher.launch_options import UIMode as UIMode
+    from ansys.fluent.core.execution.launcher.launcher import (
+        connect_to_fluent as connect_to_fluent,
+    )
+    from ansys.fluent.core.execution.launcher.launcher import (
+        create_launcher as create_launcher,
+    )
+    from ansys.fluent.core.execution.launcher.launcher import (
+        launch_fluent as launch_fluent,
+    )
+    from ansys.fluent.core.fields.field_data import (
+        PathlinesFieldDataRequest as PathlinesFieldDataRequest,
+    )
+    from ansys.fluent.core.fields.field_data import (
+        ScalarFieldDataRequest as ScalarFieldDataRequest,
+    )
+    from ansys.fluent.core.fields.field_data import (
+        SurfaceFieldDataRequest as SurfaceFieldDataRequest,
+    )
+    from ansys.fluent.core.fields.field_data import (
+        VectorFieldDataRequest as VectorFieldDataRequest,
+    )
+    from ansys.fluent.core.fields.field_data import SurfaceDataType as SurfaceDataType
+    from ansys.fluent.core.local_parametric_study import (
+        LocalParametricStudy as LocalParametricStudy,
+    )
+    from ansys.fluent.core.services.batch_ops import BatchOps as BatchOps
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        AboutToInitializeSolutionEventInfo as AboutToInitializeSolutionEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        AboutToLoadCaseEventInfo as AboutToLoadCaseEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        AboutToLoadDataEventInfo as AboutToLoadDataEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        CalculationsEndedEventInfo as CalculationsEndedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        CalculationsPausedEventInfo as CalculationsPausedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        CalculationsResumedEventInfo as CalculationsResumedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        CalculationsStartedEventInfo as CalculationsStartedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        CaseLoadedEventInfo as CaseLoadedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        DataLoadedEventInfo as DataLoadedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        Event as Event,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        EventsManager as EventsManager,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        FatalErrorEventInfo as FatalErrorEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        IterationEndedEventInfo as IterationEndedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        MeshingEvent as MeshingEvent,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        ProgressUpdatedEventInfo as ProgressUpdatedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        ReportDefinitionUpdatedEventInfo as ReportDefinitionUpdatedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        ReportPlotSetUpdatedEventInfo as ReportPlotSetUpdatedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        ResidualPlotUpdatedEventInfo as ResidualPlotUpdatedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        SettingsClearedEventInfo as SettingsClearedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        SolutionInitializedEventInfo as SolutionInitializedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        SolutionPausedEventInfo as SolutionPausedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        SolverEvent as SolverEvent,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        SolverTimeEstimateUpdatedEventInfo as SolverTimeEstimateUpdatedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        TimestepEndedEventInfo as TimestepEndedEventInfo,
+    )
+    from ansys.fluent.core.services.streaming_services.events_streaming import (
+        TimestepStartedEventInfo as TimestepStartedEventInfo,
+    )
+    from ansys.fluent.core.session import Meshing as Meshing
+    from ansys.fluent.core.session import PrePost as PrePost
+    from ansys.fluent.core.session import PureMeshing as PureMeshing
+    from ansys.fluent.core.session import Solver as Solver
+    from ansys.fluent.core.session import SolverAero as SolverAero
+    from ansys.fluent.core.session import SolverIcing as SolverIcing
+    from ansys.fluent.core.session.session import BaseSession as BaseSession
+    from ansys.fluent.core.solver.flobject import ExposureLevel as ExposureLevel
+    from ansys.fluent.core.utils import get_user_data_dir as get_user_data_dir
+    from ansys.fluent.core.utils import load_module as load_module
+    from ansys.fluent.core.utils.fluent_version import FluentVersion as FluentVersion
+    from ansys.fluent.core.utils.setup_for_fluent import (
+        setup_for_fluent as setup_for_fluent,
+    )
 
-class Fluent(BaseSession):
-    """Fluent session management.
+    class Fluent(BaseSession):
+        """Fluent session management.
 
-    This class serves as the primary base class for both meshing and solver
-    sessions within PyFluent. It extends the core functionality
-    provided by the base session instance.
+        This class serves as the primary base class for both meshing and solver
+        sessions within PyFluent. It extends the core functionality
+        provided by the base session instance.
 
-    Attributes
-    ----------
-    Inherits all attributes from :class:`~ansys.fluent.core.session.session.BaseSession`.
-    """
+        Attributes
+        ----------
+        Inherits all attributes from :class:`~ansys.fluent.core.session.session.BaseSession`.
+        """
 
 
 def version_info() -> str:
@@ -117,16 +253,6 @@ def version_info() -> str:
     """
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Module docstring from README
-# ──────────────────────────────────────────────────────────────────────────────
-_THIS_DIRNAME = _os.path.dirname(__file__)
-_README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rst"))
-
-if _os.path.exists(_README_FILE):
-    with open(_README_FILE, encoding="utf8") as f:
-        __doc__ = f.read()
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Lazy imports via PEP 562 __getattr__ / __dir__
@@ -154,13 +280,13 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "ansys.fluent.core.fields.field_data",
         "VectorFieldDataRequest",
     ),
-    # get_build_details
+    # _get_build_details
     "get_build_version": (
-        "ansys.fluent.core.get_build_details",
+        "ansys.fluent.core._get_build_details",
         "get_build_version",
     ),
     "get_build_version_string": (
-        "ansys.fluent.core.get_build_details",
+        "ansys.fluent.core._get_build_details",
         "get_build_version_string",
     ),
     # execution.launcher.launch_options
@@ -201,14 +327,14 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "ansys.fluent.core.execution.launcher.launcher",
         "connect_to_fluent",
     ),
-    # parametric
+    # local_parametric_study
     "LocalParametricStudy": (
-        "ansys.fluent.core.parametric",
+        "ansys.fluent.core.local_parametric_study",
         "LocalParametricStudy",
     ),
-    # search
+    # diagnostics.search
     "search": (
-        "ansys.fluent.core.search",
+        "ansys.fluent.core.diagnostics.search",
         "search",
     ),
     # services.batch_ops
@@ -216,15 +342,13 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "ansys.fluent.core.services.batch_ops",
         "BatchOps",
     ),
-    # session
+    # session.session
     "BaseSession": (
-        "ansys.fluent.core.session",
+        "ansys.fluent.core.session.session",
         "BaseSession",
     ),
-    "Fluent": (
-        "ansys.fluent.core.session",
-        "BaseSession",
-    ),
+    # Note: "Fluent" is handled as a special case in __getattr__ below (it is
+    # dynamically subclassed from BaseSession), so it is not listed here.
     # session
     "Meshing": (
         "ansys.fluent.core.session",
@@ -255,105 +379,105 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "ansys.fluent.core.solver.flobject",
         "ExposureLevel",
     ),
-    # streaming_services.events_streaming
+    # services.streaming_services.events_streaming
     "EventsManager": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "EventsManager",
     ),
     "Event": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "Event",
     ),
     "SolverEvent": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "SolverEvent",
     ),
     "MeshingEvent": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "MeshingEvent",
     ),
     "TimestepStartedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "TimestepStartedEventInfo",
     ),
     "TimestepEndedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "TimestepEndedEventInfo",
     ),
     "IterationEndedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "IterationEndedEventInfo",
     ),
     "CalculationsStartedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "CalculationsStartedEventInfo",
     ),
     "CalculationsEndedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "CalculationsEndedEventInfo",
     ),
     "CalculationsPausedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "CalculationsPausedEventInfo",
     ),
     "CalculationsResumedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "CalculationsResumedEventInfo",
     ),
     "AboutToLoadCaseEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "AboutToLoadCaseEventInfo",
     ),
     "CaseLoadedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "CaseLoadedEventInfo",
     ),
     "AboutToLoadDataEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "AboutToLoadDataEventInfo",
     ),
     "DataLoadedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "DataLoadedEventInfo",
     ),
     "AboutToInitializeSolutionEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "AboutToInitializeSolutionEventInfo",
     ),
     "SolutionInitializedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "SolutionInitializedEventInfo",
     ),
     "ReportDefinitionUpdatedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "ReportDefinitionUpdatedEventInfo",
     ),
     "ReportPlotSetUpdatedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "ReportPlotSetUpdatedEventInfo",
     ),
     "ResidualPlotUpdatedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "ResidualPlotUpdatedEventInfo",
     ),
     "SettingsClearedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "SettingsClearedEventInfo",
     ),
     "SolutionPausedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "SolutionPausedEventInfo",
     ),
     "ProgressUpdatedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "ProgressUpdatedEventInfo",
     ),
     "SolverTimeEstimateUpdatedEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "SolverTimeEstimateUpdatedEventInfo",
     ),
     "FatalErrorEventInfo": (
-        "ansys.fluent.core.streaming_services.events_streaming",
+        "ansys.fluent.core.services.streaming_services.events_streaming",
         "FatalErrorEventInfo",
     ),
     # utils
@@ -365,9 +489,9 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "ansys.fluent.core.utils",
         "get_user_data_dir",
     ),
-    # utils.context_managers
+    # context_manager
     "using": (
-        "ansys.fluent.core.utils.context_managers",
+        "ansys.fluent.core.context_manager",
         "using",
     ),
     # utils.fluent_version
@@ -388,13 +512,20 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
 __all__ = [
     # Eager
     "config",
+    "enable",
+    "get_default_config",
+    "get_logger",
+    "is_active",
     "set_console_logging_level",
+    "set_global_level",
     "PyFluentDeprecationWarning",
     "PyFluentUserWarning",
     "FluentDevVersionWarning",
     "warning",
     "__version__",
     "version_info",
+    # Fluent is constructed dynamically on first access (see __getattr__)
+    "Fluent",
     # Lazy
     *_LAZY_IMPORTS.keys(),
 ]
@@ -434,21 +565,49 @@ _config_by_deprecated_name = {
 # ──────────────────────────────────────────────────────────────────────────────
 # PEP 562: module-level __getattr__ for lazy imports + deprecated config names
 # ──────────────────────────────────────────────────────────────────────────────
-from typing import TYPE_CHECKING as _TYPE_CHECKING  # noqa: E402
-
 if not _TYPE_CHECKING:
+
+    def _prime_session_import_order() -> None:
+        """Work around a circular import between ``session.session`` and
+        ``fluent_connection`` (via ``execution.launcher``). Importing
+        ``execution.launcher`` first avoids the cycle; see issue #4924.
+        """
+        _importlib.import_module("ansys.fluent.core.execution.launcher")
 
     def __getattr__(name: str):
         """Lazy-load public symbols on first access; also handles deprecated names."""
-        # 1. Lazy imports
+        # 1. Fluent is dynamically subclassed from BaseSession on first access,
+        # since BaseSession itself must stay lazily imported.
+        if name == "Fluent":
+            _prime_session_import_order()
+            from ansys.fluent.core.session.session import BaseSession as _BaseSession
+
+            class Fluent(_BaseSession):
+                """Fluent session management.
+
+                This class serves as the primary base class for both meshing and
+                solver sessions within PyFluent. It extends the core functionality
+                provided by the base session instance.
+
+                Attributes
+                ----------
+                Inherits all attributes from :class:`~ansys.fluent.core.session.session.BaseSession`.
+                """
+
+            globals()["Fluent"] = Fluent  # cache for subsequent access
+            return Fluent
+
+        # 2. Lazy imports
         if name in _LAZY_IMPORTS:
             module_path, attr_name = _LAZY_IMPORTS[name]
+            if module_path.startswith("ansys.fluent.core.session"):
+                _prime_session_import_order()
             module = _importlib.import_module(module_path)
             value = getattr(module, attr_name)
             globals()[name] = value  # cache for subsequent access
             return value
 
-        # 2. Deprecated config variable names
+        # 3. Deprecated config variable names
         if name in _config_by_deprecated_name:
             config_name = _config_by_deprecated_name[name]
             _warnings.warn(
@@ -462,45 +621,29 @@ if not _TYPE_CHECKING:
 
 # Submodules that should appear in dir() for backward compatibility
 _SUBMODULES = {
-    "data_model_cache",
-    "docker",
+    "codegen",
+    "context_manager",
+    "diagnostics",
     "examples",
-    "exceptions",
+    "execution",
     "expressions",
     "fields",
-    "filereader",
-    "file_session",
+    "file_reader",
+    "file_transfer_service",
     "fluent_connection",
     "generated",
-    "get_build_details",
-    "journaling",
-    "launcher",
-    "logger",
+    "local_parametric_study",
     "meshing",
     "module_config",
-    "parametric",
-    "pyfluent_warnings",
-    "report",
+    "rest",
     "rpvars",
-    "scheduler",
-    "search",
     "services",
     "session",
-    "session_base_meshing",
-    "session_meshing",
-    "session_pure_meshing",
-    "session_shared",
-    "session_solver",
-    "session_solver_aero",
-    "session_solver_icing",
-    "session_utilities",
     "solver",
-    "streaming_services",
     "system_coupling",
+    "ui",
     "utils",
-    "variable_strategies",
     "workflow",
-    "workflow_new",
 }
 
 
