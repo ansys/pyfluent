@@ -21,6 +21,7 @@ SKIP_DIRECTORIES = {
     "services",
     "ui",
     "utils",
+    "function",
 }
 SKIP_FILES = {
     "settings_builtin_bases",
