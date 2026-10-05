@@ -607,12 +607,14 @@ class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use this class
     instead of directly calling DatamodelService's method.
 
+    This class represents a singleton (non-named) node in the datamodel. Behavior
+    that is specific to named objects (such as :meth:`name` and :meth:`rename`)
+    lives on :class:`PyNamedObject`.
+
     Methods
     -------
     __setattr__(name, value)
         Set state of the child object
-    rename(new_name)
-    name()
     create_command_arguments(command)
     """
 
@@ -634,41 +636,6 @@ class PyMenu(PyStateContainer):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
-
-    def name(self) -> str:
-        """Get the name of the named object.
-
-        Returns
-        -------
-        str
-            name
-
-        Raises
-        ------
-        InvalidNamedObject
-            If the object is not a named object.
-        """
-        try:
-            return self._name_()
-        except AttributeError:
-            raise InvalidNamedObject(self.__class__.__name__)
-
-    def _raise_method_not_yet_implemented_exception(self):
-        raise AttributeError("This method is yet to be implemented in pyfluent.")
-
-    def delete_child(self) -> None:
-        """Delete child object."""
-        self._raise_method_not_yet_implemented_exception()
-
-    def rename(self, new_name: str) -> None:
-        """Rename the named object.
-
-        Parameters
-        ----------
-        new_name : str
-            New name for the object.
-        """
-        self.service.rename(self.rules, convert_path_to_se_path(self.path), new_name)
 
     def delete_child_objects(self, obj_type: str, child_names: list[str]):
         """Delete the named objects in 'child_names' from  the container..
@@ -889,6 +856,56 @@ class PyMenu(PyStateContainer):
         )
 
 
+class PyNamedObject(PyMenu):
+    """Object class for a named (renamable) node in the datamodel.
+
+    A named object is an element of a :class:`PyNamedObjectContainer`. In
+    addition to the singleton behavior inherited from :class:`PyMenu`, it
+    exposes identity and lifecycle operations such as :meth:`name` and
+    :meth:`rename` that do not apply to singletons.
+
+    Methods
+    -------
+    name()
+    rename(new_name)
+    """
+
+    def name(self) -> str:
+        """Get the name of the named object.
+
+        Returns
+        -------
+        str
+            name
+
+        Raises
+        ------
+        InvalidNamedObject
+            If the object is not a named object.
+        """
+        try:
+            return self._name_()
+        except AttributeError:
+            raise InvalidNamedObject(self.__class__.__name__)
+
+    def _raise_method_not_yet_implemented_exception(self):
+        raise AttributeError("This method is yet to be implemented in pyfluent.")
+
+    def delete_child(self) -> None:
+        """Delete child object."""
+        self._raise_method_not_yet_implemented_exception()
+
+    def rename(self, new_name: str) -> None:
+        """Rename the named object.
+
+        Parameters
+        ----------
+        new_name : str
+            New name for the object.
+        """
+        self.service.rename(self.rules, convert_path_to_se_path(self.path), new_name)
+
+
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
@@ -1054,12 +1071,12 @@ class PyNamedObjectContainer:
         """
         return len(self.get_object_names())
 
-    def __iter__(self) -> Iterator[PyMenu]:
+    def __iter__(self) -> Iterator[PyNamedObject]:
         """Return the next child object.
 
         Yields
         -------
-        Iterator[PyMenu]
+        Iterator[PyNamedObject]
             Iterator of child objects.
         """
         for name in self.get_object_names():
@@ -1069,7 +1086,7 @@ class PyNamedObjectContainer:
                 self.service, self.rules, child_path
             )
 
-    def _get_item(self, key: str) -> PyMenu:
+    def _get_item(self, key: str) -> PyNamedObject:
         if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
@@ -1104,7 +1121,7 @@ class PyNamedObjectContainer:
                 f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
-    def __getitem__(self, key: str) -> PyMenu:
+    def __getitem__(self, key: str) -> PyNamedObject:
         """Return the child object by key.
 
         Parameters
@@ -1114,12 +1131,12 @@ class PyNamedObjectContainer:
 
         Returns
         -------
-        PyMenu
+        PyNamedObject
             Child object.
         """
         return self._get_item(key)
 
-    def get(self, key: str) -> PyMenu | None:
+    def get(self, key: str) -> PyNamedObject | None:
         """Return the child object by key.
 
         Parameters
@@ -1129,7 +1146,7 @@ class PyNamedObjectContainer:
 
         Returns
         -------
-        PyMenu
+        PyNamedObject
             Child object.
         """
         try:
