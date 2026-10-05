@@ -196,6 +196,13 @@ class _InputFile:
 
 
 class _OutputFile:
+    def _do_before_execute(self, value):
+        if getattr(self.service, "file_transfer_service", None):
+            if isinstance(value, list):
+                return [os.path.basename(file_name) for file_name in value]
+            return os.path.basename(value)
+        return value
+
     def _do_after_execute(self, value):
         try:
             file_names = value if isinstance(value, list) else [value]

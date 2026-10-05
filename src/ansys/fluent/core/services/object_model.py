@@ -1339,7 +1339,7 @@ class PyCommand(PyAction):
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
                 kwds[arg] = self.before_execute(value)
-                processed.append(kwds[arg])
+                processed.append(value)
         try:
             return super().__call__(*args, **kwds)
         finally:
