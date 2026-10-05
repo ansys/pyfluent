@@ -40,6 +40,55 @@ Use this method when:
   pre_post = pyfluent.PrePost.from_install()
 
 
+Windows UNC working directories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When ``cwd`` is a Windows UNC path, such as ``r"\\server\share\work"``,
+PyFluent starts the standalone Fluent executable with ``shell=False``. This
+avoids the ``cmd.exe`` restriction on UNC working directories. The command is
+passed directly to the executable, and inherited environment variables and
+values supplied through ``env`` remain available to the child process.
+
+Direct execution does not provide command-shell processing:
+
+- ``%VAR%`` and delayed-expansion ``!VAR!`` tokens in paths or
+  ``additional_arguments`` are passed literally. PyFluent does not expand these
+  tokens, and applications need not expand them either. Do not rely on Fluent
+  doing so. Resolve paths explicitly before passing them to PyFluent.
+- Operators such as ``>``, ``2>``, ``|``, ``&``, and ``&&`` in
+  ``additional_arguments`` are arguments, not redirection, pipelines, or command
+  chaining. Use Fluent options and journals for Fluent operations, and configure
+  subprocess output through PyFluent's stdout and stderr settings.
+- Carets are literal characters, not ``cmd.exe`` escape characters. Pass normal
+  quoted arguments rather than shell-escaped strings. PyFluent quotes journal,
+  case, and data filenames; custom ``additional_arguments`` must include the
+  required quoting for values containing spaces.
+- Use the Fluent executable, not shell built-ins or a command sequence, as
+  ``fluent_path``. Windows can invoke a shell for ``.bat`` or ``.cmd`` wrappers
+  even when ``shell=False``, so those wrappers do not have the same guarantees.
+
+For example, expand an environment-variable reference on Windows before
+supplying a journal path:
+
+.. code-block:: python
+
+   import os
+   import ansys.fluent.core as pyfluent
+
+   journal = os.path.expandvars(r"%USERPROFILE%\Fluent inputs\startup.jou")
+   solver = pyfluent.Solver.from_install(
+       cwd=r"\\server\share\work",
+       journal_file_names=journal,
+   )
+
+``os.path.expandvars`` uses the Python process's environment, not the separate
+``env`` mapping passed to the launcher, and leaves unknown variables unchanged.
+For values supplied only through ``env``, build the path explicitly from that
+mapping instead. With ``shell=True``, an unquoted ``%VAR%`` value containing
+spaces can split into multiple arguments; with ``shell=False``, the token stays
+literal, quoted or not.
+
+
 .. _launch_in_container:
 
 Launch in a container
