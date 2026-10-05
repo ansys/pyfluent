@@ -178,10 +178,10 @@ class SettingsService(ServiceProtocol):
     def _parse_attrs(self, response: settings_pb2.GetAttrsResponse) -> dict[str, Any]:
         ret = {}
         ret["attrs"] = self._get_state_from_value(response.values)
-        if response.group_children:
-            ret["group_children"] = {
+        if response.children:
+            ret["children"] = {
                 child.name: self._parse_attrs(child.value)
-                for child in response.group_children
+                for child in response.children
             }
         return ret
 

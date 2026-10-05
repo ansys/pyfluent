@@ -925,4 +925,4 @@ def test_action_behavior(mixing_elbow_case_session):
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True
     )
-    assert "iter-count" in result["group_children"]
+    assert "iter-count" in result["children"]
