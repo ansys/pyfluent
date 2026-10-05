@@ -24,14 +24,35 @@
 
 from __future__ import annotations
 
+"""High-level user-facing API for retrieving field data from Fluent surfaces.
+
+This module provides the primary interface for querying scalar fields, vector fields,
+surface data, and pathlines from Ansys Fluent simulations. It wraps the low-level
+FieldData gRPC service and exposes intuitive classes for both real-time and batched
+field data retrieval.
+
+Key classes:
+    - :class:`LiveFieldData`: Primary entry point for accessing field data live from
+      a running Fluent session. Supports individual queries and batch operations.
+    - :class:`Batch`: Accumulates multiple field data requests and retrieves them
+      efficiently in a single server round-trip via :meth:`Batch.get_response`.
+    - :class:`BatchFieldData`: Read-only container for field data returned from a
+      batch request.
+    - :class:`Mesh`: Represents the computational mesh (nodes and elements) for a
+      Fluent zone, returned by :meth:`LiveFieldData.get_mesh`.
+"""
+
+from __future__ import annotations
+
 from collections.abc import Callable
 import logging
 import time
-from typing import Any
+from typing import TYPE_CHECKING, Any
 import warnings
 import weakref
 
-import numpy as np
+if TYPE_CHECKING:
+    import numpy as np
 
 from ansys.fluent.core._variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
@@ -903,6 +924,8 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         logger.info(f"Elements data received in {time.time() - start_time} seconds")
         logger.info("Constructing nodes structure in PyFluent")
         start_time = time.time()
+        import numpy as np
+
         node_count = sum(len(nodes) for nodes in nested_nodes)
         nodes = np.empty(node_count, dtype=Node)
         node_index_by_id = {}
