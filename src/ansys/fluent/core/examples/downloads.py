@@ -30,7 +30,7 @@ import zipfile
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
-from ansys.tools.common.example_download import download_manager
+from ansys.tools.common.example_download import DownloadError, download_manager
 
 
 def delete_downloads():

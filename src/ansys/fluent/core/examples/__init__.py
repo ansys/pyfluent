@@ -23,10 +23,11 @@
 
 """Utilities for downloading and locating Fluent example files."""
 
-from .downloads import delete_downloads, download_file, path
+from .downloads import DownloadError, delete_downloads, download_file, path
 
 __all__ = [
     "delete_downloads",
     "download_file",
     "path",
+    "DownloadError",
 ]

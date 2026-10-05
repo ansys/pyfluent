@@ -163,7 +163,7 @@ def test_container_launcher_transfers_case_data_files(tmp_path):
     session = Mock()
     launcher = Mock(return_value=session)
     with patch(
-        "ansys.fluent.core.launcher.launcher.DockerLauncher",
+        "ansys.fluent.core.execution.launcher.launcher.DockerLauncher",
         return_value=launcher,
     ) as docker_launcher:
         result = pyfluent.launch_fluent(
