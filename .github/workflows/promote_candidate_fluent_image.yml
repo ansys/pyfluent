@@ -86,7 +86,7 @@ jobs:
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
+          cat src/ansys/fluent/core/generated/v${VERSION}/fluent_version.py
 
       - name: Install again after codegen
         run: |
@@ -101,7 +101,7 @@ jobs:
         env:
           VERSION: ${{ env.FLUENT_VERSION }}
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
-          FLUENT_WEBSERVER_TOKEN: ${{ secrets.FLUENT_WEBSERVER_TOKEN }}
+          FLUENT_WEBSERVER_TOKEN: ${{ vars.FLUENT_WEBSERVER_TOKEN }}
         continue-on-error: true
 
       - name: Update Fluent image

@@ -30,7 +30,9 @@ from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.connectivity.file_transfer_service import (
+    ContainerFileTransferStrategy,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 

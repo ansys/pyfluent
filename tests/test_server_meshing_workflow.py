@@ -905,7 +905,7 @@ def test_insert_delete_and_rename_task(new_meshing_session):
 
 
 ############################################################################################
-# Test the enhanced meshing workflow
+# Test the PyFluent-native meshing workflow interface
 ############################################################################################
 
 

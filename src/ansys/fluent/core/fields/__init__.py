@@ -21,21 +21,88 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Fields module for managing Fluent field data, reduction and solution variables data."""
+"""Public APIs for Fluent field data, reductions, and solution variables.
 
+The :mod:`field_data` package provides request, response, and mesh models for
+retrieving data from Fluent. :class:`Reduction`, :class:`SolutionVariableInfo`,
+and :class:`SolutionVariableData` provide the related post-processing APIs.
+The ``reduction`` and ``solution_variables`` packages also expose their
+abstract contracts, response containers, and user-facing validation errors.
+"""
 
-from ansys.fluent.core.fields.live_field_data import Batch as FieldDataBatch
-from ansys.fluent.core.fields.live_field_data import LiveFieldData as FieldData
-from ansys.fluent.core.fields.reduction import Reduction
+from ansys.fluent.core.fields.field_data import (
+    AbstractFieldData,
+    BaseDataRequest,
+    BaseFieldDataSource,
+    Batch,
+    BatchFieldData,
+    CellElementType,
+    Element,
+    Facet,
+    FieldBatch,
+    FieldData,
+    FieldDataBatch,
+    FieldDataSource,
+    LiveFieldData,
+    Mesh,
+    Node,
+    PathlinesData,
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
+    SurfaceData,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
+    ZoneInfo,
+    ZoneType,
+)
+from ansys.fluent.core.fields.reduction import AbstractReduction, Reduction
 from ansys.fluent.core.fields.solution_variables import (
+    AbstractData,
+    AbstractSolutionVariableData,
+    AbstractSolutionVariableInfo,
+    Data,
+    DomainError,
+    InvalidSolutionVariableNameError,
     SolutionVariableData,
     SolutionVariableInfo,
+    ZoneError,
 )
 
 __all__ = [
+    "AbstractFieldData",
+    "AbstractReduction",
+    "AbstractData",
+    "AbstractSolutionVariableData",
+    "AbstractSolutionVariableInfo",
+    "BaseDataRequest",
+    "BaseFieldDataSource",
+    "Batch",
+    "BatchFieldData",
+    "CellElementType",
+    "Element",
+    "Facet",
+    "FieldDataSource",
     "FieldData",
     "FieldDataBatch",
+    "FieldBatch",
+    "LiveFieldData",
+    "Mesh",
+    "Node",
+    "PathlinesData",
+    "PathlinesFieldDataRequest",
+    "ScalarFieldDataRequest",
+    "SurfaceData",
+    "SurfaceDataType",
+    "SurfaceFieldDataRequest",
+    "VectorFieldDataRequest",
+    "ZoneInfo",
+    "ZoneType",
     "Reduction",
+    "Data",
+    "DomainError",
+    "InvalidSolutionVariableNameError",
     "SolutionVariableInfo",
     "SolutionVariableData",
+    "ZoneError",
 ]

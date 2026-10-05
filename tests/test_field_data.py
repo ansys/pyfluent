@@ -36,15 +36,15 @@ from ansys.fluent.core import (
     VectorFieldDataRequest,
     examples,
 )
+from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.fields.field_data_interfaces import (
+from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     FieldUnavailableError,
     _AllowedSurfaceIDs,
     _Fields,
     _SurfaceIds,
 )
-from ansys.fluent.core.fields.live_field_data import (
+from ansys.fluent.core.fields.field_data.live_field_data import (
     CellElementType,
     ZoneType,
 )

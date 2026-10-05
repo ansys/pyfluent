@@ -51,9 +51,9 @@ from defusedxml.ElementTree import parse
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen import StaticInfoType, get_codegen_tui_dir
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
-from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
+from ansys.fluent.core.execution.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.services.text_interface import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
@@ -70,7 +70,10 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (pyfluent.config.codegen_outdir / mode / f"tui_{version}.py").resolve()
+    version_dir = pyfluent.codegen.get_codegen_version_dir(
+        version, pyfluent.config.codegen_outdir
+    )
+    return (get_codegen_tui_dir(version_dir, mode) / "tui.py").resolve()
 
 
 _INDENT_STEP = 4
@@ -197,7 +200,7 @@ class TUIGenerator:
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
         self._tui_heading = mode + ".tui"
-        self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
+        self._tui_module = "ansys.fluent.core." + self._tui_heading
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
         self._main_menu = _TUIMenu([], "")
@@ -273,7 +276,7 @@ class TUIGenerator:
     def generate(self) -> None:
         """Generate TUI API classes."""
         api_tree = {}
-        Path(self._tui_file).parent.mkdir(exist_ok=True)
+        Path(self._tui_file).parent.mkdir(parents=True, exist_ok=True)
         if self._verbose:
             print(f"{str(self._tui_file)}")
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:

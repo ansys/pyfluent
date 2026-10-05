@@ -29,9 +29,11 @@ import pytest
 from pytest import WarningsRecorder
 
 from ansys.fluent.core import config
+from ansys.fluent.core.diagnostics.exceptions import (
+    DeprecatedSettingWarning,
+    PyFluentUserWarning,
+)
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.exceptions import DeprecatedSettingWarning, PyFluentUserWarning
-from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
@@ -42,6 +44,7 @@ from ansys.fluent.core.solver.flobject import (
     _OutputFile,
     to_python_name,
 )
+from ansys.fluent.core.solver.session.solver import Solver
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
