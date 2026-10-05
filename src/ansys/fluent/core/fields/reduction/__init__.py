@@ -22,7 +22,9 @@
 
 """Public Fluent reduction APIs and their implementation contracts."""
 
+from ansys.fluent.core.fields.reduction import functional
 from ansys.fluent.core.fields.reduction.abstract_reduction import AbstractReduction
+from ansys.fluent.core.fields.reduction.functional import Weight
 from ansys.fluent.core.fields.reduction.reduction import Reduction
 
-__all__ = ("AbstractReduction", "Reduction")
+__all__ = ("AbstractReduction", "Reduction", "Weight", "functional")

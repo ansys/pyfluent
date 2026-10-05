@@ -31,7 +31,7 @@ import weakref
 
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.fields.reduction.abstract_reduction import AbstractReduction
-from ansys.fluent.core.solver.function.reduction import Weight
+from ansys.fluent.core.fields.reduction.functional import Weight
 
 Path = list[tuple[str, str]]
 
