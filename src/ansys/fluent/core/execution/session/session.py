@@ -254,6 +254,17 @@ class BaseSession:
         self._fluent_connection = fluent_connection
         # Stores the backup of the fluent connection for later reference.
         self._fluent_connection_backup = self._fluent_connection
+        # A bind-mounted container without an explicit file-transfer service still
+        # needs host paths translated to container-visible base names at the read
+        # boundary, so attach a lightweight strategy that does just that.
+        if file_transfer_service is None and getattr(
+            fluent_connection.connection_properties, "inside_container", None
+        ):
+            from ansys.fluent.core.connectivity.file_transfer_service import (
+                _BindMountFileTransferStrategy,
+            )
+
+            file_transfer_service = _BindMountFileTransferStrategy()
         self._file_transfer_service = file_transfer_service
         self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state

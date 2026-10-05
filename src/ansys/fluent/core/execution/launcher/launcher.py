@@ -590,18 +590,15 @@ def launch_fluent(
             assert_never(fluent_launch_mode)
 
     session = launcher()
-    # Lightweight case loading requires the running session's file-transfer handling.
+    # The running session translates host paths to container-visible names at the
+    # read boundary, so the full path can be passed through directly.
     if (
         fluent_launch_mode == LaunchMode.CONTAINER
         and lightweight_mode
         and case_file_name_val
         and not dry_run
     ):
-        session.read_case_lightweight(
-            case_file_name_val
-            if file_transfer_service
-            else os.path.basename(case_file_name_val)
-        )
+        session.read_case_lightweight(case_file_name_val)
     return session
 
 
