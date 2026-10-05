@@ -26,6 +26,8 @@
 The :mod:`field_data` package provides request, response, and mesh models for
 retrieving data from Fluent. :class:`Reduction`, :class:`SolutionVariableInfo`,
 and :class:`SolutionVariableData` provide the related post-processing APIs.
+The :mod:`~ansys.fluent.core.fields.reduction.functional` module provides
+reduction functions for data from one or multiple Fluent sessions.
 The ``reduction`` and ``solution_variables`` packages also expose their
 abstract contracts, response containers, and user-facing validation errors.
 """
