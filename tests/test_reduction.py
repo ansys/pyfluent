@@ -29,8 +29,8 @@ from ansys.fluent.core import FluentVersion
 from ansys.fluent.core._grpc_services.reduction_service import _locn_names_and_objs
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.solver.function import reduction
-from ansys.fluent.core.solver.function.reduction import Weight
+from ansys.fluent.core.fields.reduction import Weight
+from ansys.fluent.core.fields.reduction import functional as reduction
 from ansys.units import VariableCatalog
 
 
@@ -426,6 +426,28 @@ def _test_centroid_2_sources(solver1, solver2):
 @pytest.fixture
 def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
+
+
+def test_functional_reduction_import_compatibility(monkeypatch):
+    from ansys.fluent.core.solver.function import reduction as legacy
+
+    assert legacy.Weight is Weight
+    assert all(
+        getattr(legacy, name) is getattr(reduction, name) for name in legacy.__all__
+    )
+    solver1 = object()
+    solver2 = object()
+    monkeypatch.setattr(
+        reduction,
+        "_locns",
+        lambda locations, ctxt: [(solver1, ["a"]), (solver2, ["b"])],
+    )
+    values = iter([10.0, 2.0, 20.0, 3.0])
+    monkeypatch.setattr(
+        reduction, "_eval_reduction", lambda *args, **kwargs: next(values)
+    )
+
+    assert reduction.area_average("Pressure", ["a", "b"]) == 16.0
 
 
 def test_reductions(
