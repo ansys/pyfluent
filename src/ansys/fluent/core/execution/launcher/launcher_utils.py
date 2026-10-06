@@ -101,6 +101,54 @@ def is_windows():
     return platform.system() == "Windows"
 
 
+def _is_unc_path(path: str | Path) -> bool:
+    r"""Check whether a Windows path is a UNC (Universal Naming Convention) path.
+
+    A UNC path addresses a network resource and begins with two leading
+    separators followed by a host name, for example ``\\server\share\dir``.
+    Both backslash and forward-slash separators are accepted, and the
+    extended-length UNC prefix ``\\?\UNC\server\share`` is recognized.
+
+    Parameters
+    ----------
+    path : str | Path
+        The Windows path to inspect. Forward slashes are treated as
+        equivalent to backslashes.
+
+    Returns
+    -------
+    bool
+        ``True`` if ``path`` is a UNC path, ``False`` otherwise.
+
+    Notes
+    -----
+    This is a purely syntactic check. The following edge cases are not
+    handled:
+
+    - Existence or reachability of the host/share is not verified.
+    - The presence of a share component is not required; a path with only a
+      host (for example ``\\server``) is reported as UNC.
+    - Win32 device-namespace paths (``\\?\C:\...`` and ``\\.\device``) are
+      reported as non-UNC, with the sole exception of the ``\\?\UNC\``
+      extended UNC prefix.
+    - The check is Windows-oriented; a POSIX path with two leading slashes
+      (for example ``//mnt/data``) is reported as UNC even though it is not a
+      network path on that platform.
+    - Environment variables and ``~`` are not expanded before the check.
+    """
+    path_str = os.fspath(path)
+    normalized = path_str.replace("/", "\\")
+    if normalized.upper().startswith("\\\\?\\UNC\\"):
+        return True
+    # Other device-namespace prefixes are not UNC.
+    if normalized.startswith("\\\\?\\") or normalized.startswith("\\\\.\\"):
+        return False
+    if normalized.startswith("\\\\"):
+        host = normalized[2:].split("\\", 1)[0]
+        return bool(host)
+    return False
+
+
 def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:
     import ansys.fluent.core as pyfluent
 

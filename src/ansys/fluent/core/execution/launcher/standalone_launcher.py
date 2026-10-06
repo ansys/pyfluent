@@ -63,6 +63,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
+    _is_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -338,6 +339,17 @@ class StandaloneLauncher:
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
+        # Fluent inherits the process working directory when 'cwd' is not set.
+        effective_cwd = self.argvals.get("cwd") or os.getcwd()
+        if is_windows() and _is_unc_path(effective_cwd):
+            logger.warning(
+                "On Windows, Fluent cannot use a UNC path (for example "
+                r"'\\server\share') as its working directory. Pass a local "
+                "directory as 'cwd', and give absolute UNC paths for any case, "
+                "data, journal or output files that live on the share. Relative "
+                "paths, and files Fluent writes by default, resolve against the "
+                "local 'cwd'."
+            )
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)

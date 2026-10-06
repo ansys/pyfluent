@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import platform
 import tempfile
 from tempfile import TemporaryDirectory
@@ -60,6 +60,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
     _build_case_data_arguments,
     _build_journal_argument,
+    _is_unc_path,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -581,6 +582,51 @@ def test_build_case_data_arguments_both_paths():
         _build_case_data_arguments(Path("case.cas"), Path("data.dat"))
         == ' -case "case.cas" -data "data.dat"'
     )
+
+
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        # Standard UNC paths.
+        (r"\\server\share", True),
+        (r"\\server\share\dir\file.cas", True),
+        (r"\\server", True),  # host only, no share (documented as UNC)
+        # Forward-slash variants are normalized.
+        ("//server/share", True),
+        ("//server/share/file.cas", True),
+        (r"\\server/share\file.cas", True),  # mixed separators
+        # Extended-length UNC prefix.
+        (r"\\?\UNC\server\share", True),
+        (r"\\?\unc\server\share", True),  # case-insensitive prefix
+        # Extended-length local and device namespaces are not UNC.
+        (r"\\?\C:\dir\file.cas", False),
+        (r"\\.\PhysicalDrive0", False),
+        # Local and relative paths.
+        (r"C:\dir\file.cas", False),
+        ("C:/dir/file.cas", False),
+        (r"dir\file.cas", False),
+        ("file.cas", False),
+        ("", False),
+        (r"\single", False),  # single leading separator
+        ("/single", False),
+    ],
+)
+def test_is_unc_path_strings(path, expected):
+    """Test ``_is_unc_path`` against string paths and edge cases."""
+    assert _is_unc_path(path) is expected
+
+
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        (PureWindowsPath(r"\\server\share\file.cas"), True),
+        (PureWindowsPath(r"C:\dir\file.cas"), False),
+        (PureWindowsPath("file.cas"), False),
+    ],
+)
+def test_is_unc_path_pathlib(path, expected):
+    """Test ``_is_unc_path`` with ``Path``-like inputs."""
+    assert _is_unc_path(path) is expected
 
 
 def test_show_gui_raises_warning():
