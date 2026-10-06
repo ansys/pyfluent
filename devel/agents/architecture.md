@@ -45,9 +45,22 @@ flowchart TB
 	transfer -.-> files
 ```
 
-- Settings, datamodel and TUI are distinct surfaces; they share session/service infrastructure but have different wrappers and schemas. Fields use runtime APIs, not generated settings wrappers.
-- Expression/naming helpers support variable access; RP/Scheme helpers use services. Parametric studies orchestrate sessions; system coupling integrates solver operations with external coupled workflows.
-- UI integrates session web/Jupyter presentation. Configuration, diagnostics, utilities, shared types and example downloads support the runtime across layers; search reads the generated API index rather than being a transport.
+- `solver.settings`, generated `object_model` and `session.tui` are distinct service-backed APIs with their own wrappers and schemas.
+- `execution.session` wires these services into the session API to expose Fluent capabilities.
+- The `fields` namespace provides field-data, reduction and solution-variable APIs.
+- The `expressions` namespace constructs and evaluates expressions.
+- `_variable_strategies` handles descriptor naming for expressions, fields and solution variables.
+- `rpvars` provides RP-variable helpers.
+- `services.scheme_interpreter` provides the Scheme interface.
+- `local_parametric_study` orchestrates parametric studies across sessions.
+- `system_coupling` integrates solver operations with external coupled workflows.
+- `ui` integrates session web and Jupyter presentation.
+- `module_config` provides runtime configuration and environment defaults.
+- `diagnostics` provides logging, journaling and exception support.
+- `utils` provides utilities used across runtime layers.
+- `_types` defines shared types used across runtime layers.
+- `examples` provides example assets and download helpers.
+- `diagnostics.search` reads the generated API index; it is not a transport.
 
 ### Generation and repository tooling
 
