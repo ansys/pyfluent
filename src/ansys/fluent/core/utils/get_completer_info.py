@@ -41,9 +41,9 @@ def get_completer_info(
     obj,
     base_class: type,
     prefix: str = "",
-    excluded: Iterable = None,
-    filter_function: Callable = None,
-    type_name_map: dict = None,
+    excluded: Iterable | None = None,
+    filter_function: Callable | None = None,
+    type_name_map: dict | None = None,
 ) -> list[list[str]]:
     """Get completer information of all children.
 

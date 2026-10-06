@@ -138,6 +138,7 @@ def deprecate_arguments(
 
             return func(*args, **kwargs)
 
+        wrapper.__signature__ = inspect.signature(func)
         return wrapper
 
     return decorator
@@ -181,6 +182,7 @@ def deprecate_function(
             warnings.warn(reason, warning_cls, stacklevel=2)
             return decorated(*args, **kwargs)
 
+        wrapper.__signature__ = inspect.signature(decorated)
         return wrapper
 
     return decorator
