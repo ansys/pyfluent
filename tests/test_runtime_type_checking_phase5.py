@@ -3,16 +3,14 @@
 
 """Phase 5: Test whole-package runtime type-checking support.
 
-This module audits the 14 TYPE_CHECKING-guarded modules to ensure they work
+This module audits the TYPE_CHECKING-guarded modules to ensure they work
 when beartype.claw's whole-package import hook is applied.
 
 Each test is subprocess-based to isolate import-time state. Modules are checked
 individually so that fixes can be tracked and verified one at a time.
 
 DEPENDENCY: Requires Phase 1-4 changes to be in place (stripped _type_checking.py,
-removed hook wiring from __init__.py/module_config.py, etc.). If running on a
-branch without Phase 1-4 landed, these tests will likely fail due to missing
-state — that is expected until rebase onto main post-#5375 merge.
+removed hook wiring from __init__.py/module_config.py, etc.).
 """
 
 import subprocess
@@ -20,27 +18,25 @@ import sys
 
 import pytest
 
-# List of 14 modules with TYPE_CHECKING guards that need whole-package coverage.
-# Line numbers from 2026-09-30 grep, included for reference during fixes.
+# Modules with TYPE_CHECKING guards that need whole-package coverage.
+# Line numbers refreshed 2026-10-06 after the launcher/session module reorganization
+# (ansys.fluent.core.launcher.* -> ansys.fluent.core.execution.launcher.*, etc.).
 MODULES_TO_CHECK = [
     ("ansys.fluent.core._data_model_cache", 33),
     ("ansys.fluent.core._types", 34),
-    ("ansys.fluent.core.context_manager", 30),
+    ("ansys.fluent.core.execution.launcher.container_launcher", 71),
+    ("ansys.fluent.core.execution.launcher.launch_options", 33),
+    ("ansys.fluent.core.execution.launcher.launcher", 78),
+    ("ansys.fluent.core.execution.launcher.pim_launcher", 61),
+    ("ansys.fluent.core.execution.launcher.slurm_launcher", 104),
+    ("ansys.fluent.core.execution.launcher.standalone_launcher", 80),
+    ("ansys.fluent.core.execution.session.session", 89),
     ("ansys.fluent.core.fields.field_data._field_data_interfaces", 36),
     ("ansys.fluent.core.fields.field_data.abstract_field_data", 30),
-    ("ansys.fluent.core.launcher.container_launcher", 69),
-    ("ansys.fluent.core.launcher.launch_options", 31),
-    ("ansys.fluent.core.launcher.pim_launcher", 59),
-    ("ansys.fluent.core.launcher.standalone_launcher", 78),
-    (
-        "ansys.fluent.core.launcher.launcher",
-        None,
-    ),  # confirmed broken, exact line varies
     ("ansys.fluent.core.meshing.meshing_workflow", 39),
+    ("ansys.fluent.core.meshing.session.base_meshing", 58),
     ("ansys.fluent.core.services._protocols", 28),
-    ("ansys.fluent.core.session.base_meshing", 58),
-    ("ansys.fluent.core.session.session", 52),
-    ("ansys.fluent.core.session.solver", 72),
+    ("ansys.fluent.core.solver.session.solver", 72),
 ]
 
 

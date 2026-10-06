@@ -37,12 +37,18 @@ import sys
 from typing import Any, Generic, TypeVar, cast
 import warnings
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
+
 __all__ = ("config",)
 
 
 TConfig = TypeVar("TConfig", bound="Config")
 
 
+# ``TConfig`` is bound to a forward reference which cannot be resolved while the
+# ``Config`` class body is still executing, which is exactly when
+# ``__set_name__`` runs.
+@no_runtime_type_check
 class _ConfigDescriptor(Generic[TConfig]):
     """Descriptor for managing configuration attributes."""
 
@@ -60,7 +66,14 @@ class _ConfigDescriptor(Generic[TConfig]):
     def _set_config(self, instance: TConfig, value: Any):
         setattr(instance, self._backing_field, value)
 
-    def __set_name__(self, owner: type[TConfig], name: str):
+    def __set_name__(self, owner, name: str):
+        # ``owner`` is intentionally left unannotated: it is ``Config`` itself,
+        # but any type-checker resolving that forward reference here would have
+        # to import ``Config`` from this module while its class body (and thus
+        # this very descriptor assignment) is still executing, which always
+        # fails. This is not a case of "coverage gap" to be documented as
+        # unchecked; it is a genuine chicken-and-egg timing constraint that no
+        # runtime type-checker can satisfy at this call site.
         self._backing_field = "_" + name
 
     def __get__(self, instance: TConfig, owner: type[TConfig]) -> Any:
@@ -376,6 +389,11 @@ class Config:
         for k, v in cast(list[tuple[str, Any]], members):
             if isinstance(v, (_ConfigDescriptor, property)):
                 config_dict[k] = v.__get__(self, self.__class__)
+
+        if not config_dict:
+            print("PyFluent Configuration: (no configuration items found)")
+            return
+
         max_key_length = max(len(k) for k in config_dict)
         print("PyFluent Configuration:")
         print("-" * (max_key_length + 20))

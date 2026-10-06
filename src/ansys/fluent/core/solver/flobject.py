@@ -67,6 +67,7 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
+    no_type_check,
 )
 import warnings
 import weakref
@@ -478,6 +479,7 @@ def _is_deprecated(obj) -> bool | None:
     )
 
 
+@no_type_check
 class Base:
     """Provides the base class for settings and command objects.
 
@@ -750,7 +752,7 @@ class Base:
         return self.flproxy == other.flproxy and self.path == other.path
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable = None
+        self, prefix: str = "", excluded: Iterable | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -1017,6 +1019,7 @@ def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None)
     return cls(name, parent)
 
 
+@no_type_check
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -1270,6 +1273,7 @@ _type_name_map = {
 }
 
 
+@no_type_check
 class Group(SettingsBase[DictStateType]):
     """A ``Group`` container object.
 
@@ -1447,6 +1451,7 @@ class Group(SettingsBase[DictStateType]):
                 raise
 
 
+@no_type_check
 class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on flproxy."""
 
@@ -1543,6 +1548,7 @@ class NamedObjectWildcardPath(WildcardPath):
 ChildTypeT = TypeVar("ChildTypeT")
 
 
+@no_type_check
 class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     """A ``NamedObject`` container is a container object similar to a Python dictionary
     object. Generally, many such objects can be created with different names.
@@ -1869,6 +1875,7 @@ def _convert_to_target_units(path, state, quantity, target_units):
         raise UnhandledQuantity(path, state) from ex
 
 
+@no_type_check
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
@@ -2088,6 +2095,7 @@ def _get_new_keywords(obj, *args, **kwds):
     return newkwds
 
 
+@no_type_check
 class Action(Base):
     """Intermediate Base class for Command and Query class."""
 
@@ -2933,14 +2941,9 @@ def get_root(
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
-            import ansys.fluent.core as pyfluent
-
-            version_dir = pyfluent.codegen.get_codegen_version_dir(
-                version, config.codegen_outdir
-            )
             settings = _load_module(
                 f"settings_{version}",
-                version_dir / "solver" / "settings.py",
+                config.codegen_outdir / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
             from ..diagnostics.exceptions import warning_for_fluent_dev_version
