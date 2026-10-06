@@ -28,8 +28,6 @@ import os
 from typing import TYPE_CHECKING, TypeVar
 import warnings
 
-import grpc
-
 if TYPE_CHECKING:
     from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.meshing.session.meshing import Meshing
@@ -352,24 +350,12 @@ def _get_graphics_driver(
     return graphics_driver
 
 
-def _get_running_session_mode(
-    fluent_connection: "FluentConnection", mode: FluentMode | None = None
-):
+def _get_running_session_mode(fluent_connection: "FluentConnection"):
     """Get the mode of the running session if the mode has not been explicitly given."""
-    if mode:
-        session_mode = mode
-    else:
-        try:
-            session_mode = fluent_connection._connection_interface.get_mode()
-        except Exception as ex:
-            rpc_error = ex if isinstance(ex, grpc.RpcError) else ex.__context__
-            if (
-                isinstance(rpc_error, grpc.RpcError)
-                and rpc_error.code() == grpc.StatusCode.UNAUTHENTICATED
-            ):
-                raise exceptions.InvalidPassword() from ex
-            raise
-    return session_mode.get_fluent_value()
+    try:
+        return fluent_connection._connection_interface.get_mode().get_fluent_value()
+    except Exception as ex:
+        raise exceptions.ConnectToFluentError() from ex
 
 
 def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:

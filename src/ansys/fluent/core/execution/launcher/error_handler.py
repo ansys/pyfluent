@@ -71,6 +71,12 @@ class LaunchFluentError(Exception):
         super().__init__(details)
 
 
+class ConnectToFluentError(Exception):
+    """Exception class representing errors during connecting to a Fluent session."""
+
+    pass
+
+
 def _process_kwargs(kwargs):
     """Verify whether keyword arguments are valid or not.
 
