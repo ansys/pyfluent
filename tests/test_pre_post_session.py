@@ -30,13 +30,23 @@ from ansys.fluent.core.execution.launcher.launch_options import FluentMode
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 
 
+def test_fluent_modes_map_to_distinct_session_classes():
+    solver_class = FluentMode.SOLVER.get_fluent_value()
+    pre_post_class = FluentMode.PRE_POST.get_fluent_value()
+
+    assert solver_class is not pre_post_class
+    assert FluentMode.from_session_class(solver_class) is FluentMode.SOLVER
+    assert FluentMode.from_session_class(pre_post_class) is FluentMode.PRE_POST
+
+
 @pytest.mark.skip(reason=SKIP_UNKNOWN)
 # This test works fine locally but fails on CI
 def test_pre_post_session():
     file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     pre_post = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PRE_POST)
     assert (
-        FluentMode.PRE_POST.get_fluent_value() is FluentMode.SOLVER.get_fluent_value()
+        FluentMode.PRE_POST.get_fluent_value()
+        is not FluentMode.SOLVER.get_fluent_value()
     )
     pre_post.settings.file.read_case(file_name=file_name)
     pre_post.settings.solution.initialization.hybrid_initialize()
