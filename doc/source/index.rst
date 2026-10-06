@@ -23,9 +23,9 @@ streamline CFD workflows using the flexibility of Python.
 
 .. important::
    `fluent.docs.pyansys.com <https://fluent.docs.pyansys.com/version/stable/>`_ is the only
-   maintained and up-to-date source for PyFluent documentation. Other cheat sheets,
-   handouts, and third-party resources may be outdated or incorrect, so rely only on
-   this documentation.
+   maintained and up-to-date source for PyFluent documentation.
+   Other resources, including cheat sheets, handouts, and pages on other websites,
+   may be outdated or incorrect, so disregard them where they conflict with it.
 
 
 Why use PyFluent?
