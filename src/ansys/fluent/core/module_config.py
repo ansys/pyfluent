@@ -363,6 +363,12 @@ class Config:
     #: Whether to use Slurm from the current machine if it is available, defaults to True.
     use_slurm_from_current_machine = _ConfigDescriptor["Config"](lambda instance: True)
 
+    #: The default exposure level for settings API objects, defaults to "stable". Can be set via ``PYFLUENT_EXPOSURE_LEVEL`` environment variable ("alpha", "beta", or "stable").
+    default_exposure_level = _ConfigDescriptor["Config"](
+        lambda instance: instance._env.get("PYFLUENT_EXPOSURE_LEVEL", "stable"),
+        "DEFAULT_EXPOSURE_LEVEL",
+    )
+
     def __init__(self):
         """__init__ method of Config class."""
         # Read the environment variable once when pyfluent is imported

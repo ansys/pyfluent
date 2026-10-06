@@ -352,14 +352,14 @@ def launch_fluent(
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
     ) = None,
-    case_file_name: "PathType | None" = None,
-    case_data_file_name: "PathType | None" = None,
+    case_file_name: PathType | None = None,
+    case_data_file_name: PathType | None = None,
     lightweight_mode: bool | None = None,
     mode: FluentMode | str = FluentMode.SOLVER,
     py: bool | None = None,
     gpu: bool | list[int] | None = None,
-    cwd: "PathType | None" = None,
-    fluent_path: "PathType | None" = None,
+    cwd: PathType | None = None,
+    fluent_path: PathType | None = None,
     topy: str | list[Any] | None = None,
     start_watchdog: bool | None = None,
     scheduler_options: SlurmSchedulerOptions | None = None,
@@ -416,7 +416,7 @@ def launch_fluent(
         start_timeout if start_timeout is not None else config.launch_fluent_timeout
     )
 
-    def _normalize_path(value: "PathType | None") -> str | None:
+    def _normalize_path(value: PathType | None) -> str | None:
         if value is None or isinstance(value, str):
             return value
         return os.fspath(value)
