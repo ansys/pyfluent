@@ -1,6 +1,5 @@
 """Provides a module for generating Fluent Datamodel and TUI RST files."""
 
-import fnmatch
 import os
 import pathlib
 from pathlib import Path
@@ -112,6 +111,7 @@ def _process_datamodel_path(full_name: str):
     """
     path_string = re.findall("core.*", full_name)
     path = path_string[0].replace("core.generated.", "")
+    path = re.sub(r"^v\d+\.(?:meshing|object_model)\.", "", path)
     path = re.sub(r"\d+(?![A-Za-z])", "", path)
     path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")
@@ -203,35 +203,11 @@ def _get_path(mode: str, is_datamodel: bool | None = None):
     -------
         Datamodel or TUI path.
     """
-    if is_datamodel:
-        return os.path.normpath(
-            os.path.join(
-                _THIS_DIRNAME,
-                "..",
-                "src",
-                "ansys",
-                "fluent",
-                "core",
-                "generated",
-            )
-        )
-    else:
-        return os.path.normpath(
-            os.path.join(
-                _THIS_DIRNAME,
-                "..",
-                "src",
-                "ansys",
-                "fluent",
-                "core",
-                "generated",
-                f"{mode}",
-            )
-        )
+    return pathlib.Path(_THIS_DIRNAME).parent / "src/ansys/fluent/core/generated"
 
 
 def _get_file_or_folder(mode: str, is_datamodel: bool):
-    """Get datamodel_* folder or tui_*.py file name.
+    """Get the latest generated version containing modules for the mode.
 
     Parameters
     ----------
@@ -244,11 +220,15 @@ def _get_file_or_folder(mode: str, is_datamodel: bool):
     -------
         Datamodel or TUI file name.
     """
-    for file in os.listdir(_get_path(mode, is_datamodel)):
-        if is_datamodel and fnmatch.fnmatch(file, "datamodel_*"):
-            return pathlib.Path(file).stem
-        if not is_datamodel and fnmatch.fnmatch(file, "tui_*.py"):
-            return pathlib.Path(file).stem
+    generated_dir = _get_path(mode, is_datamodel)
+    from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+    for version in FluentVersion:
+        version_dir = generated_dir / f"v{version.number}"
+        if is_datamodel and (version_dir / "object_model").is_dir():
+            return version_dir.name
+        if not is_datamodel and (version_dir / mode / "tui.py").is_file():
+            return version_dir.name
 
 
 def _get_sorted_members(members: list):

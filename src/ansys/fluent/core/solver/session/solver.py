@@ -46,15 +46,15 @@ from ansys.fluent.core.diagnostics.exceptions import (
     DeprecatedSettingWarning,
     PyFluentDeprecationWarning,
 )
+from ansys.fluent.core.execution.session._shared import (
+    _make_datamodel_module,
+    _make_tui_module,
+)
+from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.fields.field_data.live_field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
-from ansys.fluent.core.session._shared import (
-    _make_datamodel_module,
-    _make_tui_module,
-)
-from ansys.fluent.core.session.session import BaseSession
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     Group,
@@ -70,13 +70,13 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow_old import ClassicWorkflow
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.fluent_connection import FluentConnection
-    from ansys.fluent.core.generated.datamodel_261.preferences import (
+    from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
+    from ansys.fluent.core.generated.v261.object_model.preferences import (
         Root as preferences_root,
     )
-    import ansys.fluent.core.generated.solver.settings_261 as settings_root
-    from ansys.fluent.core.generated.solver.tui_261 import main_menu
-    from ansys.fluent.core.session.http_solver import HttpSolver
+    import ansys.fluent.core.generated.v261.solver.settings as settings_root
+    from ansys.fluent.core.generated.v261.solver.tui import main_menu
+    from ansys.fluent.core.solver.session.http_solver import HttpSolver
 
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -181,7 +181,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     ) -> "HttpSolver":
         """Create a solver session connected via REST (HTTP) transport.
 
-        Returns an :class:`~ansys.fluent.core.session.http_solver.HttpSolver`
+        Returns an :class:`~ansys.fluent.core.solver.session.http_solver.HttpSolver`
         instance - a standalone REST-backed session that is independent of the
         gRPC infrastructure.
 
@@ -206,7 +206,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         >>> solver.settings.setup.models.energy.enabled()
         """
         from ansys.fluent.core.rest.client import FluentRestClient
-        from ansys.fluent.core.session.http_solver import HttpSolver
+        from ansys.fluent.core.solver.session.http_solver import HttpSolver
 
         rest_client = FluentRestClient.connect(
             url=url,
@@ -477,7 +477,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         """
         if not self._is_beta_enabled:
             raise BetaFeaturesNotEnabled("switch_to_meshing")
-        from ansys.fluent.core.session.meshing import Meshing
+        from ansys.fluent.core.meshing.session.meshing import Meshing
 
         self.settings.switch_to_meshing_mode()
         for cb in self._fluent_connection.finalizer_cbs:

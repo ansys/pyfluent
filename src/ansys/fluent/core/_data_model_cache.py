@@ -129,6 +129,7 @@ class _CacheImpl:
 
 def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str):
     """Check if a parameter is a dict type."""
+    import ansys.fluent.core as pyfluent
     from ansys.fluent.core.module_config import config
     from ansys.fluent.core.services.object_model import (
         PyDictionary,
@@ -138,8 +139,11 @@ def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str)
     from ansys.fluent.core.utils import load_module
 
     try:
+        version_dir = pyfluent.codegen.get_codegen_version_dir(
+            version.number, config.codegen_outdir
+        )
         module = load_module(
-            rules, config.codegen_outdir / f"datamodel_{version.number}" / f"{rules}.py"
+            rules, version_dir / f"datamodel_{version.number}" / f"{rules}.py"
         )
     except (
         ImportError,

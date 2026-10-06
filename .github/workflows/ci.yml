@@ -66,7 +66,7 @@ jobs:
       contents: write # Required to commit and push CHANGELOG updates.
       pull-requests: write # Required to create or update changelog PRs.
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
+      - uses: ansys/actions/doc-deploy-changelog@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running Vale
-        uses: ansys/actions/doc-style@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
+        uses: ansys/actions/doc-style@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -89,7 +89,7 @@ jobs:
 
     steps:
       - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
+        uses: ansys/actions/code-style@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: false
@@ -135,7 +135,7 @@ jobs:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-pr-title@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
+      - uses: ansys/actions/check-pr-title@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -166,7 +166,7 @@ jobs:
           path: src/ansys/fluent/core/generated
 
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
+        uses: ansys/actions/build-wheelhouse@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -177,7 +177,7 @@ jobs:
     name: "Check library vulnerabilities"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-vulnerabilities@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
+      - uses: ansys/actions/check-vulnerabilities@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -191,7 +191,7 @@ jobs:
     name: "Actions Security"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-actions-security@7e89e00c5619374a1da8c2e876309d8b15ff0559 # v11.0.3
+      - uses: ansys/actions/check-actions-security@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -400,7 +400,7 @@ jobs:
 
       - name: Print 24.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_242.py
+          cat src/ansys/fluent/core/generated/v242/fluent_version.py
 
       - name: Pull 25.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -417,7 +417,7 @@ jobs:
 
       - name: Print 25.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_251.py
+          cat src/ansys/fluent/core/generated/v251/fluent_version.py
 
       - name: Pull 25.2 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -434,7 +434,7 @@ jobs:
 
       - name: Print 25.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_252.py
+          cat src/ansys/fluent/core/generated/v252/fluent_version.py
 
       - name: Pull 26.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -450,7 +450,7 @@ jobs:
 
       - name: Print 26.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_261.py
+          cat src/ansys/fluent/core/generated/v261/fluent_version.py
 
       - name: Pull 27.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -466,7 +466,7 @@ jobs:
 
       - name: Print 27.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_271.py
+          cat src/ansys/fluent/core/generated/v271/fluent_version.py
 
       - name: Upload generated API files
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -801,7 +801,7 @@ jobs:
           skip-existing: false
 
       - name: Release
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           files: |
             ./**/*.whl
