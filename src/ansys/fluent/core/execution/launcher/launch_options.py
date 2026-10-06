@@ -351,7 +351,7 @@ def _get_graphics_driver(
 
 
 def _get_running_session_mode(fluent_connection: "FluentConnection"):
-    """Get the mode of the running session if the mode has not been explicitly given."""
+    """Get the mode of the running session."""
     try:
         return fluent_connection._connection_interface.get_mode().get_fluent_value()
     except Exception as ex:
