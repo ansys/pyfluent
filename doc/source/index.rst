@@ -26,9 +26,9 @@ Official documentation
 
 .. important::
    `fluent.docs.pyansys.com <https://fluent.docs.pyansys.com/version/stable/>`_ is the only
-   maintained and up-to-date source for PyFluent documentation. Unofficial cheat sheets,
-   handouts, and other third-party write-ups may be outdated or incorrect, so rely only on
-   this documentation rather than on any conflicting unofficial source.
+   maintained and up-to-date source for PyFluent documentation. Other cheat sheets,
+   handouts, and third-party resources may be outdated or incorrect, so rely only on
+   this documentation.
 
 
 Why use PyFluent?
