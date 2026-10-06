@@ -71,7 +71,12 @@ def override_help_text(func, func_to_be_wrapped):
 class Data(AbstractData):
     """Solution variable data."""
 
-    def __init__(self, domain_name, zone_id_name_map, solution_variable_data):
+    def __init__(
+        self,
+        domain_name: str | None,
+        zone_id_name_map: dict[int, str],
+        solution_variable_data: dict[int, npt.NDArray[Any]],
+    ) -> None:
         """Initialize Data."""
         self._domain_name = domain_name
         self._data = {
@@ -80,21 +85,21 @@ class Data(AbstractData):
         }
 
     @property
-    def domain(self):
+    def domain(self) -> str | None:
         """Domain name."""
         return self._domain_name
 
     @property
-    def zone_names(self):
+    def zone_names(self) -> list[str]:
         """Zone names."""
         return list(self._data.keys())
 
     @property
-    def data(self):
+    def data(self) -> dict[str, npt.NDArray[Any]]:
         """Solution variable data."""
         return self._data
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str) -> npt.NDArray[Any] | None:
         return self._data.get(name, None)
 
 
@@ -127,7 +132,7 @@ class SolutionVariableInfo(AbstractSolutionVariableInfo):
 
     def get_variables_info(
         self, zone_names: list[str], domain_name: str | None = "mixture"
-    ):
+    ) -> Any:
         """Get SVARs info for zones in the domain.
 
         Parameters
@@ -139,8 +144,8 @@ class SolutionVariableInfo(AbstractSolutionVariableInfo):
 
         Returns
         -------
-        SolutionVariableInfo.SolutionVariables
-            Object containing information for SVARs which are common for list of zone names.
+        Any
+            Metadata for SVARs common to the requested zones.
         """
 
         return self._service.get_variables_info(
@@ -150,7 +155,7 @@ class SolutionVariableInfo(AbstractSolutionVariableInfo):
             allowed_domain_names=_AllowedDomainNames(self),
         )
 
-    def get_zones_info(self):
+    def get_zones_info(self) -> Any:
         """Get Zones info.
 
         Parameters
@@ -159,8 +164,8 @@ class SolutionVariableInfo(AbstractSolutionVariableInfo):
 
         Returns
         -------
-        SolutionVariableInfo.ZonesInfo
-            Object containing information for all zones.
+        Any
+            Information for all zones.
         """
         return self._service.get_zones_info()
 
@@ -212,7 +217,7 @@ class _AllowedNames:
 
 
 class _AllowedSvarNames:
-    def __init__(self, solution_variable_info: SolutionVariableInfo):
+    def __init__(self, solution_variable_info: AbstractSolutionVariableInfo):
         self._solution_variable_info = solution_variable_info
 
     def __call__(
@@ -266,7 +271,7 @@ class _AllowedSvarNames:
 
 
 class _AllowedZoneNames(_AllowedNames):
-    def __init__(self, solution_variable_info: SolutionVariableInfo):
+    def __init__(self, solution_variable_info: AbstractSolutionVariableInfo):
         self._zones_info = solution_variable_info.get_zones_info()
 
     def __call__(self) -> list[str]:
@@ -289,7 +294,7 @@ class _AllowedZoneNames(_AllowedNames):
 
 
 class _AllowedDomainNames(_AllowedNames):
-    def __init__(self, solution_variable_info: SolutionVariableInfo):
+    def __init__(self, solution_variable_info: AbstractSolutionVariableInfo):
         self._zones_info = solution_variable_info.get_zones_info()
 
     def __call__(self) -> list[str]:
@@ -358,7 +363,7 @@ class SolutionVariableData(AbstractSolutionVariableData):
     def __init__(
         self,
         service,
-        solution_variable_info: SolutionVariableInfo,
+        solution_variable_info: AbstractSolutionVariableInfo,
     ):
         """Initialize SolutionVariableData."""
         self._service = service
@@ -415,7 +420,7 @@ class SolutionVariableData(AbstractSolutionVariableData):
         variable_name: str,
         zone_names: list[str],
         domain_name: str | None = "mixture",
-    ) -> Data:
+    ) -> AbstractData:
         """Get SVAR data on zones.
 
         Parameters
@@ -429,7 +434,7 @@ class SolutionVariableData(AbstractSolutionVariableData):
 
         Returns
         -------
-        Data
+        AbstractData
             Object containing SVAR data.
         """
         self._update_solution_variable_info()

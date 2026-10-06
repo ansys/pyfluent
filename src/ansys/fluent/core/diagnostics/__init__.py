@@ -19,3 +19,33 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+"""Diagnostics and observability utilities for PyFluent.
+
+This package provides tools for inspecting and recording PyFluent activity:
+
+* :mod:`logger` configures PyFluent logging and provides logger helpers.
+* :mod:`journaling` records supported Fluent interactions as Python journals.
+* :mod:`search` searches Fluent's solver and meshing API hierarchy.
+* :mod:`exceptions` defines PyFluent-specific exceptions and warning classes.
+
+For example, enable PyFluent file logging with::
+
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.diagnostics.logger.enable()
+
+The submodules are available as attributes of ``ansys.fluent.core.diagnostics``.
+"""
+
+from importlib import import_module
+
+__all__ = ("exceptions", "journaling", "logger", "search")
+
+
+def __getattr__(name: str):
+    if name not in __all__:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    module = import_module(f".{name}", __name__)
+    globals()[name] = module
+    return module
