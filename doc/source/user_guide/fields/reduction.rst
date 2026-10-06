@@ -87,7 +87,7 @@ For convenience, context-aware reductions are also supported:
   0.002555675491754098
 
 
-Reduction functions: capabilities
+Reduction functions: Capabilities
 ----------------------------------
 
 The following reduction functions are available in PyFluent:
