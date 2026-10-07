@@ -150,6 +150,7 @@ class FluentMode(FluentEnum):
         from ansys.fluent.core.solver.session.solver import Solver
         from ansys.fluent.core.solver.session.solver_aero import SolverAero
         from ansys.fluent.core.solver.session.solver_icing import SolverIcing
+        from ansys.fluent.core.solver.session.solver_pre_post import PrePost
 
         return {
             cls.MESHING: Meshing,
@@ -157,7 +158,7 @@ class FluentMode(FluentEnum):
             cls.SOLVER: Solver,
             cls.SOLVER_ICING: SolverIcing,
             cls.SOLVER_AERO: SolverAero,
-            cls.PRE_POST: Solver,
+            cls.PRE_POST: PrePost,
         }
 
     @classmethod
