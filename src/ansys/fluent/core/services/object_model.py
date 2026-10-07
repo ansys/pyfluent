@@ -607,10 +607,6 @@ class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use this class
     instead of directly calling DatamodelService's method.
 
-    This class represents a singleton (non-named) node in the datamodel. Behavior
-    that is specific to named objects (such as :meth:`name` and :meth:`rename`)
-    lives on :class:`PyNamedObject`.
-
     Methods
     -------
     __setattr__(name, value)
@@ -859,10 +855,7 @@ class PyMenu(PyStateContainer):
 class PyNamedObject(PyMenu):
     """Object class for a named (renamable) node in the datamodel.
 
-    A named object is an element of a :class:`PyNamedObjectContainer`. In
-    addition to the singleton behavior inherited from :class:`PyMenu`, it
-    exposes identity and lifecycle operations such as :meth:`name` and
-    :meth:`rename` that do not apply to singletons.
+    A named object is an element of a :class:`PyNamedObjectContainer`.
 
     Methods
     -------
