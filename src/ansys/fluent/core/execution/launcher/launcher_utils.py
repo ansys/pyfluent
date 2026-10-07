@@ -24,6 +24,7 @@
 """Provides a module for launching utilities."""
 
 import logging
+import ntpath
 import os
 from pathlib import Path
 import platform
@@ -101,8 +102,8 @@ def is_windows():
     return platform.system() == "Windows"
 
 
-def _is_unc_path(path: str | Path) -> bool:
-    r"""Check whether a Windows path is a UNC (Universal Naming Convention) path.
+def _cwd_may_trigger_cmd_unc_fallback(path: str | Path) -> bool:
+    r"""Check whether a Windows path looks like a UNC (Universal Naming Convention) path.
 
     A UNC path addresses a network resource and begins with two leading
     separators followed by a host name, for example ``\\server\share\dir``.
@@ -118,7 +119,7 @@ def _is_unc_path(path: str | Path) -> bool:
     Returns
     -------
     bool
-        ``True`` if ``path`` is a UNC path, ``False`` otherwise.
+        ``True`` if ``path`` looks like a UNC path, ``False`` otherwise.
 
     Notes
     -----
@@ -136,17 +137,12 @@ def _is_unc_path(path: str | Path) -> bool:
       network path on that platform.
     - Environment variables and ``~`` are not expanded before the check.
     """
-    path_str = os.fspath(path)
-    normalized = path_str.replace("/", "\\")
-    if normalized.upper().startswith("\\\\?\\UNC\\"):
-        return True
-    # Other device-namespace prefixes are not UNC.
-    if normalized.startswith("\\\\?\\") or normalized.startswith("\\\\.\\"):
-        return False
-    if normalized.startswith("\\\\"):
-        host = normalized[2:].split("\\", 1)[0]
-        return bool(host)
-    return False
+    # ntpath.splitdrive returns the \\server\share (or device namespace)
+    # component as the drive, defining what a UNC drive is.
+    drive = ntpath.splitdrive(os.fspath(path))[0].replace("/", "\\")
+    if drive.upper().startswith("\\\\?\\"):
+        return drive.upper().startswith("\\\\?\\UNC\\")
+    return drive.startswith("\\\\") and not drive.startswith("\\\\.\\")
 
 
 def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:
