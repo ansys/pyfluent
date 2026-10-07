@@ -282,7 +282,7 @@ distributed across more than one machine:
 
 Working directory
 ~~~~~~~~~~~~~~~~~~
-You can set the working directory of the Fluent client with the ``cwd`` argument:
+You can set the working directory of the Fluent process with the ``cwd`` argument:
 
 .. code:: python
 

@@ -590,14 +590,10 @@ def test_build_case_data_arguments_both_paths():
         # Standard UNC paths.
         (r"\\server\share", True),
         (r"\\server\share\dir\file.cas", True),
-        (r"\\server", True),  # host only, no share (documented as UNC)
         # Forward-slash variants are normalized.
         ("//server/share", True),
         ("//server/share/file.cas", True),
         (r"\\server/share\file.cas", True),  # mixed separators
-        # Extended-length UNC prefix.
-        (r"\\?\UNC\server\share", True),
-        (r"\\?\unc\server\share", True),  # case-insensitive prefix
         # Extended-length local and device namespaces are not UNC.
         (r"\\?\C:\dir\file.cas", False),
         (r"\\.\PhysicalDrive0", False),

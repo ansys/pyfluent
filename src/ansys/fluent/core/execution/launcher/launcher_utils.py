@@ -145,6 +145,42 @@ def _cwd_may_trigger_cmd_unc_fallback(path: str | Path) -> bool:
     return drive.startswith("\\\\") and not drive.startswith("\\\\.\\")
 
 
+def _warn_if_cwd_may_trigger_cmd_unc_fallback(
+    cwd: str | Path | None, stacklevel: int = 4
+) -> None:
+    r"""Warn when the effective Windows working directory looks like a UNC path.
+
+    Fluent inherits the process working directory when ``cwd`` is not set. A relative
+    ``cwd`` is resolved to an absolute path first, so a UNC share is detected even when
+    the Python process itself runs from one.
+
+    Parameters
+    ----------
+    cwd : str | Path | None
+        The requested working directory, or ``None`` to use the process directory.
+    stacklevel : int, optional
+        Stack level forwarded to :func:`warnings.warn` so the warning points at the
+        user's ``launch_fluent()`` call (warn -> helper -> __call__ -> launch_fluent
+        -> caller). Defaults to ``4``.
+    """
+    try:
+        effective_cwd = os.path.abspath(cwd) if cwd else os.getcwd()
+    except FileNotFoundError:
+        # The current directory was deleted; skip the advisory warning.
+        return
+    if is_windows() and _cwd_may_trigger_cmd_unc_fallback(effective_cwd):
+        warnings.warn(
+            "On Windows, the working directory looks like a UNC path (for "
+            r"example '\\server\share'), which Fluent cannot use. Pass a "
+            "local directory as 'cwd'. See the 'Working directory' section "
+            "of the PyFluent launch guide for details: "
+            "https://fluent.docs.pyansys.com/version/stable/user_guide/"
+            "session/launching_ansys_fluent.html#working-directory",
+            UserWarning,
+            stacklevel=stacklevel,
+        )
+
+
 def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:
     import ansys.fluent.core as pyfluent
 
