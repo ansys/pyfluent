@@ -76,6 +76,7 @@ from warnings import warn
 
 from typing_extensions import TypeVar, Unpack
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
@@ -224,6 +225,7 @@ SessionT = TypeVar(
 )
 
 
+@no_runtime_type_check
 class SlurmFuture(Generic[SessionT]):
     """Encapsulates asynchronous launch of Fluent within a Slurm environment.
 
@@ -693,6 +695,7 @@ class SlurmLauncher:
         )
         return session
 
+    @no_runtime_type_check
     def __call__(
         self,
     ) -> "SlurmFuture[Meshing | PureMeshing | Solver | SolverIcing | SolverAero]":
