@@ -662,6 +662,8 @@ def connect_to_fluent(
         insecure_mode=insecure_mode,
         cleanup_on_exit=cleanup_on_exit,
     )
+    # Map the mode detected from the running server to its session class
+    # (e.g. Meshing, PureMeshing, Solver); it is instantiated below.
     new_session = fluent_connection._mode.get_fluent_value()
 
     start_watchdog = _confirm_watchdog_start(
