@@ -61,7 +61,7 @@ class SolverLite(Solver):
 
         Parameters
         ----------
-            fluent_connection (:ref:`FluentConnection <ref_ansys_fluent_core_connectivity_fluent_connection>`): Encapsulates a Fluent connection.
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             scheme_eval: SchemeEval
                 Instance of ``SchemeEval`` to execute Fluent's scheme code on.
             start_transcript : bool, optional
