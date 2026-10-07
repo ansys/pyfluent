@@ -22,7 +22,10 @@
 # SOFTWARE.
 
 import gc
+import os
 from time import sleep
+from types import SimpleNamespace
+from unittest.mock import Mock
 
 from conftest import SKIP_INVESTIGATING
 from google.protobuf.json_format import MessageToDict
@@ -46,6 +49,7 @@ from ansys.fluent.core._grpc_services.object_model_service_v0 import (
     _convert_variant_to_value as _convert_variant_to_value_v0,
 )
 from ansys.fluent.core.services.object_model import (
+    PyAction,
     PyArguments,
     PyArgumentsSingletonSubItem,
     PyArgumentsTextualSubItem,
@@ -60,6 +64,44 @@ from ansys.fluent.core.services.streaming_services.datamodel_streaming import (
 )
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+
+@pytest.mark.parametrize("file_purpose", ["output", "inout"])
+@pytest.mark.parametrize("remote", [False, True])
+@pytest.mark.parametrize("file_list", [False, True])
+def test_command_output_file_path_translation(
+    tmp_path, monkeypatch, file_purpose, remote, file_list
+):
+    file_names = [str(tmp_path / "mesh.msh.h5"), str(tmp_path / "other.msh.h5")]
+    value = file_names if file_list else file_names[0]
+    file_service = Mock() if remote else None
+    service = SimpleNamespace(file_transfer_service=file_service)
+    command = PyCommand(service, "meshing", "WriteMesh", [])
+
+    def get_file_purpose(arg):
+        command._update_file_behavior(file_purpose)
+        return file_purpose
+
+    monkeypatch.setattr(command, "_get_file_purpose", get_file_purpose)
+    execute = Mock(return_value=None)
+    monkeypatch.setattr(PyAction, "__call__", execute)
+
+    command(FileName=value)
+
+    expected_names = [os.path.basename(file_name) for file_name in file_names]
+    expected = expected_names if file_list else expected_names[0]
+    execute.assert_called_once_with(FileName=expected if remote else value)
+    if remote:
+        transferred = file_names if file_list else file_names[:1]
+        assert file_service.download.call_count == len(transferred)
+        for file_name in transferred:
+            file_service.download.assert_any_call(file_name=file_name)
+        if file_purpose == "inout":
+            assert file_service.upload.call_count == len(transferred)
+            for file_name in transferred:
+                file_service.upload.assert_any_call(file_name=file_name)
+        else:
+            file_service.upload.assert_not_called()
 
 
 @pytest.mark.parametrize(

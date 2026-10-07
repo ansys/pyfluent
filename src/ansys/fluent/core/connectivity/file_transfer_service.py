@@ -244,6 +244,67 @@ def _get_files(
     return files
 
 
+class _BindMountFileTransferStrategy(FileTransferStrategy):
+    """File handling for a bind-mounted Fluent container without an explicit service.
+
+    Files placed in the host ``mount_source`` are visible to Fluent at its container
+    working directory, so transfers reduce to copying in and out of the mount and
+    referencing files by base name. This lets the settings layer pass base names to
+    Fluent while callers continue to work with real host paths.
+    """
+
+    def __init__(
+        self, mount_source: str | None = None, mount_target: str | None = None
+    ):
+        """Initialize the bind-mount strategy from the configured container mounts."""
+        from ansys.fluent.core.module_config import config
+
+        self.mount_source = pathlib.Path(
+            mount_source or config.container_mount_source or os.getcwd()
+        )
+        self.mount_target = mount_target or config.container_mount_target
+
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Whether the file is present in the mounted working directory."""
+        return (self.mount_source / os.path.basename(file_name)).is_file()
+
+    def upload(
+        self, file_name: list[str] | str, remote_file_name: str | None = None
+    ) -> None:
+        """Copy a host file into the mount so Fluent can read it by base name."""
+        for file in _get_files(file_name):
+            if not file.is_file():
+                continue
+            target = self.mount_source / os.path.basename(remote_file_name or file.name)
+            if target.resolve() == file.resolve():
+                continue
+            shutil.copyfile(str(file), str(target))
+
+    def download(
+        self, file_name: list[str] | str, local_directory: str | None = None
+    ) -> None:
+        """Copy a file written into the mount out to an explicit local directory.
+
+        Output files are already on the host inside the mount, so this is a no-op
+        unless a destination is requested.
+        """
+        if not local_directory:
+            return
+        for file in _get_files(file_name):
+            source = self.mount_source / os.path.basename(file.name)
+            if not source.is_file():
+                continue
+            local_dir_path = pathlib.Path(local_directory)
+            destination = (
+                local_dir_path / source.name
+                if local_dir_path.is_dir()
+                else local_dir_path
+            )
+            if destination.exists() and destination.samefile(source):
+                continue
+            shutil.copyfile(str(source), str(destination))
+
+
 class ContainerFileTransferStrategy(FileTransferStrategy):
     """Provides a file transfer service based on the `gRPC client <https://filetransfer.tools.docs.pyansys.com/version/stable/>`_
     and `gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.

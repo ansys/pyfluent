@@ -1207,6 +1207,11 @@ class _InputFile(FileName):
 
 
 class _OutputFile(FileName):
+    def _do_before_execute(self, command_name, value, kwargs):
+        if self._file_transfer_handler:
+            return os.path.basename(value)
+        return value
+
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:

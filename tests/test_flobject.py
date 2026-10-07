@@ -25,6 +25,8 @@
 
 from collections.abc import MutableMapping
 import io
+import os
+from unittest.mock import Mock
 import weakref
 
 import pytest
@@ -41,6 +43,27 @@ from ansys.fluent.core.solver.flobject import (
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.units
+
+
+@pytest.mark.parametrize("file_class", [flobject._OutputFile, flobject._InOutFile])
+@pytest.mark.parametrize("remote", [False, True])
+def test_output_file_path_translation(tmp_path, file_class, remote):
+    file_name = str(tmp_path / "mesh.msh.h5")
+    file_service = Mock() if remote else None
+    argument = file_class()
+    argument._set_file_transfer_service(file_service)
+    kwargs = {"file_name": file_name}
+
+    value = argument.before_execute("write_case", file_name, kwargs)
+
+    assert value == (os.path.basename(file_name) if remote else file_name)
+    argument.after_execute("write_case", file_name, kwargs)
+    if remote:
+        file_service.download.assert_called_once_with(file_name=file_name)
+        if file_class is flobject._InOutFile:
+            file_service.upload.assert_called_once_with(file_name=file_name)
+        else:
+            file_service.upload.assert_not_called()
 
 
 class Setting:

@@ -60,7 +60,9 @@ from ansys.fluent.core.execution.launcher.launch_options import (
     get_remote_grpc_options,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
+    _build_case_data_arguments,
     _confirm_watchdog_start,
+    _validate_lightweight_with_case_data,
     is_windows,
 )
 from ansys.fluent.core.execution.launcher.pim_launcher import PIMLauncher
@@ -449,6 +451,43 @@ def launch_fluent(
 
     match fluent_launch_mode:
         case LaunchMode.CONTAINER:
+            container_case_file_name = case_file_name_val
+            container_case_data_file_name = case_data_file_name_val
+            container_additional_arguments = additional_arguments
+            if not dry_run:
+                if file_transfer_service:
+                    # Upload host files so Fluent can see them under the mount.
+                    for file_name in (
+                        container_case_file_name,
+                        container_case_data_file_name,
+                    ):
+                        if file_name:
+                            file_transfer_service.upload(file_name=file_name)
+                # Fluent resolves case/data files by basename: they either arrive
+                # under the container's working dir via the mounted host download
+                # directory, or were just uploaded by the file transfer service.
+                if container_case_file_name:
+                    container_case_file_name = os.path.basename(
+                        container_case_file_name
+                    )
+                if container_case_data_file_name:
+                    container_case_data_file_name = os.path.basename(
+                        container_case_data_file_name
+                    )
+                should_disable, warning_msg = _validate_lightweight_with_case_data(
+                    lightweight_mode, container_case_data_file_name
+                )
+                if should_disable:
+                    warn(warning_msg, UserWarning)
+                    lightweight_mode = False
+            if (
+                not dry_run
+                and not lightweight_mode
+                and (container_case_file_name or container_case_data_file_name)
+            ):
+                container_additional_arguments += _build_case_data_arguments(
+                    container_case_file_name, container_case_data_file_name
+                )
             launcher = DockerLauncher(
                 mode=mode,
                 ui_mode=ui_mode,
@@ -458,7 +497,7 @@ def launch_fluent(
                 precision=precision,
                 processor_count=processor_count,
                 start_timeout=start_timeout_val,
-                additional_arguments=additional_arguments,
+                additional_arguments=container_additional_arguments,
                 container_dict=container_dict,
                 dry_run=dry_run,
                 cleanup_on_exit=cleanup_on_exit,
@@ -550,7 +589,17 @@ def launch_fluent(
         case _:
             assert_never(fluent_launch_mode)
 
-    return launcher()
+    session = launcher()
+    # The running session translates host paths to container-visible names at the
+    # read boundary, so the full path can be passed through directly.
+    if (
+        fluent_launch_mode == LaunchMode.CONTAINER
+        and lightweight_mode
+        and case_file_name_val
+        and not dry_run
+    ):
+        session.read_case_lightweight(case_file_name_val)
+    return session
 
 
 def connect_to_fluent(
