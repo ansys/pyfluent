@@ -37,15 +37,17 @@ from ansys.fluent.core.diagnostics.exceptions import (
     DisallowedValuesError,
     InvalidArgument,
 )
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.launcher.error_handler import (
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.error_handler import (
     GPUSolverSupportError,
     InvalidIpPort,
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.fluent_container import configure_container_dict
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.fluent_container import (
+    configure_container_dict,
+)
+from ansys.fluent.core.execution.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
@@ -53,8 +55,8 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_graphics_driver,
 )
-from ansys.fluent.core.launcher.launcher import create_launcher
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.execution.launcher.launcher import create_launcher
+from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
     _build_case_data_arguments,
     _build_journal_argument,
@@ -62,7 +64,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _validate_lightweight_with_journal,
     is_windows,
 )
-from ansys.fluent.core.launcher.process_launch_string import (
+from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
     get_fluent_exe_path,
 )
@@ -952,9 +954,11 @@ def test_default_launch_mode_is_py():
 
 @pytest.mark.standalone
 def test_create_launcher():
-    from ansys.fluent.core.launcher import create_launcher
-    from ansys.fluent.core.launcher.launch_options import LaunchMode
-    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+    from ansys.fluent.core.execution.launcher import create_launcher
+    from ansys.fluent.core.execution.launcher.launch_options import LaunchMode
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneLauncher,
+    )
 
     with pytest.raises(DisallowedValuesError):
         create_launcher("unknown_mode")
@@ -990,7 +994,9 @@ def test_idle_timeout(monkeypatch):
     )
     assert "timeout" not in fluent_launch_string
 
-    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneLauncher,
+    )
 
     assert (
         StandaloneLauncher._construct_timeout_arg(60)

@@ -67,11 +67,11 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
-    no_type_check,
 )
 import warnings
 import weakref
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -96,6 +96,7 @@ _static_class_attributes = [
     "_deprecated_version",
     "_python_name",
     "fluent_name",
+    "_parent_class",
 ]
 
 
@@ -479,7 +480,7 @@ def _is_deprecated(obj) -> bool | None:
     )
 
 
-@no_type_check
+@no_runtime_type_check
 class Base:
     """Provides the base class for settings and command objects.
 
@@ -752,7 +753,7 @@ class Base:
         return self.flproxy == other.flproxy and self.path == other.path
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable | None = None
+        self, prefix: str = "", excluded: Iterable = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -1019,7 +1020,7 @@ def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None)
     return cls(name, parent)
 
 
-@no_type_check
+@no_runtime_type_check
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -1273,7 +1274,7 @@ _type_name_map = {
 }
 
 
-@no_type_check
+@no_runtime_type_check
 class Group(SettingsBase[DictStateType]):
     """A ``Group`` container object.
 
@@ -1451,7 +1452,7 @@ class Group(SettingsBase[DictStateType]):
                 raise
 
 
-@no_type_check
+@no_runtime_type_check
 class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on flproxy."""
 
@@ -1548,7 +1549,7 @@ class NamedObjectWildcardPath(WildcardPath):
 ChildTypeT = TypeVar("ChildTypeT")
 
 
-@no_type_check
+@no_runtime_type_check
 class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     """A ``NamedObject`` container is a container object similar to a Python dictionary
     object. Generally, many such objects can be created with different names.
@@ -1875,7 +1876,7 @@ def _convert_to_target_units(path, state, quantity, target_units):
         raise UnhandledQuantity(path, state) from ex
 
 
-@no_type_check
+@no_runtime_type_check
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
@@ -2095,7 +2096,7 @@ def _get_new_keywords(obj, *args, **kwds):
     return newkwds
 
 
-@no_type_check
+@no_runtime_type_check
 class Action(Base):
     """Intermediate Base class for Command and Query class."""
 
@@ -2639,19 +2640,97 @@ def _resolve_generated_names(
     return pname, parent_attr_name
 
 
-def _set_generated_exposure_level(cls, parent, info: dict):
-    """Set class exposure level based on static info and parent level."""
-    # If root, set it explicitly to stable
+def _set_generated_exposure_level(cls, parent, info: dict, fluent_path: str = ""):
+    """Set class exposure level based on static info, overrides, and parent level.
+
+    Parameters
+    ----------
+    cls : type
+        The class being generated.
+    parent : type or None
+        The parent class (None if root).
+    info : dict
+        Static info dict for this class.
+    fluent_path : str
+        Optional pre-computed Fluent-name path for override lookup.
+        If empty, will be reconstructed from the parent chain and current fluent_name.
+    """
+    # If root, set it to stable
     if parent is None:
         cls.exposure_level = ExposureLevel.STABLE
         return
+
+    # Get the effective exposure level, applying overrides if found
+    override_level = _get_override_exposure_level(cls, parent, info, fluent_path)
+
+    # Use override if found, otherwise use server-reported level
     exposure_level_str = info.get("api_exposure_level")
-    if exposure_level_str is None:
-        cls.exposure_level = parent.exposure_level
+    if override_level is not None:
+        # Override found and applied
+        effective_server = override_level
+    elif exposure_level_str is None:
+        # No server level and no override, inherit from parent
+        effective_server = parent.exposure_level
     else:
-        cls.exposure_level = min(
-            ExposureLevel(exposure_level_str), parent.exposure_level
-        )
+        # Use server-reported level
+        effective_server = ExposureLevel(exposure_level_str)
+
+    # Combine with parent constraint: child can't be stricter than parent
+    cls.exposure_level = min(effective_server, parent.exposure_level)
+
+
+def _get_override_exposure_level(
+    cls, parent, info: dict, fluent_path: str = ""
+) -> ExposureLevel | None:
+    """Look up the exposure level override for this class, if any.
+
+    Parameters
+    ----------
+    cls : type
+        The class being generated.
+    parent : type or None
+        The parent class.
+    info : dict
+        Static info dict for this class.
+    fluent_path : str
+        Pre-computed dotted fluent path (e.g., "setup.materials.database").
+
+    Returns
+    -------
+    ExposureLevel or None
+        The override level if found, or None if no override.
+        Returning None when no override is found signals that the override
+        should not affect the exposure level computation.
+    """
+    try:
+        from ansys.fluent.core.solver import exposure_overrides
+        from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+        version = info.get("version") or getattr(cls, "_version", "") or ""
+        fluent_version = FluentVersion(version) if version else FluentVersion.v271
+
+        if not fluent_path:
+            return None
+
+        # Look up in the overrides data
+        if fluent_path in exposure_overrides.DATA:
+            override_entry = exposure_overrides.DATA[fluent_path]
+
+            # Check if entry is version-keyed (dict) or fixed (ExposureLevel)
+            if isinstance(override_entry, dict):
+                for version_predicate, override_level in override_entry.items():
+                    # Version predicates are callables that check against fluent_version
+                    if version_predicate(fluent_version):
+                        return override_level
+                # No matching version, no override applies
+                return None
+            else:
+                return override_entry
+
+        return None
+    except (ImportError, AttributeError, ValueError):
+        # If anything goes wrong with overrides, return None (no override)
+        return None
 
 
 def _set_generated_deprecated_version(cls, info: dict):
@@ -2813,6 +2892,41 @@ def _set_generated_migration_adapter(cls, info: dict):
         cls._has_migration_adapter = True
 
 
+def _build_fluent_path(name: str, parent) -> str:
+    """Build the dotted fluent path for a class being generated.
+
+    Parameters
+    ----------
+    name : str
+        The fluent name of the class being created (empty string for root).
+    parent : type or None
+        The parent class.
+
+    Returns
+    -------
+    str
+        Dotted fluent path, e.g., "setup.materials.database"
+    """
+    if parent is None:
+        return ""  # Root has no path
+
+    path_parts = []
+    # Walk up parent chain using fluent_name
+    node = parent
+    while node is not None:
+        fname = getattr(node, "fluent_name", "")
+        if fname:
+            path_parts.insert(0, fname)
+        # Check if parent has a way to get its parent (not standard, but try)
+        node = getattr(node, "_parent_class", None)
+
+    # Add current name
+    if name:
+        path_parts.append(name)
+
+    return ".".join(path_parts)
+
+
 def _create_generated_class(
     name: str,
     info: dict,
@@ -2847,9 +2961,11 @@ def _create_generated_class(
     )
 
     dct["_child_classes"] = {}
+    dct["_parent_class"] = parent  # Store reference to parent class for path building
     cls = type(pname, bases, dct)
 
-    _set_generated_exposure_level(cls, parent, info)
+    fluent_path = _build_fluent_path(name, parent)
+    _set_generated_exposure_level(cls, parent, info, fluent_path)
     _set_generated_deprecated_version(cls, info)
 
     taboo = _get_generation_taboo(cls, version)
@@ -2941,9 +3057,14 @@ def get_root(
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
+            import ansys.fluent.core as pyfluent
+
+            version_dir = pyfluent.codegen.get_codegen_version_dir(
+                version, config.codegen_outdir
+            )
             settings = _load_module(
                 f"settings_{version}",
-                config.codegen_outdir / "solver" / f"settings_{version}.py",
+                version_dir / "solver" / "settings.py",
             )
             root_cls = settings.root
             from ..diagnostics.exceptions import warning_for_fluent_dev_version
@@ -2960,7 +3081,9 @@ def get_root(
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval
-    root._setattr("_global_exposure_level", ExposureLevel.STABLE)
+    default_level_str = config.default_exposure_level.lower()
+    default_level = ExposureLevel(default_level_str)
+    root._setattr("_global_exposure_level", default_level)
     root._setattr("set_exposure_level", types.MethodType(_set_exposure_level, root))
     root._setattr("_file_transfer_service", file_transfer_service)
     return root

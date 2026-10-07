@@ -18,8 +18,10 @@ SKIP_DIRECTORIES = {
     "expressions",
     "generated",
     "rest",
+    "services",
     "ui",
     "utils",
+    "function",
 }
 SKIP_FILES = {
     "settings_builtin_bases",
@@ -27,6 +29,7 @@ SKIP_FILES = {
     "settings_external",
     "meshing_workflow_old",
     "workflow_old",
+    "workflow",
 }
 ADDITIONAL_DOCUMENTATION = {
     "ansys.fluent.core.meshing": (
