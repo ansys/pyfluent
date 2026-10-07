@@ -1008,6 +1008,42 @@ def test_idle_timeout(monkeypatch):
     )
 
 
+def test_slurm_launcher_start_timeout_defaults_to_no_timeout():
+    launcher = create_launcher(
+        LaunchMode.SLURM,
+        mode=FluentMode.SOLVER,
+        insecure_mode=True,
+    )
+    assert launcher._argvals["start_timeout"] == -1
+
+
+def test_slurm_launcher_start_timeout_respects_explicit_value():
+    launcher = create_launcher(
+        LaunchMode.SLURM,
+        mode=FluentMode.SOLVER,
+        insecure_mode=True,
+        start_timeout=45,
+    )
+    assert launcher._argvals["start_timeout"] == 45
+
+
+def test_launch_fluent_does_not_force_config_timeout_for_slurm(monkeypatch):
+    # The Slurm launch path must receive start_timeout=None so SlurmLauncher applies
+    # its own no-timeout default instead of config.launch_fluent_timeout (issue #4628).
+    captured_kwargs = {}
+
+    def fake_slurm_launcher(**kwargs):
+        captured_kwargs.update(kwargs)
+        return lambda: None
+
+    monkeypatch.setattr(
+        "ansys.fluent.core.execution.launcher.launcher.SlurmLauncher",
+        fake_slurm_launcher,
+    )
+    pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"}, insecure_mode=True)
+    assert captured_kwargs["start_timeout"] is None
+
+
 def test_standalone_launcher_cleanup_on_exit_false_preserves_file():
     """Verify cleanup_on_exit=False preserves server-info file (issue #5145)."""
     from pathlib import Path
