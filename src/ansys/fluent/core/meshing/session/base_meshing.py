@@ -120,7 +120,7 @@ class BaseMeshing(BaseSession):
 
         Parameters
         ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
+        fluent_connection (:ref:`FluentConnection <ref_ansys_fluent_core_connectivity_fluent_connection>`):
             Encapsulates a Fluent connection.
         scheme_eval: SchemeInterpreter
             Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
