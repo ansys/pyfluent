@@ -608,6 +608,19 @@ def test_attrs():
         r.g_1.s_4.get_attr("allowed-values")
 
 
+def test_class_resolution(caplog):
+    dict_cls, _ = flobject.get_cls("state", {"type": "dict"}, version="271")
+    assert issubclass(dict_cls, flobject.Dict)
+    assert dict_cls._state_type == flobject.DictStateType
+
+    command_cls, _ = flobject.get_cls(
+        "restore-topology",
+        {"type": "command", "arguments": {"state": {"type": "dict"}}},
+        version="271",
+    )
+    assert "state" in command_cls.argument_names
+
+
 def test_exposure_level_filtering(monkeypatch):
     """Test that beta/alpha objects are hidden by default and revealed by activation."""
     from ansys.fluent.core.module_config import config
