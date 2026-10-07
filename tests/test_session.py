@@ -66,7 +66,6 @@ from ansys.fluent.core.execution.launcher.error_handler import (
 )
 from ansys.fluent.core.execution.launcher.launch_options import (
     FluentMode,
-    _get_running_session_mode,
 )
 from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
@@ -338,29 +337,6 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     server.stop(None)
     session.exit()
     assert not session.is_active()
-
-
-def test_get_running_session_mode_returns_session_class() -> None:
-    class _FakeConnectionInterface:
-        def get_mode(self):
-            return FluentMode.SOLVER
-
-    class _FakeFluentConnection:
-        _connection_interface = _FakeConnectionInterface()
-
-    assert _get_running_session_mode(_FakeFluentConnection()) is Solver
-
-
-def test_get_running_session_mode_wraps_error() -> None:
-    class _FakeConnectionInterface:
-        def get_mode(self):
-            raise RuntimeError("connection failed")
-
-    class _FakeFluentConnection:
-        _connection_interface = _FakeConnectionInterface()
-
-    with pytest.raises(ConnectToFluentError):
-        _get_running_session_mode(_FakeFluentConnection())
 
 
 def test_create_mock_session_from_server_info_file(tmp_path: Path, monkeypatch) -> None:

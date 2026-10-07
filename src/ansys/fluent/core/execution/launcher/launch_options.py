@@ -350,14 +350,6 @@ def _get_graphics_driver(
     return graphics_driver
 
 
-def _get_running_session_mode(fluent_connection: "FluentConnection"):
-    """Get the mode of the running session."""
-    try:
-        return fluent_connection._connection_interface.get_mode().get_fluent_value()
-    except Exception as ex:
-        raise exceptions.ConnectToFluentError() from ex
-
-
 def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.

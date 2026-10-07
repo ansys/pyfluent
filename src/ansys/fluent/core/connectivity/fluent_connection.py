@@ -48,6 +48,7 @@ from ansys.fluent.core.connectivity.file_transfer_service import (
     ContainerFileTransferStrategy,
 )
 from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
+from ansys.fluent.core.execution.launcher.error_handler import ConnectToFluentError
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
@@ -603,6 +604,14 @@ class FluentConnection:
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
         )
+        try:
+            self._mode = self._connection_interface.get_mode()
+        except (
+            RuntimeError
+        ) as ex:  # GrpcErrorInterceptor raises RuntimeError on failure
+            raise ConnectToFluentError(
+                f"Failed to determine the Fluent session mode: {ex}"
+            ) from ex
         self._cleanup_on_exit = cleanup_on_exit
         self._container = container
         if (
