@@ -28,8 +28,9 @@ def generate_meshing_datamodels():
         try:
             version_dir = _get_file_or_folder(mode="meshing", is_datamodel=True)
             output_dir = get_codegen_datamodel_dir(Path(version_dir), meshing_datamodel)
+            module_path = ".".join(output_dir.parts)
             datamodel = importlib.import_module(
-                f"ansys.fluent.core.generated.{output_dir}.{meshing_datamodel}"
+                f"ansys.fluent.core.generated.{module_path}.{meshing_datamodel}"
             )
             if datamodel:
                 meshing_datamodel_roots.append(datamodel.Root)
