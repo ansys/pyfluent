@@ -60,13 +60,7 @@ from ansys.fluent.core.diagnostics.exceptions import (
 )
 from ansys.fluent.core.execution import session
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.execution.launcher.error_handler import (
-    ConnectToFluentError,
-    LaunchFluentError,
-)
-from ansys.fluent.core.execution.launcher.launch_options import (
-    FluentMode,
-)
+from ansys.fluent.core.execution.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
 from ansys.fluent.core.services.streaming_services.events_streaming import (
