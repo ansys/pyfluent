@@ -49,6 +49,14 @@ if os.getenv("PYFLUENT_DOC_SKIP_EXAMPLES") != "1":
 
 typehints_document_rtype = False
 
+# sphinx_gallery_conf holds callables and can't be pickled for the config cache.
+suppress_warnings = ["config.cache"]
+
+# The API reference RSTs are only generated when BUILD_ALL_DOCS is set (nightly and
+# release builds). Without them, references into the API docs are unresolved.
+if os.getenv("BUILD_ALL_DOCS") != "1":
+    suppress_warnings += ["ref.ref", "toc.not_readable"]
+
 # Intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/", None),

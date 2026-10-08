@@ -452,7 +452,7 @@ graphics.picture.save_picture(file_name="contour.png")
 #     Velocity Vectors
 #
 # *The velocity vectors illustrate the flow patterns within the tank, highlighting the
-#  complex interactions between the liquid and gas phases.*
+# complex interactions between the liquid and gas phases.*
 
 
 # Animation Setup
