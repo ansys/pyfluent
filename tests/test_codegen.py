@@ -287,6 +287,7 @@ _expected_datamodel_api_output = '''#
 
 from ansys.fluent.core.services.object_model import (
     PyMenu,
+    PyNamedObject,
     PyParameter,
     PyTextual,
     PyNumerical,
@@ -318,7 +319,7 @@ class Root(PyMenu):
         """
         .
         """
-        class _N1(PyMenu):
+        class _N1(PyNamedObject):
             """
             _N1 group.
             """
