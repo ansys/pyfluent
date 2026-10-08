@@ -20,7 +20,7 @@ with two separate examples case files as follows:
 .. code-block:: python
 
     >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core.solver.function import reduction
+    >>> from ansys.fluent.core.fields.reduction import functional as reduction
     >>> from ansys.fluent.core.examples import download_file
 
     >>> solver1 = pyfluent.Solver.from_install()
@@ -87,7 +87,7 @@ For convenience, context-aware reductions are also supported:
   0.002555675491754098
 
 
-Reduction functions: capabilities
+Reduction functions: Capabilities
 ----------------------------------
 
 The following reduction functions are available in PyFluent:
@@ -311,7 +311,7 @@ Object-Oriented:
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.reduction import Weight
+  >>> from ansys.fluent.core.fields.reduction import Weight
   >>> reduction.sum(
   >>>   expression=VariableCatalog.ABSOLUTE_PRESSURE,
   >>>   locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,

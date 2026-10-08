@@ -37,12 +37,18 @@ import sys
 from typing import Any, Generic, TypeVar, cast
 import warnings
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
+
 __all__ = ("config",)
 
 
 TConfig = TypeVar("TConfig", bound="Config")
 
 
+# ``TConfig`` is bound to a forward reference which cannot be resolved while the
+# ``Config`` class body is still executing, which is exactly when
+# ``__set_name__`` runs.
+@no_runtime_type_check
 class _ConfigDescriptor(Generic[TConfig]):
     """Descriptor for managing configuration attributes."""
 
@@ -349,6 +355,12 @@ class Config:
 
     #: Whether to use Slurm from the current machine if it is available, defaults to True.
     use_slurm_from_current_machine = _ConfigDescriptor["Config"](lambda instance: True)
+
+    #: The default exposure level for settings API objects, defaults to "stable". Can be set via ``PYFLUENT_EXPOSURE_LEVEL`` environment variable ("alpha", "beta", or "stable").
+    default_exposure_level = _ConfigDescriptor["Config"](
+        lambda instance: instance._env.get("PYFLUENT_EXPOSURE_LEVEL", "stable"),
+        "DEFAULT_EXPOSURE_LEVEL",
+    )
 
     def __init__(self):
         """__init__ method of Config class."""

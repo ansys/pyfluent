@@ -56,7 +56,6 @@ from ansys.fluent.core.execution.launcher.launch_options import (
     Precision,
     UIMode,
     _get_fluent_launch_mode,
-    _get_running_session_mode,
     get_remote_grpc_options,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
@@ -352,14 +351,14 @@ def launch_fluent(
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
     ) = None,
-    case_file_name: "PathType | None" = None,
-    case_data_file_name: "PathType | None" = None,
+    case_file_name: PathType | None = None,
+    case_data_file_name: PathType | None = None,
     lightweight_mode: bool | None = None,
     mode: FluentMode | str = FluentMode.SOLVER,
     py: bool | None = None,
     gpu: bool | list[int] | None = None,
-    cwd: "PathType | None" = None,
-    fluent_path: "PathType | None" = None,
+    cwd: PathType | None = None,
+    fluent_path: PathType | None = None,
     topy: str | list[Any] | None = None,
     start_watchdog: bool | None = None,
     scheduler_options: SlurmSchedulerOptions | None = None,
@@ -416,7 +415,7 @@ def launch_fluent(
         start_timeout if start_timeout is not None else config.launch_fluent_timeout
     )
 
-    def _normalize_path(value: "PathType | None") -> str | None:
+    def _normalize_path(value: PathType | None) -> str | None:
         if value is None or isinstance(value, str):
             return value
         return os.fspath(value)
@@ -663,7 +662,9 @@ def connect_to_fluent(
         insecure_mode=insecure_mode,
         cleanup_on_exit=cleanup_on_exit,
     )
-    new_session = _get_running_session_mode(fluent_connection)
+    # Map the mode detected from the running server to its session class
+    # (e.g. Meshing, PureMeshing, Solver); it is instantiated below.
+    new_session = fluent_connection._mode.get_fluent_value()
 
     start_watchdog = _confirm_watchdog_start(
         start_watchdog, cleanup_on_exit, fluent_connection
