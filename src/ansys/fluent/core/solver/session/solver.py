@@ -70,6 +70,9 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow_old import ClassicWorkflow
 
 if TYPE_CHECKING:
+    from ansys.fluent.core.connectivity.file_transfer_service import (
+        FileTransferStrategy,
+    )
     from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.generated.v261.object_model.preferences import (
         Root as preferences_root,
@@ -139,7 +142,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self,
         fluent_connection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: "FileTransferStrategy | None" = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
     ):
@@ -218,7 +221,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self,
         fluent_connection: "FluentConnection",
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: "FileTransferStrategy | None" = None,
         launcher_args: dict[str, Any] | None = None,
     ):
         self._tui_service = self._datamodel_service_tui

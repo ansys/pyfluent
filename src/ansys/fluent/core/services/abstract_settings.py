@@ -25,17 +25,19 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+from ansys.fluent.core.solver.flobject import StateType
+
 
 class AbstractSettings(ABC):
     """Abstract base class for accessing and modifying Fluent settings."""
 
     @abstractmethod
-    def set_var(self, path: str, value: Any) -> None:
+    def set_var(self, path: str, value: StateType) -> None:
         """Set the value for the given path."""
         pass
 
     @abstractmethod
-    def get_var(self, path: str) -> Any:
+    def get_var(self, path: str) -> StateType:
         """Get the value for the given path."""
         pass
 

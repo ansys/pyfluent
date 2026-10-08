@@ -455,14 +455,14 @@ class PyStateContainer(PyCallableStateObject):
 
     fixState = fix_state
 
-    def set_state(self, state: Any | None = None, **kwargs) -> None:
+    def set_state(self, state: ValueT | None = None, **kwargs: ValueT) -> None:
         """Set state of the current object.
 
         Parameters
         ----------
-        state : Any, optional
+        state : ValueT, optional
             state
-        kwargs : Any
+        kwargs : ValueT
             Keyword arguments.
 
         Raises
@@ -620,14 +620,14 @@ class PyMenu(PyStateContainer):
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
-    def __setattr__(self, name: str, value: Any) -> None:
+    def __setattr__(self, name: str, value: ValueT) -> None:
         """Set state of the child object.
 
         Parameters
         ----------
         name : str
             child object name
-        value : Any
+        value : ValueT
             state
         """
         if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
@@ -1137,14 +1137,14 @@ class PyNamedObjectContainer:
         except LookupError:
             return
 
-    def __setitem__(self, key: str, value: Any) -> None:
+    def __setitem__(self, key: str, value: ValueT) -> None:
         """Set state of the child object by name.
 
         Parameters
         ----------
         key : str
             Name of the child object.
-        value : Any
+        value : ValueT
             State of the child object.
         """
         if isinstance(value, dict) and not value:
@@ -1376,7 +1376,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     getState = get_state
 
-    def set_state(self, state) -> Any:
+    def set_state(self, state: ValueT) -> ValueT:
         """Set state of the command argument."""
         self.parent.set_state({self.name: state})
 
@@ -1400,7 +1400,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     getAttribValue = get_attr
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: ValueT) -> None:
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
@@ -1460,7 +1460,7 @@ class PyArguments(PyStateContainer):
         """
         return self._get_remote_attr(attrib)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: ValueT) -> None:
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:

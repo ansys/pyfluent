@@ -71,12 +71,14 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
+from types import TracebackType
 from typing import TYPE_CHECKING, Any, Generic, TypedDict
 from warnings import warn
 
 from typing_extensions import TypeVar, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
@@ -239,7 +241,12 @@ class SlurmFuture(Generic[SessionT]):
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ):
         self.cancel()
 
     def _get_state(self) -> str:
@@ -577,7 +584,9 @@ class SlurmLauncher:
 
         certificates_folder: str | None = kwargs.get("certificates_folder")
         insecure_mode: bool = kwargs.get("insecure_mode", False)
-        file_transfer_service: Any | None = kwargs.get("file_transfer_service")
+        file_transfer_service: FileTransferStrategy | None = kwargs.get(
+            "file_transfer_service"
+        )
         ui_mode = kwargs.get("ui_mode")
         certificates_folder, insecure_mode = get_remote_grpc_options(
             certificates_folder, insecure_mode

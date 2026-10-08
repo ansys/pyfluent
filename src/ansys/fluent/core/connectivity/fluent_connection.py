@@ -37,7 +37,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, TypeVar
+from typing import Callable, TypeVar
 import warnings
 import weakref
 
@@ -46,6 +46,7 @@ import grpc
 
 from ansys.fluent.core.connectivity.file_transfer_service import (
     ContainerFileTransferStrategy,
+    FileTransferStrategy,
 )
 from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
@@ -467,7 +468,7 @@ class FluentConnection:
         insecure_mode: bool = False,
         cleanup_on_exit: bool = True,
         remote_instance: Instance | None = None,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
         container: ContainerT | None = None,

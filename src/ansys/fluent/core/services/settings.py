@@ -57,6 +57,7 @@ from functools import wraps
 from typing import Any
 
 from ansys.fluent.core.services.abstract_settings import AbstractSettings
+from ansys.fluent.core.solver.flobject import StateType
 
 trace: bool = False
 _indent: int = 0
@@ -91,12 +92,12 @@ class BaseSettings(AbstractSettings):
         self.service = service
 
     @_trace
-    def set_var(self, path: str, value: Any) -> None:
+    def set_var(self, path: str, value: StateType) -> None:
         """Set the value for the given path."""
         self.service.set_var(path, value)
 
     @_trace
-    def get_var(self, path: str) -> Any:
+    def get_var(self, path: str) -> StateType:
         """Get the value for the given path."""
         return self.service.get_var(path)
 
