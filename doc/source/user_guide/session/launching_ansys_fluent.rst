@@ -278,6 +278,26 @@ distributed across more than one machine:
   >>> )
 
 
+.. _working_directory:
+
+Working directory
+~~~~~~~~~~~~~~~~~~
+You can set the working directory of the Fluent process with the ``cwd`` argument:
+
+.. code:: python
+
+  >>> solver_session = pyfluent.launch_fluent(cwd="/path/to/working/directory")
+
+.. note::
+   On Windows, Fluent cannot use a UNC path (for example ``\\server\share``) as its
+   working directory. Pass a local directory as ``cwd``, and give absolute UNC paths
+   for any case, data, journal, or output files that live on the share. Relative
+   paths, and files Fluent writes by default, resolve against the local ``cwd``.
+
+   If you do not pass ``cwd``, Fluent inherits the working directory of your Python
+   process. If your script runs from a UNC path, pass an explicit local ``cwd``.
+
+
 Logging support
 ---------------
 PyFluent has an option to run with logging enabled.

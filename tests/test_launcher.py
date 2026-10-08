@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import platform
 import tempfile
 from tempfile import TemporaryDirectory
@@ -60,6 +60,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
     _build_case_data_arguments,
     _build_journal_argument,
+    _cwd_may_trigger_cmd_unc_fallback,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
@@ -583,6 +584,47 @@ def test_build_case_data_arguments_both_paths():
     )
 
 
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        # Standard UNC paths.
+        (r"\\server\share", True),
+        (r"\\server\share\dir\file.cas", True),
+        # Forward-slash variants are normalized.
+        ("//server/share", True),
+        ("//server/share/file.cas", True),
+        (r"\\server/share\file.cas", True),  # mixed separators
+        # Extended-length local and device namespaces are not UNC.
+        (r"\\?\C:\dir\file.cas", False),
+        (r"\\.\PhysicalDrive0", False),
+        # Local and relative paths.
+        (r"C:\dir\file.cas", False),
+        ("C:/dir/file.cas", False),
+        (r"dir\file.cas", False),
+        ("file.cas", False),
+        ("", False),
+        (r"\single", False),  # single leading separator
+        ("/single", False),
+    ],
+)
+def test_cwd_may_trigger_cmd_unc_fallback_strings(path, expected):
+    """Test ``_cwd_may_trigger_cmd_unc_fallback`` against string paths and edge cases."""
+    assert _cwd_may_trigger_cmd_unc_fallback(path) is expected
+
+
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        (PureWindowsPath(r"\\server\share\file.cas"), True),
+        (PureWindowsPath(r"C:\dir\file.cas"), False),
+        (PureWindowsPath("file.cas"), False),
+    ],
+)
+def test_cwd_may_trigger_cmd_unc_fallback_pathlib(path, expected):
+    """Test ``_cwd_may_trigger_cmd_unc_fallback`` with ``Path``-like inputs."""
+    assert _cwd_may_trigger_cmd_unc_fallback(path) is expected
+
+
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
@@ -879,6 +921,55 @@ def test_standalone_meshing_with_case_data_raises(monkeypatch):
             case_file_name=r"C:\tmp\mixing_elbow.cas.h5",
             case_data_file_name=r"C:\tmp\mixing_elbow.dat.h5",
         )
+
+
+def _invoke_standalone_call_with_stubbed_launch(monkeypatch, **launch_kwargs):
+    """Run ``StandaloneLauncher.__call__`` on a patched Windows platform with the
+    real subprocess launch stubbed out, so only the pre-launch UNC
+    working-directory check runs.
+
+    ``is_windows`` is patched where the launcher uses it so the check is
+    exercised on any host OS, and ``subprocess.Popen`` is stubbed to raise,
+    which makes ``__call__`` raise ``LaunchFluentError`` right after the check.
+    """
+    from ansys.fluent.core.execution.launcher import standalone_launcher
+
+    monkeypatch.setattr(standalone_launcher, "is_windows", lambda: True)
+    monkeypatch.setattr(
+        standalone_launcher.subprocess,
+        "Popen",
+        Mock(side_effect=RuntimeError("stubbed launch")),
+    )
+    launcher = standalone_launcher.StandaloneLauncher(
+        fluent_path=r"\x\y\z\fluent.exe",
+        ui_mode="no_gui",
+        **launch_kwargs,
+    )
+    with pytest.raises(LaunchFluentError):
+        launcher()
+
+
+@pytest.mark.standalone
+def test_standalone_warns_on_explicit_unc_cwd(monkeypatch):
+    """An explicit UNC ``cwd`` on Windows warns about the cmd working-directory fallback."""
+    with pytest.warns(UserWarning, match="UNC"):
+        _invoke_standalone_call_with_stubbed_launch(monkeypatch, cwd=r"\\server\share")
+
+
+@pytest.mark.standalone
+def test_standalone_warns_on_unc_getcwd(monkeypatch):
+    """With no ``cwd``, a UNC process working directory warns."""
+    from ansys.fluent.core.execution.launcher import standalone_launcher
+
+    monkeypatch.setattr(standalone_launcher.os, "getcwd", lambda: r"\\server\share")
+    with pytest.warns(UserWarning, match="UNC"):
+        _invoke_standalone_call_with_stubbed_launch(monkeypatch)
+
+
+def test_standalone_does_not_warn_on_local_cwd(monkeypatch, recwarn):
+    """A local ``cwd`` on Windows does not warn about the cmd working-directory fallback."""
+    _invoke_standalone_call_with_stubbed_launch(monkeypatch, cwd=r"C:\tmp\local")
+    assert not [w for w in recwarn.list if "UNC" in str(w.message)]
 
 
 @pytest.mark.standalone

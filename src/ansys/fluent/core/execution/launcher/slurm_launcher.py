@@ -94,6 +94,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _get_subprocess_kwargs_for_fluent,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
+    _warn_if_cwd_may_trigger_cmd_unc_fallback,
 )
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _generate_launch_string,
@@ -669,6 +670,10 @@ class SlurmLauncher:
             launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
+        # Point at the caller's launch_fluent() line (warn -> helper -> _prepare -> __call__ -> launch_fluent -> caller).
+        _warn_if_cwd_may_trigger_cmd_unc_fallback(
+            self._argvals.get("cwd"), stacklevel=5
+        )
         proc = subprocess.Popen(launch_cmd, **kwargs)
         slurm_job_id = _get_slurm_job_id(proc)
         logger.info(f"Slurm job id = {slurm_job_id}")
