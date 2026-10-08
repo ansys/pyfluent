@@ -207,6 +207,9 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
+    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
+        MockSchemeEvalServicer(), server
+    )
     scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
         MockSchemeEvalServicerV1(), server
     )
