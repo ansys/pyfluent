@@ -949,12 +949,14 @@ def _invoke_standalone_call_with_stubbed_launch(monkeypatch, **launch_kwargs):
         launcher()
 
 
+@pytest.mark.standalone
 def test_standalone_warns_on_explicit_unc_cwd(monkeypatch):
     """An explicit UNC ``cwd`` on Windows warns about the cmd working-directory fallback."""
     with pytest.warns(UserWarning, match="UNC"):
         _invoke_standalone_call_with_stubbed_launch(monkeypatch, cwd=r"\\server\share")
 
 
+@pytest.mark.standalone
 def test_standalone_warns_on_unc_getcwd(monkeypatch):
     """With no ``cwd``, a UNC process working directory warns."""
     from ansys.fluent.core.execution.launcher import standalone_launcher
