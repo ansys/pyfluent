@@ -11,7 +11,7 @@ if "%SPHINXBUILD%" == "" (
 
 set SOURCEDIR=source
 set BUILDDIR=_build
-set SPHINXOPTS=-j auto -N -q -W --keep-going
+set SPHINXOPTS=-j auto -w build_errors.txt -N -q -W --keep-going
 
 if "%1" == "" goto help
 if "%1" == "clean" goto clean

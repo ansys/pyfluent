@@ -120,7 +120,7 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/tui
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
-	@xvfb-run make -C doc html
+	@xvfb-run make -C doc html || { cat doc/build_errors.txt; exit 1; }
 
 build-all-docs:
 	@python doc/api_rstgen.py
