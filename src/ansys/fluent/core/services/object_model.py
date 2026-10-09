@@ -393,7 +393,7 @@ class PyCallableStateObject:
         Get the state of the current object.
     """
 
-    def __call__(self, *args, **kwds) -> Any:
+    def __call__(self, *args, **kwds) -> ValueT:
         return self.get_state()
 
 
@@ -433,11 +433,11 @@ class PyStateContainer(PyCallableStateObject):
             )
         )
 
-    def get_remote_state(self) -> Any:
+    def get_remote_state(self) -> ValueT:
         """Get state of the current object."""
         return self.service.get_state(self.rules, convert_path_to_se_path(self.path))
 
-    def get_state(self) -> Any:
+    def get_state(self) -> ValueT:
         """Get state."""
         if self.service._cache is not None:
             state = self.service._cache.get_state(self.rules, self, NameKey.DISPLAY)
@@ -492,12 +492,12 @@ class PyStateContainer(PyCallableStateObject):
             obj=self, base_class=PyStateContainer, prefix=prefix, excluded=excluded
         )
 
-    def _get_remote_attr(self, attrib: str) -> Any:
+    def _get_remote_attr(self, attrib: str) -> ValueT:
         return self.service.get_attribute_value(
             self.rules, convert_path_to_se_path(self.path), attrib
         )
 
-    def _get_cached_attr(self, attrib: str) -> Any:
+    def _get_cached_attr(self, attrib: str) -> ValueT:
         cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
@@ -514,7 +514,7 @@ class PyStateContainer(PyCallableStateObject):
                 logger.debug(ex)
         return cached_val
 
-    def get_attr(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> ValueT:
         """Get attribute value of the current object.
 
         Parameters
@@ -524,7 +524,7 @@ class PyStateContainer(PyCallableStateObject):
 
         Returns
         -------
-        Any
+        ValueT
             Value of the attribute.
         """
         if config.datamodel_use_attr_cache and self.rules != "meshing_workflow":
@@ -541,7 +541,7 @@ class PyStateContainer(PyCallableStateObject):
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
-    def __call__(self, *args, **kwargs) -> Any:
+    def __call__(self, *args, **kwargs) -> ValueT | None:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -895,7 +895,7 @@ class PyParameter(PyStateContainer):
     Use this class instead of directly calling DatamodelService's method.
     """
 
-    def default_value(self) -> Any:
+    def default_value(self) -> ValueT:
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
@@ -1019,7 +1019,7 @@ class PyNamedObjectContainer:
         else:
             self.path = path
 
-    def get_object_names(self) -> Any:
+    def get_object_names(self) -> list[str]:
         """Displays the name of objects within a container."""
         return self.service.get_object_names(
             self.rules, convert_path_to_se_path(self.path)
@@ -1203,7 +1203,7 @@ class PyAction:
         setattr(self, self._operation, name)
         self.path = path or []
 
-    def __call__(self, *args, **kwds) -> Any:
+    def __call__(self, *args, **kwds) -> ValueT:
         """Execute the operation (command or query)."""
         execute_method = getattr(self.service, f"execute_{self._operation}")
         return execute_method(
@@ -1327,12 +1327,12 @@ class PyCommand(PyAction):
         if hasattr(self.file_behavior, "_do_after_execute"):
             self.file_behavior._do_after_execute(value)
 
-    def __call__(self, *args, **kwds) -> Any:
+    def __call__(self, *args, **kwds) -> ValueT:
         """Execute the command.
 
         Returns
         -------
-        Any
+        ValueT
             Return value.
         """
         processed = []
@@ -1369,7 +1369,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
             )
         )
 
-    def get_state(self) -> Any:
+    def get_state(self) -> ValueT:
         """Get state of the command argument."""
         parent_state = self.parent.get_state()
         return parent_state[self.name]
@@ -1382,7 +1382,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     setState = set_state
 
-    def get_attr(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> ValueT:
         """Get attribute value of the command argument.
 
         Parameters
@@ -1392,7 +1392,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
         Returns
         -------
-        Any
+        ValueT
             attribute value
         """
         attrib_path = f"{self.name}/{attrib}"
@@ -1445,7 +1445,7 @@ class PyArguments(PyStateContainer):
         except Exception as exc:
             logger.info(f"__del__ {type(exc).__name__}: {exc}")
 
-    def get_attr(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> ValueT:
         """Get attribute value of the current object.
 
         Parameters
@@ -1455,7 +1455,7 @@ class PyArguments(PyStateContainer):
 
         Returns
         -------
-        Any
+        ValueT
             Value of the attribute.
         """
         return self._get_remote_attr(attrib)

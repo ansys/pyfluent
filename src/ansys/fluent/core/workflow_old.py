@@ -25,7 +25,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator
+from collections.abc import ItemsView, Iterable, Iterator
 from contextlib import suppress
 import logging
 import re
@@ -41,6 +41,7 @@ from ansys.fluent.core.services.object_model import (
     PyCallableStateObject,
     PyCommand,
     PyMenu,
+    ValueT,
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -677,15 +678,15 @@ class TaskContainer(PyCallableStateObject):
             )
         )
 
-    def items(self) -> Any:
+    def items(self) -> ItemsView[str, ValueT]:
         """Get state items."""
         return self._task_container.get_state().items()
 
-    def get_state(self) -> Any:
+    def get_state(self) -> ValueT:
         """Get state."""
         return self._task_container.get_state()
 
-    def __call__(self) -> Any:
+    def __call__(self) -> ValueT:
         return self.get_state()
 
 
@@ -909,17 +910,17 @@ class ArgumentWrapper(PyCallableStateObject):
         if self._arg is None:
             raise RuntimeError(f"{arg} is not an argument.")
 
-    def set_state(self, value: Any) -> None:
+    def set_state(self, value: ValueT) -> None:
         """Set the state of the argument.
 
         Parameters
         ----------
-        value : Any
+        value : ValueT
             Value of the argument.
         """
         self._task.arguments.update_dict({self._arg_name: value})
 
-    def get_state(self, explicit_only: bool = False) -> Any:
+    def get_state(self, explicit_only: bool = False) -> ValueT:
         """Get the state of this argument.
 
         Parameters
