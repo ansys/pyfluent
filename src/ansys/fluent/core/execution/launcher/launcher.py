@@ -411,8 +411,18 @@ def launch_fluent(
             "Cannot use both 'use_docker_compose' and 'use_podman_compose' at the same time."
         )
 
+    fluent_launch_mode = _get_fluent_launch_mode(
+        start_container=start_container,
+        container_dict=container_dict,
+        scheduler_options=scheduler_options,
+    )
+
+    # Slurm launches must keep start_timeout as None so SlurmLauncher applies its own
+    # no-timeout default instead of the generic config.launch_fluent_timeout default.
     start_timeout_val = (
-        start_timeout if start_timeout is not None else config.launch_fluent_timeout
+        start_timeout
+        if start_timeout is not None or fluent_launch_mode == LaunchMode.SLURM
+        else config.launch_fluent_timeout
     )
 
     def _normalize_path(value: PathType | None) -> str | None:
@@ -424,12 +434,6 @@ def launch_fluent(
     case_data_file_name_val = _normalize_path(case_data_file_name)
     cwd_val = _normalize_path(cwd)
     fluent_path_val = _normalize_path(fluent_path)
-
-    fluent_launch_mode = _get_fluent_launch_mode(
-        start_container=start_container,
-        container_dict=container_dict,
-        scheduler_options=scheduler_options,
-    )
 
     if fluent_launch_mode == LaunchMode.STANDALONE and certificates_folder is not None:
         warn(
