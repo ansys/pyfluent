@@ -67,10 +67,10 @@ class SolverIcing(Solver):
 
         Parameters
         ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
+        fluent_connection (:class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`):
             Encapsulates a Fluent connection.
         scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+            Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional

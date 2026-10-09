@@ -728,7 +728,7 @@ class FileFieldData(FieldDataSource):
         Returns
         -------
         Dict[int | str, SurfaceData]
-            Dictionary mapping each surface name or ID to a ``SurfaceData``
+            Dictionary mapping each surface name or ID to a :class:`~ansys.fluent.core.fields.field_data.data_types.SurfaceData`
             object. Requested data is available via its attributes:
 
             - ``SurfaceData.vertices`` – ``ndarray`` of shape ``(N, 3)``
@@ -1031,7 +1031,7 @@ class FileFieldData(FieldDataSource):
         Dict[int | str, SurfaceData | np.ndarray]
             Dictionary mapping each surface name or ID to the requested data:
 
-            - **SurfaceFieldDataRequest** -- values are ``SurfaceData`` objects.
+            - **SurfaceFieldDataRequest** -- values are :class:`~ansys.fluent.core.fields.field_data.data_types.SurfaceData` objects.
               Access retrieved data via attributes:
 
               - ``.vertices`` -- ``ndarray`` of shape ``(N, 3)``, or ``None``.
@@ -1050,7 +1050,7 @@ class FileFieldData(FieldDataSource):
         NotImplementedError
             If a ``SurfaceFieldDataRequest`` includes unsupported
             ``SurfaceDataType`` entries (only ``Vertices`` and
-            ``FacesConnectivity`` are supported by ``FileSession``).
+            ``FacesConnectivity`` are supported by :class:`~ansys.fluent.core.execution.session.file.FileSession`).
         """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())

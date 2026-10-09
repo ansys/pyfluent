@@ -61,9 +61,9 @@ class SolverLite(Solver):
 
         Parameters
         ----------
-            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            fluent_connection (:class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`): Encapsulates a Fluent connection.
             scheme_eval: SchemeEval
-                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+                Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
             start_transcript : bool, optional
                 Whether to start the Fluent transcript in the client.
                 The default is ``True``, in which case the Fluent transcript can be subsequently

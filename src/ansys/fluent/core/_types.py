@@ -49,16 +49,16 @@ class LauncherArgsBase(TypedDict, total=False):
     """Common launcher arguments shared across launch modes."""
 
     ui_mode: "UIMode | str | None"
-    """Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+    """Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
     or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
     """
     graphics_driver: (
         "FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None"
     )
     """Graphics driver of Fluent. In Windows, options are either the values of the
-    ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``, ``"msw"``,
+    :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum or any of ``"null"``, ``"msw"``,
     ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, options are
-    either the values of the ``FluentLinuxGraphicsDriver`` enum or any of
+    either the values of the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum or any of
     ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
     ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
     ``FluentLinuxGraphicsDriver.AUTO`` in Linux.

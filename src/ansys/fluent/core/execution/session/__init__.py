@@ -47,12 +47,12 @@ public hierarchy is::
                 ├── PureMeshing (meshing.session.pure_meshing)
                 └── Meshing (meshing.session.meshing)
 
-``FileSession`` is a separate file-based reader, not a live Fluent session and
-not a subclass of ``BaseSession``. It is defined in
+:class:`~ansys.fluent.core.execution.session.file.FileSession` is a separate file-based reader, not a live Fluent session and
+not a subclass of :class:`~ansys.fluent.core.execution.session.session.BaseSession`. It is defined in
 :mod:`ansys.fluent.core.execution.session.file`.
 
 This package re-exports the concrete solver, meshing, and file-session classes
-for convenience. Their defining modules are listed above; ``BaseSession`` is
+for convenience. Their defining modules are listed above; :class:`~ansys.fluent.core.execution.session.session.BaseSession` is
 available from :mod:`ansys.fluent.core.execution.session.session`.
 """
 
