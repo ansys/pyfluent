@@ -42,6 +42,7 @@ Example
 from __future__ import annotations
 
 import collections
+import collections.abc  # needed so `collections.abc.X` resolves for the type checker
 from collections.abc import (
     Callable,
     ItemsView,
@@ -2415,7 +2416,7 @@ def _fix_help_info(obj_type, helpinfo):
     return fix or helpinfo
 
 
-class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
+class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping[str, "Base"]):
     """A mixin class to provide a dictionary interface at a Group class level if the
     Group has multiple named objects of a similar type. For example, boundary conditions
     are grouped by type but quite often we want to access them without the type context.
@@ -2428,7 +2429,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     boundary_conditions.
     """
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str) -> "Base":
         """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
@@ -2438,11 +2439,11 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 return cobj[name]
         raise KeyError(name)
 
-    def __setitem__(self, name, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         """Set the state of a child object."""
         self[name].set_state(value)
 
-    def __delitem__(self, name):
+    def __delitem__(self, name: str) -> None:
         """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
@@ -2453,7 +2454,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 return
         raise KeyError(name)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         """Iterator for child named objects."""
         for cname in self.child_names:
             # Use suppress to ignore exceptions during child object iteration without triggering B110
@@ -2462,7 +2463,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 for item in getattr(self, cname):
                     yield item
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Number of child named objects."""
         count = 0
         for cname in self.child_names:
@@ -2472,10 +2473,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         return count
 
 
-class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+class CreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
     """Provides creatable named objects for Fluent 2025 R1 and later."""
 
-    def __setitem__(self, name: str, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child = WildcardPath(
@@ -2496,7 +2497,7 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTyp
         child.set_state(value)
 
 
-class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
+class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin[ChildTypeT]):
     """Provides creatable named objects for Fluent 2024 R2 and earlier."""
 
     # In Fluent 2025 R1, the ``create()`` method is available as commands in the ``NamedObject`` class.
@@ -2518,10 +2519,8 @@ class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
         return self._create_child_object(name)
 
 
-class _NonCreatableNamedObjectMixin(
-    collections.abc.MutableMapping, Generic[ChildTypeT]
-):
-    def __setitem__(self, name: str, value):
+class _NonCreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
+    def __setitem__(self, name: str, value: StateType) -> None:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child = WildcardPath(
