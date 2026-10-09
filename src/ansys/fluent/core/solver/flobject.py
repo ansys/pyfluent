@@ -67,6 +67,7 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
+    no_type_check,
 )
 import warnings
 import weakref
@@ -753,7 +754,7 @@ class Base:
         return self.flproxy == other.flproxy and self.path == other.path
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable = None
+        self, prefix: str = "", excluded: Iterable | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -3057,14 +3058,9 @@ def get_root(
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
-            import ansys.fluent.core as pyfluent
-
-            version_dir = pyfluent.codegen.get_codegen_version_dir(
-                version, config.codegen_outdir
-            )
             settings = _load_module(
                 f"settings_{version}",
-                version_dir / "solver" / "settings.py",
+                config.codegen_outdir / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
             from ..diagnostics.exceptions import warning_for_fluent_dev_version
