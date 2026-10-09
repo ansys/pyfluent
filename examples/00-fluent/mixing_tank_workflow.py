@@ -446,7 +446,7 @@ solver_session.settings.file.write(
 #############################################################################################################
 # Close the session
 # ===========================================================================================================
-session.exit()
+solver_session.exit()
 
 
 # sphinx_gallery_thumbnail_path = '_static/mixing_tank_velocity_contour.png'

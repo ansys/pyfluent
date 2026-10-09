@@ -135,9 +135,9 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 
 - The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
   can be accessed as attributes. For example, using the expression ``solver_session.settings.setup.models.energy``,
-  which resolves to :obj:`~ansys.fluent.core.generated.solver.settings_232.energy.energy`,
-  which is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.models_1.models`,
-  which itself is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`, and each of those
+  which resolves to :obj:`~ansys.fluent.core.generated.v261.solver.settings.energy`,
+  which is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.models_1`,
+  which itself is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.setup`, and each of those
   three objects is a ``Group``.
   The names of the child objects of a group can be accessed
   via ``<Group>.child_names``.
