@@ -143,17 +143,19 @@ class BaseSettings(AbstractSettings):
         return self.service.get_static_info()
 
     @_trace
-    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+    def execute_cmd(self, path: str, command: str, **kwds) -> StateType:
         """Execute a given command with the provided keyword arguments."""
         return self.service.execute_cmd(path, command, **kwds)
 
     @_trace
-    def execute_query(self, path: str, query: str, **kwds) -> Any:
+    def execute_query(self, path: str, query: str, **kwds) -> StateType:
         """Execute a given query with the provided keyword arguments."""
         return self.service.execute_query(path, query, **kwds)
 
     @_trace
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+    def get_attrs(
+        self, path: str, attrs: list[str], recursive: bool = False
+    ) -> dict[str, StateType]:
         """Return values of given attributes."""
         return self.service.get_attrs(path, attrs, recursive)
 

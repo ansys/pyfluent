@@ -83,17 +83,19 @@ class AbstractSettings(ABC):
         pass
 
     @abstractmethod
-    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+    def execute_cmd(self, path: str, command: str, **kwds) -> StateType:
         """Execute a given command with the provided keyword arguments."""
         pass
 
     @abstractmethod
-    def execute_query(self, path: str, query: str, **kwds) -> Any:
+    def execute_query(self, path: str, query: str, **kwds) -> StateType:
         """Execute a given query with the provided keyword arguments."""
         pass
 
     @abstractmethod
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+    def get_attrs(
+        self, path: str, attrs: list[str], recursive: bool = False
+    ) -> dict[str, StateType]:
         """Return values of given attributes."""
         pass
 

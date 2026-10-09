@@ -192,7 +192,7 @@ class LaunchFluentArgsNoContainer(LauncherArgsBase, TypedDict, total=False):
     """Working directory for the Fluent client."""
     fluent_path: str | None
     """User provided Fluent installation path."""
-    topy: str | list[Any] | None
+    topy: bool | str | None
     """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
     Can optionally take the file name of the new python journal file.
     """
@@ -360,7 +360,7 @@ def launch_fluent(
     gpu: bool | list[int] | None = None,
     cwd: PathType | None = None,
     fluent_path: PathType | None = None,
-    topy: str | list[Any] | None = None,
+    topy: bool | str | None = None,
     start_watchdog: bool | None = None,
     scheduler_options: SlurmSchedulerOptions | None = None,
     file_transfer_service: Any | None = None,
@@ -514,7 +514,9 @@ def launch_fluent(
                 topy=topy,
                 start_watchdog=start_watchdog,
                 scheduler_options=(
-                    dict(scheduler_options) if scheduler_options is not None else None
+                    cast(SlurmSchedulerOptions, dict(scheduler_options))
+                    if scheduler_options is not None
+                    else None
                 ),
                 file_transfer_service=file_transfer_service,
                 certificates_folder=certificates_folder,

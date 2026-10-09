@@ -64,6 +64,7 @@ import string
 import sys
 import types
 from typing import (
+    TYPE_CHECKING,
     Any,
     ForwardRef,
     Generic,
@@ -79,6 +80,11 @@ from typing import (
 )
 import warnings
 import weakref
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.connectivity.file_transfer_service import (
+        FileTransferStrategy,
+    )
 
 from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._variable_strategies import (
@@ -622,7 +628,7 @@ class Base:
             return ppath + self.python_name
         return ppath + "." + self.python_name
 
-    def get_attrs(self, attrs: list[str], recursive: bool = False) -> Any:
+    def get_attrs(self, attrs: list[str], recursive: bool = False) -> StateType:
         """Get the requested attributes for the object.
 
         Parameters
@@ -634,7 +640,7 @@ class Base:
 
         Returns
         -------
-        Any
+        StateType
             Requested attributes.
         """
         return self.flproxy.get_attrs(self.path, attrs, recursive)
@@ -643,7 +649,7 @@ class Base:
         self,
         attr: str,
         attr_type_or_types: type | tuple[type] | None = None,
-    ) -> Any:
+    ) -> StateType:
         """Get the requested attribute for the object.
 
         Parameters
@@ -655,7 +661,7 @@ class Base:
 
         Returns
         -------
-        Any
+        StateType
             attribute value
 
         Raises
@@ -702,7 +708,7 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def find_object(self, relative_path: str) -> Any:
+    def find_object(self, relative_path: str) -> "Base":
         """Find object."""
         obj = self
         for comp in relative_path.split("/"):
@@ -713,8 +719,8 @@ class Base:
         return obj
 
     def before_execute(
-        self, command_name: str, value: Any, kwargs: dict[str, Any]
-    ) -> Any:
+        self, command_name: str, value: StateType, kwargs: dict[str, StateType]
+    ) -> StateType:
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
             base_file_name = self._do_before_execute(
@@ -725,8 +731,8 @@ class Base:
             return value
 
     def after_execute(
-        self, command_name: str, value: Any, kwargs: dict[str, Any]
-    ) -> Any:
+        self, command_name: str, value: StateType, kwargs: dict[str, StateType]
+    ) -> StateType:
         """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
             base_file_name = self._do_after_execute(
@@ -797,7 +803,7 @@ StateT = TypeVar("StateT")
 class Property(Base):
     """Exposes attribute accessor on settings object."""
 
-    def default_value(self) -> Any:
+    def default_value(self) -> StateType:
         """Gets the default value of the object."""
         return self.get_attr(_InlineConstants.default_value)
 
@@ -853,7 +859,7 @@ class RealNumerical(Numerical):
                 error = "Could not determine units."
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
-    def set_state(self, state: StateT | None = None, **kwargs: Any) -> None:
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
@@ -861,7 +867,7 @@ class RealNumerical(Numerical):
         state
             The type of state can be float, str (representing either
             an expression or a value with units), or an ansys.units.Quantity.
-        kwargs : Any
+        kwargs : StateType
             Keyword arguments.
 
         Raises
@@ -903,7 +909,7 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    def set_state(self, state: StateT | None = None, **kwargs: Any) -> None:
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
@@ -914,7 +920,7 @@ class Textual(Property):
             implementing ``__fluent_expr__() -> str`` (e.g. an
             :class:`~ansys.fluent.core.expressions.Expr` produced by the
             expression builder).
-        kwargs : Any
+        kwargs : StateType
             Keyword arguments.
 
         Raises
@@ -1064,7 +1070,7 @@ class SettingsBase(Base, Generic[StateT]):
         """
         return value
 
-    def __call__(self, *args: Any, **kwargs: Any) -> StateT | None:
+    def __call__(self, *args: StateType, **kwargs: StateType) -> StateT | None:
         """Get or set the state of the object."""
         if kwargs:
             # Send value of the first key only
@@ -1085,7 +1091,7 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT | None = None, **kwargs: Any) -> None:
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object."""
         with self._while_setting_state():
             if isinstance(state, (tuple, ansys.units.Quantity)) and hasattr(
@@ -1187,7 +1193,7 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
-    def file_purpose(self) -> Any:
+    def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
@@ -1197,7 +1203,7 @@ class FilenameList(SettingsBase[StringListType], Textual):
 
     _state_type = StringListType
 
-    def file_purpose(self) -> Any:
+    def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
@@ -1323,7 +1329,7 @@ class Group(SettingsBase[DictStateType]):
             cls = self.__class__._child_classes[query]
             self._setattr(query, _create_child(cls, None, self))
 
-    def __call__(self, *args: Any, **kwargs: Any) -> DictStateType | None:
+    def __call__(self, *args: StateType, **kwargs: StateType) -> DictStateType | None:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -1446,7 +1452,7 @@ class Group(SettingsBase[DictStateType]):
             ex.args = (error_msg,)
             raise
 
-    def __setattr__(self, name: str, value: Any) -> None:
+    def __setattr__(self, name: str, value: StateType) -> None:
         # 'settings_source' will be set to settings object when they are created from builtin settings classes.
         # We don't allow overwriting it.
         if name == "settings_source":
@@ -1533,7 +1539,7 @@ class WildcardPath(Group):
                 )
             ) from ex
 
-    def items(self) -> Iterator[tuple[str, Any]]:
+    def items(self) -> Iterator[tuple[str, StateType]]:
         """Items."""
         for key, value in self._parent.items():
             if fnmatch.fnmatch(key, self._path.rsplit(sep="/", maxsplit=1)[-1]):
@@ -1549,11 +1555,11 @@ class WildcardPath(Group):
     # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
     # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
 
-    def to_scheme_keys(self, value: Any, root_cls: type, path: list[str]) -> Any:
+    def to_scheme_keys(self, value: StateType, root_cls: type, path: list[str]) -> StateType:
         """Convert value to have keys with scheme names."""
         return self._settings_cls.to_scheme_keys(value, root_cls, path)
 
-    def to_python_keys(self, value: Any) -> Any:
+    def to_python_keys(self, value: StateType) -> StateType:
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
 
@@ -1570,7 +1576,7 @@ class NamedObjectWildcardPath(WildcardPath):
             self,
         )
 
-    def __setitem__(self, name: str, value: Any) -> None:
+    def __setitem__(self, name: str, value: StateType) -> None:
         self[name].set_state(value)
 
 
@@ -2014,7 +2020,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             self._update_objects()
         return self._objects[index]
 
-    def __setitem__(self, index: int, value: Any) -> None:
+    def __setitem__(self, index: int, value: StateType) -> None:
         child = self[index]
         child.set_state(value)
 
@@ -2054,7 +2060,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return child_value.units()
         return None
 
-    def set_state(self, state: StateT | None = None, **kwargs: Any) -> None:
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the list object.
 
         For Quantity-like inputs containing sequence values, convert once to the
@@ -2176,7 +2182,7 @@ class Action(Base):
                     f"'{self.python_path}' is a command/query object and has no attribute '{name}'"
                 ) from None
 
-    def __setattr__(self, name: str, value: Any) -> None:
+    def __setattr__(self, name: str, value: StateType) -> None:
         attr = getattr(self, name)
         try:
             return attr.set_state(value)
@@ -2225,7 +2231,7 @@ class BaseCommand(Action):
                 ret = _fix_parameter_list_return(ret)
             return ret
 
-    def execute_command(self, *args: Any, **kwds: Any) -> Any:
+    def execute_command(self, *args: StateType, **kwds: StateType) -> StateType:
         """Execute command."""
         kwds = _get_new_keywords(self, *args, **kwds)
         scmKwds = {}
@@ -2548,7 +2554,7 @@ class _NonCreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTyp
 class AllowedValuesMixin:
     """Provides allowed values."""
 
-    def allowed_values(self) -> list[Any] | str:
+    def allowed_values(self) -> list[StateType] | str:
         """Get the allowed values of the object."""
         try:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
@@ -3050,9 +3056,9 @@ def get_root(
     flproxy: Any,
     version: str = "",
     interrupt: Any | None = None,
-    is_interruptible_command: Any | None = None,
-    file_transfer_service: Any | None = None,
-    scheme_eval: Callable[[str], Any] | None = None,
+    is_interruptible_command: Callable[[str], bool] | None = None,
+    file_transfer_service: "FileTransferStrategy | None" = None,
+    scheme_eval: Callable[[str], StateType] | None = None,
 ) -> Group:
     """Get the root settings object.
 
@@ -3069,7 +3075,7 @@ def get_root(
         gRPC when the solver is stopped cleanly by ``interrupt()``.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
-    scheme_eval : Any
+    scheme_eval : Callable[[str], StateType], optional
         A gRPC service to execute Scheme code.
     version : str
         Fluent version.

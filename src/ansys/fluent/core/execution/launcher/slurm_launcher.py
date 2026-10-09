@@ -104,6 +104,7 @@ from ansys.fluent.core.execution.launcher.server_info import _get_server_info_fi
 from ansys.fluent.core.module_config import config
 
 if TYPE_CHECKING:
+    from ansys.fluent.core.execution.launcher.launcher import SlurmSchedulerOptions
     from ansys.fluent.core.meshing.session.meshing import Meshing
     from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
     from ansys.fluent.core.solver.session.solver import Solver
@@ -432,11 +433,11 @@ class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
     """Working directory for the Fluent client."""
     fluent_path: "PathType | None"
     """User provided Fluent installation path."""
-    topy: str | list[Any] | None
+    topy: bool | str | None
     """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
     Can optionally take the file name of the new python journal file.
     """
-    scheduler_options: dict[str, Any] | None
+    scheduler_options: SlurmSchedulerOptions | None
     """Dictionary containing scheduler options. Default is None.
 
     Currently only the Slurm scheduler is supported. The ``scheduler_options``
