@@ -47,6 +47,7 @@ import warnings
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.diagnostics.exceptions import InvalidArgument
 from ansys.fluent.core.execution.launcher.error_handler import (
     LaunchFluentError,
@@ -110,6 +111,8 @@ class StandaloneArgsWithoutDryRunMode(
     """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
     a filename for the new Python journal.
     """
+    file_transfer_service: FileTransferStrategy | None
+    """Service for uploading and downloading files to/from the Fluent server."""
 
 
 class StandaloneArgsWithoutDryRun(

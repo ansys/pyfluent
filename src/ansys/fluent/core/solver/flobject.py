@@ -2300,7 +2300,7 @@ _fix_parameter_list_return.scheme_eval = None
 class Command(BaseCommand):
     """Command object."""
 
-    def __call__(self, **kwds: Any) -> Any:
+    def __call__(self, **kwds: Any) -> StateType | None:
         """Call a command with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2331,7 +2331,7 @@ class Command(BaseCommand):
 class CommandWithPositionalArgs(BaseCommand):
     """Command Object supporting positional arguments."""
 
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
+    def __call__(self, *args: Any, **kwds: Any) -> StateType | None:
         """Call a command with the specified positional and keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2362,7 +2362,7 @@ class CommandWithPositionalArgs(BaseCommand):
 class Query(Action):
     """Query object."""
 
-    def __call__(self, **kwds: Any) -> Any:
+    def __call__(self, **kwds: Any) -> StateType | None:
         """Call a query with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)

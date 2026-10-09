@@ -437,6 +437,8 @@ class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
     """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
     Can optionally take the file name of the new python journal file.
     """
+    file_transfer_service: FileTransferStrategy | None
+    """Service for uploading and downloading files to/from the Fluent server."""
     scheduler_options: SlurmSchedulerOptions | None
     """Dictionary containing scheduler options. Default is None.
 
