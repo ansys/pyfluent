@@ -67,6 +67,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
 )
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
+    _has_parallel_flags,
     get_fluent_exe_path,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -679,6 +680,60 @@ def test_additional_arguments_fluent_launch_args_string():
         additional_arguments=additional_arguments,
         processor_count=4,
     )
+
+
+@pytest.mark.parametrize(
+    "additional_arguments, expected",
+    [
+        # No parallel flags present.
+        ("", False),
+        ("-gpu", False),
+        ("-gpu_async", False),
+        ("-ws -ws-port=5000 -i test.jou", False),
+        # '-t' substring inside an unrelated argument must not be treated as '-t<n>'.
+        ("-scheduler_opt='--time=04:00:00'", False),
+        ("-scheduler_opt='--time=04:00:00' -scheduler_gpn=2 -gpu_async", False),
+        ("--time=1", False),
+        # '-t' without a trailing digit is not the process-count flag.
+        ("-t", False),
+        ("-tx", False),
+        # Explicit process-count flag '-t<n>'.
+        ("-t4", True),
+        ("-t16", True),
+        ("-t4 -gpu", True),
+        ("-gpu -t4", True),
+        ("-scheduler_opt='--time=04:00:00' -t4", True),
+        # Machine-list flag '-cnf='.
+        ("-cnf=m1:8", True),
+        ("-t16 -cnf=m1:8,m2:8", True),
+        ("-gpu -cnf=m1:8,m2:8", True),
+    ],
+)
+def test_has_parallel_flags(additional_arguments, expected):
+    assert _has_parallel_flags(additional_arguments) is expected
+
+
+def test_processor_count_applied_with_time_scheduler_option():
+    # Regression: a '-t' substring inside "-scheduler_opt='--time=...'" must not
+    # suppress the '-t<n>' flag derived from processor_count.
+    additional_arguments = (
+        "-scheduler_opt='--time=04:00:00' -scheduler_gpn=2 -scheduler_ppn=2 -gpu_async"
+    )
+    launch_args = _build_fluent_launch_args_string(
+        additional_arguments=additional_arguments,
+        processor_count=4,
+        gpu=True,
+    )
+    assert "-t4" in launch_args
+
+
+def test_processor_count_not_applied_when_user_sets_t_flag():
+    launch_args = _build_fluent_launch_args_string(
+        additional_arguments="-t2",
+        processor_count=4,
+    )
+    assert "-t4" not in launch_args
+    assert "-t2" in launch_args
 
 
 def test_processor_count():
