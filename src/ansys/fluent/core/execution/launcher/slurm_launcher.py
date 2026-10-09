@@ -461,12 +461,12 @@ class SlurmLauncher:
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
             or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
-            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
-            ``FluentLinuxGraphicsDriver`` enum in Linux.
+            :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum in Windows or the values of the
+            :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum in Linux.
         product_version : FluentVersion or str or float or int, optional
             Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
             ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``.

@@ -28,7 +28,7 @@ This module is private.  Do not import from it directly; use
 :class:`~ansys.fluent.core.meshing.session.meshing.Meshing` instead.
 
 Both leaf classes are lightweight and add no further public API beyond what
-is defined here.  ``PureMeshing`` targets deployments where meshing and
+is defined here.  :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` targets deployments where meshing and
 solving run as separate processes; ``Meshing`` additionally exposes
 :meth:`~ansys.fluent.core.meshing.session.meshing.Meshing.switch_to_solver`.
 """
@@ -120,10 +120,10 @@ class BaseMeshing(BaseSession):
 
         Parameters
         ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
+        fluent_connection (:class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`):
             Encapsulates a Fluent connection.
         scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+            Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
