@@ -1,0 +1,21 @@
+:orphan:
+
+.. _species_reactions:
+
+species_reactions
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.species_reactions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =====================================================
+
+Parent                                                           Summary
+
+================   =====================================================
+:ref:`fmg <fmg>`       The set full-multigrid for initialization object.
+
+================   =====================================================
+

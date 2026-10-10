@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scname:
+
+scname
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.scname
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`connect_parallel <connect_parallel>`   System coupling connection status.
+
+==========================================   ==================================
+

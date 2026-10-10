@@ -1,0 +1,21 @@
+:orphan:
+
+.. _shell_conduction_zones_action:
+
+shell_conduction_zones_action
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.shell_conduction_zones_action
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================================================
+
+Parent                                                                                         Summary
+
+====================================   ===============================================================
+:ref:`make_periodic <make_periodic>`   Attempt to establish conformal periodic face zone connectivity.
+
+====================================   ===============================================================
+

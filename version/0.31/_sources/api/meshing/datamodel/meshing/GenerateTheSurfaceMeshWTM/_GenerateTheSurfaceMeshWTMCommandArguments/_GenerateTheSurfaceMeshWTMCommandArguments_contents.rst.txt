@@ -1,0 +1,22 @@
+.. _ref_meshing_datamodel_meshing_GenerateTheSurfaceMeshWTM__GenerateTheSurfaceMeshWTMCommandArguments:
+
+_GenerateTheSurfaceMeshWTMCommandArguments
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.GenerateTheSurfaceMeshWTM._GenerateTheSurfaceMeshWTMCommandArguments
+   :members: _AppendMesh, _CadFacetingFileName, _Directory, _ExecuteShareTopology, _ImportType, _LengthUnit, _OriginalZones, _Pattern, _PreviewSizeToggle, _RemeshLabelList, _RemeshSelectionType, _RemeshZoneList, _SeparationAngle, _SeparationRequired, _TesselationMethod
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _CADFacetingControls/_CADFacetingControls_contents
+   _CFDSurfaceMeshControls/_CFDSurfaceMeshControls_contents
+   _CadImportOptions/_CadImportOptions_contents
+   _ShareTopologyPreferences/_ShareTopologyPreferences_contents
+   _SurfaceMeshPreferences/_SurfaceMeshPreferences_contents

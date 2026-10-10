@@ -1,0 +1,32 @@
+:orphan:
+
+.. _compute_erosion_accretion_rates:
+
+compute_erosion_accretion_rates
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.compute_erosion_accretion_rates
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ==============================================
+
+Argument                                                                  Summary
+
+================================   ==============================================
+:ref:`injections <injections_1>`       Pick injections for DPM particle sampling.
+
+================================   ==============================================
+
+.. rubric:: Included in:
+
+==================================================   ==============================================================
+
+Parent                                                                                                      Summary
+
+==================================================   ==============================================================
+:ref:`sampling_and_erosion <sampling_and_erosion>`       Configure sampling of particle trajectory data for output.
+
+==================================================   ==============================================================
+

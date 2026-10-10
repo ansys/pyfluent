@@ -1,0 +1,64 @@
+:orphan:
+
+.. _disabled:
+
+disabled
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.disabled
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================   ====================================================
+
+Attribute                                                                                                                   Summary
+
+============================================================================   ====================================================
+:ref:`udf_zmotion_name <udf_zmotion_name>`                                                       User Defined Zone Motion Function.
+
+:ref:`axis_direction <axis_direction_1>`                                                                 Axis direction components.
+
+:ref:`axis_origin <axis_origin_1>`                                                                          Axis origin components.
+
+:ref:`cursys <cursys>`                                                                                          Help not available.
+
+:ref:`solid_omega <solid_omega>`                                                                         Solid Body Rotation Speed.
+
+:ref:`solid_relative_to_thread <solid_relative_to_thread>`                                                   Relative To Cell Zone.
+
+:ref:`enable <enable_15>`                                                                              Enable/disable solid motion.
+
+:ref:`solid_motion_axis_direction <solid_motion_axis_direction>`                            Solid motion axis direction components.
+
+:ref:`solid_motion_axis_origin <solid_motion_axis_origin>`                                     Solid motion axis origin components.
+
+:ref:`solid_motion_velocity <solid_motion_velocity>`                                              Solid motion velocity components.
+
+:ref:`solid_motion_zone_motion_function <solid_motion_zone_motion_function>`       Solid Motion User Defined Solid Motion Function.
+
+:ref:`omega <omega_1>`                                                                                          Help not available.
+
+:ref:`relative_to_thread <relative_to_thread>`                                                               Relative To Cell Zone.
+
+:ref:`motion_spec <motion_spec>`                                                                                       Motion Type.
+
+============================================================================   ====================================================
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`fluid_1_child <fluid_1_child>`       'child_object_type' of fluid.
+
+:ref:`phase_child <phase_child>`           'child_object_type' of phase.
+
+:ref:`fluid_2_child <fluid_2_child>`       'child_object_type' of fluid.
+
+:ref:`phase_2_child <phase_2_child>`       'child_object_type' of phase.
+
+====================================   =================================
+

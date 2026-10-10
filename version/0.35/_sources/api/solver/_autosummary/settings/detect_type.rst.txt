@@ -1,0 +1,21 @@
+:orphan:
+
+.. _detect_type:
+
+detect_type
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.detect_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`dual_potential_zone <dual_potential_zone>`       Dual-potential zone assignment.
+
+================================================   ===================================
+

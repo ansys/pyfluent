@@ -1,0 +1,36 @@
+:orphan:
+
+.. _interaction_1:
+
+interaction
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.interaction_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =================================================================
+
+Attribute                                                                                                      Summary
+
+==================================================   =================================================================
+:ref:`evaporating_species <evaporating_species>`         Continuous phase mixture component for particle evaporation:.
+
+:ref:`continuous_phase <continuous_phase>`                     The continuous phase that the injection interacts with.
+
+:ref:`volume_displacement <volume_displacement_1>`                            Lagrangian volume displacement settings.
+
+==================================================   =================================================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`injections_child <injections_child>`       'child_object_type' of injections.
+
+==========================================   ======================================
+

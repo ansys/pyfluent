@@ -1,0 +1,21 @@
+:orphan:
+
+.. _suppression:
+
+suppression
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.suppression
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =====================================================
+
+Parent                                                                           Summary
+
+================================   =====================================================
+:ref:`dissipation <dissipation>`   The dissipation method stabilization controls object.
+
+================================   =====================================================
+

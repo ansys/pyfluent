@@ -1,0 +1,13 @@
+.. _ref_flicing:
+
+Flicing
+=======
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :glob:
+
+    datamodel/flicing/*/*_contents
+
+Please follow the tree to access the APIs under this section.

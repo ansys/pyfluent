@@ -1,0 +1,21 @@
+:orphan:
+
+.. _damping:
+
+damping
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.damping
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`spalart_allmaras <spalart_allmaras>`   Spalart-Allmaras model options.
+
+==========================================   ===============================
+

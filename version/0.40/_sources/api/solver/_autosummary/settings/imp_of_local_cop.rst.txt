@@ -1,0 +1,21 @@
+:orphan:
+
+.. _imp_of_local_cop:
+
+imp_of_local_cop
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.imp_of_local_cop
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

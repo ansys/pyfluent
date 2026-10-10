@@ -1,0 +1,28 @@
+.. _ref_solver_datamodel_flicing_Case_Results_SurfaceDefs__SurfaceDefs:
+
+_SurfaceDefs
+============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.Results.SurfaceDefs._SurfaceDefs
+   :members: GroupName, SaveFlag, SurfaceDim, SurfaceId, SurfaceType, Surfaces, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Display/Display_contents
+   IsoClipSettings/IsoClipSettings_contents
+   IsosurfaceSettings/IsosurfaceSettings_contents
+   LineSettings/LineSettings_contents
+   PlaneSettings/PlaneSettings_contents
+   PointSettings/PointSettings_contents
+   RakeSettings/RakeSettings_contents
+   SaveImage/SaveImage_contents
+   SaveImageOptions/SaveImageOptions_contents
+   Ungroup/Ungroup_contents
+   ZoneSettings/ZoneSettings_contents

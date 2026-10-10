@@ -1,0 +1,55 @@
+:orphan:
+
+.. _cell_registers_child:
+
+cell_registers_child
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cell_registers_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===============================================
+
+Attribute                                                                          Summary
+
+========================================   ===============================================
+:ref:`name <name_25>`                                     The name for this cell register.
+
+:ref:`python_name_1 <python_name_1>`                                  'python_name' child.
+
+:ref:`type <type_14>`                                     The type for this cell register.
+
+:ref:`display_options <display_options>`       The display options for this cell register.
+
+========================================   ===============================================
+
+.. rubric:: Methods
+
+==========================================================   ======================================================
+
+Method                                                                                                      Summary
+
+==========================================================   ======================================================
+:ref:`refine <refine_1>`                                                              Refine cell register objects.
+
+:ref:`coarsen <coarsen_1>`                                                           Coarsen cell register objects.
+
+:ref:`apply_poor_mesh_numerics <apply_poor_mesh_numerics>`       Apply poor mesh numerics to cell register objects.
+
+:ref:`create_volume_surface <create_volume_surface>`                                       Create a volume surface.
+
+==========================================================   ======================================================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`cell_registers <cell_registers>`       'cell_registers' child.
+
+======================================   ===========================
+

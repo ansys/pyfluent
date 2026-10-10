@@ -1,0 +1,23 @@
+:orphan:
+
+.. _name_29:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.name_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ==================================================
+
+Parent                                                                                                              Summary
+
+======================================================================   ==================================================
+:ref:`create_12 <create_12>`                                                                Create a custom field function.
+
+:ref:`custom_field_functions_1_child <custom_field_functions_1_child>`       'child_object_type' of custom_field_functions.
+
+======================================================================   ==================================================
+

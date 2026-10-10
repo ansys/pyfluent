@@ -1,0 +1,60 @@
+:orphan:
+
+.. _plot_11:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.plot_11
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================================================   =============================================================
+
+Argument                                                                                                                       Summary
+
+======================================================================   =============================================================
+:ref:`node_values <node_values_8>`                                                           Specifies whether to include node values.
+
+:ref:`file_name <file_name_17>`                                                                 The name you want the file saved with.
+
+:ref:`order_points <order_points>`                                                                  Specifies whether to order points.
+
+:ref:`y_axis_direction_vector <y_axis_direction_vector>`                     Specifies whether to provide the Y Axis direction vector.
+
+:ref:`direction_along_y_axis <direction_along_y_axis>`                                                     The direction along y axis.
+
+:ref:`y_axis_curve_length <y_axis_curve_length>`                                 Specifies whether to provide the Y Axis curve length.
+
+:ref:`y_axis_function <y_axis_function_2>`                                                                                  The field.
+
+:ref:`reverse_direction_along_y_axis <reverse_direction_along_y_axis>`             Specifies whether to provide the reverse direction.
+
+:ref:`x_axis_direction_vector <x_axis_direction_vector>`                     Specifies whether to provide the X Axis direction vector.
+
+:ref:`direction_along_x_axis <direction_along_x_axis>`                                                     The direction along x axis.
+
+:ref:`x_axis_curve_length <x_axis_curve_length>`                                 Specifies whether to provide the X Axis curve length.
+
+:ref:`x_axis_function <x_axis_function_3>`                                                                                  The field.
+
+:ref:`reverse_direction_along_x_axis <reverse_direction_along_x_axis>`             Specifies whether to provide the reverse direction.
+
+:ref:`surfaces <surfaces_17>`                                                                                          The surface(s).
+
+:ref:`geometry <geometry_12>`                                                                                            UTL Geometry.
+
+======================================================================   =============================================================
+
+.. rubric:: Included in:
+
+======================   ==============================
+
+Parent                                          Summary
+
+======================   ==============================
+:ref:`plot_6 <plot_6>`       Plot solution on surfaces.
+
+======================   ==============================
+

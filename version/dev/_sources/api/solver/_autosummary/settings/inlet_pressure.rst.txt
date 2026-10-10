@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inlet_pressure:
+
+inlet_pressure
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.inlet_pressure
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`inlet_conditions <inlet_conditions>`   The auxiliary fluid inlet condition parameters.
+
+==========================================   ===============================================
+

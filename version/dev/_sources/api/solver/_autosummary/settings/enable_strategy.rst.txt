@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_strategy:
+
+enable_strategy
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enable_strategy
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================================================
+
+Parent                                                                                                     Summary
+
+============================================   ===================================================================
+:ref:`case_modification <case_modification>`   The automatic initialization and case modification strategy object.
+
+============================================   ===================================================================
+

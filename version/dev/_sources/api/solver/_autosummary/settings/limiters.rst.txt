@@ -1,0 +1,21 @@
+:orphan:
+
+.. _limiters:
+
+limiters
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.limiters
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================
+
+Parent                                              Summary
+
+========================   ================================
+:ref:`type_23 <type_23>`   The type for this cell register.
+
+========================   ================================
+

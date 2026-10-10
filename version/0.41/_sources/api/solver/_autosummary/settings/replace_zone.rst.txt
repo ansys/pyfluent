@@ -1,0 +1,38 @@
+:orphan:
+
+.. _replace_zone:
+
+replace_zone
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.replace_zone
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ==========================================================
+
+Argument                                                                                Summary
+
+==================================   ==========================================================
+:ref:`file_name <file_name_1_16>`                     The case file name to read the zone from.
+
+:ref:`zone_1_name <zone_1_name>`                                                 The zone name.
+
+:ref:`zone_2_name <zone_2_name>`            The name of the zone to replace original zone with.
+
+:ref:`interpolate <interpolate_1>`       Enables interpolation of data during zone replacement.
+
+==================================   ==========================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

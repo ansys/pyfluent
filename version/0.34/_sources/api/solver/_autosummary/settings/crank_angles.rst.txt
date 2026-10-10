@@ -1,0 +1,34 @@
+:orphan:
+
+.. _crank_angles:
+
+crank_angles
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.crank_angles
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ======================
+
+Attribute                                                     Summary
+
+============================================   ======================
+:ref:`unsteady_ca_start <unsteady_ca_start>`       Start Crank Angle.
+
+:ref:`unsteady_ca_stop <unsteady_ca_stop>`          Stop Crank Angle.
+
+============================================   ======================
+
+.. rubric:: Included in:
+
+======================================   ===========================================
+
+Parent                                                                       Summary
+
+======================================   ===========================================
+:ref:`initial_values <initial_values>`       Lagrangian particle initial properties.
+
+======================================   ===========================================
+

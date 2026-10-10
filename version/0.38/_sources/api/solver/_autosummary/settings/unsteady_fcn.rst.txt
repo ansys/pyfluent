@@ -1,0 +1,21 @@
+:orphan:
+
+.. _unsteady_fcn:
+
+unsteady_fcn
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.unsteady_fcn
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`scalar_child <scalar_child>`       'child_object_type' of scalar.
+
+==================================   ==================================
+

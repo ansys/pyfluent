@@ -1,0 +1,34 @@
+:orphan:
+
+.. _delete_7:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.delete_7
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =================================================================
+
+Argument                                                                                     Summary
+
+================================   =================================================================
+:ref:`delete_all <delete_all_5>`       Yes: "Delete all animations", no: "Delete single animation.".
+
+:ref:`name <name_48>`                                                           Animation to delete.
+
+================================   =================================================================
+
+.. rubric:: Included in:
+
+==========================   =========================================================
+
+Parent                                                                         Summary
+
+==========================   =========================================================
+:ref:`playback <playback>`       Control the playback settings of animation sequences.
+
+==========================   =========================================================
+

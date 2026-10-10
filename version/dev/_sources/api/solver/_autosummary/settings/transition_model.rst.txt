@@ -1,0 +1,21 @@
+:orphan:
+
+.. _transition_model:
+
+transition_model
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.transition_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`turbulence <turbulence>`   Viscous object.
+
+==============================   ===============
+

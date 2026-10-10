@@ -1,0 +1,21 @@
+:orphan:
+
+.. _point:
+
+point
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.point
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`plane <plane>`       'plane' child.
+
+====================   ==================
+

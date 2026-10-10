@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solid_toggle_mrf_mgrid_ui:
+
+solid_toggle_mrf_mgrid_ui
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.solid_toggle_mrf_mgrid_ui
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================================================
+
+Parent                                                                                      Summary
+
+==================================   ==============================================================
+:ref:`solid_motion <solid_motion>`       Allows to change solid-motion model variables or settings.
+
+==================================   ==============================================================
+

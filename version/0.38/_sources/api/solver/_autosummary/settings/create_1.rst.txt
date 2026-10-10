@@ -1,0 +1,21 @@
+:orphan:
+
+.. _create_1:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===================================================================
+
+Parent                                                                                             Summary
+
+====================================   ===================================================================
+:ref:`make_periodic <make_periodic>`       Attempt to establish conformal periodic face zone connectivity.
+
+====================================   ===================================================================
+

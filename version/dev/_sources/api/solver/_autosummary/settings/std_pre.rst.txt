@@ -1,0 +1,23 @@
+:orphan:
+
+.. _std_pre:
+
+std_pre
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.std_pre
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================
+
+Parent                                         Summary
+
+==================================   =================
+:ref:`parameters_4 <parameters_4>`   Model parameters.
+
+:ref:`parameters_5 <parameters_5>`   Model parameters.
+
+==================================   =================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _rigid_body_properties:
+
+rigid_body_properties
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.rigid_body_properties
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   =============================
+
+Attribute                                                            Summary
+
+============================================   =============================
+:ref:`cg_position <cg_position>`                        'cg_position' child.
+
+:ref:`orientation <orientation>`                        'orientation' child.
+
+:ref:`cg_velocity <cg_velocity>`                        'cg_velocity' child.
+
+:ref:`angular_velocity <angular_velocity_1>`       'angular_velocity' child.
+
+============================================   =============================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`motion <motion>`       'motion' child.
+
+======================   ===================
+

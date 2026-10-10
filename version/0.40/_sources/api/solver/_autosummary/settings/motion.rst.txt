@@ -1,0 +1,42 @@
+:orphan:
+
+.. _motion:
+
+motion
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.motion
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ===============================================
+
+Attribute                                                                                      Summary
+
+====================================================   ===============================================
+:ref:`motion_def <motion_def>`                                                     'motion_def' child.
+
+:ref:`six_dof <six_dof_1>`                                                            'six_dof' child.
+
+:ref:`exclude_motion_bc <exclude_motion_bc>`               Exclude mesh motion in boundary conditions.
+
+:ref:`relative_motion <relative_motion>`                                      'relative_motion' child.
+
+:ref:`rigid_body_properties <rigid_body_properties>`                    'rigid_body_properties' child.
+
+:ref:`in_cylinder_props <in_cylinder_props>`                                'in_cylinder_props' child.
+
+====================================================   ===============================================
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`dynamic_zones_child <dynamic_zones_child>`       'child_object_type' of dynamic_zones.
+
+================================================   =========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _optimizer_type:
+
+optimizer_type
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.optimizer_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================
+
+Parent                                       Summary
+
+==============================   ===================
+:ref:`settings_9 <settings_9>`   Optimizer settings.
+
+==============================   ===================
+

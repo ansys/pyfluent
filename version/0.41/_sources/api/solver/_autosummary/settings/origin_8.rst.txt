@@ -1,0 +1,23 @@
+:orphan:
+
+.. _origin_8:
+
+origin
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.origin_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =====================================
+
+Parent                                                                       Summary
+
+============================================   =====================================
+:ref:`cylinder_def <cylinder_def>`                             'cylinder_def' child.
+
+:ref:`injection_2_child <injection_2_child>`       'child_object_type' of injection.
+
+============================================   =====================================
+

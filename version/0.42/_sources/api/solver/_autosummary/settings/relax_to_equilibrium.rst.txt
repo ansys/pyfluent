@@ -1,0 +1,21 @@
+:orphan:
+
+.. _relax_to_equilibrium:
+
+relax_to_equilibrium
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.relax_to_equilibrium
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

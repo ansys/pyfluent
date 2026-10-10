@@ -1,0 +1,34 @@
+:orphan:
+
+.. _set_inactive_parameter:
+
+set_inactive_parameter
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.set_inactive_parameter
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ========================
+
+Argument                                            Summary
+
+================================   ========================
+:ref:`name <name_37>`                  Inactive Parameters.
+
+:ref:`default_val <default_val>`             Default Value.
+
+================================   ========================
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

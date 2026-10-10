@@ -1,0 +1,21 @@
+:orphan:
+
+.. _thickened_flame_1:
+
+thickened_flame
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.thickened_flame_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

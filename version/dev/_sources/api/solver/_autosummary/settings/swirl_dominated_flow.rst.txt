@@ -1,0 +1,21 @@
+:orphan:
+
+.. _swirl_dominated_flow:
+
+swirl_dominated_flow
+====================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.swirl_dominated_flow
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ========================
+
+Parent                                          Summary
+
+============================   ========================
+:ref:`k_epsilon <k_epsilon>`   K-epsilon model options.
+
+============================   ========================
+

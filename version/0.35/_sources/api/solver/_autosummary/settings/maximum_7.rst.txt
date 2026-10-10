@@ -1,0 +1,21 @@
+:orphan:
+
+.. _maximum_7:
+
+maximum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.maximum_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ========================================
+
+Parent                                                      Summary
+
+========================   ========================================
+:ref:`range_6 <range_6>`       Specifies Range for Filter Settings.
+
+========================   ========================================
+

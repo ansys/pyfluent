@@ -1,0 +1,36 @@
+:orphan:
+
+.. _general_settings_1:
+
+general_settings
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.general_settings_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ===============================================
+
+Attribute                                                                                        Summary
+
+======================================================   ===============================================
+:ref:`iter_count <iter_count_1>`                                               The number of iterations.
+
+:ref:`explicit_urf <explicit_urf>`                                    Explicit URF for scalar equations.
+
+:ref:`initialization_options <initialization_options>`       Initialization options for the hybrid case.
+
+======================================================   ===============================================
+
+.. rubric:: Included in:
+
+================================================   ==================================================
+
+Parent                                                                                        Summary
+
+================================================   ==================================================
+:ref:`hybrid_init_options <hybrid_init_options>`       The settings for hybrid initialization method.
+
+================================================   ==================================================
+

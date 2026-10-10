@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AddLocalSizingWTM__AddLocalSizingWTMCommandArguments:
+
+_AddLocalSizingWTMCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.AddLocalSizingWTM._AddLocalSizingWTMCommandArguments
+   :members: _AddChild, _AssignSizeUsing, _BOICellsPerGap, _BOIControlName, _BOICurvatureNormalAngle, _BOIExecution, _BOIFaceLabelList, _BOIFaceZoneList, _BOIGrowthRate, _BOIMaxSize, _BOIMinSize, _BOIPatchingtoggle, _BOIScopeTo, _BOISize, _BOIZoneorLabel, _BiasFactor, _CompleteEdgeLabelList, _CompleteFaceLabelList, _CompleteFaceZoneList, _CompleteTopologyList, _DrawSizeControl, _EdgeLabelList, _EdgeZoneList, _GrowthMethod, _GrowthPattern, _IgnoreOrientation, _NumberofLayers, _PrimeSizeControlId, _ReverseEdgeZoneList, _ReverseEdgeZoneOrientation, _SmallestHeight, _TopologyList, _ZoneLocation
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

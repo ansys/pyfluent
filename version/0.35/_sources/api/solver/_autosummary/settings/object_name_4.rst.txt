@@ -1,0 +1,23 @@
+:orphan:
+
+.. _object_name_4:
+
+object_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.object_name_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===================================
+
+Parent                                                 Summary
+
+========================   ===================================
+:ref:`plot_8 <plot_8>`         Display cumulative-plot object.
+
+:ref:`print_6 <print_6>`         Print cumulative-plot object.
+
+========================   ===================================
+

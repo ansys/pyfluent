@@ -1,0 +1,21 @@
+:orphan:
+
+.. _output_usd_path:
+
+output_usd_path
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.output_usd_path
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ========================================
+
+Parent                                                                                        Summary
+
+==========================================================   ========================================
+:ref:`usd_export_via_connector <usd_export_via_connector>`       Export data for Omniverse rendering.
+
+==========================================================   ========================================
+

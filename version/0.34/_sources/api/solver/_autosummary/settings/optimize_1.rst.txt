@@ -1,0 +1,59 @@
+:orphan:
+
+.. _optimize_1:
+
+optimize
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.optimize_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===========================
+
+Attribute                                                            Summary
+
+==============================================   ===========================
+:ref:`algorithm <algorithm>`                         Optimization algorithm.
+
+:ref:`algorithm_settings <algorithm_settings>`            Optimize Settings.
+
+:ref:`best_design <best_design>`                                Best Design.
+
+:ref:`results_csv_path <results_csv_path>`                 Results CSV Path.
+
+:ref:`criteria <criteria_1>`                                  Criteria List.
+
+==============================================   ===========================
+
+.. rubric:: Methods
+
+======================================================================================   ===========================================
+
+Method                                                                                                                       Summary
+
+======================================================================================   ===========================================
+:ref:`configure_algorithm_settings <configure_algorithm_settings>`                                     Configure Algorithm Settings.
+
+:ref:`run_optimization <run_optimization>`                                                                         Run optimization.
+
+:ref:`new_optimization <new_optimization>`                                                                         New Optimization.
+
+:ref:`export_omdb_in_optislang_postprocessor <export_omdb_in_optislang_postprocessor>`       Export OMDB in optiSLang Postprocessor.
+
+:ref:`export_optimization_results_to_csv <export_optimization_results_to_csv>`                   Export Optimization Results to CSV.
+
+======================================================================================   ===========================================
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

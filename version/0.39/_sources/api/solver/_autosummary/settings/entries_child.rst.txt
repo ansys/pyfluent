@@ -1,0 +1,36 @@
+:orphan:
+
+.. _entries_child:
+
+entries_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.entries_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ===============================================
+
+Attribute                                                                    Summary
+
+==================================   ===============================================
+:ref:`coefficient <coefficient_3>`       Coefficient that multiplies the observable.
+
+:ref:`observable <observable>`                 Observable in the linear combination.
+
+:ref:`power <power>`                             Exponent applied to the observable.
+
+==================================   ===============================================
+
+.. rubric:: Included in:
+
+========================   ====================================================================
+
+Parent                                                                                  Summary
+
+========================   ====================================================================
+:ref:`entries <entries>`       List of observables and coefficients for the linear combination.
+
+========================   ====================================================================
+

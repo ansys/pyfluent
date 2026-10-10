@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_generate_initial_surface_mesh__generate_initial_surface_mesh_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.generate_initial_surface_mesh._generate_initial_surface_mesh.arguments
+   :members: enable_multi_threading, generate_quads, number_of_multi_threads, project_on_geometry
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   prism_2d_preferences/prism_2d_preferences_contents
+   surface_2d_preferences/surface_2d_preferences_contents

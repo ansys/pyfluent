@@ -1,0 +1,21 @@
+:orphan:
+
+.. _vmass_implicit_options:
+
+vmass_implicit_options
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.vmass_implicit_options
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`forces <forces>`   Interfacial forces.
+
+======================   ===================
+

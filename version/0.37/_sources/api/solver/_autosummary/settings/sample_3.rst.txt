@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sample_3:
+
+sample
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sample_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ============================
+
+Parent                                                      Summary
+
+====================================   ============================
+:ref:`delete_sample <delete_sample>`       'delete_sample' command.
+
+====================================   ============================
+

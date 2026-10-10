@@ -1,0 +1,21 @@
+:orphan:
+
+.. _two_stage:
+
+two_stage
+=========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.two_stage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`runge_kutta <runge_kutta>`   Runge-Kutta schemes setup object.
+
+================================   =================================
+

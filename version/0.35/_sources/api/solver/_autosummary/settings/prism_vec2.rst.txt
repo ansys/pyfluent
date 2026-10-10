@@ -1,0 +1,21 @@
+:orphan:
+
+.. _prism_vec2:
+
+prism_vec2
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.prism_vec2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===========================================================
+
+Parent                                                                                     Summary
+
+====================================   ===========================================================
+:ref:`orthotropic_k <orthotropic_k>`       Parameters related to orthotropic thermal conductivity.
+
+====================================   ===========================================================
+

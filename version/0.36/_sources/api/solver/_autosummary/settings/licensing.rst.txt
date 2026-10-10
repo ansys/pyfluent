@@ -1,0 +1,36 @@
+:orphan:
+
+.. _licensing:
+
+licensing
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.licensing
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===========================
+
+Attribute                                                                      Summary
+
+========================================================   ===========================
+:ref:`type <type_23>`                                                    License Type.
+
+:ref:`optislang_license_type <optislang_license_type>`         OptiSLang License Type.
+
+:ref:`optislang_license_count <optislang_license_count>`                 License Port.
+
+========================================================   ===========================
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

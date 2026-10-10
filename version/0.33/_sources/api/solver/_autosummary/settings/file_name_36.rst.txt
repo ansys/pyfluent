@@ -1,0 +1,23 @@
+:orphan:
+
+.. _file_name_36:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_36
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================================
+
+Parent                                                            Summary
+
+====================================   ==================================
+:ref:`export_data_1 <export_data_1>`       Export data for interpolation.
+
+:ref:`import_data_1 <import_data_1>`       Import data for interpolation.
+
+====================================   ==================================
+

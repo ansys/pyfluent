@@ -1,0 +1,23 @@
+:orphan:
+
+.. _file_name_44:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_44
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`write_to_file_8 <write_to_file_8>`              Write observable to file.
+
+:ref:`write_to_file_10 <write_to_file_10>`       Write parameter value to file.
+
+==========================================   ==================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_SaveFmdFile__SaveFmdFileCommandArguments:
+
+_SaveFmdFileCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.SaveFmdFile._SaveFmdFileCommandArguments
+   :members: _FilePath
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

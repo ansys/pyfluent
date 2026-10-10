@@ -1,0 +1,23 @@
+:orphan:
+
+.. _set_1:
+
+set
+===
+
+.. deprecated:: Ansys 2023R2
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.set_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================================================================
+
+Parent                                                                                                Summary
+
+======================================   ====================================================================
+:ref:`register_based <register_based>`       Up the application of poor mesh numerics to cells in a register.
+
+======================================   ====================================================================
+

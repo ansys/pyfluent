@@ -1,0 +1,21 @@
+:orphan:
+
+.. _residual_convergence_criteria:
+
+residual_convergence_criteria
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.residual_convergence_criteria
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==========================
+
+Parent                                                        Summary
+
+========================================   ==========================
+:ref:`solve_frequency <solve_frequency>`   Radiation solve frequency.
+
+========================================   ==========================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _arithmetic_average_child:
+
+arithmetic_average_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.arithmetic_average_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ========================
+
+Attribute                                                   Summary
+
+========================================   ========================
+:ref:`name <name_5>`                            Name of the object.
+
+:ref:`observable_list <observable_list>`       List of observables.
+
+========================================   ========================
+
+.. rubric:: Included in:
+
+==============================================   ==============================================
+
+Parent                                                                                  Summary
+
+==============================================   ==============================================
+:ref:`arithmetic_average <arithmetic_average>`       Arithmetic average observable definitions.
+
+==============================================   ==============================================
+

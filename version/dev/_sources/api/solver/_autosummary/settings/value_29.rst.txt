@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_29:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.value_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==============
+
+Parent                        Summary
+
+====================   ==============
+:ref:`dispy <dispy>`   'dispy' child.
+
+====================   ==============
+

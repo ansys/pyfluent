@@ -1,0 +1,25 @@
+:orphan:
+
+.. _inside:
+
+inside
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.inside
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =======================
+
+Parent                                           Summary
+
+==============================   =======================
+:ref:`hexahedron <hexahedron>`       'hexahedron' child.
+
+:ref:`sphere_1 <sphere_1>`               'sphere' child.
+
+:ref:`cylinder_1 <cylinder_1>`         'cylinder' child.
+
+==============================   =======================
+

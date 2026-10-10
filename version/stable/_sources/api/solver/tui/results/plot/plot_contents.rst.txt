@@ -1,0 +1,26 @@
+.. _ref_solver_tui_results_plot:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.results.plot
+   :members: circum_avg_axial, circum_avg_radial, fft, label_alignment, plot_direction, set_boundary_val_off
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   cumulative_plot/cumulative_plot_contents
+   histogram/histogram_contents
+   interpolated_data/interpolated_data_contents
+   plot/plot_contents
+   plot_from_file/plot_from_file_contents
+   plot_from_file_list/plot_from_file_list_contents
+   profile_data/profile_data_contents
+   solution_plot/solution_plot_contents
+   xy_plot/xy_plot_contents

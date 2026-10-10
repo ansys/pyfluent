@@ -1,0 +1,130 @@
+:orphan:
+
+.. _icing_1:
+
+icing
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.icing_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   =========================================================================
+
+Attribute                                                                                                                                    Summary
+
+========================================================================   =========================================================================
+:ref:`fensapice_flow_bc_subtype <fensapice_flow_bc_subtype>`                         Sets the flow boundary condition subtype for icing simulations.
+
+:ref:`fensapice_drop_bccustom <fensapice_drop_bccustom>`                                         Enables custom droplet boundary condition settings.
+
+:ref:`fensapice_drop_lwc <fensapice_drop_lwc>`                                               Defines the Liquid Water Content (LWC) of the droplets.
+
+:ref:`fensapice_drop_dtemp <fensapice_drop_dtemp>`                                                          Defines the temperature of the droplets.
+
+:ref:`fensapice_drop_ddiam <fensapice_drop_ddiam>`                                                             Defines the diameter of the droplets.
+
+:ref:`fensapice_drop_dv <fensapice_drop_dv>`                                                                 Enables the droplet velocity to be set.
+
+:ref:`fensapice_drop_dx <fensapice_drop_dx>`                                                        Defines the x-component of the droplet velocity.
+
+:ref:`fensapice_drop_dy <fensapice_drop_dy>`                                                        Defines the y-component of the droplet velocity.
+
+:ref:`fensapice_drop_dz <fensapice_drop_dz>`                                                        Defines the z-component of the droplet velocity.
+
+:ref:`fensapice_dpm_surface_injection <fensapice_dpm_surface_injection>`                     Enables surface injection of droplets in the DPM model.
+
+:ref:`fensapice_dpm_inj_nstream <fensapice_dpm_inj_nstream>`                   Defines the number of streams for droplet injection in the DPM model.
+
+:ref:`fensapice_dpm_rh_mode <fensapice_dpm_rh_mode_1>`                                      Defines the mode for relative humidity in the DPM model.
+
+:ref:`fensapice_drop_icc <fensapice_drop_icc>`                                         Defines the Ice Crystal Concentration (ICC) for the droplets.
+
+:ref:`fensapice_drop_ctemp <fensapice_drop_ctemp>`                                                      Defines the temperature of the ice crystals.
+
+:ref:`fensapice_drop_cmelt <fensapice_drop_cmelt>`                                             Defines the melting coefficient for the ice crystals.
+
+:ref:`fensapice_drop_cdiam <fensapice_drop_cdiam>`                                                         Defines the diameter of the ice crystals.
+
+:ref:`fensapice_drop_cv <fensapice_drop_cv>`                                                             Enables the ice crystal velocity to be set.
+
+:ref:`fensapice_drop_cx <fensapice_drop_cx>`                                                    Defines the x-component of the ice crystal velocity.
+
+:ref:`fensapice_drop_cy <fensapice_drop_cy>`                                                    Defines the y-component of the ice crystal velocity.
+
+:ref:`fensapice_drop_cz <fensapice_drop_cz>`                                                    Defines the z-component of the ice crystal velocity.
+
+:ref:`fensapice_drop_vrh <fensapice_drop_vrh_1>`                                        Enables the use of the VRH model for ice crystal collisions.
+
+:ref:`fensapice_drop_vrh_1 <fensapice_drop_vrh_1_1>`                                     Defines the VRH model parameter for ice crystal collisions.
+
+:ref:`fensapice_drop_vc <fensapice_drop_vc_1>`                                                    Defines the collision efficiency for ice crystals.
+
+========================================================================   =========================================================================
+
+.. rubric:: Included in:
+
+==============================================================   ==============================================
+
+Parent                                                                                                  Summary
+
+==============================================================   ==============================================
+:ref:`inlet_vent_child <inlet_vent_child>`                                   'child_object_type' of inlet_vent.
+
+:ref:`phase_7_child <phase_7_child>`                                              'child_object_type' of phase.
+
+:ref:`intake_fan_child <intake_fan_child>`                                   'child_object_type' of intake_fan.
+
+:ref:`phase_8_child <phase_8_child>`                                              'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_child <mass_flow_inlet_child>`                    'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_11_child <phase_11_child>`                                            'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_child <mass_flow_outlet_child>`                 'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_12_child <phase_12_child>`                                            'child_object_type' of phase.
+
+:ref:`pressure_far_field_child <pressure_far_field_child>`           'child_object_type' of pressure_far_field.
+
+:ref:`phase_19_child <phase_19_child>`                                            'child_object_type' of phase.
+
+:ref:`pressure_inlet_child <pressure_inlet_child>`                       'child_object_type' of pressure_inlet.
+
+:ref:`phase_20_child <phase_20_child>`                                            'child_object_type' of phase.
+
+:ref:`velocity_inlet_child <velocity_inlet_child>`                       'child_object_type' of velocity_inlet.
+
+:ref:`phase_26_child <phase_26_child>`                                            'child_object_type' of phase.
+
+:ref:`inlet_vent_1_child <inlet_vent_1_child>`                               'child_object_type' of inlet_vent.
+
+:ref:`phase_31_child <phase_31_child>`                                            'child_object_type' of phase.
+
+:ref:`intake_fan_1_child <intake_fan_1_child>`                               'child_object_type' of intake_fan.
+
+:ref:`phase_32_child <phase_32_child>`                                            'child_object_type' of phase.
+
+:ref:`mass_flow_inlet_1_child <mass_flow_inlet_1_child>`                'child_object_type' of mass_flow_inlet.
+
+:ref:`phase_35_child <phase_35_child>`                                            'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_1_child <mass_flow_outlet_1_child>`             'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_36_child <phase_36_child>`                                            'child_object_type' of phase.
+
+:ref:`pressure_far_field_1_child <pressure_far_field_1_child>`       'child_object_type' of pressure_far_field.
+
+:ref:`phase_43_child <phase_43_child>`                                            'child_object_type' of phase.
+
+:ref:`pressure_inlet_1_child <pressure_inlet_1_child>`                   'child_object_type' of pressure_inlet.
+
+:ref:`phase_44_child <phase_44_child>`                                            'child_object_type' of phase.
+
+:ref:`velocity_inlet_1_child <velocity_inlet_1_child>`                   'child_object_type' of velocity_inlet.
+
+:ref:`phase_50_child <phase_50_child>`                                            'child_object_type' of phase.
+
+==============================================================   ==============================================
+

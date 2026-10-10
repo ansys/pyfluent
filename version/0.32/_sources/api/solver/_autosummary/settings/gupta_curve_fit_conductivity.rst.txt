@@ -1,0 +1,40 @@
+:orphan:
+
+.. _gupta_curve_fit_conductivity:
+
+gupta_curve_fit_conductivity
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.gupta_curve_fit_conductivity
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============   ==================
+
+Attribute                   Summary
+
+==============   ==================
+:ref:`a <a_2>`       A coefficient.
+
+:ref:`b <b>`         B coefficient.
+
+:ref:`c <c>`         C coefficient.
+
+:ref:`d <d>`         D coefficient.
+
+:ref:`e <e_2>`       E coefficient.
+
+==============   ==================
+
+.. rubric:: Included in:
+
+======================================================   ============================================
+
+Parent                                                                                        Summary
+
+======================================================   ============================================
+:ref:`thermal_conductivity_1 <thermal_conductivity_1>`       Material property: thermal-conductivity.
+
+======================================================   ============================================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _sutherland:
+
+sutherland
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sutherland
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ===============================
+
+Attribute                                                                        Summary
+
+======================================================   ===============================
+:ref:`option <option_39>`                                    Sepcify coefficient method.
+
+:ref:`c1 <c1>`                                                           C1 coefficient.
+
+:ref:`c2 <c2>`                                                           C2 coefficient.
+
+:ref:`reference_viscosity <reference_viscosity>`               Reference viscosity, mu0.
+
+:ref:`reference_temperature <reference_temperature_1>`        Reference temperature, T0.
+
+:ref:`effective_temperature <effective_temperature>`           Effective temperature, S.
+
+======================================================   ===============================
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`viscosity <viscosity>`           Material property: viscosity.
+
+:ref:`viscosity_1 <viscosity_1>`       Material property: viscosity.
+
+================================   =================================
+

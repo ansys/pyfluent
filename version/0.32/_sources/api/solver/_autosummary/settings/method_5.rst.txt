@@ -1,0 +1,27 @@
+:orphan:
+
+.. _method_5:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.method_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================================
+
+Parent                                                               Summary
+
+====================================   =====================================
+:ref:`cathode_ocv <cathode_ocv>`           Equilibrium potential at cathode.
+
+:ref:`anode_ocv <anode_ocv>`                 Equilibrium potential at anode.
+
+:ref:`tplus <tplus>`                                 Transference number t+.
+
+:ref:`activity_term <activity_term>`                  Activity-related term.
+
+====================================   =====================================
+

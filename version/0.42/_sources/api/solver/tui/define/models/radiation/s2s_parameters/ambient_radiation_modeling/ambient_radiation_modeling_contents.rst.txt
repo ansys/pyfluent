@@ -1,0 +1,14 @@
+.. _ref_solver_tui_define_models_radiation_s2s_parameters_ambient_radiation_modeling:
+
+ambient_radiation_modeling
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.define.models.radiation.s2s_parameters.ambient_radiation_modeling
+   :members: ambient_temperature, enable_ambient_radiation
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

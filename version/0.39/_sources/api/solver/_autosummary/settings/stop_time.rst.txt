@@ -1,0 +1,21 @@
+:orphan:
+
+.. _stop_time:
+
+stop_time
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.stop_time
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ================================================
+
+Parent                                                          Summary
+
+====================   ================================================
+:ref:`times <times>`       Lagrangian particle injection time settings.
+
+====================   ================================================
+

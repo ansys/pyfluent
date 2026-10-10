@@ -1,0 +1,21 @@
+:orphan:
+
+.. _number_of_levels:
+
+number_of_levels
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.number_of_levels
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ==========================
+
+Parent                                                                    Summary
+
+====================================================   ==========================
+:ref:`get_number_of_designs <get_number_of_designs>`       Get Number of Designs.
+
+====================================================   ==========================
+

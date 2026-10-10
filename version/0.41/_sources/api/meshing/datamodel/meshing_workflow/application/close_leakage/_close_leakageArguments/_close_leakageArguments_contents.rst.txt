@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_close_leakage__close_leakageArguments:
+
+_close_leakageArguments
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.close_leakage._close_leakageArguments
+   :members: _close_leakage_option
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

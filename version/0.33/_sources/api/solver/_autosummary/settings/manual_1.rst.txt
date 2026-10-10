@@ -1,0 +1,38 @@
+:orphan:
+
+.. _manual_1:
+
+manual
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.manual_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ================================================
+
+Attribute                                                                         Summary
+
+======================================   ================================================
+:ref:`faces <faces_2>`                                           The color for the faces.
+
+:ref:`edges <edges_2>`                                          The color for the edges..
+
+:ref:`nodes <nodes_1>`                                                   The nodes color.
+
+:ref:`material_color <material_color>`       The material type for the selected surfaces.
+
+======================================   ================================================
+
+.. rubric:: Included in:
+
+==========================   ================================
+
+Parent                                                Summary
+
+==========================   ================================
+:ref:`coloring <coloring>`       The coloring options object.
+
+==========================   ================================
+

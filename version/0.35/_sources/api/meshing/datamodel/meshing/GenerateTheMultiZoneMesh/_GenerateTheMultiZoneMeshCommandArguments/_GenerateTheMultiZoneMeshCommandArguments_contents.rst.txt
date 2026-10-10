@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_GenerateTheMultiZoneMesh__GenerateTheMultiZoneMeshCommandArguments:
+
+_GenerateTheMultiZoneMeshCommandArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.GenerateTheMultiZoneMesh._GenerateTheMultiZoneMeshCommandArguments
+   :members: _BodyLabelList, _CellZoneList, _CompleteRegionScope, _MergeBodyLabels, _MeshingStrategy, _NonConformal, _OrthogonalQualityLimit, _ReMergeZones, _RegionScope, _SelectionType, _SizeFunctionScaleFactor
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _CFDSurfaceMeshControls/_CFDSurfaceMeshControls_contents

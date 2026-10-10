@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inlet_diffusion_3:
+
+inlet_diffusion
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.inlet_diffusion_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================
+
+Parent                                              Summary
+
+========================   ================================
+:ref:`scalars <scalars>`       Define user-defined scalars.
+
+========================   ================================
+

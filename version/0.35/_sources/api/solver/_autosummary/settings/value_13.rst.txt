@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_13:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.value_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==========================================================
+
+Parent                                                                                          Summary
+
+==========================================   ==========================================================
+:ref:`tab_elec_current <tab_elec_current>`       Electric current load at terminal in the CHT-coupling.
+
+==========================================   ==========================================================
+

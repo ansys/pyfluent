@@ -1,0 +1,21 @@
+:orphan:
+
+.. _start_2:
+
+start
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.start_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =====================================
+
+Parent                                                                   Summary
+
+========================================   =====================================
+:ref:`multiband_child <multiband_child>`       'child_object_type' of multiband.
+
+========================================   =====================================
+

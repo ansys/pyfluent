@@ -1,0 +1,32 @@
+:orphan:
+
+.. _fuse_cell_zones:
+
+fuse_cell_zones
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fuse_cell_zones
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ===========================================
+
+Argument                                                               Summary
+
+================================   ===========================================
+:ref:`cell_zones <cell_zones_6>`       Names or IDs of cell zones to be fused.
+
+================================   ===========================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

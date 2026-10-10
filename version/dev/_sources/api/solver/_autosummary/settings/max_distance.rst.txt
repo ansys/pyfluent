@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_distance:
+
+max_distance
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_distance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`spatial_staggering <spatial_staggering>`   Enable and configure spatial staggering.
+
+==============================================   ========================================
+

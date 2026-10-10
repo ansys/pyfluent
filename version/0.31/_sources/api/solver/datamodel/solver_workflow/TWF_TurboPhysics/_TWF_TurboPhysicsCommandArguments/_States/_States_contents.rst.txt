@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_TurboPhysics__TWF_TurboPhysicsCommandArguments__States:
+
+_States
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.solver_workflow.Root.TWF_TurboPhysics._TWF_TurboPhysicsCommandArguments._States
+   :members: _CEBtn, _Density, _EFM, _Energy, _OpP, _Vrpm, _WF
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

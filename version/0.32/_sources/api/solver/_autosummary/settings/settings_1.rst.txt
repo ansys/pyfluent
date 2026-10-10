@@ -1,0 +1,44 @@
+:orphan:
+
+.. _settings_1:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================
+
+Attribute                                                                         Summary
+
+============================   ==========================================================
+:ref:`geometry <geometry_6>`       Allows to change geometry model variables or settings.
+
+:ref:`phase <phase_3>`                                 Domain name to define settings on.
+
+============================   ==========================================================
+
+.. rubric:: Included in:
+
+==========================================   =====================================
+
+Parent                                                                     Summary
+
+==========================================   =====================================
+:ref:`axis_5_child <axis_5_child>`                    'child_object_type' of axis.
+
+:ref:`degassing_child <degassing_child>`         'child_object_type' of degassing.
+
+:ref:`geometry_5_child <geometry_5_child>`        'child_object_type' of geometry.
+
+:ref:`overset_child <overset_child>`               'child_object_type' of overset.
+
+:ref:`shadow_child <shadow_child>`                  'child_object_type' of shadow.
+
+:ref:`symmetry_child <symmetry_child>`            'child_object_type' of symmetry.
+
+==========================================   =====================================
+

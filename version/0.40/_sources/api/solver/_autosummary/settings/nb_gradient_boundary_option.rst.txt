@@ -1,0 +1,32 @@
+:orphan:
+
+.. _nb_gradient_boundary_option:
+
+nb_gradient_boundary_option
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.nb_gradient_boundary_option
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ===============================
+
+Attribute                                                  Summary
+
+================================   ===============================
+:ref:`nb_gradient <nb_gradient>`       Type of boundary treatment.
+
+================================   ===============================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

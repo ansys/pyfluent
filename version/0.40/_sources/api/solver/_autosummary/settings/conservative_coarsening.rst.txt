@@ -1,0 +1,23 @@
+:orphan:
+
+.. _conservative_coarsening:
+
+conservative_coarsening
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.conservative_coarsening
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ===============================================================================================
+
+Parent                                                                                                                                             Summary
+
+========================================================   ===============================================================================================
+:ref:`coarsening_parameters_1 <coarsening_parameters_1>`        Configures coarsening parameters for scalar equations in algebraic multigrid (AMG) solver.
+
+:ref:`coarsening_parameters_2 <coarsening_parameters_2>`       Configures coarsening parameters for coupled equations in algebraic multigrid (AMG) solver.
+
+========================================================   ===============================================================================================
+
