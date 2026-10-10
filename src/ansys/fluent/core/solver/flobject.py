@@ -42,7 +42,14 @@ Example
 from __future__ import annotations
 
 import collections
-from collections.abc import Callable
+import collections.abc  # needed so `collections.abc.X` resolves for the type checker
+from collections.abc import (
+    Callable,
+    ItemsView,
+    Iterator,
+    KeysView,
+    ValuesView,
+)
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
@@ -57,11 +64,14 @@ import string
 import sys
 import types
 from typing import (
+    TYPE_CHECKING,
     Any,
     ForwardRef,
     Generic,
     Iterable,
     NewType,
+    NoReturn,
+    TextIO,
     TypeVar,
     Union,
     _eval_type,
@@ -70,6 +80,11 @@ from typing import (
 )
 import warnings
 import weakref
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.connectivity.file_transfer_service import (
+        FileTransferStrategy,
+    )
 
 from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._variable_strategies import (
@@ -87,7 +102,7 @@ from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
 
-settings_logger = logging.getLogger("pyfluent.settings_api")
+settings_logger: logging.Logger = logging.getLogger("pyfluent.settings_api")
 
 
 _static_class_attributes = [
@@ -161,7 +176,7 @@ def _try_render_expression(state):
 class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
-    def __init__(self, python_path):
+    def __init__(self, python_path: str):
         """Initialize InactiveObjectError."""
         super().__init__(f"'{python_path}' is currently inactive.")
 
@@ -169,7 +184,7 @@ class InactiveObjectError(RuntimeError):
 class ReadOnlyActionError(RuntimeError):
     """Read-only action execution."""
 
-    def __init__(self, python_path):
+    def __init__(self, python_path: str):
         """Initialize ReadOnlyActionError."""
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
@@ -182,7 +197,7 @@ class ExposureLevel(Enum):
     BETA = "beta"
     STABLE = "stable"
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
         """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
         if isinstance(other, ExposureLevel):
             order = {
@@ -299,7 +314,7 @@ ListStateType = list["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
-def check_type(val, tp):
+def check_type(val: Any, tp: Any) -> bool:
     """Check type of object."""
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
@@ -335,7 +350,7 @@ def check_type(val, tp):
         return False
 
 
-def assert_type(val, tp):
+def assert_type(val: Any, tp: Any) -> None:
     """Assert type.
 
     Raises
@@ -498,7 +513,7 @@ class Base:
     fluent_name
     """
 
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
@@ -514,7 +529,7 @@ class Base:
         else:
             return self._parent._root
 
-    def set_flproxy(self, flproxy):
+    def set_flproxy(self, flproxy: Any) -> None:
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
@@ -531,7 +546,7 @@ class Base:
         self._setattr("_file_transfer_service", file_transfer_service)
 
     @property
-    def flproxy(self):
+    def flproxy(self) -> Any:
         """Proxy object.
 
         The proxy object is set at the root level and accessed via the parent for the
@@ -557,7 +572,7 @@ class Base:
     _python_name = None
 
     @property
-    def parent(self):
+    def parent(self) -> "Base | None":
         """Parent (container) object."""
         return self._parent
 
@@ -613,7 +628,7 @@ class Base:
             return ppath + self.python_name
         return ppath + "." + self.python_name
 
-    def get_attrs(self, attrs, recursive=False) -> Any:
+    def get_attrs(self, attrs: list[str], recursive: bool = False) -> StateType:
         """Get the requested attributes for the object.
 
         Parameters
@@ -625,7 +640,7 @@ class Base:
 
         Returns
         -------
-        Any
+        StateType
             Requested attributes.
         """
         return self.flproxy.get_attrs(self.path, attrs, recursive)
@@ -634,7 +649,7 @@ class Base:
         self,
         attr: str,
         attr_type_or_types: type | tuple[type] | None = None,
-    ) -> Any:
+    ) -> StateType:
         """Get the requested attribute for the object.
 
         Parameters
@@ -646,7 +661,7 @@ class Base:
 
         Returns
         -------
-        Any
+        StateType
             attribute value
 
         Raises
@@ -685,7 +700,7 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any) -> NoReturn:
         raise AttributeError(name)
 
     # __setattr__ is overridden to prevent creation of new attributes or
@@ -693,7 +708,7 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def find_object(self, relative_path):
+    def find_object(self, relative_path: str) -> "Base":
         """Find object."""
         obj = self
         for comp in relative_path.split("/"):
@@ -703,7 +718,9 @@ class Base:
                 obj = getattr(obj, comp)
         return obj
 
-    def before_execute(self, command_name, value, kwargs):
+    def before_execute(
+        self, command_name: str, value: StateType, kwargs: dict[str, StateType]
+    ) -> StateType:
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
             base_file_name = self._do_before_execute(
@@ -713,7 +730,9 @@ class Base:
         else:
             return value
 
-    def after_execute(self, command_name, value, kwargs):
+    def after_execute(
+        self, command_name: str, value: StateType, kwargs: dict[str, StateType]
+    ) -> StateType:
         """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
             base_file_name = self._do_after_execute(
@@ -747,13 +766,13 @@ class Base:
         """Avoid additional processing while executing a command."""
         return nullcontext()
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable = None
+        self, prefix: str = "", excluded: Iterable[str] | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -784,7 +803,7 @@ StateT = TypeVar("StateT")
 class Property(Base):
     """Exposes attribute accessor on settings object."""
 
-    def default_value(self):
+    def default_value(self) -> StateType:
         """Gets the default value of the object."""
         return self.get_attr(_InlineConstants.default_value)
 
@@ -792,12 +811,12 @@ class Property(Base):
 class Numerical(Property):
     """Exposes attribute accessor on settings object - specific to numerical objects."""
 
-    def min(self):
+    def min(self) -> float | int | None:
         """Get the minimum value of the object."""
         val = self.get_attr(_InlineConstants.min, (float, int))
         return None if isinstance(val, bool) else val
 
-    def max(self):
+    def max(self) -> float | int | None:
         """Get the maximum value of the object."""
         val = self.get_attr(_InlineConstants.max, (float, int))
         return None if isinstance(val, bool) else val
@@ -840,7 +859,7 @@ class RealNumerical(Numerical):
                 error = "Could not determine units."
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
@@ -848,7 +867,7 @@ class RealNumerical(Numerical):
         state
             The type of state can be float, str (representing either
             an expression or a value with units), or an ansys.units.Quantity.
-        kwargs : Any
+        kwargs : StateType
             Keyword arguments.
 
         Raises
@@ -890,7 +909,7 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
@@ -901,7 +920,7 @@ class Textual(Property):
             implementing ``__fluent_expr__() -> str`` (e.g. an
             :class:`~ansys.fluent.core.expressions.Expr` produced by the
             expression builder).
-        kwargs : Any
+        kwargs : StateType
             Keyword arguments.
 
         Raises
@@ -1034,7 +1053,7 @@ class SettingsBase(Base, Generic[StateT]):
     """
 
     @classmethod
-    def to_scheme_keys(cls, value: StateT, root_cls, path: list[str]) -> StateT:
+    def to_scheme_keys(cls, value: StateT, root_cls: type, path: list[str]) -> StateT:
         """Convert value to have keys with scheme names.
 
         This is overridden in the ``Group``, ``NamedObject``, and
@@ -1051,7 +1070,7 @@ class SettingsBase(Base, Generic[StateT]):
         """
         return value
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: StateType, **kwargs: StateType) -> StateT | None:
         """Get or set the state of the object."""
         if kwargs:
             # Send value of the first key only
@@ -1072,7 +1091,7 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object."""
         with self._while_setting_state():
             if isinstance(state, (tuple, ansys.units.Quantity)) and hasattr(
@@ -1107,7 +1126,7 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             out.write(f"{state}\n")
 
-    def print_state(self, out=None, indent_factor=2):
+    def print_state(self, out: TextIO | None = None, indent_factor: int = 2) -> None:
         """Print the state of the object."""
         out = sys.stdout if out is None else out
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
@@ -1154,8 +1173,8 @@ class Real(SettingsBase[RealType], RealNumerical):
     expression values.
     """
 
-    base_set_state = SettingsBase[RealType].set_state
-    set_state = RealNumerical.set_state
+    base_set_state: Callable[..., None] = SettingsBase[RealType].set_state
+    set_state: Callable[..., None] = RealNumerical.set_state
 
     _state_type = RealType
 
@@ -1165,8 +1184,8 @@ class String(SettingsBase[str], Textual):
 
     _state_type = str
 
-    base_set_state = SettingsBase[str].set_state
-    set_state = Textual.set_state
+    base_set_state: Callable[..., None] = SettingsBase[str].set_state
+    set_state: Callable[..., None] = Textual.set_state
 
 
 class Filename(SettingsBase[str], Textual):
@@ -1174,7 +1193,7 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
-    def file_purpose(self):
+    def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
@@ -1184,7 +1203,7 @@ class FilenameList(SettingsBase[StringListType], Textual):
 
     _state_type = StringListType
 
-    def file_purpose(self):
+    def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
@@ -1196,6 +1215,8 @@ class FileName(Base):
 
 
 class _InputFile(FileName):
+    """Mixin providing upload behavior for settings backed by an input file."""
+
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
@@ -1207,6 +1228,8 @@ class _InputFile(FileName):
 
 
 class _OutputFile(FileName):
+    """Mixin providing download behavior for settings backed by an output file."""
+
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
@@ -1218,6 +1241,8 @@ class _OutputFile(FileName):
 
 
 class _InOutFile(_InputFile, _OutputFile):
+    """Mixin providing both upload and download behavior for in/out file settings."""
+
     pass
 
 
@@ -1230,8 +1255,8 @@ class Boolean(SettingsBase[bool], Property):
 class RealList(SettingsBase[RealListType], RealNumerical):
     """A ``RealList`` object representing a real list setting."""
 
-    base_set_state = SettingsBase[RealListType].set_state
-    set_state = RealNumerical.set_state
+    base_set_state: Callable[..., None] = SettingsBase[RealListType].set_state
+    set_state: Callable[..., None] = RealNumerical.set_state
 
     _state_type = RealListType
 
@@ -1291,7 +1316,7 @@ class Group(SettingsBase[DictStateType]):
 
     _state_type = DictStateType
 
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
@@ -1304,7 +1329,7 @@ class Group(SettingsBase[DictStateType]):
             cls = self.__class__._child_classes[query]
             self._setattr(query, _create_child(cls, None, self))
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: StateType, **kwargs: StateType) -> DictStateType | None:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -1313,7 +1338,9 @@ class Group(SettingsBase[DictStateType]):
             return self.get_state()
 
     @classmethod
-    def to_scheme_keys(cls, value, root_cls, path: list[str]):
+    def to_scheme_keys(
+        cls, value: DictStateType, root_cls: type, path: list[str]
+    ) -> DictStateType:
         """Convert value to have keys with scheme names.
 
         Raises
@@ -1342,7 +1369,7 @@ class Group(SettingsBase[DictStateType]):
             return value
 
     @classmethod
-    def to_python_keys(cls, value):
+    def to_python_keys(cls, value: DictStateType) -> DictStateType:
         """Convert value to have keys with Python names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
@@ -1357,12 +1384,12 @@ class Group(SettingsBase[DictStateType]):
             return {}
 
     _child_classes = {}
-    child_names = []
-    command_names = []
-    query_names = []
+    child_names: list[str] = []
+    command_names: list[str] = []
+    query_names: list[str] = []
     _child_aliases = {}
 
-    def get_active_child_names(self):
+    def get_active_child_names(self) -> list[str]:
         """Names of children that are currently active."""
         ret = []
         child_classes = type(self)._child_classes
@@ -1375,15 +1402,15 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(child_name)
         return ret
 
-    def get_active_command_names(self):
+    def get_active_command_names(self) -> list[str]:
         """Names of commands that are currently active."""
         return _get_active_names(self, self.command_names)
 
-    def get_active_query_names(self):
+    def get_active_query_names(self) -> list[str]:
         """Names of queries that are currently active."""
         return _get_active_names(self, self.query_names)
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(
             self.child_names + self.command_names + self.query_names,
@@ -1392,7 +1419,7 @@ class Group(SettingsBase[DictStateType]):
         )
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         # Avoiding server queries for static attributes
         if name in _static_class_attributes:
             return super().__getattribute__(name)
@@ -1425,7 +1452,7 @@ class Group(SettingsBase[DictStateType]):
             ex.args = (error_msg,)
             raise
 
-    def __setattr__(self, name: str, value):
+    def __setattr__(self, name: str, value: StateType) -> None:
         # 'settings_source' will be set to settings object when they are created from builtin settings classes.
         # We don't allow overwriting it.
         if name == "settings_source":
@@ -1456,7 +1483,14 @@ class Group(SettingsBase[DictStateType]):
 class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on flproxy."""
 
-    def __init__(self, flproxy, path: str, state_cls, settings_cls, parent):
+    def __init__(
+        self,
+        flproxy: Any,
+        path: str,
+        state_cls: type,
+        settings_cls: type,
+        parent: "Base",
+    ):
         """__init__ of WildcardPath class."""
         self._setattr("_flproxy", flproxy)
         self._setattr("_path", path)
@@ -1471,16 +1505,16 @@ class WildcardPath(Group):
         self._setattr("_parent", parent)
 
     @property
-    def flproxy(self):
+    def flproxy(self) -> Any:
         """Proxy object."""
         return self._flproxy
 
     @property
-    def path(self):
+    def path(self) -> str:
         """Path with wildcards."""
         return self._path
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> "WildcardPath":
         try:
             child_settings_cls = self._settings_cls._child_classes[name]
             scheme_name = child_settings_cls.fluent_name
@@ -1505,13 +1539,13 @@ class WildcardPath(Group):
                 )
             ) from ex
 
-    def items(self):
+    def items(self) -> Iterator[tuple[str, StateType]]:
         """Items."""
         for key, value in self._parent.items():
             if fnmatch.fnmatch(key, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield key, value
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         for item in self._parent:
             if fnmatch.fnmatch(item, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield item
@@ -1521,11 +1555,11 @@ class WildcardPath(Group):
     # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
     # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
 
-    def to_scheme_keys(self, value, root_cls, path):
+    def to_scheme_keys(self, value: StateType, root_cls: type, path: list[str]) -> StateType:
         """Convert value to have keys with scheme names."""
         return self._settings_cls.to_scheme_keys(value, root_cls, path)
 
-    def to_python_keys(self, value):
+    def to_python_keys(self, value: StateType) -> StateType:
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
 
@@ -1533,7 +1567,7 @@ class WildcardPath(Group):
 class NamedObjectWildcardPath(WildcardPath):
     """WildcardPath at a NamedObject path, so it can be looked up by wildcard again."""
 
-    def __getitem__(self, name: str):
+    def __getitem__(self, name: str) -> WildcardPath:
         return WildcardPath(
             self.flproxy,
             self.path + "/" + name,
@@ -1542,7 +1576,7 @@ class NamedObjectWildcardPath(WildcardPath):
             self,
         )
 
-    def __setitem__(self, name, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         self[name].set_state(value)
 
 
@@ -1562,7 +1596,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", {})
@@ -1581,7 +1615,9 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
 
     @classmethod
-    def to_scheme_keys(cls, value, root_cls, path: list[str]):
+    def to_scheme_keys(
+        cls, value: DictStateType, root_cls: type, path: list[str]
+    ) -> DictStateType:
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
@@ -1592,7 +1628,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return value
 
     @classmethod
-    def to_python_keys(cls, value):
+    def to_python_keys(cls, value: DictStateType) -> DictStateType:
         """Convert value to have keys with Python names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
@@ -1603,18 +1639,18 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return {}
 
     _child_classes = {}
-    command_names = []
-    query_names = []
+    command_names: list[str] = []
+    query_names: list[str] = []
     _child_aliases = {}
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(
             self.command_names + self.query_names, type(self)._child_classes, self
         )
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         if name in _static_class_attributes:
             return super().__getattribute__(name)
         _raise_if_exposure_hidden(
@@ -1643,33 +1679,33 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             if name not in self._objects:
                 self._create_child_object(name)
 
-    def __delitem__(self, name: str):
+    def __delitem__(self, name: str) -> None:
         with self._while_deleting():
             self.flproxy.delete(self.path, name)
         if name in self._objects:
             del self._objects[name]
 
-    def __contains__(self, name: str):
+    def __contains__(self, name: str) -> bool:
         return name in self.get_object_names()
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.keys())
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         self._update_objects()
         return iter(self._objects)
 
-    def keys(self):
+    def keys(self) -> KeysView[str]:
         """Object names."""
         self._update_objects()
         return self._objects.keys()
 
-    def values(self):
+    def values(self) -> ValuesView[ChildTypeT]:
         """Object values."""
         self._update_objects()
         return self._objects.values()
 
-    def items(self):
+    def items(self) -> ItemsView[str, ChildTypeT]:
         """Items."""
         self._update_objects()
         return self._objects.items()
@@ -1678,17 +1714,17 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         """Whether the object is user-creatable."""
         return self.get_attr(_InlineConstants.user_creatable, bool)
 
-    def get_object_names(self):
+    def get_object_names(self) -> list[str]:
         """Object names."""
         obj_names = self.flproxy.get_object_names(self.path)
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
-    def get_active_command_names(self):
+    def get_active_command_names(self) -> list[str]:
         """Names of commands that are currently active."""
         return _get_active_names(self, self.command_names)
 
-    def get_active_query_names(self):
+    def get_active_query_names(self) -> list[str]:
         """Names of queries that are currently active."""
         return _get_active_names(self, self.query_names)
 
@@ -1735,7 +1771,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         except Exception:
             return
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         alias = self._child_aliases.get(name)
         if alias:
             alias = alias[0]
@@ -1754,21 +1790,21 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                     f"'{self.__class__.__name__}' has no attribute '{name}'"
                 ) from ex
 
-    def __add__(self, other):
+    def __add__(self, other: "NamedObject[Any]") -> "CombinedNamedObject":
         if not isinstance(other, NamedObject):
             raise TypeError(
                 f"Can only add NamedObject to NamedObject, not {type(other).__name__}"
             )
         return CombinedNamedObject([self, other])
 
-    def list(self):
+    def list(self) -> Any:
         """Print the object names."""
         if FluentVersion(self._version) >= FluentVersion.v261:
             return self._root.list(object_path=self.path)
         else:
             return self.list_1()
 
-    def list_properties(self, object_name):
+    def list_properties(self, object_name: str) -> Any:
         """Print the properties of the given object name.
 
         Parameters
@@ -1785,10 +1821,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 class CombinedNamedObject:
     """A ``CombinedNamedObject`` contains the concatenated named-objects."""
 
-    def __init__(self, objects: list[NamedObject]):
+    def __init__(self, objects: list[NamedObject[Any]]):
         """__init__ of CombinedNamedObject."""
-        self.objects = []
-        self._items = []
+        self.objects: list[NamedObject[Any]] = []
+        self._items: list[tuple[str, Any]] = []
         for obj in objects:
             if isinstance(obj, CombinedNamedObject):
                 self.objects.extend(obj.objects)
@@ -1797,20 +1833,20 @@ class CombinedNamedObject:
         for obj in self.objects:
             self._items.extend(obj.items())
 
-    def items(self):
+    def items(self) -> list[tuple[str, Any]]:
         """Return items like a dictionary."""
         return self._items
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
         for obj in self.objects:
             yield from obj
 
-    def __add__(self, other):
+    def __add__(self, other: NamedObject[Any]) -> "CombinedNamedObject":
         if not isinstance(other, NamedObject):
             raise TypeError(f"Cannot add {type(self)} to NamedObject")
         return CombinedNamedObject(self.objects + [other])
 
-    def __call__(self):
+    def __call__(self) -> dict[str, Any]:
         temp_dict = {}
         for obj in self.objects:
             temp_dict.update(obj())
@@ -1894,7 +1930,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name=None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of ListObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", [])
@@ -1906,7 +1942,9 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             self._setattr(query, _create_child(cls, None, self))
 
     @classmethod
-    def to_scheme_keys(cls, value, root_cls, path: list[str]):
+    def to_scheme_keys(
+        cls, value: ListStateType, root_cls: type, path: list[str]
+    ) -> ListStateType:
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Sequence):
             return [
@@ -1916,7 +1954,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return value
 
     @classmethod
-    def to_python_keys(cls, value):
+    def to_python_keys(cls, value: ListStateType) -> ListStateType:
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Sequence):
             return [cls.child_object_type.to_python_keys(v) for v in value]
@@ -1924,18 +1962,18 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return []
 
     _child_classes = {}
-    command_names = []
-    query_names = []
+    command_names: list[str] = []
+    query_names: list[str] = []
     _child_aliases = {}
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(
             self.command_names + self.query_names, type(self)._child_classes, self
         )
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         if name in _static_class_attributes:
             return super().__getattribute__(name)
         _raise_if_exposure_hidden(
@@ -1950,18 +1988,18 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             [_create_child(cls, str(x), self) for x in range(self.get_size())],
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.get_size()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[ChildTypeT]:
         self._update_objects()
         return iter(self._objects)
 
-    def get_active_command_names(self):
+    def get_active_command_names(self) -> list[str]:
         """Names of commands that are currently active."""
         return _get_active_names(self, self.command_names)
 
-    def get_active_query_names(self):
+    def get_active_query_names(self) -> list[str]:
         """Names of queries that are currently active."""
         return _get_active_names(self, self.query_names)
 
@@ -1982,11 +2020,11 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             self._update_objects()
         return self._objects[index]
 
-    def __setitem__(self, index: int, value):
+    def __setitem__(self, index: int, value: StateType) -> None:
         child = self[index]
         child.set_state(value)
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         alias = self._child_aliases.get(name)
         if alias:
             alias = alias[0]
@@ -2022,7 +2060,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return child_value.units()
         return None
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the list object.
 
         For Quantity-like inputs containing sequence values, convert once to the
@@ -2102,9 +2140,9 @@ class Action(Base):
 
     _child_classes = {}
     _child_aliases = {}
-    argument_names = []
+    argument_names: list[str] = []
 
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
@@ -2112,12 +2150,12 @@ class Action(Base):
                 cls = self.__class__._child_classes[argument]
                 self._setattr(argument, _create_child(cls, None, self))
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(self.argument_names, type(self)._child_classes, self)
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         if name in _static_class_attributes:
             return super().__getattribute__(name)
         _raise_if_exposure_hidden(
@@ -2125,7 +2163,7 @@ class Action(Base):
         )
         return super().__getattribute__(name)
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         alias = self._child_aliases.get(name)
         if alias:
             alias = alias[0]
@@ -2144,7 +2182,7 @@ class Action(Base):
                     f"'{self.python_path}' is a command/query object and has no attribute '{name}'"
                 ) from None
 
-    def __setattr__(self, name: str, value):
+    def __setattr__(self, name: str, value: StateType) -> None:
         attr = getattr(self, name)
         try:
             return attr.set_state(value)
@@ -2193,7 +2231,7 @@ class BaseCommand(Action):
                 ret = _fix_parameter_list_return(ret)
             return ret
 
-    def execute_command(self, *args, **kwds):
+    def execute_command(self, *args: StateType, **kwds: StateType) -> StateType:
         """Execute command."""
         kwds = _get_new_keywords(self, *args, **kwds)
         scmKwds = {}
@@ -2262,7 +2300,7 @@ _fix_parameter_list_return.scheme_eval = None
 class Command(BaseCommand):
     """Command object."""
 
-    def __call__(self, **kwds):
+    def __call__(self, **kwds: Any) -> StateType | None:
         """Call a command with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2293,7 +2331,7 @@ class Command(BaseCommand):
 class CommandWithPositionalArgs(BaseCommand):
     """Command Object supporting positional arguments."""
 
-    def __call__(self, *args, **kwds):
+    def __call__(self, *args: Any, **kwds: Any) -> StateType | None:
         """Call a command with the specified positional and keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2324,7 +2362,7 @@ class CommandWithPositionalArgs(BaseCommand):
 class Query(Action):
     """Query object."""
 
-    def __call__(self, **kwds):
+    def __call__(self, **kwds: Any) -> StateType | None:
         """Call a query with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2384,7 +2422,7 @@ def _fix_help_info(obj_type, helpinfo):
     return fix or helpinfo
 
 
-class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
+class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping[str, "Base"]):
     """A mixin class to provide a dictionary interface at a Group class level if the
     Group has multiple named objects of a similar type. For example, boundary conditions
     are grouped by type but quite often we want to access them without the type context.
@@ -2397,7 +2435,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     boundary_conditions.
     """
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str) -> "Base":
         """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
@@ -2407,11 +2445,11 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 return cobj[name]
         raise KeyError(name)
 
-    def __setitem__(self, name, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         """Set the state of a child object."""
         self[name].set_state(value)
 
-    def __delitem__(self, name):
+    def __delitem__(self, name: str) -> None:
         """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
@@ -2422,7 +2460,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 return
         raise KeyError(name)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         """Iterator for child named objects."""
         for cname in self.child_names:
             # Use suppress to ignore exceptions during child object iteration without triggering B110
@@ -2431,7 +2469,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 for item in getattr(self, cname):
                     yield item
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Number of child named objects."""
         count = 0
         for cname in self.child_names:
@@ -2441,10 +2479,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         return count
 
 
-class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+class CreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
     """Provides creatable named objects for Fluent 2025 R1 and later."""
 
-    def __setitem__(self, name: str, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child = WildcardPath(
@@ -2465,7 +2503,7 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTyp
         child.set_state(value)
 
 
-class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
+class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin[ChildTypeT]):
     """Provides creatable named objects for Fluent 2024 R2 and earlier."""
 
     # In Fluent 2025 R1, the ``create()`` method is available as commands in the ``NamedObject`` class.
@@ -2487,10 +2525,8 @@ class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
         return self._create_child_object(name)
 
 
-class _NonCreatableNamedObjectMixin(
-    collections.abc.MutableMapping, Generic[ChildTypeT]
-):
-    def __setitem__(self, name: str, value):
+class _NonCreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
+    def __setitem__(self, name: str, value: StateType) -> None:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child = WildcardPath(
@@ -2518,7 +2554,7 @@ class _NonCreatableNamedObjectMixin(
 class AllowedValuesMixin:
     """Provides allowed values."""
 
-    def allowed_values(self):
+    def allowed_values(self) -> list[StateType] | str:
         """Get the allowed values of the object."""
         try:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
@@ -2973,7 +3009,13 @@ def _create_generated_class(
 
 
 # pylint: disable=missing-raises-doc
-def get_cls(name, info, parent=None, version=None, parent_taboo=None):
+def get_cls(
+    name: str,
+    info: dict[str, Any],
+    parent: type | None = None,
+    version: str | None = None,
+    parent_taboo: set[str] | None = None,
+) -> tuple[type, str]:
     """Create a class for the object identified by "path"."""
     try:
         cls, parent_attr_name, taboo, user_creatable = _create_generated_class(
@@ -3011,12 +3053,12 @@ def _gethash(obj_info):
 
 
 def get_root(
-    flproxy,
+    flproxy: Any,
     version: str = "",
     interrupt: Any | None = None,
-    is_interruptible_command: Any | None = None,
-    file_transfer_service: Any | None = None,
-    scheme_eval=None,
+    is_interruptible_command: Callable[[str], bool] | None = None,
+    file_transfer_service: "FileTransferStrategy | None" = None,
+    scheme_eval: Callable[[str], StateType] | None = None,
 ) -> Group:
     """Get the root settings object.
 
@@ -3033,7 +3075,7 @@ def get_root(
         gRPC when the solver is stopped cleanly by ``interrupt()``.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
-    scheme_eval : Any
+    scheme_eval : Callable[[str], StateType], optional
         A gRPC service to execute Scheme code.
     version : str
         Fluent version.
@@ -3089,7 +3131,7 @@ def get_root(
     return root
 
 
-def find_children(obj, identifier="*"):
+def find_children(obj: Any, identifier: str = "*") -> list[str]:
     """Returns path of all the child objects matching an identifier.
 
     Parameters

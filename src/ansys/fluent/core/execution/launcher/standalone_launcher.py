@@ -107,11 +107,10 @@ class StandaloneArgsWithoutDryRunMode(
     """Working directory for the Fluent client."""
     fluent_path: str | None
     """User-specified path for Fluent installation."""
-    topy: str | list[Any] | None
+    topy: bool | str | None
     """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
     a filename for the new Python journal.
     """
-
 
 class StandaloneArgsWithoutDryRun(
     StandaloneArgsWithoutDryRunMode
@@ -303,7 +302,7 @@ class StandaloneLauncher:
             )
 
         self._launch_string += _build_journal_argument(
-            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
+            self.argvals.get("topy"), self.argvals.get("journal_file_names")
         )
 
         if is_windows():

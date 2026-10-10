@@ -41,6 +41,7 @@ from typing import TYPE_CHECKING, Any, cast
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.connectivity.data_transfer import transfer_case
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.execution.session._shared import (
@@ -112,7 +113,7 @@ class BaseMeshing(BaseSession):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
     ):
