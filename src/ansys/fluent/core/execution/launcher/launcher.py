@@ -56,7 +56,6 @@ from ansys.fluent.core.execution.launcher.launch_options import (
     Precision,
     UIMode,
     _get_fluent_launch_mode,
-    _get_running_session_mode,
     get_remote_grpc_options,
 )
 from ansys.fluent.core.execution.launcher.launcher_utils import (
@@ -665,7 +664,9 @@ def connect_to_fluent(
         insecure_mode=insecure_mode,
         cleanup_on_exit=cleanup_on_exit,
     )
-    new_session = _get_running_session_mode(fluent_connection)
+    # Map the mode detected from the running server to its session class
+    # (e.g. Meshing, PureMeshing, Solver); it is instantiated below.
+    new_session = fluent_connection._mode.get_fluent_value()
 
     start_watchdog = _confirm_watchdog_start(
         start_watchdog, cleanup_on_exit, fluent_connection

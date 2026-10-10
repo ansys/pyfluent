@@ -604,6 +604,7 @@ class FluentConnection:
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             self._connection_interface.get_cortex_connection_properties()
         )
+        self._mode = self._connection_interface.get_mode()
         self._cleanup_on_exit = cleanup_on_exit
         self._container = container
         if (

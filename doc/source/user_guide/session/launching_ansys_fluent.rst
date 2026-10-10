@@ -142,7 +142,7 @@ Use this method when:
 .. vale Google.Spacing = YES
 
 Using :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 
 You can use the :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
 function to start Fluent from Python. This code starts Fluent in the background and starts
@@ -276,6 +276,26 @@ distributed across more than one machine:
   >>>     processor_count=16
   >>>     additional_arguments="-cnf=m1:8,m2:8",
   >>> )
+
+
+.. _working_directory:
+
+Working directory
+~~~~~~~~~~~~~~~~~~
+You can set the working directory of the Fluent process with the ``cwd`` argument:
+
+.. code:: python
+
+  >>> solver_session = pyfluent.launch_fluent(cwd="/path/to/working/directory")
+
+.. note::
+   On Windows, Fluent cannot use a UNC path (for example ``\\server\share``) as its
+   working directory. Pass a local directory as ``cwd``, and give absolute UNC paths
+   for any case, data, journal, or output files that live on the share. Relative
+   paths, and files Fluent writes by default, resolve against the local ``cwd``.
+
+   If you do not pass ``cwd``, Fluent inherits the working directory of your Python
+   process. If your script runs from a UNC path, pass an explicit local ``cwd``.
 
 
 Logging support
@@ -504,7 +524,7 @@ Connect to a Fluent container running inside WSL from a Windows host
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver_session = pyfluent.connect_to_fluent(ip="localhost", port=63084, password=<password written `server.txt`>)
+  >>> solver_session = pyfluent.connect_to_fluent(ip="localhost", port=63084, password="<password written in server.txt>")
 
 
 Connecting to a Fluent container running inside Linux from a Windows host

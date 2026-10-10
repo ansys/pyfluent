@@ -119,8 +119,9 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/datamodel
 	@sudo rm -rf doc/source/api/solver/tui
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
+	@python doc/api_rstgen.py
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
-	@xvfb-run make -C doc html
+	@xvfb-run make -C doc html; rc=$$?; cat doc/build_errors.txt; exit $$rc
 
 build-all-docs:
 	@python doc/api_rstgen.py
