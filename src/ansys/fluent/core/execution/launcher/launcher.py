@@ -37,7 +37,6 @@ from warnings import warn
 from typing_extensions import Required, Unpack, assert_never
 
 from ansys.fluent.core._types import LauncherArgsBase, PathType
-from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
 from ansys.fluent.core.execution.launcher.container_launcher import DockerLauncher
@@ -197,8 +196,6 @@ class LaunchFluentArgsNoContainer(LauncherArgsBase, TypedDict, total=False):
     """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
     Can optionally take the file name of the new python journal file.
     """
-    file_transfer_service: FileTransferStrategy | None
-    """Service for uploading and downloading files to/from the Fluent server."""
     use_docker_compose: bool
     """Whether to use Docker Compose to launch Fluent."""
     use_podman_compose: bool

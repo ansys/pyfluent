@@ -44,7 +44,6 @@ from typing import TYPE_CHECKING, Any, TypedDict
 from typing_extensions import Required, Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
-from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
@@ -95,8 +94,6 @@ class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
     insecure_mode: bool
     """If True, Fluent's gRPC server will be started in insecure mode without TLS. Provide this only when ``certificates_folder``(or ``ANSYS_GRPC_CERTIFICATES`` environment variable) is not set; the two are mutually exclusive. This mode is not recommended. For more details on the implications and usage of insecure mode, refer to the Fluent documentation.
     """
-    file_transfer_service: FileTransferStrategy | None
-    """Service for uploading and downloading files to/from the Fluent server."""
 
 
 class ContainerArgsWithoutMode(
