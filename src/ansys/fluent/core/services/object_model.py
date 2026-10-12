@@ -42,10 +42,10 @@ Class hierarchy
     Implementation for Fluent versions 27R1 and later.
 """
 
-from collections.abc import Callable, Iterator, Sequence
+from collections.abc import Callable, Iterable, Iterator, Sequence
 import functools
 import logging
-from typing import Any, Iterable, TypeVar
+from typing import Any, TypeVar
 
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.module_config import config
@@ -73,14 +73,14 @@ logger: logging.Logger = logging.getLogger("pyfluent.object_model")
 
 
 class _FilterDatamodelNames:
-    def __init__(self, service):
+    def __init__(self, service: Any) -> None:
         self._filter_fn = getattr(service, "is_in_datamodel", None)
 
-    def __call__(self, parent, names):
+    def __call__(self, parent: Any, names: list[str]) -> list[str]:
         if self._filter_fn is None:
             return names
 
-        def validate_name(name):
+        def validate_name(name: str) -> bool:
             obj = getattr(parent, name)
             # might need to make this more flexible (e.g., enhanced workflow types)
             is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
@@ -97,9 +97,9 @@ class ObjectModelBase:
 
     def __init__(
         self,
-        service,
-        scheme_interpreter_service,
-    ):
+        service: Any,
+        scheme_interpreter_service: Any,
+    ) -> None:
         self._service = service
         self._cache = DataModelCache() if config.datamodel_use_state_cache else None
         self.file_transfer_service = None
@@ -194,7 +194,7 @@ class ObjectModelBase:
         rules: str,
         path: str,
         dict_state: dict[str, ValueT],
-        recursive=False,
+        recursive: bool = False,
     ) -> None:
         """Update the dict."""
         state, deleted_paths = self._service.update_dict(
@@ -349,9 +349,9 @@ class ObjectModelV261(ObjectModelBase, AbstractObjectModel):
 
     def __init__(
         self,
-        service,
-        scheme_interpreter_service,
-    ):
+        service: Any,
+        scheme_interpreter_service: Any,
+    ) -> None:
         super().__init__(service, scheme_interpreter_service)
 
     def create_object(self, rules: str, path: str, name: str) -> None:
@@ -367,9 +367,9 @@ class ObjectModel(ObjectModelBase, AbstractObjectModel):
 
     def __init__(
         self,
-        service,
-        scheme_interpreter_service,
-    ):
+        service: Any,
+        scheme_interpreter_service: Any,
+    ) -> None:
         super().__init__(service, scheme_interpreter_service)
 
     def create_object(self, rules: str, path: str, name: str) -> None:
@@ -393,7 +393,7 @@ class PyCallableStateObject:
         Get the state of the current object.
     """
 
-    def __call__(self, *args, **kwds) -> ValueT:
+    def __call__(self, *args: ValueT, **kwds: ValueT) -> ValueT:
         return self.get_state()
 
 
@@ -421,7 +421,7 @@ class PyStateContainer(PyCallableStateObject):
         Set the state of the current object if state is provided else get its state.
     """
 
-    def __init__(self, service, rules: str, path: Path | None = None) -> None:
+    def __init__(self, service: Any, rules: str, path: Path | None = None) -> None:
         """__init__ method of PyStateContainer class."""
         super().__init__()
         self.__dict__.update(
@@ -541,7 +541,7 @@ class PyStateContainer(PyCallableStateObject):
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
-    def __call__(self, *args, **kwargs) -> ValueT | None:
+    def __call__(self, *args: ValueT, **kwargs: ValueT) -> ValueT | None:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -591,7 +591,7 @@ class PyStateContainer(PyCallableStateObject):
             self.rules, convert_path_to_se_path(self.path), command, attribute, cb
         )
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         all_children = list(self.__dict__) + dir(type(self))
 
         filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
@@ -614,7 +614,7 @@ class PyMenu(PyStateContainer):
     create_command_arguments(command)
     """
 
-    def __init__(self, service, rules: str, path: Path | None = None) -> None:
+    def __init__(self, service: Any, rules: str, path: Path | None = None) -> None:
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
@@ -994,7 +994,7 @@ class PyDictionary(PyParameter):
 
     updateDict = update_dict
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             dir_list = dir_list - {"updateDict", "update_dict"}
@@ -1020,7 +1020,7 @@ class PyNamedObjectContainer:
         Delete the child object by name.
     """
 
-    def __init__(self, service, rules: str, path: Path | None = None) -> None:
+    def __init__(self, service: Any, rules: str, path: Path | None = None) -> None:
         """__init__ method of PyNamedObjectContainer class."""
         self.service = service
         self.rules = rules
@@ -1202,7 +1202,7 @@ class PyAction:
 
     def __init__(
         self,
-        service,
+        service: Any,
         rules: str,
         name: str,
         path: Path | None = None,
@@ -1213,7 +1213,7 @@ class PyAction:
         setattr(self, self._operation, name)
         self.path = path or []
 
-    def __call__(self, *args, **kwds) -> ValueT:
+    def __call__(self, *args: ValueT, **kwds: ValueT) -> ValueT:
         """Execute the operation (command or query)."""
         execute_method = getattr(self.service, f"execute_{self._operation}")
         return execute_method(
@@ -1288,16 +1288,16 @@ class PyCommand(PyAction):
 
     def __init__(
         self,
-        service,
+        service: Any,
         rules: str,
         command: str,
         path: Path | None = None,
-    ):
+    ) -> None:
         """__init__ method of PyCommand class."""
         super().__init__(service, rules, command, path)
         self.file_behavior = None
 
-    def _update_file_behavior(self, file_purpose):
+    def _update_file_behavior(self, file_purpose: str | None) -> None:
         purpose_to_class = {
             "input": _InputFile,
             "output": _OutputFile,
@@ -1314,7 +1314,7 @@ class PyCommand(PyAction):
                     "File purpose", file_purpose, ["input", "output", "inout"]
                 )
 
-    def _get_file_purpose(self, arg):
+    def _get_file_purpose(self, arg: str) -> str | None:
         try:
             cmd_instance = self.create_instance()
             arg_instance = getattr(cmd_instance, arg)
@@ -1323,21 +1323,21 @@ class PyCommand(PyAction):
             self._update_file_behavior(file_purpose)
             return file_purpose if file_purpose else None
         except AttributeError:
-            pass
+            return None
 
-    def before_execute(self, value):
+    def before_execute(self, value: ValueT) -> ValueT:
         """Executes before command execution."""
         if hasattr(self.file_behavior, "_do_before_execute"):
             return self.file_behavior._do_before_execute(value)
         else:
             return value
 
-    def after_execute(self, value):
+    def after_execute(self, value: ValueT) -> None:
         """Executes after command execution."""
         if hasattr(self.file_behavior, "_do_after_execute"):
             self.file_behavior._do_after_execute(value)
 
-    def __call__(self, *args, **kwds) -> ValueT:
+    def __call__(self, *args: ValueT, **kwds: ValueT) -> ValueT:
         """Execute the command.
 
         Returns
@@ -1362,9 +1362,9 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     def __init__(
         self,
-        parent,
+        parent: Any,
         name: str,
-        service,
+        service: Any,
         rules: str,
         path: Path,
     ) -> None:
@@ -1422,7 +1422,7 @@ class PyArguments(PyStateContainer):
 
     def __init__(
         self,
-        service,
+        service: Any,
         rules: str,
         command: str,
         path: Path,
@@ -1482,9 +1482,9 @@ class PyArgumentsTextualSubItem(PyArgumentsSubItem, PyTextual):
 
     def __init__(
         self,
-        parent,
+        parent: Any,
         attr: str,
-        service,
+        service: Any,
         rules: str,
         path: Path,
     ) -> None:
@@ -1498,9 +1498,9 @@ class PyArgumentsNumericalSubItem(PyArgumentsSubItem, PyNumerical):
 
     def __init__(
         self,
-        parent,
+        parent: Any,
         attr: str,
-        service,
+        service: Any,
         rules: str,
         path: Path,
     ) -> None:
@@ -1514,9 +1514,9 @@ class PyArgumentsDictionarySubItem(PyArgumentsSubItem, PyDictionary):
 
     def __init__(
         self,
-        parent,
+        parent: Any,
         attr: str,
-        service,
+        service: Any,
         rules: str,
         path: Path,
     ) -> None:
@@ -1530,9 +1530,9 @@ class PyArgumentsParameterSubItem(PyArgumentsSubItem, PyParameter):
 
     def __init__(
         self,
-        parent,
+        parent: Any,
         attr: str,
-        service,
+        service: Any,
         rules: str,
         path: Path,
     ) -> None:
@@ -1553,9 +1553,9 @@ class PyArgumentsSingletonSubItem(PyArgumentsSubItem):
 
     def __init__(
         self,
-        parent,
+        parent: Any,
         attr: str,
-        service,
+        service: Any,
         rules: str,
         path: Path,
     ) -> None:
@@ -1583,7 +1583,7 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
         child_path = self.path + [(name, "")]
         return PySimpleMenuGeneric(self.service, self.rules, child_path)
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         if name in PySimpleMenuGeneric.attrs:
             return super().__getattr__(name)
         else:
