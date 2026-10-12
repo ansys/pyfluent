@@ -25,7 +25,7 @@
 
 The session classes are organized by responsibility:
 
-* :class:`BaseSession` and :class:`FileSession` are defined in
+* :class:`~ansys.fluent.core.execution.session.session.BaseSession` and :class:`FileSession` are defined in
     :mod:`ansys.fluent.core.execution.session.session` and
     :mod:`ansys.fluent.core.execution.session.file`, respectively.
 * Solver sessions are defined in modules under

@@ -204,8 +204,8 @@ class BaseSession:
 
         Parameters
         ----------
-        fluent_connection (:class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`):
-            Encapsulates a Fluent connection.
+        fluent_connection : FluentConnection
+            Encapsulates a :class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`.
         scheme_eval: SchemeInterpreter
             Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
         file_transfer_service : Optional
