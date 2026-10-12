@@ -624,7 +624,11 @@ class SlurmLauncher:
         if config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self._argvals["ui_mode"] = UIMode(ui_mode)
-        if self._argvals["start_timeout"] is None:
+        # Treat parent's default-resolved value as unset (issue #4628)
+        if (
+            self._argvals["start_timeout"] is None
+            or self._argvals["start_timeout"] == config.launch_fluent_timeout
+        ):
             self._argvals["start_timeout"] = -1
         if self._argvals["scheduler_options"]:
             if "scheduler" not in self._argvals["scheduler_options"]:

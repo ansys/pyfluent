@@ -68,6 +68,10 @@ from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
     get_fluent_exe_path,
 )
+from ansys.fluent.core.execution.launcher.slurm_launcher import (
+    SlurmFuture,
+    SlurmLauncher,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
@@ -1028,20 +1032,18 @@ def test_slurm_launcher_start_timeout_respects_explicit_value():
 
 
 def test_launch_fluent_does_not_force_config_timeout_for_slurm(monkeypatch):
-    # The Slurm launch path must receive start_timeout=None so SlurmLauncher applies
-    # its own no-timeout default instead of config.launch_fluent_timeout (issue #4628).
-    captured_kwargs = {}
+    # Slurm default should be -1 (no timeout) even when parent resolves unset
+    # start_timeout to config.launch_fluent_timeout (issue #4628).
+    captured_launcher = {}
 
-    def fake_slurm_launcher(**kwargs):
-        captured_kwargs.update(kwargs)
-        return lambda: None
+    def mock_call(self):
+        captured_launcher["instance"] = self
+        # Return a stub to avoid actual Slurm job submission
+        return SlurmFuture(None, None)
 
-    monkeypatch.setattr(
-        "ansys.fluent.core.execution.launcher.launcher.SlurmLauncher",
-        fake_slurm_launcher,
-    )
+    monkeypatch.setattr(SlurmLauncher, "__call__", mock_call)
     pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"}, insecure_mode=True)
-    assert captured_kwargs["start_timeout"] is None
+    assert captured_launcher["instance"]._argvals["start_timeout"] == -1
 
 
 def test_standalone_launcher_cleanup_on_exit_false_preserves_file():
