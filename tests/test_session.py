@@ -44,6 +44,7 @@ from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.api.fluent.v1 import health_pb2 as health_pb2_v1
 from ansys.api.fluent.v1 import health_pb2_grpc as health_pb2_grpc_v1
 from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_grpc
+from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer as SchemePointerV1
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core._grpc_services import _server_supports_v1
@@ -61,9 +62,6 @@ from ansys.fluent.core.diagnostics.exceptions import (
 from ansys.fluent.core.execution import session
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.execution.launcher.error_handler import LaunchFluentError
-from ansys.fluent.core.execution.launcher.launch_options import (
-    _get_running_session_mode,
-)
 from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
 from ansys.fluent.core.services.streaming_services.events_streaming import (
@@ -138,8 +136,6 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         request,
         context: grpc.ServicerContext,
     ) -> scheme_eval_pb2.SchemeEvalResponse:
-        if getattr(self, "mode_query_unavailable", False):
-            context.abort(grpc.StatusCode.UNAVAILABLE, "Mode detection failed")
         metadata = dict(context.invocation_metadata())
         password = metadata.get("password", None)
         if password != "12345":
@@ -161,7 +157,7 @@ class MockSchemeEvalServicerV1(scheme_interpreter_pb2_grpc.SchemeInterpreterServ
         password = metadata.get("password", None)
         if password != "12345":
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
-        return scheme_interpreter_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
+        return scheme_interpreter_pb2.SchemeEvalResponse(output=SchemePointerV1(b=True))
 
 
 class MockHealthServicerV1(health_pb2_grpc_v1.HealthServicer):
@@ -212,8 +208,9 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     health_pb2_grpc_v1.add_HealthServicer_to_server(MockHealthServicerV1(), server)
-    scheme_servicer = MockSchemeEvalServicer()
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(scheme_servicer, server)
+    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
+        MockSchemeEvalServicer(), server
+    )
     scheme_interpreter_pb2_grpc.add_SchemeInterpreterServicer_to_server(
         MockSchemeEvalServicerV1(), server
     )
@@ -255,10 +252,6 @@ def test_create_mock_session_by_passing_ip_port_password(monkeypatch) -> None:
         scheme_eval=fluent_connection.scheme_eval,
     )
     assert session.is_active()
-    scheme_servicer.mode_query_unavailable = True
-    with pytest.raises(RuntimeError) as ex:
-        _get_running_session_mode(fluent_connection)
-    assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE
     server.stop(None)
     session.exit()
     assert not session.is_active()

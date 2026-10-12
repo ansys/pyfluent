@@ -759,6 +759,8 @@ solver_session.exit()
 # References
 # ----------
 # .. _References_1:
-# .. [1] `ANSYS Fluent User's Guide, ANSYS, Inc. <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent&prodver=25.2&lang=en>`_.
+#
+# 1. `ANSYS Fluent User's Guide, ANSYS, Inc. <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent&prodver=25.2&lang=en>`_.
 # .. _References_2:
-# .. [2] `Modeling Flow Through Porous Media <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_tut_catalytic_converter.html>`_.
+#
+# 2. `Modeling Flow Through Porous Media <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_tut_catalytic_converter.html>`_.
