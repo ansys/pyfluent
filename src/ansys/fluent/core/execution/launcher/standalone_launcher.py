@@ -112,6 +112,7 @@ class StandaloneArgsWithoutDryRunMode(
     a filename for the new Python journal.
     """
 
+
 class StandaloneArgsWithoutDryRun(
     StandaloneArgsWithoutDryRunMode
 ):  # pylint: disable=missing-class-docstring
