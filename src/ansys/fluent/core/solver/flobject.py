@@ -1555,7 +1555,9 @@ class WildcardPath(Group):
     # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
     # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
 
-    def to_scheme_keys(self, value: StateType, root_cls: type, path: list[str]) -> StateType:
+    def to_scheme_keys(
+        self, value: StateType, root_cls: type, path: list[str]
+    ) -> StateType:
         """Convert value to have keys with scheme names."""
         return self._settings_cls.to_scheme_keys(value, root_cls, path)
 
