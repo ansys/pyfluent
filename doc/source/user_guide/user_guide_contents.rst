@@ -74,7 +74,7 @@ Leverage intuitive, :ref:`guided workflows <ref_meshing_guide>` to create high-q
 
 Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
+Utilize :ref:`settings objects <ref_root>` to configure and control your simulation. Get familiar
 with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction

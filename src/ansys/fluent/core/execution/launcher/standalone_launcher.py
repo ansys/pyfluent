@@ -65,6 +65,7 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _get_subprocess_kwargs_for_fluent,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
+    _warn_if_cwd_may_trigger_cmd_unc_fallback,
     is_windows,
 )
 from ansys.fluent.core.execution.launcher.process_launch_string import (
@@ -338,6 +339,8 @@ class StandaloneLauncher:
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
+        # Point at the caller's launch_fluent() line (warn -> helper -> __call__ -> launch_fluent -> caller).
+        _warn_if_cwd_may_trigger_cmd_unc_fallback(self.argvals.get("cwd"), stacklevel=4)
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
