@@ -229,7 +229,8 @@ class BatchFieldData:
             an empty array is returned and a warning is issued. Users should always check
             the array size before using the data.
 
-            Example:
+            Example::
+
                 data = get_field_data(field_data_request)[surface_id]
                 if data.size == 0:
                     # Handle missing data

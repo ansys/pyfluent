@@ -142,7 +142,7 @@ Use this method when:
 .. vale Google.Spacing = YES
 
 Using :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 
 You can use the :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
 function to start Fluent from Python. This code starts Fluent in the background and starts
@@ -524,7 +524,7 @@ Connect to a Fluent container running inside WSL from a Windows host
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver_session = pyfluent.connect_to_fluent(ip="localhost", port=63084, password=<password written `server.txt`>)
+  >>> solver_session = pyfluent.connect_to_fluent(ip="localhost", port=63084, password="<password written in server.txt>")
 
 
 Connecting to a Fluent container running inside Linux from a Windows host

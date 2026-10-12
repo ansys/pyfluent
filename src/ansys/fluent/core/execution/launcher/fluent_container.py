@@ -409,7 +409,7 @@ def configure_container_dict(
         Path to the folder containing TLS certificates for Fluent's gRPC server.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
-        to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
+        to be passed directly to the Docker run execution. See examples below and `Docker run <https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run>`__ documentation.
 
     Returns
     -------
@@ -435,7 +435,7 @@ def configure_container_dict(
     :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent()`.
 
     For a list of additional Docker container run configuration options that can also be specified using
-    ``container_dict``, see `Docker run`_ documentation.
+    ``container_dict``, see `Docker run <https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run>`__ documentation.
 
     See also :func:`start_fluent_container`.
     """
