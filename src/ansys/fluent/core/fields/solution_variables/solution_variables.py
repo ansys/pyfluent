@@ -28,8 +28,8 @@ service.
 
 The public API is centered around:
 
-* ``SolutionVariableInfo`` for zone and SVAR metadata access.
-* ``SolutionVariableData`` for reading and writing SVAR data arrays.
+* :class:`~ansys.fluent.core.fields.solution_variables.solution_variables.SolutionVariableInfo` for zone and SVAR metadata access.
+* :class:`~ansys.fluent.core.fields.solution_variables.solution_variables.SolutionVariableData` for reading and writing SVAR data arrays.
 """
 
 __all__ = [
