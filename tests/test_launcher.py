@@ -724,7 +724,7 @@ def test_processor_count_applied_with_time_scheduler_option():
         processor_count=4,
         gpu=True,
     )
-    assert "-t4" in launch_args
+    assert "-t4" in launch_args.split()
 
 
 def test_processor_count_not_applied_when_user_sets_t_flag():
@@ -732,8 +732,8 @@ def test_processor_count_not_applied_when_user_sets_t_flag():
         additional_arguments="-t2",
         processor_count=4,
     )
-    assert "-t4" not in launch_args
-    assert "-t2" in launch_args
+    assert "-t4" not in launch_args.split()
+    assert "-t2" in launch_args.split()
 
 
 def test_processor_count():
@@ -798,7 +798,7 @@ def test_standalone_launcher_dry_run_default_ui_mode(monkeypatch):
         dry_run=True,
     )
     expected_ui_arg = "-hidden" if is_windows() else "-gu"
-    assert expected_ui_arg in fluent_launch_string
+    assert expected_ui_arg in fluent_launch_string.split()
 
 
 def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
@@ -1095,7 +1095,7 @@ def test_warning_for_deprecated_compose_env_vars(monkeypatch):
 @pytest.mark.fluent_version(">=25.1")
 def test_default_launch_mode_is_py():
     fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
-    assert "-py" in fluent_launch_string
+    assert "-py" in fluent_launch_string.split()
 
 
 @pytest.mark.standalone
@@ -1119,26 +1119,37 @@ def test_create_launcher():
 def test_idle_timeout(monkeypatch):
     monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     fluent_path = r"\x\y\z\fluent.exe"
-    fluent_launch_string, _ = pyfluent.launch_fluent(
+
+    def expected_launch_string(server_info_file_name, idle_timeout_minutes):
+        launch_string = (
+            f"{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm"
+        )
+        if idle_timeout_minutes is not None:
+            launch_string += (
+                f' -command="(set-session-idle-timeout {idle_timeout_minutes})"'
+            )
+        return launch_string
+
+    fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeout 3" in fluent_launch_string
-    fluent_launch_string, _ = pyfluent.launch_fluent(
+    assert fluent_launch_string == expected_launch_string(server_info_file_name, 3)
+    fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         start_timeout=200, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeout 5" in fluent_launch_string
-    fluent_launch_string, _ = pyfluent.launch_fluent(
+    assert fluent_launch_string == expected_launch_string(server_info_file_name, 5)
+    fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         start_timeout=60, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeout 2" in fluent_launch_string
-    fluent_launch_string, _ = pyfluent.launch_fluent(
+    assert fluent_launch_string == expected_launch_string(server_info_file_name, 2)
+    fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         start_timeout=0, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeout 1" in fluent_launch_string
-    fluent_launch_string, _ = pyfluent.launch_fluent(
+    assert fluent_launch_string == expected_launch_string(server_info_file_name, 1)
+    fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         start_timeout=-5, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeout" not in fluent_launch_string
+    assert fluent_launch_string == expected_launch_string(server_info_file_name, None)
 
     from ansys.fluent.core.execution.launcher.standalone_launcher import (
         StandaloneLauncher,
