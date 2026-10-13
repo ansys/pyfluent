@@ -141,7 +141,6 @@ jobs:
 
   test-import:
     name: Build and Smoke tests
-    if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
     needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -167,7 +166,6 @@ jobs:
           path: src/ansys/fluent/core/generated
 
       - name: Build wheelhouse and perform smoke test
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         uses: ansys/actions/build-wheelhouse@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
         with:
           library-name: ${{ env.PACKAGE_NAME }}
