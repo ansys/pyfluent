@@ -53,6 +53,9 @@ PyFluent is compatible with the full set of Fluent versions officially supported
    Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
    These versions are no longer supported in the current PyFluent releases.
 
+.. important::
+   PyFluent is not supported when using a Fluent Pro license.
+
 
 Getting started
 ---------------
