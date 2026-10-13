@@ -319,7 +319,7 @@ class StandaloneLauncher:
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
         # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
         _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
-        return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+        return f' -command="(set-session-idle-timeout {_idle_timeout_minutes})"'
 
     @staticmethod
     def _disable_idle_timeout_guard(session):
