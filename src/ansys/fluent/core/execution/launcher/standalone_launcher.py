@@ -153,11 +153,11 @@ class StandaloneLauncher:
         mode : FluentMode
             Specifies the launch mode of Fluent to target a specific session type.
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
             or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+            Specifies the graphics driver for Fluent. Options are from the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum
+            (for Windows) or the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum (for Linux).
         product_version : FluentVersion or str or float or int, optional
             Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
             ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
