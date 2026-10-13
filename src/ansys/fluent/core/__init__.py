@@ -80,7 +80,7 @@ if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
 
-from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
+from ansys.fluent.core import offline as _file_reader  # noqa: E402
 from ansys.fluent.core.connectivity import (  # noqa: E402
     fluent_connection as _fluent_connection,
 )
