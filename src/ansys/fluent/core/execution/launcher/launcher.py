@@ -513,7 +513,7 @@ def launch_fluent(
                 topy=topy,
                 start_watchdog=start_watchdog,
                 scheduler_options=(
-                    cast(SlurmSchedulerOptions, dict(scheduler_options))
+                    dict(scheduler_options) if scheduler_options is not None else None
                     if scheduler_options is not None
                     else None
                 ),
