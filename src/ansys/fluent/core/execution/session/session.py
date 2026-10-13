@@ -482,11 +482,7 @@ class BaseSession:
             Whether file exists.
         """
         if self._file_transfer_service:
-            check_exists = getattr(
-                self._file_transfer_service, "file_exists_on_remote", None
-            )
-            if check_exists is not None:
-                return check_exists(file_name)
+            return self._file_transfer_service.file_exists_on_remote(file_name)
 
     def _file_transfer_api_warning(self, method_name: str) -> str:
         """User warning for upload/download methods."""
