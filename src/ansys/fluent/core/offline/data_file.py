@@ -50,8 +50,8 @@ from ansys.fluent.core._variable_strategies import (
     FluentSVarNamingStrategy as scalar_naming,
 )
 
-from . import lispy
-from .pre_processor import remove_unsupported_xml_chars
+from . import _lispy
+from ._pre_processor import remove_unsupported_xml_chars
 
 _to_scalar_field_name = scalar_naming().to_string
 _to_vector_field_name = vector_naming().to_string
@@ -143,7 +143,7 @@ class DataFile:
     def variables(self) -> dict:
         """Returns all associated data variables in form of a dictionary."""
         data_vars_str = self._settings["Data Variables"][0].decode()
-        return {v[0]: v[1] for v in lispy.parse(data_vars_str)[1]}
+        return {v[0]: v[1] for v in _lispy.parse(data_vars_str)[1]}
 
     def get_phases(self) -> list:
         """Returns list of phases available."""

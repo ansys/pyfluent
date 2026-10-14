@@ -21,12 +21,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Standalone file reader for PyFluent."""
+"""Offline tools for PyFluent.
 
-from ansys.fluent.core.file_reader.case_file import CaseFile
-from ansys.fluent.core.file_reader.data_file import DataFile
+This module provides standalone utilities that work without a running Fluent
+session, including an in-house case file reader (:class:`CaseFile`) and data
+file reader (:class:`DataFile`), as well as a local parametric study
+(:class:`LocalParametricStudy`).
+"""
+
+from ansys.fluent.core.offline.case_file import CaseFile
+from ansys.fluent.core.offline.data_file import DataFile
+from ansys.fluent.core.offline.parametric_study import LocalParametricStudy
 
 __all__ = [
     "CaseFile",
     "DataFile",
+    "LocalParametricStudy",
 ]
