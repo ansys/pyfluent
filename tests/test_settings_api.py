@@ -392,7 +392,6 @@ def test_deprecated_settings_with_settings_api_aliases(
     if solver.get_fluent_version() < FluentVersion.v271:
         max_val = 0
     else:
-        max_val = 1
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
         "maximum": max_val,
