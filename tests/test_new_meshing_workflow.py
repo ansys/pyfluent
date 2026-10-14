@@ -1610,3 +1610,21 @@ def test_inactive_and_developer_level_access(new_meshing_session):
 
     # Checks items with developer level access are not exposed.
     assert import_geom.cad_import_options() == {}
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_setting_state_in_arguments(new_meshing_session):
+    meshing = new_meshing_session
+    assert meshing.is_active()
+
+    watertight = meshing.watertight()
+
+    assert watertight.import_geometry.arguments() is not None
+
+    assert watertight.import_geometry.file_format() == "CAD"
+    watertight.import_geometry.arguments.set_state({"file_format": "Mesh"})
+    assert watertight.import_geometry.file_format() == "Mesh"
+
+    assert watertight.import_geometry.length_unit() == "mm"
+    watertight.import_geometry.arguments = {"length_unit": "cm"}
+    assert watertight.import_geometry.length_unit() == "cm"

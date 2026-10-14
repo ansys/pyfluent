@@ -52,7 +52,11 @@ import inspect
 import re
 from typing import ValuesView
 
-from ansys.fluent.core.services.object_model import PyMenu
+from ansys.fluent.core.services.object_model import (
+    PyMenu,
+    PyNamedObjectContainer,
+    PyStateContainer,
+)
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -859,7 +863,9 @@ class TaskObject:
     def __setattr__(self, key, value):
         """Enable attribute assignment to task arguments."""
         args = self._task_object.arguments
-        if hasattr(args, key):
+        if key == "arguments":
+            args.set_state(value)
+        elif hasattr(args, key):
             setattr(args, key, value)
         else:
             super().__setattr__(key, value)
@@ -1242,11 +1248,18 @@ def build_specific_interface(task_object):
 
         return delegate
 
-    # Determine the API surface of the underlying task:
+    # Determine the API surface of the underlying task. State containers (e.g.
+    # ``arguments`` and parameter nodes) are callable but must be reached as data
+    # objects via ``TaskObject.__getattr__``, so they are excluded here to avoid
+    # shadowing them with plain delegate functions.
     public_members = {
         name
         for name in dir(task_object)
-        if not name.startswith("_") and callable(getattr(task_object, name))
+        if not name.startswith("_")
+        and callable(getattr(task_object, name))
+        and not isinstance(
+            getattr(task_object, name), (PyStateContainer, PyNamedObjectContainer)
+        )
     }
 
     # Build the namespace (class dictionary) for a new dynamic interface class where
