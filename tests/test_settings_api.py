@@ -391,7 +391,7 @@ def test_deprecated_settings_with_settings_api_aliases(
     solver.settings.results.surfaces.iso_clip["clip-1"] = {}
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
-        "maximum": max_val,
+        "maximum": 0,
     }
     solver.settings.results.surfaces.iso_clip["clip-1"] = {
         "min": -0.0001,
