@@ -31,7 +31,7 @@ This package exposes two meshing session types:
     meshing capabilities without solver switching, for workflows where meshing
     and solving run separately.
 
-Both classes inherit the common meshing API from the internal ``BaseMeshing``
+Both classes inherit the common meshing API from the internal :class:`~ansys.fluent.core.meshing.session.base_meshing.BaseMeshing`
 class, which extends :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
 """
 

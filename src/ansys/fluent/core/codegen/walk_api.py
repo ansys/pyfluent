@@ -29,7 +29,7 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core.codegen import walk_api
-    >>> from ansys.fluent.core.generated.v252.solver import settings
+    >>> from ansys.fluent.core.generated.v261.solver import settings
     >>> walk_api.walk_api(settings.root, lambda p: print(p), current_path=[])
     >>> walk_api.walk_api(settings.root, lambda p, api_item_type: print(p, api_item_type), current_path=[])
 

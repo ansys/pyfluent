@@ -43,6 +43,17 @@ ADDITIONAL_DOCUMENTATION = {
     ),
 }
 
+# Modules documented on standalone pages that are reachable through
+# cross-references from docstrings but kept out of the API reference toctree.
+HIDDEN_MODULES = {
+    "ansys.fluent.core.workflow": "Workflow",
+    "ansys.fluent.core.services.events": "Events",
+    "ansys.fluent.core.services.monitors": "Monitor",
+    "ansys.fluent.core.services.health_check": "Health check",
+    "ansys.fluent.core.services.application_runtime": "Application runtime",
+    "ansys.fluent.core.services.scheme_interpreter": "Scheme interpreter",
+}
+
 
 def _write_common_options(rst_file):
     rst_file.write(
@@ -101,6 +112,22 @@ def _write_module_page(source_path):
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf8") as rst_file:
         _write_api_page(rst_file, source_path.stem, "automodule", module_name)
+
+
+def _write_hidden_pages():
+    """Write orphan API pages reachable via cross-reference but not via the toctree.
+
+    Each page carries the standard ``ref_<dotted_module>`` label so docstrings can
+    link to it with ``:ref:``, while the ``:orphan:`` marker keeps it out of the
+    API reference toctree.
+    """
+    output_directory = API_DIR / "hidden"
+    output_directory.mkdir(parents=True, exist_ok=True)
+    for module_name, title in HIDDEN_MODULES.items():
+        output_path = output_directory / f"{module_name.replace('.', '_')}.rst"
+        with output_path.open("w", encoding="utf8") as rst_file:
+            rst_file.write(":orphan:\n\n")
+            _write_api_page(rst_file, title, "automodule", module_name)
 
 
 def _write_package_index(source_path):
@@ -181,6 +208,7 @@ def generate():
     API_DIR.mkdir(parents=True)
     _write_api_index()
     _generate_package_tree(SOURCE_PACKAGE)
+    _write_hidden_pages()
 
 
 if __name__ == "__main__":
