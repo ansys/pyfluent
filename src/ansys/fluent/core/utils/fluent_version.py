@@ -132,14 +132,14 @@ class FluentVersion(Enum):
             if version_as_int is None:
                 warnings.warn(
                     f"Fluent version '{requested_version}' is unrecognized; using the "
-                    f"highest supported version '{latest.value}' instead.",
+                    f"latest supported version '{latest.value}' instead.",
                     PyFluentUserWarning,
                     stacklevel=2,
                 )
                 return latest
             if version_as_int > latest.number:
                 warnings.warn(
-                    f"Fluent version '{requested_version}' is newer than the highest "
+                    f"Fluent version '{requested_version}' is newer than the latest "
                     f"supported version '{latest.value}'; using '{latest.value}' instead.",
                     PyFluentUserWarning,
                     stacklevel=2,
@@ -234,7 +234,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(config.fluent_release_version)
+        return cls.v271
 
     @classmethod
     def current_dev(cls):
@@ -245,7 +245,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(config.fluent_dev_version)
+        return cls.v272
 
     @classmethod
     def minimum_supported(cls):

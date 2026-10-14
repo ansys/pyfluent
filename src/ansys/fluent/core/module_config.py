@@ -262,9 +262,7 @@ class Config:
 
     #: The tag of the Fluent image to use when launching in a container, defaults to the value of ``FLUENT_IMAGE_TAG`` environment variable or the latest release version of Fluent.
     fluent_image_tag = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get(
-            "FLUENT_IMAGE_TAG", f"v{instance.fluent_release_version}"
-        )
+        lambda instance: instance._env.get("FLUENT_IMAGE_TAG", "v27.1.0")
     )
 
     #: The name of the Fluent image to use when launching in a container, defaults to the value of ``FLUENT_IMAGE_NAME`` environment variable.
@@ -367,16 +365,6 @@ class Config:
         # Read the environment variable once when pyfluent is imported
         # and reuse it throughout process lifetime.
         self._env = os.environ.copy()
-
-    @property
-    def fluent_release_version(self) -> str:
-        """The latest released version of Fluent."""
-        return "26.1.0"
-
-    @property
-    def fluent_dev_version(self) -> str:
-        """The latest development version of Fluent."""
-        return "27.1.0"
 
     def print(self):
         """Print all configuration variables."""

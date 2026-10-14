@@ -141,8 +141,6 @@ _pydoc.text.docother = _fldoc.docother.__get__(_pydoc.text, _pydoc.TextDoc)
 
 
 _config_by_deprecated_name = {
-    "FLUENT_RELEASE_VERSION": "fluent_release_version",
-    "FLUENT_DEV_VERSION": "fluent_dev_version",
     "EXAMPLES_PATH": "examples_path",
     "CONTAINER_MOUNT_SOURCE": "container_mount_source",
     "CONTAINER_MOUNT_TARGET": "container_mount_target",
