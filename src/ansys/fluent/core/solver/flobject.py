@@ -3111,9 +3111,6 @@ def get_root(
                 version_dir / "solver" / "settings.py",
             )
             root_cls = settings.root
-            from ..diagnostics.exceptions import warning_for_fluent_dev_version
-
-            warning_for_fluent_dev_version(version)
         except FileNotFoundError:
             obj_info = flproxy.get_static_info()
             root_cls, _ = get_cls("", obj_info, version=version)

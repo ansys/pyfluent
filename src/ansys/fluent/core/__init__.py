@@ -52,8 +52,8 @@ from ansys.fluent.core.execution.launcher.launcher import *
 from ansys.fluent.core.execution.session import *
 from ansys.fluent.core.execution.session.session import BaseSession
 from ansys.fluent.core.fields.field_data import *
-from ansys.fluent.core.local_parametric_study import *
 from ansys.fluent.core.meshing import *
+from ansys.fluent.core.offline.parametric_study import *
 from ansys.fluent.core.services.batch_ops import *
 from ansys.fluent.core.services.streaming_services.events_streaming import *
 from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
@@ -80,10 +80,7 @@ if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
 
-from ansys.fluent.core import (  # noqa: E402
-    local_parametric_study as _local_parametric_study,
-)
-from ansys.fluent.core import file_reader as _file_reader  # noqa: E402
+from ansys.fluent.core import offline as _file_reader  # noqa: E402
 from ansys.fluent.core.connectivity import (  # noqa: E402
     fluent_connection as _fluent_connection,
 )
@@ -92,6 +89,9 @@ from ansys.fluent.core.diagnostics import journaling as _journaling  # noqa: E40
 from ansys.fluent.core.diagnostics import logger as _logger  # noqa: E402
 from ansys.fluent.core.diagnostics.search import search as _search  # noqa: E402
 from ansys.fluent.core.execution.session import file as _session_file  # noqa: E402
+from ansys.fluent.core.offline import (  # noqa: E402
+    parametric_study as _local_parametric_study,
+)
 
 _sys.modules["ansys.fluent.core.file_session"] = _session_file
 _sys.modules["ansys.fluent.core.fluent_connection"] = _fluent_connection

@@ -260,7 +260,7 @@ class BaseSession:
         self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
-        self.rp_vars = RPVars(self.scheme.string_eval)
+        self._rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
         self.transcript = fluent_connection._service_factory.transcript_streaming
@@ -350,6 +350,14 @@ class BaseSession:
         See the :ref:`application runtime API <ref_ansys_fluent_core_services_application_runtime>` for details.
         """
         return self._application_runtime
+
+    @property
+    def rp_vars(self):
+        """Provides access and modification of rpvars.
+
+        See the :ref:`rpvars API <ref_ansys_fluent_core_rpvars>` for details.
+        """
+        return self._rp_vars
 
     @property
     def id(self) -> str:
