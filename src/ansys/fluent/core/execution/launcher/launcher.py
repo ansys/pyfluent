@@ -641,9 +641,9 @@ def launch_fluent(
                 topy=topy,
                 start_watchdog=start_watchdog,
                 scheduler_options=(
-                    dict(scheduler_options) if scheduler_options is not None else None
+                    dict(scheduler_options)
                     if scheduler_options is not None
-                    else None
+                    else None if scheduler_options is not None else None
                 ),
                 file_transfer_service=file_transfer_service,
                 certificates_folder=certificates_folder,
