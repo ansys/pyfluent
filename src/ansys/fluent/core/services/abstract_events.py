@@ -25,7 +25,7 @@
 
 from abc import ABC, abstractmethod
 
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
 
 
 class AbstractEvents(ABC):

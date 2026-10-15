@@ -24,14 +24,14 @@ Example usage:
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.launch_fluent(mode="meshing")
+  >>> meshing_session = pyfluent.Meshing.from_install()
 
   >>> # Feature is available before enabling beta features, but unusable and raises 'BetaFeaturesNotEnabled'
   >>> assert hasattr(meshing_session, "topology_based")
   >>> assert "topology_based" in dir(meshing_session)
 
   >>> topo_meshing = meshing_session.topology_based()
-  ansys.fluent.core.exceptions.BetaFeaturesNotEnabled: The feature 'topology_based' requires 'enable_beta_features' flag to be enabled.
+  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: The feature 'topology_based' requires 'enable_beta_features' flag to be enabled.
 
   >>> # Enable beta features
   >>> meshing_session.enable_beta_features()
@@ -53,13 +53,13 @@ Example usage:
 
 .. code-block:: python
 
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
 
   >>> # Method available before enabling beta features, but unusable and raises 'BetaFeaturesNotEnabled'
   >>> assert hasattr(solver_session, "switch_to_meshing")
 
   >>> switched_meshing_session = solver_session.switch_to_meshing()
-  ansys.fluent.core.exceptions.BetaFeaturesNotEnabled: The feature 'switch_to_meshing' requires 'enable_beta_features' flag to be enabled.
+  ansys.fluent.core.diagnostics.exceptions.BetaFeaturesNotEnabled: The feature 'switch_to_meshing' requires 'enable_beta_features' flag to be enabled.
 
   >>> # Enable beta features
   >>> solver_session.enable_beta_features()

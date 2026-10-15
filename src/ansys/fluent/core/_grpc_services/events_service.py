@@ -28,7 +28,7 @@ from google.protobuf.json_format import MessageToDict
 from ansys.api.fluent.v1 import events_pb2, events_pb2_grpc
 from ansys.fluent.core._grpc_services._streaming import StreamingService
 from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
 
 
 class EventsService(StreamingService, ServiceProtocol):
@@ -91,8 +91,13 @@ class EventsService(StreamingService, ServiceProtocol):
         # to avoid changing backward-compatible v0 behavior.
         if not event_info_dict:
             return event_info_cls()
-        # Key names can be different, but their order is the same
-        return event_info_cls(*event_info_dict.values())
+        # MessageToDict emits explicitly-set fields before defaulted (no-presence)
+        # ones, so dict insertion order is not the proto field order. Reorder by
+        # the proto field definition, which matches the dataclass field order.
+        ordered_values = [
+            event_info_dict[f.json_name] for f in event_info_msg.DESCRIPTOR.fields
+        ]
+        return event_info_cls(*ordered_values)
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes events streaming."""

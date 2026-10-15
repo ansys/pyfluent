@@ -29,14 +29,14 @@ import time
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import (
+from ansys.fluent.core.connectivity.fluent_connection import (
     WaitTypeError,
     _pid_exists,
     get_container,
 )
-from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
+from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 from docker.models.containers import Container
 

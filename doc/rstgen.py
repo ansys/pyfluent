@@ -1,6 +1,5 @@
 """Provides a module for generating Fluent Datamodel and TUI RST files."""
 
-import fnmatch
 import os
 import pathlib
 from pathlib import Path
@@ -22,12 +21,11 @@ def _get_attribute_classes(menu: type):
     attribute_classes: list
         Attributes of ``menu``.
     """
-    attribute_classes = []
-    attributes_dict = dict(vars(menu))
-    for attr_name, attr_value in attributes_dict.items():
-        if not attr_name.startswith("__"):
-            attribute_classes.append(attributes_dict[attr_name])
-    return attribute_classes
+    return [
+        attr_value
+        for attr_name, attr_value in dict(vars(menu)).items()
+        if not attr_name.startswith("__")
+    ]
 
 
 def _get_attribute_classes_with_and_without_members(menu: type):
@@ -113,6 +111,7 @@ def _process_datamodel_path(full_name: str):
     """
     path_string = re.findall("core.*", full_name)
     path = path_string[0].replace("core.generated.", "")
+    path = re.sub(r"^v\d+\.(?:meshing|object_model)\.", "", path)
     path = re.sub(r"\d+(?![A-Za-z])", "", path)
     path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")
@@ -204,35 +203,11 @@ def _get_path(mode: str, is_datamodel: bool | None = None):
     -------
         Datamodel or TUI path.
     """
-    if is_datamodel:
-        return os.path.normpath(
-            os.path.join(
-                _THIS_DIRNAME,
-                "..",
-                "src",
-                "ansys",
-                "fluent",
-                "core",
-                "generated",
-            )
-        )
-    else:
-        return os.path.normpath(
-            os.path.join(
-                _THIS_DIRNAME,
-                "..",
-                "src",
-                "ansys",
-                "fluent",
-                "core",
-                "generated",
-                f"{mode}",
-            )
-        )
+    return pathlib.Path(_THIS_DIRNAME).parent / "src/ansys/fluent/core/generated"
 
 
 def _get_file_or_folder(mode: str, is_datamodel: bool):
-    """Get datamodel_* folder or tui_*.py file name.
+    """Get the latest generated version containing modules for the mode.
 
     Parameters
     ----------
@@ -245,11 +220,15 @@ def _get_file_or_folder(mode: str, is_datamodel: bool):
     -------
         Datamodel or TUI file name.
     """
-    for file in os.listdir(_get_path(mode, is_datamodel)):
-        if is_datamodel and fnmatch.fnmatch(file, "datamodel_*"):
-            return pathlib.Path(file).stem
-        if not is_datamodel and fnmatch.fnmatch(file, "tui_*.py"):
-            return pathlib.Path(file).stem
+    generated_dir = _get_path(mode, is_datamodel)
+    from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+    for version in FluentVersion:
+        version_dir = generated_dir / f"v{version.number}"
+        if is_datamodel and (version_dir / "object_model").is_dir():
+            return version_dir.name
+        if not is_datamodel and (version_dir / mode / "tui.py").is_file():
+            return version_dir.name
 
 
 def _get_sorted_members(members: list):
@@ -282,9 +261,6 @@ def _write_datamodel_index_doc(datamodels: list, mode: str):
         f.write(f".. _ref_{mode}_datamodel:\n\n")
         f.write(f"{datamodel_mode}\n")
         f.write(f"{'=' * len(datamodel_mode)}\n\n")
-        f.write(".. automodule:: ansys.fluent.core.datamodel\n")
-        f.write("   :autosummary:\n\n")
-        f.write("   :autosummary-members:\n\n")
         f.write(".. toctree::\n")
         f.write("   :hidden:\n\n")
         for datamodel in datamodels:
@@ -376,6 +352,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             f.write(".. toctree::\n")
             f.write("   :hidden:\n\n")
             for member in _get_sorted_members(menu["with_members"]):
+                if member.startswith("_"):
+                    continue
                 f.write(f"   {member}/{member}_contents\n")
 
 

@@ -91,3 +91,9 @@ config
 user_guide_variables
 Synopsys
 synopsys
+subpackage
+beartype
+beartype's
+namespace
+descriptor's
+proxying

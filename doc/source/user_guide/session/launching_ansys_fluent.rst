@@ -20,7 +20,7 @@ Launch from local installation
 
 .. vale Google.Spacing = NO
 
-The :meth:`from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>` method launches Fluent using a locally installed version of Ansys Fluent.
+The :meth:`from_install() <ansys.fluent.core.execution.session.session.BaseSession.from_install>` method launches Fluent using a locally installed version of Ansys Fluent.
 
 Use this method when:
 
@@ -45,7 +45,7 @@ Use this method when:
 Launch in a container
 ---------------------
 
-The :meth:`from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>` method launches Fluent inside a Docker container.
+The :meth:`from_container() <ansys.fluent.core.execution.session.session.BaseSession.from_container>` method launches Fluent inside a Docker container.
 Pass ``use_docker_compose=True`` or ``use_podman_compose=True`` to use Docker Compose or Podman Compose, respectively.
 
 Use this method when:
@@ -78,22 +78,21 @@ Use this method when:
 Connect to an existing session
 ------------------------------
 
-The :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
-
-Use this method when:
-
-- Fluent was launched externally or earlier.
-- You need to connect from a different process or system.
+The :meth:`from_connection() <ansys.fluent.core.execution.session.session.BaseSession.from_connection>` method connects to an externally launched Fluent session from a local or remote Python process.
 
 **Prerequisites**
 
-Before connecting, you must launch Fluent externally with the gRPC server enabled.
+Before connecting, start Fluent with ``<fluent_executable> -sifile=<server_info_file_name>``
+to enable the Fluent gRPC server and specify the server info file path.
 
 .. note::
 
-    After starting the gRPC server, Fluent writes connection information to the server info file. The file contains the IP address, port, and password needed for connection.
-    
-    The recommended approach is to connect using the server info file path, which encapsulates all connection information.
+  Fluent writes the IP address, port, and password to the server info file. If you do not
+  specify the file path with ``-sifile``, Fluent generates the file in the directory where
+  ``fluent.exe`` resides.
+
+  The recommended approach is to connect using the server info file path, which encapsulates
+  all connection information.
 
 **Example:**
 
@@ -107,24 +106,13 @@ Before connecting, you must launch Fluent externally with the gRPC server enable
 
 .. note::
 
-    PyFluent offers two Python interfaces for meshing:
-
-    - ``Meshing``: meshing interface with an additional method to switch to solver mode.
-    - ``PureMeshing``: meshing interface without any solver switching features.
-
-    The two interfaces expose the **same meshing functionality**. The only difference is that
-    ``Meshing`` includes ``switch_to_solver()``.
-
-    When connecting to an existing Fluent session
-    via :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`:
+    For more information on meshing session types, see :ref:`ref_session_guide`.
+    When connecting to an existing Fluent session:
 
     - Use ``PureMeshing.from_connection()`` if the session was launched for **meshing only**.
     - Use ``Meshing.from_connection()`` if the session supports **meshing and solving**.
-    - You may also use ``PureMeshing.from_connection()`` with a session that supports solving,
-    if you intentionally want access **only to meshing features**.
 
-    A ``Meshing`` interface is not recommended for a **meshing-only** session, because
-    ``switch_to_solver()`` would raise an error in that case.
+    A ``Meshing`` session type is not recommended for a **meshing-only** session.
 
 
 .. _connect_to_pim_session:
@@ -132,7 +120,7 @@ Before connecting, you must launch Fluent externally with the gRPC server enable
 Launch in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode
 ----------------------------------------------------------------------
 
-The :meth:`from_pim() <ansys.fluent.core.session_utilities.SessionBase.from_pim>` method launches Fluent in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
+The :meth:`from_pim() <ansys.fluent.core.execution.session.session.BaseSession.from_pim>` method launches Fluent in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
 Use this method when:
 
@@ -153,10 +141,10 @@ Use this method when:
 
 .. vale Google.Spacing = YES
 
-Using :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
----------------------------------------------------------------------------------
+Using :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
+-------------------------------------------------------------------------------------------
 
-You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+You can use the :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
 function to start Fluent from Python. This code starts Fluent in the background and starts
 Fluent's gRPC server so that commands can be sent to it from the Python interpreter:
 
@@ -166,7 +154,7 @@ Fluent's gRPC server so that commands can be sent to it from the Python interpre
   >>> solver_session = pyfluent.launch_fluent()
 
 
-You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
+You can use the :func:`connect_to_fluent() <ansys.fluent.core.execution.launcher.launcher.connect_to_fluent>`
 function to connect to a running Fluent session that has already started the gRPC server. There are
 some options for starting Fluent's gRPC server:
 
@@ -192,7 +180,7 @@ directory:
 Launcher options
 ----------------
 The following examples show different ways that you can launch Fluent locally.
-For more information, see :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+For more information, see :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`.
 
 Solution mode
 ~~~~~~~~~~~~~
@@ -290,6 +278,26 @@ distributed across more than one machine:
   >>> )
 
 
+.. _working_directory:
+
+Working directory
+~~~~~~~~~~~~~~~~~~
+You can set the working directory of the Fluent process with the ``cwd`` argument:
+
+.. code:: python
+
+  >>> solver_session = pyfluent.launch_fluent(cwd="/path/to/working/directory")
+
+.. note::
+   On Windows, Fluent cannot use a UNC path (for example ``\\server\share``) as its
+   working directory. Pass a local directory as ``cwd``, and give absolute UNC paths
+   for any case, data, journal, or output files that live on the share. Relative
+   paths, and files Fluent writes by default, resolve against the local ``cwd``.
+
+   If you do not pass ``cwd``, Fluent inherits the working directory of your Python
+   process. If your script runs from a UNC path, pass an explicit local ``cwd``.
+
+
 Logging support
 ---------------
 PyFluent has an option to run with logging enabled.
@@ -297,7 +305,7 @@ This command enables logging:
 
 .. code:: python
 
-  >>> pyfluent.logger.enable()
+  >>> pyfluent.diagnostics.logger.enable()
 
 
 For more details, see :ref:`ref_logging_guide`.
@@ -308,7 +316,7 @@ For more details, see :ref:`ref_logging_guide`.
 Scheduler support
 -----------------
 When PyFluent is used within a job scheduler environment, the :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` function automatically determines
+<ansys.fluent.core.execution.launcher.launcher.launch_fluent>` function automatically determines
 the list of machines and core counts with which to start Fluent. The supported
 scheduler environments are Altair Grid Engine (formerly UGE), Sun Grid Engine (SGE),
 Load Sharing Facility (LSF), Portable Batch System (PBS), and Slurm.
@@ -352,7 +360,7 @@ Here are a few notes about this example:
   the supported interfaces.
 
 Within the scheduler environment, the
-:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+:func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
 function can be used in a few different ways. This example shows how to start
 the three-dimensional, double precision version of Fluent on all the requested
 machines and cores:
@@ -385,7 +393,7 @@ not scale well on all the allocated cores.
 
 Finally, if you want to ignore the scheduler allocation, you can pass either the ``-t``
 argument or both the ``-t`` and ``-cnf`` arguments to the
-:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
+:func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>` function
 using the ``additional_arguments`` parameter. For local parallel execution, simply pass the
 ``-t`` argument:
 
@@ -409,7 +417,7 @@ For distributed parallel processing, you usually pass both parameters:
   >>> )
 
 
-The :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
+The :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>` function
 also supports the ``scheduler_options`` parameter to submit the Fluent job to a Slurm
 scheduler without using any bash script:
 
@@ -431,17 +439,17 @@ scheduler without using any bash script:
 
 The keys ``scheduler_headnode``, ``scheduler_queue`` and ``scheduler_account`` are
 optional and should be specified in a similar manner to Fluent's scheduler options.
-Here, the :func:`launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
-function returns a :class:`SlurmFuture <ansys.fluent.core.launcher.slurm_launcher.SlurmFuture>`
+Here, the :func:`launch_fluent <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
+function returns a :class:`SlurmFuture <ansys.fluent.core.execution.launcher.slurm_launcher.SlurmFuture>`
 instance from which the PyFluent session can be extracted. For a detailed usage, see the
-documentation of the :mod:`slurm_launcher <ansys.fluent.core.launcher.slurm_launcher>`
+documentation of the :mod:`slurm_launcher <ansys.fluent.core.execution.launcher.slurm_launcher>`
 module.
 
 .. vale on
 
 The ``scheduler_options`` parameter doesn't support the automatic scheduler allocation,
 the ``-t`` and ``-cnf`` arguments must be passed to the
-:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
+:func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>` function
 using the ``additional_arguments`` parameter for distributed parallel processing.
 
 .. _pypim_guide:
@@ -449,14 +457,14 @@ using the ``additional_arguments`` parameter for distributed parallel processing
 Launching a `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ session
 ---------------------------------------------------------------------------
 When PyFluent is used within a `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ configured environment,
-:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` automatically launches Fluent in
+:func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>` automatically launches Fluent in
 `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode. In that same environment it can be launched explicitly
-using :func:`create_launcher() <ansys.fluent.core.launcher.launcher.create_launcher>` as follows:
+using :func:`create_launcher() <ansys.fluent.core.execution.launcher.launcher.create_launcher>` as follows:
 
 .. code:: python
 
-  >>> from ansys.fluent.core.launcher.launcher import create_launcher
-  >>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
+  >>> from ansys.fluent.core.execution.launcher.launcher import create_launcher
+  >>> from ansys.fluent.core.execution.launcher.launch_options import LaunchMode, FluentMode
 
   >>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING)
   >>> pim_meshing_session = pim_meshing_launcher()
@@ -516,7 +524,7 @@ Connect to a Fluent container running inside WSL from a Windows host
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver_session = pyfluent.connect_to_fluent(ip="localhost", port=63084, password=<password written `server.txt`>)
+  >>> solver_session = pyfluent.connect_to_fluent(ip="localhost", port=63084, password="<password written in server.txt>")
 
 
 Connecting to a Fluent container running inside Linux from a Windows host
@@ -602,7 +610,7 @@ Run the following Python code to connect to Fluent and transfer files:
 .. code:: python
 
    from ansys.fluent.core import connect_to_fluent
-   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+   from ansys.fluent.core.connectivity.file_transfer_service import RemoteFileTransferStrategy
 
    file_service = RemoteFileTransferStrategy("10.18.44.179", 50000)
    solver_session = connect_to_fluent(ip="10.18.44.179", port=51344, password="5scj6c8l", file_transfer_service=file_service)
@@ -662,7 +670,7 @@ Run the following Python code to connect to Fluent and transfer files:
 .. code:: python
 
    from ansys.fluent.core import connect_to_fluent
-   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+   from ansys.fluent.core.connectivity.file_transfer_service import RemoteFileTransferStrategy
 
    file_service = RemoteFileTransferStrategy("10.18.19.150", 50000)
    solver_session = connect_to_fluent(ip="10.18.19.150", port=41429, password="u5s3iivh", file_transfer_service=file_service)

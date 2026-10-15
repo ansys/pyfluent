@@ -25,12 +25,14 @@
 
 The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
-interfaces: solver settings objects and task-based meshing workflow.
+interfaces: solver settings objects.
+
+This is a legacy Fluent API and its use is not recommended.
 """
 from enum import Enum
 from typing import Any
 
-import ansys.fluent.core.filereader.lispy as lispy
+import ansys.fluent.core.offline._lispy as _lispy
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
@@ -131,7 +133,7 @@ class RPVars:
         List[str]
             List with all allowed rpvars names.
         """
-        return lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))"))
+        return _lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))"))
 
     def _get_var(self, var: str):
         allowed_rp_vars = self.allowed_values()
@@ -182,9 +184,9 @@ class RPVars:
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
         if type(val) is str:
-            cmd = f'(rpsetvar {RPVars._var(var)} "{lispy.to_string(val)}")'
+            cmd = f'(rpsetvar {RPVars._var(var)} "{_lispy.to_string(val)}")'
         else:
-            cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
+            cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{_lispy.to_string(val)})"
         return self._execute(cmd)
 
     def create(self, name: str, value: Any, var_type: RPVarType | type | None):
@@ -253,9 +255,9 @@ class RPVars:
                 )
         prefix = "'" if isinstance(value, (list, tuple)) else ""
         if var_type == RPVarType.STRING:
-            cmd = f'(make-new-rpvar {RPVars._var(name)} "{prefix}{lispy.to_string(value)}" \'{lispy.to_string(var_type.value)})'
+            cmd = f'(make-new-rpvar {RPVars._var(name)} "{prefix}{_lispy.to_string(value)}" \'{_lispy.to_string(var_type.value)})'
         else:
-            cmd = f"(make-new-rpvar {RPVars._var(name)} {prefix}{lispy.to_string(value)} '{lispy.to_string(var_type.value)})"
+            cmd = f"(make-new-rpvar {RPVars._var(name)} {prefix}{_lispy.to_string(value)} '{_lispy.to_string(var_type.value)})"
         returned_val = self._execute(cmd)
         if returned_val is False:
             if name in self.allowed_values():
@@ -267,7 +269,7 @@ class RPVars:
 
     def _execute(self, cmd: str):
         scheme_val = self._eval_fn(cmd)
-        return lispy.parse(scheme_val)
+        return _lispy.parse(scheme_val)
 
     @staticmethod
     def _var(var: str):

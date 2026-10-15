@@ -40,7 +40,7 @@ A simple example
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, product_version=pyfluent.FluentVersion.v251)
+  >>> meshing_session = pyfluent.Meshing.from_install(product_version=pyfluent.FluentVersion.v251)
   >>> watertight = meshing_session.watertight()
   >>> watertight.import_geometry.file_name = pyfluent.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
   >>> watertight.import_geometry()
@@ -74,7 +74,7 @@ Leverage intuitive, :ref:`guided workflows <ref_meshing_guide>` to create high-q
 
 Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
+Utilize :ref:`settings objects <ref_root>` to configure and control your simulation. Get familiar
 with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction
@@ -92,7 +92,7 @@ Offline features
 
 :ref:`Get rapid access to Fluent case and solution data through offline tools<ref_offline_guide>`.
 PyFluent offers Python classes that represent case, data, and project files, enabling you to work with
-Fluent data efficiently offline. The :obj:`~ansys.fluent.core.file_session.FileSession` class mimics the functionality of live 
+Fluent data efficiently offline. The :obj:`~ansys.fluent.core.execution.session.file.FileSession` class mimics the functionality of live
 :ref:`live session objects <ref_session_guide>`, allowing you to access field data and other relevant information without a live Fluent session.
 
 .. vale Google.Spacing = YES

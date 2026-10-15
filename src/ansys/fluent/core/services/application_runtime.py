@@ -51,7 +51,7 @@ import os
 import platform
 
 from ansys.fluent.core._types import PathType
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -64,7 +64,7 @@ from ansys.fluent.core.services.abstract_application_runtime import (
     BuildInfo,
     ProcessInfo,
 )
-from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.services.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 

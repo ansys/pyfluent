@@ -30,7 +30,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 def test_aero_session():

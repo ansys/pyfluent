@@ -5,7 +5,7 @@ Pull a Fluent Docker image based on the FLUENT_IMAGE_TAG environment variable.
 import subprocess
 
 from ansys.fluent.core import config
-from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
+from ansys.fluent.core.execution.docker.utils import get_ghcr_fluent_image_name
 
 
 def pull_fluent_image():

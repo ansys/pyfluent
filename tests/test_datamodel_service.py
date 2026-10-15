@@ -50,12 +50,15 @@ from ansys.fluent.core.services.object_model import (
     PyArgumentsSingletonSubItem,
     PyArgumentsTextualSubItem,
     PyCommand,
+    PyMenu,
+    PyNamedObject,
+    PyNamedObjectContainer,
     PyNumerical,
     PyQuery,
     ReadOnlyObjectError,
     convert_path_to_se_path,
 )
-from ansys.fluent.core.streaming_services.datamodel_streaming import (
+from ansys.fluent.core.services.streaming_services.datamodel_streaming import (
     DatamodelStream,
 )
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -723,7 +726,7 @@ def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logger.enable()
+    pyfluent.diagnostics.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -743,7 +746,7 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logger.enable()
+    pyfluent.diagnostics.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -939,3 +942,42 @@ def test_get_completer_info(new_meshing_session):
             ].arguments.file_name.get_completer_info()
         ]
     )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_py_named_object_methods_in_meshing_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    watertight = meshing.watertight()
+
+    assert isinstance(
+        meshing.meshing_workflow.task_object.import_geometry["Import Geometry"],
+        PyNamedObject,
+    )
+    assert isinstance(
+        meshing.meshing_workflow.task_object.import_geometry, PyNamedObjectContainer
+    )
+    assert isinstance(meshing.meshing_workflow.task_object, PyMenu)
+    assert isinstance(meshing.meshing_workflow, PyMenu)
+
+    assert "rename" in dir(
+        meshing.meshing_workflow.task_object.import_geometry["Import Geometry"]
+    )
+    assert "rename" not in dir(meshing.meshing_workflow)
+    assert "rename" not in dir(meshing.meshing_workflow.task_object.import_geometry)
+
+    assert "rename" in dir(watertight.import_geometry)
+    assert "rename" not in dir(watertight)
+
+
+def test_py_named_object_methods_in_workflow(new_meshing_session):
+    meshing = new_meshing_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert "rename" not in dir(meshing.workflow)
+    assert "rename" not in dir(meshing.workflow.TaskObject)
+    assert "rename" in dir(meshing.workflow.TaskObject["Import Geometry"])
+
+    assert isinstance(meshing.workflow, PyMenu)
+    assert isinstance(meshing.workflow.TaskObject, PyNamedObjectContainer)
+    assert isinstance(meshing.workflow.TaskObject["Import Geometry"], PyNamedObject)

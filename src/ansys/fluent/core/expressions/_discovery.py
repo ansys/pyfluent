@@ -22,7 +22,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from ansys.fluent.core.variable_strategies import FluentExprNamingStrategy
+from ansys.fluent.core._variable_strategies import FluentExprNamingStrategy
 from ansys.units.variable_descriptor import VariableDescriptor
 
 _NAMING = FluentExprNamingStrategy()
@@ -32,10 +32,11 @@ _logger = logging.getLogger("pyfluent.expressions")
 def _field_data_naming():
     """Lazy import to avoid a hard dependency on field_data_interfaces at import time."""
     try:
-        from ansys.fluent.core.field_data_interfaces import (
-            _naming_strategy_instance,
+        from ansys.fluent.core._variable_strategies import (
+            FluentFieldDataNamingStrategy as naming_strategy,
         )
 
+        _naming_strategy_instance = naming_strategy()
         return _naming_strategy_instance
     except Exception:
         return None

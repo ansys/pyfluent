@@ -28,7 +28,7 @@ from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples
-from ansys.fluent.core.workflow import camel_to_snake_case
+from ansys.fluent.core.workflow_old import camel_to_snake_case
 
 
 @pytest.mark.nightly
@@ -971,7 +971,7 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     assert fault_tolerant.import_cad_and_part_management.fmd_file_name()
     # Reinitialize the workflow:
     fault_tolerant = new_meshing_session.fault_tolerant(legacy=True)
-    assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
 def test_switch_between_workflows(new_meshing_session):

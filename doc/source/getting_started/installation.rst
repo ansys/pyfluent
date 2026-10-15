@@ -51,92 +51,23 @@ Then, install PyFluent in the virtual environment with:
 
 Development Installation
 ------------------------
-The PyFluent source repository is available on GitHub. You can clone the repository and set up for local
-development with the following commands:
+The PyFluent source repository is available on GitHub. Clone it and set up a virtual
+environment as described above, then install PyFluent in editable mode:
 
 .. code:: console
 
    git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
-
-Use the following commands to create and activate a virtual environment:
-
-.. code:: console
-
-   python -m venv .venv
-
-
-On Windows:
-
-.. code:: console
-
-   .venv\Scripts\activate
-
-
-On Linux and Mac OS:
-
-.. code:: console
-
-   source .venv/bin/activate
-
-
-Then, install PyFluent within the virtual environment in editable mode with:
-
-.. code:: console
-
    pip install pip -U
    pip install -e .
    python codegen/allapigen.py     # Generates the API files or
    python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
 
-Step-by-step explanation
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Clone the repository
-++++++++++++++++++++
-
-.. code:: console
-
-   git clone https://github.com/ansys/pyfluent.git
-   cd pyfluent
-
-These commands clone the PyFluent repository from GitHub to your local machine and navigate into
-the repository directory.
-
-Upgrade pip
-+++++++++++
-
-.. code:: console
-
-   pip install pip -U
-
-This command upgrades pip to the latest version to ensure compatibility with the latest packages.
-
-Install PyFluent in editable mode
-+++++++++++++++++++++++++++++++++
-
-.. code:: console
-
-   pip install -e .
-
-Installing with the -e option (editable mode) creates a symbolic link to the repository in the
-``site-packages`` directory of your Python installation. This means any changes you make to the
-PyFluent code are automatically reflected when you use PyFluent.
-
-Generate required API classes
-+++++++++++++++++++++++++++++
-
-.. code:: console
-
-   python codegen/allapigen.py     # Generates the API files or
-   python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
-
-The full PyFluent package includes some required API classes that are auto-generated rather
-than maintained under version control. This command runs the auto-generation script included
-in the repository. Note that this step requires an Ansys Fluent installation.
-
-By following these steps, you can set up PyFluent for local development, ensuring that any changes 
-you make to the source code are immediately usable without needing to reinstall the package.
+Installing with the ``-e`` option (editable mode) creates a symbolic link to the repository in
+your Python installation's ``site-packages`` directory, so changes to the PyFluent source are
+reflected immediately without reinstalling. The ``codegen/allapigen.py`` script generates API
+classes that aren't tracked under version control; this step requires a licensed Ansys Fluent
+installation.
 
 Fluent Installation
 -------------------
@@ -160,7 +91,7 @@ current user in the current shell session as follows:
 For this variable to persist between different shell sessions for the current user, the same
 export command can instead be added to the user's ``~/.profile`` file.
 
-For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
+For information on other ways of specifying the Fluent location for PyFluent, see :ref:`ref_launch_guide`.
 
 .. note::
    Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
