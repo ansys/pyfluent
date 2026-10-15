@@ -11,8 +11,12 @@ variable / function names follow CFX conventions.
 
 import pytest
 
-from ansys.fluent.core.expressions import CfxExpressionBuilder, ExpressionBuildError
-from ansys.fluent.core.expressions.cfx_builder import CfxCall, CfxSignature
+from ansys.fluent.core.expressions import ExpressionBuildError
+from ansys.fluent.core.expressions._cfx_builder import (
+    CfxCall,
+    CfxExpressionBuilder,
+    CfxSignature,
+)
 from ansys.units import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
