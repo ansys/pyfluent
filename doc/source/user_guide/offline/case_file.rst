@@ -5,19 +5,19 @@
 CaseFile
 ========
 
-The :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` class allows you to access Fluent case information without a live Fluent session.
-You command :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` objects to read your Fluent case files before you access the case information through
-the :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` methods. 
+The :obj:`~ansys.fluent.core.file_reader.case_file.CaseFile` class allows you to access Fluent case information without a live Fluent session.
+You command :obj:`~ansys.fluent.core.file_reader.case_file.CaseFile` objects to read your Fluent case files before you access the case information through
+the :obj:`~ansys.fluent.core.file_reader.case_file.CaseFile` methods. 
 
 Sample usage
 ------------
 
-This example shows how to command a :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` object to read a case file, and query its interface:
+This example shows how to command a :obj:`~ansys.fluent.core.file_reader.case_file.CaseFile` object to read a case file, and query its interface:
 
 .. code-block:: python
 
   >>> from ansys.fluent.core import examples
-  >>> from ansys.fluent.core.filereader.case_file import CaseFile
+  >>> from ansys.fluent.core.file_reader.case_file import CaseFile
 
   >>> case_file_name = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
   >>> reader = CaseFile(case_file_name=case_file_name)
@@ -58,12 +58,12 @@ Along with basic functionality, the CaseFile class provides many additional feat
 
 - **Extracts mesh data**
   The CaseReader can be used to extract mesh data. This example shows how to
-  command a :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` object to read a case file and extract and use the mesh data:
+  command a :obj:`~ansys.fluent.core.file_reader.case_file.CaseFile` object to read a case file and extract and use the mesh data:
 
   .. code-block:: python
 
       >>> from ansys.fluent.core import examples
-      >>> from ansys.fluent.core.filereader.case_file import CaseFile
+      >>> from ansys.fluent.core.file_reader.case_file import CaseFile
 
       >>> case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
       >>> reader = CaseFile(case_file_name=case_file_name)

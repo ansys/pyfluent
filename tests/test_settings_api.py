@@ -29,12 +29,13 @@ import pytest
 from pytest import WarningsRecorder
 
 from ansys.fluent.core import config
+from ansys.fluent.core.diagnostics.exceptions import (
+    DeprecatedSettingWarning,
+    PyFluentUserWarning,
+)
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
-    DeprecatedSettingWarning,
     InactiveObjectError,
     NamedObject,
     ReadOnlyActionError,
@@ -43,6 +44,7 @@ from ansys.fluent.core.solver.flobject import (
     _OutputFile,
     to_python_name,
 )
+from ansys.fluent.core.solver.session.solver import Solver
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -382,8 +384,10 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_session):
-    solver = mixing_elbow_case_data_session
+def test_deprecated_settings_with_settings_api_aliases(
+    mixing_elbow_case_data_session_grpc_rest,
+):
+    solver = mixing_elbow_case_data_session_grpc_rest
     solver.settings.results.surfaces.iso_clip["clip-1"] = {}
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
@@ -633,8 +637,8 @@ def test_nested_alias(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_commands_not_in_settings(new_solver_session):
-    solver = new_solver_session
+def test_commands_not_in_settings(solver_session_grpc_rest):
+    solver = solver_session_grpc_rest
 
     assert "exit" not in dir(solver.settings)
     with pytest.raises(AttributeError):
@@ -675,8 +679,10 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
 # https://github.com/ansys/pyfluent/issues/4298
 @pytest.mark.fluent_version(">=25.2")
-def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_return_types_of_operations_on_named_objects(
+    mixing_elbow_settings_session_grpc_rest,
+):
+    solver = mixing_elbow_settings_session_grpc_rest
 
     var1 = solver.settings.setup.materials.fluid.create("air-created")
     assert var1 == solver.settings.setup.materials.fluid["air-created"]
@@ -808,6 +814,7 @@ def test_runtime_python_classes(
 
 @pytest.mark.fluent_version(">=26.1")
 def test_setting_string_constants(mixing_elbow_settings_session):
+
     solver = mixing_elbow_settings_session
     viscous = Viscous(solver)
 
@@ -832,6 +839,7 @@ def test_setting_string_constants(mixing_elbow_settings_session):
 
 
 def test_named_object_commands(mixing_elbow_settings_session):
+
     solver = mixing_elbow_settings_session
     inlets = VelocityInlets(solver)
     inlets.list()
@@ -842,8 +850,8 @@ def test_named_object_commands(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=26.1")
-def test_migration_adapter_for_strings(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_migration_adapter_for_strings(mixing_elbow_settings_session_grpc_rest):
+    solver = mixing_elbow_settings_session_grpc_rest
     solver.settings.setup.general.solver.time = "unsteady-2nd-order"
     solver.settings.setup.models.discrete_phase.general_settings.interaction.enabled = (
         True
@@ -877,14 +885,14 @@ def test_migration_adapter_for_strings(mixing_elbow_settings_session):
     )
 
 
-def test_set_state_via_call(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_set_state_via_call(mixing_elbow_settings_session_grpc_rest):
+    solver = mixing_elbow_settings_session_grpc_rest
     solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
 
 
 @pytest.mark.fluent_version(">=26.1")
-def test_read_only_command_execution(mixing_elbow_case_session):
-    solver = mixing_elbow_case_session
+def test_read_only_command_execution(mixing_elbow_case_session_grpc_rest):
+    solver = mixing_elbow_case_session_grpc_rest
     contour = solver.settings.results.graphics.contour.create()
     assert contour.display.is_active() is False
     with pytest.raises(InactiveObjectError):
@@ -898,8 +906,8 @@ def test_read_only_command_execution(mixing_elbow_case_session):
         contour.display()
 
 
-def test_copy_accepts_sequence_types(mixing_elbow_settings_session: Solver):
-    solver = mixing_elbow_settings_session
+def test_copy_accepts_sequence_types(mixing_elbow_settings_session_grpc_rest):
+    solver = mixing_elbow_settings_session_grpc_rest
     hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     hot_inlet.momentum.velocity = 1.0
@@ -915,6 +923,7 @@ def test_copy_accepts_sequence_types(mixing_elbow_settings_session: Solver):
 @pytest.mark.fluent_version(">=26.1")
 def test_action_behavior(mixing_elbow_case_session):
     solver = mixing_elbow_case_session
+
     with pytest.raises(AttributeError, match="command/query object"):
         solver.settings.solution.run_calculation.iterate.get_state()
     assert isinstance(
@@ -925,4 +934,4 @@ def test_action_behavior(mixing_elbow_case_session):
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True
     )
-    assert "iter-count" in result["group_children"]
+    assert "iter-count" in result["children"]

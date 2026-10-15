@@ -29,15 +29,15 @@ import socket
 import tempfile
 import unittest
 
-from ansys.fluent.core.scheduler import build_parallel_options
-from ansys.fluent.core.scheduler.load_machines import (
+from ansys.fluent.core.execution.scheduler import build_parallel_options
+from ansys.fluent.core.execution.scheduler.load_machines import (
     _construct_machine_list_slurm,
     _parse_host_info,
     _parse_machine_data,
     _restrict_machines_to_core_count,
     load_machines,
 )
-from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
+from ansys.fluent.core.execution.scheduler.machine_list import Machine, MachineList
 
 
 class TestMachine(unittest.TestCase):

@@ -108,7 +108,9 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     capsys.readouterr()
     help(meshing)
     captured = capsys.readouterr()
-    assert "Encapsulates a Fluent meshing session." in captured.out
+    assert (
+        "Fluent meshing session with the ability to switch to a solver." in captured.out
+    )
     solver = meshing.switch_to_solver()
     assert meshing.is_active() is False
     for attr in ("tui", "meshing", "workflow", "watertight"):

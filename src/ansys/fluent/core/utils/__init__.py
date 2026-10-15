@@ -21,7 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Miscellaneous utility functions."""
+"""Provide reusable utilities for PyFluent workflows.
+
+The package-level helpers load Python modules dynamically and locate PyFluent's
+user-data directory. Utility submodules additionally cover networking,
+execution and timeout handling, file transfer, version checks, deprecation
+support, data transfer, and Fluent documentation helpers.
+"""
 
 import importlib.util
 import logging
@@ -31,10 +37,10 @@ import sys
 logger = logging.getLogger("pyfluent.general")
 
 
-__all__ = (
+__all__ = [
     "load_module",
     "get_user_data_dir",
-)
+]
 
 
 def load_module(module_name, file_path):

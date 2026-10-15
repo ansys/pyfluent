@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import platform
 import tempfile
 from tempfile import TemporaryDirectory
@@ -33,16 +33,21 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import PyFluentDeprecationWarning, PyFluentUserWarning
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.diagnostics.exceptions import (
+    DisallowedValuesError,
+    InvalidArgument,
+)
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.launcher.error_handler import (
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.error_handler import (
     GPUSolverSupportError,
     InvalidIpPort,
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.fluent_container import configure_container_dict
-from ansys.fluent.core.launcher.launch_options import (
+from ansys.fluent.core.execution.launcher.fluent_container import (
+    configure_container_dict,
+)
+from ansys.fluent.core.execution.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
@@ -50,17 +55,19 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_graphics_driver,
 )
-from ansys.fluent.core.launcher.launcher import create_launcher
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.execution.launcher.launcher import create_launcher
+from ansys.fluent.core.execution.launcher.launcher_utils import (
     ComposeConfig,
     _build_case_data_arguments,
     _build_journal_argument,
+    _cwd_may_trigger_cmd_unc_fallback,
     _validate_lightweight_with_case_data,
     _validate_lightweight_with_journal,
     is_windows,
 )
-from ansys.fluent.core.launcher.process_launch_string import (
+from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
+    _has_parallel_flags,
     get_fluent_exe_path,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -578,6 +585,47 @@ def test_build_case_data_arguments_both_paths():
     )
 
 
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        # Standard UNC paths.
+        (r"\\server\share", True),
+        (r"\\server\share\dir\file.cas", True),
+        # Forward-slash variants are normalized.
+        ("//server/share", True),
+        ("//server/share/file.cas", True),
+        (r"\\server/share\file.cas", True),  # mixed separators
+        # Extended-length local and device namespaces are not UNC.
+        (r"\\?\C:\dir\file.cas", False),
+        (r"\\.\PhysicalDrive0", False),
+        # Local and relative paths.
+        (r"C:\dir\file.cas", False),
+        ("C:/dir/file.cas", False),
+        (r"dir\file.cas", False),
+        ("file.cas", False),
+        ("", False),
+        (r"\single", False),  # single leading separator
+        ("/single", False),
+    ],
+)
+def test_cwd_may_trigger_cmd_unc_fallback_strings(path, expected):
+    """Test ``_cwd_may_trigger_cmd_unc_fallback`` against string paths and edge cases."""
+    assert _cwd_may_trigger_cmd_unc_fallback(path) is expected
+
+
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        (PureWindowsPath(r"\\server\share\file.cas"), True),
+        (PureWindowsPath(r"C:\dir\file.cas"), False),
+        (PureWindowsPath("file.cas"), False),
+    ],
+)
+def test_cwd_may_trigger_cmd_unc_fallback_pathlib(path, expected):
+    """Test ``_cwd_may_trigger_cmd_unc_fallback`` with ``Path``-like inputs."""
+    assert _cwd_may_trigger_cmd_unc_fallback(path) is expected
+
+
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
@@ -634,6 +682,60 @@ def test_additional_arguments_fluent_launch_args_string():
     )
 
 
+@pytest.mark.parametrize(
+    "additional_arguments, expected",
+    [
+        # No parallel flags present.
+        ("", False),
+        ("-gpu", False),
+        ("-gpu_async", False),
+        ("-ws -ws-port=5000 -i test.jou", False),
+        # '-t' substring inside an unrelated argument must not be treated as '-t<n>'.
+        ("-scheduler_opt='--time=04:00:00'", False),
+        ("-scheduler_opt='--time=04:00:00' -scheduler_gpn=2 -gpu_async", False),
+        ("--time=1", False),
+        # '-t' without a trailing digit is not the process-count flag.
+        ("-t", False),
+        ("-tx", False),
+        # Explicit process-count flag '-t<n>'.
+        ("-t4", True),
+        ("-t16", True),
+        ("-t4 -gpu", True),
+        ("-gpu -t4", True),
+        ("-scheduler_opt='--time=04:00:00' -t4", True),
+        # Machine-list flag '-cnf='.
+        ("-cnf=m1:8", True),
+        ("-t16 -cnf=m1:8,m2:8", True),
+        ("-gpu -cnf=m1:8,m2:8", True),
+    ],
+)
+def test_has_parallel_flags(additional_arguments, expected):
+    assert _has_parallel_flags(additional_arguments) is expected
+
+
+def test_processor_count_applied_with_time_scheduler_option():
+    # Regression: a '-t' substring inside "-scheduler_opt='--time=...'" must not
+    # suppress the '-t<n>' flag derived from processor_count.
+    additional_arguments = (
+        "-scheduler_opt='--time=04:00:00' -scheduler_gpn=2 -scheduler_ppn=2 -gpu_async"
+    )
+    launch_args = _build_fluent_launch_args_string(
+        additional_arguments=additional_arguments,
+        processor_count=4,
+        gpu=True,
+    )
+    assert "-t4" in launch_args
+
+
+def test_processor_count_not_applied_when_user_sets_t_flag():
+    launch_args = _build_fluent_launch_args_string(
+        additional_arguments="-t2",
+        processor_count=4,
+    )
+    assert "-t4" not in launch_args
+    assert "-t2" in launch_args
+
+
 def test_processor_count():
     def get_processor_count(solver):
         return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
@@ -684,7 +786,7 @@ def test_standalone_launcher_dry_run(monkeypatch):
     assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
     assert (
         fluent_launch_string
-        == f'{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm -command="(set-session-idle-timeoutPLF+3)"'
+        == f'{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm -command="(set-session-idle-timeout 3)"'
     )
 
 
@@ -710,7 +812,7 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
         assert str(Path(server_info_file_name).parent) == tmp_dir
         assert (
             fluent_launch_string
-            == f'{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm -command="(set-session-idle-timeoutPLF+3)"'
+            == f'{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm -command="(set-session-idle-timeout 3)"'
         )
 
 
@@ -741,7 +843,7 @@ def test_container_launcher_args():
 
 
 def test_report():
-    from ansys.fluent.core.report import ANSYS_ENV_VARS, dependencies
+    from ansys.fluent.core.utils.report import ANSYS_ENV_VARS, dependencies
     from ansys.tools.common.report import Report
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
@@ -876,6 +978,55 @@ def test_standalone_meshing_with_case_data_raises(monkeypatch):
         )
 
 
+def _invoke_standalone_call_with_stubbed_launch(monkeypatch, **launch_kwargs):
+    """Run ``StandaloneLauncher.__call__`` on a patched Windows platform with the
+    real subprocess launch stubbed out, so only the pre-launch UNC
+    working-directory check runs.
+
+    ``is_windows`` is patched where the launcher uses it so the check is
+    exercised on any host OS, and ``subprocess.Popen`` is stubbed to raise,
+    which makes ``__call__`` raise ``LaunchFluentError`` right after the check.
+    """
+    from ansys.fluent.core.execution.launcher import standalone_launcher
+
+    monkeypatch.setattr(standalone_launcher, "is_windows", lambda: True)
+    monkeypatch.setattr(
+        standalone_launcher.subprocess,
+        "Popen",
+        Mock(side_effect=RuntimeError("stubbed launch")),
+    )
+    launcher = standalone_launcher.StandaloneLauncher(
+        fluent_path=r"\x\y\z\fluent.exe",
+        ui_mode="no_gui",
+        **launch_kwargs,
+    )
+    with pytest.raises(LaunchFluentError):
+        launcher()
+
+
+@pytest.mark.standalone
+def test_standalone_warns_on_explicit_unc_cwd(monkeypatch):
+    """An explicit UNC ``cwd`` on Windows warns about the cmd working-directory fallback."""
+    with pytest.warns(UserWarning, match="UNC"):
+        _invoke_standalone_call_with_stubbed_launch(monkeypatch, cwd=r"\\server\share")
+
+
+@pytest.mark.standalone
+def test_standalone_warns_on_unc_getcwd(monkeypatch):
+    """With no ``cwd``, a UNC process working directory warns."""
+    from ansys.fluent.core.execution.launcher import standalone_launcher
+
+    monkeypatch.setattr(standalone_launcher.os, "getcwd", lambda: r"\\server\share")
+    with pytest.warns(UserWarning, match="UNC"):
+        _invoke_standalone_call_with_stubbed_launch(monkeypatch)
+
+
+def test_standalone_does_not_warn_on_local_cwd(monkeypatch, recwarn):
+    """A local ``cwd`` on Windows does not warn about the cmd working-directory fallback."""
+    _invoke_standalone_call_with_stubbed_launch(monkeypatch, cwd=r"C:\tmp\local")
+    assert not [w for w in recwarn.list if "UNC" in str(w.message)]
+
+
 @pytest.mark.standalone
 def test_warning_in_windows():
     with pytest.warns(PyFluentUserWarning):
@@ -949,9 +1100,11 @@ def test_default_launch_mode_is_py():
 
 @pytest.mark.standalone
 def test_create_launcher():
-    from ansys.fluent.core.launcher import create_launcher
-    from ansys.fluent.core.launcher.launch_options import LaunchMode
-    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+    from ansys.fluent.core.execution.launcher import create_launcher
+    from ansys.fluent.core.execution.launcher.launch_options import LaunchMode
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneLauncher,
+    )
 
     with pytest.raises(DisallowedValuesError):
         create_launcher("unknown_mode")
@@ -969,33 +1122,35 @@ def test_idle_timeout(monkeypatch):
     fluent_launch_string, _ = pyfluent.launch_fluent(
         fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+3" in fluent_launch_string
+    assert "timeout 3" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=200, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+5" in fluent_launch_string
+    assert "timeout 5" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=60, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+2" in fluent_launch_string
+    assert "timeout 2" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=0, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+1" in fluent_launch_string
+    assert "timeout 1" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=-5, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
     assert "timeout" not in fluent_launch_string
 
-    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+    from ansys.fluent.core.execution.launcher.standalone_launcher import (
+        StandaloneLauncher,
+    )
 
     assert (
         StandaloneLauncher._construct_timeout_arg(60)
-        == ' -command="(set-session-idle-timeoutPLF+2)"'
+        == ' -command="(set-session-idle-timeout 2)"'
     )
     assert (
         StandaloneLauncher._construct_timeout_arg(200)
-        == ' -command="(set-session-idle-timeoutPLF+5)"'
+        == ' -command="(set-session-idle-timeout 5)"'
     )
 
 

@@ -30,7 +30,7 @@ Example
 The following code is employed to translate the source data
 into Python data structures:
 
->>> from ansys.fluent.core.filereader import lispy
+>>> from ansys.fluent.core.file_reader import lispy
 >>> from ansys.units import Quantity, Unit
 >>> from ansys.units.quantity import get_si_value
 >>> import re

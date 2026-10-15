@@ -225,7 +225,7 @@ class SettingsService(ServiceProtocol):
         ret = {}
         ret["attrs"] = self._get_state_from_value(response.values)
         if response.group_children:
-            ret["group_children"] = {
+            ret["children"] = {
                 child.name: self._parse_attrs(child.value)
                 for child in response.group_children
             }

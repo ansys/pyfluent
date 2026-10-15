@@ -16,7 +16,7 @@ in PyFluent. The PyFluent TUI commands are Python versions of the commands
 that are used in the Fluent console.
 
 The Python TUI is superseded by purpose-built PyFluent interfaces that are more powerful
-and user-friendly. See :ref:`settings objects <ref_settings>` for solution mode, and
+and user-friendly. See :ref:`settings objects <ref_root>` for solution mode, and
 :ref:`guided workflows <ref_meshing_guide>` for meshing mode.
 
 The PyFluent TUI commands do not support TUI features such as aliases or
@@ -27,8 +27,8 @@ both command line completion and history. To inspect any PyFluent TUI object fur
 you can use the Python built-in `help <https://docs.python.org/3/library/functions.html#help>`_
 and `dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
 For example, to see the options available under the viscous model menu, the
-following can be used, assuming that :obj:`~ansys.fluent.core.session_solver.Solver` is the session instance returned
-by :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function:
+following can be used, assuming that :obj:`~ansys.fluent.core.solver.session.solver.Solver` is the session instance returned
+by :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>` function:
 
 .. code-block:: python
 
@@ -105,7 +105,7 @@ The following code yields the same result but specifies all arguments in one cal
    /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
 The recorded Python journal contains the following line which can be executed in
-PyFluent, where :obj:`~ansys.fluent.core.session_solver.Solver` is the session instance returned by :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+PyFluent, where :obj:`~ansys.fluent.core.solver.session.solver.Solver` is the session instance returned by :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`.
 
 .. code:: python
 

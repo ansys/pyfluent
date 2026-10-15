@@ -7,7 +7,7 @@ Solver settings objects
 
 Solver settings objects provide a natural way to access and modify Fluent solver
 settings and issue commands to be executed.
-An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
+An appropriate call to the :func:`~ansys.fluent.core.execution.launcher.launcher.launch_fluent`
 function returns an object whose interface directly exposes the :ref:`ref_root` of the solver settings hierarchy.
 
 .. vale Google.Spacing = YES
@@ -28,7 +28,7 @@ Example usage
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.solver import VelocityInlet
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
   >>> inlet1 = VelocityInlet(settings_source=solver_session, name="inlet-1")
 
 
@@ -135,9 +135,9 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 
 - The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
   can be accessed as attributes. For example, using the expression ``solver_session.settings.setup.models.energy``,
-  which resolves to :obj:`~ansys.fluent.core.generated.solver.settings_232.energy.energy`,
-  which is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.models_1.models`,
-  which itself is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`, and each of those
+  which resolves to :obj:`~ansys.fluent.core.generated.v261.solver.settings.energy`,
+  which is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.models_1`,
+  which itself is a child of :obj:`~ansys.fluent.core.generated.v261.solver.settings.setup`, and each of those
   three objects is a ``Group``.
   The names of the child objects of a group can be accessed
   via ``<Group>.child_names``.
@@ -364,7 +364,7 @@ in a single solver session:
   >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.Solver.from_install()
   >>> solver_session.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
@@ -375,18 +375,7 @@ in a single solver session:
   False
   >>> viscous.model.default_value()
   >>> pprint(viscous.model.allowed_values(), width=1)
-  ['inviscid',
-   'laminar',
-   'k-epsilon',
-   'k-omega',
-   'mixing-length',
-   'spalart-allmaras',
-   'k-kl-w',
-   'transition-sst',
-   'reynolds-stress',
-   'scale-adaptive-simulation',
-   'detached-eddy-simulation',
-   'large-eddy-simulation']
+  ['inviscid', 'laminar', 'k-omega', ...]  # plus additional models
   >>> cold_inlet = VelocityInlet(settings_source=solver_session, name="cold-inlet")
   >>> cold_inlet.turb_intensity.min()
   0
@@ -470,5 +459,5 @@ The following list summarizes common wildcards:
    :maxdepth: 1
    :hidden:
 
-   set_up/set_up_contents
+   set_up/setup_contents
    solution

@@ -21,4 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Module providing reductions functions."""
+"""Compatibility package for the functional API in ``fields.reduction.functional``."""

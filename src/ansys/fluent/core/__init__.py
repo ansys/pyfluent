@@ -23,31 +23,41 @@
 
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+
+def using(session):
+    """Make a session active for top-level settings within a ``with`` block.
+
+    This top-level function is retained for backward compatibility. The
+    implementation lives with the session base implementation.
+    """
+    from ansys.fluent.core.execution.session.session import using as _using
+
+    return _using(session)
+
+
 # isort: off
 
 # config must be initialized before logging setup.
 from ansys.fluent.core.module_config import *
 
 # Logging has to be imported before importing other PyFluent modules
-from ansys.fluent.core.logger import *
+from ansys.fluent.core.diagnostics.logger import *
 
 # isort: on
 
-from ansys.fluent.core.fields.field_data_interfaces import *
-from ansys.fluent.core.get_build_details import *
-from ansys.fluent.core.launcher.launch_options import *
-from ansys.fluent.core.launcher.launcher import *
-from ansys.fluent.core.parametric import *
-from ansys.fluent.core.pyfluent_warnings import *
-from ansys.fluent.core.search import *
+from ansys.fluent.core.diagnostics.exceptions import *
+from ansys.fluent.core.diagnostics.search import *
+from ansys.fluent.core.execution.launcher.launch_options import *
+from ansys.fluent.core.execution.launcher.launcher import *
+from ansys.fluent.core.execution.session import *
+from ansys.fluent.core.execution.session.session import BaseSession
+from ansys.fluent.core.fields.field_data import *
+from ansys.fluent.core.meshing import *
+from ansys.fluent.core.offline.parametric_study import *
 from ansys.fluent.core.services.batch_ops import *
-from ansys.fluent.core.session import *
-from ansys.fluent.core.session import BaseSession as Fluent
-from ansys.fluent.core.session_utilities import *
+from ansys.fluent.core.services.streaming_services.events_streaming import *
 from ansys.fluent.core.solver.flobject import ExposureLevel  # noqa: E402
-from ansys.fluent.core.streaming_services.events_streaming import *
 from ansys.fluent.core.utils import *
-from ansys.fluent.core.utils.context_managers import *
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 
@@ -60,6 +70,7 @@ Build timestamp and commit hash are added to this variable during packaging.
 """
 
 import os as _os  # noqa: E402
+import sys as _sys  # noqa: E402
 import warnings as _warnings  # noqa: E402
 
 _THIS_DIRNAME = _os.path.dirname(__file__)
@@ -68,6 +79,43 @@ _README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rs
 if _os.path.exists(_README_FILE):
     with open(_README_FILE, encoding="utf8") as f:
         __doc__ = f.read()
+
+from ansys.fluent.core import offline as _file_reader  # noqa: E402
+from ansys.fluent.core.connectivity import (  # noqa: E402
+    fluent_connection as _fluent_connection,
+)
+from ansys.fluent.core.diagnostics import exceptions as _exceptions  # noqa: E402
+from ansys.fluent.core.diagnostics import journaling as _journaling  # noqa: E402
+from ansys.fluent.core.diagnostics import logger as _logger  # noqa: E402
+from ansys.fluent.core.diagnostics.search import search as _search  # noqa: E402
+from ansys.fluent.core.execution.session import file as _session_file  # noqa: E402
+from ansys.fluent.core.offline import (  # noqa: E402
+    parametric_study as _local_parametric_study,
+)
+
+_sys.modules["ansys.fluent.core.file_session"] = _session_file
+_sys.modules["ansys.fluent.core.fluent_connection"] = _fluent_connection
+_sys.modules["ansys.fluent.core.parametric"] = _local_parametric_study
+_sys.modules["ansys.fluent.core.pyfluent_warnings"] = _exceptions
+_sys.modules["ansys.fluent.core.filereader"] = _file_reader
+
+_sys.modules["ansys.fluent.core.logger"] = _logger
+_sys.modules["ansys.fluent.core.journaling"] = _journaling
+_sys.modules["ansys.fluent.core.exceptions"] = _exceptions
+_sys.modules["ansys.fluent.core.search"] = _search
+
+
+class Fluent(BaseSession):
+    """Fluent session management.
+
+    This class serves as the primary base class for both meshing and solver
+    sessions within PyFluent. It extends the core functionality
+    provided by the base session instance.
+
+    Attributes
+    ----------
+    Inherits all attributes from :class:`~ansys.fluent.core.execution.session.session.BaseSession`.
+    """
 
 
 def version_info() -> str:

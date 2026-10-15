@@ -1,15 +1,15 @@
-.. _ref_session_guide:
-
 .. vale Google.Spacing = NO
+
+.. _ref_session_guide:
 
 Using PyFluent sessions
 =======================
 
 To create a PyFluent session, use the ``from_<...>`` class methods on a session type, for
-example :meth:`Solver.from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>`,
-:meth:`Solver.from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>`,
-:meth:`Solver.from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`, or
-:meth:`Solver.from_pim() <ansys.fluent.core.session_utilities.SessionBase.from_pim>`.
+example :meth:`Solver.from_install() <ansys.fluent.core.execution.session.session.BaseSession.from_install>`,
+:meth:`Solver.from_container() <ansys.fluent.core.execution.session.session.BaseSession.from_container>`,
+:meth:`Solver.from_connection() <ansys.fluent.core.execution.session.session.BaseSession.from_connection>`, or
+:meth:`Solver.from_pim() <ansys.fluent.core.execution.session.session.BaseSession.from_pim>`.
 For full details, see :ref:`ref_launch_guide`.
 
 For example, to launch a solver session from a local Fluent installation:
@@ -23,18 +23,18 @@ For example, to launch a solver session from a local Fluent installation:
 
 .. note::
 
-  You can also use the lower-level :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-  and :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>` functions,
+  You can also use the lower-level :func:`launch_fluent() <ansys.fluent.core.execution.launcher.launcher.launch_fluent>`
+  and :func:`connect_to_fluent() <ansys.fluent.core.execution.launcher.launcher.connect_to_fluent>` functions,
   but the ``from_<...>`` class methods are recommended for new code.
 
 
 Solution mode sessions
 ----------------------
 
-The above :obj:`~ansys.fluent.core.session_solver.Solver` session object exposes a variety of Python child objects that provide access to the data
+The above :obj:`~ansys.fluent.core.solver.session.solver.Solver` session object exposes a variety of Python child objects that provide access to the data
 and functions of the connected Fluent solver_session. A consistent interface style is maintained across those Python objects
 and each object adopts a specific responsibility that is reflected in its particular interface. For instance,
-the :obj:`~ansys.fluent.core.session_solver.Solver` session provides child objects for solver settings and field data access respectively.
+the :obj:`~ansys.fluent.core.solver.session.solver.Solver` session provides child objects for solver settings and field data access respectively.
 You can see these ``fields`` and ``settings`` children by executing ``dir(solver)``. You can discover the
 children of ``fields`` and ``settings`` by calling ``dir(solver_session.fields)`` and ``dir(solver_session.settings)`` respectively,
 and so on:
@@ -55,8 +55,8 @@ You can call the Python ``help()`` function to find out more about each item in 
   >>> help(solver_session.settings.file.read_case)
 
 
-You can create additional PyFluent sessions. The following code creates a :obj:`~ansys.fluent.core.session_meshing.Meshing` mode
-session that starts a second Fluent instance and is independent of your PyFluent :obj:`~ansys.fluent.core.session_solver.Solver` session.
+You can create additional PyFluent sessions. The following code creates a :obj:`~ansys.fluent.core.meshing.session.meshing.Meshing` mode
+session that starts a second Fluent instance and is independent of your PyFluent :obj:`~ansys.fluent.core.solver.session.solver.Solver` session.
 
 .. code:: python
 
@@ -65,41 +65,22 @@ session that starts a second Fluent instance and is independent of your PyFluent
 
 
 A uniform interface exists across solver settings objects. For instance,
-``get_state()``, ``set_state()`` and ``is_active()`` are ubiquitous methods,
-and ``allowed_values()``, ``min()`` and ``max()`` are found on relevant items.
-Here are some examples using the ``viscous`` and ``discrete_phase`` models.
+``get_state()`` and ``set_state()`` are ubiquitous methods, and ``allowed_values()``
+is found on relevant items:
 
 .. code:: python
 
   >>> viscous_model = settings.setup.models.viscous.model
   >>> viscous_model.get_state()
 	'k-omega'
-  >>> from pprint import pprint
-  >>> pprint(viscous_model.allowed_values())
-	['inviscid',
-	 'laminar',
-	 'k-epsilon',
-	 'k-omega',
-	 'mixing-length',
-	 'spalart-allmaras',
-	 'k-kl-w',
-	 'transition-sst',
-	 'reynolds-stress',
-	 'scale-adaptive-simulation',
-	 'detached-eddy-simulation',
-	 'large-eddy-simulation']
+  >>> viscous_model.allowed_values()
+	['inviscid', 'laminar', 'k-omega', ...]  # plus additional models
   >>> viscous_model.set_state("laminar")
   >>> viscous_model.get_state()
     'laminar'
-  >>> discrete_phase = settings.setup.models.discrete_phase
-  >>> discrete_phase.is_active()
-    True
-  >>> max_num_refinements = discrete_phase.numerics.tracking.accuracy_control.max_num_refinements
-  >>> max_num_refinements.get_state()
-	20
-  >>> max_num_refinements.min(), max_num_refinements.max()
-   (0, 1000000)
-  
+
+For the full set of settings metadata methods (``is_active()``, ``min()``, ``max()``,
+and more), see :ref:`ref_solver_settings_guide`.
 
 Some items in the solver settings object tree are methods that you call to request a particular
 action in Fluent:
@@ -118,8 +99,8 @@ that of the ``settings`` objects:
 .. code:: python
 
   >>> field_data = fields.field_data
-  >>> transaction = field_data.new_transaction()
-  >>> add_scalar_fields = transaction.add_scalar_fields_request
+  >>> batch = field_data.new_batch()
+  >>> add_scalar_fields = batch.add_scalar_fields_request
   >>> allowed_field_names = add_scalar_fields.field_name.allowed_values()
   >>> pprint(allowed_field_names[:min([len(allowed_field_names), 5])])
   ['abs-angular-coordinate',
@@ -127,10 +108,10 @@ that of the ``settings`` objects:
    'angular-coordinate',
    'anisotropic-adaption-cells',
    'aspect-ratio']
-  >>> add_scalar_fields.surface_names.allowed_values()
+  >>> add_scalar_fields.surfaces.allowed_values()
   ['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet']
   >>> add_scalar_fields(field_name='absolute-pressure', surfaces=['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet'])
-  >>> pressure_fields = transaction.get_fields()
+  >>> pressure_fields = batch.get_fields()
   >>> solver_session.fields.reduction.sum_if(
   >>>     expression="AbsolutePressure",
   >>>     condition="AbsolutePressure > 0[Pa]",
@@ -165,11 +146,11 @@ task-based meshing workflow code:
 Note: You can find out more about meshing workflows here:
 :ref:`ref_new_meshing_workflows_guide`.
 
-A :obj:`~ansys.fluent.core.session_meshing.Meshing` mode session object exposes additional child objects. For instance, ``meshing``
+A :obj:`~ansys.fluent.core.meshing.session.meshing.Meshing` mode session object exposes additional child objects. For instance, ``meshing``
 has ``fields`` and ``events`` children. Each has the same interface as the identically named
-child of the :obj:`~ansys.fluent.core.session_solver.Solver` session object respectively.
+child of the :obj:`~ansys.fluent.core.solver.session.solver.Solver` session object respectively.
 
-You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session:
+You can also create a :obj:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` session:
 
 
 .. code:: python
@@ -186,10 +167,12 @@ of minimal server images, which becomes significant in the context of containeri
 Context manager for active sessions
 -----------------------------------
 
-The ``using(session)`` context manager sets an active session so you can call top-level settings objects and functions
-without explicitly passing the session each time.
+Use ``using(session)`` to make a session active within a ``with`` block. This
+lets top-level settings objects and functions use that session without it being
+passed explicitly each time. The active session is restored when the block
+exits, including when an exception is raised.
 
-Example:
+For example:
 
 .. code:: python
 
@@ -216,7 +199,6 @@ within its intended scope:
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> from ansys.fluent.core import using
   >>> from ansys.fluent.core.solver import ReadCase, Viscous
   >>> solver_session_1 = pyfluent.Solver.from_install()
   >>> solver_session_2 = pyfluent.Solver.from_install()
@@ -232,8 +214,8 @@ within its intended scope:
   ...     print(Viscous().model())
   k-omega
 
-Thread-local behavior
-~~~~~~~~~~~~~~~~~~~~~
+Thread- and task-local behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each thread can set and use its own active session. Sessions set in one thread are not visible to other threads:
 
@@ -249,14 +231,18 @@ Each thread can set and use its own active session. Sessions set in one thread a
   >>> t = threading.Thread(target=work, args=(solver_session,))
   >>> t.start(); t.join()
 
-Outside of a ``with using(...)`` block, pass sessions explicitly when operating on multiple sessions in the same scope
-or when working with multi-threaded code.
+``using(session)`` is implemented with :class:`contextvars.ContextVar`, so the same isolation
+also holds across ``asyncio`` tasks: each task gets its own copy of the active session context,
+so concurrent tasks using different sessions do not interfere with each other.
+
+Outside of a ``with using(session)`` block, pass sessions explicitly when operating on multiple sessions in the same scope
+or when working with multi-threaded or asynchronous code.
 
 
 Switching between sessions
 --------------------------
 
-You switch between meshing and solution modes by calling the :obj:`switch_to_solver() <ansys.fluent.core.session_meshing.Meshing.switch_to_solver>` method.
+You switch between meshing and solution modes by calling the :obj:`switch_to_solver() <ansys.fluent.core.meshing.session.meshing.Meshing.switch_to_solver>` method.
 
 
 .. code:: python
@@ -265,9 +251,9 @@ You switch between meshing and solution modes by calling the :obj:`switch_to_sol
 
 
 The ``switched_solver`` session uses the same Fluent instance that was previously used by the
-:obj:`~ansys.fluent.core.session_meshing.Meshing` session, which is now unusable.
+:obj:`~ansys.fluent.core.meshing.session.meshing.Meshing` session, which is now unusable.
 
-A similar action with the :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session raises an exception:
+A similar action with the :obj:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` session raises an exception:
 
 
 .. code:: python
@@ -294,8 +280,8 @@ Ending PyFluent sessions
 ------------------------
 
 Just as PyFluent session objects start and exist independently within a single Python interpreter session,
-each session can be ended independently of the others. Calling the ``exit()`` method on the :obj:`~ansys.fluent.core.session_solver.Solver` and
-:obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session objects ends those PyFluent sessions and terminates the connected Fluent sessions:
+each session can be ended independently of the others. Calling the ``exit()`` method on the :obj:`~ansys.fluent.core.solver.session.solver.Solver` and
+:obj:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` session objects ends those PyFluent sessions and terminates the connected Fluent sessions:
 
 
 .. code:: python
@@ -305,11 +291,11 @@ each session can be ended independently of the others. Calling the ``exit()`` me
 
 
 Each Fluent session terminates in this scenario because both PyFluent :ref:`Session <ref_session_guide>` objects were obtained by
-using a ``from_<...>`` launch method (for example, :meth:`from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>`).
-If :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` were used instead, the
+using a ``from_<...>`` launch method (for example, :meth:`from_install() <ansys.fluent.core.execution.session.session.BaseSession.from_install>`).
+If :meth:`from_connection() <ansys.fluent.core.execution.session.session.BaseSession.from_connection>` were used instead, the
 Fluent session would not be terminated upon ``exit()`` by default.
 For configurable cleanup behavior when attaching to an existing Fluent process,
-use :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
+use :func:`connect_to_fluent() <ansys.fluent.core.execution.launcher.launcher.connect_to_fluent>`
 directly with its ``cleanup_on_exit`` parameter.
 
 Session exiting can also happen implicitly when :ref:`Session <ref_session_guide>` objects are garbage collected. The same rules apply

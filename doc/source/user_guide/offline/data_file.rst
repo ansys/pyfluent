@@ -5,20 +5,20 @@
 DataFile
 ========
 
-The :obj:`~ansys.fluent.core.filereader.data_file.DataFile` class allows you to access solution data without a live Fluent session.
-You command :obj:`~ansys.fluent.core.filereader.data_file.DataFile` objects to read your Fluent data files before you access the data through
-the :obj:`~ansys.fluent.core.filereader.data_file.DataFile` methods. 
+The :obj:`~ansys.fluent.core.file_reader.data_file.DataFile` class allows you to access solution data without a live Fluent session.
+You command :obj:`~ansys.fluent.core.file_reader.data_file.DataFile` objects to read your Fluent data files before you access the data through
+the :obj:`~ansys.fluent.core.file_reader.data_file.DataFile` methods. 
 
 Sample usage
 ------------
 
-This example shows how to command a :obj:`~ansys.fluent.core.filereader.data_file.DataFile` object to access case and data files, and query its interface:
+This example shows how to command a :obj:`~ansys.fluent.core.file_reader.data_file.DataFile` object to access case and data files, and query its interface:
 
 .. code-block:: python
 
   >>> from ansys.fluent.core import examples
-  >>> from ansys.fluent.core.filereader.data_file import DataFile
-  >>> from ansys.fluent.core.filereader.case_file import CaseFile
+  >>> from ansys.fluent.core.file_reader.data_file import DataFile
+  >>> from ansys.fluent.core.file_reader.case_file import CaseFile
 
   >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
   >>> reader = DataFile(data_file_name=data_file_name, case_file_handle=CaseFile(case_file_name))
