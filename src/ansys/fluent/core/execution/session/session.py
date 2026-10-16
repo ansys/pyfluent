@@ -37,6 +37,7 @@ from functools import cached_property
 import json
 import logging
 import os
+from types import TracebackType
 from typing import TYPE_CHECKING, Any, Literal, overload
 import warnings
 import weakref
@@ -95,6 +96,7 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.execution.launcher.pim_launcher import PIMArgsWithoutMode
 
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import (
     PyFluentDeprecationWarning,
@@ -194,7 +196,7 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
         event_type: Enum | None = None,
@@ -245,7 +247,7 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
         launcher_args: dict[str, Any] | None = None,
@@ -376,7 +378,7 @@ class BaseSession:
     def _create_from_server_info_file(
         cls,
         server_info_file_name: str,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
         **connection_kwargs,
@@ -556,7 +558,12 @@ class BaseSession:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ):
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self._exit()
