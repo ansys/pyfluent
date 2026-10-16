@@ -514,11 +514,11 @@ jobs:
             version: 252
           - image-tag: v26.1.latest
             version: 261
-          - image-tag: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          - image-tag: v27.1.latest
             version: 271
     timeout-minutes: 60
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
