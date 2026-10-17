@@ -1,0 +1,52 @@
+:orphan:
+
+.. _geometry_7:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.geometry_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===================================
+
+Attribute                                                          Summary
+
+====================================   ===================================
+:ref:`geom_disable <geom_disable>`         Disable Geometry Based Adption.
+
+:ref:`geom_dir_spec <geom_dir_spec>`              Direction Specification.
+
+:ref:`geom_dir_x <geom_dir_x>`                                X Direction.
+
+:ref:`geom_dir_y <geom_dir_y>`                                Y Direction.
+
+:ref:`geom_dir_z <geom_dir_z>`                                Z Direction.
+
+:ref:`geom_levels <geom_levels>`                                   Levels.
+
+:ref:`geom_bgthread <geom_bgthread>`                    Background Thread.
+
+====================================   ===================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`settings_14 <settings_14>`                 Domain name to define settings on.
+
+:ref:`phase_16_child <phase_16_child>`                'child_object_type' of phase.
+
+:ref:`periodic_2_child <periodic_2_child>`         'child_object_type' of periodic.
+
+:ref:`periodic_3_child <periodic_3_child>`         'child_object_type' of periodic.
+
+:ref:`phase_41_child <phase_41_child>`                'child_object_type' of phase.
+
+==========================================   ======================================
+

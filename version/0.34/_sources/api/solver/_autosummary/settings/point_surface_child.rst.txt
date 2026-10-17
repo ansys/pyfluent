@@ -1,0 +1,59 @@
+:orphan:
+
+.. _point_surface_child:
+
+point_surface_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.point_surface_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ================================================================
+
+Attribute                                                                                             Summary
+
+==========================================   ================================================================
+:ref:`name <name_4>`                                                                      Name of the object.
+
+:ref:`reference_frame <reference_frame_9>`                                               The reference frame.
+
+:ref:`coordinate <coordinate>`                                                        The co-ordinate-system.
+
+:ref:`point <point_3>`                                                      The XYZ coordinates of the point.
+
+:ref:`r <r_1>`                                                                                    Value of r.
+
+:ref:`theta <theta_1>`                                                                        Value of theta.
+
+:ref:`z <z_6>`                                                                                    Value of z.
+
+:ref:`snap_method <snap_method>`                 The method to snap the point to nearest node or cell center.
+
+:ref:`dynamic <dynamic>`                                                                      The point type.
+
+==========================================   ================================================================
+
+.. rubric:: Methods
+
+==========================   ======================
+
+Method                                      Summary
+
+==========================   ======================
+:ref:`display <display_8>`       Display a surface.
+
+==========================   ======================
+
+.. rubric:: Included in:
+
+====================================   =========================================================================================
+
+Parent                                                                                                                   Summary
+
+====================================   =========================================================================================
+:ref:`point_surface <point_surface>`       Provides access to creating point surfaces (surfaces containing a single data point).
+
+====================================   =========================================================================================
+

@@ -1,0 +1,34 @@
+.. _ref_solver_tui_solution_report_definitions:
+
+report_definitions
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu.solution.report_definitions
+   :members: compute, copy, delete_all
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   aeromechanics/aeromechanics_contents
+   custom/custom_contents
+   drag/drag_contents
+   expression/expression_contents
+   flux/flux_contents
+   force/force_contents
+   icing/icing_contents
+   injection/injection_contents
+   lift/lift_contents
+   mesh/mesh_contents
+   moment/moment_contents
+   single_valued_expression/single_valued_expression_contents
+   surface/surface_contents
+   time/time_contents
+   user_defined/user_defined_contents
+   vbm/vbm_contents
+   volume/volume_contents

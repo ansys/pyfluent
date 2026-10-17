@@ -1,0 +1,21 @@
+:orphan:
+
+.. _upper:
+
+upper
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.upper
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`frustum <frustum>`       'frustum' child.
+
+========================   ====================
+

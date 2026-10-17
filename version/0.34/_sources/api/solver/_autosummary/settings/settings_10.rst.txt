@@ -1,0 +1,32 @@
+:orphan:
+
+.. _settings_10:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_10
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=======================   ======================================
+
+Attribute                                                Summary
+
+=======================   ======================================
+:ref:`phase <phase_12>`       Domain name to define settings on.
+
+=======================   ======================================
+
+.. rubric:: Included in:
+
+====================================   ===================================
+
+Parent                                                             Summary
+
+====================================   ===================================
+:ref:`network_child <network_child>`       'child_object_type' of network.
+
+====================================   ===================================
+

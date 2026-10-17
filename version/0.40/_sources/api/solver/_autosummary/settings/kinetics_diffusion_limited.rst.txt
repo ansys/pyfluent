@@ -1,0 +1,36 @@
+:orphan:
+
+.. _kinetics_diffusion_limited:
+
+kinetics_diffusion_limited
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.kinetics_diffusion_limited
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   =================================================
+
+Attribute                                                                                            Summary
+
+========================================================   =================================================
+:ref:`diffusion_rate_constant <diffusion_rate_constant>`               Mass diffusion-limited rate constant.
+
+:ref:`pre_exponential_factor <pre_exponential_factor_1>`       Kinetics-limited rate pre-exponential factor.
+
+:ref:`activation_energy <activation_energy_4>`                      Kinetics-limited rate activation energy.
+
+========================================================   =================================================
+
+.. rubric:: Included in:
+
+==========================================   ========================================
+
+Parent                                                                        Summary
+
+==========================================   ========================================
+:ref:`combustion_model <combustion_model>`       Material property: combustion-model.
+
+==========================================   ========================================
+

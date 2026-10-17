@@ -1,0 +1,35 @@
+.. _ref_solver_datamodel_solver_workflow:
+
+solver.datamodel.solver_workflow
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.solver_workflow.Root
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   CellZone/CellZone_contents
+   FaceZone/FaceZone_contents
+   GlobalSettings/GlobalSettings_contents
+   JournalCommand/JournalCommand_contents
+   TWF_AssociateMesh/TWF_AssociateMesh_contents
+   TWF_BasicMachineDescription/TWF_BasicMachineDescription_contents
+   TWF_BladeRowAnalysisScope/TWF_BladeRowAnalysisScope_contents
+   TWF_CompleteWorkflowSetup/TWF_CompleteWorkflowSetup_contents
+   TWF_CreateCFDModel/TWF_CreateCFDModel_contents
+   TWF_ImportMesh/TWF_ImportMesh_contents
+   TWF_MapRegionInfo/TWF_MapRegionInfo_contents
+   TWF_ReportDefMonitors/TWF_ReportDefMonitors_contents
+   TWF_TurboPhysics/TWF_TurboPhysics_contents
+   TWF_TurboRegionsZones/TWF_TurboRegionsZones_contents
+   TWF_TurboSurfaces/TWF_TurboSurfaces_contents
+   TWF_TurboTopology/TWF_TurboTopology_contents
+   Zone/Zone_contents
+   ZoneList/ZoneList_contents

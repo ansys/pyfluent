@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coupled_nsteps:
+
+coupled_nsteps
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coupled_nsteps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`degradation <degradation>`   Degradation model settings.
+
+================================   ===========================
+

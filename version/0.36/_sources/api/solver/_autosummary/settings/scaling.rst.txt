@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scaling:
+
+scaling
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scaling
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`field_value <field_value>`       'field_value' child.
+
+================================   ========================
+

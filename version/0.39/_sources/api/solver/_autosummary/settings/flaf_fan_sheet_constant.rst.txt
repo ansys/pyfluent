@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flaf_fan_sheet_constant:
+
+flaf_fan_sheet_constant
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.flaf_fan_sheet_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _advanced_1:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.advanced_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ===============================
+
+Attribute                                                                  Summary
+
+================================================   ===============================
+:ref:`contact_resis <contact_resis>`                   Contact Resistance Regions.
+
+:ref:`coolant_channel <coolant_channel>`                       Up coolant channel.
+
+:ref:`stack_management <stack_management>`                       Stack management.
+
+:ref:`predefined_workflow <predefined_workflow>`          Use predefined workflow.
+
+================================================   ===============================
+
+.. rubric:: Included in:
+
+====================   =========================
+
+Parent                                   Summary
+
+====================   =========================
+:ref:`pemfc <pemfc>`       PEMFC model settings.
+
+====================   =========================
+

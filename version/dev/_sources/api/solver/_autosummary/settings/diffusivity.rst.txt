@@ -1,0 +1,21 @@
+:orphan:
+
+.. _diffusivity:
+
+diffusivity
+===========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.diffusivity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`setup_1 <setup_1>`   Set membrane species diffusion list.
+
+========================   ====================================
+

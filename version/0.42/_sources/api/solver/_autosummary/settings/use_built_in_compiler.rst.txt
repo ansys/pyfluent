@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_built_in_compiler:
+
+use_built_in_compiler
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.use_built_in_compiler
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===================================
+
+Parent                                                           Summary
+
+==================================   ===================================
+:ref:`compiled_udf <compiled_udf>`       Compile user-defined functions.
+
+==================================   ===================================
+

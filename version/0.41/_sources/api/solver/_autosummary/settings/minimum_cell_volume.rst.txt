@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_cell_volume:
+
+minimum_cell_volume
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minimum_cell_volume
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===========================================================================================================
+
+Parent                                                                                                                                               Summary
+
+==============================================   ===========================================================================================================
+:ref:`vof_to_dpm_generic <vof_to_dpm_generic>`       Define cell registers, expressions, and adaption settings suitable for a generic VOF-to-DPM simulation.
+
+==============================================   ===========================================================================================================
+

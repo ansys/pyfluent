@@ -1,0 +1,23 @@
+:orphan:
+
+.. _auto_name:
+
+auto_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.auto_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =====================
+
+Parent                                                     Summary
+
+==========================================   =====================
+:ref:`split_surface <split_surface>`                Split Surface.
+
+:ref:`external_surface <external_surface>`       External Surface.
+
+==========================================   =====================
+

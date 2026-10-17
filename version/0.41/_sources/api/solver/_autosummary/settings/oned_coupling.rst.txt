@@ -1,0 +1,34 @@
+:orphan:
+
+.. _oned_coupling:
+
+oned_coupling
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.oned_coupling
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ========================
+
+Argument                                                    Summary
+
+========================================   ========================
+:ref:`code_name <code_name>`                         The code name.
+
+:ref:`input_file_name <input_file_name>`       The input file name.
+
+========================================   ========================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

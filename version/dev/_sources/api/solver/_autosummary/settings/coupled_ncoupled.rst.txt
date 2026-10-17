@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coupled_ncoupled:
+
+coupled_ncoupled
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.coupled_ncoupled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`degradation <degradation>`   Degradation model settings.
+
+================================   ===========================
+

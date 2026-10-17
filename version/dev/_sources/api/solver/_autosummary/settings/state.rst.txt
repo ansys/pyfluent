@@ -1,0 +1,21 @@
+:orphan:
+
+.. _state:
+
+state
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.state
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =================================
+
+Parent                                                                 Summary
+
+==========================================   =================================
+:ref:`restore_topology <restore_topology>`   Set the state of physics objects.
+
+==========================================   =================================
+

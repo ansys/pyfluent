@@ -1,0 +1,32 @@
+:orphan:
+
+.. _constant_2:
+
+constant
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.constant_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ========================
+
+Attribute                                       Summary
+
+============================   ========================
+:ref:`diameter <diameter_4>`       The sphere diameter.
+
+============================   ========================
+
+.. rubric:: Included in:
+
+==============================   =====================================
+
+Parent                                                         Summary
+
+==============================   =====================================
+:ref:`options_18 <options_18>`       The options Constant or Variable.
+
+==============================   =====================================
+

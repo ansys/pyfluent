@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reverse_direction_along_y_axis:
+
+reverse_direction_along_y_axis
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.reverse_direction_along_y_axis
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =================================================
+
+Parent                                                               Summary
+
+========================   =================================================
+:ref:`plot_11 <plot_11>`       Provides access to plot solution on surfaces.
+
+========================   =================================================
+

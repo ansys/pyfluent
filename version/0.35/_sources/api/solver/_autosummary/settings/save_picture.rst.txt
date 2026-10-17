@@ -1,0 +1,21 @@
+:orphan:
+
+.. _save_picture:
+
+save_picture
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.save_picture
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ========================
+
+Parent                                                  Summary
+
+====================================   ========================
+:ref:`mesh_motion_2 <mesh_motion_2>`       Perform mesh motion.
+
+====================================   ========================
+

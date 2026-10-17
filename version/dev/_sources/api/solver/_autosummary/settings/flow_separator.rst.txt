@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_separator:
+
+flow_separator
+==============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.flow_separator
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============
+
+Parent                                Summary
+
+============================   ==============
+:ref:`options_5 <options_5>`   Model options.
+
+============================   ==============
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _options_20:
+
+options
+=======
+
+.. deprecated:: Ansys 2025R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.options_20
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===============================
+
+Attribute                                                                Summary
+
+==============================================   ===============================
+:ref:`node_values <node_values_6>`                          'node_values' child.
+
+:ref:`position_on_x_axis <position_on_x_axis>`       'position_on_x_axis' child.
+
+:ref:`position_on_y_axis <position_on_y_axis>`       'position_on_y_axis' child.
+
+==============================================   ===============================
+
+.. rubric:: Included in:
+
+====================================   ===================================
+
+Parent                                                             Summary
+
+====================================   ===================================
+:ref:`xy_plot_child <xy_plot_child>`       'child_object_type' of xy_plot.
+
+====================================   ===================================
+

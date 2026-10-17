@@ -1,0 +1,23 @@
+.. _ref_solver_tui_results_plot:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu.results.plot
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   cumulative_plot/cumulative_plot_contents
+   histogram/histogram_contents
+   interpolated_data/interpolated_data_contents
+   profile_data/profile_data_contents
+   solution_plot/solution_plot_contents
+   xy_plot/xy_plot_contents

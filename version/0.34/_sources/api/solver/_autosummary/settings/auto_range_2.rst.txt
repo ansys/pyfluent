@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_range_2:
+
+auto_range
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.auto_range_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`range_5 <range_5>`       Range using the min max options.
+
+========================   ====================================
+

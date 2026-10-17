@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_advection:
+
+boundary_advection
+==================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.boundary_advection
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================================
+
+Parent                                                                   Summary
+
+========================   =====================================================
+:ref:`thermal <thermal>`   Allows to change thermal model variables or settings.
+
+========================   =====================================================
+

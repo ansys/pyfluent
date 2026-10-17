@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_AddThinVolumeMeshControls__AddThinVolumeMeshControlsCommandArguments:
+
+_AddThinVolumeMeshControlsCommandArguments
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.AddThinVolumeMeshControls._AddThinVolumeMeshControlsCommandArguments
+   :members: _AssignSizeUsing, _AutoControlCreation, _CompleteLabelSourceList, _CompleteLabelTargetList, _CompleteRegionScope, _CompleteTopoSourceList, _CompleteZoneSourceList, _CompleteZoneTargetList, _DoubleBiasing, _GrowthRate, _Intervals, _LabelSourceList, _LabelTargetList, _MaxNumberOfIntervals, _Objects, _ParallelSource, _ParallelTarget, _RegionScope, _RemeshOverlapping, _SelectSourceBy, _SelectTargetBy, _SideImprints, _Size, _StackedPlates, _ThinMeshingName, _ThinVolRegs, _TopoSourceList, _ZoneLocation, _ZoneLocation2, _ZoneSourceList, _ZoneTargetList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _ThinVolumePreferences/_ThinVolumePreferences_contents

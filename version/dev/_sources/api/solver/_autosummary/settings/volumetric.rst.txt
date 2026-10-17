@@ -1,0 +1,21 @@
+:orphan:
+
+.. _volumetric:
+
+volumetric
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.volumetric
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ================
+
+Parent                                  Summary
+
+============================   ================
+:ref:`species_6 <species_6>`   Mixture species.
+
+============================   ================
+

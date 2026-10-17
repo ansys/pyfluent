@@ -1,0 +1,36 @@
+:orphan:
+
+.. _cylinder_def:
+
+cylinder_def
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cylinder_def
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ===================
+
+Attribute                              Summary
+
+========================   ===================
+:ref:`origin <origin_4>`       'origin' child.
+
+:ref:`axis <axis_3>`             'axis' child.
+
+:ref:`radius <radius_4>`       'radius' child.
+
+========================   ===================
+
+.. rubric:: Included in:
+
+================================   =====================
+
+Parent                                           Summary
+
+================================   =====================
+:ref:`geometry_10 <geometry_10>`       'geometry' child.
+
+================================   =====================
+

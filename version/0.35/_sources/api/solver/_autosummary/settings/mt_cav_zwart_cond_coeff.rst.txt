@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_cav_zwart_cond_coeff:
+
+mt_cav_zwart_cond_coeff
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_cav_zwart_cond_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ==============================
+
+Parent                                                                          Summary
+
+======================================================   ==============================
+:ref:`mt_cav_model_constants <mt_cav_model_constants>`       Cav model constants class.
+
+======================================================   ==============================
+

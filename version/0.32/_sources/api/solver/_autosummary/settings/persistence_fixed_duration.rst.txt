@@ -1,0 +1,21 @@
+:orphan:
+
+.. _persistence_fixed_duration:
+
+persistence_fixed_duration
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.persistence_fixed_duration
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================================================
+
+Parent                                                                         Summary
+
+==================================   =================================================
+:ref:`parameters_7 <parameters_7>`       Flexible numerics controls parameters object.
+
+==================================   =================================================
+

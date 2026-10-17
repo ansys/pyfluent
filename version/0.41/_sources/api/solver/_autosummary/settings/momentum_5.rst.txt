@@ -1,0 +1,38 @@
+:orphan:
+
+.. _momentum_5:
+
+momentum
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.momentum_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ========================
+
+Attribute                                               Summary
+
+====================================   ========================
+:ref:`flowrate_frac <flowrate_frac>`       Flow rate weighting.
+
+====================================   ========================
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`outflow_child <outflow_child>`           'child_object_type' of outflow.
+
+:ref:`phase_15_child <phase_15_child>`           'child_object_type' of phase.
+
+:ref:`outflow_1_child <outflow_1_child>`       'child_object_type' of outflow.
+
+:ref:`phase_39_child <phase_39_child>`           'child_object_type' of phase.
+
+========================================   ===================================
+

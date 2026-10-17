@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_mop:
+
+use_mop
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.use_mop
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

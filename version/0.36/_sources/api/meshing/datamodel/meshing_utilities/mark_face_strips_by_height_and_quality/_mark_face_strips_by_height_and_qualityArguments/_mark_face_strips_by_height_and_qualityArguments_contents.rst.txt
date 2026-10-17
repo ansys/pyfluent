@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_face_strips_by_height_and_quality__mark_face_strips_by_height_and_qualityArguments:
+
+_mark_face_strips_by_height_and_qualityArguments
+================================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.mark_face_strips_by_height_and_quality._mark_face_strips_by_height_and_qualityArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern, _feature_angle, _quality_limit, _quality_measure, _strip_height, _strip_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

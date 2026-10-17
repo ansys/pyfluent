@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reset_to_defaults:
+
+reset_to_defaults
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.reset_to_defaults
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =====================================================
+
+Parent                                                           Summary
+
+================   =====================================================
+:ref:`fmg <fmg>`       The set full-multigrid for initialization object.
+
+================   =====================================================
+

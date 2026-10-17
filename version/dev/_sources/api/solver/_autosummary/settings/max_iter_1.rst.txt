@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_iter_1:
+
+max_iter
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.max_iter_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ========================
+
+Parent                                                      Summary
+
+========================================   ========================
+:ref:`spring_settings <spring_settings>`   'spring_settings' child.
+
+========================================   ========================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _date_and_time:
+
+date_and_time
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.date_and_time
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===========================
+
+Attribute                                    Summary
+
+======================   ===========================
+:ref:`day <day>`                                Day.
+
+:ref:`month <month>`                          Month.
+
+:ref:`hour <hour>`           Hour in 24-hour format.
+
+:ref:`minute <minute>`                       Minute.
+
+======================   ===========================
+
+.. rubric:: Included in:
+
+==================================================   ==================================
+
+Parent                                                                          Summary
+
+==================================================   ==================================
+:ref:`solar_calculator <solar_calculator>`               Settings for solar calculator.
+
+:ref:`solar_calculator_gui <solar_calculator_gui>`       Settings for solar calculator.
+
+==================================================   ==================================
+

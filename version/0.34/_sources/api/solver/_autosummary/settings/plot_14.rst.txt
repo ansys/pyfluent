@@ -1,0 +1,21 @@
+:orphan:
+
+.. _plot_14:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.plot_14
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================
+
+Parent                                                                Summary
+
+============================================   ==============================
+:ref:`interpolated_data <interpolated_data>`       Display interpolated data.
+
+============================================   ==============================
+

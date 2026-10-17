@@ -1,0 +1,21 @@
+:orphan:
+
+.. _linearized_mass_transfer_udf:
+
+linearized_mass_transfer_udf
+============================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.linearized_mass_transfer_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`expert_13 <expert_13>`   Expert options object.
+
+============================   ======================
+

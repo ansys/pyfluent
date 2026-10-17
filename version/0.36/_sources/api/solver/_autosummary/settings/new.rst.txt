@@ -1,0 +1,32 @@
+:orphan:
+
+.. _new:
+
+new
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.new
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   ============================================
+
+Argument                                                                            Summary
+
+============================================   ============================================
+:ref:`project_file_name <project_file_name>`       The name of new parametric project file.
+
+============================================   ============================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`parametric_project <parametric_project>`       'parametric_project' child.
+
+==============================================   ===============================
+

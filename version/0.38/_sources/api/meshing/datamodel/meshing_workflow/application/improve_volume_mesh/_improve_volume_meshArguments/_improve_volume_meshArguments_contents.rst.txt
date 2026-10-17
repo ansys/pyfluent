@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_improve_volume_mesh__improve_volume_meshArguments:
+
+_improve_volume_meshArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.improve_volume_mesh._improve_volume_meshArguments
+   :members: _add_multiple_quality_methods, _cell_quality_limit, _old_quality_criteria_list, _old_quality_method_list, _quality_criteria_list, _quality_method, _quality_method_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _improve_volume_mesh_preferences/_improve_volume_mesh_preferences_contents

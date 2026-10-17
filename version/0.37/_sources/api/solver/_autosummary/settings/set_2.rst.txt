@@ -1,0 +1,38 @@
+:orphan:
+
+.. _set_2:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.set_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ===========================
+
+Attribute                                                    Summary
+
+======================================   ===========================
+:ref:`partition_mask <partition_mask>`               Partition mask.
+
+:ref:`verbosity <verbosity_21>`              The parallel verbosity.
+
+:ref:`time_out <time_out>`                    Spawn timeout seconds.
+
+:ref:`fast_io <fast_io>`                        Use fast I/O option.
+
+======================================   ===========================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`parallel <parallel>`       'parallel' child.
+
+==========================   =====================
+

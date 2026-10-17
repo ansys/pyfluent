@@ -1,0 +1,21 @@
+:orphan:
+
+.. _update_monitors:
+
+update_monitors
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.update_monitors
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ========================
+
+Parent                                                  Summary
+
+====================================   ========================
+:ref:`mesh_motion_2 <mesh_motion_2>`       Perform mesh motion.
+
+====================================   ========================
+

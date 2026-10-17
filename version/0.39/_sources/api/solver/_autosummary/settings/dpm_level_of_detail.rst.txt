@@ -1,0 +1,21 @@
+:orphan:
+
+.. _dpm_level_of_detail:
+
+dpm_level_of_detail
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dpm_level_of_detail
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`discrete_phase <discrete_phase>`       Toplevel object.
+
+======================================   ====================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_35:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_35
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================================   =========================================================================
+
+Parent                                                                                                                                                   Summary
+
+====================================================================================   =========================================================================
+:ref:`write_simulation_report_template_file <write_simulation_report_template_file>`       Write a JSON template file with this case Simulation Report settings.
+
+====================================================================================   =========================================================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _acoustics_wave_eqn_controls:
+
+acoustics_wave_eqn_controls
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.acoustics_wave_eqn_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ======================================================
+
+Attribute                                                                                                               Summary
+
+======================================================================   ======================================================
+:ref:`expert <expert_8>`                                                                                                Object.
+
+:ref:`relative_convergence_criterion <relative_convergence_criterion>`       Convergence tolerance for the timestep iterations.
+
+:ref:`max_iter_per_timestep_count <max_iter_per_timestep_count>`                     Maximum number of iterations per timestep.
+
+======================================================================   ======================================================
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`controls_1 <controls_1>`       Solution controls object.
+
+==============================   =============================
+

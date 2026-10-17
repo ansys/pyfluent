@@ -1,0 +1,61 @@
+:orphan:
+
+.. _gradient_based:
+
+gradient_based
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.gradient_based
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ========================================
+
+Attribute                                                                           Summary
+
+================================================   ========================================
+:ref:`observables <observables>`                         The postprocessing options object.
+
+:ref:`methods <methods_3>`                             The adjoint solution methods object.
+
+:ref:`controls <controls_2>`                                   The adjoint controls object.
+
+:ref:`monitors <monitors>`                                    The residual monitors object.
+
+:ref:`calculation <calculation>`                            The adjoint calculation object.
+
+:ref:`postprocess_options <postprocess_options>`         The postprocessing options object.
+
+:ref:`reporting <reporting>`                                      Adjoint reporting object.
+
+:ref:`design_tool <design_tool>`                         Gradient-based design tool object.
+
+:ref:`optimizer <optimizer>`                               Gradient-based optimizer object.
+
+:ref:`utilities <utilities>`                                      Adjoint utilities object.
+
+================================================   ========================================
+
+.. rubric:: Methods
+
+=========================   =====================================
+
+Method                                                    Summary
+
+=========================   =====================================
+:ref:`enable <enable_26>`       Enables and loads adjoint module.
+
+=========================   =====================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`design <design>`       'design' child.
+
+======================   ===================
+

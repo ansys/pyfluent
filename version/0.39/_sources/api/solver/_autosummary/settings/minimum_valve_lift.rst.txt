@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_valve_lift:
+
+minimum_valve_lift
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minimum_valve_lift
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`in_cylinder <in_cylinder>`       'in_cylinder' child.
+
+================================   ========================
+

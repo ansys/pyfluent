@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateShellBoundaryLayerMesh__GenerateShellBoundaryLayerMeshArguments:
+
+_GenerateShellBoundaryLayerMeshArguments
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.GenerateShellBoundaryLayerMesh._GenerateShellBoundaryLayerMeshArguments
+   :members: _GapFactor, _LocalRemesh, _MaxAspectRatio, _MaxFaceSkew, _MinAspectRatio, _RefineStretchedQuads, _RemeshGrowthRate, _SplitQuads, _nOrthogonalLayers
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

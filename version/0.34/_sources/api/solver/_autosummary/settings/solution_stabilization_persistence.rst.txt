@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solution_stabilization_persistence:
+
+solution_stabilization_persistence
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.solution_stabilization_persistence
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================================================
+
+Parent                                                                         Summary
+
+==================================   =================================================
+:ref:`parameters_7 <parameters_7>`       Flexible numerics controls parameters object.
+
+==================================   =================================================
+

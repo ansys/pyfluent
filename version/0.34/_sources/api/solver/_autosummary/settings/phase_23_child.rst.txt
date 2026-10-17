@@ -1,0 +1,34 @@
+:orphan:
+
+.. _phase_23_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_23_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =====================================================================
+
+Attribute                                                                                                          Summary
+
+==================================================   =====================================================================
+:ref:`recirculation_inlet <recirculation_inlet_1>`       Allows to change recirculation-inlet model variables or settings.
+
+:ref:`geometry <geometry_6>`                                        Allows to change geometry model variables or settings.
+
+==================================================   =====================================================================
+
+.. rubric:: Included in:
+
+==========================   ======================================
+
+Parent                                                      Summary
+
+==========================   ======================================
+:ref:`phase_23 <phase_23>`       Domain name to define settings on.
+
+==========================   ======================================
+

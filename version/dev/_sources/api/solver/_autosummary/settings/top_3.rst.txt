@@ -1,0 +1,21 @@
+:orphan:
+
+.. _top_3:
+
+top
+===
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.top_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===============================
+
+Parent                                           Summary
+
+======================   ===============================
+:ref:`text_1 <text_1>`   The text window options object.
+
+======================   ===============================
+

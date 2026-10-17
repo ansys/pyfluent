@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solve_free_parameters_direct_interpolation:
+
+solve_free_parameters_direct_interpolation
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solve_free_parameters_direct_interpolation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ============================
+
+Parent                                                            Summary
+
+==========================================   ============================
+:ref:`freeform_motions <freeform_motions>`       Freeform motions object.
+
+==========================================   ============================
+

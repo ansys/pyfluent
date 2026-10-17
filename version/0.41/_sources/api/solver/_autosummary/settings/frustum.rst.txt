@@ -1,0 +1,40 @@
+:orphan:
+
+.. _frustum:
+
+frustum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.frustum
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   =====================================
+
+Attribute                                                Summary
+
+========================   =====================================
+:ref:`axis <axis_1>`                   The axis for the frustum.
+
+:ref:`lower <lower>`            The lower radius of the frustum.
+
+:ref:`upper <upper>`            The upper radius of the frustum.
+
+:ref:`length <length_1>`             The length for the frustum.
+
+:ref:`origin <origin_1>`       The origin point for the frustum.
+
+========================   =====================================
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`primitive <primitive>`       'primitive' child.
+
+============================   ======================
+

@@ -1,0 +1,134 @@
+:orphan:
+
+.. _species_5:
+
+species
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.species_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================================   ========================================
+
+Attribute                                                                                                                 Summary
+
+======================================================================================   ========================================
+:ref:`mean_mixture_fraction <mean_mixture_fraction>`                                                       Mean Mixture Fraction.
+
+:ref:`secondary_mean_mixture_fraction <secondary_mean_mixture_fraction>`                         Secondary Mean Mixture Fraction.
+
+:ref:`mixture_fraction_variance <mixture_fraction_variance>`                                           Mixture Fraction Variance.
+
+:ref:`secondary_mixture_fraction_variance <secondary_mixture_fraction_variance>`             Secondary Mixture Fraction Variance.
+
+:ref:`specify_species_in_mole_fractions <specify_species_in_mole_fractions>`                           Species in Mole Fractions.
+
+:ref:`backflow_species_mass_fraction <backflow_species_mass_fraction>`                                     Species mass fraction.
+
+:ref:`species_mole_fraction <species_mole_fraction>`                                                       Species mole fraction.
+
+:ref:`backflow_mixture_fraction <backflow_mixture_fraction>`                                                    Mixture fraction.
+
+:ref:`backflow_mode_2_probability <backflow_mode_2_probability>`                                              Mode-2 probability.
+
+:ref:`backflow_mode_3_probability <backflow_mode_3_probability>`                                              Mode-3 probability.
+
+:ref:`backflow_progress_variable <backflow_progress_variable>`                                                 Progress Variable.
+
+:ref:`backflow_progress_variable_variance <backflow_progress_variable_variance>`                      Progress Variable Variance.
+
+:ref:`backflow_flame_area_density <backflow_flame_area_density>`                                              Flame Area Density.
+
+:ref:`backflow_inert_stream <backflow_inert_stream>`                                                                Inert Stream.
+
+:ref:`backflow_pollutant_no_mass_fraction <backflow_pollutant_no_mass_fraction>`                      Pollutant NO Mass Fraction.
+
+:ref:`backflow_pollutant_hcn_mass_fraction <backflow_pollutant_hcn_mass_fraction>`                   Pollutant HCN Mass Fraction.
+
+:ref:`backflow_pollutant_nh3_mass_fraction <backflow_pollutant_nh3_mass_fraction>`                   Pollutant NH3 Mass Fraction.
+
+:ref:`backflow_pollutant_n2o_mass_fraction <backflow_pollutant_n2o_mass_fraction>`                   Pollutant N2O Mass Fraction.
+
+:ref:`backflow_pollutant_urea_mass_fraction <backflow_pollutant_urea_mass_fraction>`                Pollutant UREA Mass Fraction.
+
+:ref:`backflow_pollutant_hnco_mass_fraction <backflow_pollutant_hnco_mass_fraction>`                Pollutant HNCO Mass Fraction.
+
+:ref:`backflow_pollutant_nco_mass_fraction <backflow_pollutant_nco_mass_fraction>`                   Pollutant NCO Mass Fraction.
+
+:ref:`backflow_pollutant_so2_mass_fraction <backflow_pollutant_so2_mass_fraction>`                   Pollutant SO2 Mass Fraction.
+
+:ref:`backflow_pollutant_h2s_mass_fraction <backflow_pollutant_h2s_mass_fraction>`                   Pollutant H2S Mass Fraction.
+
+:ref:`backflow_pollutant_so3_mass_fraction <backflow_pollutant_so3_mass_fraction>`                   Pollutant SO3 Mass Fraction.
+
+:ref:`backflow_pollutant_sh_mass_fraction <backflow_pollutant_sh_mass_fraction>`                      Pollutant SH Mass Fraction.
+
+:ref:`backflow_pollutant_so_mass_fraction <backflow_pollutant_so_mass_fraction>`                      Pollutant SO Mass Fraction.
+
+:ref:`backflow_soot_mass_fraction <backflow_soot_mass_fraction>`                                              Soot Mass Fraction.
+
+:ref:`backflow_nuclei <backflow_nuclei>`                                                                                  Nuclei.
+
+:ref:`backflow_tar_mass_fraction <backflow_tar_mass_fraction>`                                                 Tar Mass Fraction.
+
+:ref:`backflow_pollutant_hg_mass_fraction <backflow_pollutant_hg_mass_fraction>`                      Pollutant HG Mass Fraction.
+
+:ref:`backflow_pollutant_hgcl2_mass_fraction <backflow_pollutant_hgcl2_mass_fraction>`             Pollutant HGCL2 Mass Fraction.
+
+:ref:`backflow_pollutant_hcl_mass_fraction <backflow_pollutant_hcl_mass_fraction>`                   Pollutant HCL Mass Fraction.
+
+:ref:`backflow_pollutant_hgo_mass_fraction <backflow_pollutant_hgo_mass_fraction>`                   Pollutant HGO Mass Fraction.
+
+:ref:`backflow_pollutant_cl_mass_fraction <backflow_pollutant_cl_mass_fraction>`                      Pollutant CL Mass Fraction.
+
+:ref:`backflow_pollutant_cl2_mass_fraction <backflow_pollutant_cl2_mass_fraction>`                   Pollutant CL2 Mass Fraction.
+
+:ref:`backflow_pollutant_hgcl_mass_fraction <backflow_pollutant_hgcl_mass_fraction>`                Pollutant HGCL Mass Fraction.
+
+:ref:`backflow_pollutant_hocl_mass_fraction <backflow_pollutant_hocl_mass_fraction>`                Pollutant HOCL Mass Fraction.
+
+:ref:`tss_scalar <tss_scalar>`                                                                                Help not available.
+
+======================================================================================   ========================================
+
+.. rubric:: Included in:
+
+========================================================   ===========================================
+
+Parent                                                                                         Summary
+
+========================================================   ===========================================
+:ref:`settings_2 <settings_2>`                                      Domain name to define settings on.
+
+:ref:`phase_4_child <phase_4_child>`                                     'child_object_type' of phase.
+
+:ref:`settings_13 <settings_13>`                                    Domain name to define settings on.
+
+:ref:`phase_15_child <phase_15_child>`                                   'child_object_type' of phase.
+
+:ref:`settings_18 <settings_18>`                                    Domain name to define settings on.
+
+:ref:`phase_20_child <phase_20_child>`                                   'child_object_type' of phase.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`outlet_vent_1_child <outlet_vent_1_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`pressure_outlet_1_child <pressure_outlet_1_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`exhaust_fan_2_child <exhaust_fan_2_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`phase_29_child <phase_29_child>`                                   'child_object_type' of phase.
+
+:ref:`outlet_vent_2_child <outlet_vent_2_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`phase_40_child <phase_40_child>`                                   'child_object_type' of phase.
+
+:ref:`pressure_outlet_2_child <pressure_outlet_2_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`phase_45_child <phase_45_child>`                                   'child_object_type' of phase.
+
+========================================================   ===========================================
+

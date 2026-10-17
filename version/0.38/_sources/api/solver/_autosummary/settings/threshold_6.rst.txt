@@ -1,0 +1,21 @@
+:orphan:
+
+.. _threshold_6:
+
+threshold
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.threshold_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==========================================
+
+Parent                                                                    Summary
+
+====================================   ==========================================
+:ref:`mesh_adaption <mesh_adaption>`       Use load balancing for mesh adaption?.
+
+====================================   ==========================================
+

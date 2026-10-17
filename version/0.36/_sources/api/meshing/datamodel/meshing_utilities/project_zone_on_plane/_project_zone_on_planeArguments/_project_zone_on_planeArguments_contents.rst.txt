@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_project_zone_on_plane__project_zone_on_planeArguments:
+
+_project_zone_on_planeArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.project_zone_on_plane._project_zone_on_planeArguments
+   :members: _zone_id
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _plane/_plane_contents

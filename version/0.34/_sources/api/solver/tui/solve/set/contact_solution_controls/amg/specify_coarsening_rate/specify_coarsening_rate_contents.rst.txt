@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_set_contact_solution_controls_amg_specify_coarsening_rate:
+
+specify_coarsening_rate
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.solve.set.contact_solution_controls.amg.specify_coarsening_rate
+   :members: coarsen_rate, specify_coarsening_rate
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

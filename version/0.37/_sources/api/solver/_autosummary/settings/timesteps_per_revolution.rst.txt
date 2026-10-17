@@ -1,0 +1,21 @@
+:orphan:
+
+.. _timesteps_per_revolution:
+
+timesteps_per_revolution
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.timesteps_per_revolution
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`fwh_options <fwh_options>`       Entering object.
+
+================================   ====================
+

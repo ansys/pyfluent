@@ -1,0 +1,32 @@
+:orphan:
+
+.. _view_simulation_report:
+
+view_simulation_report
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.view_simulation_report
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   =================================================
+
+Argument                                                                       Summary
+
+==================================   =================================================
+:ref:`report_name <report_name_1>`       Simulation report to be displayed in the TUI.
+
+==================================   =================================================
+
+.. rubric:: Included in:
+
+==============================================   ======================================================================================================================
+
+Parent                                                                                                                                                          Summary
+
+==============================================   ======================================================================================================================
+:ref:`simulation_reports <simulation_reports>`       Provides access to simulation reports, allowing to generate, view, export, and manage reports for the simulations.
+
+==============================================   ======================================================================================================================
+

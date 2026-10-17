@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_iterations_4:
+
+max_iterations
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.max_iterations_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

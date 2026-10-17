@@ -1,0 +1,23 @@
+:orphan:
+
+.. _frequency_cmd:
+
+frequency_cmd
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.frequency_cmd
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ============================================
+
+Parent                                                                                            Summary
+
+==========================================================   ============================================
+:ref:`execute_commands_child <execute_commands_child>`           'child_object_type' of execute_commands.
+
+:ref:`execute_commands_1_child <execute_commands_1_child>`       'child_object_type' of execute_commands.
+
+==========================================================   ============================================
+

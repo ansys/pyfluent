@@ -1,0 +1,21 @@
+:orphan:
+
+.. _packing_udf:
+
+packing_udf
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.packing_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`granular_props <granular_props>`       Granular phase properties.
+
+======================================   ==============================
+

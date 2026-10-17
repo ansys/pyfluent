@@ -1,0 +1,23 @@
+:orphan:
+
+.. _arrow_scale:
+
+arrow_scale
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.arrow_scale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`style_attribute <style_attribute>`           The style attributes.
+
+:ref:`style_attribute_1 <style_attribute_1>`       The style attributes.
+
+============================================   =========================
+

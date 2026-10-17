@@ -1,0 +1,50 @@
+:orphan:
+
+.. _results:
+
+results
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.results
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ==============================================================================================================================================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                                                                                                                                         Summary
+
+========================================================   ==============================================================================================================================================================================================================================================================================================================================================
+:ref:`custom_field_functions <custom_field_functions_1>`                                                                                                                                                                                                                                                                                               Provides access to creating custom field function.
+
+:ref:`custom_vectors <custom_vectors>`                                                                                                                                                                                                                                                                                                  Create and manage user-defined vector fields for post-processing.
+
+:ref:`surfaces <surfaces_9>`                                                                                                                                                                                                                                                                                  Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+:ref:`graphics <graphics>`                                                                                                                                                                                                                                                                                                                       Controls the graphics display of the simulation results.
+
+:ref:`plot <plot_4>`                                                                                                                                                                                                                                                                  Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+:ref:`ansys_sound_analysis <ansys_sound_analysis>`                                                                                                                                           Configure and perform sound analysis by specifying input data, frequency response filters, receivers, and output options. Use this section to set up and manage all aspects of your sound analysis workflow.
+
+:ref:`scene <scene>`                                           A scene is a container object graphics that organizes and manages the display of multiple graphical elements such as contours, vectors, pathlines, LIC, particle tracks, and mesh into a single visual output. Scenes help you build layered visualizations, control rendering order, and export cohesive views for reports or animations.
+
+:ref:`annotation <annotation>`                                                                                                                                                                                                                                                                                                                                Add, Edit, Remove annotations in case file.
+
+:ref:`animations <animations>`                                                                                                                                                                                                                                                                                                                       View and manage animation objects in the simulation.
+
+:ref:`report <report_2>`                                                                                                                                                                                               Provides access to common settings to set up reports for your CFD simulation. Reports can be compiled for fluxes forces projected areas surface and volume integrals among others.
+
+========================================================   ==============================================================================================================================================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+======================   ==================
+
+Parent                              Summary
+
+======================   ==================
+:ref:`root <ref_root>`       'root' object.
+
+======================   ==================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_39:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_39
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================================================
+
+Parent                                                                                                            Summary
+
+==============================================   ========================================================================
+:ref:`write_user_setting <write_user_setting>`       Write the contents of the Modified Settings Summary table to a file.
+
+==============================================   ========================================================================
+

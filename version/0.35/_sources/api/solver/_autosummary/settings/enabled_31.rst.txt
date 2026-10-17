@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_31:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_31
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===========================================
+
+Parent                                                                                 Summary
+
+================================================   ===========================================
+:ref:`thermal_abuse_model <thermal_abuse_model>`       Thermal abuse model related parameters.
+
+================================================   ===========================================
+
