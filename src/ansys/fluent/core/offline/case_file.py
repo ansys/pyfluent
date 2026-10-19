@@ -53,8 +53,8 @@ import numpy.typing as npt
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
-from . import lispy
-from .pre_processor import remove_unsupported_xml_chars
+from . import _lispy
+from ._pre_processor import remove_unsupported_xml_chars
 
 
 class InputParameterOld:
@@ -413,7 +413,7 @@ class RPVarProcessor:
 
         self.rp_vars_str = rp_vars_str
 
-        self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
+        self._rp_vars = {v[0]: v[1] for v in _lispy.parse(rp_vars_str)[1]}
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
@@ -487,6 +487,8 @@ class RPVarProcessor:
 
     def rp_vars(self) -> dict:
         """Get the rpvars associated with this case.
+
+        See the :ref:`rpvars API <ref_ansys_fluent_core_rpvars>` for details.
 
         Returns
         -------

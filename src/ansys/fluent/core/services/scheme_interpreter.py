@@ -30,7 +30,7 @@ service. The grpc service implementation lives in:
 
 Class hierarchy
 ---------------
-``SchemeInterpreter``
+:class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter`
     gRPC-based implementation (v1 and v0 proto API).
 
 Example

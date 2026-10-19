@@ -23,7 +23,7 @@
 
 """Base implementation and active-session context manager for Fluent sessions.
 
-``BaseSession`` is an internal base class; use the concrete session classes
+:class:`~ansys.fluent.core.execution.session.session.BaseSession` is an internal base class; use the concrete session classes
 exposed by :mod:`ansys.fluent.core.execution.session`. The module-level
 :func:`using` context manager makes a session active for top-level settings
 objects and is re-exported as ``ansys.fluent.core.using`` for compatibility.
@@ -138,7 +138,7 @@ class BaseSession:
     Attributes
     ----------
     scheme: SchemeInterpreter
-        Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+        Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
 
     Methods
     -------
@@ -206,10 +206,10 @@ class BaseSession:
 
         Parameters
         ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
-            Encapsulates a Fluent connection.
+        fluent_connection : FluentConnection
+            Encapsulates a :class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`.
         scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+            Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
@@ -260,14 +260,14 @@ class BaseSession:
         self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
-        self.rp_vars = RPVars(self.scheme.string_eval)
+        self._rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
         self.transcript = fluent_connection._service_factory.transcript_streaming
         if self._start_transcript:
             self.transcript.start()
 
-        self.application_runtime = self._fluent_connection.application_runtime
+        self._application_runtime = self._fluent_connection.application_runtime
 
         self.journal = Journal(self.application_runtime)
 
@@ -337,8 +337,27 @@ class BaseSession:
     @property
     @deprecated(version="0.32", reason="Use ``session.is_server_healthy``.")
     def health_check(self):
-        """Provides access to Health Check service."""
+        """Provides access to Health Check service.
+
+        See the :ref:`health check API <ref_ansys_fluent_core_services_health_check>` for details.
+        """
         return self._health_check
+
+    @property
+    def application_runtime(self):
+        """Provides access to the Fluent application runtime.
+
+        See the :ref:`application runtime API <ref_ansys_fluent_core_services_application_runtime>` for details.
+        """
+        return self._application_runtime
+
+    @property
+    def rp_vars(self):
+        """Provides access and modification of rpvars.
+
+        See the :ref:`rpvars API <ref_ansys_fluent_core_rpvars>` for details.
+        """
+        return self._rp_vars
 
     @property
     def id(self) -> str:
@@ -608,11 +627,11 @@ class BaseSession:
         Parameters
         ----------
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
             or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+            Specifies the graphics driver for Fluent. Options are from the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum
+            (for Windows) or the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum (for Linux).
         product_version : FluentVersion or str or float or int, optional
             Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
             ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
@@ -723,11 +742,11 @@ class BaseSession:
         Parameters
         ----------
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
             or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+            Specifies the graphics driver for Fluent. Options are from the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum
+            (for Windows) or the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum (for Linux).
         product_version :  FluentVersion or str or float or int, optional
             Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
             any of ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
@@ -818,11 +837,11 @@ class BaseSession:
         Parameters
         ----------
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
             or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+            Specifies the graphics driver for Fluent. Options are from the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum
+            (for Windows) or the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum (for Linux).
         product_version : FluentVersion or str or float or int, optional
             Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
             any of ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,

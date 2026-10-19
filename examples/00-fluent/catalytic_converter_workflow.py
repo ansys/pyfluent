@@ -120,7 +120,6 @@ from ansys.fluent.core.solver import (  # noqa: E402
 
 # Launch meshing session
 meshing = pyfluent.launch_fluent(
-    product_version=FluentVersion.v252,
     mode=FluentMode.MESHING,
     ui_mode=UIMode.GUI,
     processor_count=4,

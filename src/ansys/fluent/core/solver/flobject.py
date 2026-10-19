@@ -1555,7 +1555,9 @@ class WildcardPath(Group):
     # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
     # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
 
-    def to_scheme_keys(self, value: StateType, root_cls: type, path: list[str]) -> StateType:
+    def to_scheme_keys(
+        self, value: StateType, root_cls: type, path: list[str]
+    ) -> StateType:
         """Convert value to have keys with scheme names."""
         return self._settings_cls.to_scheme_keys(value, root_cls, path)
 
@@ -3109,9 +3111,6 @@ def get_root(
                 version_dir / "solver" / "settings.py",
             )
             root_cls = settings.root
-            from ..diagnostics.exceptions import warning_for_fluent_dev_version
-
-            warning_for_fluent_dev_version(version)
         except FileNotFoundError:
             obj_info = flproxy.get_static_info()
             root_cls, _ = get_cls("", obj_info, version=version)
