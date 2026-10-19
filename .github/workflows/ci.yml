@@ -211,8 +211,9 @@ jobs:
         shell: bash
         run: |
           cd "$RUNNER_TEMP"
-          rm -rf "$GITHUB_WORKSPACE"
+          sudo rm -rf "$GITHUB_WORKSPACE"
           mkdir -p "$GITHUB_WORKSPACE"
+          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE"
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -344,8 +345,9 @@ jobs:
         shell: bash
         run: |
           cd "$RUNNER_TEMP"
-          rm -rf "$GITHUB_WORKSPACE"
+          sudo rm -rf "$GITHUB_WORKSPACE"
           mkdir -p "$GITHUB_WORKSPACE"
+          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE"
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -722,8 +724,9 @@ jobs:
         shell: bash
         run: |
           cd "$RUNNER_TEMP"
-          rm -rf "$GITHUB_WORKSPACE"
+          sudo rm -rf "$GITHUB_WORKSPACE"
           mkdir -p "$GITHUB_WORKSPACE"
+          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE"
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
