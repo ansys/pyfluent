@@ -154,7 +154,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow, _FaultTolerantBase):
         return self._parent_workflow.parts
 
     @property
-    def parts_files(self):
+    def parts_files(self) -> PyMenu | None:
         """Access the part-management file-management object in fault-tolerant mode.
 
         Returns
@@ -312,7 +312,7 @@ class CreatedWorkflow(Workflow):
             self._create_workflow()
 
 
-def _get_current_workflow(current_workflow, name: str):
+def _get_current_workflow(current_workflow, name: str) -> Workflow | None:
     if current_workflow and current_workflow._name == name:
         return current_workflow
 

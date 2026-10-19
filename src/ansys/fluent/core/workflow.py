@@ -50,7 +50,7 @@ from collections import OrderedDict
 from functools import wraps
 import inspect
 import re
-from typing import ValuesView
+from typing import Any, ValuesView
 
 from ansys.fluent.core.services.object_model import PyMenu
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -309,31 +309,31 @@ class Workflow:
 
         return self._task_dict.values()
 
-    def _workflow_state(self):
+    def _workflow_state(self) -> Any:
         """Get the complete state dictionary of the workflow."""
         return self._workflow()
 
-    def _new_workflow(self, name: str):
+    def _new_workflow(self, name: str) -> None:
         """Initialize a new workflow from a predefined template."""
         self._workflow.general.initialize_workflow(workflow_type=name)
 
-    def _load_workflow(self, file_path: str):
+    def _load_workflow(self, file_path: str) -> None:
         """Load a workflow from a saved workflow file (.wft)."""
         self._workflow.general.load_workflow(file_path=file_path)
 
-    def _create_workflow(self):
+    def _create_workflow(self) -> None:
         """Create a new empty workflow."""
         self._workflow.general.create_new_workflow()
 
-    def save_workflow(self, file_path: str):
+    def save_workflow(self, file_path: str) -> None:
         """Save the current workflow to a file."""
         self._workflow.general.save_workflow(file_path=file_path)
 
-    def load_state(self, list_of_roots: list):
+    def load_state(self, list_of_roots: list) -> None:
         """Load the state of the workflow."""
         self._workflow.general.load_state(list_of_roots=list_of_roots)
 
-    def task_names(self):
+    def task_names(self) -> list[str]:
         """Get Python-friendly names for all available tasks.
 
         Returns the list of task names as they would be accessed via Python
@@ -455,13 +455,13 @@ class Workflow:
                     self._command_source,
                 )
 
-    def _task_names(self):
+    def _task_names(self) -> list[str]:
         """Gets a list of display names of all tasks in the workflow."""
         return _convert_task_list_to_display_names(
             self._workflow, self._workflow.general.workflow.task_list()
         )
 
-    def _ordered_tasks(self):
+    def _ordered_tasks(self) -> OrderedDict:
         """Get ordered dictionary mapping task names to task objects."""
         ordered_names = _convert_task_list_to_display_names(
             self._workflow,
@@ -487,7 +487,7 @@ class Workflow:
 
         return sorted_dict
 
-    def delete_tasks(self, list_of_tasks: list[TaskObject]):
+    def delete_tasks(self, list_of_tasks: list[TaskObject]) -> None:
         """Delete multiple tasks from the workflow.
 
         Removes the specified tasks from the workflow. Tasks are identified by TaskObject instances.
@@ -605,7 +605,7 @@ class Workflow:
             def __repr__(self) -> str:
                 return f"<Insertable '{self._task_map[self._name]}' task>"
 
-    def __getattr__(self, item):
+    def __getattr__(self, item: str) -> Any:
         """Enable attribute-style access to tasks."""
         if item in ["parts", "parts_files"]:
             raise AttributeError(
@@ -627,11 +627,11 @@ class Workflow:
                 )
             ) from ex
 
-    def __call__(self):
+    def __call__(self) -> Any:
         """Get workflow state when called as a function."""
         return self._workflow_state()
 
-    def __delattr__(self, item):
+    def __delattr__(self, item: str) -> None:
         """Delete a task using Python's del statement.
 
         Parameters
@@ -712,7 +712,7 @@ class TaskObject:
         if state and "Forced-up-to-date" in state.allowed_values():
             state.set_state("Forced-up-to-date")
 
-    def _get_next_possible_tasks(self):
+    def _get_next_possible_tasks(self) -> list[str]:
         """Get display names of tasks that can be inserted after this task."""
         task_obj = self._task_object
         ret_list = []
@@ -723,7 +723,7 @@ class TaskObject:
             ret_list.append(snake_case_name)
         return ret_list
 
-    def _insert_next_task(self, task_name):
+    def _insert_next_task(self, task_name: str) -> None:
         """Insert a task after the current task.
 
         Notes
@@ -735,7 +735,7 @@ class TaskObject:
         self._task_object.insert_next_task(command_name=command_name)
 
     @property
-    def insertable_tasks(self):
+    def insertable_tasks(self) -> Any:
         """Get interface for inserting tasks after this one.
 
         Returns a dynamic object that exposes all valid task types that can be
@@ -843,7 +843,7 @@ class TaskObject:
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
 
-    def __getattr__(self, item):
+    def __getattr__(self, item: str) -> Any:
         """Enable attribute access to task properties and arguments.
 
         Notes
@@ -856,7 +856,7 @@ class TaskObject:
             return getattr(args, item)
         return getattr(task_obj, item)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: Any) -> None:
         """Enable attribute assignment to task arguments."""
         args = self._task_object.arguments
         if hasattr(args, key):
@@ -864,11 +864,11 @@ class TaskObject:
         else:
             super().__setattr__(key, value)
 
-    def __call__(self):
+    def __call__(self) -> Any:
         """Execute the task when called as a function."""
         return self._task_object.execute()
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Any:
         task_obj = self._task_object
         name = self._name
         workflow = self._workflow
@@ -907,10 +907,10 @@ class TaskObject:
                     f"Neither '{name_2}' nor '{key}' found in task object '{name_1}'."
                 ) from ex2
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: str) -> None:
         self[key].delete()
 
-    def _task_names(self):
+    def _task_names(self) -> list[str]:
         """Gets the display names of the child tasks of a task item."""
         task_list = self._task_object.task_list()
         if task_list:
@@ -918,7 +918,7 @@ class TaskObject:
         else:
             return []
 
-    def children(self):
+    def children(self) -> list[TaskObject]:
         """Get ordered list of direct child tasks.
 
         Returns
@@ -956,7 +956,7 @@ class TaskObject:
 
         return wrapped_children
 
-    def first_child(self):
+    def first_child(self) -> TaskObject | None:
         """Get the first child task of this task.
 
         Returns
@@ -1001,7 +1001,7 @@ class TaskObject:
                     self._meshing_root,
                 )
 
-    def last_child(self):
+    def last_child(self) -> TaskObject | None:
         """Get the last child task of this task.
 
         Returns
@@ -1037,7 +1037,7 @@ class TaskObject:
                 )
 
     @staticmethod
-    def _get_next_key(input_dict, current_key):
+    def _get_next_key(input_dict: dict, current_key: str) -> str | None:
         """Get the key that follows current_key in an ordered dictionary.
 
         Parameters
@@ -1063,8 +1063,7 @@ class TaskObject:
             raise IndexError("Reached the end.")
         return keys[idx + 1]
 
-    @staticmethod
-    def _get_previous_key(input_dict, current_key):
+    def _get_previous_key(input_dict: dict, current_key: str) -> str:
         """Get the key that precedes current_key in an ordered dictionary.
 
         Parameters
@@ -1090,7 +1089,7 @@ class TaskObject:
             raise IndexError("In the beginning.")
         return keys[idx - 1]
 
-    def has_parent(self):
+    def has_parent(self) -> bool:
         """Check if this task has a parent container.
 
         Returns
@@ -1104,7 +1103,7 @@ class TaskObject:
         except AttributeError:
             return False
 
-    def parent(self):
+    def parent(self) -> Workflow | TaskObject:
         """Get the parent container of this task.
 
         Returns
@@ -1116,55 +1115,19 @@ class TaskObject:
         """
         return self._parent
 
-    def has_next(self) -> bool:
-        """Check if there is a next sibling task.
-
-        Determines whether this task has a sibling task that follows it in the
-        workflow sequence at the same level.
-
-        Returns
-        -------
-        bool
-            True if a next sibling exists, False if this is the last task.
-        """
-        task_dict = self._parent._ordered_tasks()
-        try:
-            self._get_next_key(task_dict, self.name())
-            return True
-        except IndexError:
-            return False
-
-    def next(self):
+    def next(self) -> TaskObject:
         """Returns the next sibling task item."""
         task_dict = self._parent._ordered_tasks()
         next_key = self._get_next_key(task_dict, self.name())
         return task_dict[next_key]
 
-    def has_previous(self) -> bool:
-        """Check if there is a previous sibling task.
-
-        Determines whether this task has a sibling task that precedes it in the
-        workflow sequence at the same level.
-
-        Returns
-        -------
-        bool
-            True if a previous sibling exists, False if this is the first task.
-        """
-        task_dict = self._parent._ordered_tasks()
-        try:
-            self._get_previous_key(task_dict, self.name())
-            return True
-        except IndexError:
-            return False
-
-    def previous(self):
+    def previous(self) -> TaskObject:
         """Returns the previous sibling task item."""
         task_dict = self._parent._ordered_tasks()
         previous_key = self._get_previous_key(task_dict, self.name())
         return task_dict[previous_key]
 
-    def _ordered_tasks(self):
+    def _ordered_tasks(self) -> OrderedDict:
         if not self._task_names():
             return OrderedDict()
 

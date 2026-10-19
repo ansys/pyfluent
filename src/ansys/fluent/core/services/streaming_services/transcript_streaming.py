@@ -25,6 +25,7 @@
 
 import os
 from pathlib import Path
+from typing import Any
 
 from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
@@ -32,22 +33,22 @@ from ansys.fluent.core.services.streaming_services.streaming import StreamingSer
 class AppendToFile:
     """Class representing append to file action."""
 
-    def __init__(self, file_name: str):
+    def __init__(self, file_name: str) -> None:
         """__init__ method of AppendToFile class."""
         self.f = open(file_name, "a")
 
-    def __call__(self, transcript):
+    def __call__(self, transcript: Any) -> None:
         self.f.write(transcript)
         self.f.flush()
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.f.close()
 
 
 class Transcript(StreamingService):
     """Encapsulates a Fluent Transcript streaming service."""
 
-    def __init__(self, transcript_service):
+    def __init__(self, transcript_service: Any) -> None:
         """__init__ method of Transcript class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
@@ -82,7 +83,7 @@ class Transcript(StreamingService):
             self._write_to_stdout()
         super().start()
 
-    def _write_to_stdout(self):
+    def _write_to_stdout(self) -> None:
         """Write transcript to stdout."""
         if not self._writing_transcript_to_interpreter:
             self.callback_ids.append(self.register_callback(print))
@@ -94,7 +95,14 @@ class Transcript(StreamingService):
             self.unregister_callback(callback_id)
         super().stop()
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: Any,
+        stream_begin_method: Any,
+        started_evt: Any,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Performs processes on transcript depending on the callback functions."""
         responses = self._streaming_service._process_streaming(
             *args,

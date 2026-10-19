@@ -23,8 +23,10 @@
 
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+from typing import Any, Iterator
 
-def using(session):
+
+def using(session: Any) -> Iterator[None]:
     """Make a session active for top-level settings within a ``with`` block.
 
     This top-level function is retained for backward compatibility. The

@@ -40,7 +40,7 @@ class FieldDataStreaming(StreamingService):
         FieldData streaming service.
     """
 
-    def __init__(self, service, chunk_parser):
+    def __init__(self, service: Any, chunk_parser: Any) -> None:
         """Initialize FieldDataStreaming."""
         super().__init__(
             stream_begin_method="BeginFieldsStreaming",
@@ -49,7 +49,14 @@ class FieldDataStreaming(StreamingService):
         )
         self._chunk_parser = chunk_parser
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: Any,
+        stream_begin_method: Any,
+        started_evt: Any,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Processes field data streaming."""
         self._chunk_parser(self).extract_fields(
             self._streaming_service._process_streaming(

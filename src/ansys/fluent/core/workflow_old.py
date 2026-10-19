@@ -49,7 +49,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 class CommandInstanceCreationError(RuntimeError):
     """Raised when an attempt to create an instance of a task command fails."""
 
-    def __init__(self, task_name):
+    def __init__(self, task_name: str) -> None:
         """Initialize CommandInstanceCreationError."""
         super().__init__(f"Could not create command instance for task {task_name}.")
 
@@ -57,7 +57,7 @@ class CommandInstanceCreationError(RuntimeError):
 class TaskLookupError(LookupError):
     """Raised when a task cannot be found by it's ID"""
 
-    def __init__(self, task_name):
+    def __init__(self, task_name: str) -> None:
         """Initialise TaskLookupError."""
         super().__init__(
             f"Task ID not found for task '{task_name}'. "

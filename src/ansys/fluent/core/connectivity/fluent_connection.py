@@ -37,7 +37,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Callable, TypeVar
+from typing import Any, Callable, TypeVar
 import warnings
 import weakref
 
@@ -66,7 +66,7 @@ from ansys.tools.common.cyberchannel import create_channel
 logger = logging.getLogger("pyfluent.general")
 
 
-def _docker():
+def _docker() -> Any:
     import docker
 
     return docker
@@ -75,7 +75,7 @@ def _docker():
 class PortNotProvided(ValueError):
     """Raised when port is not provided."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize PortNotProvided."""
         super().__init__(
             "Provide the 'port' to connect to an existing Fluent instance."
@@ -85,7 +85,7 @@ class PortNotProvided(ValueError):
 class UnsupportedRemoteFluentInstance(ValueError):
     """Raised when 'wait_process_finished' does not support remote Fluent session."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize UnsupportedRemoteFluentInstance."""
         super().__init__("Remote Fluent instance is unsupported.")
 
@@ -93,7 +93,7 @@ class UnsupportedRemoteFluentInstance(ValueError):
 class WaitTypeError(TypeError):
     """Raised when invalid ``wait`` type is provided."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize WaitTypeError."""
         super().__init__("Invalid 'wait' type.")
 
@@ -121,7 +121,7 @@ class MonitorThread(threading.Thread):
         Cleanup/shutdown functions
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize MonitorThread."""
         super().__init__(daemon=True)
         self.cbs: list[Callable] = []
@@ -189,16 +189,16 @@ class ErrorState:
     """
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Get name."""
         return self._name
 
     @property
-    def details(self):
+    def details(self) -> str:
         """Get details."""
         return self._details
 
-    def __init__(self, name: str = "", details: str | None = ""):
+    def __init__(self, name: str = "", details: str | None = "") -> None:
         """Initializes the error state object.
 
         Parameters
@@ -211,12 +211,12 @@ class ErrorState:
         self._name = name
         self._details = details
 
-    def set(self, name: str, details: str):
+    def set(self, name: str, details: str) -> None:
         """Method to set the error state name and details to new values."""
         self._name = name
         self._details = details
 
-    def clear(self):
+    def clear(self) -> None:
         """Method to clear the current error state, emptying the error name and details
         properties."""
         self._name = ""
@@ -386,7 +386,7 @@ class _ConnectionInterface:
         build_info = self._application_runtime.get_build_info()
         return f"Build Time: {build_info.build_time}  Build Id: {build_info.build_id}  Revision: {build_info.vcs_revision}  Branch: {build_info.vcs_branch}"
 
-    def get_cortex_connection_properties(self):
+    def get_cortex_connection_properties(self) -> tuple[Any, Any, Any, Any]:
         """Get connection properties of Fluent."""
 
         try:
@@ -411,16 +411,16 @@ class _ConnectionInterface:
 
         return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
 
-    def get_mode(self):
+    def get_mode(self) -> Any:
         """Get the mode of a running fluent session."""
         return self._application_runtime.get_app_mode()
 
-    def exit_server(self):
+    def exit_server(self) -> None:
         """Exits the server."""
         self._application_runtime.exit()
 
 
-def _pid_exists(pid):
+def _pid_exists(pid: int) -> bool:
     if platform.system() == "Linux":
         try:
             os.kill(pid, 0)
@@ -473,7 +473,7 @@ class FluentConnection:
         inside_container: bool | None = None,
         container: ContainerT | None = None,
         compose_config: ComposeConfig | None = None,
-    ):
+    ) -> None:
         """Initialize a Session.
 
         Parameters
@@ -666,14 +666,14 @@ class FluentConnection:
 
     @property
     @deprecated(version="0.32", reason="No longer required at this level.")
-    def health_check(self):
+    def health_check(self) -> Any:
         """Provides access to Health Check service."""
         return self._health_check
 
-    def _close_slurm(self):
+    def _close_slurm(self) -> None:
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
 
-    def force_exit(self):
+    def force_exit(self) -> None:
         """Immediately terminates the Fluent client, losing unsaved progress and data.
 
         Notes
@@ -743,7 +743,7 @@ class FluentConnection:
             else:
                 logger.error("Could not find cleanup file.")
 
-    def _force_exit_container(self):
+    def _force_exit_container(self) -> None:
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
         if self._compose_config.is_compose and self._container:
@@ -769,7 +769,7 @@ class FluentConnection:
                     "Container not found, cancelling cleanup script execution."
                 )
 
-    def register_finalizer_cb(self, cb, at_start=False):
+    def register_finalizer_cb(self, cb: Callable, at_start: bool = False) -> None:
         """Register a callback to run with the finalizer."""
         if at_start:
             self.finalizer_cbs.insert(0, cb)
@@ -793,7 +793,7 @@ class FluentConnection:
         """
         return service(self._channel, self._metadata, *args)
 
-    def wait_process_finished(self, wait: float | int | bool = 100):
+    def wait_process_finished(self, wait: float | int | bool = 100) -> bool | None:
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
         are still running when wait limit (default 100 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.

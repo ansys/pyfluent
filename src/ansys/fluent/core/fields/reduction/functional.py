@@ -83,6 +83,7 @@ Examples
 
 from collections.abc import Iterable
 from enum import Enum
+from typing import Any
 
 import numpy as np
 from numpy import array
@@ -114,18 +115,18 @@ class BadReductionRequest(Exception):
         super().__init__(f"Could not complete reduction function request: {err}")
 
 
-def _is_iterable(obj):
+def _is_iterable(obj: Any) -> bool:
     return hasattr(type(obj), "__iter__")
 
 
-def _expand_locn_container(locns):
+def _expand_locn_container(locns: Any) -> Any:
     try:
         return [[locn, locns] for locn in locns]
     except TypeError as ex:
         raise BadReductionRequest(ex)
 
 
-def _locn_name_and_obj(locn, locns):
+def _locn_name_and_obj(locn: Any, locns: Any) -> tuple[str, Any]:
     if isinstance(locn, str):
         return [locn, locns]
     # should call locn_get_name()
@@ -135,7 +136,7 @@ def _locn_name_and_obj(locn, locns):
         return [locn.obj_name, locn]
 
 
-def _locn_names_and_objs(locns):
+def _locn_names_and_objs(locns: Any) -> Any:
     if _is_iterable(locns):
         names_and_objs = []
         if locns.__class__.__name__ == "CombinedNamedObject":
@@ -155,7 +156,7 @@ def _locn_names_and_objs(locns):
         return _expand_locn_container(locns)
 
 
-def _root(obj):
+def _root(obj: Any) -> Any:
     return (
         None
         if isinstance(obj, list)
@@ -163,14 +164,14 @@ def _root(obj):
     )
 
 
-def _validate_locn_list(locn_list, ctxt):
+def _validate_locn_list(locn_list: Any, ctxt: Any) -> None:
     if not all(locn[0] for locn in locn_list) and (
         any(locn[0] for locn in locn_list) or not ctxt
     ):
         raise BadReductionRequest("Invalid combination of arguments")
 
 
-def _locns(locns, ctxt):
+def _locns(locns: Any, ctxt: Any) -> Any:
     if locns == []:
         # Raising 'RuntimeError' instead of 'ValueError' to address a limitation in the server-side implementation.
         raise RuntimeError("No locations specified.")
@@ -190,7 +191,7 @@ def _locns(locns, ctxt):
     return locn_list
 
 
-def _eval_expr(solver, expr_str):
+def _eval_expr(solver: Any, expr_str: Any) -> Any:
     named_exprs = solver.setup.named_expressions
     expr_name = "temp_expr_1"
     named_exprs[expr_name] = {}
@@ -202,7 +203,7 @@ def _eval_expr(solver, expr_str):
     return val
 
 
-def _expr_to_expr_str(expr):
+def _expr_to_expr_str(expr: Any) -> str:
     return getattr(expr, "definition", expr) if expr is not None else expr
 
 
@@ -260,7 +261,9 @@ def _extent_expression(
     return numerator / denominator
 
 
-def _extent_moment_vector(f_string, expr, locations, ctxt):
+def _extent_moment_vector(
+    f_string: str, expr: Any, locations: Any, ctxt: Any
+) -> tuple[Any, ...]:
     locns = _locns(locations, ctxt)
     total = array([0.0, 0.0, 0.0])
     for solver, names in locns:
@@ -273,15 +276,17 @@ def _extent_moment_vector(f_string, expr, locations, ctxt):
     return tuple(total)
 
 
-def _extent_average(extent_name, expr, locations, ctxt):
+def _extent_average(extent_name: str, expr: Any, locations: Any, ctxt: Any) -> float:
     return _extent_expression(f"{extent_name}Ave", extent_name, expr, locations, ctxt)
 
 
-def _extent_integrated_average(extent_name, expr, locations, ctxt):
+def _extent_integrated_average(
+    extent_name: str, expr: Any, locations: Any, ctxt: Any
+) -> float:
     return _extent_expression(f"{extent_name}Int", extent_name, expr, locations, ctxt)
 
 
-def _extent(extent_name, locations, ctxt):
+def _extent(extent_name: str, locations: Any, ctxt: Any) -> float:
     locns = _locns(locations, ctxt)
     total = 0.0
     for solver, names in locns:
@@ -294,7 +299,7 @@ def _extent(extent_name, locations, ctxt):
     return total
 
 
-def _extent_vectors(extent_name, locations, ctxt):
+def _extent_vectors(extent_name: str, locations: Any, ctxt: Any) -> tuple[Any, ...]:
     locns = _locns(locations, ctxt)
     total = array([0.0, 0.0, 0.0])
     for solver, names in locns:
@@ -307,7 +312,7 @@ def _extent_vectors(extent_name, locations, ctxt):
     return tuple(total)
 
 
-def _limit(limit, expr, locations, ctxt):
+def _limit(limit: Any, expr: Any, locations: Any, ctxt: Any) -> float:
     locns = _locns(locations, ctxt)
     limit_val = None
     for solver, names in locns:
@@ -323,7 +328,7 @@ def _limit(limit, expr, locations, ctxt):
 weight = Weight
 
 
-def area_average(expression, locations, ctxt=None):
+def area_average(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the area averaged value of the specified expression over the specified
     locations.
 
@@ -339,7 +344,7 @@ def area_average(expression, locations, ctxt=None):
     return _extent_average("Area", expression, locations, ctxt)
 
 
-def area_integral(expression, locations, ctxt=None):
+def area_integral(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the area integrated averaged of the specified expression over the
     specified locations.
 
@@ -355,7 +360,7 @@ def area_integral(expression, locations, ctxt=None):
     return _extent_integrated_average("Area", expression, locations, ctxt)
 
 
-def volume_average(expression, locations, ctxt=None):
+def volume_average(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the volume-weighted average value of the specified expression over the
     specified locations.
 
@@ -371,7 +376,7 @@ def volume_average(expression, locations, ctxt=None):
     return _extent_average("Volume", expression, locations, ctxt)
 
 
-def volume_integral(expression, locations, ctxt=None):
+def volume_integral(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the volume-weighted total of the specified expression over the specified
     locations.
 
@@ -387,7 +392,7 @@ def volume_integral(expression, locations, ctxt=None):
     return _extent_integrated_average("Volume", expression, locations, ctxt)
 
 
-def area(locations, ctxt=None):
+def area(locations: Any, ctxt: Any = None) -> float:
     """Compute the total area of the specified locations.
 
     Parameters
@@ -401,7 +406,7 @@ def area(locations, ctxt=None):
     return _extent("Area", locations, ctxt)
 
 
-def volume(locations, ctxt=None):
+def volume(locations: Any, ctxt: Any = None) -> float:
     """Compute the total volume of the specified locations.
 
     Parameters
@@ -415,7 +420,7 @@ def volume(locations, ctxt=None):
     return _extent("Volume", locations, ctxt)
 
 
-def count(locations, ctxt=None):
+def count(locations: Any, ctxt: Any = None) -> float:
     """Compute the total number of cells included in the specified locations.
 
     Parameters
@@ -429,7 +434,7 @@ def count(locations, ctxt=None):
     return _extent("Count", locations, ctxt)
 
 
-def centroid(locations, ctxt=None):
+def centroid(locations: Any, ctxt: Any = None) -> tuple[Any, ...]:
     """Compute the geometric centroid of the specified location(s) as a vector.
 
     Parameters
@@ -443,7 +448,7 @@ def centroid(locations, ctxt=None):
     return _extent_vectors("Centroid", locations, ctxt)
 
 
-def force(locations, ctxt=None):
+def force(locations: Any, ctxt: Any = None) -> tuple[Any, ...]:
     """Compute the force acting on the location(s) specified (should be walls) as a
     vector.
 
@@ -458,7 +463,7 @@ def force(locations, ctxt=None):
     return _extent_vectors("Force", locations, ctxt)
 
 
-def pressure_force(locations, ctxt=None):
+def pressure_force(locations: Any, ctxt: Any = None) -> tuple[Any, ...]:
     """Compute the pressure force acting on the location(s) specified (should be walls)
     as a vector.
 
@@ -473,7 +478,7 @@ def pressure_force(locations, ctxt=None):
     return _extent_vectors("PressureForce", locations, ctxt)
 
 
-def viscous_force(locations, ctxt=None):
+def viscous_force(locations: Any, ctxt: Any = None) -> tuple[Any, ...]:
     """Compute the viscous force acting on the location(s) specified (should be walls)
     as a vector.
 
@@ -488,7 +493,7 @@ def viscous_force(locations, ctxt=None):
     return _extent_vectors("ViscousForce", locations, ctxt)
 
 
-def moment(expression, locations, ctxt=None):
+def moment(expression: Any, locations: Any, ctxt: Any = None) -> tuple[Any, ...]:
     """Compute  the moment vector about the specified point (which can be single-valued
     expression) for the specified location(s).
 
@@ -504,7 +509,7 @@ def moment(expression, locations, ctxt=None):
     return _extent_moment_vector("Moment", expression, locations, ctxt)
 
 
-def minimum(expression, locations, ctxt=None):
+def minimum(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the minimum of the specified expression over the specified locations.
 
     Parameters
@@ -519,7 +524,7 @@ def minimum(expression, locations, ctxt=None):
     return _limit(min, expression, locations, ctxt)
 
 
-def maximum(expression, locations, ctxt=None):
+def maximum(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the maximum of the specified expression over the specified locations.
 
     Parameters
@@ -534,7 +539,7 @@ def maximum(expression, locations, ctxt=None):
     return _limit(max, expression, locations, ctxt)
 
 
-def mass_average(expression, locations, ctxt=None):
+def mass_average(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the mass-weighted average value of the specified expression over the
     specified locations.
 
@@ -550,7 +555,7 @@ def mass_average(expression, locations, ctxt=None):
     return _extent_average("Mass", expression, locations, ctxt)
 
 
-def mass_integral(expression, locations, ctxt=None):
+def mass_integral(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the total mass-weighted value of the specified expression over the
     specified locations.
 
@@ -566,7 +571,7 @@ def mass_integral(expression, locations, ctxt=None):
     return _extent_integrated_average("Mass", expression, locations, ctxt)
 
 
-def mass_flow_average(expression, locations, ctxt=None):
+def mass_flow_average(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the mass-flow-weighted average value of the specified expression over the
     specified locations.
 
@@ -582,7 +587,7 @@ def mass_flow_average(expression, locations, ctxt=None):
     return _extent_average("MassFlow", expression, locations, ctxt)
 
 
-def mass_flow_integral(expression, locations, ctxt=None):
+def mass_flow_integral(expression: Any, locations: Any, ctxt: Any = None) -> float:
     """Compute the total mass flow over the specified locations.
 
     Parameters
@@ -597,7 +602,7 @@ def mass_flow_integral(expression, locations, ctxt=None):
     return _extent_integrated_average("MassFlow", expression, locations, ctxt)
 
 
-def mass_flow(locations, ctxt=None):
+def mass_flow(locations: Any, ctxt: Any = None) -> float:
     """Compute the total mass flow rate of the specified locations.
 
     Parameters
@@ -611,7 +616,9 @@ def mass_flow(locations, ctxt=None):
     return _extent("MassFlow", locations, ctxt)
 
 
-def sum(expression, locations, weight: str | Weight, ctxt=None):
+def sum(
+    expression: Any, locations: Any, weight: str | Weight, ctxt: Any = None
+) -> float:
     """Compute the sum of the specified expression over the specified locations.
 
     Parameters
@@ -627,7 +634,13 @@ def sum(expression, locations, weight: str | Weight, ctxt=None):
     return _extent_expression("Sum", "Sum", expression, locations, ctxt, weight=weight)
 
 
-def sum_if(expression, condition, locations, weight: str | Weight, ctxt=None):
+def sum_if(
+    expression: Any,
+    condition: str,
+    locations: Any,
+    weight: str | Weight,
+    ctxt: Any = None,
+) -> float:
     """Compute the sum of the specified expression over the specified locations if a
     condition is satisfied.
 

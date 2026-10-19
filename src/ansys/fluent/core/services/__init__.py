@@ -30,6 +30,7 @@ can be implemented with other service providers through the service factory.
 """
 
 from functools import cached_property
+from typing import Any
 
 from ansys.fluent.core.fields.field_data.transport import (
     FieldData,
@@ -89,7 +90,7 @@ class ServiceFactory:
         Source of the underlying raw gRPC service objects.
     """
 
-    def __init__(self, service_factory):
+    def __init__(self, service_factory: Any) -> None:
         """Initialize ServiceFactory."""
         self._service_factory = service_factory
 
@@ -103,32 +104,32 @@ class ServiceFactory:
         return SchemeInterpreter(self._service_factory.scheme_interpreter)
 
     @cached_property
-    def health_check(self):
+    def health_check(self) -> HealthCheck:
         """Server health and readiness service."""
         return HealthCheck(self._service_factory.health_check)
 
     @cached_property
-    def reduction(self):
+    def reduction(self) -> Reduction:
         """Data-reduction service (forces, moments, etc.)."""
         return Reduction(self._service_factory.reduction)
 
     @cached_property
-    def transcript(self):
+    def transcript(self) -> Transcript:
         """Transcript service."""
         return Transcript(self._service_factory.transcript)
 
     @property
-    def transcript_streaming(self):
+    def transcript_streaming(self) -> TranscriptStreaming:
         """Transcript streaming service."""
         return TranscriptStreaming(self._service_factory.transcript)
 
     @cached_property
-    def batch_ops(self):
+    def batch_ops(self) -> Any:
         """Batch operations service."""
         return self._service_factory.batch_ops
 
     @cached_property
-    def text_interface(self):
+    def text_interface(self) -> TextInterface:
         """Text interface service."""
         return TextInterface(
             self._service_factory.text_interface,
@@ -137,41 +138,41 @@ class ServiceFactory:
         )
 
     @cached_property
-    def monitor(self):
+    def monitor(self) -> Monitor:
         """Monitor service."""
         return Monitor(self._service_factory.monitor)
 
     @cached_property
-    def object_model_streaming(self):
+    def object_model_streaming(self) -> DatamodelStream:
         """Object model streaming service."""
         return DatamodelStream(self._service_factory.object_model)
 
     @cached_property
-    def object_model_events_streaming(self):
+    def object_model_events_streaming(self) -> DatamodelEvents:
         """Object model events streaming service."""
         return DatamodelEvents(self._service_factory.object_model)
 
     @cached_property
-    def solution_variable_info(self):
+    def solution_variable_info(self) -> SolutionVariableInfo:
         """Solution variable info service."""
         return SolutionVariableInfo(self._service_factory.solution_variable)
 
     @cached_property
-    def solution_variable_data(self):
+    def solution_variable_data(self) -> SolutionVariableData:
         """Solution variable data service."""
         return SolutionVariableData(
             self._service_factory.solution_variable, self.solution_variable_info
         )
 
     @property
-    def field_data_streaming(self):
+    def field_data_streaming(self) -> FieldDataStreaming:
         """Field data streaming service."""
         return FieldDataStreaming(
             self._service_factory.field_data,
             self._service_factory._chunk_parser,
         )
 
-    def _get_events_manager(self, event_type, session_ref):
+    def _get_events_manager(self, event_type: str, session_ref: Any) -> EventsManager:
         """Get events manager."""
         return EventsManager[event_type](
             event_type,
@@ -180,7 +181,7 @@ class ServiceFactory:
             session_ref,
         )
 
-    def _get_monitors_manager(self, session_id):
+    def _get_monitors_manager(self, session_id: int) -> MonitorsManager:
         """Get monitors manager."""
         return MonitorsManager(
             session_id,
@@ -192,27 +193,27 @@ class ServiceFactory:
     # ------------------------------------------------------------------
 
     @cached_property
-    def application_runtime(self):
+    def application_runtime(self) -> ApplicationRuntime:
         """Application runtime, version and session lifecycle service."""
         raise NotImplementedError
 
     @cached_property
-    def settings(self):
+    def settings(self) -> Settings:
         """Solver settings service."""
         raise NotImplementedError
 
     @cached_property
-    def field_data(self):
+    def field_data(self) -> FieldData:
         """Field data service."""
         raise NotImplementedError
 
     @cached_property
-    def events(self):
+    def events(self) -> Events:
         """Events service."""
         raise NotImplementedError
 
     @cached_property
-    def object_model(self):
+    def object_model(self) -> ObjectModel:
         """Object model service."""
         raise NotImplementedError
 
@@ -221,17 +222,17 @@ class ServiceFactoryV271(ServiceFactory):
     """Service factory for Fluent >= v271 (v1 proto era)."""
 
     @cached_property
-    def application_runtime(self):
+    def application_runtime(self) -> ApplicationRuntime:
         """Application runtime, version and session lifecycle service."""
         return ApplicationRuntime(self._service_factory.application_runtime)
 
     @cached_property
-    def settings(self):
+    def settings(self) -> Settings:
         """Solver settings service."""
         return Settings(self._service_factory.settings)
 
     @cached_property
-    def field_data(self):
+    def field_data(self) -> FieldData:
         """Field data service."""
         return FieldData(
             self._service_factory.field_data,
@@ -239,12 +240,12 @@ class ServiceFactoryV271(ServiceFactory):
         )
 
     @cached_property
-    def events(self):
+    def events(self) -> Events:
         """Events service."""
         return Events(self._service_factory.events)
 
     @cached_property
-    def object_model(self):
+    def object_model(self) -> ObjectModel:
         """Object model service."""
         return ObjectModel(
             self._service_factory.object_model,
@@ -264,13 +265,13 @@ class ServiceFactoryV261(ServiceFactory):
         from ``ApplicationRuntimeV252``.
     """
 
-    def __init__(self, service_factory, product_version):
+    def __init__(self, service_factory: Any, product_version: Any) -> None:
         """Initialize ServiceFactoryV261."""
         super().__init__(service_factory)
         self._product_version = product_version
 
     @cached_property
-    def application_runtime(self):
+    def application_runtime(self) -> ApplicationRuntime:
         """Application runtime, version and session lifecycle service."""
         if self._product_version == FluentVersion.v261:
             return ApplicationRuntimeV261(
@@ -285,7 +286,7 @@ class ServiceFactoryV261(ServiceFactory):
         return ApplicationRuntimeOld(self._service_factory.scheme_interpreter)
 
     @cached_property
-    def settings(self):
+    def settings(self) -> Settings:
         """Solver settings service."""
         return SettingsV261(
             self._service_factory.settings,
@@ -294,7 +295,7 @@ class ServiceFactoryV261(ServiceFactory):
         )
 
     @cached_property
-    def field_data(self):
+    def field_data(self) -> FieldData:
         """Field data service."""
         return FieldDataV261(
             self._service_factory.field_data,
@@ -303,7 +304,7 @@ class ServiceFactoryV261(ServiceFactory):
         )
 
     @cached_property
-    def events(self):
+    def events(self) -> Events:
         """Events service."""
         return EventsV261(
             self._service_factory.events,
@@ -311,7 +312,7 @@ class ServiceFactoryV261(ServiceFactory):
         )
 
     @cached_property
-    def object_model(self):
+    def object_model(self) -> ObjectModel:
         """Object model service."""
         return ObjectModelV261(
             self._service_factory.object_model,
@@ -323,12 +324,12 @@ class ServiceFactoryLegacy(ServiceFactory):
     """Service factory for Fluent < v252 (legacy / v0 era)."""
 
     @cached_property
-    def application_runtime(self):
+    def application_runtime(self) -> ApplicationRuntime:
         """Application runtime, version and session lifecycle service."""
         return ApplicationRuntimeOld(self._service_factory.scheme_interpreter)
 
     @cached_property
-    def settings(self):
+    def settings(self) -> Settings:
         """Solver settings service."""
         return SettingsV251(
             self._service_factory.settings,
@@ -336,7 +337,7 @@ class ServiceFactoryLegacy(ServiceFactory):
         )
 
     @cached_property
-    def field_data(self):
+    def field_data(self) -> FieldData:
         """Field data service."""
         return FieldDataV251(
             self._service_factory.field_data,
@@ -345,7 +346,7 @@ class ServiceFactoryLegacy(ServiceFactory):
         )
 
     @cached_property
-    def events(self):
+    def events(self) -> Events:
         """Events service."""
         return EventsV251(
             self._service_factory.events,
@@ -353,7 +354,7 @@ class ServiceFactoryLegacy(ServiceFactory):
         )
 
     @cached_property
-    def object_model(self):
+    def object_model(self) -> ObjectModel:
         """Object model service."""
         return ObjectModelV261(
             self._service_factory.object_model,

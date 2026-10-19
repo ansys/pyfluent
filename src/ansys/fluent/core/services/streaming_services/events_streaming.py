@@ -27,7 +27,7 @@ from collections.abc import Callable, Sequence
 from functools import partial
 import inspect
 import logging
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 import warnings
 
 from ansys.fluent.core.diagnostics.exceptions import (
@@ -126,14 +126,14 @@ class EventsManager(Generic[TEvent]):
         self._sync_event_ids = {}
         self._service = session_events_service
 
-    def _construct_event_info(self, response, event: TEvent):
+    def _construct_event_info(self, response, event: TEvent) -> Any:
         return self._service._construct_event_info(
             response, event, EventInfoBase.derived_classes.get(event.name)
         )
 
     def _process_streaming(
         self, service, id, stream_begin_method, started_evt, *args, **kwargs
-    ):
+    ) -> None:
         responses = self._service._process_streaming(
             *args,
             id=id,
@@ -170,7 +170,7 @@ class EventsManager(Generic[TEvent]):
                 break
 
     @staticmethod
-    def _make_callback_to_call(callback: Callable, args, kwargs):
+    def _make_callback_to_call(callback: Callable, args, kwargs) -> Callable:
         params = inspect.signature(callback).parameters
         if "session_id" in params:
             warnings.warn(
@@ -198,7 +198,7 @@ class EventsManager(Generic[TEvent]):
         callback: Callable,
         *args,
         **kwargs,
-    ):
+    ) -> str:
         """Register the callback.
 
         Parameters
@@ -296,7 +296,7 @@ class EventsManager(Generic[TEvent]):
             )
         return cb_ids[0] if len(cb_ids) == 1 else cb_ids
 
-    def unregister_callback(self, callback_id: str):
+    def unregister_callback(self, callback_id: str) -> None:
         """Unregister the callback.
 
         Parameters

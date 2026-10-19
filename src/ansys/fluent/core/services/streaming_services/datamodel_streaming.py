@@ -24,6 +24,7 @@
 """Provides a module for datamodel streaming."""
 
 import logging
+from typing import Any
 
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.streaming_services.streaming import StreamingService
@@ -34,7 +35,7 @@ network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 class DatamodelStream(StreamingService):
     """Encapsulates a datamodel streaming service."""
 
-    def __init__(self, service):
+    def __init__(self, service: Any) -> None:
         """Initialize DatamodelStream."""
         grpc_service = getattr(service, "_service", service)
         super().__init__(
@@ -45,14 +46,14 @@ class DatamodelStream(StreamingService):
 
     def _process_streaming(
         self,
-        id,
-        stream_begin_method,
-        started_evt,
-        rules,
-        no_commands_diff_state,
-        *args,
-        **kwargs,
-    ):
+        id: Any,
+        stream_begin_method: Any,
+        started_evt: Any,
+        rules: Any,
+        no_commands_diff_state: Any,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Processes datamodel events."""
         responses = self._streaming_service._process_streaming(
             *args,

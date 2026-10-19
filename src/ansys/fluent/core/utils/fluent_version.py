@@ -23,7 +23,7 @@
 
 """Provides a module to get Fluent version."""
 
-from collections.abc import Set
+from collections.abc import Iterator, Set
 from enum import Enum
 from functools import total_ordering
 import os
@@ -67,7 +67,7 @@ class ComparisonError(RuntimeError):
         )
 
 
-def get_version(session=None):
+def get_version(session: Any = None) -> str:
     """Get Fluent version."""
     if session is None:
         session = pyfluent.launch_fluent()
@@ -75,7 +75,7 @@ def get_version(session=None):
     return session.get_fluent_version().value
 
 
-def get_version_for_file_name(version: str | None = None, session=None):
+def get_version_for_file_name(version: str | None = None, session: Any = None) -> str:
     """Get Fluent version for file name."""
     if version is None:
         version = get_version(session)
@@ -113,7 +113,7 @@ class FluentVersion(Enum):
     v242 = "24.2.0"
 
     @classmethod
-    def _missing_(cls, version: Any):
+    def _missing_(cls, version: Any) -> "FluentVersion | None":
         if isinstance(version, (int, float, str)):
             requested_version = str(version)
             normalized_version = requested_version
@@ -149,7 +149,7 @@ class FluentVersion(Enum):
         raise AnsysVersionNotFound(version)
 
     @classmethod
-    def get_latest_installed(cls):
+    def get_latest_installed(cls) -> "FluentVersion":
         """Return the version member corresponding to the most recent, available ANSYS
         installation.
 
@@ -226,7 +226,7 @@ class FluentVersion(Enum):
         )
 
     @classmethod
-    def current_release(cls):
+    def current_release(cls) -> "FluentVersion":
         """Return the version member of the current release.
 
         Returns
@@ -237,7 +237,7 @@ class FluentVersion(Enum):
         return cls(config.fluent_release_version)
 
     @classmethod
-    def current_dev(cls):
+    def current_dev(cls) -> "FluentVersion":
         """Return the version member of the current development version.
 
         Returns
@@ -248,7 +248,7 @@ class FluentVersion(Enum):
         return cls(config.fluent_dev_version)
 
     @classmethod
-    def minimum_supported(cls):
+    def minimum_supported(cls) -> "FluentVersion":
         """Return the version member of the minimum supported version.
 
         Returns
@@ -259,21 +259,21 @@ class FluentVersion(Enum):
         return next(reversed(cls))
 
     @property
-    def awp_var(self):
+    def awp_var(self) -> str:
         """Get the Fluent version in AWP environment variable format."""
         return f"AWP_ROOT{self.number}"
 
     @property
-    def number(self):
+    def number(self) -> int:
         """Get the Fluent version as a plain integer."""
         return int(self.value.replace(".", "")[:-1])
 
     @property
-    def docker_image_tag(self):
+    def docker_image_tag(self) -> str:
         """Get the Fluent version as a Docker image tag."""
         return f"v{self.value.rsplit('.', 1)[0]}.latest"
 
-    def __lt__(self, other):
+    def __lt__(self, other: Any) -> bool:
         if isinstance(other, FluentVersion):
             return self.value < other.value
         raise ComparisonError()
@@ -290,7 +290,7 @@ class FluentVersion(Enum):
 class FluentVersionSet(Set[FluentVersion]):
     """A set of Fluent versions defined by a predicate."""
 
-    def __init__(self, predicate):
+    def __init__(self, predicate: Any) -> None:
         """Initialize the FluentVersionSet with a predicate."""
         self._predicate = predicate
         self._versions = tuple(
@@ -301,7 +301,7 @@ class FluentVersionSet(Set[FluentVersion]):
         """Check if the version is in the set."""
         return self._predicate(version)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[FluentVersion]:
         """Iterate over all Fluent versions."""
         yield from self._versions
 

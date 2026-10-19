@@ -26,6 +26,7 @@
 from collections.abc import Callable
 import logging
 import threading
+from typing import Any
 
 from google.protobuf.json_format import MessageToDict
 
@@ -42,7 +43,7 @@ class DatamodelEvents(StreamingService):
     ``_process_event_streaming`` and ``parse_event_response``.
     """
 
-    def __init__(self, service):
+    def __init__(self, service: Any) -> None:
         """Initialize DatamodelEvents."""
         # `service` may be a high-level wrapper (ObjectModel / ObjectModelV261).
         # The underlying gRPC service is accessible via ``_service``.
@@ -66,7 +67,14 @@ class DatamodelEvents(StreamingService):
         with self._lock:
             self._cbs.pop(tag, None)
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: Any,
+        stream_begin_method: Any,
+        started_evt: Any,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Process incoming datamodel event responses."""
         from ansys.fluent.core.module_config import config
 

@@ -33,113 +33,126 @@ class AbstractReduction(ABC):
     """Abstract interface for area, volume, force, and statistical reductions."""
 
     @abstractmethod
-    def area(self, locations, ctxt=None) -> Any:
+    def area(self, locations: Any, ctxt: Any = None) -> Any:
         """Get area."""
         pass
 
     @abstractmethod
-    def area_average(self, expression, locations, ctxt=None) -> Any:
+    def area_average(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get area average."""
         pass
 
     @abstractmethod
-    def area_integral(self, expression, locations, ctxt=None) -> Any:
+    def area_integral(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get area integral."""
         pass
 
     @abstractmethod
-    def centroid(self, locations, ctxt=None) -> Any:
+    def centroid(self, locations: Any, ctxt: Any = None) -> Any:
         """Get centroid."""
         pass
 
     @abstractmethod
-    def count(self, locations, ctxt=None) -> Any:
+    def count(self, locations: Any, ctxt: Any = None) -> Any:
         """Count the number of faces or cells within the locations."""
         pass
 
     @abstractmethod
-    def count_if(self, condition, locations, ctxt=None) -> Any:
+    def count_if(self, condition: str, locations: Any, ctxt: Any = None) -> Any:
         """Count the number of faces or cells where the specified condition is satisfied."""
         pass
 
     @abstractmethod
-    def force(self, locations, ctxt=None) -> Any:
+    def force(self, locations: Any, ctxt: Any = None) -> Any:
         """Get force."""
         pass
 
     @abstractmethod
-    def mass_average(self, expression, locations, ctxt=None) -> Any:
+    def mass_average(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get mass average."""
         pass
 
     @abstractmethod
-    def mass_flow_average(self, expression, locations, ctxt=None) -> Any:
+    def mass_flow_average(
+        self, expression: Any, locations: Any, ctxt: Any = None
+    ) -> Any:
         """Get mass flow average."""
         pass
 
     @abstractmethod
-    def mass_flow_average_absolute(self, expression, locations, ctxt=None) -> Any:
+    def mass_flow_average_absolute(
+        self, expression: Any, locations: Any, ctxt: Any = None
+    ) -> Any:
         """Compute the mass flow average of the absolute value of the given expression."""
         pass
 
     @abstractmethod
-    def mass_flow_integral(self, expression, locations, ctxt=None) -> Any:
+    def mass_flow_integral(
+        self, expression: Any, locations: Any, ctxt: Any = None
+    ) -> Any:
         """Get mass flow integral."""
         pass
 
     @abstractmethod
-    def mass_integral(self, expression, locations, ctxt=None) -> Any:
+    def mass_integral(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get mass integral."""
         pass
 
     @abstractmethod
-    def maximum(self, expression, locations, ctxt=None) -> Any:
+    def maximum(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get maximum."""
         pass
 
     @abstractmethod
-    def minimum(self, expression, locations, ctxt=None) -> Any:
+    def minimum(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get minimum."""
         pass
 
     @abstractmethod
-    def pressure_force(self, locations, ctxt=None) -> Any:
+    def pressure_force(self, locations: Any, ctxt: Any = None) -> Any:
         """Get pressure force."""
         pass
 
     @abstractmethod
-    def viscous_force(self, locations, ctxt=None) -> Any:
+    def viscous_force(self, locations: Any, ctxt: Any = None) -> Any:
         """Get viscous force."""
         pass
 
     @abstractmethod
-    def volume(self, locations, ctxt=None) -> Any:
+    def volume(self, locations: Any, ctxt: Any = None) -> Any:
         """Get volume."""
         pass
 
     @abstractmethod
-    def volume_average(self, expression, locations, ctxt=None) -> Any:
+    def volume_average(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get volume average."""
         pass
 
     @abstractmethod
-    def volume_integral(self, expression, locations, ctxt=None) -> Any:
+    def volume_integral(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get volume integral."""
         pass
 
     @abstractmethod
-    def moment(self, expression, locations, ctxt=None) -> Any:
+    def moment(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get moment."""
         pass
 
     @abstractmethod
-    def sum(self, expression, locations, weight: str | Enum, ctxt=None) -> Any:
+    def sum(
+        self, expression: Any, locations: Any, weight: str | Enum, ctxt: Any = None
+    ) -> Any:
         """Get sum."""
         pass
 
     @abstractmethod
     def sum_if(
-        self, expression, condition, locations, weight: str | Enum, ctxt=None
+        self,
+        expression: Any,
+        condition: str,
+        locations: Any,
+        weight: str | Enum,
+        ctxt: Any = None,
     ) -> Any:
         """Compute the weighted sum of the expression at locations where the given condition is satisfied."""
         pass

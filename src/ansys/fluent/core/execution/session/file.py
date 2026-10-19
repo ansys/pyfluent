@@ -23,6 +23,7 @@
 
 """Provides a module for file session."""
 
+from typing import Any
 import warnings
 
 from deprecated.sphinx import deprecated
@@ -66,7 +67,7 @@ from ansys.fluent.core.utils.deprecate import (
 class InvalidMultiPhaseFieldName(ValueError):
     """Raised when multi-phase field name is inappropriate."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InvalidMultiPhaseFieldName."""
         super().__init__("Multi-phase field name should start with 'phase-'.")
 
@@ -74,7 +75,7 @@ class InvalidMultiPhaseFieldName(ValueError):
 class InvalidFieldName(ValueError):
     """Raised when a field name is inappropriate."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize InvalidFieldName."""
         super().__init__("The only allowed field is 'velocity'.")
 
@@ -106,7 +107,7 @@ def _normalize_file_session_scalar_options(
     return False, False
 
 
-def _data_type_converter(args_dict):
+def _data_type_converter(args_dict: dict) -> dict:
     d_type_list = []
     d_type_map = {
         "provide_vertices": SurfaceDataType.Vertices,
@@ -244,10 +245,10 @@ class BatchFieldData:
         elif isinstance(obj, PathlinesFieldDataRequest):
             return self._get_pathlines_field_data(**obj._asdict())
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.data)
 
-    def __call__(self):
+    def __call__(self) -> Any:
         return self.data
 
 
@@ -255,7 +256,9 @@ class Batch(FieldBatch):
     """Populates field data on surfaces."""
 
     class _SurfaceTransaction:
-        def __init__(self, surface_id, provide_vertices, provide_faces):
+        def __init__(
+            self, surface_id: int, provide_vertices: bool, provide_faces: bool
+        ) -> None:
             self.surface_id = surface_id
             self.provide_vertices = provide_vertices
             self.provide_faces = provide_faces
@@ -263,12 +266,12 @@ class Batch(FieldBatch):
     class _ScalarFieldTransaction:
         def __init__(
             self,
-            field_name,
-            surface_ids,
-            phase="phase-1",
-            node_value=False,
-            boundary_value=False,
-        ):
+            field_name: str,
+            surface_ids: list[int],
+            phase: str = "phase-1",
+            node_value: bool = False,
+            boundary_value: bool = False,
+        ) -> None:
             self.phase_name = phase
             self.field_name = field_name
             self.surface_ids = surface_ids
@@ -276,12 +279,14 @@ class Batch(FieldBatch):
             self.boundary_value = boundary_value
 
     class _VectorFieldTransaction:
-        def __init__(self, field_name, surface_ids, phase="phase-1"):
+        def __init__(
+            self, field_name: str, surface_ids: list[int], phase: str = "phase-1"
+        ) -> None:
             self.phase_name = phase
             self.field_name = field_name
             self.surface_ids = surface_ids
 
-    def __init__(self, file_session, field_info):
+    def __init__(self, file_session: Any, field_info: Any) -> None:
         """__init__ method of Batch class."""
         self._surface_batches = []
         self._scalar_field_batches = []
@@ -574,7 +579,7 @@ class Batch(FieldBatch):
             self._cache_requests.append(req)
         return self
 
-    def get_fields(self):
+    def get_fields(self) -> BatchFieldData:
         """Get data for previously added requests."""
         warnings.warn(
             "'get_fields' is deprecated, use 'get_response' instead",
@@ -582,7 +587,7 @@ class Batch(FieldBatch):
         )
         return self.get_response()
 
-    def get_response(self):
+    def get_response(self) -> BatchFieldData:
         """Get data for previously added requests.
 
         Returns
@@ -652,7 +657,7 @@ class Batch(FieldBatch):
 class FileFieldData(FieldDataSource):
     """File field data."""
 
-    def __init__(self, file_session, field_info):
+    def __init__(self, file_session: Any, field_info: Any) -> None:
         """Initialize FileFieldData."""
         self._file_session = file_session
         self._field_info = field_info
@@ -664,7 +669,7 @@ class FileFieldData(FieldDataSource):
         self._returned_data = _ReturnFieldData()
 
     @property
-    def surface_ids(self):
+    def surface_ids(self) -> Any:
         """Get the surface ids."""
         return _SurfaceIds(
             _get_surface_ids(
@@ -672,12 +677,12 @@ class FileFieldData(FieldDataSource):
             )
         )
 
-    def new_batch(self):
+    def new_batch(self) -> Batch:
         """Create a new field batch."""
         return Batch(self._file_session, self._field_info)
 
     @deprecated(version="0.34", reason="Use `new_batch` instead.")
-    def new_transaction(self):
+    def new_transaction(self) -> Batch:
         """Create a new field transaction."""
         return self.new_batch()
 
@@ -1066,7 +1071,7 @@ class FileFieldData(FieldDataSource):
 class _FileFieldInfo(_BaseFieldInfo):
     """File field info."""
 
-    def __init__(self, file_session):
+    def __init__(self, file_session: Any) -> None:
         """Initialize _FileFieldInfo."""
         self._file_session = file_session
 
@@ -1113,7 +1118,7 @@ class _FileFieldInfo(_BaseFieldInfo):
 
         return [minimum, maximum]
 
-    def get_scalar_fields_info(self):
+    def get_scalar_fields_info(self) -> dict[str, Any]:
         """Get fields information (field name, domain, and section).
 
         Returns
@@ -1127,7 +1132,7 @@ class _FileFieldInfo(_BaseFieldInfo):
         )
         return self._get_scalar_fields_info()
 
-    def _get_scalar_fields_info(self):
+    def _get_scalar_fields_info(self) -> dict[str, Any]:
         phases = self._file_session._data_file.get_phases()
 
         scalar_field_info = {}
@@ -1156,7 +1161,7 @@ class _FileFieldInfo(_BaseFieldInfo):
 
         return scalar_field_info
 
-    def get_vector_fields_info(self):
+    def get_vector_fields_info(self) -> dict[str, Any]:
         """Get vector fields information (vector components).
 
         Returns
@@ -1170,7 +1175,7 @@ class _FileFieldInfo(_BaseFieldInfo):
         )
         return self._get_vector_fields_info()
 
-    def _get_vector_fields_info(self):
+    def _get_vector_fields_info(self) -> dict[str, Any]:
         phases = self._file_session._data_file.get_phases()
 
         if len(phases) > 1:
@@ -1193,7 +1198,7 @@ class _FileFieldInfo(_BaseFieldInfo):
                 }
             }
 
-    def get_surfaces_info(self):
+    def get_surfaces_info(self) -> dict[str, Any]:
         """Get surfaces information (surface name, ID, and type).
 
         Returns
@@ -1207,7 +1212,7 @@ class _FileFieldInfo(_BaseFieldInfo):
         )
         return self._get_surfaces_info()
 
-    def _get_surfaces_info(self):
+    def _get_surfaces_info(self) -> dict[str, Any]:
         mesh = self._file_session._case_file.get_mesh()
         surface_names = mesh.get_surface_names()
         surface_ids = mesh.get_surface_ids()
@@ -1226,7 +1231,7 @@ class _FileFieldInfo(_BaseFieldInfo):
 class FileFieldInfo(_FileFieldInfo):
     """File field info."""
 
-    def __init__(self, file_session):
+    def __init__(self, file_session: Any) -> None:
         """Initialize FileFieldInfo"""
         warnings.warn(
             "'FieldInfo' is deprecated and will be removed in a future release. "
@@ -1239,7 +1244,9 @@ class FileFieldInfo(_FileFieldInfo):
 class FileSession:
     """File session to read case and data file."""
 
-    def __init__(self, case_file_name=None, data_file_name=None):
+    def __init__(
+        self, case_file_name: str | None = None, data_file_name: str | None = None
+    ) -> None:
         """__init__ method of FileSession class."""
         self._case_file = CaseFile(case_file_name) if case_file_name else None
         self._data_file = (
@@ -1252,20 +1259,20 @@ class FileSession:
         self.session_id = 1
         self.fields = Fields(self)
 
-    def read_case(self, case_file_name):
+    def read_case(self, case_file_name: str) -> None:
         """Read Case file."""
         if self._case_file:
             warnings.warn("Case already read during initialization. Over-writing...")
         self._case_file = CaseFile(case_file_name)
 
-    def read_data(self, data_file_name):
+    def read_data(self, data_file_name: str) -> None:
         """Read Data file."""
         if self._data_file:
             warnings.warn("Data already read during initialization. Over-writing...")
         self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)
 
     @property
-    def field_info(self):
+    def field_info(self) -> FileFieldInfo:
         """Provides access to Fluent field information."""
         warnings.warn(
             "field_info is deprecated. Use fields.field_info instead.",
@@ -1274,7 +1281,7 @@ class FileSession:
         return self.fields.field_info
 
     @property
-    def field_data(self):
+    def field_data(self) -> Any:
         """Fluent field data on surfaces."""
         warnings.warn(
             "field_data is deprecated. Use fields.field_data instead.",

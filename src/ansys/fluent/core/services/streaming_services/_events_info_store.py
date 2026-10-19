@@ -25,12 +25,13 @@
 
 from dataclasses import dataclass, field, fields
 from enum import Enum
+from typing import Any
 import warnings
 
 from ansys.fluent.core.diagnostics.exceptions import PyFluentDeprecationWarning
 
 
-def _missing_for_events(cls, value):
+def _missing_for_events(cls, value: Any) -> Any:
     # Top-level imports can expose the v0 or v1 event enums depending on how
     # the package was imported. Accept equivalent enum members from either
     # version by matching on the stable enum name first.
@@ -73,7 +74,7 @@ class SolverEvent(Enum):
     FATAL_ERROR = "fatal_error"
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, value: str | int | None) -> "SolverEvent | None":
         return _missing_for_events(cls, value)
 
 
@@ -87,7 +88,7 @@ class MeshingEvent(Enum):
     FATAL_ERROR = "fatal_error"
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, value: str | int | None) -> "MeshingEvent | None":
         return _missing_for_events(cls, value)
 
 
@@ -96,16 +97,16 @@ class EventInfoBase:
 
     derived_classes = {}
 
-    def __init_subclass__(cls, event, **kwargs):
+    def __init_subclass__(cls, event, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
         cls.derived_classes[event.name] = cls
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         for f in fields(self):
             # Cast to the correct type
             setattr(self, f.name, f.type(getattr(self, f.name)))
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         for f in fields(self):
             if f.metadata.get("deprecated_name") == name:
                 warnings.warn(

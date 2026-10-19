@@ -54,7 +54,7 @@ class _ConfigDescriptor(Generic[TConfig]):
 
     def __init__(
         self, default_fn: Callable[[TConfig], Any], deprecated_var: str | None = None
-    ):
+    ) -> None:
         self._default_fn = default_fn
         self._deprecated_var = deprecated_var
 
@@ -63,10 +63,10 @@ class _ConfigDescriptor(Generic[TConfig]):
             setattr(instance, self._backing_field, self._default_fn(instance))
         return getattr(instance, self._backing_field)
 
-    def _set_config(self, instance: TConfig, value: Any):
+    def _set_config(self, instance: TConfig, value: Any) -> None:
         setattr(instance, self._backing_field, value)
 
-    def __set_name__(self, owner: type[TConfig], name: str):
+    def __set_name__(self, owner: type[TConfig], name: str) -> None:
         self._backing_field = "_" + name
 
     def __get__(self, instance: TConfig, owner: type[TConfig]) -> Any:
@@ -76,7 +76,7 @@ class _ConfigDescriptor(Generic[TConfig]):
             return getattr(pyfluent, self._deprecated_var)
         return self._get_config(instance)
 
-    def __set__(self, instance: TConfig, value: Any):
+    def __set__(self, instance: TConfig, value: Any) -> None:
         import ansys.fluent.core as pyfluent
 
         if self._deprecated_var is not None and self._deprecated_var in vars(pyfluent):
@@ -362,7 +362,7 @@ class Config:
         "DEFAULT_EXPOSURE_LEVEL",
     )
 
-    def __init__(self):
+    def __init__(self) -> None:
         """__init__ method of Config class."""
         # Read the environment variable once when pyfluent is imported
         # and reuse it throughout process lifetime.
@@ -378,7 +378,7 @@ class Config:
         """The latest development version of Fluent."""
         return "27.1.0"
 
-    def print(self):
+    def print(self) -> None:
         """Print all configuration variables."""
         config_dict = {}
         if sys.version_info >= (3, 11):

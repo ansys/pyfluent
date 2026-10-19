@@ -242,7 +242,7 @@ class MeshType(Enum):
     UNKNOWN = "unknown"
 
 
-def _check_h5_extension(file_path):
+def _check_h5_extension(file_path: str) -> None:
     """
     Checks if a given file path ends with the '.h5' extension.
 

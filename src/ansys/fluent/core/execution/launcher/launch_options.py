@@ -25,7 +25,7 @@
 
 from enum import Enum
 import os
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 import warnings
 
 if TYPE_CHECKING:
@@ -65,14 +65,14 @@ class FluentEnum(Enum):
     Accepts lowercase member names as values and supports comparison operators.
     """
 
-    def _get_enum_map(self):
+    def _get_enum_map(self) -> dict:
         return {}
 
-    def get_fluent_value(self):
+    def get_fluent_value(self) -> Any:
         """Returns the fluent value of the enum."""
         return self._get_enum_map()[self]
 
-    def _default(self):
+    def _default(self) -> "FluentEnum | None":
         return
 
     @classmethod
@@ -108,7 +108,7 @@ class LaunchMode(FluentEnum):
     CONTAINER = "container"
     SLURM = "slurm"
 
-    def _get_enum_map(self):
+    def _get_enum_map(self) -> dict["LaunchMode", int]:
         return {
             self.STANDALONE: 1,
             self.PIM: 2,
@@ -138,11 +138,11 @@ class FluentMode(FluentEnum):
     SOLVER_AERO = "solver_aero"
     PRE_POST = "pre_post"
 
-    def _default(self):
+    def _default(self) -> "FluentMode":
         return self.SOLVER
 
     @classmethod
-    def _get_enum_map(cls):
+    def _get_enum_map(cls) -> dict["FluentMode", type]:
         from ansys.fluent.core.meshing.session.meshing import Meshing
         from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
         from ansys.fluent.core.solver.session.solver import Solver
@@ -160,7 +160,7 @@ class FluentMode(FluentEnum):
         }
 
     @classmethod
-    def from_session_class(cls, session_class):
+    def from_session_class(cls, session_class: type) -> "FluentMode | None":
         """Get the FluentMode corresponding to a session class."""
         return {v: k for k, v in cls._get_enum_map().items()}.get(session_class)
 
@@ -191,14 +191,14 @@ class UIMode(FluentEnum):
     HIDDEN_GUI = "hidden_gui"
     GUI = "gui"
 
-    def _default(self):
+    def _default(self) -> "UIMode":
         # Not using NO_GUI in windows as it opens a new cmd or
         # shows Fluent output in the current cmd if start <launch_string> is not used.
         # Note: HIDDEN_GUI is not supported inside containers and the default value will be
         # downgraded to NO_GUI on windows host automatically by the container launcher.
         return self.HIDDEN_GUI if is_windows() else self.NO_GUI
 
-    def _get_enum_map(self):
+    def _get_enum_map(self) -> dict["UIMode", tuple[str, ...]]:
         return {
             self.NO_GUI_OR_GRAPHICS: ("g",),
             self.NO_GRAPHICS: ("gr",),
@@ -214,10 +214,10 @@ class Dimension(FluentEnum):
     TWO = 2
     THREE = 3
 
-    def _default(self):
+    def _default(self) -> "Dimension":
         return self.THREE
 
-    def _get_enum_map(self):
+    def _get_enum_map(self) -> dict["Dimension", tuple[str, ...]]:
         return {
             self.TWO: ("2d",),
             self.THREE: ("3d",),
@@ -230,10 +230,10 @@ class Precision(FluentEnum):
     SINGLE = "single"
     DOUBLE = "double"
 
-    def _default(self):
+    def _default(self) -> "Precision":
         return self.DOUBLE
 
-    def _get_enum_map(self):
+    def _get_enum_map(self) -> dict["Precision", tuple[str, ...]]:
         return {
             self.SINGLE: ("",),
             self.DOUBLE: ("dp",),
@@ -250,10 +250,10 @@ class FluentWindowsGraphicsDriver(FluentEnum):
     OPENGL = "opengl"
     AUTO = "auto"
 
-    def _default(self):
+    def _default(self) -> "FluentWindowsGraphicsDriver":
         return self.AUTO
 
-    def _get_enum_map(self):
+    def _get_enum_map(self) -> dict["FluentWindowsGraphicsDriver", tuple[str, ...]]:
         return {
             self.NULL: ("null",),
             self.MSW: ("msw",),
@@ -273,10 +273,10 @@ class FluentLinuxGraphicsDriver(FluentEnum):
     OPENGL = "opengl"
     AUTO = "auto"
 
-    def _default(self):
+    def _default(self) -> "FluentLinuxGraphicsDriver":
         return self.AUTO
 
-    def _get_enum_map(self):
+    def _get_enum_map(self) -> dict["FluentLinuxGraphicsDriver", tuple[str, ...]]:
         return {
             self.NULL: ("null",),
             self.X11: ("x11",),
@@ -286,7 +286,9 @@ class FluentLinuxGraphicsDriver(FluentEnum):
         }
 
 
-def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
+def _get_fluent_launch_mode(
+    start_container, container_dict, scheduler_options
+) -> LaunchMode:
     """Get the Fluent launch mode.
 
     Parameters
@@ -326,7 +328,7 @@ def _get_graphics_driver(
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
     ) = None,
     ui_mode: UIMode | None = None,
-):
+) -> FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver:
     ui_mode_ = UIMode(ui_mode)
     if graphics_driver is not None and ui_mode_ not in {UIMode.GUI, UIMode.HIDDEN_GUI}:
         warnings.warn(
@@ -385,7 +387,9 @@ def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     return FluentVersion.get_latest_installed()
 
 
-def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | None):
+def _validate_gpu(
+    gpu: bool | list[int] | None, dimension: Dimension | int | None
+) -> None:
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters

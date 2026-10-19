@@ -1555,7 +1555,9 @@ class WildcardPath(Group):
     # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
     # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
 
-    def to_scheme_keys(self, value: StateType, root_cls: type, path: list[str]) -> StateType:
+    def to_scheme_keys(
+        self, value: StateType, root_cls: type, path: list[str]
+    ) -> StateType:
         """Convert value to have keys with scheme names."""
         return self._settings_cls.to_scheme_keys(value, root_cls, path)
 
@@ -2479,7 +2481,9 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping[str, "Base"]
         return count
 
 
-class CreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
+class CreatableNamedObjectMixin(
+    collections.abc.MutableMapping[str, ChildTypeT], Generic[ChildTypeT]
+):
     """Provides creatable named objects for Fluent 2025 R1 and later."""
 
     def __setitem__(self, name: str, value: StateType) -> None:
@@ -2503,7 +2507,9 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT])
         child.set_state(value)
 
 
-class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin[ChildTypeT]):
+class CreatableNamedObjectMixinOld(
+    CreatableNamedObjectMixin[ChildTypeT], Generic[ChildTypeT]
+):
     """Provides creatable named objects for Fluent 2024 R2 and earlier."""
 
     # In Fluent 2025 R1, the ``create()`` method is available as commands in the ``NamedObject`` class.
@@ -2525,7 +2531,9 @@ class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin[ChildTypeT]):
         return self._create_child_object(name)
 
 
-class _NonCreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
+class _NonCreatableNamedObjectMixin(
+    collections.abc.MutableMapping[str, ChildTypeT], Generic[ChildTypeT]
+):
     def __setitem__(self, name: str, value: StateType) -> None:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):

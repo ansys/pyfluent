@@ -27,7 +27,7 @@ from __future__ import annotations
 
 from enum import Enum
 import os
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.execution.session import Meshing, PureMeshing
@@ -84,7 +84,7 @@ class MeshingWorkflow(Workflow):
 
     if not TYPE_CHECKING:
 
-        def __getattribute__(self, item: str):
+        def __getattribute__(self, item: str) -> Any:
             if (
                 not item.startswith("_")
                 and super().__getattribute__("_initialized")
@@ -301,11 +301,11 @@ class CreatedWorkflow(Workflow):
             self._activate_dynamic_interface(dynamic_interface=True)
 
 
-def _is_workflow_active(meshing_root, name: str):
+def _is_workflow_active(meshing_root, name: str) -> Any:
     return getattr(meshing_root.GlobalSettings, name_to_identifier_map[name])()
 
 
-def _get_current_workflow(current_workflow, name: str):
+def _get_current_workflow(current_workflow, name: str) -> Workflow | None:
     if current_workflow and current_workflow._name == name:
         return current_workflow
 

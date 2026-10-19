@@ -37,15 +37,15 @@ from ._slots import SlotAccessor, make_slot
 class _GroupFacade:
     """Attribute-style access to one group of registered signatures."""
 
-    def __init__(self, group: str, discovery: Discovery):
+    def __init__(self, group: str, discovery: Discovery) -> None:
         self._group = group
         self._sigs = REGISTRY.group(group)
         self._discovery = discovery
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         return sorted(list(self._sigs) + list(super().__dir__()))
 
-    def __getattr__(self, item: str):
+    def __getattr__(self, item: str) -> _SigInvoker:
         try:
             sig = self._sigs[item]
         except KeyError as exc:
@@ -69,14 +69,14 @@ class _SigInvoker:
     * ``inv.signature`` / ``inv.params()`` -- introspection.
     """
 
-    def __init__(self, sig: Signature, discovery: Discovery):
+    def __init__(self, sig: Signature, discovery: Discovery) -> None:
         self._sig = sig
         self._discovery = discovery
         self._slots: dict[str, SlotAccessor] = {
             p.name: make_slot(p, discovery) for p in sig.params
         }
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
         return self._sig.build(*args, **kwargs)
 
     def __getattr__(self, item: str) -> SlotAccessor:
@@ -88,7 +88,7 @@ class _SigInvoker:
             f"Available: {list(slots)}"
         )
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         return sorted(list(super().__dir__()) + list(self._slots))
 
     @property
@@ -100,7 +100,7 @@ class _SigInvoker:
         """Return the parameter names for this signature."""
         return [p.name for p in self._sig.params]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         params = ", ".join(f"{p.name}: {p.kind.value}" for p in self._sig.params)
         return (
             f"<{self._sig.py_name}({params}) "

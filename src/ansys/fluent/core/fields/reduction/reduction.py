@@ -39,16 +39,16 @@ Path = list[tuple[str, str]]
 class Reduction(AbstractReduction):
     """Reduction backed by the Reduction gRPC service."""
 
-    def __init__(self, service):
+    def __init__(self, service: Any) -> None:
         """Initialize Reduction."""
         self.service = service
         self.ctxt = None
 
-    def set_context(self, ctxt):
+    def set_context(self, ctxt: Any) -> None:
         """Set the context over which reduction service should operate."""
         self.ctxt = weakref.proxy(ctxt)
 
-    def _validate_str_location(self, loc: str):
+    def _validate_str_location(self, loc: str) -> None:
         if not self.ctxt:
             return
         if all(
@@ -60,7 +60,7 @@ class Reduction(AbstractReduction):
         ):
             raise ValueError(f"Invalid location input: '{loc}'")
 
-    def _validate_locations(self, locations):
+    def _validate_locations(self, locations: Any) -> None:
         for loc in locations:
             if isinstance(loc, Iterable) and not isinstance(loc, (str, bytes)):
                 raise DisallowedValuesError("location", loc, list(loc))
@@ -173,7 +173,12 @@ class Reduction(AbstractReduction):
         return self.service.sum(expression, locations, weight, ctxt)
 
     def sum_if(
-        self, expression, condition, locations, weight: str | Weight, ctxt=None
+        self,
+        expression: Any,
+        condition: str,
+        locations: Any,
+        weight: str | Weight,
+        ctxt: Any = None,
     ) -> Any:
         """Compute the weighted sum of the expression at locations where the given condition is satisfied."""
         self._validate_locations(locations=locations)

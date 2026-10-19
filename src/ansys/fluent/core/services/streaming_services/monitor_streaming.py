@@ -24,13 +24,14 @@
 """Module for monitors management."""
 
 import threading
+from typing import Any
 
 import numpy as np
 
 from ansys.fluent.core.services.streaming_services.streaming import StreamingService
 
 
-def _pandas():
+def _pandas() -> Any:
     import pandas
 
     return pandas
@@ -47,7 +48,7 @@ class MonitorsManager(StreamingService):
         Monitors streaming service.
     """
 
-    def __init__(self, session_id: str, service):
+    def __init__(self, session_id: str, service: Any) -> None:
         """__init__ method of MonitorsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
@@ -173,10 +174,12 @@ class MonitorsManager(StreamingService):
             self.stop()
             self.start()
 
-    def _prepare(self):
+    def _prepare(self) -> None:
         self._update_dataframe()
 
-    def _populate_dataframes(self, data_received, *args, **kwargs):
+    def _populate_dataframes(
+        self, data_received: Any, *args: Any, **kwargs: Any
+    ) -> None:
         for _, df_data in self._data_frames.items():
             df = df_data["df"]
             monitors = df_data["monitors"]
@@ -198,7 +201,7 @@ class MonitorsManager(StreamingService):
                     callback, args, kwargs = callback_map
                     callback(*args, **kwargs)
 
-    def _update_dataframe(self):
+    def _update_dataframe(self) -> None:
         with self._lock:
             self._monitors_info = self._streaming_service.get_monitors_info()
             self._data_frames = {}
@@ -212,7 +215,14 @@ class MonitorsManager(StreamingService):
                 self._data_frames[monitor_set_name]["df"] = df
                 self._data_frames[monitor_set_name]["monitors"] = monitors_name
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self,
+        id: Any,
+        stream_begin_method: Any,
+        started_evt: Any,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Begin monitors streaming."""
         responses = self._streaming_service._process_streaming(
             *args,

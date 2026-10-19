@@ -39,6 +39,7 @@ Startup and logger-discovery helpers are kept internal to the module.
 
 import logging.config
 import os
+from typing import Any
 
 from ansys.fluent.core.module_config import config
 
@@ -54,7 +55,7 @@ __all__ = (
 _logging_file_enabled = False
 
 
-def root_config():
+def root_config() -> None:
     """Sets up the root PyFluent logger that outputs messages to stdout, but not to
     files."""
     logger = logging.getLogger("pyfluent")
@@ -67,7 +68,7 @@ def root_config():
         logger.addHandler(ch)
 
 
-def set_console_logging_level(level: str | int):
+def set_console_logging_level(level: str | int) -> None:
     """Set the minimum level of PyFluent messages written to the console.
 
     Parameters
@@ -155,7 +156,7 @@ def get_default_config() -> dict:
     return config
 
 
-def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
+def enable(level: str | int = "DEBUG", custom_config: dict | None = None) -> None:
     """Enable PyFluent logging to a rotating log file.
 
     By default, PyFluent uses the packaged ``logging_config.yaml`` file and
@@ -219,7 +220,7 @@ def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
     set_global_level(level)
 
 
-def get_logger(*args, **kwargs):
+def get_logger(*args: Any, **kwargs: Any) -> logging.Logger:
     """Return a standard-library logger for a PyFluent component.
 
     Parameters
@@ -243,7 +244,7 @@ def get_logger(*args, **kwargs):
     return logging.getLogger(*args, **kwargs)
 
 
-def set_global_level(level: str | int):
+def set_global_level(level: str | int) -> None:
     """Set the level of all registered PyFluent file loggers.
 
     Parameters
@@ -284,7 +285,7 @@ def set_global_level(level: str | int):
             logging.getLogger(name).setLevel(level)
 
 
-def list_loggers():
+def list_loggers() -> list[str]:
     """List all PyFluent loggers.
 
     Returns

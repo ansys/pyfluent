@@ -101,7 +101,7 @@ class BaseMeshing(BaseSession):
         "PMFileManagement",
     ]
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs) -> object:
         if cls is BaseMeshing:
             raise TypeError(
                 "BaseMeshing cannot be instantiated directly. "
@@ -116,7 +116,7 @@ class BaseMeshing(BaseSession):
         file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
-    ):
+    ) -> None:
         """BaseMeshing session.
 
         Parameters
@@ -184,7 +184,7 @@ class BaseMeshing(BaseSession):
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 
     @property
-    def _version(self):
+    def _version(self) -> Any:
         """Fluent's product version."""
         if self._product_version is None:
             self._product_version = get_version_for_file_name(session=self)
@@ -637,12 +637,16 @@ class BaseMeshing(BaseSession):
         return self._topology_based_meshing_workflow(legacy=legacy)
 
     @property
-    def current_workflow(self):
+    def current_workflow(
+        self,
+    ) -> "_meshing_workflow_type.WatertightMeshing | _meshing_workflow_type.FaultTolerantMeshing | _meshing_workflow_type.TwoDimensionalMeshing | _meshing_workflow_type.TopologyBasedMeshing | _meshing_workflow_type.CreateMeshingWorkflow | _meshing_workflow_type.LoadMeshingWorkflow":
         """Get the currently active meshing workflow."""
         return self._get_current_workflow()
 
     @property
-    def legacy_current_workflow(self):
+    def legacy_current_workflow(
+        self,
+    ) -> "_meshing_workflow_type.WatertightMeshing | _meshing_workflow_type.FaultTolerantMeshing | _meshing_workflow_type.TwoDimensionalMeshing | _meshing_workflow_type.TopologyBasedMeshing | _meshing_workflow_type.CreateMeshingWorkflow | _meshing_workflow_type.LoadMeshingWorkflow":
         """Get the currently active meshing workflow using the legacy implementation."""
         return self._get_current_workflow(legacy=True)
 
@@ -654,7 +658,7 @@ class BaseMeshing(BaseSession):
         num_files_to_try: int = 1,
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,
-    ):
+    ) -> None:
         """Transfer mesh to Fluent solver instances.
 
         Parameters

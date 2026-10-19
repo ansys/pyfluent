@@ -62,7 +62,7 @@ _active_session: ContextVar["BaseSession | None"] = ContextVar(
 )
 
 
-def _get_active_session():
+def _get_active_session() -> "BaseSession | None":
     return _active_session.get()
 
 
@@ -114,7 +114,7 @@ logger = logging.getLogger("pyfluent.general")
 __all__ = ("BaseSession", "using")
 
 
-def _parse_server_info_file(file_name: str):
+def _parse_server_info_file(file_name: str) -> tuple[str, int, str] | tuple[str, str]:
     """Parse server info file.
     Returns (ip, port, password) or (unix_socket, password)"""
     with open(file_name, encoding="utf-8") as f:
@@ -176,7 +176,7 @@ class BaseSession:
                 f"You are already using {cls.__name__}, which sets mode to {FluentMode.from_session_class(cls)}."
             )
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs) -> "BaseSession":
         if cls is BaseSession:
             raise TypeError(
                 "BaseSession cannot be instantiated directly. "
@@ -185,7 +185,7 @@ class BaseSession:
         return super().__new__(cls)
 
     @classmethod
-    def _create_instance(cls, *args, **kwargs):
+    def _create_instance(cls, *args, **kwargs) -> "BaseSession":
         """Private factory bypassing the direct-instantiation guard."""
         instance = object.__new__(cls)
         instance.__init__(*args, **kwargs)
@@ -311,7 +311,7 @@ class BaseSession:
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
     @cached_property
-    def _batch_ops_service(self):
+    def _batch_ops_service(self) -> Any:
         """gRPC service for batch operations (loaded on first use)."""
         return self._fluent_connection._service_factory.batch_ops
 
@@ -330,13 +330,13 @@ class BaseSession:
 
     @property
     @deprecated(version="0.32", reason="Use ``session.scheme``.")
-    def scheme_eval(self):
+    def scheme_eval(self) -> Any:
         """Provides access to Fluent field information."""
         return self.scheme
 
     @property
     @deprecated(version="0.32", reason="Use ``session.is_server_healthy``.")
-    def health_check(self):
+    def health_check(self) -> Any:
         """Provides access to Health Check service."""
         return self._health_check
 
@@ -345,12 +345,12 @@ class BaseSession:
         """Return the session ID."""
         return self._fluent_connection._id
 
-    def start_journal(self, file_name: str):
+    def start_journal(self, file_name: str) -> None:
         """Executes tui command to start journal."""
         warnings.warn("Use -> journal.start()", PyFluentDeprecationWarning)
         self.journal.start(file_name)
 
-    def stop_journal(self):
+    def stop_journal(self) -> None:
         """Executes tui command to stop journal."""
         warnings.warn("Use -> journal.stop()", PyFluentDeprecationWarning)
         self.journal.stop()
@@ -420,7 +420,7 @@ class BaseSession:
         """Gets and returns the fluent version."""
         return FluentVersion(self.scheme.version)
 
-    def _exit_compose_service(self):
+    def _exit_compose_service(self) -> None:
         args = self._launcher_args or {}
         compose_config = args.get("compose_config", None)
 
@@ -428,7 +428,7 @@ class BaseSession:
         if compose_config and compose_config.is_compose:
             container.stop()
 
-    def wait_process_finished(self, wait: float | int | bool = 100):
+    def wait_process_finished(self, wait: float | int | bool = 100) -> bool | None:
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
         are still running when wait limit (default 100 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.
@@ -482,11 +482,7 @@ class BaseSession:
             Whether file exists.
         """
         if self._file_transfer_service:
-            check_exists = getattr(
-                self._file_transfer_service, "file_exists_on_remote", None
-            )
-            if check_exists is not None:
-                return check_exists(file_name)
+            return self._file_transfer_service.file_exists_on_remote(file_name)
 
     def _file_transfer_api_warning(self, method_name: str) -> str:
         """User warning for upload/download methods."""
@@ -498,7 +494,9 @@ class BaseSession:
         file interactions require explicit use of {method_name}  method \
         for relevant files."
 
-    def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
+    def upload(
+        self, file_name: list[str] | str, remote_file_name: str | None = None
+    ) -> Any:
         """Upload a file to the server.
 
         Parameters
@@ -514,7 +512,7 @@ class BaseSession:
             )
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_directory: str | None = None):
+    def download(self, file_name: str, local_directory: str | None = None) -> Any:
         """Download a file from the server.
 
         Parameters
@@ -540,7 +538,7 @@ class BaseSession:
         """
         self.application_runtime.set_working_directory(os.fspath(path))
 
-    def __enter__(self):
+    def __enter__(self) -> "BaseSession":
         return self
 
     def __exit__(
@@ -548,12 +546,12 @@ class BaseSession:
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
-    ):
+    ) -> None:
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self._exit()
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         if self._fluent_connection is None:
             names = super().__dir__()
             return [
@@ -569,12 +567,12 @@ class BaseSession:
         }
         return sorted(dir_list)
 
-    def enable_beta_features(self):
+    def enable_beta_features(self) -> None:
         """Enable access to Fluent beta-features"""
         self.application_runtime.enable_beta()
 
     @property
-    def _is_beta_enabled(self):
+    def _is_beta_enabled(self) -> bool:
         return self.application_runtime.is_beta_enabled()
 
     @overload
@@ -813,66 +811,71 @@ class BaseSession:
         **kwargs: Unpack["PIMArgsWithoutMode"],
     ) -> "BaseSession":
         """
-        Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
+                Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
-        Parameters
-        ----------
-        ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
-            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
-        graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
-        product_version : FluentVersion or str or float or int, optional
-            Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
-            any of ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
-            which uses the newest installed version.
-        dimension : Dimension or int, optional
-            Specifies the geometric dimensionality of the Fluent simulation. Defaults to ``None``,
-            which corresponds to ``Dimension.THREE``. Acceptable values include ``Dimension.TWO``,
-            ``Dimension.THREE``, or integers ``2`` and ``3``.
-        precision : Precision or str, optional
-            Defines the floating point precision. Defaults to ``None``, which corresponds to
-            ``Precision.DOUBLE``. Acceptable values include ``Precision.SINGLE``,
-            ``Precision.DOUBLE``, or strings ``"single"`` and ``"double"``.
-        processor_count : int, optional
-            Specifies the number of processors to use. Defaults to ``None``, which uses 1 processor.
-            In job scheduler environments, this value limits the total number of allocated cores.
-        start_timeout : int, optional
-            Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 100 seconds.
-        additional_arguments : str, optional
-            Additional command-line arguments for Fluent, formatted as they would be on the command line.
-        cleanup_on_exit : bool
-            Determines whether to shut down the connected Fluent session upon exit or when calling
-            the session's `exit()` method. Defaults to True.
-        dry_run : bool, optional
-            If True, does not launch Fluent but prints configuration information instead. If dry running a
-            PIM start, this method will return a configuration dictionary. Defaults to False.
-        start_transcript : bool
-            Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
-            streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
-        gpu : bool, optional
-            If True, starts Fluent with GPU Solver enabled.
-        start_watchdog : bool, optional
-            If True and `cleanup_on_exit` is True, an independent watchdog process is run to ensure that any local
-            GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
-        file_transfer_service : Any, optional
-            Service for uploading/downloading files to/from the server.
+                Parameters
+                ----------
+                ui_mode : UIMode or str, optional
+                    Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+                    or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
+                graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+                    Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
+                    (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+        . Accepts either a ``UIMode`` value
+                    or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
+                graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+                    Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
+                    (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+                product_version : FluentVersion or str or float or int, optional
+                    Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
+                    any of ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
+                    which uses the newest installed version.
+                dimension : Dimension or int, optional
+                    Specifies the geometric dimensionality of the Fluent simulation. Defaults to ``None``,
+                    which corresponds to ``Dimension.THREE``. Acceptable values include ``Dimension.TWO``,
+                    ``Dimension.THREE``, or integers ``2`` and ``3``.
+                precision : Precision or str, optional
+                    Defines the floating point precision. Defaults to ``None``, which corresponds to
+                    ``Precision.DOUBLE``. Acceptable values include ``Precision.SINGLE``,
+                    ``Precision.DOUBLE``, or strings ``"single"`` and ``"double"``.
+                processor_count : int, optional
+                    Specifies the number of processors to use. Defaults to ``None``, which uses 1 processor.
+                    In job scheduler environments, this value limits the total number of allocated cores.
+                start_timeout : int, optional
+                    Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 100 seconds.
+                additional_arguments : str, optional
+                    Additional command-line arguments for Fluent, formatted as they would be on the command line.
+                cleanup_on_exit : bool
+                    Determines whether to shut down the connected Fluent session upon exit or when calling
+                    the session's `exit()` method. Defaults to True.
+                dry_run : bool, optional
+                    If True, does not launch Fluent but prints configuration information instead. If dry running a
+                    PIM start, this method will return a configuration dictionary. Defaults to False.
+                start_transcript : bool
+                    Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
+                    streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
+                gpu : bool, optional
+                    If True, starts Fluent with GPU Solver enabled.
+                start_watchdog : bool, optional
+                    If True and `cleanup_on_exit` is True, an independent watchdog process is run to ensure that any local
+                    GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
+                file_transfer_service : Any, optional
+                    Service for uploading/downloading files to/from the server.
 
-        Returns
-        -------
-        Union[Meshing, PureMeshing, Solver, SolverIcing, dict]
-            Session object or configuration dictionary if ``dry_run`` is True.
+                Returns
+                -------
+                Union[Meshing, PureMeshing, Solver, SolverIcing, dict]
+                    Session object or configuration dictionary if ``dry_run`` is True.
 
-        Raises
-        ------
-        UnexpectedKeywordArgument
-            If an unexpected keyword argument is provided.
+                Raises
+                ------
+                UnexpectedKeywordArgument
+                    If an unexpected keyword argument is provided.
 
-        Notes
-        -----
-        In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
-        and core counts are queried from these environments before being passed to Fluent.
+                Notes
+                -----
+                In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
+                and core counts are queried from these environments before being passed to Fluent.
         """
         from ansys.fluent.core.execution.launcher.pim_launcher import PIMLauncher
 
