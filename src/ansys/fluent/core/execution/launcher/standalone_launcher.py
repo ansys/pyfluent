@@ -107,7 +107,7 @@ class StandaloneArgsWithoutDryRunMode(
     """Working directory for the Fluent client."""
     fluent_path: str | None
     """User-specified path for Fluent installation."""
-    topy: str | list[Any] | None
+    topy: bool | str | None
     """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
     a filename for the new Python journal.
     """
@@ -153,11 +153,11 @@ class StandaloneLauncher:
         mode : FluentMode
             Specifies the launch mode of Fluent to target a specific session type.
         ui_mode : UIMode or str, optional
-            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            Defines the user interface mode for Fluent. Accepts either a :class:`~ansys.fluent.core.execution.launcher.launch_options.UIMode` value
             or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
-            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+            Specifies the graphics driver for Fluent. Options are from the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentWindowsGraphicsDriver` enum
+            (for Windows) or the :class:`~ansys.fluent.core.execution.launcher.launch_options.FluentLinuxGraphicsDriver` enum (for Linux).
         product_version : FluentVersion or str or float or int, optional
             Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
             ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
@@ -303,7 +303,7 @@ class StandaloneLauncher:
             )
 
         self._launch_string += _build_journal_argument(
-            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
+            self.argvals.get("topy"), self.argvals.get("journal_file_names")
         )
 
         if is_windows():
@@ -319,7 +319,7 @@ class StandaloneLauncher:
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
         # +1 ensures the minute-granularity timer never fires before start_timeout elapses.
         _idle_timeout_minutes = math.ceil(idle_timeout_seconds / 60) + 1
-        return f' -command="(set-session-idle-timeoutPLF+{_idle_timeout_minutes})"'
+        return f' -command="(set-session-idle-timeout {_idle_timeout_minutes})"'
 
     @staticmethod
     def _disable_idle_timeout_guard(session):
