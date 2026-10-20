@@ -89,7 +89,7 @@ def camel_to_snake_case(camel_case_str: str) -> str:
 camel_to_snake_case.cache = {}
 
 
-def snake_to_camel_case(snake_case_str: str, camel_case_strs: Iterable):
+def snake_to_camel_case(snake_case_str: str, camel_case_strs: Iterable) -> str | None:
     """Populate the snake-case attribute map and return camel case of the passed
     attribute."""
     try:
@@ -245,7 +245,7 @@ class BaseTask:
             )
         )
 
-    def get_direct_upstream_tasks(self) -> list:
+    def get_direct_upstream_tasks(self) -> list["BaseTask"]:
         """Get the list of tasks upstream of this one and directly connected by a data
         dependency.
 
@@ -258,7 +258,7 @@ class BaseTask:
             attr="requiredInputs", other_attr="outputs"
         )
 
-    def get_direct_downstream_tasks(self) -> list:
+    def get_direct_downstream_tasks(self) -> list["BaseTask"]:
         """Get the list of tasks downstream of this one and directly connected by a data
         dependency.
 
@@ -277,7 +277,7 @@ class BaseTask:
         if state and "Forced-up-to-date" in state.allowed_values():
             state.set_state("Forced-up-to-date")
 
-    def tasks(self, recompute=True) -> list:
+    def tasks(self, recompute: bool = True) -> list[BaseTask]:
         """Get the ordered task list held by this task.
 
         This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
@@ -323,11 +323,11 @@ class BaseTask:
                 self._task_list = task_list
         return self._ordered_children
 
-    def task_names(self):
+    def task_names(self) -> list[str]:
         """Get the list of the Python names for the available tasks."""
         return [child.python_name() for child in self.tasks()]
 
-    def inactive_tasks(self) -> list:
+    def inactive_tasks(self) -> list[BaseTask]:
         """Get the inactive ordered child list.
 
         Returns
@@ -437,7 +437,7 @@ class BaseTask:
 
         return camel_args
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Any:
         result = getattr(self._task, attr, None)
         if result:
             return result
@@ -466,7 +466,7 @@ class BaseTask:
             return result
         return super().__getattribute__(attr)
 
-    def __setattr__(self, attr, value):
+    def __setattr__(self, attr: str, value: Any) -> None:
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
@@ -475,7 +475,7 @@ class BaseTask:
         else:
             setattr(self._task, attr, value)
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         arg_list = []
         for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
             arg_list.append(camel_to_snake_case(arg))
@@ -486,7 +486,7 @@ class BaseTask:
         """Delete this task from the workflow."""
         self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
 
-    def rename(self, new_name: str):
+    def rename(self, new_name: str) -> Any:
         """Rename the current task to a given name."""
         self._command_source._dynamic_python_names = True
         py_name = self.python_name()
@@ -517,11 +517,11 @@ class BaseTask:
         self._python_name = new_name
         return self._task.Rename(NewName=new_name)
 
-    def add_child_to_task(self):
+    def add_child_to_task(self) -> Any:
         """Add a child task."""
         return self._task.AddChildToTask()
 
-    def update_child_tasks(self, setup_type_changed: bool):
+    def update_child_tasks(self, setup_type_changed: bool) -> None:
         """Update child tasks."""
         self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
 
@@ -564,7 +564,7 @@ class BaseTask:
         _call_refresh_task_accessors(self._command_source)
 
     @property
-    def insertable_tasks(self):
+    def insertable_tasks(self) -> "BaseTask._NextTask":
         """Tasks that can be inserted after the current task."""
         return self._NextTask(self)
 
@@ -620,11 +620,11 @@ class BaseTask:
                 matches.append(task)
         return matches
 
-    def display_name(self):
+    def display_name(self) -> str:
         """Display name."""
         return self._name_()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Task '{self.display_name()}'>"
 
 
@@ -661,29 +661,29 @@ class TaskContainer(PyCallableStateObject):
         for name in self.get_object_names():
             yield self[name]
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str) -> Any:
         logger.debug(f"TaskContainer.__getitem__({name})")
         return self._container._workflow.TaskObject[name]
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Any:
         return getattr(self._task_container, attr)
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         return sorted(
             set(
                 list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
             )
         )
 
-    def items(self):
+    def items(self) -> Any:
         """Get state items."""
         return self._task_container.get_state().items()
 
-    def get_state(self):
+    def get_state(self) -> dict[str, Any]:
         """Get state."""
         return self._task_container.get_state()
 
-    def __call__(self):
+    def __call__(self) -> dict[str, Any]:
         return self.get_state()
 
 
@@ -777,7 +777,7 @@ class ArgumentsWrapper(PyCallableStateObject):
                 snake_case_state_dict[camel_to_snake_case(key)] = val
         return snake_case_state_dict
 
-    def get_state(self, explicit_only=False) -> dict:
+    def get_state(self, explicit_only: bool = False) -> dict[str, Any]:
         """Get the state of the arguments.
 
         Parameters
@@ -863,10 +863,10 @@ class ArgumentsWrapper(PyCallableStateObject):
                 camel_args[self._snake_to_camel_map[key]] = val
         self._task.Arguments.set_state(camel_args)
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Any:
         return getattr(self._task, attr)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: Any) -> None:
         try:
             getattr(self, key).set_state(value)
         except AttributeError:
@@ -874,10 +874,10 @@ class ArgumentsWrapper(PyCallableStateObject):
                 f"No attribute named '{key}' in '{self._task.name()}'."
             )
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value: Any) -> None:
         getattr(self._task, key).set_state(value)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: str) -> Any:
         return getattr(self._task, item).get_state()
 
 
@@ -951,7 +951,7 @@ class ArgumentWrapper(PyCallableStateObject):
 
         return _camel_args
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Any:
         if not attr.islower():
             raise AttributeError(
                 "Camel case attribute access is not supported. "
@@ -963,13 +963,13 @@ class ArgumentWrapper(PyCallableStateObject):
         attr = camel_attr or attr
         return getattr(self._arg, attr)
 
-    def __setattr__(self, attr, value):
+    def __setattr__(self, attr: str, value: Any) -> None:
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
             self.set_state({attr: value})
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         arg_state = self.get_state()
         arg_list = list(arg_state) if isinstance(arg_state, dict) else []
         dir_arg = [item for item in dir(self._arg) if item.islower()]
@@ -1070,7 +1070,7 @@ class SimpleTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def tasks(self, recompute=True) -> list:
+    def tasks(self, recompute: bool = True) -> list[BaseTask]:
         """Get the ordered task list held by the workflow.
 
         SimpleTasks have no TaskList.
@@ -1170,7 +1170,7 @@ class CompositeTask(BaseTask):
         """
         return {}
 
-    def insert_composite_child_task(self, command_name: str):
+    def insert_composite_child_task(self, command_name: str) -> Any:
         """Insert a composite child task based on the Python name."""
         return self._task.InsertCompositeChildTask(CommandName=command_name)
 
@@ -1195,7 +1195,7 @@ class ConditionalTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def inactive_tasks(self) -> list:
+    def inactive_tasks(self) -> list[BaseTask]:
         """Get the inactive ordered task list held by this task.
 
         Returns
@@ -1242,11 +1242,13 @@ class CompoundTask(CommandTask):
         state.update({"add_child": "yes"})
         self.arguments.update_dict(state)
 
-    def insert_compound_child_task(self):
+    def insert_compound_child_task(self) -> Any:
         """Insert a compound child task."""
         return self.add_child_and_update()
 
-    def add_child_and_update(self, state=None, defer_update=None):
+    def add_child_and_update(
+        self, state: dict[str, Any] | None = None, defer_update: bool | None = None
+    ) -> Any:
         """Add a child to this CompoundTask and update.
 
         Parameters
@@ -1447,7 +1449,7 @@ class Workflow:
         """
         return _makeTask(self, name)
 
-    def tasks(self, recompute=True) -> list:
+    def tasks(self, recompute: bool = True) -> list[BaseTask]:
         """Get the ordered task list held by the workflow.
 
         This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
@@ -1673,19 +1675,19 @@ class Workflow:
                 self.add_on_affected(refresh_after_sleep)
             )
 
-    def save_workflow(self, file_path: str):
+    def save_workflow(self, file_path: str) -> None:
         """Save the current workflow to the location provided."""
         self._workflow.SaveWorkflow(FilePath=file_path)
 
-    def load_state(self, list_of_roots: list):
+    def load_state(self, list_of_roots: list[str]) -> None:
         """Load the state of the workflow."""
         self._workflow.LoadState(ListOfRoots=list_of_roots)
 
-    def task_names(self):
+    def task_names(self) -> list[str]:
         """Get the list of the Python names for the available tasks."""
         return [child.python_name() for child in self.tasks()]
 
-    def delete_tasks(self, list_of_tasks: list[str]):
+    def delete_tasks(self, list_of_tasks: list[str]) -> Any:
         """Delete the provided list of tasks.
 
         Parameters

@@ -39,6 +39,7 @@ Example
 """
 
 import codecs
+from collections.abc import Callable
 from enum import Enum
 import gzip
 import os
@@ -203,7 +204,7 @@ class CaseVariable:
         self._variables = variables
         self._path = path
 
-    def __call__(self, name: str | None = ""):
+    def __call__(self, name: str | None = "") -> Any:
         if not name:
             error_name = self._path[:-1] if self._path else self._path
             raise RuntimeError(f"Invalid variable {error_name}")
@@ -218,7 +219,7 @@ class CaseVariable:
                 )
             )
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> "CaseVariable" | Callable[[], Any]:
         for orig, sub in (
             ("__q", "?"),
             ("__dot", "."),
@@ -542,7 +543,7 @@ class RPVarProcessor:
         """
         return CaseVariable(self._config_vars)
 
-    def has_config_var(self, name):
+    def has_config_var(self, name: str) -> bool:
         """Get whether the case has a given variable."""
         return name in self._config_vars
 
@@ -596,10 +597,10 @@ class SettingsFile(RPVarProcessor):
 class EmptyContainer:
     """Empty Container."""
 
-    def __getattr__(self, item):
+    def __getattr__(self, item: str) -> Callable[..., None]:
         return lambda *args, **kwargs: None
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: Any, **kwargs: Any) -> None:
         return None
 
 
@@ -703,11 +704,11 @@ class CaseFile(RPVarProcessor):
         if self._is_case_file:
             super().__init__(rp_vars_str=rp_vars_str)
 
-    def get_mesh(self):
+    def get_mesh(self) -> "Mesh" | None:
         """Get the mesh data."""
         return self._mesh
 
-    def __getattribute__(self, item):
+    def __getattribute__(self, item: str) -> Any:
         if (
             item != "_is_case_file"
             and not self._is_case_file

@@ -36,7 +36,7 @@ solving run as separate processes; ``Meshing`` additionally exposes
 import functools
 import logging
 import os
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, Iterable, cast
 
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._types import PathType
@@ -652,7 +652,7 @@ class BaseMeshing(BaseSession):
 
     def transfer_mesh_to_solvers(
         self,
-        solvers,
+        solvers: Iterable[Any],
         file_type: str = "case",
         file_name_stem: str | None = None,
         num_files_to_try: int = 1,

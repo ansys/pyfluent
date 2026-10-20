@@ -311,8 +311,10 @@ def _get_current_workflow(current_workflow, name: str) -> Workflow | None:
 
 
 def get_current_workflow(
-    meshing_root, current_workflow, workflow_factories
-) -> Workflow:
+    meshing_root: Any,
+    current_workflow: Any,
+    workflow_factories: Any,
+) -> Any:
     """Get the currently active meshing workflow (legacy mode).
 
     Determines which workflow type is currently active by checking GlobalSettings

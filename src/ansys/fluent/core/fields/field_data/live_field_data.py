@@ -635,7 +635,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         field_info: _FieldInfo,
         scheme_interpreter: Any,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
-    ):
+    ) -> None:
         """Initialize a LiveFieldData instance.
 
         Parameters

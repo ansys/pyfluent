@@ -309,7 +309,7 @@ class FluentVersionSet(Set[FluentVersion]):
         """Return the number of versions in the set."""
         return len(self._versions)
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         """Check equality with another FluentVersionSet."""
         if isinstance(other, FluentVersionSet):
             if len(self) != len(other):
@@ -347,13 +347,13 @@ class FluentVersionSet(Set[FluentVersion]):
             raise TypeError("Can only intersect with another FluentVersionSet.")
         return FluentVersionSet(lambda v: self._predicate(v) and other._predicate(v))
 
-    def __or__(self, other):
+    def __or__(self, other: "FluentVersionSet") -> "FluentVersionSet":
         """Return the union of two FluentVersionSets."""
         if not isinstance(other, FluentVersionSet):
             raise TypeError("Can only union with another FluentVersionSet.")
         return FluentVersionSet(lambda v: self._predicate(v) or other._predicate(v))
 
-    def __sub__(self, other):
+    def __sub__(self, other: "FluentVersionSet") -> "FluentVersionSet":
         """Return the difference of two FluentVersionSets."""
         if not isinstance(other, FluentVersionSet):
             raise TypeError("Can only subtract another FluentVersionSet.")
@@ -361,7 +361,7 @@ class FluentVersionSet(Set[FluentVersion]):
             lambda v: self._predicate(v) and not other._predicate(v)
         )
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self._versions)
 
 

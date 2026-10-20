@@ -75,26 +75,26 @@ class Machine:
         )
 
     @property
-    def host_name(self):
+    def host_name(self) -> str:
         """Returns the hostname listed in the machine file."""
         return self._hostName
 
     @property
-    def number_of_cores(self):
+    def number_of_cores(self) -> int:
         """Returns the number of cores allocated on the machine."""
         return self._numberOfCores
 
     @number_of_cores.setter
-    def number_of_cores(self, value):
+    def number_of_cores(self, value: int) -> None:
         self._numberOfCores = value
 
     @property
-    def queue_name(self):
+    def queue_name(self) -> str | None:
         """Returns the name of the queue the machine is allocated in."""
         return self._queueName
 
     @property
-    def core_list(self):
+    def core_list(self) -> list[int] | None:
         """Returns a list of core IDs allocated on the machine."""
         return self._coreList
 
@@ -125,31 +125,31 @@ class MachineList:
             machineList.append(m)
         return MachineList(copy.deepcopy(machineList, memo))
 
-    def reset(self):
+    def reset(self) -> None:
         """Resets the machine file data to the initial values."""
         self._machines = []
 
-    def add(self, m):
+    def add(self, m: Machine) -> None:
         """Add to machine list."""
         self._machines.append(m)
 
-    def remove(self, m):
+    def remove(self, m: Machine) -> None:
         """Remove from machine list."""
         self._machines.remove(m)
 
-    def sort_by_core_count(self):
+    def sort_by_core_count(self) -> None:
         """Sorts the machines by core count, reordering the existing data."""
         self._machines.sort(key=lambda machine: machine.number_of_cores, reverse=True)
 
-    def sort_by_core_count_ascending(self):
+    def sort_by_core_count_ascending(self) -> None:
         """Sorts the machines by core count, reordering the existing data."""
         self._machines.sort(key=lambda machine: machine.number_of_cores)
 
-    def remove_empty_machines(self):
+    def remove_empty_machines(self) -> None:
         """Removes all machines with 0 cores."""
         self._machines = [m for m in self._machines if m.number_of_cores > 0]
 
-    def move_local_host_to_front(self):
+    def move_local_host_to_front(self) -> None:
         """Moves the local host machine to the front of the machine list, creating it if
         it does not exist."""
         import socket
@@ -170,26 +170,26 @@ class MachineList:
             self._machines.insert(0, localMachine)
 
     @property
-    def machines(self):
+    def machines(self) -> list[Machine]:
         """Returns the entire list of machines."""
         return self._machines
 
     @property
-    def num_machines(self):
+    def num_machines(self) -> int:
         """Returns the total number of machines."""
         return len(self._machines)
 
     @property
-    def number_of_cores(self):
+    def number_of_cores(self) -> int:
         """Returns the total number of cores."""
         return sum([m.number_of_cores for m in self._machines])
 
     @property
-    def max_cores(self):
+    def max_cores(self) -> int:
         """Returns the maximum number of cores."""
         return max([m.number_of_cores for m in self._machines])
 
     @property
-    def min_cores(self):
+    def min_cores(self) -> int:
         """Returns the minimum number of cores."""
         return min([m.number_of_cores for m in self._machines])

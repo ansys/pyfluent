@@ -176,7 +176,7 @@ class BaseSession:
                 f"You are already using {cls.__name__}, which sets mode to {FluentMode.from_session_class(cls)}."
             )
 
-    def __new__(cls, *args, **kwargs) -> "BaseSession":
+    def __new__(cls, *args: Any, **kwargs: Any) -> "BaseSession":
         if cls is BaseSession:
             raise TypeError(
                 "BaseSession cannot be instantiated directly. "
@@ -448,7 +448,7 @@ class BaseSession:
         """
         return self._fluent_connection_backup.wait_process_finished()
 
-    def exit(self, **kwargs) -> None:
+    def exit(self, **kwargs: Any) -> None:
         """Exit session.
 
         This public method is a convenience wrapper that delegates directly to
@@ -892,7 +892,7 @@ class BaseSession:
         allow_remote_host: bool = False,
         certificates_folder: str | None = None,
         insecure_mode: bool = False,
-    ):
+    ) -> "BaseSession":
         """Connect to an existing Fluent server instance.
 
         Parameters

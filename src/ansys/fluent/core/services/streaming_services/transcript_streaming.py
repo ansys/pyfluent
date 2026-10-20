@@ -37,7 +37,7 @@ class AppendToFile:
         """__init__ method of AppendToFile class."""
         self.f = open(file_name, "a")
 
-    def __call__(self, transcript: Any) -> None:
+    def __call__(self, transcript: str) -> None:
         self.f.write(transcript)
         self.f.flush()
 

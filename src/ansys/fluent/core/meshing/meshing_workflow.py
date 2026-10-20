@@ -28,7 +28,7 @@ from __future__ import annotations
 
 from enum import Enum
 import os
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.execution.session import Meshing, PureMeshing
@@ -318,8 +318,11 @@ def _get_current_workflow(current_workflow, name: str) -> Workflow | None:
 
 
 def get_current_workflow(
-    workflow_root, current_workflow, workflow_factories, load_workflow_handle
-) -> Workflow:
+    workflow_root: Any,
+    current_workflow: Any,
+    workflow_factories: Any,
+    load_workflow_handle: Any,
+) -> Any:
     """Get the currently active workflow in the PyFluent-native interface.
 
     Parameters

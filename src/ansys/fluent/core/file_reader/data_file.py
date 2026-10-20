@@ -39,6 +39,7 @@ Example
 import os
 from os.path import dirname
 from pathlib import Path
+from typing import Any
 
 import defusedxml.ElementTree as ET
 import numpy as np
@@ -80,7 +81,7 @@ class DataFile:
         self,
         data_file_name: str | None = None,
         project_file_name: str | None = None,
-        case_file_handle=None,
+        case_file_handle: Any | None = None,
     ):
         """__init__ method of CaseFile class."""
         self._case_file_handle = case_file_handle
@@ -149,7 +150,7 @@ class DataFile:
         """Returns list of phases available."""
         return list(self._field_data.keys())
 
-    def get_face_variables(self, phase_name) -> list:
+    def get_face_variables(self, phase_name: str) -> list[str]:
         """Extracts face variables available for a particular phase.
 
         Parameters
@@ -163,7 +164,7 @@ class DataFile:
         """
         return self._field_data[phase_name]["faces"]["fields"][0].decode().split(";")
 
-    def get_cell_variables(self, phase_name) -> list:
+    def get_cell_variables(self, phase_name: str) -> list[str]:
         """Extracts cell variables available for a particular phase.
 
         Parameters

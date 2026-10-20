@@ -32,9 +32,13 @@ Inheritance
         └── SolverLite      ← this class
 """
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core.solver.session.solver import Solver
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
+    from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 
 
 class SolverLite(Solver):
@@ -52,11 +56,11 @@ class SolverLite(Solver):
 
     def __init__(
         self,
-        fluent_connection=None,
-        scheme_eval=None,
+        fluent_connection: "FluentConnection | None" = None,
+        scheme_eval: "SchemeInterpreter | None" = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
-    ):
+    ) -> None:
         """SolverLite session.
 
         Parameters
@@ -78,7 +82,7 @@ class SolverLite(Solver):
 
     # One can inherit methods from 'Solver' and re-define it here to make it unavailable in solver-Lite
 
-    def switch_to_full_solver(self):
+    def switch_to_full_solver(self) -> Any:
         """A switch to move to the full-solver session from solver-lite."""
         solver_session = Solver(
             fluent_connection=self._fluent_connection, scheme_eval=self.scheme

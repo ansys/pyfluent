@@ -66,19 +66,21 @@ class SolverIcing(Solver):
     ):
         """SolverIcing session.
 
-        Parameters
-        ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
-            Encapsulates a Fluent connection.
-        scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
-        file_transfer_service : Optional
-            Service for uploading and downloading files.
-        start_transcript : bool, optional
-            Whether to start the Fluent transcript in the client.
-            The default is ``True``, in which case the Fluent
-            transcript can be subsequently started and stopped
-            using method calls on the ``Session`` object.
+                Parameters
+                ----------
+                fluent_connection (:ref:`ref_fluent_connection`):
+                    Encapsulates a Fluent connection.
+                scheme_eval: SchemeInterpreter
+                    Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+        : SchemeInterpreter
+                    Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+                file_transfer_service : Optional
+                    Service for uploading and downloading files.
+                start_transcript : bool, optional
+                    Whether to start the Fluent transcript in the client.
+                    The default is ``True``, in which case the Fluent
+                    transcript can be subsequently started and stopped
+                    using method calls on the ``Session`` object.
         """
         super().__init__(
             fluent_connection=fluent_connection,
@@ -101,6 +103,6 @@ class SolverIcing(Solver):
         return self._flserver_root
 
     @property
-    def icing(self):
+    def icing(self) -> Any:
         """Instance of icing (Case.App) -> root datamodel object."""
         return self._flserver.Case.App

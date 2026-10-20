@@ -65,19 +65,21 @@ class SolverAero(Solver):
     ):
         """SolverAero session.
 
-        Parameters
-        ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
-            Encapsulates a Fluent connection.
-        scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
-        file_transfer_service : Optional
-            Service for uploading and downloading files.
-        start_transcript : bool, optional
-            Whether to start the Fluent transcript in the client.
-            The default is ``True``, in which case the Fluent
-            transcript can be subsequently started and stopped
-            using method calls on the ``Session`` object.
+                Parameters
+                ----------
+                fluent_connection (:ref:`ref_fluent_connection`):
+                    Encapsulates a Fluent connection.
+                scheme_eval: SchemeInterpreter
+                    Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+        : SchemeInterpreter
+                    Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+                file_transfer_service : Optional
+                    Service for uploading and downloading files.
+                start_transcript : bool, optional
+                    Whether to start the Fluent transcript in the client.
+                    The default is ``True``, in which case the Fluent
+                    transcript can be subsequently started and stopped
+                    using method calls on the ``Session`` object.
         """
         super().__init__(
             fluent_connection=fluent_connection,
@@ -90,24 +92,24 @@ class SolverAero(Solver):
         # TODO: Update Aero DM
         scheme_eval.eval("(aero-load-addon)")
 
-    def new_project(self, project_name: str):
+    def new_project(self, project_name: str) -> None:
         """Define a new project."""
         # TODO: Update Aero DM
         self.scheme.eval(f"""(prjapp-new-project-cb #f "{project_name}")""")
 
-    def open_project(self, project_name: str):
+    def open_project(self, project_name: str) -> None:
         """Open a saved project."""
         # TODO: Update Aero DM
         self.scheme.eval(f"""(prjapp-project-open-project-cb #f "{project_name}")""")
 
-    def new_simulation(self, case_file_name: str):
+    def new_simulation(self, case_file_name: str) -> None:
         """Add a new simulation by loading a case-file."""
         # TODO: Update Aero DM
         self.scheme.eval(
             f"""(gui-aero-project-add-workflow-cb #f "{case_file_name}" #f #f)"""
         )
 
-    def open_simulation(self, simulation_file_name: str):
+    def open_simulation(self, simulation_file_name: str) -> None:
         """Open a saved simulation."""
         # TODO: Update Aero DM
         self.scheme.eval(
@@ -121,6 +123,6 @@ class SolverAero(Solver):
         return PySimpleMenuGeneric(service=self._se_service, rules="flserver")
 
     @property
-    def aero(self):
+    def aero(self) -> Any:
         """Instance of aero (Case.App) -> root datamodel object."""
         return self._flserver.Case.App

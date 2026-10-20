@@ -108,10 +108,10 @@ class EventsManager(Generic[TEvent]):
     def __init__(
         self,
         event_type: type[TEvent],
-        session_events_service,
-        fluent_error_state,
-        session,
-    ):
+        session_events_service: Any,
+        fluent_error_state: Any,
+        session: Any,
+    ) -> None:
         """__init__ method of EventsManager class."""
         self._event_type = event_type
         self._impl = StreamingService(
@@ -196,8 +196,8 @@ class EventsManager(Generic[TEvent]):
         self,
         event_name: TEvent | str,
         callback: Callable,
-        *args,
-        **kwargs,
+        *args: Any,
+        **kwargs: Any,
     ) -> str:
         """Register the callback.
 
@@ -256,9 +256,9 @@ class EventsManager(Generic[TEvent]):
             SolverEvent | MeshingEvent | Sequence[SolverEvent] | Sequence[MeshingEvent]
         ),
         callback: Callable,
-        *args,
-        **kwargs,
-    ):
+        *args: Any,
+        **kwargs: Any,
+    ) -> str | list[str]:
         """Register the callback.
 
         Parameters
@@ -314,7 +314,7 @@ class EventsManager(Generic[TEvent]):
                     registration_id=sync_event_id
                 )
 
-    def start(self, *args, **kwargs) -> None:
+    def start(self, *args: Any, **kwargs: Any) -> None:
         """Start streaming."""
         self._impl.start(*args, **kwargs)
 

@@ -614,11 +614,11 @@ class PimFileTransferService:
         """
         return self.file_service.file_exist(os.path.basename(file_name))
 
-    def is_configured(self):
+    def is_configured(self) -> bool:
         """Check pypim configuration."""
         return pypim.is_configured()
 
-    def upload_file(self, file_name: str, remote_file_name: str | None = None):
+    def upload_file(self, file_name: str, remote_file_name: str | None = None) -> None:
         """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -647,7 +647,9 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
-    def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
+    def upload(
+        self, file_name: list[str] | str, remote_file_name: str | None = None
+    ) -> None:
         """Upload a file to the server.
 
         Parameters
@@ -681,7 +683,7 @@ class PimFileTransferService:
                 elif not self.file_service.file_exist(os.path.basename(file)):
                     raise FileNotFoundError(f"{file} does not exist.")
 
-    def download_file(self, file_name: str, local_directory: str | None = None):
+    def download_file(self, file_name: str, local_directory: str | None = None) -> None:
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -706,7 +708,9 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError("Remote file does not exist.")
 
-    def download(self, file_name: list[str] | str, local_directory: str | None = None):
+    def download(
+        self, file_name: list[str] | str, local_directory: str | None = None
+    ) -> None:
         """Download a file from the server.
 
         Parameters
@@ -735,5 +739,5 @@ class PimFileTransferService:
                             local_directory=download_directory,
                         )
 
-    def __call__(self, pim_instance: Any | None = None):
+    def __call__(self, pim_instance: Any | None = None) -> None:
         self.pim_instance = pim_instance

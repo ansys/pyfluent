@@ -93,7 +93,9 @@ class MonitorsManager(StreamingService):
         with self._lock:
             return self._monitors_info.get(monitor_set_name, {}).get(property)
 
-    def get_monitor_set_plot(self, monitor_set_name, *args, **kwargs) -> None | object:
+    def get_monitor_set_plot(
+        self, monitor_set_name: str, *args: Any, **kwargs: Any
+    ) -> None | object:
         """Get monitor set plot.
 
         Parameters
@@ -117,7 +119,7 @@ class MonitorsManager(StreamingService):
 
     def get_monitor_set_data(
         self,
-        monitor_set_name,
+        monitor_set_name: str,
         start_index: int = 0,
         end_index: int | None = None,
     ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
@@ -153,7 +155,7 @@ class MonitorsManager(StreamingService):
                 )
             )
 
-    def refresh(self, session, event_info) -> None:
+    def refresh(self, session: Any, event_info: Any) -> None:
         """Refresh plots on-initialized and data-read events.
 
         This method is registered with the EventsManager and is called

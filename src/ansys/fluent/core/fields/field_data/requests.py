@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import dataclasses
 from enum import Enum
-from typing import Iterable
+from typing import Any, Iterable
 
 from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     _set_dataclass_field_docs,
@@ -67,11 +67,11 @@ class BaseDataRequest:
         """Serialize dataclass fields dynamically."""
         return {field: getattr(self, field) for field in self.__dataclass_fields__}
 
-    def _replace(self, **changes) -> "BaseDataRequest":
+    def _replace(self, **changes: Any) -> "BaseDataRequest":
         """Replicate NamedTuple._replace behavior for frozen dataclasses."""
         return dataclasses.replace(self, **changes)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate shared attributes."""
         if not isinstance(self.surfaces, Iterable) or isinstance(
             self.surfaces, (str, bytes)

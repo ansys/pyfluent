@@ -57,7 +57,7 @@ class StreamingService:
         with self._lock:
             return self._streaming
 
-    def register_callback(self, callback: Callable, *args, **kwargs) -> str:
+    def register_callback(self, callback: Callable, *args: Any, **kwargs: Any) -> str:
         """Register the callback.
 
         Parameters
@@ -91,7 +91,7 @@ class StreamingService:
             if callback_id in self._service_callbacks:
                 del self._service_callbacks[callback_id]
 
-    def start(self, *args, **kwargs) -> None:
+    def start(self, *args: Any, **kwargs: Any) -> None:
         """Start streaming."""
         with self._lock:
             if not self.is_streaming:

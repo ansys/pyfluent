@@ -49,6 +49,7 @@ Class hierarchy
 
 import os
 import platform
+from typing import Any
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.execution.launcher.launch_options import (
@@ -71,7 +72,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 class ApplicationRuntime(AbstractApplicationRuntime):
     """Application runtime backed by the ApplicationRuntime gRPC service."""
 
-    def __init__(self, service):
+    def __init__(self, service: Any) -> None:
         """Initialize ApplicationRuntime."""
         self.service = service
 
@@ -181,7 +182,7 @@ class ApplicationRuntimeV261V252:
     ``unregister_pause_on_solution_events`` is migrated to events in 27R1.
     """
 
-    def __init__(self, service, scheme):
+    def __init__(self, service: Any, scheme: Any) -> None:
         """Initialize ApplicationRuntime."""
         self.service = service
         self.scheme = scheme
@@ -377,7 +378,7 @@ class ApplicationRuntimeV261(ApplicationRuntimeV261V252):
     ``enable_beta`` is implemented in the 26R1 server.
     """
 
-    def __init__(self, service, scheme):
+    def __init__(self, service: Any, scheme: Any) -> None:
         """Initialize ApplicationRuntimeV252."""
         super().__init__(service, scheme)
 
@@ -393,7 +394,7 @@ class ApplicationRuntimeV252(ApplicationRuntimeV261V252):
     back to a Scheme call.
     """
 
-    def __init__(self, service, scheme):
+    def __init__(self, service: Any, scheme: Any) -> None:
         """Initialize ApplicationRuntimeV252."""
         super().__init__(service, scheme)
 
@@ -407,7 +408,7 @@ class ApplicationRuntimeV252(ApplicationRuntimeV261V252):
 class ApplicationRuntimeOld:
     """Application runtime backed by Scheme evaluation (Fluent < 25R2)."""
 
-    def __init__(self, scheme_eval):
+    def __init__(self, scheme_eval: Any) -> None:
         """Initialize ApplicationRuntimeOld."""
         self.scheme = scheme_eval
 
@@ -578,7 +579,7 @@ class ApplicationRuntimeOld:
         """Return whether beta features are enabled."""
         return self.scheme.eval("(is-beta-feature-available?)")
 
-    def enable_beta(self):
+    def enable_beta(self) -> None:
         """Enable beta features.
 
         Raises

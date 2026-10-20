@@ -45,9 +45,14 @@ Class hierarchy
 from collections.abc import Callable, Iterable, Iterator, Sequence
 import functools
 import logging
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
+
+if TYPE_CHECKING:
+    from ansys.fluent.core._grpc_services.object_model_service import (
+        EventSubscription,
+    )
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.abstract_object_model import AbstractObjectModel
 from ansys.fluent.core.services.object_model_utilities import (
@@ -285,11 +290,13 @@ class ObjectModelBase:
 
     def add_on_child_created(
         self, rules: str, path: str, child_type: str, cb: Callable[[str], None]
-    ) -> Any:
+    ) -> "EventSubscription":
         """Add on child created."""
         return self._service.add_on_child_created(rules, path, child_type, cb)
 
-    def add_on_deleted(self, rules: str, path: str, cb: Callable[[], None]) -> Any:
+    def add_on_deleted(
+        self, rules: str, path: str, cb: Callable[[], None]
+    ) -> "EventSubscription":
         """Add on deleted."""
         return self._service.add_on_deleted(rules, path, cb)
 
@@ -316,19 +323,19 @@ class ObjectModelBase:
         command: str,
         obj,
         cb: Callable[[str, ValueT], None],
-    ) -> Any:
+    ) -> "EventSubscription":
         """Add on command executed."""
         return self._service.add_on_command_executed_old(rules, path, command, obj, cb)
 
     def add_on_command_executed(
         self, rules: str, path: str, cb: Callable[[str, ValueT], None]
-    ) -> Any:
+    ) -> "EventSubscription":
         """Add on command executed."""
         return self._service.add_on_command_executed(rules, path, cb)
 
     def add_on_attribute_changed(
         self, rules: str, path: str, attribute: str, cb: Callable[[ValueT], None]
-    ) -> Any:
+    ) -> "EventSubscription":
         """Add on attribute changed."""
         return self._service.add_on_attribute_changed(rules, path, attribute, cb)
 
@@ -339,7 +346,7 @@ class ObjectModelBase:
         command: str,
         attribute: str,
         cb: Callable[[ValueT], None],
-    ) -> Any:
+    ) -> "EventSubscription":
         """Add on command attribute changed."""
         return self._service.add_on_command_attribute_changed(
             rules, path, command, attribute, cb
@@ -758,7 +765,7 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(value: ValueT):
+        def cb_service(value: ValueT) -> None:
             cb(self)
 
         return self.service.add_on_changed(
@@ -931,7 +938,7 @@ class PyParameter(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(value: ValueT):
+        def cb_service(value: ValueT) -> None:
             cb(self)
 
         return self.service.add_on_changed(
@@ -976,7 +983,7 @@ class PyDictionary(PyParameter):
         to dict.update semantics (same as update_dict(dict_state))]
     """
 
-    def update_dict(self, dict_state: dict[str, Any], recursive=False) -> None:
+    def update_dict(self, dict_state: dict[str, Any], recursive: bool = False) -> None:
         """Update the state of the current object if the current object is a Dict in the
         data model, else throws RuntimeError (currently not showing up in Python).
         Update is executed according to dict.update semantics.
@@ -1188,7 +1195,7 @@ class PyNamedObjectContainer:
         child_obj_type = self.path[-1][0]
         return child_obj_type == obj_type
 
-    def get_state(self) -> Any:
+    def get_state(self) -> dict[str, ValueT]:
         """Returns state of the container."""
         parent_state = PyMenu(self.service, self.rules, self.path[:-1]).get_state()
         returned_state = {}
@@ -1256,7 +1263,7 @@ class PyAction:
                 f"The underlying DatamodelService reported an error: {e}."
             )
 
-    def create_instance(self) -> "PyArguments":
+    def create_instance(self) -> "PyArguments | None":
         """Create a command-argument instance for this operation.
 
         The returned :class:`PyArguments` wrapper exposes the operation's
@@ -1394,7 +1401,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     getState = get_state
 
-    def set_state(self, state: ValueT) -> ValueT:
+    def set_state(self, state: ValueT) -> None:
         """Set state of the command argument."""
         self.parent.set_state({self.name: state})
 
@@ -1591,7 +1598,7 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
         child_path = self.path + [(name, "")]
         return PySimpleMenuGeneric(self.service, self.rules, child_path)
 
-    def __getattr__(self, name: str) -> Any:
+    def __getattr__(self, name: str) -> "PySimpleMenuGeneric":
         if name in PySimpleMenuGeneric.attrs:
             return super().__getattr__(name)
         else:

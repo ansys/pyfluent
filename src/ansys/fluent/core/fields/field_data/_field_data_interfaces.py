@@ -165,7 +165,7 @@ class _BaseFieldInfo(ABC):
 
 
 class _SurfaceNames:
-    def __init__(self, allowed_surface_names):
+    def __init__(self, allowed_surface_names: Callable[[], list[str]]) -> None:
         self._allowed_surface_names = allowed_surface_names
 
     def allowed_values(self):
@@ -198,7 +198,7 @@ class _SurfaceNames:
 
 
 class _SurfaceIds:
-    def __init__(self, allowed_surface_ids):
+    def __init__(self, allowed_surface_ids: Callable[[], list[int]]) -> None:
         self._allowed_surface_ids = allowed_surface_ids
 
     def allowed_values(self):
@@ -231,7 +231,7 @@ class _SurfaceIds:
 
 
 class _Fields:
-    def __init__(self, available_field_names):
+    def __init__(self, available_field_names: Callable[[], list[str]]) -> None:
         self._available_field_names = available_field_names
 
     def is_active(self, field_name: "VariableDescriptor" | str) -> bool:
@@ -290,7 +290,9 @@ class _Fields:
 
 
 class _ScalarFields(_Fields):
-    def __init__(self, available_field_names, field_info):
+    def __init__(
+        self, available_field_names: Callable[[], list[str]], field_info: _BaseFieldInfo
+    ) -> None:
         super().__init__(available_field_names)
         self._field_info = field_info
 
@@ -315,7 +317,7 @@ class _ScalarFields(_Fields):
 
 
 class _VectorFields(_Fields):
-    def __init__(self, available_field_names):
+    def __init__(self, available_field_names: Callable[[], list[str]]) -> None:
         super().__init__(available_field_names)
 
 
@@ -326,7 +328,7 @@ class _AllowedNames:
         self._field_info = field_info
         self._info = info
 
-    def is_valid(self, name, respect_data_valid=True):
+    def is_valid(self, name: str, respect_data_valid: bool = True) -> bool:
         """Checks validity."""
         return name in self(respect_data_valid)
 
@@ -448,12 +450,12 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
             )
         )
 
-    def is_valid(self, name, respect_data_valid=True):
+    def is_valid(self, name: str, respect_data_valid: bool = True) -> bool:
         """Checks validity."""
         return name in self(respect_data_valid)
 
 
-def _get_surfaces_from_objects(surfaces: list[int | str | object]):
+def _get_surfaces_from_objects(surfaces: list[int | str | object]) -> list[int | str]:
     """
     Extract surface names or identifiers from a list of surfaces.
 

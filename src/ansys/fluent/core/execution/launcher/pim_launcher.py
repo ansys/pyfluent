@@ -191,11 +191,11 @@ class PIMLauncher:
 
 
 def get_ip_port_password(
-    file_service,
-    filename="sifile.txt",
-    max_retries=20,
-    wait_time_between_retries=1,  # seconds
-):
+    file_service: Any,
+    filename: str = "sifile.txt",
+    max_retries: int = 20,
+    wait_time_between_retries: float = 1,  # seconds
+) -> tuple[str, int, str]:
     """
     Downloads the file with retries and parses server info.
 
@@ -333,8 +333,8 @@ def launch_remote_fluent(
 
 
 def create_fluent_instance(
-    pim, mode: FluentMode, dimensionality: Dimension, product_version: str | None
-):
+    pim: Any, mode: FluentMode, dimensionality: Dimension, product_version: str | None
+) -> Any:
     """Create a Fluent instance based on mode and dimensionality."""
 
     product_name = (
@@ -352,11 +352,11 @@ def create_fluent_connection(
     ip: str,
     port: int,
     password: str,
-    channel,
+    channel: Any,
     cleanup_on_exit: bool,
-    instance,
+    instance: Any,
     launcher_args: dict[str, Any] | None,
-):
+) -> FluentConnection:
     """Create a Fluent connection."""
 
     return FluentConnection(
@@ -371,7 +371,7 @@ def create_fluent_connection(
 
 
 def get_file_transfer_service(
-    file_transfer_service: Any | None, fluent_connection
+    file_transfer_service: Any | None, fluent_connection: FluentConnection
 ) -> Any:
     """Get the file transfer service."""
 

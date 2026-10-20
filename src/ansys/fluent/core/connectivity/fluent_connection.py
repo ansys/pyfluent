@@ -776,7 +776,7 @@ class FluentConnection:
         else:
             self.finalizer_cbs.append(cb)
 
-    def create_grpc_service(self, service: type[S], *args) -> S:
+    def create_grpc_service(self, service: type[S], *args: Any) -> S:
         """Create a gRPC service.
 
         Parameters

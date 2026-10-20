@@ -16,7 +16,7 @@ The builder is a thin, discoverable wrapper over the Layer 1 registry:
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Sequence
 
 from ansys.units.variable_descriptor import VariableDescriptor
 
@@ -181,7 +181,7 @@ class ExpressionBuilder:
         return RawName(name)
 
     @staticmethod
-    def locations(names) -> LocationList:
+    def locations(names: Sequence[str]) -> LocationList:
         """Build a :class:`LocationList` from an iterable of strings."""
         return coerce_location_list(names)
 

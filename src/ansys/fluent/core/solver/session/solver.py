@@ -140,12 +140,12 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
     def __init__(
         self,
-        fluent_connection,
+        fluent_connection: "FluentConnection",
         scheme_eval: SchemeInterpreter,
         file_transfer_service: "FileTransferStrategy | None" = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
-    ):
+    ) -> None:
         """Solver session.
 
         Parameters
@@ -397,7 +397,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
             if thread.is_alive():
                 thread.join()
 
-    def read_case_lightweight(self, file_name: str):
+    def read_case_lightweight(self, file_name: str) -> None:
         """Read a case file using light IO mode.
 
         Parameters
@@ -422,11 +422,11 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         """Get the state of the object."""
         return self.settings.get_state()
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: Any) -> None:
         """Set the state of the object."""
         self.settings.set_state(state, **kwargs)
 
-    def __call__(self):
+    def __call__(self) -> StateT:
         return self.get_state()
 
     if not TYPE_CHECKING:
@@ -457,7 +457,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
                     return getattr(settings, item)
                 raise
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         dir_list = set(super().__dir__()) - {
             "svar_data",
             "svar_info",
@@ -465,7 +465,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         }
         return sorted(dir_list)
 
-    def switch_to_meshing(self):
+    def switch_to_meshing(self) -> Any:
         """Switch to meshing mode and return a meshing session object. Deactivate this
         object's public interface and streaming services.
 

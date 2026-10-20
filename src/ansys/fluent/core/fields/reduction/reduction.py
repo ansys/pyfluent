@@ -67,107 +67,115 @@ class Reduction(AbstractReduction):
             if isinstance(loc, str):
                 self._validate_str_location(loc)
 
-    def area(self, locations, ctxt=None) -> Any:
+    def area(self, locations: Any, ctxt: Any = None) -> Any:
         """Get area."""
         self._validate_locations(locations=locations)
         return self.service.area(locations, ctxt)
 
-    def area_average(self, expression, locations, ctxt=None) -> Any:
+    def area_average(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get area average."""
         self._validate_locations(locations=locations)
         return self.service.area_average(expression, locations, ctxt)
 
-    def area_integral(self, expression, locations, ctxt=None) -> Any:
+    def area_integral(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get area integral."""
         self._validate_locations(locations=locations)
         return self.service.area_integral(expression, locations, ctxt)
 
-    def centroid(self, locations, ctxt=None) -> Any:
+    def centroid(self, locations: Any, ctxt: Any = None) -> Any:
         """Get centroid."""
         self._validate_locations(locations=locations)
         return self.service.centroid(locations, ctxt)
 
-    def count(self, locations, ctxt=None) -> Any:
+    def count(self, locations: Any, ctxt: Any = None) -> Any:
         """Count the number of faces or cells within the locations."""
         self._validate_locations(locations=locations)
         return self.service.count(locations, ctxt)
 
-    def count_if(self, condition, locations, ctxt=None) -> Any:
+    def count_if(self, condition: Any, locations: Any, ctxt: Any = None) -> Any:
         """Count the number of faces or cells where the specified condition is satisfied."""
         self._validate_locations(locations=locations)
         return self.service.count_if(condition, locations, ctxt)
 
-    def force(self, locations, ctxt=None) -> Any:
+    def force(self, locations: Any, ctxt: Any = None) -> Any:
         """Get force."""
         self._validate_locations(locations=locations)
         return self.service.force(locations, ctxt)
 
-    def mass_average(self, expression, locations, ctxt=None) -> Any:
+    def mass_average(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get mass average."""
         self._validate_locations(locations=locations)
         return self.service.mass_average(expression, locations, ctxt)
 
-    def mass_flow_average(self, expression, locations, ctxt=None) -> Any:
+    def mass_flow_average(
+        self, expression: Any, locations: Any, ctxt: Any = None
+    ) -> Any:
         """Get mass flow average."""
         self._validate_locations(locations=locations)
         return self.service.mass_flow_average(expression, locations, ctxt)
 
-    def mass_flow_average_absolute(self, expression, locations, ctxt=None) -> Any:
+    def mass_flow_average_absolute(
+        self, expression: Any, locations: Any, ctxt: Any = None
+    ) -> Any:
         """Compute the mass flow average of the absolute value of the given expression."""
         self._validate_locations(locations=locations)
         return self.service.mass_flow_average_absolute(expression, locations, ctxt)
 
-    def mass_flow_integral(self, expression, locations, ctxt=None) -> Any:
+    def mass_flow_integral(
+        self, expression: Any, locations: Any, ctxt: Any = None
+    ) -> Any:
         """Get mass flow integral."""
         self._validate_locations(locations=locations)
         return self.service.mass_flow_integral(expression, locations, ctxt)
 
-    def mass_integral(self, expression, locations, ctxt=None) -> Any:
+    def mass_integral(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get mass integral."""
         self._validate_locations(locations=locations)
         return self.service.mass_integral(expression, locations, ctxt)
 
-    def maximum(self, expression, locations, ctxt=None) -> Any:
+    def maximum(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get maximum."""
         self._validate_locations(locations=locations)
         return self.service.maximum(expression, locations, ctxt)
 
-    def minimum(self, expression, locations, ctxt=None) -> Any:
+    def minimum(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get minimum."""
         self._validate_locations(locations=locations)
         return self.service.minimum(expression, locations, ctxt)
 
-    def pressure_force(self, locations, ctxt=None) -> Any:
+    def pressure_force(self, locations: Any, ctxt: Any = None) -> Any:
         """Get pressure force."""
         self._validate_locations(locations=locations)
         return self.service.pressure_force(locations, ctxt)
 
-    def viscous_force(self, locations, ctxt=None) -> Any:
+    def viscous_force(self, locations: Any, ctxt: Any = None) -> Any:
         """Get viscous force."""
         self._validate_locations(locations=locations)
         return self.service.viscous_force(locations, ctxt)
 
-    def volume(self, locations, ctxt=None) -> Any:
+    def volume(self, locations: Any, ctxt: Any = None) -> Any:
         """Get volume."""
         self._validate_locations(locations=locations)
         return self.service.volume(locations, ctxt)
 
-    def volume_average(self, expression, locations, ctxt=None) -> Any:
+    def volume_average(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get volume average."""
         self._validate_locations(locations=locations)
         return self.service.volume_average(expression, locations, ctxt)
 
-    def volume_integral(self, expression, locations, ctxt=None) -> Any:
+    def volume_integral(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get volume integral."""
         self._validate_locations(locations=locations)
         return self.service.volume_integral(expression, locations, ctxt)
 
-    def moment(self, expression, locations, ctxt=None) -> Any:
+    def moment(self, expression: Any, locations: Any, ctxt: Any = None) -> Any:
         """Get moment."""
         self._validate_locations(locations=locations)
         return self.service.moment(expression, locations, ctxt)
 
-    def sum(self, expression, locations, weight: str | Weight, ctxt=None) -> Any:
+    def sum(
+        self, expression: Any, locations: Any, weight: str | Weight, ctxt: Any = None
+    ) -> Any:
         """Get sum."""
         self._validate_locations(locations=locations)
         return self.service.sum(expression, locations, weight, ctxt)

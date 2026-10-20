@@ -23,7 +23,7 @@
 
 """Provides a module for file session."""
 
-from typing import Any
+from typing import Any, NoReturn
 import warnings
 
 from deprecated.sphinx import deprecated
@@ -710,7 +710,7 @@ class FileFieldData(FieldDataSource):
         surfaces: list[int | str],
         overset_mesh: bool | None = False,
         flatten_connectivity: bool = False,
-    ):
+    ) -> dict[int | str, SurfaceData]:
         """Get surface data (vertices and faces connectivity).
 
         Only ``SurfaceDataType.Vertices`` and ``SurfaceDataType.FacesConnectivity``
@@ -818,7 +818,7 @@ class FileFieldData(FieldDataSource):
         surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
-    ):
+    ) -> dict[int | str, np.ndarray]:
         """Get scalar field data on a surface.
 
         Parameters
@@ -908,7 +908,7 @@ class FileFieldData(FieldDataSource):
         self,
         field_name: str,
         surfaces: list[int | str],
-    ):
+    ) -> dict[int | str, np.ndarray]:
         """Get vector field data on a surface.
 
         Parameters
@@ -990,7 +990,7 @@ class FileFieldData(FieldDataSource):
         self,
         field_name: str,
         surfaces: list[int | str],
-    ):
+    ) -> NoReturn:
         """Get the pathlines field data on a surface.
 
         Parameters

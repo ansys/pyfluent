@@ -22,6 +22,8 @@
 
 """Public response models returned by Fluent field-data requests."""
 
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 
@@ -42,7 +44,7 @@ class SurfaceData:
     face_normals: npt.NDArray[np.float64] | None
     """
 
-    def __init__(self, surf_data):
+    def __init__(self, surf_data: dict[Any, Any]) -> None:
         """__init__ method of SurfaceData class."""
         self._surf_data = surf_data
         self.vertices: npt.NDArray[np.float64] | None = self._surf_data.get(
@@ -73,7 +75,7 @@ class PathlinesData:
     particle_time: npt.NDArray[np.float64] | None
     """
 
-    def __init__(self, pathlines_data_for_surface):
+    def __init__(self, pathlines_data_for_surface: dict[str, Any]) -> None:
         """__init__ method of PathlinesData class."""
         self._pathlines_data_for_surface = pathlines_data_for_surface
         self.scalar_field_name: str = list(
