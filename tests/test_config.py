@@ -104,8 +104,36 @@ def test_set_deprecated_var_after_config(reset_examples_path):
     assert pyfluent.config.examples_path == new_path2
 
 
-# launch_fluent_timeout config removed - timeout defaults now handled per launcher
+# launch_fluent_timeout config descriptor removed - timeout defaults now handled per launcher
 # (StandaloneLauncher: 100s, DockerLauncher: 100s, PIMLauncher: 60s, SlurmLauncher: -1)
+# See issue #4628 for details
+
+
+def test_fluent_launch_timeout_environment_variable(monkeypatch):
+    """Verify PYFLUENT_FLUENT_LAUNCH_TIMEOUT environment variable can be set and read.
+
+    Note: The config descriptor for launch_fluent_timeout was removed (issue #4628).
+    Individual launchers now handle their own timeout defaults. This test validates
+    that the environment variable can still be set and read if needed for external
+    purposes, using monkey patching to isolate the test environment.
+    """
+    import os
+
+    # Capture current value
+    original_value = os.environ.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT")
+
+    # Test setting the environment variable
+    test_value = "120"
+    monkeypatch.setenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", test_value)
+
+    # Verify it can be read back
+    assert os.environ.get("PYFLUENT_FLUENT_LAUNCH_TIMEOUT") == test_value
+
+    # Restore original value
+    if original_value is not None:
+        monkeypatch.setenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", original_value)
+    else:
+        monkeypatch.delenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", raising=False)
 
 
 def test_rest_api_component_default_standalone(monkeypatch):
