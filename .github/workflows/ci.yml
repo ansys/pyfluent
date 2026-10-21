@@ -207,7 +207,8 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
 
     steps:
-      - name: Reset stale self-hosted workspace
+      - &reset-stale-self-hosted-workspace
+        name: Reset stale self-hosted workspace
         shell: bash
         run: |
           cd "$RUNNER_TEMP"
@@ -341,13 +342,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
 
     steps:
-      - name: Reset stale self-hosted workspace
-        shell: bash
-        run: |
-          cd "$RUNNER_TEMP"
-          sudo rm -rf "$GITHUB_WORKSPACE"
-          mkdir -p "$GITHUB_WORKSPACE"
-          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE"
+      - *reset-stale-self-hosted-workspace
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -720,13 +715,7 @@ jobs:
       PYTEST_XDIST_AUTO_NUM_WORKERS: 1
 
     steps:
-      - name: Reset stale self-hosted workspace
-        shell: bash
-        run: |
-          cd "$RUNNER_TEMP"
-          sudo rm -rf "$GITHUB_WORKSPACE"
-          mkdir -p "$GITHUB_WORKSPACE"
-          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE"
+      - *reset-stale-self-hosted-workspace
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
