@@ -5,17 +5,15 @@
 Expression builder
 ==================
 
-The :obj:`~ansys.fluent.core.expressions.builder.ExpressionBuilder` class provides
-a high-level, object-based API for constructing Fluent expression strings (for example,
-``AreaAve(AbsolutePressure,['inlet1'])``) without hand-writing them. You can build
-these expressions without a live Fluent session and later assign them to a solver's
-named expressions or use them in other contexts.
+The expression builder allows you to construct Fluent expressions using Python instead of typing them by hand.
+Use the :obj:`~ansys.fluent.core.expressions.builder.ExpressionBuilder` class to build expressions
+programmatically. This is useful for creating named expressions, field reductions, and other
+expression-based features in your simulation.
 
-Sample usage
-------------
+Quick example
+-------------
 
-This example shows how to use the :obj:`~ansys.fluent.core.expressions.builder.ExpressionBuilder`
-to construct a single-field reduction expression:
+This example demonstrates how to construct an area-averaged pressure expression at an inlet:
 
 .. code-block:: python
 
@@ -23,17 +21,17 @@ to construct a single-field reduction expression:
   >>> from ansys.units import VariableCatalog as V
 
   >>> builder = ExpressionBuilder()
-
   >>> expr = builder.reductions.area_ave(
   ...     expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
   ... )
-  >>> str(expr)
-  "AreaAve(AbsolutePressure,['inlet1'])"
 
-To assign this expression to a live solver session:
+The resulting expression can be rendered and assigned to a named expression:
 
 .. code-block:: python
 
-  named = solver.setup.named_expressions.create()
-  named.definition = expr
-  val = named.get_value()
+  >>> str(expr)
+  "AreaAve(AbsolutePressure,['inlet1'])"
+
+  >>> named = solver.setup.named_expressions.create()
+  >>> named.definition = expr
+  >>> value = named.get_value()  # Retrieve the computed value
