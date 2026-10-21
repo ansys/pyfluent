@@ -30,6 +30,8 @@ import logging
 from typing import Any, Generic, TypeVar
 import warnings
 
+from ansys.fluent.core._type_aliases import SubscriptionId
+
 from ansys.fluent.core.diagnostics.exceptions import (
     InvalidArgument,
     PyFluentDeprecationWarning,
@@ -170,7 +172,9 @@ class EventsManager(Generic[TEvent]):
                 break
 
     @staticmethod
-    def _make_callback_to_call(callback: Callable, args, kwargs) -> Callable:
+    def _make_callback_to_call(
+        callback: Callable[..., Any], args: tuple[Any, ...], kwargs: dict[str, Any]
+    ) -> Callable[..., Any]:
         params = inspect.signature(callback).parameters
         if "session_id" in params:
             warnings.warn(
@@ -195,7 +199,7 @@ class EventsManager(Generic[TEvent]):
     def _register_single_callback(
         self,
         event_name: TEvent | str,
-        callback: Callable,
+        callback: Callable[..., Any],
         *args: Any,
         **kwargs: Any,
     ) -> str:

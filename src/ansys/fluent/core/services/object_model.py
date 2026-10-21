@@ -53,6 +53,7 @@ if TYPE_CHECKING:
     from ansys.fluent.core._grpc_services.object_model_service import (
         EventSubscription,
     )
+from ansys.fluent.core._type_aliases import SubscriptionId
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.abstract_object_model import AbstractObjectModel
 from ansys.fluent.core.services.object_model_utilities import (
@@ -290,29 +291,25 @@ class ObjectModelBase:
 
     def add_on_child_created(
         self, rules: str, path: str, child_type: str, cb: Callable[[str], None]
-    ) -> "EventSubscription":
+    ):
         """Add on child created."""
         return self._service.add_on_child_created(rules, path, child_type, cb)
 
-    def add_on_deleted(
-        self, rules: str, path: str, cb: Callable[[], None]
-    ) -> "EventSubscription":
+    def add_on_deleted(self, rules: str, path: str, cb: Callable[[], None]):
         """Add on deleted."""
         return self._service.add_on_deleted(rules, path, cb)
 
-    def add_on_changed(
-        self, rules: str, path: str, cb: Callable[[ValueT], None]
-    ) -> Any:
+    def add_on_changed(self, rules: str, path: str, cb: Callable[[ValueT], None]):
         """Add on changed."""
         return self._service.add_on_changed(rules, path, cb)
 
-    def add_on_affected(self, rules: str, path: str, cb: Callable[[], None]) -> Any:
+    def add_on_affected(self, rules: str, path: str, cb: Callable[[], None]):
         """Add on affected."""
         return self._service.add_on_affected(rules, path, cb)
 
     def add_on_affected_at_type_path(
         self, rules: str, path: str, child_type: str, cb: Callable[[], None]
-    ) -> Any:
+    ):
         """Add on affected at type path."""
         return self._service.add_on_affected_at_type_path(rules, path, child_type, cb)
 
@@ -323,19 +320,19 @@ class ObjectModelBase:
         command: str,
         obj,
         cb: Callable[[str, ValueT], None],
-    ) -> "EventSubscription":
+    ):
         """Add on command executed."""
         return self._service.add_on_command_executed_old(rules, path, command, obj, cb)
 
     def add_on_command_executed(
         self, rules: str, path: str, cb: Callable[[str, ValueT], None]
-    ) -> "EventSubscription":
+    ):
         """Add on command executed."""
         return self._service.add_on_command_executed(rules, path, cb)
 
     def add_on_attribute_changed(
         self, rules: str, path: str, attribute: str, cb: Callable[[ValueT], None]
-    ) -> "EventSubscription":
+    ):
         """Add on attribute changed."""
         return self._service.add_on_attribute_changed(rules, path, attribute, cb)
 
@@ -346,7 +343,7 @@ class ObjectModelBase:
         command: str,
         attribute: str,
         cb: Callable[[ValueT], None],
-    ) -> "EventSubscription":
+    ):
         """Add on command attribute changed."""
         return self._service.add_on_command_attribute_changed(
             rules, path, command, attribute, cb
@@ -558,9 +555,7 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    def add_on_attribute_changed(
-        self, attribute: str, cb: Callable[[ValueT], None]
-    ) -> Any:
+    def add_on_attribute_changed(self, attribute: str, cb: Callable[[ValueT], None]):
         """Register a callback for when an attribute is changed.
 
         Parameters
@@ -581,7 +576,7 @@ class PyStateContainer(PyCallableStateObject):
 
     def add_on_command_attribute_changed(
         self, command: str, attribute: str, cb: Callable[[ValueT], None]
-    ) -> Any:
+    ):
         """Register a callback for when an attribute is changed.
 
         Parameters
@@ -706,9 +701,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), command
         )
 
-    def add_on_child_created(
-        self, child_type: str, cb: Callable[[PyMenuT], None]
-    ) -> Any:
+    def add_on_child_created(self, child_type: str, cb: Callable[[PyMenuT], None]):
         """Register a callback for when a child object is created.
 
         Parameters
@@ -734,7 +727,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), child_type, cb_service
         )
 
-    def add_on_deleted(self, cb: Callable[[], None]) -> Any:
+    def add_on_deleted(self, cb: Callable[[], None]):
         """Register a callback for when the object is deleted.
 
         Parameters
@@ -751,7 +744,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), cb
         )
 
-    def add_on_changed(self, cb: Callable[[PyMenuT], None]) -> Any:
+    def add_on_changed(self, cb: Callable[[PyMenuT], None]):
         """Register a callback for when the object is modified.
 
         Parameters
@@ -772,7 +765,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), cb_service
         )
 
-    def add_on_affected(self, cb: Callable[[PyMenuT], None]) -> Any:
+    def add_on_affected(self, cb: Callable[[PyMenuT], None]):
         """Register a callback for when the object is affected.
 
         Parameters
@@ -795,7 +788,7 @@ class PyMenu(PyStateContainer):
 
     def add_on_affected_at_type_path(
         self, child_type: str, cb: Callable[[PyMenuT], None]
-    ) -> Any:
+    ):
         """Register a callback for when the object is affected at child type.
 
         Parameters
@@ -820,7 +813,7 @@ class PyMenu(PyStateContainer):
 
     def add_on_command_executed_old(
         self, command: str, cb: Callable[[PyMenuT, str, ValueT], None]
-    ) -> Any:
+    ):
         """Register a callback for when a command is executed.
 
         Parameters
@@ -843,9 +836,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), command, self, cb_service
         )
 
-    def add_on_command_executed(
-        self, cb: Callable[[PyMenuT, str, ValueT], None]
-    ) -> Any:
+    def add_on_command_executed(self, cb: Callable[[PyMenuT, str, ValueT], None]):
         """Register a callback for when a command is executed.
 
         Parameters
@@ -924,7 +915,7 @@ class PyParameter(PyStateContainer):
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
-    def add_on_changed(self, cb: Callable[[PyMenuT], None]) -> Any:
+    def add_on_changed(self, cb: Callable[[PyMenuT], None]):
         """Register a callback for when the object is modified.
 
         Parameters

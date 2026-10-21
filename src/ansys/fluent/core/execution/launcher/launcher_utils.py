@@ -70,7 +70,7 @@ class ComposeConfig:
         if use_podman_compose is None and self._env_podman:
             self._warn_env_deprecated()
 
-    def _warn_env_deprecated(self):
+    def _warn_env_deprecated(self) -> None:
         warnings.warn(
             (
                 "The environment variables 'PYFLUENT_USE_DOCKER_COMPOSE' and "
@@ -97,7 +97,7 @@ class ComposeConfig:
         return self.use_docker_compose or self.use_podman_compose
 
 
-def is_windows():
+def is_windows() -> bool:
     """Check if the current operating system is Windows."""
     return platform.system() == "Windows"
 
