@@ -3,11 +3,10 @@
 Expression builder
 ==================
 
-The :obj:`~ansys.fluent.core.expressions.builder.ExpressionBuilder` class provides
-a high-level, object-based API for constructing Fluent expression strings
-(for example, ``AreaAve(AbsolutePressure,['inlet1'])``) without hand-writing them.
-You can use the expression builder without a live Fluent session to build expressions
-that you later assign to a solver's named expressions or use in other contexts.
+The expression builder allows you to construct Fluent expressions using Python instead of typing them by hand.
+Use the :obj:`~ansys.fluent.core.offline.expressions.builder.ExpressionBuilder` class to build expressions
+programmatically. This is useful for creating named expressions, field reductions, and other
+expression-based features in your simulation.
 
 Sample usage
 ------------
@@ -17,7 +16,7 @@ to construct an expression computing the pressure drop across two surfaces:
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.expressions import ExpressionBuilder
+  >>> from ansys.fluent.core.offline.expressions import ExpressionBuilder
   >>> from ansys.units import VariableCatalog as V
 
   >>> builder = ExpressionBuilder()
