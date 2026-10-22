@@ -12,27 +12,24 @@ to build expressions programmatically. This is useful for creating named
 expressions, field reductions, and other expression-based features in your 
 simulation.
 
-This example demonstrates how to construct an area-averaged pressure expression 
-without requiring a running Fluent solver:
+To assign the expression to a named expression in a live Fluent solver:
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.offline.expressions.builder import ExpressionBuilder
+  >>> from ansys.fluent.core import Solver
+  >>> from ansys.fluent.core.examples import download_file
+  >>> from ansys.fluent.core.offline.expressions import ExpressionBuilder
   >>> from ansys.units import VariableCatalog as V
 
-  >>> builder = ExpressionBuilder()
+  >>> solver_session = Solver.from_install()
+  >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+  >>> solver_session.settings.file.read_case(file_name=case_path)
+
+  >>> builder = ExpressionBuilder(session=solver_session)
   >>> expr = builder.reductions.area_ave(
   ...     expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
   ... )
 
-The resulting expression can be rendered as a Fluent expression string:
-
-.. code-block:: python
-
-  >>> str(expr)
-  "AreaAve(AbsolutePressure,['inlet1'])"
-
-This expression string can later be assigned to a named expression definition 
-in a running Fluent solver session. Refer to the expression builder tests 
-in ``tests/expressions/test_fluent_smoke.py`` for an example of integrating 
-this with a live Fluent session.
+  >>> named = solver_session.setup.named_expressions.create()
+  >>> named.definition = expr
+  >>> value = named.get_value()
