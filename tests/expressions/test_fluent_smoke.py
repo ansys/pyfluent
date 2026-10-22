@@ -14,7 +14,7 @@ from typing import Any
 
 import pytest
 
-from ansys.fluent.core.offline.expressions import ExpressionBuilder, parse
+from ansys.fluent.core.expressions import ExpressionBuilder, parse
 from ansys.units import VariableCatalog as V
 
 
