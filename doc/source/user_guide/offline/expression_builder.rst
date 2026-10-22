@@ -6,7 +6,7 @@ Expression builder
 ==================
 
 The expression builder allows you to construct Fluent expressions using Python instead of typing them by hand.
-Use the :obj:`~ansys.fluent.core.expressions.builder.ExpressionBuilder` class to build expressions
+Use the :obj:`~ansys.fluent.core.offline.expressions.builder.ExpressionBuilder` class to build expressions
 programmatically. This is useful for creating named expressions, field reductions, and other
 expression-based features in your simulation.
 
@@ -17,7 +17,7 @@ This example demonstrates how to construct an area-averaged pressure expression 
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.expressions import ExpressionBuilder
+  >>> from ansys.fluent.core.offline.expressions import ExpressionBuilder
   >>> from ansys.units import VariableCatalog as V
 
   >>> builder = ExpressionBuilder()
