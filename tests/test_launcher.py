@@ -1218,9 +1218,11 @@ def test_standalone_launcher_default_start_timeout(monkeypatch):
 def test_standalone_launcher_respects_user_start_timeout(monkeypatch):
     """Verify StandaloneLauncher respects user-provided start_timeout."""
     monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
     launcher = StandaloneLauncher(
         mode=FluentMode.SOLVER,
         dry_run=True,
+        fluent_path=fluent_path,
         start_timeout=45,
     )
     # When user provides a value, it should be respected
