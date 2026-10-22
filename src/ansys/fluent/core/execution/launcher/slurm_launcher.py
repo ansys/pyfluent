@@ -499,7 +499,7 @@ class SlurmLauncher:
         start_timeout : int, optional
             Maximum allowable time in seconds for connecting to the Fluent
             server. The default is ``-1``, meaning PyFluent waits indefinitely for
-            Fluent to launch in a Slurm environment.
+            Fluent to launch in Slurm environment.
         additional_arguments : str, optional
             Additional arguments to send to Fluent as a string in the same
             format they are normally passed to Fluent on the command line.
