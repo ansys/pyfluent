@@ -70,6 +70,9 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow_old import ClassicWorkflow
 
 if TYPE_CHECKING:
+    from ansys.fluent.core.connectivity.file_transfer_service import (
+        FileTransferStrategy,
+    )
     from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.generated.v261.object_model.preferences import (
         Root as preferences_root,
@@ -121,25 +124,27 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         ``solution_variable_data``, ``reduction``, ``field_data``).
     monitors : MonitorsManager
         Residual and report-definition monitors; auto-refreshed on
-        solution events.
+        solution events. See the :ref:`monitors API <ref_ansys_fluent_core_services_monitors>` for details.
     system_coupling : SystemCoupling
         System Coupling co-simulation integration object.
     scheme : SchemeInterpreter
-        Direct access to Fluent's Scheme interpreter.
+        Direct access to Fluent's Scheme interpreter. See the :ref:`scheme interpreter API <ref_ansys_fluent_core_services_scheme_interpreter>` for details.
+    application_runtime : ApplicationRuntime
+        Fluent application runtime. See :attr:`~ansys.fluent.core.execution.session.session.BaseSession.application_runtime` for details.
     journal : Journal
         Fluent journal recorder; call :meth:`~Journal.start` /
         :meth:`~Journal.stop`.
     transcript : TranscriptStreaming
         Fluent console transcript; call ``.start()`` / ``.stop()``.
     events : EventsManager
-        Subscribe to solver events (``SolverEvent``).
+        Subscribe to solver events (``SolverEvent``). See the :ref:`events API <ref_ansys_fluent_core_services_events>` for details.
     """
 
     def __init__(
         self,
         fluent_connection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: "FileTransferStrategy | None" = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
     ):
@@ -147,10 +152,10 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
 
         Parameters
         ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
-            Encapsulates a Fluent connection.
+        fluent_connection : FluentConnection
+            Encapsulates a :class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`.
         scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+            Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
@@ -218,7 +223,7 @@ class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
         self,
         fluent_connection: "FluentConnection",
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: "FileTransferStrategy | None" = None,
         launcher_args: dict[str, Any] | None = None,
     ):
         self._tui_service = self._datamodel_service_tui

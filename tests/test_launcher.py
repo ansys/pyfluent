@@ -799,7 +799,7 @@ def test_standalone_launcher_dry_run(monkeypatch):
     assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
     assert (
         fluent_launch_string
-        == f'{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm -command="(set-session-idle-timeoutPLF+3)"'
+        == f'{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm -command="(set-session-idle-timeout 3)"'
     )
 
 
@@ -825,7 +825,7 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
         assert str(Path(server_info_file_name).parent) == tmp_dir
         assert (
             fluent_launch_string
-            == f'{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm -command="(set-session-idle-timeoutPLF+3)"'
+            == f'{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm -command="(set-session-idle-timeout 3)"'
         )
 
 
@@ -1135,19 +1135,19 @@ def test_idle_timeout(monkeypatch):
     fluent_launch_string, _ = pyfluent.launch_fluent(
         fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+3" in fluent_launch_string
+    assert "timeout 3" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=200, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+5" in fluent_launch_string
+    assert "timeout 5" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=60, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+2" in fluent_launch_string
+    assert "timeout 2" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=0, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
-    assert "timeoutPLF+1" in fluent_launch_string
+    assert "timeout 1" in fluent_launch_string
     fluent_launch_string, _ = pyfluent.launch_fluent(
         start_timeout=-5, fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
@@ -1159,11 +1159,11 @@ def test_idle_timeout(monkeypatch):
 
     assert (
         StandaloneLauncher._construct_timeout_arg(60)
-        == ' -command="(set-session-idle-timeoutPLF+2)"'
+        == ' -command="(set-session-idle-timeout 2)"'
     )
     assert (
         StandaloneLauncher._construct_timeout_arg(200)
-        == ' -command="(set-session-idle-timeoutPLF+5)"'
+        == ' -command="(set-session-idle-timeout 5)"'
     )
 
 
