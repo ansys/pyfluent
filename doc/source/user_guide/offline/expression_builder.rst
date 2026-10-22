@@ -10,7 +10,6 @@ Use the :obj:`~ansys.fluent.core.expressions.builder.ExpressionBuilder` class to
 programmatically. This is useful for creating named expressions, field reductions, and other
 expression-based features in your simulation.
 
-
 This example demonstrates how to construct an area-averaged pressure expression at an inlet:
 
 .. code-block:: python
