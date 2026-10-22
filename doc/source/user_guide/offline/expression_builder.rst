@@ -11,7 +11,7 @@ instead of typing them by hand. Use the
 to build expressions programmatically. This is useful for creating named 
 expressions, field reductions, and other expression-based features in your 
 simulation.
-Expand commentComment on line R14Resolved
+
 To assign the expression to a named expression in a live Fluent solver:
 
 .. code-block:: python
