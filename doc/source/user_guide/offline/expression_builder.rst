@@ -5,33 +5,31 @@
 Expression builder
 ==================
 
-The expression builder allows you to construct Fluent expressions using Python instead of typing them by hand.
-Use the :obj:`~ansys.fluent.core.offline.expressions.builder.ExpressionBuilder` class to build expressions
-programmatically. This is useful for creating named expressions, field reductions, and other
-expression-based features in your simulation.
-
-Quick example
--------------
-
-This example demonstrates how to construct an area-averaged pressure expression at an inlet:
+The expression builder allows you to construct Fluent expressions using Python 
+instead of typing them by hand. Use the 
+:obj:`~ansys.fluent.core.offline.expressions.builder.ExpressionBuilder` class 
+to build expressions programmatically. This is useful for creating named 
+expressions, field reductions, and other expression-based features in your 
+simulation.
+Expand commentComment on line R14Resolved
+To assign the expression to a named expression in a live Fluent solver:
 
 .. code-block:: python
 
+  >>> from ansys.fluent.core import Solver
+  >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.offline.expressions import ExpressionBuilder
   >>> from ansys.units import VariableCatalog as V
 
-  >>> builder = ExpressionBuilder()
+  >>> solver_session = Solver.from_install()
+  >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+  >>> solver_session.settings.file.read_case(file_name=case_path)
+
+  >>> builder = ExpressionBuilder(session=solver_session)
   >>> expr = builder.reductions.area_ave(
   ...     expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
   ... )
 
-The resulting expression can be rendered and assigned to a named expression:
-
-.. code-block:: python
-
-  >>> str(expr)
-  "AreaAve(AbsolutePressure,['inlet1'])"
-
-  >>> named = solver.setup.named_expressions.create()
+  >>> named = solver_session.setup.named_expressions.create()
   >>> named.definition = expr
-  >>> value = named.get_value()  # Retrieve the computed value
+  >>> value = named.get_value()
