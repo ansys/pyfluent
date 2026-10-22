@@ -5,16 +5,19 @@
 Expression builder
 ==================
 
-The expression builder allows you to construct Fluent expressions using Python instead of typing them by hand.
-Use the :obj:`~ansys.fluent.core.offline.expressions.builder.ExpressionBuilder` class to build expressions
-programmatically. This is useful for creating named expressions, field reductions, and other
-expression-based features in your simulation.
+The expression builder allows you to construct Fluent expressions using Python 
+instead of typing them by hand. Use the 
+:obj:`~ansys.fluent.core.offline.expressions.builder.ExpressionBuilder` class 
+to build expressions programmatically. This is useful for creating named 
+expressions, field reductions, and other expression-based features in your 
+simulation.
 
-This example demonstrates how to construct an area-averaged pressure expression at an inlet:
+This example demonstrates how to construct an area-averaged pressure expression 
+without requiring a running Fluent solver:
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.offline.expressions import ExpressionBuilder
+  >>> from ansys.fluent.core.offline.expressions.builder import ExpressionBuilder
   >>> from ansys.units import VariableCatalog as V
 
   >>> builder = ExpressionBuilder()
@@ -22,13 +25,14 @@ This example demonstrates how to construct an area-averaged pressure expression 
   ...     expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
   ... )
 
-The resulting expression can be rendered and assigned to a named expression:
+The resulting expression can be rendered as a Fluent expression string:
 
 .. code-block:: python
 
   >>> str(expr)
   "AreaAve(AbsolutePressure,['inlet1'])"
 
-  >>> named = solver.setup.named_expressions.create()
-  >>> named.definition = expr
-  >>> value = named.get_value()  # Retrieve the computed value
+This expression string can later be assigned to a named expression definition 
+in a running Fluent solver session. Refer to the expression builder tests 
+in ``tests/expressions/test_fluent_smoke.py`` for an example of integrating 
+this with a live Fluent session.
