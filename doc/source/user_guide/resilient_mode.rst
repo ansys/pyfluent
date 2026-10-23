@@ -143,6 +143,43 @@ Category              Severity     Automatic action
 ``unknown``           hard         Raises ``UnrecoverableStepError``.
 ====================  ===========  ==================================================
 
+**Where each error is detected (and how it is caught).** The three value errors
+you might expect -- out of range, not an allowed value, wrong type -- are not all
+raised in the same place, and resilient mode hooks every layer so recovery is
+transparent regardless:
+
+=========================  ================================================  ================================================
+Error                      Where it is raised                                How resilient mode catches it
+=========================  ================================================  ================================================
+Out of range               Fluent server (``RuntimeError`` via ``set_var``)  At the settings-service layer (``set_var``).
+Not an allowed value       Fluent server (``set_var``), or client-side       At the settings-service layer; client-side
+                           ``DisallowedValuesError``                         ``DisallowedValuesError`` is caught by the
+                                                                             guarded ``__setattr__`` wrapper.
+Wrong data type            Client-side ``TypeError`` in ``Textual.set_state``  By the guarded ``__setattr__`` wrapper, before
+                           / type checks (``flobject.py``) -- *before* any     the value reaches the server.
+                           value reaches the server
+Inactive target            Client-side ``InactiveObjectError`` in            By the guarded ``__getattribute__`` wrapper,
+                           ``Group.__getattribute__`` while *navigating*      which runs model-activation discovery.
+                           into an inactive branch
+=========================  ================================================  ================================================
+
+This is why resilient mode wraps **three** points, not one: the settings-service
+layer (``set_var`` / ``execute_cmd``) for server-reported errors, and -- for the
+errors Fluent raises *client-side before the value is ever sent* -- a guarded,
+reference-counted pair of wrappers around the settings tree's ``__getattribute__``
+and ``__setattr__``. All of these wrappers are a complete no-op for non-resilient
+sessions.
+
+.. note::
+
+   Fluent is permissive about some "type" cases: a numeric string on a real-valued
+   field is accepted natively (treated as a value or expression), so no coercion is
+   needed. The ``wrong_type`` repair only applies when Fluent actually raises a
+   ``TypeError``, and only performs a *safe* coercion (numeric string to a number).
+   A genuinely unconvertible assignment (for example an integer given to a
+   string-valued enumeration) has no safe fix, so the original ``TypeError`` is
+   re-raised unchanged -- resilient mode never masks a real mistake.
+
 **Example (verified on Fluent 27.1.0).** Turbulent intensity must be a fraction
 in ``[0, 1]``. Setting ``5.0`` makes Fluent raise ``Value is not in range``. The
 runtime reads the live bounds (``min=0``, ``max=1``), clamps to ``1``, and
@@ -163,6 +200,20 @@ retries:
   2
   >>> out.old_value, out.new_value
   (0.05, 1)
+
+In transparent mode the same thing happens through ordinary PyFluent code --
+``cold_inlet.turbulence.turbulent_intensity = 5.0`` simply succeeds with the value
+clamped to ``1``.
+
+**Example -- disallowed value snapped (verified on Fluent 27.1.0).** A near-miss of
+an allowed enumeration value is snapped to the nearest valid entry:
+
+.. code:: python
+
+  >>> # 'Intensity and Hydraulic Diamete' (typo) -> nearest allowed value
+  >>> cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diamete"
+  >>> cold_inlet.turbulence.turbulence_specification()
+  'Intensity and Hydraulic Diameter'
 
 **Inactive targets: automatic model activation (live discovery).** Many settings
 are *inactive* until a governing model is enabled -- for example a thermal boundary

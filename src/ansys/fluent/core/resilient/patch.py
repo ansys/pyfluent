@@ -55,6 +55,7 @@ _resilient_sessions = 0
 _lock = threading.RLock()
 _installed = False
 _original_getattribute = None
+_original_setattr = None
 
 
 def _inactive_object_error_cls():
@@ -116,15 +117,92 @@ def _make_wrapper(original):
     return __getattribute__
 
 
+def _recoverable_setattr_errors():
+    """Client-side error types raised by ``Group.__setattr__`` we can repair.
+
+    ``TypeError`` is raised by ``Textual.set_state`` for a wrong value type;
+    ``DisallowedValuesError`` is raised by ``Group.__setattr__`` when the value is
+    not among ``allowed_values``. Both happen *before* the value reaches the
+    settings-service layer, so they must be caught here rather than in the
+    interceptor.
+    """
+    errors = [TypeError]
+    try:
+        from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
+
+        errors.append(DisallowedValuesError)
+    except Exception:  # noqa: BLE001  # nosec B110
+        pass
+    return tuple(errors)
+
+
+def _classification_for(err):
+    """Map a caught client-side setattr error to a resilient Classification."""
+    from ansys.fluent.core.resilient.types import (
+        Classification,
+        ErrorCategory,
+        Severity,
+    )
+
+    category = (
+        ErrorCategory.WRONG_TYPE
+        if isinstance(err, TypeError)
+        else ErrorCategory.WRONG_VALUE
+    )
+    return Classification(
+        category=category, severity=Severity.RECOVERABLE, message=str(err)
+    )
+
+
+def _make_setattr_wrapper(original):
+    recoverable = _recoverable_setattr_errors()
+
+    def __setattr__(self, name, value):  # noqa: N807
+        # Fast path: no behavioural change when no resilient session is active.
+        if _resilient_sessions == 0:
+            return original(self, name, value)
+        try:
+            return original(self, name, value)
+        except recoverable as err:
+            controller = _controller_for(self)
+            resolver = getattr(controller, "_resolver", None) if controller else None
+            if resolver is None:
+                raise
+            # Resolve the child being assigned so the resolver can introspect it
+            # (allowed_values / min / max) and propose a coerce / snap fix.
+            try:
+                child = getattr(self, name)
+            except Exception:  # noqa: BLE001
+                raise err
+            cls = _classification_for(err)
+            try:
+                fix = resolver.propose_for_object(child, value, cls)
+            except Exception:  # noqa: BLE001
+                fix = None
+            if fix is None or fix.new_value is None:
+                raise
+            # Retry the assignment with the repaired value.
+            return original(self, name, fix.new_value)
+
+    return __setattr__
+
+
 def install() -> None:
-    """Install the guarded ``Group.__getattribute__`` wrapper (idempotent)."""
-    global _installed, _original_getattribute
+    """Install the guarded ``Group`` wrappers (idempotent).
+
+    Wraps both ``__getattribute__`` (to recover inactive-target navigation) and
+    ``__setattr__`` (to recover client-side wrong-type / disallowed-value writes).
+    Both are no-ops unless a resilient session is active.
+    """
+    global _installed, _original_getattribute, _original_setattr
     with _lock:
         if _installed:
             return
         group = _group_cls()
         _original_getattribute = group.__getattribute__
         group.__getattribute__ = _make_wrapper(_original_getattribute)
+        _original_setattr = group.__setattr__
+        group.__setattr__ = _make_setattr_wrapper(_original_setattr)
         _installed = True
 
 

@@ -144,6 +144,28 @@ out = rsolver.set('....turbulence.turbulent_intensity', 5.0)
 # out.old_value == 0.05, out.new_value == 1
 ```
 
+**Where each error is detected — and why three interception points are needed.**
+These failures are raised at different layers, so resilient mode hooks all of them:
+
+| Error | Raised where | Caught by |
+| --- | --- | --- |
+| Out of range | Fluent server, via `set_var` | settings-service interceptor (`set_var`) |
+| Not an allowed value | Fluent server (`set_var`), or client-side `DisallowedValuesError` | interceptor, or the `__setattr__` wrapper |
+| Wrong data type | client-side `TypeError` in `Textual.set_state` — before any value is sent | the `__setattr__` wrapper |
+| Inactive target | client-side `InactiveObjectError` in `Group.__getattribute__` while navigating | the `__getattribute__` wrapper |
+
+So the three interception points are: the settings-service layer (`set_var` /
+`execute_cmd`) for server-reported errors, and the guarded `Group.__getattribute__`
+and `Group.__setattr__` wrappers (`patch.py`) for the errors Fluent raises
+*client-side before the value is ever sent*. All wrappers are a no-op for
+non-resilient sessions (gated by a reference count).
+
+> **Fluent is permissive about types.** A numeric string on a real field is
+> accepted natively (as a value/expression), so no coercion is needed. `wrong_type`
+> repair fires only on an actual `TypeError`, and only does a *safe* coercion
+> (numeric string → number). An unconvertible assignment (e.g. `int` → a
+> string enum) has no safe fix and the original error is re-raised unchanged.
+
 **Inactive targets — automatic model activation by live discovery.** Many
 settings are inactive until a governing model is on (e.g. a thermal BC needs the
 energy model). Fluent raises `InactiveObjectError` **client-side**, inside
@@ -276,9 +298,12 @@ ansys/fluent/core/resilient/
 │                     set_var / execute_cmd, delegates everything else transparently.
 ├── controller.py     ResilientController: owns resilient state; the apply envelope
 │                     (classify -> recover -> checkpoint / failover) over string paths.
-├── patch.py          Guarded, ref-counted Group.__getattribute__ wrapper: catches the
-│                     client-side InactiveObjectError raised while navigating into an
-│                     inactive branch, discovers + enables the governing model, retries.
+├── patch.py          Guarded, ref-counted wrappers around Group.__getattribute__
+│                     (recovers client-side InactiveObjectError while navigating into
+│                     an inactive branch: discovers + enables the governing model) and
+│                     Group.__setattr__ (recovers client-side TypeError /
+│                     DisallowedValuesError: coerces / snaps the value). No-ops unless
+│                     a resilient session is active.
 ├── attach.py         enable_resilient_mode(session): swaps in the wrapped service and
 │                     attaches checkpoint/undo/redo onto the session.
 │

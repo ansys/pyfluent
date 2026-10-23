@@ -107,6 +107,21 @@ class RecoverableErrorResolver:
             return self._fix_type(obj, value)
         return None
 
+    def propose_for_object(self, obj, value, cls: Classification) -> Fix | None:
+        """Propose a :class:`Fix` from a live object directly (no path resolution).
+
+        Used by the client-side ``__setattr__`` recovery path, which already holds
+        the target object. Only the value-repair categories (range / allowed value
+        / type) apply here; inactive targets are handled on the access path.
+        """
+        if cls.category is ErrorCategory.OUT_OF_RANGE:
+            return self._fix_range(obj, value)
+        if cls.category is ErrorCategory.WRONG_VALUE:
+            return self._fix_value(obj, value)
+        if cls.category is ErrorCategory.WRONG_TYPE:
+            return self._fix_type(obj, value)
+        return None
+
     def _fix_inactive(self, path: str, obj) -> Fix | None:
         """Discover, by live introspection, which model activates an inactive target.
 

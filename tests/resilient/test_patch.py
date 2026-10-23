@@ -137,3 +137,112 @@ def test_wrapper_reraises_when_activation_fails():
     with pytest.raises(_FakeInactiveError):
         wrapper(node, "child")
     assert activator.called == 1
+
+
+# -- __setattr__ wrapper (client-side wrong-type / disallowed-value) --------
+
+
+from ansys.fluent.core.resilient.types import Fix  # noqa: E402
+
+
+class _SetattrController:
+    def __init__(self, resolver):
+        self._resolver = resolver
+
+
+class _SnapResolver:
+    """Proposes a coerce/snap fix from the live child object."""
+
+    def __init__(self, new_value):
+        self._new_value = new_value
+        self.seen = []
+
+    def propose_for_object(self, obj, value, cls):
+        self.seen.append((obj, value, cls.category))
+        if self._new_value is None:
+            return None
+        return Fix(kind="fix", description="repair", new_value=self._new_value)
+
+
+class _SetattrNode:
+    """Simulates a Group whose set rejects bad values until repaired."""
+
+    def __init__(self, resolver, accept):
+        object.__setattr__(self, "_resolver", resolver)
+        object.__setattr__(self, "_accept", accept)
+        object.__setattr__(self, "child", _Child())
+        object.__setattr__(self, "applied", None)
+
+    @property
+    def _root(self):
+        root = type("Root", (), {})()
+        root.flproxy = type("Proxy", (), {"_controller": self._resolver_holder})()
+        return root
+
+
+class _Child:
+    python_path = "<session>.settings.setup.x"
+
+
+def _build_setattr_wrapper(resolver, accept_value):
+    """Build the __setattr__ wrapper around a synthetic original."""
+    import ansys.fluent.core.resilient.patch as p
+
+    state = {}
+
+    def original(self, name, value):
+        if name == "child" and value != accept_value:
+            raise TypeError("wrong type")
+        state[name] = value
+
+    p._controller_for = lambda obj: _SetattrController(resolver)
+    p._recoverable_setattr_errors = lambda: (TypeError,)
+    return p._make_setattr_wrapper(original), state
+
+
+def test_setattr_passthrough_when_no_resilient_session():
+    resolver = _SnapResolver(new_value=0.05)
+    wrapper, _ = _build_setattr_wrapper(resolver, accept_value=0.05)
+    while patch.active_session_count() > 0:
+        patch.unregister_session()
+
+    class N:
+        def __getattribute__(self, n):
+            return object.__getattribute__(self, n)
+
+    node = N()
+    with pytest.raises(TypeError):
+        wrapper(node, "child", "bad")
+
+
+def test_setattr_recovers_with_coerced_value():
+    resolver = _SnapResolver(new_value=0.05)
+    wrapper, state = _build_setattr_wrapper(resolver, accept_value=0.05)
+    patch.register_session()
+
+    class N:
+        child = _Child()
+
+        def __getattribute__(self, n):
+            return object.__getattribute__(self, n)
+
+    node = N()
+    wrapper(node, "child", "0.05")  # wrong type -> coerced to 0.05 -> accepted
+    assert state["child"] == 0.05
+    assert resolver.seen  # resolver was consulted
+
+
+def test_setattr_reraises_when_no_fix():
+    resolver = _SnapResolver(new_value=None)  # no fix proposed
+    wrapper, _ = _build_setattr_wrapper(resolver, accept_value=0.05)
+    patch.register_session()
+
+    class N:
+        child = _Child()
+
+        def __getattribute__(self, n):
+            return object.__getattribute__(self, n)
+
+    node = N()
+    with pytest.raises(TypeError):
+        wrapper(node, "child", "bad")
