@@ -8,7 +8,10 @@ These tests are pure-Python and do not require a live Fluent session.
 
 import pytest
 
-from ansys.fluent.core.expressions import ExpressionBuilder, ExpressionBuildError
+from ansys.fluent.core.offline.expressions import (
+    ExpressionBuilder,
+    ExpressionBuildError,
+)
 from ansys.units import VariableCatalog as V
 
 
@@ -36,7 +39,7 @@ def test_variable_maps_via_naming_strategy(b):
 
 
 def test_variable_unmapped_raises():
-    from ansys.fluent.core.expressions._ast import Variable
+    from ansys.fluent.core.offline.expressions._ast import Variable
 
     # Fabricate a descriptor unknown to FluentExprNamingStrategy.
     class _Fake:
@@ -114,7 +117,7 @@ def test_scalar_arithmetic_with_python_numbers(b):
 
 
 def test_comparison_produces_boolean(b):
-    from ansys.fluent.core.expressions import BooleanExpr
+    from ansys.fluent.core.offline.expressions import BooleanExpr
 
     v = b.variable(V.VELOCITY_MAGNITUDE)
     cond = v > 10

@@ -26,15 +26,40 @@
 This module provides standalone utilities that work without a running Fluent
 session, including an in-house case file reader (:class:`CaseFile`) and data
 file reader (:class:`DataFile`), as well as a local parametric study
-(:class:`LocalParametricStudy`).
+(:class:`LocalParametricStudy`), and an expression builder for constructing
+Fluent expressions programmatically.
 """
 
 from ansys.fluent.core.offline.case_file import CaseFile
 from ansys.fluent.core.offline.data_file import DataFile
+from ansys.fluent.core.offline.expressions import (
+    BooleanExpr,
+    Expr,
+    ExpressionBuilder,
+    ExpressionBuildError,
+    Kind,
+    LocationList,
+    Quantity,
+    ScalarExpr,
+    VectorExpr,
+    Weight,
+    parse,
+)
 from ansys.fluent.core.offline.parametric_study import LocalParametricStudy
 
 __all__ = [
     "CaseFile",
     "DataFile",
     "LocalParametricStudy",
+    "BooleanExpr",
+    "ExpressionBuildError",
+    "ExpressionBuilder",
+    "Expr",
+    "Kind",
+    "LocationList",
+    "Quantity",
+    "ScalarExpr",
+    "VectorExpr",
+    "Weight",
+    "parse",
 ]

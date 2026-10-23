@@ -15,7 +15,7 @@ The package is organised in three layers:
 
 Typical use::
 
-    from ansys.fluent.core.expressions import ExpressionBuilder
+    from ansys.fluent.core.offline.expressions import ExpressionBuilder
     from ansys.units import VariableCatalog as V
 
     builder = ExpressionBuilder(settings=solver.settings)
