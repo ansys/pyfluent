@@ -41,6 +41,7 @@ import warnings
 import weakref
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core.diagnostics.exceptions import (
     BetaFeaturesNotEnabled,
     DeprecatedSettingWarning,
@@ -83,6 +84,7 @@ tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
+@no_runtime_type_check
 def _set_state_safe(obj: SettingsBase, state: StateType):
     try:
         obj.set_state(state)

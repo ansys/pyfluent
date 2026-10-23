@@ -28,18 +28,15 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 import dataclasses
-from typing import TYPE_CHECKING, Iterable
+from typing import Iterable
 import warnings
 
 from ansys.fluent.core.diagnostics.exceptions import DisallowedValuesError
-
-if TYPE_CHECKING:
-
-    from ansys.units.variable_descriptor import (
-        ScalarVariableDescriptor,
-        VariableDescriptor,
-        VectorVariableDescriptor,
-    )
+from ansys.units.variable_descriptor import (
+    ScalarVariableDescriptor,
+    VariableDescriptor,
+    VectorVariableDescriptor,
+)
 
 
 def _set_dataclass_field_docs(cls: type, field_docs: dict[str, str]) -> None:
@@ -60,21 +57,17 @@ def _set_dataclass_field_docs(cls: type, field_docs: dict[str, str]) -> None:
 
 
 def _validate_scalar_variable_descriptor(
-    field_name: "ScalarVariableDescriptor",
+    field_name: ScalarVariableDescriptor,
 ) -> None:
     """Validate that the provided field_name is a ScalarVariableDescriptor."""
-    from ansys.units.variable_descriptor import ScalarVariableDescriptor
-
     if not isinstance(field_name, ScalarVariableDescriptor):
         raise TypeError("field_name must be a `ScalarVariableDescriptor`.")
 
 
 def _validate_vector_variable_descriptor(
-    field_name: "VectorVariableDescriptor",
+    field_name: VectorVariableDescriptor,
 ) -> None:
     """Validate that the provided field_name is a VectorVariableDescriptor."""
-    from ansys.units.variable_descriptor import VectorVariableDescriptor
-
     if not isinstance(field_name, VectorVariableDescriptor):
         raise TypeError("field_name must be a `VectorVariableDescriptor`.")
 
@@ -99,7 +92,7 @@ class _BaseFieldInfo(ABC):
     @abstractmethod
     def _get_scalar_field_range(
         self,
-        field: str | "ScalarVariableDescriptor",
+        field: str | ScalarVariableDescriptor,
         node_value: bool = False,
         surface_ids: list[int] | None = None,
     ) -> list[float]:
@@ -234,7 +227,7 @@ class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
 
-    def is_active(self, field_name: "VariableDescriptor" | str) -> bool:
+    def is_active(self, field_name: VariableDescriptor | str) -> bool:
         """Check whether a field is active in the given context.
 
         Parameters
@@ -254,7 +247,7 @@ class _Fields:
         """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
 
-    def allowed_variables(self) -> list["VariableDescriptor"]:
+    def allowed_variables(self) -> list[VariableDescriptor]:
         """Return allowed field names as VariableDescriptor objects.
 
         Returns

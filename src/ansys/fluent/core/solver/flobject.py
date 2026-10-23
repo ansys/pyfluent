@@ -67,7 +67,6 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
-    no_type_check,
 )
 import warnings
 import weakref

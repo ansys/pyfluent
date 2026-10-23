@@ -585,8 +585,8 @@ class BaseSession:
         **kwargs: Unpack["StandaloneArgsWithoutDryRunMode"],
     ) -> tuple[str, str]: ...
 
-    @no_runtime_type_check
     @classmethod
+    @no_runtime_type_check
     def from_install(  # pylint: disable=missing-param-doc
         cls,
         *,
@@ -701,8 +701,8 @@ class BaseSession:
         **kwargs: Unpack["ContainerArgsWithoutDryRunMode"],
     ) -> dict[str, Any]: ...
 
-    @no_runtime_type_check
     @classmethod
+    @no_runtime_type_check
     def from_container(  # pylint: disable=missing-param-doc
         cls,
         *,
@@ -799,8 +799,8 @@ class BaseSession:
         )
         return launcher()
 
-    @no_runtime_type_check
     @classmethod
+    @no_runtime_type_check
     def from_pim(  # pylint: disable=missing-param-doc
         cls,
         **kwargs: Unpack["PIMArgsWithoutMode"],

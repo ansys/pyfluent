@@ -23,7 +23,7 @@
 
 """Wrapper over the object model gRPC service of Fluent (v1 proto API)."""
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 import logging
 from threading import RLock
 from typing import Any
@@ -37,13 +37,13 @@ from ansys.fluent.core._grpc_services._command_arguments_mixin import (
     CommandArgumentsCleanupMixin,
 )
 from ansys.fluent.core._grpc_services._streaming import StreamingService
+from ansys.fluent.core._types import ValueT
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.object_model_utilities import (
     convert_path_to_se_path,
     convert_se_path_to_path,
 )
 
-ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.object_model_v1")
 
 

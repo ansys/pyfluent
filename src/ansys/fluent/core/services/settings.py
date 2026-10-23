@@ -64,19 +64,20 @@ _indent: int = 0
 
 def _trace(fn):
     @wraps(fn)
-    def _fn(self, *args, **kwds):
+    # No named parameters here: a leading ``self`` hides the wrapped hints from beartype.
+    def _fn(*args, **kwds):
         global _indent
         if trace:
-            print(f"{' ' * _indent}fn={fn.__name__}, args={args} {{")
+            print(f"{' ' * _indent}fn={fn.__name__}, args={args[1:]} {{")
             try:
                 _indent += 1
-                ret = fn(self, *args, **kwds)
+                ret = fn(*args, **kwds)
             finally:
                 _indent -= 1
             print(f"{' ' * _indent}fn = {fn.__name__}, ret={ret} }}")
             return ret
         else:
-            return fn(self, *args, **kwds)
+            return fn(*args, **kwds)
 
     return _fn
 

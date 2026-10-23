@@ -38,6 +38,7 @@ if TYPE_CHECKING:
     from ansys.fluent.core.solver.session.solver_aero import SolverAero
     from ansys.fluent.core.solver.session.solver_icing import SolverIcing
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.diagnostics.exceptions import (
     DisallowedValuesError,
@@ -353,6 +354,7 @@ def _get_graphics_driver(
     return graphics_driver
 
 
+@no_runtime_type_check
 def _get_running_session_mode(
     fluent_connection: "FluentConnection", mode: FluentMode | None = None
 ):
@@ -424,6 +426,7 @@ def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int | Non
 LauncherArgsT = TypeVar("LauncherArgsT", bound=LauncherArgsBase)
 
 
+@no_runtime_type_check
 def _get_argvals_and_session(
     argvals: LauncherArgsT,
 ) -> tuple[
