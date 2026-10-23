@@ -24,6 +24,7 @@ User guide
    journal
    log
    usability
+   resilient_mode
    make_container_image
    legacy/legacy_contents
    beta_feature_access
@@ -96,4 +97,14 @@ Fluent data efficiently offline. The :obj:`~ansys.fluent.core.execution.session.
 :ref:`live session objects <ref_session_guide>`, allowing you to access field data and other relevant information without a live Fluent session.
 
 .. vale Google.Spacing = YES
+
+Resilient mode
+~~~~~~~~~~~~~~
+
+Make an automated setup-and-solve run survivable with
+:ref:`resilient mode <ref_resilient_guide>`. Recover automatically from
+non-catastrophic Fluent errors, checkpoint and undo / redo across an in-memory
+settings tier and a case/data file tier, and optionally run a warm pool of
+sessions that fails over and replays the last checkpoint when the active solver
+dies.
 

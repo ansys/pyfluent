@@ -368,6 +368,8 @@ def launch_fluent(
     use_podman_compose: bool = False,
     certificates_folder: str | None = None,
     insecure_mode: bool = False,
+    resilient_mode: bool = False,
+    resilient_config: Any | None = None,
 ) -> (
     Meshing
     | PureMeshing
@@ -550,7 +552,24 @@ def launch_fluent(
         case _:
             assert_never(fluent_launch_mode)
 
-    return launcher()
+    session = launcher()
+    if resilient_mode and not dry_run:
+        session = _maybe_enable_resilient_mode(session, resilient_config)
+    return session
+
+
+def _maybe_enable_resilient_mode(session, resilient_config):
+    """Enable resilient mode on a solver session, if applicable.
+
+    Resilient mode wraps the settings tree, so it only applies to a live solver
+    session (one exposing ``_settings_service``). Meshing sessions and dry-run
+    results are returned unchanged.
+    """
+    if not hasattr(session, "_settings_service"):
+        return session
+    from ansys.fluent.core.resilient.attach import enable_resilient_mode
+
+    return enable_resilient_mode(session, resilient_config)
 
 
 def connect_to_fluent(
@@ -615,6 +634,18 @@ def connect_to_fluent(
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
+    resilient_mode : bool, optional
+        If True (and launching a solver), enable *resilient mode* on the returned
+        session. The settings tree is transparently wrapped so that ordinary
+        PyFluent code (``solver.settings...`` writes and commands) gains automatic
+        recovery from recoverable Fluent errors, two-tier checkpoint/undo/redo
+        (via ``session.checkpoint`` / ``undo`` / ``redo``), and -- with a warm pool
+        -- failover with checkpoint replay. Defaults to False. See
+        :mod:`ansys.fluent.core.resilient`.
+    resilient_config : ResilientConfig, optional
+        Configuration for resilient mode (pool size, checkpoint directory, resolver
+        attempts, ...). Only used when ``resilient_mode`` is True. Defaults to None,
+        which uses the resilient-mode defaults (single session, no failover).
 
     Returns
     -------

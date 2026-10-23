@@ -676,10 +676,17 @@ class BaseSession:
             StandaloneLauncher,
         )
 
+        resilient_mode = kwargs.pop("resilient_mode", False)
+        resilient_config = kwargs.pop("resilient_config", None)
         launcher = StandaloneLauncher(
             **kwargs, dry_run=dry_run, mode=FluentMode.from_session_class(cls)
         )
-        return launcher()
+        session = launcher()
+        if resilient_mode and not dry_run and hasattr(session, "_settings_service"):
+            from ansys.fluent.core.resilient.attach import enable_resilient_mode
+
+            session = enable_resilient_mode(session, resilient_config)
+        return session
 
     @overload
     @classmethod
