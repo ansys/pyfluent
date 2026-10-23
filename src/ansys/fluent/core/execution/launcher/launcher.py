@@ -539,10 +539,6 @@ def launch_fluent(
             "Cannot use both 'use_docker_compose' and 'use_podman_compose' at the same time."
         )
 
-    start_timeout_val = (
-        start_timeout if start_timeout is not None else config.launch_fluent_timeout
-    )
-
     def _normalize_path(value: PathType | None) -> str | None:
         if value is None or isinstance(value, str):
             return value
@@ -584,7 +580,7 @@ def launch_fluent(
                 dimension=dimension,
                 precision=precision,
                 processor_count=processor_count,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 container_dict=container_dict,
                 dry_run=dry_run,
@@ -608,7 +604,7 @@ def launch_fluent(
                 dimension=dimension,
                 precision=precision,
                 processor_count=processor_count,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
@@ -626,7 +622,7 @@ def launch_fluent(
                 precision=precision,
                 processor_count=processor_count,
                 journal_file_names=journal_file_names,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 env=env,
                 cleanup_on_exit=cleanup_on_exit,
@@ -658,7 +654,7 @@ def launch_fluent(
                 precision=precision,
                 processor_count=processor_count,
                 journal_file_names=journal_file_names,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 env=env,
                 cleanup_on_exit=cleanup_on_exit,
