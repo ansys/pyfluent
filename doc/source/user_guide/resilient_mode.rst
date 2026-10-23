@@ -130,6 +130,13 @@ recording what happened.)
 ``RuntimeError(<text>)``, so the classifier combines typed exceptions, the shared
 fatal-error state, and text heuristics:
 
+.. important::
+
+   A classification of **fatal** (and therefore a failover) comes *only* from the
+   authoritative session ``ErrorState`` (set by the ``FATAL_ERROR`` event). Error
+   *text* is never used to escalate to fatal, so a recoverable or benign message
+   that merely mentions the word "fatal" cannot trigger a session failover.
+
 ====================  ===========  ==================================================
 Category              Severity     Automatic action
 ====================  ===========  ==================================================

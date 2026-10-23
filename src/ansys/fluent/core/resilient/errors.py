@@ -32,7 +32,10 @@ shared ``ErrorState``. The classifier checks, in order:
 1. **benign interrupt** -- ``RuntimeError("()")`` is Fluent's clean solver-stop
    sentinel, not an error;
 2. **fatal** -- the session's ``ErrorState`` is ``"fatal"`` (or the server is no
-   longer serving) -- catastrophic, triggers failover;
+   longer serving) -- catastrophic, triggers failover. This is the *only* source
+   of a catastrophic classification; error text is never used to escalate to
+   fatal, so a recoverable message that merely mentions "fatal" cannot trigger a
+   failover;
 3. **typed core errors** -- inactive target / read-only / disallowed value;
 4. **text heuristics** -- "not active", "out of range", "allowed values", etc.;
 5. **fallback** -- :attr:`ErrorCategory.UNKNOWN` (hard).
@@ -151,9 +154,13 @@ class ErrorClassifier:
 
     @staticmethod
     def _classify_text(text: str) -> ErrorCategory:
+        # NOTE: this runs only when the authoritative fatal check (the shared
+        # ``ErrorState``) already said the session is NOT fatal. We therefore do
+        # *not* escalate to ``FATAL`` from text here: a recoverable or benign
+        # message that merely mentions the word "fatal" (e.g. "may cause a fatal
+        # error") must not trigger a failover. Catastrophic classification is
+        # driven solely by the authoritative ``ErrorState`` in ``classify``.
         lowered = text.lower()
-        if "fatal" in lowered:
-            return ErrorCategory.FATAL
         if "not active" in lowered or "is not active" in lowered:
             return ErrorCategory.INACTIVE_TARGET
         if "read-only" in lowered or "read only" in lowered:

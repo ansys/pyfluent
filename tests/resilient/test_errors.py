@@ -48,6 +48,27 @@ def test_fatal_state_is_catastrophic():
     assert "solver died" in (cls.details or "")
 
 
+def test_text_mentioning_fatal_on_healthy_session_is_not_catastrophic():
+    # A recoverable/benign message that merely contains the word "fatal" must NOT
+    # escalate to a failover when the session's ErrorState is healthy. Only the
+    # authoritative ErrorState marks a session fatal.
+    session = FakeSession()  # healthy: not fatal
+    cls = ErrorClassifier().classify(
+        RuntimeError("Warning: this may cause a fatal error during solve"),
+        session,
+    )
+    assert cls.category is not ErrorCategory.FATAL
+    assert not cls.catastrophic
+
+
+def test_text_mentioning_fatal_without_session_is_not_catastrophic():
+    # With no session to consult, a "fatal"-containing string still must not be
+    # classified catastrophic from text alone.
+    cls = ErrorClassifier().classify(RuntimeError("fatal-sounding but benign"))
+    assert cls.category is not ErrorCategory.FATAL
+    assert not cls.catastrophic
+
+
 def test_text_heuristics_out_of_range():
     cls = ErrorClassifier().classify(RuntimeError("value is below minimum 0.0"))
     assert cls.category is ErrorCategory.OUT_OF_RANGE

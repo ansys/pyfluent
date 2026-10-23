@@ -135,7 +135,7 @@ When a settings write fails, the runtime **classifies** the error and, if it is
 | `wrong_type` | recoverable | Coerce a numeric string to `int` / `float`. |
 | `read_only` | hard | Not fixable → `UnrecoverableStepError`. |
 | `benign_interrupt` | benign | Clean solver stop (`RuntimeError("()")`) → treated as success. |
-| `fatal` | catastrophic | Triggers failover (see 3.4). |
+| `fatal` | catastrophic | Triggers failover (see 3.4). Driven **only** by the authoritative `ErrorState`; never inferred from error text. |
 | `unknown` | hard | → `UnrecoverableStepError`. |
 
 ```python
