@@ -303,7 +303,7 @@ class LocalParametricStudy:
         self, case_filepath: PathType, base_design_point_name: str = "Base DP"
     ):
         """Initialize LocalParametricStudy."""
-        from ansys.fluent.core.file_reader.case_file import CaseFile
+        from ansys.fluent.core.offline.case_file import CaseFile
 
         self.case_filepath = os.fspath(case_filepath)
         base_design_point = LocalDesignPoint(base_design_point_name)

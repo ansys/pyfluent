@@ -51,8 +51,8 @@ from ansys.fluent.core.fields.field_data.requests import (
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
 )
-from ansys.fluent.core.file_reader.case_file import CaseFile
-from ansys.fluent.core.file_reader.data_file import (
+from ansys.fluent.core.offline.case_file import CaseFile
+from ansys.fluent.core.offline.data_file import (
     DataFile,
     _to_scalar_field_name,
     _to_vector_field_name,
@@ -229,7 +229,8 @@ class BatchFieldData:
             an empty array is returned and a warning is issued. Users should always check
             the array size before using the data.
 
-            Example:
+            Example::
+
                 data = get_field_data(field_data_request)[surface_id]
                 if data.size == 0:
                     # Handle missing data
@@ -728,7 +729,7 @@ class FileFieldData(FieldDataSource):
         Returns
         -------
         Dict[int | str, SurfaceData]
-            Dictionary mapping each surface name or ID to a ``SurfaceData``
+            Dictionary mapping each surface name or ID to a :class:`~ansys.fluent.core.fields.field_data.data_types.SurfaceData`
             object. Requested data is available via its attributes:
 
             - ``SurfaceData.vertices`` – ``ndarray`` of shape ``(N, 3)``
@@ -1031,7 +1032,7 @@ class FileFieldData(FieldDataSource):
         Dict[int | str, SurfaceData | np.ndarray]
             Dictionary mapping each surface name or ID to the requested data:
 
-            - **SurfaceFieldDataRequest** -- values are ``SurfaceData`` objects.
+            - **SurfaceFieldDataRequest** -- values are :class:`~ansys.fluent.core.fields.field_data.data_types.SurfaceData` objects.
               Access retrieved data via attributes:
 
               - ``.vertices`` -- ``ndarray`` of shape ``(N, 3)``, or ``None``.
@@ -1050,7 +1051,7 @@ class FileFieldData(FieldDataSource):
         NotImplementedError
             If a ``SurfaceFieldDataRequest`` includes unsupported
             ``SurfaceDataType`` entries (only ``Vertices`` and
-            ``FacesConnectivity`` are supported by ``FileSession``).
+            ``FacesConnectivity`` are supported by :class:`~ansys.fluent.core.execution.session.file.FileSession`).
         """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())

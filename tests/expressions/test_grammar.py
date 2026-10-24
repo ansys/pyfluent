@@ -8,7 +8,7 @@ Reductions, math functions, vector operations, and the ``IF`` conditional.
 
 import pytest
 
-from ansys.fluent.core.expressions import (
+from ansys.fluent.core.offline.expressions import (
     ExpressionBuilder,
     ExpressionBuildError,
     Weight,
@@ -73,7 +73,7 @@ def test_extent_only_reductions(b, py_name, fluent_name):
 
 
 def test_centroid_is_vector(b):
-    from ansys.fluent.core.expressions import Kind
+    from ansys.fluent.core.offline.expressions import Kind
 
     node = b.reductions.centroid(locations=["inlet1"])
     assert str(node) == "Centroid(['inlet1'])"
@@ -81,7 +81,7 @@ def test_centroid_is_vector(b):
 
 
 def test_force_is_vector(b):
-    from ansys.fluent.core.expressions import Kind
+    from ansys.fluent.core.offline.expressions import Kind
 
     node = b.reductions.force(locations=["wall"])
     assert node.kind is Kind.VECTOR
@@ -160,7 +160,7 @@ def test_math_arity_enforced(b):
 
 def test_make_vec(b):
     node = b.vector.make_vec(1, 2, 3)
-    from ansys.fluent.core.expressions import Kind
+    from ansys.fluent.core.offline.expressions import Kind
 
     assert str(node) == "MakeVec(1,2,3)"
     assert node.kind is Kind.VECTOR
@@ -221,15 +221,15 @@ def test_if_in_reduction(b):
 
 
 def test_registered_groups(b):
-    from ansys.fluent.core.expressions._registry import REGISTRY
+    from ansys.fluent.core.offline.expressions._registry import REGISTRY
 
     assert set(REGISTRY.groups()) >= {"reductions", "math", "vector", "conditional"}
 
 
 def test_make_call_escape_hatch(b):
     # For anything not yet catalogued, users can still hand-roll a Call.
-    from ansys.fluent.core.expressions import Kind
-    from ansys.fluent.core.expressions._registry import make_call
+    from ansys.fluent.core.offline.expressions import Kind
+    from ansys.fluent.core.offline.expressions._registry import make_call
 
     node = make_call("Grad", b.variable(V.TEMPERATURE), returns=Kind.VECTOR)
     assert str(node) == "Grad(StaticTemperature)"

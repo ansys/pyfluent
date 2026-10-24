@@ -393,7 +393,7 @@ class PyCallableStateObject:
         Get the state of the current object.
     """
 
-    def __call__(self, *args, **kwds) -> Any:
+    def __call__(self, *args, **kwds) -> ValueT:
         return self.get_state()
 
 
@@ -433,11 +433,11 @@ class PyStateContainer(PyCallableStateObject):
             )
         )
 
-    def get_remote_state(self) -> Any:
+    def get_remote_state(self) -> ValueT:
         """Get state of the current object."""
         return self.service.get_state(self.rules, convert_path_to_se_path(self.path))
 
-    def get_state(self) -> Any:
+    def get_state(self) -> ValueT:
         """Get state."""
         if self.service._cache is not None:
             state = self.service._cache.get_state(self.rules, self, NameKey.DISPLAY)
@@ -455,14 +455,14 @@ class PyStateContainer(PyCallableStateObject):
 
     fixState = fix_state
 
-    def set_state(self, state: Any | None = None, **kwargs) -> None:
+    def set_state(self, state: ValueT | None = None, **kwargs: ValueT) -> None:
         """Set state of the current object.
 
         Parameters
         ----------
-        state : Any, optional
+        state : ValueT, optional
             state
-        kwargs : Any
+        kwargs : ValueT
             Keyword arguments.
 
         Raises
@@ -492,12 +492,12 @@ class PyStateContainer(PyCallableStateObject):
             obj=self, base_class=PyStateContainer, prefix=prefix, excluded=excluded
         )
 
-    def _get_remote_attr(self, attrib: str) -> Any:
+    def _get_remote_attr(self, attrib: str) -> ValueT:
         return self.service.get_attribute_value(
             self.rules, convert_path_to_se_path(self.path), attrib
         )
 
-    def _get_cached_attr(self, attrib: str) -> Any:
+    def _get_cached_attr(self, attrib: str) -> ValueT:
         cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
@@ -514,7 +514,7 @@ class PyStateContainer(PyCallableStateObject):
                 logger.debug(ex)
         return cached_val
 
-    def get_attr(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> ValueT:
         """Get attribute value of the current object.
 
         Parameters
@@ -524,7 +524,7 @@ class PyStateContainer(PyCallableStateObject):
 
         Returns
         -------
-        Any
+        ValueT
             Value of the attribute.
         """
         if config.datamodel_use_attr_cache and self.rules != "meshing_workflow":
@@ -541,7 +541,7 @@ class PyStateContainer(PyCallableStateObject):
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
-    def __call__(self, *args, **kwargs) -> Any:
+    def __call__(self, *args, **kwargs) -> ValueT | None:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -611,8 +611,6 @@ class PyMenu(PyStateContainer):
     -------
     __setattr__(name, value)
         Set state of the child object
-    rename(new_name)
-    name()
     create_command_arguments(command)
     """
 
@@ -620,55 +618,20 @@ class PyMenu(PyStateContainer):
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
-    def __setattr__(self, name: str, value: Any) -> None:
+    def __setattr__(self, name: str, value: ValueT) -> None:
         """Set state of the child object.
 
         Parameters
         ----------
         name : str
             child object name
-        value : Any
+        value : ValueT
             state
         """
         if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
-
-    def name(self) -> str:
-        """Get the name of the named object.
-
-        Returns
-        -------
-        str
-            name
-
-        Raises
-        ------
-        InvalidNamedObject
-            If the object is not a named object.
-        """
-        try:
-            return self._name_()
-        except AttributeError:
-            raise InvalidNamedObject(self.__class__.__name__)
-
-    def _raise_method_not_yet_implemented_exception(self):
-        raise AttributeError("This method is yet to be implemented in pyfluent.")
-
-    def delete_child(self) -> None:
-        """Delete child object."""
-        self._raise_method_not_yet_implemented_exception()
-
-    def rename(self, new_name: str) -> None:
-        """Rename the named object.
-
-        Parameters
-        ----------
-        new_name : str
-            New name for the object.
-        """
-        self.service.rename(self.rules, convert_path_to_se_path(self.path), new_name)
 
     def delete_child_objects(self, obj_type: str, child_names: list[str]):
         """Delete the named objects in 'child_names' from  the container..
@@ -889,13 +852,60 @@ class PyMenu(PyStateContainer):
         )
 
 
+class PyNamedObject(PyMenu):
+    """Object class for a named (renamable) node in the datamodel.
+
+    A named object is an element of a :class:`PyNamedObjectContainer`.
+
+    Methods
+    -------
+    name()
+    rename(new_name)
+    """
+
+    def name(self) -> str:
+        """Get the name of the named object.
+
+        Returns
+        -------
+        str
+            name
+
+        Raises
+        ------
+        InvalidNamedObject
+            If the object is not a named object.
+        """
+        try:
+            return self._name_()
+        except AttributeError:
+            raise InvalidNamedObject(self.__class__.__name__)
+
+    def _raise_method_not_yet_implemented_exception(self):
+        raise AttributeError("This method is yet to be implemented in pyfluent.")
+
+    def delete_child(self) -> None:
+        """Delete child object."""
+        self._raise_method_not_yet_implemented_exception()
+
+    def rename(self, new_name: str) -> None:
+        """Rename the named object.
+
+        Parameters
+        ----------
+        new_name : str
+            New name for the object.
+        """
+        self.service.rename(self.rules, convert_path_to_se_path(self.path), new_name)
+
+
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
     Use this class instead of directly calling DatamodelService's method.
     """
 
-    def default_value(self) -> Any:
+    def default_value(self) -> ValueT:
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
@@ -1019,7 +1029,7 @@ class PyNamedObjectContainer:
         else:
             self.path = path
 
-    def get_object_names(self) -> Any:
+    def get_object_names(self) -> list[str]:
         """Displays the name of objects within a container."""
         return self.service.get_object_names(
             self.rules, convert_path_to_se_path(self.path)
@@ -1054,12 +1064,12 @@ class PyNamedObjectContainer:
         """
         return len(self.get_object_names())
 
-    def __iter__(self) -> Iterator[PyMenu]:
+    def __iter__(self) -> Iterator[PyNamedObject]:
         """Return the next child object.
 
         Yields
         -------
-        Iterator[PyMenu]
+        Iterator[PyNamedObject]
             Iterator of child objects.
         """
         for name in self.get_object_names():
@@ -1069,7 +1079,7 @@ class PyNamedObjectContainer:
                 self.service, self.rules, child_path
             )
 
-    def _get_item(self, key: str) -> PyMenu:
+    def _get_item(self, key: str) -> PyNamedObject:
         if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
@@ -1104,7 +1114,7 @@ class PyNamedObjectContainer:
                 f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
-    def __getitem__(self, key: str) -> PyMenu:
+    def __getitem__(self, key: str) -> PyNamedObject:
         """Return the child object by key.
 
         Parameters
@@ -1114,12 +1124,12 @@ class PyNamedObjectContainer:
 
         Returns
         -------
-        PyMenu
+        PyNamedObject
             Child object.
         """
         return self._get_item(key)
 
-    def get(self, key: str) -> PyMenu | None:
+    def get(self, key: str) -> PyNamedObject | None:
         """Return the child object by key.
 
         Parameters
@@ -1129,7 +1139,7 @@ class PyNamedObjectContainer:
 
         Returns
         -------
-        PyMenu
+        PyNamedObject
             Child object.
         """
         try:
@@ -1137,14 +1147,14 @@ class PyNamedObjectContainer:
         except LookupError:
             return
 
-    def __setitem__(self, key: str, value: Any) -> None:
+    def __setitem__(self, key: str, value: ValueT) -> None:
         """Set state of the child object by name.
 
         Parameters
         ----------
         key : str
             Name of the child object.
-        value : Any
+        value : ValueT
             State of the child object.
         """
         if isinstance(value, dict) and not value:
@@ -1203,7 +1213,7 @@ class PyAction:
         setattr(self, self._operation, name)
         self.path = path or []
 
-    def __call__(self, *args, **kwds) -> Any:
+    def __call__(self, *args, **kwds) -> ValueT:
         """Execute the operation (command or query)."""
         execute_method = getattr(self.service, f"execute_{self._operation}")
         return execute_method(
@@ -1327,12 +1337,12 @@ class PyCommand(PyAction):
         if hasattr(self.file_behavior, "_do_after_execute"):
             self.file_behavior._do_after_execute(value)
 
-    def __call__(self, *args, **kwds) -> Any:
+    def __call__(self, *args, **kwds) -> ValueT:
         """Execute the command.
 
         Returns
         -------
-        Any
+        ValueT
             Return value.
         """
         processed = []
@@ -1369,20 +1379,20 @@ class PyArgumentsSubItem(PyCallableStateObject):
             )
         )
 
-    def get_state(self) -> Any:
+    def get_state(self) -> ValueT:
         """Get state of the command argument."""
         parent_state = self.parent.get_state()
         return parent_state[self.name]
 
     getState = get_state
 
-    def set_state(self, state) -> Any:
+    def set_state(self, state: ValueT) -> ValueT:
         """Set state of the command argument."""
         self.parent.set_state({self.name: state})
 
     setState = set_state
 
-    def get_attr(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> ValueT:
         """Get attribute value of the command argument.
 
         Parameters
@@ -1392,7 +1402,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
         Returns
         -------
-        Any
+        ValueT
             attribute value
         """
         attrib_path = f"{self.name}/{attrib}"
@@ -1400,7 +1410,7 @@ class PyArgumentsSubItem(PyCallableStateObject):
 
     getAttribValue = get_attr
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: ValueT) -> None:
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
@@ -1445,7 +1455,7 @@ class PyArguments(PyStateContainer):
         except Exception as exc:
             logger.info(f"__del__ {type(exc).__name__}: {exc}")
 
-    def get_attr(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> ValueT:
         """Get attribute value of the current object.
 
         Parameters
@@ -1455,12 +1465,12 @@ class PyArguments(PyStateContainer):
 
         Returns
         -------
-        Any
+        ValueT
             Value of the attribute.
         """
         return self._get_remote_attr(attrib)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: str, value: ValueT) -> None:
         if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
