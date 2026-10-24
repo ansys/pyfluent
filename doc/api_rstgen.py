@@ -38,10 +38,6 @@ ADDITIONAL_DOCUMENTATION = {
         ":ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` "
         "for details.\n"
     ),
-    "ansys.fluent.core.solver": (
-        "Solver expose an underlying hierarchical settings object. See "
-        "the :ref:`settings API <ref_root>` for details.\n"
-    ),
 }
 
 # Modules documented on standalone pages that are reachable through
