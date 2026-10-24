@@ -27,6 +27,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
+
 if TYPE_CHECKING:
     import numpy as np
     import numpy.typing as npt
@@ -52,6 +54,7 @@ __all__ = (
 )
 
 
+@no_runtime_type_check
 class BaseFieldDataSource(ABC):
     """Abstract contract for a user-facing field-data source.
 
@@ -111,6 +114,7 @@ class FieldDataSource(BaseFieldDataSource, ABC):
         pass
 
 
+@no_runtime_type_check
 class FieldBatch(ABC):
     """Abstract contract for collecting and executing field-data requests.
 
@@ -162,6 +166,7 @@ class FieldBatch(ABC):
         pass
 
 
+@no_runtime_type_check
 class AbstractFieldData(ABC):
     """Abstract base class for the field data service."""
 

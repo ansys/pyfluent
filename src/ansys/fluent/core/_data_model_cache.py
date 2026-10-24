@@ -35,18 +35,22 @@ if TYPE_CHECKING:
 
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-StateType = (
-    bool
-    | int
-    | float
-    | str
-    | list[bool]
-    | list[int]
-    | list[float]
-    | list[str]
-    | list["StateType"]
-    | dict[str, "StateType"]
-)
+if TYPE_CHECKING:
+    StateType = (
+        bool
+        | int
+        | float
+        | str
+        | list[bool]
+        | list[int]
+        | list[float]
+        | list[str]
+        | list["StateType"]
+        | dict[str, "StateType"]
+    )
+else:
+    # Runtime checkers cannot resolve recursive aliases, so use the shallow form.
+    StateType = bool | int | float | str | list | dict
 
 
 class NameKey(Enum):

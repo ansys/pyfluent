@@ -22,7 +22,6 @@
 
 """Contains utilities for object model."""
 
-from collections.abc import Sequence
 from enum import Enum
 import os
 from typing import Any, Iterable
@@ -32,7 +31,6 @@ from ansys.fluent.core.utils.get_completer_info import (
     get_completer_info as _completer_info_method,
 )
 
-ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 Path = list[tuple[str, str]]
 
 

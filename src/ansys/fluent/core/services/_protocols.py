@@ -23,17 +23,15 @@
 
 """Provides protocol definitions for gRPC services."""
 
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol, runtime_checkable
 
-if TYPE_CHECKING:
-    import grpc
+import grpc
 
 
+@runtime_checkable
 class ServiceProtocol(Protocol):
     """Protocol for gRPC service classes."""
 
-    if TYPE_CHECKING:
-
-        def __init__(
-            self, channel: "grpc.Channel", metadata: list[tuple[str, str]]
-        ) -> None: ...
+    def __init__(
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]]
+    ) -> None: ...

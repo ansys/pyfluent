@@ -103,7 +103,7 @@ class SurfaceFieldDataRequest(BaseDataRequest):
 class ScalarFieldDataRequest(BaseDataRequest):
     """Container storing parameters for scalar field data request."""
 
-    field_name: str | "ScalarVariableDescriptor"
+    field_name: str | ScalarVariableDescriptor
     node_value: bool | None = True
     boundary_value: bool | None = True
 
@@ -116,7 +116,7 @@ class ScalarFieldDataRequest(BaseDataRequest):
 class VectorFieldDataRequest(BaseDataRequest):
     """Container storing parameters for vector field data request."""
 
-    field_name: str | "VectorVariableDescriptor"
+    field_name: str | VectorVariableDescriptor
 
     def _validate_inputs(self) -> None:
         if not isinstance(self.field_name, (str)):
@@ -127,7 +127,7 @@ class VectorFieldDataRequest(BaseDataRequest):
 class PathlinesFieldDataRequest(BaseDataRequest):
     """Container storing parameters for path-lines field data request."""
 
-    field_name: str | "ScalarVariableDescriptor"
+    field_name: str | ScalarVariableDescriptor
     additional_field_name: str = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
