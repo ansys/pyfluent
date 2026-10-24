@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solid_zone_name:
+
+solid_zone_name
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solid_zone_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =============================================================
+
+Parent                                                                                   Summary
+
+================================   =============================================================
+:ref:`porous_zone <porous_zone>`       Allows to change porous-zone model variables or settings.
+
+================================   =============================================================
+

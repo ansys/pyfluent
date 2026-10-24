@@ -1,0 +1,21 @@
+:orphan:
+
+.. _n_layers:
+
+n_layers
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.n_layers
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===========================================================
+
+Parent                                                                                     Summary
+
+====================================   ===========================================================
+:ref:`interpolation <interpolation>`   Flood filling interpolation settings for blocked gap cells.
+
+====================================   ===========================================================
+

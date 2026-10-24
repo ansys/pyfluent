@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateTheSurfaceMeshFTM__GenerateTheSurfaceMeshFTMCommandArguments:
+
+_GenerateTheSurfaceMeshFTMCommandArguments
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.GenerateTheSurfaceMeshFTM._GenerateTheSurfaceMeshFTMCommandArguments
+   :members: _AdvancedInnerWrap, _AdvancedOptions, _AutoAssignZoneTypes, _AutoPairing, _AutoRegionBetweenPorous, _DihedralMinAngle, _GapCoverZoneRecovery, _GlobalMin, _IntermediateFileName, _LeakShield, _MaxIslandFace, _MergeWrapperAtSolidConacts, _NumberOfSessions, _ParallelSerialOption, _ProjectOnGeometry, _SaveIntermediateFiles, _SaveSurfaceMesh, _SeparateSurface, _ShowSubTasks, _SpikeRemovalAngle, _SurfaceQuality, _UseSizeFieldForPrimeWrap
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

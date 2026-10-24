@@ -1,0 +1,13 @@
+.. _ref_workflow:
+
+Workflow
+========
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :glob:
+
+    datamodel/workflow/*/*_contents
+
+Please follow the tree to access the APIs under this section.

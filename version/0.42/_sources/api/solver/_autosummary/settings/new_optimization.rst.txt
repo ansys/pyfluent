@@ -1,0 +1,21 @@
+:orphan:
+
+.. _new_optimization:
+
+new_optimization
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.new_optimization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

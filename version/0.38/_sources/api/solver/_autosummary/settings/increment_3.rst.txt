@@ -1,0 +1,21 @@
+:orphan:
+
+.. _increment_3:
+
+increment
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.increment_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================================================================================================
+
+Parent                                                                                                                   Summary
+
+============================   =================================================================================================
+:ref:`uniform_1 <uniform_1>`       Pick the first and last timestep and specify an increment to select the timesteps in-between.
+
+============================   =================================================================================================
+

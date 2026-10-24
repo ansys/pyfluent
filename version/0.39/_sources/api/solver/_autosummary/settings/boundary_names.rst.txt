@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_names:
+
+boundary_names
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.boundary_names
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==============================================
+
+Parent                                                                  Summary
+
+==============================   ==============================================
+:ref:`set_type_2 <set_type_2>`       Input boundary name(s) to change its type.
+
+==============================   ==============================================
+

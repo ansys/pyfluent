@@ -1,0 +1,59 @@
+:orphan:
+
+.. _field_value:
+
+field_value
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.field_value
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ============================================================
+
+Attribute                                                                             Summary
+
+==============================   ============================================================
+:ref:`field <field_1>`                                 The field name for this cell register.
+
+:ref:`option <option_49>`            The range option for cell marking based on field values.
+
+:ref:`min <min_1>`                                                               'min' child.
+
+:ref:`max <max_1>`                                                               'max' child.
+
+:ref:`average <average>`                                                     'average' child.
+
+:ref:`std_dev <std_dev>`                                                     'std_dev' child.
+
+:ref:`scaling <scaling>`                                 The scaling method for field values.
+
+:ref:`derivative <derivative>`                        The derivative method for field values.
+
+:ref:`size_ratio <size_ratio>`        The size ratio factor for field scaling by cell volume.
+
+==============================   ============================================================
+
+.. rubric:: Methods
+
+==========================   ======================
+
+Method                                      Summary
+
+==========================   ======================
+:ref:`compute <compute_4>`       'compute' command.
+
+==========================   ======================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_14 <type_14>`       The type for this cell register.
+
+========================   ====================================
+

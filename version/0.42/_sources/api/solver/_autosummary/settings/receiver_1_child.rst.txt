@@ -1,0 +1,39 @@
+:orphan:
+
+.. _receiver_1_child:
+
+receiver_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.receiver_1_child
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`receiver_1_child_child <receiver_1_child_child>`
+
+
+.. rubric:: Included in:
+
+==============================   =====================================================================================================================================
+
+Parent                                                                                                                                                         Summary
+
+==============================   =====================================================================================================================================
+:ref:`receiver_1 <receiver_1>`       Manage the list of receivers for sound analysis. Each receiver pairs an input file with a Frequency Response Function (FRF) file.
+
+==============================   =====================================================================================================================================
+

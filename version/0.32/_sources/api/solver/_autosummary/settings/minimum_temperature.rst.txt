@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_temperature:
+
+minimum_temperature
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.minimum_temperature
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`parameters_2 <parameters_2>`       PDF Table Parameters.
+
+==================================   =========================
+

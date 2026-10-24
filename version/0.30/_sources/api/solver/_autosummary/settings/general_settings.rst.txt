@@ -1,0 +1,36 @@
+:orphan:
+
+.. _general_settings:
+
+general_settings
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.general_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==========================================================================
+
+Attribute                                                                                                         Summary
+
+============================================   ==========================================================================
+:ref:`interaction <interaction>`                                   Group containing interphase coupling related settings.
+
+:ref:`unsteady_tracking <unsteady_tracking>`                Group containing unsteady particle tracking related settings.
+
+:ref:`contour_plotting <contour_plotting>`         Enable/disable contour and vector plots of mean and rms particle data.
+
+============================================   ==========================================================================
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`discrete_phase <discrete_phase>`       Toplevel object.
+
+======================================   ====================
+

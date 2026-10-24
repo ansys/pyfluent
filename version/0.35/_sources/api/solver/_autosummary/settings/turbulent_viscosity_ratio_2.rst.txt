@@ -1,0 +1,21 @@
+:orphan:
+
+.. _turbulent_viscosity_ratio_2:
+
+turbulent_viscosity_ratio
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.turbulent_viscosity_ratio_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =====================================================
+
+Parent                                                           Summary
+
+================   =====================================================
+:ref:`fmg <fmg>`       The set full-multigrid for initialization object.
+
+================   =====================================================
+

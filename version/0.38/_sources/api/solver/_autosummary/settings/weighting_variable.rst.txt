@@ -1,0 +1,25 @@
+:orphan:
+
+.. _weighting_variable:
+
+weighting_variable
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.weighting_variable
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ===============================================================================
+
+Parent                                                                                                                       Summary
+
+==================================================   ===============================================================================
+:ref:`histogram_selections <histogram_selections>`                      Make selections for the DPM sample histogram to be computed.
+
+:ref:`plot_hist_with_args <plot_hist_with_args>`                           Plot a distribution histogram based on a DPM sample file.
+
+:ref:`write_hist_with_args <write_hist_with_args>`       Write a data file from a distribution histogram based on a DPM sample file.
+
+==================================================   ===============================================================================
+

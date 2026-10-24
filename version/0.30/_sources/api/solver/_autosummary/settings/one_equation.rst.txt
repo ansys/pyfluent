@@ -1,0 +1,52 @@
+:orphan:
+
+.. _one_equation:
+
+one_equation
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.one_equation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ========================================================
+
+Attribute                                                                         Summary
+
+==============================   ========================================================
+:ref:`data_type <data_type_3>`                 Data type in the 1-eq thermal abuse model.
+
+:ref:`hw <hw>`                                  Hw value in the 1-eq thermal abuse model.
+
+:ref:`a <a>`                                     A value in the 1-eq thermal abuse model.
+
+:ref:`e <e>`                                     E value in the 1-eq thermal abuse model.
+
+:ref:`m <m>`                                     M value in the 1-eq thermal abuse model.
+
+:ref:`n <n>`                                     N value in the 1-eq thermal abuse model.
+
+:ref:`alpha0 <alpha0>`                      Alpha0 value in the 1-eq thermal abuse model.
+
+:ref:`rate_table <rate_table>`          Abuse rate table in the 1-eq thermal abuse model.
+
+:ref:`hw_table <hw_table>`                      Hw value in the 1-eq thermal abuse model.
+
+:ref:`hw_udf <hw_udf>`                          Hw value in the 1-eq thermal abuse model.
+
+:ref:`udf_name <udf_name_2>`         Abuse rate udf file in the 1-eq thermal abuse model.
+
+==============================   ========================================================
+
+.. rubric:: Included in:
+
+================================================   ===========================================
+
+Parent                                                                                 Summary
+
+================================================   ===========================================
+:ref:`thermal_abuse_model <thermal_abuse_model>`       Thermal abuse model related parameters.
+
+================================================   ===========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _real_to_simulated_particle_ratio:
+
+real_to_simulated_particle_ratio
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.real_to_simulated_particle_ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ==============================
+
+Parent                                      Summary
+
+==================   ==============================
+:ref:`dsmc <dsmc>`       Enable/disable dsmc model.
+
+==================   ==============================
+

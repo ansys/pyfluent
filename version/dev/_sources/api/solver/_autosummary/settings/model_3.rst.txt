@@ -1,0 +1,21 @@
+:orphan:
+
+.. _model_3:
+
+model
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.model_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`acoustics <acoustics>`   Entering acoustics model object.
+
+============================   ================================
+

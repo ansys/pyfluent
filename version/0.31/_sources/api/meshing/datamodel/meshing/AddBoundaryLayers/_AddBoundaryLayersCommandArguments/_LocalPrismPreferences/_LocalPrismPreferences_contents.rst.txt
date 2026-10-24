@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AddBoundaryLayers__AddBoundaryLayersCommandArguments__LocalPrismPreferences:
+
+_LocalPrismPreferences
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.AddBoundaryLayers._AddBoundaryLayersCommandArguments._LocalPrismPreferences
+   :members: _AdditionalIgnoredLayers, _AllowedTangencyAtInvalidNormals, _Continuous, _IgnoreBoundaryLayers, _InvalidNormalMethod, _LastRatio, _LastRatioNumLayers, _ModifyAtInvalidNormals, _NumberOfSplitLayers, _RemeshAtInvalidNormals, _ShowLocalPrismPreferences, _SmoothRingsAtInvalidNormals, _SphereRadiusFactorAtInvalidNormals, _SplitPrism
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

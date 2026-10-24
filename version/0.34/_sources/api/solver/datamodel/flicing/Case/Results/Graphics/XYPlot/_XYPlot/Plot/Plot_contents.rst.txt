@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_XYPlot__XYPlot_Plot:
+
+Plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.flicing.Root.Case.Results.Graphics.XYPlot._XYPlot.Plot
+   :members: _PlotCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

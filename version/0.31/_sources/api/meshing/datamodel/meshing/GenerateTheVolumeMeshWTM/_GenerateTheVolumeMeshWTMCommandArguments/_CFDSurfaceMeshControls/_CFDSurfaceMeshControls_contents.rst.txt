@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateTheVolumeMeshWTM__GenerateTheVolumeMeshWTMCommandArguments__CFDSurfaceMeshControls:
+
+_CFDSurfaceMeshControls
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.GenerateTheVolumeMeshWTM._GenerateTheVolumeMeshWTMCommandArguments._CFDSurfaceMeshControls
+   :members: _AutoCreateScopedSizing, _CellsPerGap, _CurvatureNormalAngle, _DrawSizeControl, _GrowthRate, _MaxSize, _MinSize, _ObjectBasedControls, _PreviewSizefield, _RemeshImportedMesh, _SaveSizeField, _SaveSizeFieldFile, _ScopeProximityTo, _SizeControlFile, _SizeFieldFile, _SizeFunctions, _UseSizeFiles
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

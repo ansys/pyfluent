@@ -1,0 +1,32 @@
+:orphan:
+
+.. _combustion:
+
+combustion
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.combustion
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   ====================================================================================================
+
+Method                                                                                                                                  Summary
+
+========================================   ====================================================================================================
+:ref:`flame_indicator <flame_indicator>`       Define cell registers and adaption settings suitable for a flame adaptive refinement simulation.
+
+========================================   ====================================================================================================
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`predefined_criteria <predefined_criteria>`       The predefined criteria object.
+
+================================================   ===================================
+

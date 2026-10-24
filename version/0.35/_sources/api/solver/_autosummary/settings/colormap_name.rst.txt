@@ -1,0 +1,21 @@
+:orphan:
+
+.. _colormap_name:
+
+colormap_name
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.colormap_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ========================================
+
+Parent                                                                                        Summary
+
+==========================================================   ========================================
+:ref:`usd_export_via_connector <usd_export_via_connector>`       Export data for Omniverse rendering.
+
+==========================================================   ========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_77:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enabled_77
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================
+
+Parent                                               Summary
+
+====================================   =====================
+:ref:`data_sampling <data_sampling>`   Data sampling object.
+
+====================================   =====================
+

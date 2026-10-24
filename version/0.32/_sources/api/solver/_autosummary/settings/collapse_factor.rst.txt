@@ -1,0 +1,21 @@
+:orphan:
+
+.. _collapse_factor:
+
+collapse_factor
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.collapse_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =====================
+
+Parent                                           Summary
+
+================================   =====================
+:ref:`settings_27 <settings_27>`       'settings' child.
+
+================================   =====================
+

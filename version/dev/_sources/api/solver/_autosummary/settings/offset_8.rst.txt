@@ -1,0 +1,21 @@
+:orphan:
+
+.. _offset_8:
+
+offset
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.offset_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===================
+
+Parent                                         Summary
+
+================================   ===================
+:ref:`periodicity <periodicity>`   Periodic settings .
+
+================================   ===================
+

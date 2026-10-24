@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scale_factor_2:
+
+scale_factor
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.scale_factor_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`bounded_by_surfaces_child <bounded_by_surfaces_child>`       'child_object_type' of bounded_by_surfaces.
+
+============================================================   ===============================================
+

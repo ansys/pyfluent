@@ -1,0 +1,22 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Graphics_XYPlot__XYPlot_Axes_Y:
+
+Y
+=
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.flicing.Root.Case.Results.Graphics.XYPlot._XYPlot.Axes.Y
+   :members: Label
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   MajorRules/MajorRules_contents
+   MinorRules/MinorRules_contents
+   NumberFormat/NumberFormat_contents
+   Options/Options_contents
+   Range/Range_contents

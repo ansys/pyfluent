@@ -1,0 +1,25 @@
+.. _ref_solver_datamodel_flicing_Case:
+
+Case
+====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.flicing.Root.Case
+   :members: App, AppLocal, AppName, ClearDatamodel, ReadCase, ReadCaseAndData, ReadData, SendCommand, WriteCase, WriteCaseAndData, WriteData
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   AuxiliaryInfo/AuxiliaryInfo_contents
+   CaseInfo/CaseInfo_contents
+   MeshInfo/MeshInfo_contents
+   Results/Results_contents
+   ResultsInfo/ResultsInfo_contents
+   Setup/Setup_contents
+   Solution/Solution_contents
+   Streaming/Streaming_contents

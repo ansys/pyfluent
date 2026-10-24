@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inlet_diffusion:
+
+inlet_diffusion
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.inlet_diffusion
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ========================================
+
+Parent                                                    Summary
+
+======================   ========================================
+:ref:`energy <energy>`       The energy transport model settings.
+
+======================   ========================================
+

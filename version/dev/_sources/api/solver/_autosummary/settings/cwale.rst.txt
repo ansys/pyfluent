@@ -1,0 +1,23 @@
+:orphan:
+
+.. _cwale:
+
+cwale
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.cwale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`coefficients_6 <coefficients_6>`          Coefficients group.
+
+:ref:`coefficients_7 <coefficients_7>`   SBES/SDES model constants.
+
+======================================   ==========================
+

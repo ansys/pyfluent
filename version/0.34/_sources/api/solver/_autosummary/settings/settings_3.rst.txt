@@ -1,0 +1,40 @@
+:orphan:
+
+.. _settings_3:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.settings_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ==========================================================
+
+Attribute                                                                                                               Summary
+
+==================================================================   ==========================================================
+:ref:`pressure_jump_specification <pressure_jump_specification>`                          Pressure jump specification settings.
+
+:ref:`swirl_velocity_specification <swirl_velocity_specification>`                       Swirl Velocity specification settings.
+
+:ref:`discrete_phase <discrete_phase_2>`                                                               Discrete Phase settings.
+
+:ref:`geometry <geometry_6>`                                             Allows to change geometry model variables or settings.
+
+:ref:`phase <phase_5>`                                                                       Domain name to define settings on.
+
+==================================================================   ==========================================================
+
+.. rubric:: Included in:
+
+============================   ===============================
+
+Parent                                                 Summary
+
+============================   ===============================
+:ref:`fan_child <fan_child>`       'child_object_type' of fan.
+
+============================   ===============================
+

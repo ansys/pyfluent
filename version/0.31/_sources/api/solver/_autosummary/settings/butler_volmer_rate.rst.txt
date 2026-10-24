@@ -1,0 +1,60 @@
+:orphan:
+
+.. _butler_volmer_rate:
+
+butler_volmer_rate
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.butler_volmer_rate
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =============================================
+
+Attribute                                                                              Summary
+
+==============================================   =============================================
+:ref:`cathode_i0 <cathode_i0>`                         Exchange current density i0 at cathode.
+
+:ref:`cathode_alpha1 <cathode_alpha1>`                            Ce rate exponent at cathode.
+
+:ref:`cathode_alpha2 <cathode_alpha2>`                       Cmax-cs rate exponent at cathode.
+
+:ref:`cathode_alpha3 <cathode_alpha3>`                            Cs rate exponent at cathode.
+
+:ref:`cathode_alpha_a <cathode_alpha_a>`               Anodic transfer coefficient at cathode.
+
+:ref:`cathode_alpha_c <cathode_alpha_c>`             Cathodic transfer coefficient at cathode.
+
+:ref:`cathode_ocv <cathode_ocv>`                              Equilibium potential at cathode.
+
+:ref:`anode_i0 <anode_i0>`                               Exchange current density i0 at anode.
+
+:ref:`anode_alpha1 <anode_alpha1>`                                  Ce rate exponent at anode.
+
+:ref:`anode_alpha2 <anode_alpha2>`                             Cmax-cs rate exponent at anode.
+
+:ref:`anode_alpha3 <anode_alpha3>`                                  Cs rate exponent at anode.
+
+:ref:`anode_alpha_a <anode_alpha_a>`                     Anodic transfer coefficient at anode.
+
+:ref:`anode_alpha_c <anode_alpha_c>`                   Cathodic transfer coefficient at anode.
+
+:ref:`anode_ocv <anode_ocv>`                                    Equilibium potential at anode.
+
+:ref:`linearized_bv_rate <linearized_bv_rate>`                  Linearized Butler-Volmer rate.
+
+==============================================   =============================================
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`lithium_battery <lithium_battery>`       Up li-ion battery model.
+
+========================================   ============================
+

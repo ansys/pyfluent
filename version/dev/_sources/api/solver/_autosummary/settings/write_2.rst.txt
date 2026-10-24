@@ -1,0 +1,21 @@
+:orphan:
+
+.. _write_2:
+
+write
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.write_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================================
+
+Parent                                                                                            Summary
+
+==============================================   ========================================================
+:ref:`divergence_tracker <divergence_tracker>`   Stop simulation after a divergence incident is detected.
+
+==============================================   ========================================================
+

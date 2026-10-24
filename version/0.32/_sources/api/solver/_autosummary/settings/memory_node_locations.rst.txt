@@ -1,0 +1,21 @@
+:orphan:
+
+.. _memory_node_locations:
+
+memory_node_locations
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.memory_node_locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =================================
+
+Parent                                             Summary
+
+======================   =================================
+:ref:`memory <memory>`       Allocate user-defined memory.
+
+======================   =================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _type_11:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.type_11
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===================
+
+Parent                                         Summary
+
+================================   ===================
+:ref:`periodicity <periodicity>`   Periodic settings .
+
+================================   ===================
+

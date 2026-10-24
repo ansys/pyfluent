@@ -1,0 +1,23 @@
+:orphan:
+
+.. _distance_1:
+
+distance
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.distance_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================================
+
+Parent                                                                                           Summary
+
+================================================   =====================================================
+:ref:`create_14 <create_14>`                           Define a mirror plane for a non-symmetric domain.
+
+:ref:`mirror_planes_child <mirror_planes_child>`                   'child_object_type' of mirror_planes.
+
+================================================   =====================================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_UpdateRegions__UpdateRegionsCommandArguments:
+
+_UpdateRegionsCommandArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.UpdateRegions._UpdateRegionsCommandArguments
+   :members: _MeshObject, _NumberOfListedRegions, _OldRegionNameList, _OldRegionTypeList, _RegionCurrentList, _RegionCurrentTypeList, _RegionInternalTypes, _RegionInternals, _RegionNameList, _RegionTypeList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

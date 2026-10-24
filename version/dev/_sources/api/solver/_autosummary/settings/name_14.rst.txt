@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_14:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.name_14
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==================================
+
+Parent                                                                    Summary
+
+============================================   ==================================
+:ref:`list_properties_4 <list_properties_4>`   List database material properties.
+
+============================================   ==================================
+

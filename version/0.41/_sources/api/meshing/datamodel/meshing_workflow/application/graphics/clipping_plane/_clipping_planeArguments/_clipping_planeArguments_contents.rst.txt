@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_clipping_plane__clipping_planeArguments:
+
+_clipping_planeArguments
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.graphics.clipping_plane._clipping_planeArguments
+   :members: _cut_direction, _draw_cell_layer, _flip_clipping_plane, _freeze_cell_layer, _insert_clipping_plane, _plane_normal, _point_coordinates, _slider_position
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

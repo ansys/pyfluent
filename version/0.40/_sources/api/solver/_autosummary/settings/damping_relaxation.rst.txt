@@ -1,0 +1,21 @@
+:orphan:
+
+.. _damping_relaxation:
+
+damping_relaxation
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.damping_relaxation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =========================================================
+
+Parent                                                                               Summary
+
+================================   =========================================================
+:ref:`dissipation <dissipation>`       The dissipation method stabilization controls object.
+
+================================   =========================================================
+

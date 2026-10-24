@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ignition_source:
+
+ignition_source
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.ignition_source
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

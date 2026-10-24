@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_choose_mesh_control_options__choose_mesh_control_options_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.choose_mesh_control_options._choose_mesh_control_options.arguments
+   :members: creation_method, global_growth_rate, global_max, global_min, read_or_create, size_control_file_name, view_option, wrap_size_control_file_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   mesh_control_options/mesh_control_options_contents

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreateCollarMesh__CreateCollarMeshCommandArguments__BoundingBoxObject:
+
+_BoundingBoxObject
+==================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreateCollarMesh._CreateCollarMeshCommandArguments._BoundingBoxObject
+   :members: _SizeRelativeLength, _Xmax, _XmaxRatio, _Xmin, _XminRatio, _Ymax, _YmaxRatio, _Ymin, _YminRatio, _Zmax, _ZmaxRatio, _Zmin, _ZminRatio
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _print_residuals_by_zone:
+
+print_residuals_by_zone
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.print_residuals_by_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================
+
+Parent                                             Summary
+
+============================   ===========================
+:ref:`diagnosis <diagnosis>`   Diagnosis utilities object.
+
+============================   ===========================
+

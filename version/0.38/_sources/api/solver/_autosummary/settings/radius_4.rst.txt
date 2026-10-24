@@ -1,0 +1,21 @@
+:orphan:
+
+.. _radius_4:
+
+radius
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.radius_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`cylinder_def <cylinder_def>`       'cylinder_def' child.
+
+==================================   =========================
+

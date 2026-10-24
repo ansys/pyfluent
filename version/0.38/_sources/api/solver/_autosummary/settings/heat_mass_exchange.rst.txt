@@ -1,0 +1,34 @@
+:orphan:
+
+.. _heat_mass_exchange:
+
+heat_mass_exchange
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.heat_mass_exchange
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   ===============================================================================================
+
+Attribute                                                                                                                                                      Summary
+
+====================================================================   ===============================================================================================
+:ref:`coupled_heat_mass_solution <coupled_heat_mass_solution>`             Options to enable coupled calculation of heat and mass exchange for various particle types.
+
+:ref:`vaporization_limiting_factors <vaporization_limiting_factors>`       The criteria for automatically switching to the coupled solution of heat and mass transfer.
+
+====================================================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+==========================   ================
+
+Parent                                Summary
+
+==========================   ================
+:ref:`numerics <numerics>`       Main object.
+
+==========================   ================
+

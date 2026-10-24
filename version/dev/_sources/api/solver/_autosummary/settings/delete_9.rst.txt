@@ -1,0 +1,21 @@
+:orphan:
+
+.. _delete_9:
+
+delete
+======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.delete_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================================================================================================================================
+
+Parent                                                                                                                                                                    Summary
+
+==========================   ====================================================================================================================================================
+:ref:`graphics <graphics>`   Graphics (post-processing) spectral content. Defines the Fourier coefficient data used for spectral post-processing of unsteady turbomachinery flow.
+
+==========================   ====================================================================================================================================================
+

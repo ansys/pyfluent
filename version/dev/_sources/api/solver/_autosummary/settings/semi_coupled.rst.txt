@@ -1,0 +1,21 @@
+:orphan:
+
+.. _semi_coupled:
+
+semi_coupled
+============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.semi_coupled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`degradation <degradation>`   Degradation model settings.
+
+================================   ===========================
+

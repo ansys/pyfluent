@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_list_1:
+
+file_list
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_list_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ========================================
+
+Parent                                                    Summary
+
+======================   ========================================
+:ref:`reload <reload>`       Reload sensitivities from data file.
+
+======================   ========================================
+

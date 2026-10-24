@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cell_zones_8:
+
+cell_zones
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cell_zones_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`volume_2_child <volume_2_child>`       'child_object_type' of volume.
+
+======================================   ==================================
+

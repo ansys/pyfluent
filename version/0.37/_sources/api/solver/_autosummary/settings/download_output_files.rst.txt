@@ -1,0 +1,32 @@
+:orphan:
+
+.. _download_output_files:
+
+download_output_files
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.download_output_files
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =========================
+
+Argument                                                   Summary
+
+======================================   =========================
+:ref:`design_points <design_points_3>`       Design Point Name(s).
+
+======================================   =========================
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

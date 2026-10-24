@@ -1,0 +1,34 @@
+:orphan:
+
+.. _delta_eddington:
+
+delta_eddington
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.delta_eddington
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ==============================
+
+Attribute                                                                             Summary
+
+============================================================   ==============================
+:ref:`forward_scattering_factor <forward_scattering_factor>`       Forward scattering factor.
+
+:ref:`asymmetry_factor <asymmetry_factor>`                                  Asymmetry aactor.
+
+============================================================   ==============================
+
+.. rubric:: Included in:
+
+============================================================   =================================================
+
+Parent                                                                                                   Summary
+
+============================================================   =================================================
+:ref:`scattering_phase_function <scattering_phase_function>`       Material property: scattering-phase-function.
+
+============================================================   =================================================
+
