@@ -28,6 +28,7 @@ SKIP_FILES = {
     "settings_builtin_data",
     "settings_external",
     "meshing_workflow_old",
+    "rpvars",
     "workflow_old",
     "workflow",
 }
@@ -52,6 +53,7 @@ HIDDEN_MODULES = {
     "ansys.fluent.core.services.health_check": "Health check",
     "ansys.fluent.core.services.application_runtime": "Application runtime",
     "ansys.fluent.core.services.scheme_interpreter": "Scheme interpreter",
+    "ansys.fluent.core.rpvars": "RP Vars",
 }
 
 
