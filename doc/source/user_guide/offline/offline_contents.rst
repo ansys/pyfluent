@@ -9,4 +9,5 @@ Offline features
 
    case_file
    data_file
+   expression_builder
    file_session

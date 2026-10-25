@@ -39,6 +39,9 @@ from ansys.fluent.core.diagnostics.exceptions import (
 )
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.container_launcher import (
+    DockerLauncher,
+)
 from ansys.fluent.core.execution.launcher.error_handler import (
     GPUSolverSupportError,
     InvalidIpPort,
@@ -65,10 +68,20 @@ from ansys.fluent.core.execution.launcher.launcher_utils import (
     _validate_lightweight_with_journal,
     is_windows,
 )
+from ansys.fluent.core.execution.launcher.pim_launcher import (
+    PIMLauncher,
+)
 from ansys.fluent.core.execution.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
     _has_parallel_flags,
     get_fluent_exe_path,
+)
+from ansys.fluent.core.execution.launcher.slurm_launcher import (
+    SlurmFuture,
+    SlurmLauncher,
+)
+from ansys.fluent.core.execution.launcher.standalone_launcher import (
+    StandaloneLauncher,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
@@ -1152,6 +1165,128 @@ def test_idle_timeout(monkeypatch):
         StandaloneLauncher._construct_timeout_arg(200)
         == ' -command="(set-session-idle-timeout 5)"'
     )
+
+
+def test_slurm_launcher_start_timeout_defaults_to_no_timeout():
+    launcher = create_launcher(
+        LaunchMode.SLURM,
+        mode=FluentMode.SOLVER,
+        insecure_mode=True,
+    )
+    assert launcher._argvals["start_timeout"] == -1
+
+
+def test_slurm_launcher_start_timeout_respects_explicit_value():
+    launcher = create_launcher(
+        LaunchMode.SLURM,
+        mode=FluentMode.SOLVER,
+        insecure_mode=True,
+        start_timeout=45,
+    )
+    assert launcher._argvals["start_timeout"] == 45
+
+
+def test_launch_fluent_does_not_force_config_timeout_for_slurm(monkeypatch):
+    # Slurm default should be -1 (no timeout) even when parent resolves unset
+    # start_timeout to config.launch_fluent_timeout (issue #4628).
+    captured_launcher = {}
+
+    def mock_call(self):
+        captured_launcher["instance"] = self
+        # Return a stub to avoid actual Slurm job submission
+        return SlurmFuture(None, None)
+
+    monkeypatch.setattr(SlurmLauncher, "__call__", mock_call)
+    pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"}, insecure_mode=True)
+    assert captured_launcher["instance"]._argvals["start_timeout"] == -1
+
+
+# Comprehensive timeout tests for all launcher types (issue #4628)
+def test_standalone_launcher_default_start_timeout(monkeypatch):
+    """Verify StandaloneLauncher defaults to 100 seconds when start_timeout is None."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launcher = StandaloneLauncher(
+        mode=FluentMode.SOLVER,
+        dry_run=True,
+        fluent_path=fluent_path,
+    )
+    # When start_timeout is None (not provided), launcher should set it to 100
+    assert launcher.argvals["start_timeout"] == 100
+
+
+def test_standalone_launcher_respects_user_start_timeout(monkeypatch):
+    """Verify StandaloneLauncher respects user-provided start_timeout."""
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
+    fluent_path = r"\x\y\z\fluent.exe"
+    launcher = StandaloneLauncher(
+        mode=FluentMode.SOLVER,
+        dry_run=True,
+        fluent_path=fluent_path,
+        start_timeout=45,
+    )
+    # When user provides a value, it should be respected
+    assert launcher.argvals["start_timeout"] == 45
+
+
+def test_docker_launcher_default_start_timeout(monkeypatch):
+    """Verify DockerLauncher defaults to 100 seconds when start_timeout is None."""
+    launcher = DockerLauncher(
+        mode=FluentMode.SOLVER,
+        container_dict={},
+        insecure_mode=True,
+    )
+    # When start_timeout is None (not provided), launcher should set it to 100
+    assert launcher.argvals["start_timeout"] == 100
+
+
+def test_docker_launcher_respects_user_start_timeout():
+    """Verify DockerLauncher respects user-provided start_timeout."""
+    launcher = DockerLauncher(
+        mode=FluentMode.SOLVER,
+        container_dict={},
+        insecure_mode=True,
+        start_timeout=75,
+    )
+    # When user provides a value, it should be respected
+    assert launcher.argvals["start_timeout"] == 75
+
+
+def test_pim_launcher_default_start_timeout():
+    """Verify PIMLauncher defaults to 60 seconds when start_timeout is None."""
+    launcher = PIMLauncher(
+        mode=FluentMode.SOLVER,
+    )
+    # When start_timeout is None (not provided), launcher should set it to 60
+    assert launcher.argvals["start_timeout"] == 60
+
+
+def test_pim_launcher_respects_user_start_timeout():
+    """Verify PIMLauncher respects user-provided start_timeout."""
+    launcher = PIMLauncher(
+        mode=FluentMode.SOLVER,
+        start_timeout=90,
+    )
+    # When user provides a value, it should be respected
+    assert launcher.argvals["start_timeout"] == 90
+
+
+def test_launcher_timeout_defaults_via_launch_fluent(monkeypatch):
+    """Verify launch_fluent passes None to launchers, allowing each to set its own default."""
+    from ansys.fluent.core.execution.launcher.slurm_launcher import SlurmLauncher
+
+    captured_launcher = {}
+
+    # Mock SlurmLauncher.__call__ to capture the launcher instance without executing
+    def mock_call(self):
+        captured_launcher["instance"] = self
+        return SlurmFuture(None, None)
+
+    monkeypatch.setattr(SlurmLauncher, "__call__", mock_call)
+    pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"}, insecure_mode=True)
+
+    # Verify that SlurmLauncher received None and set its own default to -1
+    assert captured_launcher["instance"]._argvals["start_timeout"] == -1
 
 
 def test_standalone_launcher_cleanup_on_exit_false_preserves_file():

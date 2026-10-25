@@ -191,7 +191,7 @@ class LaunchFluentArgsNoContainer(LauncherArgsBase, TypedDict, total=False):
     """Working directory for the Fluent client."""
     fluent_path: str | None
     """User provided Fluent installation path."""
-    topy: str | list[Any] | None
+    topy: bool | str | None
     """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
     Can optionally take the file name of the new python journal file.
     """
@@ -359,7 +359,7 @@ def launch_fluent(
     gpu: bool | list[int] | None = None,
     cwd: PathType | None = None,
     fluent_path: PathType | None = None,
-    topy: str | list[Any] | None = None,
+    topy: bool | str | None = None,
     start_watchdog: bool | None = None,
     scheduler_options: SlurmSchedulerOptions | None = None,
     file_transfer_service: Any | None = None,
@@ -539,10 +539,6 @@ def launch_fluent(
             "Cannot use both 'use_docker_compose' and 'use_podman_compose' at the same time."
         )
 
-    start_timeout_val = (
-        start_timeout if start_timeout is not None else config.launch_fluent_timeout
-    )
-
     def _normalize_path(value: PathType | None) -> str | None:
         if value is None or isinstance(value, str):
             return value
@@ -584,7 +580,7 @@ def launch_fluent(
                 dimension=dimension,
                 precision=precision,
                 processor_count=processor_count,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 container_dict=container_dict,
                 dry_run=dry_run,
@@ -608,7 +604,7 @@ def launch_fluent(
                 dimension=dimension,
                 precision=precision,
                 processor_count=processor_count,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
@@ -626,7 +622,7 @@ def launch_fluent(
                 precision=precision,
                 processor_count=processor_count,
                 journal_file_names=journal_file_names,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 env=env,
                 cleanup_on_exit=cleanup_on_exit,
@@ -641,7 +637,9 @@ def launch_fluent(
                 topy=topy,
                 start_watchdog=start_watchdog,
                 scheduler_options=(
-                    dict(scheduler_options) if scheduler_options is not None else None
+                    dict(scheduler_options)
+                    if scheduler_options is not None
+                    else None if scheduler_options is not None else None
                 ),
                 file_transfer_service=file_transfer_service,
                 certificates_folder=certificates_folder,
@@ -656,7 +654,7 @@ def launch_fluent(
                 precision=precision,
                 processor_count=processor_count,
                 journal_file_names=journal_file_names,
-                start_timeout=start_timeout_val,
+                start_timeout=start_timeout,
                 additional_arguments=additional_arguments,
                 env=env,
                 cleanup_on_exit=cleanup_on_exit,
