@@ -166,7 +166,7 @@ def false_if_none(val: bool | None) -> bool:
 
 
 def _get_completer_info(
-    obj, base_class: type, prefix: str, excluded: Iterable
+    obj, base_class: type, prefix: str, excluded: Iterable[str] | None
 ) -> list[list[str]]:
     _type_name_map = {
         _InputFile: "InputFilename",

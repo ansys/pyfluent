@@ -26,7 +26,7 @@
 from collections.abc import Callable, Sequence
 import logging
 from threading import RLock
-from typing import Any
+from typing import Any, TypeAlias
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -45,6 +45,8 @@ from ansys.fluent.core.services.object_model_utilities import (
 
 ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.object_model_v1")
+# (state, deleted_paths) returned by every mutating RPC wrapper.
+_StateChanges: TypeAlias = tuple[Any, Any]
 
 
 class EventSubscription:
@@ -52,8 +54,8 @@ class EventSubscription:
 
     def __init__(
         self,
-        service,
-        path,
+        service: "ObjectModelService",
+        path: str,
         request_dict: dict[str, Any],
     ) -> None:
         """Subscribe to a datamodel event.
@@ -94,9 +96,9 @@ class EventSubscription:
 class SubscriptionList:
     """Stores subscription objects by tag."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize SubscriptionList."""
-        self._subscriptions = {}
+        self._subscriptions: dict[str, EventSubscription] = {}
         self._lock = RLock()
 
     def __contains__(self, tag: str) -> bool:
@@ -167,7 +169,7 @@ class SubscriptionList:
 class SubscribeEventError(RuntimeError):
     """Raised when server fails to subscribe from event."""
 
-    def __init__(self, request):
+    def __init__(self, request: Any) -> None:
         """Initialize SubscribeEventError."""
         super().__init__(f"Failed to subscribe event: {request}!")
 
@@ -175,7 +177,7 @@ class SubscribeEventError(RuntimeError):
 class UnsubscribeEventError(RuntimeError):
     """Raised when server fails to unsubscribe from event."""
 
-    def __init__(self, request):
+    def __init__(self, request: Any) -> None:
         """Initialize UnsubscribeEventError."""
         super().__init__(f"Failed to unsubscribe event: {request}!")
 
@@ -187,7 +189,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def __init__(
         self,
-        intercept_channel,
+        intercept_channel: Any,
         metadata: list[tuple[str, str]],
     ) -> None:
         """__init__ method of ObjectModelService class."""
@@ -195,8 +197,9 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             stub=object_model_pb2_grpc.ObjectModelStub(intercept_channel),
             metadata=metadata,
         )
-        self.subscriptions = SubscriptionList()
-        self.event_streaming = None
+        self.subscriptions: SubscriptionList = SubscriptionList()
+        # Assigned by DatamodelEvents.__init__; importing it here would be circular.
+        self.event_streaming: Any = None
 
     def _delete_command_arguments_rpc(
         self, rules: str, path: str, command: str, commandid: str
@@ -246,7 +249,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         response = self._stub.GetObjectNames(request, metadata=self._metadata)
         return response.names
 
-    def rename(self, rules: str, path: str, new_name: str) -> None:
+    def rename(self, rules: str, path: str, new_name: str) -> _StateChanges:
         """Rename an object."""
         request = object_model_pb2.RenameRequest(
             rules=rules, path=path, new_name=new_name, wait=True
@@ -256,7 +259,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def delete_child_objects(
         self, rules: str, path: str, obj_type: str, child_names: list[str]
-    ) -> None:
+    ) -> _StateChanges:
         """Delete child objects."""
         request = object_model_pb2.DeleteChildObjectsRequest(
             rules=rules, path=path + "/" + obj_type, wait=True
@@ -265,7 +268,9 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         response = self._stub.DeleteChildObjects(request, metadata=self._metadata)
         return response.state, response.deleted_paths
 
-    def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
+    def delete_all_child_objects(
+        self, rules: str, path: str, obj_type: str
+    ) -> _StateChanges:
         """Delete all child objects."""
         request = object_model_pb2.DeleteChildObjectsRequest(
             rules=rules, path=path + "/" + obj_type, delete_all=True, wait=True
@@ -273,14 +278,14 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         response = self._stub.DeleteChildObjects(request, metadata=self._metadata)
         return response.state, response.deleted_paths
 
-    def set_state(self, rules: str, path: str, state: ValueT) -> None:
+    def set_state(self, rules: str, path: str, state: ValueT) -> _StateChanges:
         """Set state."""
         request = object_model_pb2.SetStateRequest(rules=rules, path=path, wait=True)
         _convert_value_to_variant(state, request.state)
         response = self._stub.SetState(request, metadata=self._metadata)
         return response.state, response.deleted_paths
 
-    def fix_state(self, rules, path) -> None:
+    def fix_state(self, rules: str, path: list[tuple[str, str]]) -> _StateChanges:
         """Fix state."""
         request = object_model_pb2.FixStateRequest(
             rules=rules,
@@ -294,8 +299,8 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         rules: str,
         path: str,
         dict_state: dict[str, ValueT],
-        recursive=False,
-    ) -> None:
+        recursive: bool = False,
+    ) -> _StateChanges:
         """Update the dict."""
         request = object_model_pb2.UpdateDictRequest(
             rules=rules, path=path, wait=True, recursive=recursive
@@ -304,7 +309,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         response = self._stub.UpdateDict(request, metadata=self._metadata)
         return response.state, response.deleted_paths
 
-    def create_object(self, rules: str, path: str, name: str) -> None:
+    def create_object(self, rules: str, path: str, name: str) -> _StateChanges:
         """Create a named object."""
         request = object_model_pb2.CreateObjectRequest(
             rules=rules, path=path, name=name, wait=True
@@ -312,7 +317,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         response = self._stub.CreateObject(request, metadata=self._metadata)
         return response.state, response.deleted_paths
 
-    def delete_object(self, rules: str, path: str) -> None:
+    def delete_object(self, rules: str, path: str) -> _StateChanges:
         """Delete an object."""
         request = object_model_pb2.DeleteObjectRequest(
             rules=rules, path=path, wait=True
@@ -322,7 +327,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
 
     def execute_command(
         self, rules: str, path: str, command: str, args: dict[str, ValueT]
-    ) -> ValueT:
+    ) -> tuple[ValueT, Any, Any]:
         """Execute the command."""
         request = object_model_pb2.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
@@ -494,7 +499,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
         rules: str,
         path: str,
         command: str,
-        obj,
+        obj: Any,
         cb: Callable[[str, ValueT], None],
     ) -> EventSubscription:
         """Add on command executed."""
@@ -599,7 +604,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             stream_begin_method=stream_begin_method,
         )
 
-    def parse_streaming_response(self, response):
+    def parse_streaming_response(self, response: Any) -> _StateChanges:
         """Parse v1 streaming response into canonical (state, deleted_paths) form."""
         return response.state, response.deleted_paths
 
@@ -623,7 +628,7 @@ class ObjectModelService(  # pyright: ignore[reportUnsafeMultipleInheritance]
             stream_begin_method=self._event_stream_begin_method,
         )
 
-    def parse_event_response(self, response):
+    def parse_event_response(self, response: Any) -> tuple[str | None, tuple[Any, ...]]:
         """Parse a v1 event streaming response into (event_type, cb_args) form."""
         if response.HasField("created_event_response"):
             return "created", (

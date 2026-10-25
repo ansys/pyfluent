@@ -45,15 +45,9 @@ Class hierarchy
 from collections.abc import Callable, Iterable, Iterator, Sequence
 import functools
 import logging
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, NoReturn, TypeAlias, TypeVar
 
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
-
-if TYPE_CHECKING:
-    from ansys.fluent.core._grpc_services.object_model_service import (
-        EventSubscription,
-    )
-from ansys.fluent.core._type_aliases import SubscriptionId
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services.abstract_object_model import AbstractObjectModel
 from ansys.fluent.core.services.object_model_utilities import (
@@ -72,17 +66,30 @@ from ansys.fluent.core.services.object_model_utilities import (
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+if TYPE_CHECKING:
+    from ansys.fluent.core._grpc_services.object_model_service import (
+        EventSubscription as _EventSubscriptionV1,
+    )
+    from ansys.fluent.core._grpc_services.object_model_service_v0 import (
+        EventSubscription as _EventSubscriptionV0,
+    )
+    from ansys.fluent.core.connectivity.file_transfer_service import (
+        FileTransferStrategy,
+    )
+
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
 ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 Path = list[tuple[str, str]]
+# Return type of datamodel event-subscription callbacks (v0 or v1 gRPC backend).
+_EventSubscription: TypeAlias = "_EventSubscriptionV1 | _EventSubscriptionV0"
 logger: logging.Logger = logging.getLogger("pyfluent.object_model")
 
 
 class _FilterDatamodelNames:
-    def __init__(self, service: Any) -> None:
+    def __init__(self, service) -> None:
         self._filter_fn = getattr(service, "is_in_datamodel", None)
 
-    def __call__(self, parent: Any, names: list[str]) -> list[str]:
+    def __call__(self, parent, names: list[str]) -> list[str]:
         if self._filter_fn is None:
             return names
 
@@ -108,7 +115,7 @@ class ObjectModelBase:
     ) -> None:
         self._service = service
         self._cache = DataModelCache() if config.datamodel_use_state_cache else None
-        self.file_transfer_service = None
+        self.file_transfer_service: FileTransferStrategy | None = None
         self._version = FluentVersion(
             ".".join(
                 scheme_interpreter_service.string_eval("(cx-version)")
@@ -291,25 +298,31 @@ class ObjectModelBase:
 
     def add_on_child_created(
         self, rules: str, path: str, child_type: str, cb: Callable[[str], None]
-    ):
+    ) -> _EventSubscription:
         """Add on child created."""
         return self._service.add_on_child_created(rules, path, child_type, cb)
 
-    def add_on_deleted(self, rules: str, path: str, cb: Callable[[], None]):
+    def add_on_deleted(
+        self, rules: str, path: str, cb: Callable[[], None]
+    ) -> _EventSubscription:
         """Add on deleted."""
         return self._service.add_on_deleted(rules, path, cb)
 
-    def add_on_changed(self, rules: str, path: str, cb: Callable[[ValueT], None]):
+    def add_on_changed(
+        self, rules: str, path: str, cb: Callable[[ValueT], None]
+    ) -> _EventSubscription:
         """Add on changed."""
         return self._service.add_on_changed(rules, path, cb)
 
-    def add_on_affected(self, rules: str, path: str, cb: Callable[[], None]):
+    def add_on_affected(
+        self, rules: str, path: str, cb: Callable[[], None]
+    ) -> _EventSubscription:
         """Add on affected."""
         return self._service.add_on_affected(rules, path, cb)
 
     def add_on_affected_at_type_path(
         self, rules: str, path: str, child_type: str, cb: Callable[[], None]
-    ):
+    ) -> _EventSubscription:
         """Add on affected at type path."""
         return self._service.add_on_affected_at_type_path(rules, path, child_type, cb)
 
@@ -318,21 +331,21 @@ class ObjectModelBase:
         rules: str,
         path: str,
         command: str,
-        obj,
+        obj: Any,
         cb: Callable[[str, ValueT], None],
-    ):
+    ) -> _EventSubscription:
         """Add on command executed."""
         return self._service.add_on_command_executed_old(rules, path, command, obj, cb)
 
     def add_on_command_executed(
         self, rules: str, path: str, cb: Callable[[str, ValueT], None]
-    ):
+    ) -> _EventSubscription:
         """Add on command executed."""
         return self._service.add_on_command_executed(rules, path, cb)
 
     def add_on_attribute_changed(
         self, rules: str, path: str, attribute: str, cb: Callable[[ValueT], None]
-    ):
+    ) -> _EventSubscription:
         """Add on attribute changed."""
         return self._service.add_on_attribute_changed(rules, path, attribute, cb)
 
@@ -343,7 +356,7 @@ class ObjectModelBase:
         command: str,
         attribute: str,
         cb: Callable[[ValueT], None],
-    ):
+    ) -> _EventSubscription:
         """Add on command attribute changed."""
         return self._service.add_on_command_attribute_changed(
             rules, path, command, attribute, cb
@@ -485,7 +498,7 @@ class PyStateContainer(PyCallableStateObject):
     setState = set_state
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable | None = None
+        self, prefix: str = "", excluded: Iterable[str] | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -555,7 +568,9 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    def add_on_attribute_changed(self, attribute: str, cb: Callable[[ValueT], None]):
+    def add_on_attribute_changed(
+        self, attribute: str, cb: Callable[[ValueT], None]
+    ) -> _EventSubscription:
         """Register a callback for when an attribute is changed.
 
         Parameters
@@ -576,7 +591,7 @@ class PyStateContainer(PyCallableStateObject):
 
     def add_on_command_attribute_changed(
         self, command: str, attribute: str, cb: Callable[[ValueT], None]
-    ):
+    ) -> _EventSubscription:
         """Register a callback for when an attribute is changed.
 
         Parameters
@@ -701,7 +716,9 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), command
         )
 
-    def add_on_child_created(self, child_type: str, cb: Callable[[PyMenuT], None]):
+    def add_on_child_created(
+        self, child_type: str, cb: Callable[[PyMenuT], None]
+    ) -> _EventSubscription:
         """Register a callback for when a child object is created.
 
         Parameters
@@ -727,7 +744,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), child_type, cb_service
         )
 
-    def add_on_deleted(self, cb: Callable[[], None]):
+    def add_on_deleted(self, cb: Callable[[], None]) -> _EventSubscription:
         """Register a callback for when the object is deleted.
 
         Parameters
@@ -744,7 +761,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), cb
         )
 
-    def add_on_changed(self, cb: Callable[[PyMenuT], None]):
+    def add_on_changed(self, cb: Callable[[PyMenuT], None]) -> _EventSubscription:
         """Register a callback for when the object is modified.
 
         Parameters
@@ -765,7 +782,7 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), cb_service
         )
 
-    def add_on_affected(self, cb: Callable[[PyMenuT], None]):
+    def add_on_affected(self, cb: Callable[[PyMenuT], None]) -> _EventSubscription:
         """Register a callback for when the object is affected.
 
         Parameters
@@ -788,7 +805,7 @@ class PyMenu(PyStateContainer):
 
     def add_on_affected_at_type_path(
         self, child_type: str, cb: Callable[[PyMenuT], None]
-    ):
+    ) -> _EventSubscription:
         """Register a callback for when the object is affected at child type.
 
         Parameters
@@ -813,7 +830,7 @@ class PyMenu(PyStateContainer):
 
     def add_on_command_executed_old(
         self, command: str, cb: Callable[[PyMenuT, str, ValueT], None]
-    ):
+    ) -> _EventSubscription:
         """Register a callback for when a command is executed.
 
         Parameters
@@ -836,7 +853,9 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), command, self, cb_service
         )
 
-    def add_on_command_executed(self, cb: Callable[[PyMenuT, str, ValueT], None]):
+    def add_on_command_executed(
+        self, cb: Callable[[PyMenuT, str, ValueT], None]
+    ) -> _EventSubscription:
         """Register a callback for when a command is executed.
 
         Parameters
@@ -887,7 +906,7 @@ class PyNamedObject(PyMenu):
         except AttributeError:
             raise InvalidNamedObject(self.__class__.__name__)
 
-    def _raise_method_not_yet_implemented_exception(self) -> None:
+    def _raise_method_not_yet_implemented_exception(self) -> NoReturn:
         raise AttributeError("This method is yet to be implemented in pyfluent.")
 
     def delete_child(self) -> None:
@@ -915,7 +934,7 @@ class PyParameter(PyStateContainer):
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
-    def add_on_changed(self, cb: Callable[[PyMenuT], None]):
+    def add_on_changed(self, cb: Callable[[PyMenuT], None]) -> _EventSubscription:
         """Register a callback for when the object is modified.
 
         Parameters
@@ -1031,7 +1050,7 @@ class PyNamedObjectContainer:
         self.service = service
         self.rules = rules
         if path is None:
-            self.path = []
+            self.path: Path = []
         else:
             self.path = path
 
@@ -1044,7 +1063,7 @@ class PyNamedObjectContainer:
     getChildObjectDisplayNames = get_object_names
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable | None = None
+        self, prefix: str = "", excluded: Iterable[str] | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -1179,7 +1198,7 @@ class PyNamedObjectContainer:
         self._del_item(key)
 
     @staticmethod
-    def _get_type_and_name(type_and_name: str) -> tuple[str, str]:
+    def _get_type_and_name(type_and_name: str) -> list[str]:
         return type_and_name.split(":", maxsplit=1)
 
     def _compare_type(self, obj_type: str) -> bool:
@@ -1198,7 +1217,10 @@ class PyNamedObjectContainer:
 
         return dict(sorted(returned_state.items()))
 
-    getState = __call__ = get_state
+    getState = get_state
+
+    def __call__(self) -> dict[str, ValueT]:
+        return self.get_state()
 
 
 class PyAction:
@@ -1217,7 +1239,7 @@ class PyAction:
         self.service = service
         self.rules = rules
         setattr(self, self._operation, name)
-        self.path = path or []
+        self.path: Path = path or []
 
     def __call__(self, *args: ValueT, **kwds: ValueT) -> ValueT:
         """Execute the operation (command or query)."""
@@ -1237,7 +1259,7 @@ class PyAction:
             getattr(self, self._operation),
         )
 
-    def _get_create_instance_args(self) -> dict[str, Any]:
+    def _get_create_instance_args(self) -> list[Any] | None:
         """Prepare arguments for PyArguments constructor."""
         try:
             id = self._create_arguments()
@@ -1267,7 +1289,7 @@ class PyAction:
             return PyArguments(*args)
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable | None = None
+        self, prefix: str = "", excluded: Iterable[str] | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -1301,7 +1323,7 @@ class PyCommand(PyAction):
     ) -> None:
         """__init__ method of PyCommand class."""
         super().__init__(service, rules, command, path)
-        self.file_behavior = None
+        self.file_behavior: Any = None
 
     def _update_file_behavior(self, file_purpose: str | None) -> None:
         purpose_to_class = {
@@ -1320,7 +1342,7 @@ class PyCommand(PyAction):
                     "File purpose", file_purpose, ["input", "output", "inout"]
                 )
 
-    def _get_file_purpose(self, arg: str) -> str | None:
+    def _get_file_purpose(self, arg: str) -> ValueT:
         try:
             cmd_instance = self.create_instance()
             arg_instance = getattr(cmd_instance, arg)
@@ -1583,20 +1605,20 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
     'service.get_specs'
     """
 
-    attrs = ("service", "rules", "path")
+    attrs: tuple[str, ...] = ("service", "rules", "path")
 
     def _get_child(self, name: str) -> "PySimpleMenuGeneric":
         child_path = self.path + [(name, "")]
         return PySimpleMenuGeneric(self.service, self.rules, child_path)
 
-    def __getattr__(self, name: str) -> "PySimpleMenuGeneric":
+    def __getattr__(self, name: str) -> Any:
         if name in PySimpleMenuGeneric.attrs:
             return super().__getattr__(name)
         else:
             return self._get_child(name)
 
 
-arg_class_by_type = {
+arg_class_by_type: dict[str, type[PyArgumentsSubItem]] = {
     **dict.fromkeys(["String", "ListString", "String List"], PyArgumentsTextualSubItem),
     **dict.fromkeys(
         ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt", "Integer List"],

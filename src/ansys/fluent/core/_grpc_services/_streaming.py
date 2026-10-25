@@ -24,6 +24,8 @@
 """Wrapper over the streaming gRPC services of Fluent."""
 
 from collections.abc import Generator
+import threading
+from typing import Any
 
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
@@ -39,14 +41,21 @@ class _StreamingServiceHelper:
         End streaming
     """
 
-    def __init__(self, stub, metadata: list[tuple[str, str]], stream_begin_method):
+    def __init__(
+        self,
+        stub: Any,
+        metadata: list[tuple[str, str]],
+        stream_begin_method: str,
+    ) -> None:
         """__init__ method of StreamingService class."""
         self._stub = stub
         self._metadata = metadata
         self._stream_begin_method = stream_begin_method
-        self._streams = None
+        self._streams: Any = None
 
-    def begin_streaming(self, request, started_evt) -> Generator:
+    def begin_streaming(
+        self, request: Any, started_evt: threading.Event
+    ) -> Generator[Any, None, None]:
         """Begin streaming from Fluent."""
         self._streams = getattr(self._stub, self._stream_begin_method)(
             request, metadata=self._metadata
@@ -75,15 +84,19 @@ class StreamingService(ServiceProtocol):
         End streaming
     """
 
-    def __init__(self, stub, metadata: list[tuple[str, str]]):
+    def __init__(self, stub: Any, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of StreamingService class."""
         self._stub = stub
         self._metadata = metadata
-        self._streamHelper = {}
+        self._streamHelper: dict[str, _StreamingServiceHelper] = {}
 
     def begin_streaming(
-        self, request, started_evt, id, stream_begin_method
-    ) -> Generator:
+        self,
+        request: Any,
+        started_evt: threading.Event,
+        id: str,
+        stream_begin_method: str,
+    ) -> Generator[Any, None, None] | None:
         """Begin streaming from Fluent."""
         if id in self._streamHelper:
             return
@@ -94,7 +107,7 @@ class StreamingService(ServiceProtocol):
             request, started_evt
         )
 
-    def end_streaming(self, id, stream_begin_method) -> None:
+    def end_streaming(self, id: str, stream_begin_method: str) -> None:
         """End streaming from Fluent."""
         self._streamHelper[id + stream_begin_method].end_streaming()
         del self._streamHelper[id + stream_begin_method]

@@ -38,7 +38,7 @@ import logging
 
 from ansys.fluent.core import using  # noqa: F401
 
-logger = logging.getLogger("pyfluent.general")
+logger: logging.Logger = logging.getLogger("pyfluent.general")
 
 try:
     from ansys.fluent.core.generated.solver.settings_builtin import (

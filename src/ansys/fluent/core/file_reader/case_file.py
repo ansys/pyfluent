@@ -38,6 +38,8 @@ Example
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
 """
 
+from __future__ import annotations
+
 import codecs
 from collections.abc import Callable
 from enum import Enum

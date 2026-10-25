@@ -26,6 +26,7 @@
 from abc import ABC, abstractmethod
 import logging
 from threading import RLock
+from typing import Any
 
 logger = logging.getLogger("pyfluent.datamodel")
 
@@ -33,7 +34,7 @@ logger = logging.getLogger("pyfluent.datamodel")
 class CommandArgumentsCleanupMixin(ABC):
     """Shared command-argument lifecycle cleanup for datamodel services."""
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._command_arguments: set[tuple[str, str, str, str]] = set()
         self._command_arguments_lock = RLock()
