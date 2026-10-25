@@ -402,18 +402,14 @@ keras.backend.clear_session()
 np.random.seed(42)
 tf.random.set_seed(42)
 
-ModelType: TypeAlias = keras.models.Model[
-    npt.NDArray[np.float64], npt.NDArray[np.float64]
-]
+ModelType: TypeAlias = keras.Model
 model = cast(
     ModelType,
-    keras.models.Sequential(
+    keras.Sequential(
         [
+            keras.Input(shape=X_train.shape[1:]),
             keras.layers.Dense(
-                20,
-                activation="relu",
-                input_shape=X_train.shape[1:],
-                kernel_initializer="lecun_normal",
+                20, activation="relu", kernel_initializer="lecun_normal"
             ),
             keras.layers.BatchNormalization(),
             keras.layers.Dense(
@@ -429,11 +425,11 @@ model = cast(
     ),
 )
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
+optimizer = keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
 
 model.compile(loss="mean_squared_error", optimizer=optimizer)
 checkpoint_cb = keras.callbacks.ModelCheckpoint(
-    "my_keras_model.h5", save_best_only=True
+    "my_keras_model.keras", save_best_only=True
 )
 early_stopping_cb = keras.callbacks.EarlyStopping(
     patience=30, restore_best_weights=True
@@ -450,7 +446,7 @@ history = model.fit(
     validation_split=0.2,
     callbacks=[checkpoint_cb, early_stopping_cb],
 )
-model = cast(ModelType, keras.models.load_model("my_keras_model.h5"))
+model = cast(ModelType, keras.models.load_model("my_keras_model.keras"))
 
 print(history.params)
 
