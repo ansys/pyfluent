@@ -1533,7 +1533,9 @@ class WildcardPath(Group):
         except KeyError as ex:
             raise AttributeError(
                 allowed_name_error_message(
-                    context=self._state_cls._python_name,
+                    # class attr, so fall back like the python_name property does
+                    context=getattr(self._state_cls, "_python_name", None)
+                    or self._state_cls.__name__,
                     trial_name=name,
                     allowed_values=self.get_active_child_names(),
                 )

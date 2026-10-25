@@ -28,6 +28,8 @@ import os
 from typing import TYPE_CHECKING, TypeVar
 import warnings
 
+import grpc
+
 if TYPE_CHECKING:
     from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
     from ansys.fluent.core.meshing.session.meshing import Meshing
