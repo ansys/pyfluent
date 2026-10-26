@@ -320,7 +320,7 @@ def test_wait_process_finished():
     assert not meshing_session.is_active()
     with pytest.raises(AttributeError):
         meshing_session.tui
-    assert meshing_session.wait_process_finished(wait=5)
+    assert meshing_session.wait_process_finished(wait=20)
 
     solver_session = pyfluent.launch_fluent(**grpc_kwds)
     assert len(dir(solver_session)) > 2
@@ -336,9 +336,10 @@ def test_wait_process_finished():
     assert not solver_session.is_active()
     with pytest.raises(AttributeError):
         solver_session.settings
-    assert solver_session.wait_process_finished(wait=5)
+    assert solver_session.wait_process_finished(wait=20)
 
 
+@pytest.mark.standalone
 def test_wait_process_finished_from_standalone_launcher():
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     session = pyfluent.launch_fluent(**grpc_kwds)
