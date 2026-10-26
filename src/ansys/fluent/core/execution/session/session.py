@@ -465,7 +465,7 @@ class BaseSession:
         WaitTypeError
             If ``wait`` is specified improperly.
         """
-        return self._fluent_connection_backup.wait_process_finished()
+        return self._fluent_connection_backup.wait_process_finished(wait=wait)
 
     def exit(self, **kwargs) -> None:
         """Exit session.
