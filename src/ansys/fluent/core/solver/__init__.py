@@ -21,16 +21,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Solver settings and context-management APIs for PyFluent.
+"""High-level access to the solver.
 
-This package exposes generated solver settings objects and the :func:`using`
-context manager. Solver session classes are defined in modules under
-:mod:`ansys.fluent.core.solver.session`: ``Solver`` directly inherits from
-:class:`~ansys.fluent.core.execution.session.session.BaseSession`, and the
-``SolverAero``, ``SolverIcing``, ``SolverLite``, and ``PrePost`` variants
-inherit from ``Solver``. The session classes are re-exported through
-:mod:`ansys.fluent.core.execution.session` and the top-level
-``ansys.fluent.core`` API.
+- Access to the solver is via session objects. See
+  :ref:`session <ref_ansys_fluent_core_solver_session>`.
+- A session object consists of individual attributes, each providing access to a
+  specific service or aspect of solver functionality.
+- A key session attribute is the solver settings object, which is the root of
+  the whole solver settings hierarchy: an API that allows configuration and
+  execution of the solver. See :ref:`settings root <ref_root>`.
+
+This package exposes high-level solver classes, which provide access to parts of
+the settings tree without the caller needing to specify the API path. They are
+listed below.
 """
 
 from importlib import import_module
