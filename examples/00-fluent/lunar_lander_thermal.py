@@ -67,8 +67,6 @@ reference [2_]. Validation data for the regolith temperatures are taken from
 measurements conducted by the Apollo 17 mission to the Moon [3_].
 """
 
-# sphinx_gallery_thumbnail_path = '_static/lunar_lander_thermal_thumbnail.png'
-
 ###############################################################################
 # .. image:: ../../_static/lunar_lander_thermal_setup.png
 #   :align: center
@@ -94,6 +92,7 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 
 # flake8: noqa: E402
 
+# sphinx_gallery_thumbnail_path = '_static/lunar_lander_thermal_thumbnail.png'
 from itertools import chain
 import os
 

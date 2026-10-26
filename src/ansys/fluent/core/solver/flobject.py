@@ -918,7 +918,7 @@ class Textual(Property):
             Either str, VariableDescriptor, or -- at whitelisted paths
             (see :data:`EXPRESSION_DEFINITION_PATHS`) -- any object
             implementing ``__fluent_expr__() -> str`` (e.g. an
-            :class:`~ansys.fluent.core.expressions.Expr` produced by the
+            :class:`~ansys.fluent.core.offline.expressions.Expr` produced by the
             expression builder).
         kwargs : StateType
             Keyword arguments.

@@ -15,7 +15,7 @@ Verifies -- without a live Fluent session -- that:
 
 import pytest
 
-from ansys.fluent.core.expressions import ExpressionBuilder
+from ansys.fluent.core.offline.expressions import ExpressionBuilder
 from ansys.fluent.core.solver.flobject import (
     EXPRESSION_DEFINITION_PATHS,
     Textual,
