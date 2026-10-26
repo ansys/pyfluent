@@ -12,6 +12,7 @@ v271/commonfiles/images/splash.bmp
 v271/commonfiles/help/en-us/fluent_gui_help/
 v271/commonfiles/CPython/3_13/linx64/Release
 v271/commonfiles/fluids
+v271/commonfiles/ensight_components
 v271/tp/IntelCompiler/2025.3.2/linx64/lib/libifcoremt.so.5
 v271/tp/IntelCompiler/2025.3.2/linx64/lib/libifcoremt.so
 v271/tp/IntelCompiler/2025.3.2/linx64/lib/libifcore.so
