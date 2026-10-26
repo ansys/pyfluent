@@ -337,3 +337,18 @@ def test_wait_process_finished():
     with pytest.raises(AttributeError):
         solver_session.settings
     assert solver_session.wait_process_finished(wait=5)
+
+
+def test_wait_process_finished_from_standalone_launcher():
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    session = pyfluent.launch_fluent(**grpc_kwds)
+    assert session.is_active()
+    session.exit()
+    assert session.wait_process_finished(wait=120)
+    assert not session.is_active()
+
+    session_1 = pyfluent.Solver.from_install(**grpc_kwds)
+    assert session_1.is_active()
+    session_1.exit()
+    assert session_1.wait_process_finished(wait=120)
+    assert not session_1.is_active()
