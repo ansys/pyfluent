@@ -188,7 +188,7 @@ def _write_api_index():
             "Some key APIs are mentioned below:\n\n"
             "Meshing mode\n"
             "------------\n\n"
-            "The :ref:`meshing workflow <ref_meshing_datamodel_meshing_workflow>` and "
+            "The :ref:`meshing workflow <ref_ansys_fluent_core_meshing_meshing_workflow>` and "
             ":ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` "
             "provide the primary interface for creating, editing, managing, and "
             "querying mesh data.\n\n"
