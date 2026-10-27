@@ -205,6 +205,15 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
 
     steps:
+      - &reset-stale-self-hosted-workspace
+        name: Reset stale self-hosted workspace
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          sudo rm -rf "$GITHUB_WORKSPACE"
+          mkdir -p "$GITHUB_WORKSPACE"
+          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE"
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -331,6 +340,8 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
 
     steps:
+      - *reset-stale-self-hosted-workspace
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -702,6 +713,8 @@ jobs:
       PYTEST_XDIST_AUTO_NUM_WORKERS: 1
 
     steps:
+      - *reset-stale-self-hosted-workspace
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -762,8 +775,8 @@ jobs:
     needs: [test, test-import]
     runs-on: ubuntu-latest
     permissions:
-      id-token: write       # required for trusted publishing
-      contents: write       # required for GitHub release upload
+      id-token: write # required for trusted publishing
+      contents: write # required for GitHub release upload
 
     steps:
       - name: Set up Python
@@ -788,9 +801,9 @@ jobs:
 
       - name: Upload to Private PyPi
         run: |
-          pip install 'twine>=7.0.0' 'packaging>=26.1'
-          python -m twine upload --skip-existing ./**/*.whl
-          python -m twine upload --skip-existing ./**/*.tar.gz
+          pip install 'twine==7.0.0' 'packaging==26.3'
+          python -m twine upload ./**/*.whl
+          python -m twine upload ./**/*.tar.gz
         env:
           TWINE_USERNAME: PAT
           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}

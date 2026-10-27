@@ -11,7 +11,7 @@ Fluent connection.
 
 import pytest
 
-from ansys.fluent.core.expressions import ExpressionBuilder
+from ansys.fluent.core.offline.expressions import ExpressionBuilder
 from ansys.units import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
@@ -85,7 +85,7 @@ class _FakeFieldDataNaming:
     """Maps field-data hyphen-cased names → VariableDescriptors.
 
     Mirrors the interface of the real ``_naming_strategy_instance`` used by
-    :func:`~ansys.fluent.core.expressions._discovery._field_data_naming`.
+    :func:`~ansys.fluent.core.offline.expressions._discovery._field_data_naming`.
     Only the names present in the fake ``_FakeFieldInfo`` are registered;
     everything else (e.g. ``"wall-y-plus"``) is intentionally absent so that
     the active-field filter correctly excludes those descriptors.
@@ -120,7 +120,7 @@ def session(monkeypatch):
         vectors=["velocity"],
     )
     monkeypatch.setattr(
-        "ansys.fluent.core.expressions._discovery._field_data_naming",
+        "ansys.fluent.core.offline.expressions._discovery._field_data_naming",
         lambda: _FakeFieldDataNaming(),
     )
     return _FakeSession(settings, field_info)

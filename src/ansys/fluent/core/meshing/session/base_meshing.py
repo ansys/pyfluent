@@ -57,6 +57,8 @@ from ansys.fluent.core.utils.fluent_version import (
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from ansys.fluent.core import meshing as _meshing_workflow_type
     from ansys.fluent.core.generated.v261.meshing.meshing import Root as meshing_root
     from ansys.fluent.core.generated.v261.meshing.meshing_utilities import (
@@ -78,6 +80,7 @@ if TYPE_CHECKING:
     from ansys.fluent.core.generated.v261.object_model.workflow import (
         Root as workflow_root,
     )
+    from ansys.fluent.core.solver.session.solver import Solver
 
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
@@ -648,7 +651,7 @@ class BaseMeshing(BaseSession):
 
     def transfer_mesh_to_solvers(
         self,
-        solvers,
+        solvers: "Iterable[Solver]",
         file_type: str = "case",
         file_name_stem: str | None = None,
         num_files_to_try: int = 1,
@@ -659,18 +662,19 @@ class BaseMeshing(BaseSession):
 
         Parameters
         ----------
-        solvers : iterable
-            Sequence of solver instances.
+        solvers : Iterable[Solver]
+            Sequence of solver instances to transfer the case or mesh to.
         file_type : str, optional
             ``"case"`` or ``"mesh"``.  Default is ``"case"``.
         file_name_stem : str, optional
-            Stem for the generated file name.
+            Stem for the generated file name. If not specified (``None``),
+            a default stem (``"temp_case_file"``) is used.
         num_files_to_try : int, optional
-            Number of candidate file names to try.  Default is ``1``.
+            Number of files to try to write, each with a different generated name. Default is ``1``.
         clean_up_mesh_file : bool, optional
-            Remove the mesh file after transfer.  Default is ``True``.
+            Whether to remove the file at the end. Defaults to ``True``.
         overwrite_previous : bool, optional
-            Overwrite an existing file with the same name.  Default is ``True``.
+            Whether to overwrite the file if it already exists. Defaults to ``True``.
         """
         transfer_case(
             self,
