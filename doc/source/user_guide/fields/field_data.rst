@@ -260,31 +260,53 @@ and ``surface_ids``. It returns the set of accessible object names or IDs.
   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
+Allowed variables
+~~~~~~~~~~~~~~~~~~
+The ``allowed_variables()`` method is provided on ``scalar_fields`` and
+``vector_fields``. It returns the allowed field names as ``VariableDescriptor``
+objects rather than strings. Fields that do not have a corresponding
+``VariableDescriptor`` are excluded, and a warning is issued listing them.
+
+.. code-block:: python
+
+  >>> field_data.vector_fields.allowed_values()
+  ['velocity', 'relative-velocity']
+  >>> field_data.vector_fields.allowed_variables()
+  UserWarning: The following variables are available but do not have corresponding descriptors: relative-velocity
+  [VectorVariableDescriptor(dimension={'LENGTH': 1.0, 'TIME': -1.0}, name='velocity')]
+
+
 Active status
 ~~~~~~~~~~~~~
 
 The ``is_active()`` method checks whether a particular variable is available.
+Variables are strongly typed by tensor kind, so passing a scalar variable to
+``vector_fields`` (or a vector variable to ``scalar_fields``) raises a
+``TypeError``.
 
 .. code-block:: python
 
   >>> from ansys.units import VariableCatalog
   >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY)
   True
-  >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
-  False
   >>> field_data.scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
   True
+  >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+  TypeError: field_name must be a `VectorVariableDescriptor`.
 
 
 Value ranges
 ~~~~~~~~~~~~
 
 The ``range()`` method returns the numeric range of values for a given variable.
+The field can be provided as a string or as a scalar ``VariableDescriptor``.
 
 .. code-block:: python
 
   >>> field_data.scalar_fields.range("cell-weight")
-  [8.0, 24.0]
+  [6.0, 26.0]
+  >>> field_data.scalar_fields.range(VariableCatalog.mesh.CELL_WEIGHT)
+  [6.0, 26.0]
 
 
 Field data streaming
