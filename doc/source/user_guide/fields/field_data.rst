@@ -262,9 +262,9 @@ and ``surface_ids``. It returns the set of accessible object names or IDs.
 
 Allowed variables
 ~~~~~~~~~~~~~~~~~~
-The ``allowed_variables()`` method is provided on ``scalar_fields`` and
-``vector_fields``. It returns the allowed field names as ``VariableDescriptor``
-objects rather than strings. Fields that do not have a corresponding
+The ``allowed_variables()`` method is provided on the ``scalar_fields`` and
+``vector_fields`` objects of field data. It returns the allowed fields as ``VariableDescriptor``
+objects rather than as name strings. Fields that do not have a corresponding
 ``VariableDescriptor`` are excluded, and a warning is issued listing them.
 
 .. code-block:: python
