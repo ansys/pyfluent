@@ -58,6 +58,13 @@ ALLOWED_EXEMPT_CLASSES = {
     "ansys.fluent.core.fields.field_data.abstract_field_data.BaseFieldDataSource",
     "ansys.fluent.core.fields.field_data.abstract_field_data.FieldBatch",
     "ansys.fluent.core.fields.field_data.abstract_field_data.AbstractFieldData",
+    "ansys.fluent.core.services.abstract_settings.AbstractSettings",
+    "ansys.fluent.core.services.settings.BaseSettings",
+    "ansys.fluent.core.connectivity.fluent_connection.FluentConnection",
+    "ansys.fluent.core.execution.session.session.BaseSession",
+    "ansys.fluent.core.meshing.session.base_meshing.BaseMeshing",
+    "ansys.fluent.core.solver.session.solver_aero.SolverAero",
+    "ansys.fluent.core.solver.session.solver_icing.SolverIcing",
 }
 
 # Functions intentionally excluded because their hints name classes that cannot be
@@ -69,7 +76,12 @@ ALLOWED_EXEMPT_FUNCTIONS = {
     "ansys.fluent.core.execution.launcher.launch_options._get_argvals_and_session",
     "ansys.fluent.core.execution.launcher.launch_options._get_running_session_mode",
     "ansys.fluent.core.solver.session.solver._set_state_safe",
+    "ansys.fluent.core.solver.flobject.get_root",
+    "ansys.fluent.core.solver.settings_builtin_bases._get_settings_obj",
 }
+
+# Functions that accept wrong types. Must stay empty unless a case is justified here.
+ALLOWED_NOT_ENFORCED: set[str] = set()
 
 _WORKER = r"""
 import importlib, inspect, json, pkgutil, sys, typing, warnings
@@ -201,7 +213,12 @@ for mod in modules:
             else:
                 kwargs[p.name] = WRONG
         try:
-            layer(*args, **kwargs)
+            result = layer(*args, **kwargs)
+            # Generator functions (incl. @contextmanager) are only checked once started.
+            if inspect.isgenerator(result):
+                next(result)
+            elif hasattr(result, "__enter__") and hasattr(result, "__exit__"):
+                result.__enter__()
             out["not_enforced"].append(qual)
         except roar.BeartypeCallHintForwardRefException as exc:
             out["forward_ref"].append(f"{qual}: {str(exc).splitlines()[0][:160]}")
@@ -289,7 +306,8 @@ def test_public_api_is_wrapped_by_beartype(audit):
 def test_public_api_rejects_wrong_types(audit):
     """Calling a public callable with a wrong-typed argument must raise."""
     _fail_if(
-        audit["not_enforced"], "Public callables that accepted a wrong-typed argument"
+        set(audit["not_enforced"]) - ALLOWED_NOT_ENFORCED,
+        "Public callables that accepted a wrong-typed argument",
     )
     _fail_if(
         audit["forward_ref"], "Public callables with unresolvable hints at call time"
@@ -328,6 +346,33 @@ def test_all_hints_resolve_at_runtime(audit):
         audit["unresolvable_hints"],
         "Functions whose hints cannot be resolved at runtime",
     )
+
+
+def test_using_context_manager_type_enforcement():
+    """``using()`` is a generator context manager: its hints are checked on ``__enter__``."""
+    pytest.importorskip("beartype")
+
+    source = """
+from beartype import roar
+from beartype.claw import beartype_package
+
+beartype_package('ansys.fluent.core')
+
+from ansys.fluent.core.execution.session.session import using
+
+try:
+    with using(123):
+        print('FAIL:no-raise')
+except roar.BeartypeCallHintViolation:
+    print('PASS')
+"""
+    result = subprocess.run(
+        [sys.executable, "-W", "ignore", "-c", source],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.stdout.strip() == "PASS", (result.stdout, result.stderr[-2000:])
 
 
 if __name__ == "__main__":

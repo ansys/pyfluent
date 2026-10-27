@@ -131,6 +131,7 @@ def _parse_server_info_file(file_name: str):
         return ip, port, password
 
 
+@no_runtime_type_check
 class BaseSession:
     """Encapsulates a Fluent session.
 

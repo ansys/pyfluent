@@ -44,6 +44,7 @@ import weakref
 from deprecated.sphinx import deprecated
 import grpc
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core.connectivity.file_transfer_service import (
     ContainerFileTransferStrategy,
     FileTransferStrategy,
@@ -443,6 +444,7 @@ def _pid_exists(pid):
 S = TypeVar("S", bound=ServiceProtocol)
 
 
+@no_runtime_type_check
 class FluentConnection:
     """Encapsulates a Fluent connection.
 

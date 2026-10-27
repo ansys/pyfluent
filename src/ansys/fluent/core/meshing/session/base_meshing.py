@@ -39,6 +39,7 @@ import os
 from typing import TYPE_CHECKING, Any, cast
 
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.connectivity.data_transfer import transfer_case
 from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
@@ -84,6 +85,7 @@ pyfluent_logger = logging.getLogger("pyfluent.general")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
+@no_runtime_type_check
 class BaseMeshing(BaseSession):
     """Base class providing the full public API for all meshing sessions.
 

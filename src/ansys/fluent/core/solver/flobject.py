@@ -309,8 +309,8 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = dict[str, "StateType"]
-ListStateType = list["StateType"]
+DictStateType = dict[str, Any]  # avoid forward-ref; runtime uses Any
+ListStateType = list[Any]  # avoid forward-ref; runtime uses Any
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
@@ -3056,6 +3056,7 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
+@no_runtime_type_check
 def get_root(
     flproxy: Any,
     version: str = "",
