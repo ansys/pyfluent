@@ -168,9 +168,7 @@ jobs:
 
       - name: "Test: Runtime Type-Checking Audit"
         run: |
-          python -m pytest tests/test_runtime_type_checking_public_api.py -v \
-            -k "not test_public_api_parameters_are_annotated" \
-            --tb=short
+          python -m pytest tests/test_runtime_type_checking_public_api.py -v --tb=short
 
   test-import:
     name: Build and Smoke tests

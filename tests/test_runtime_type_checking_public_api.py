@@ -99,7 +99,7 @@ class _Wrong:
 WRONG = _Wrong()
 out = {
     "decor_failures": [], "import_failures": [], "exempt": [], "exempt_functions": [],
-    "not_wrapped": [], "unannotated": [], "forward_ref": [], "not_enforced": [],
+    "not_wrapped": [], "forward_ref": [], "not_enforced": [],
     "unexpected": [], "unresolvable_hints": [], "checked": 0,
 }
 
@@ -185,9 +185,6 @@ for mod in modules:
             if p.name not in ("self", "cls") and p.kind not in (p.VAR_POSITIONAL, p.VAR_KEYWORD)
         ]
         annotated = [p for p in params if p.annotation is not p.empty]
-        if params and not annotated:
-            out["unannotated"].append(qual)
-            continue
         if not annotated:
             continue
         try:
@@ -313,15 +310,6 @@ def test_public_api_rejects_wrong_types(audit):
         audit["forward_ref"], "Public callables with unresolvable hints at call time"
     )
     _fail_if(audit["unexpected"], "Public callables raising a non-beartype error")
-
-
-@pytest.mark.xfail(
-    reason="Static type hints are tracked separately from runtime checking.",
-    strict=False,
-)
-def test_public_api_parameters_are_annotated(audit):
-    """Public callables taking parameters must annotate at least one of them."""
-    _fail_if(audit["unannotated"], "Public callables with no parameter annotations")
 
 
 def test_only_known_classes_opt_out(audit):
