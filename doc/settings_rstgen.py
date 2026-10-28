@@ -41,6 +41,9 @@ logger = logging.getLogger("pyfluent.settings_api")
 parents_dict = {}
 rst_list = []
 deprecated_class_version = {}
+# Class names (``__name__``) of named/list object member types, used to present
+# an instance with an ``_item`` suffix instead of the internal ``_child`` name.
+instance_class_names = set()
 
 
 def _get_indent_str(indent):
@@ -91,7 +94,9 @@ def _populate_parents_list(cls):
                 _register_parent(cls._child_classes[child].__name__, cls)
 
     if hasattr(cls, "child_object_type"):
-        _register_parent(getattr(cls, "child_object_type").__name__, cls)
+        member = getattr(cls, "child_object_type")
+        instance_class_names.add(member.__name__)
+        _register_parent(member.__name__, cls)
 
     # Phase 2: recurse into each immediate child.
     for attr in _CHILD_LIST_ATTRS:
@@ -103,22 +108,28 @@ def _populate_parents_list(cls):
         _populate_parents_list(getattr(cls, "child_object_type"))
 
 
-def _member_access_label(container_cls):
-    """Return the friendly access form for one member of a collection.
+def _instance_name(member_cls):
+    """Return the friendly instance name shown for a collection member.
 
-    For a named-object container this is ``<container>['<name>']`` and for a
-    list-object container ``<container>[<index>]``. This is shown to users
-    instead of the internal, possibly ``_n``-suffixed ``*_child`` class name.
+    Members are presented with an ``_item`` suffix (for example
+    ``velocity_inlet_item``) instead of the internal ``_child`` suffix.
     """
-    name = container_cls._python_name
-    if issubclass(container_cls, ListObject):
-        return f"{name}[<index>]"
-    return f"{name}['<name>']"
+    name = member_cls._python_name
+    if name.endswith("_child"):
+        name = name[: -len("_child")] + "_item"
+    return name
 
 
-def _member_breadcrumb_segment(container_cls):
-    """Return the breadcrumb segment for a member hop below its container."""
-    return "[<index>]" if issubclass(container_cls, ListObject) else "['<name>']"
+def _display_name(cls):
+    """Return the user-facing name for a class.
+
+    Named/list object members are shown with the ``_item`` convention; every
+    other class uses its friendly ``_python_name`` (never the internal,
+    possibly ``_n``-suffixed class name).
+    """
+    if cls.__name__ in instance_class_names:
+        return _instance_name(cls)
+    return cls._python_name
 
 
 def _write_breadcrumb(r, breadcrumb):
@@ -191,7 +202,13 @@ def _write_rst_header(
     r.write(
         f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
     )
-    r.write(f"{istr1}:show-inheritance:\n\n")
+    # ``:show-inheritance:`` on collection containers renders a noisy
+    # ``Bases: NamedObject[<member>], ...`` line exposing internal generic
+    # subscripts; suppress it there while keeping useful base-type info
+    # (for example scalar parameter types) on every other page.
+    if not hasattr(cls, "child_object_type"):
+        r.write(f"{istr1}:show-inheritance:\n")
+    r.write("\n")
 
 
 def _write_rst_body(r, cls, cls_name):
@@ -209,13 +226,18 @@ def _write_rst_body(r, cls, cls_name):
         _write_common("Argument", r, cls, "argument_names")
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
-        access_label = _member_access_label(cls)
+        instance_label = _instance_name(child_cls)
         r.write(".. rubric:: Named object type\n\n")
         if issubclass(cls, ListObject):
+            access_example = f"{cls._python_name}[<index>]"
             r.write("Access a member of this collection by index:\n\n")
         else:
+            access_example = f"{cls._python_name}['<name>']"
             r.write("Access a member of this collection by name:\n\n")
-        r.write(f":ref:`{access_label} <{child_cls.__name__}>`\n\n\n")
+        r.write(
+            f":ref:`{instance_label} <{child_cls.__name__}>` "
+            f"(for example, ``{access_example}``)\n\n\n"
+        )
     if parents_dict.get(cls_name):
         r.write(".. rubric:: Included in:\n\n")
         data_dict = {"Parent": "Summary"}
@@ -223,10 +245,10 @@ def _write_rst_body(r, cls, cls_name):
             parent_ref = parent.__name__
             if parent_ref == "root":
                 parent_ref = "ref_root"
-            # Display the friendly ``_python_name`` (never the internal,
-            # possibly ``_n``-suffixed class name); keep the class name as the
-            # link target so the cross-reference still resolves.
-            ref_string = f":ref:`{parent._python_name} <{parent_ref}>`"
+            # Display the friendly name (``_item`` for members, otherwise the
+            # ``_python_name``); keep the class name as the link target so the
+            # cross-reference still resolves.
+            ref_string = f":ref:`{_display_name(parent)} <{parent_ref}>`"
             data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
         _generate_table_for_rst(r, data_dict)
 
@@ -245,16 +267,15 @@ def _recurse_rst_children(rst_dir, cls, version, current_path, breadcrumb):
                 )
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
-        member_breadcrumb = breadcrumb + [
-            (_member_breadcrumb_segment(cls), child_cls.__name__)
-        ]
+        instance_label = _instance_name(child_cls)
+        member_breadcrumb = breadcrumb + [(instance_label, child_cls.__name__)]
         _populate_rst_from_settings(
             rst_dir,
             child_cls,
             version,
             current_path,
             member_breadcrumb,
-            display_title=_member_access_label(cls),
+            display_title=instance_label,
         )
 
 
