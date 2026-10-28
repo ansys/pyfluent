@@ -30,6 +30,9 @@ import numpy.typing as npt
 
 from ansys.api.fluent.v0 import field_data_pb2, svar_pb2, svar_pb2_grpc
 from ansys.fluent.core._grpc_services.field_data_service_v0 import _FieldDataConstants
+from ansys.fluent.core._grpc_services.solution_variable_service import (
+    IncompleteSolutionVariableDataError,
+)
 from ansys.fluent.core.services._protocols import ServiceProtocol
 
 
@@ -387,12 +390,21 @@ class SolutionVariableService(ServiceProtocol):
 
 
 def extract_svars(solution_variables_data):
-    """Extracts SVAR data via a server call."""
+    """Extracts SVAR data via a server call.
+
+    Raises
+    ------
+    IncompleteSolutionVariableDataError
+        If the streamed data for a zone ends before all declared elements are
+        received.
+    """
 
     def _extract_svar(
         field_datatype: npt.DTypeLike, field_size: int, solution_variables_data
-    ) -> npt.NDArray[np.float64] | None:
+    ) -> npt.NDArray[np.float64]:
         field_arr = np.empty(field_size, dtype=field_datatype)
+        if field_size == 0:
+            return field_arr
         field_datatype_item_size = np.dtype(field_datatype).itemsize
         index = 0
         for solution_variable_data in solution_variables_data:
@@ -422,6 +434,7 @@ def extract_svars(solution_variables_data):
                 index += count
                 if index == field_size:
                     return field_arr
+        raise IncompleteSolutionVariableDataError(index, field_size)
 
     zones_svar_data = dict[Any, npt.NDArray[Any] | None]()
     for array in solution_variables_data:

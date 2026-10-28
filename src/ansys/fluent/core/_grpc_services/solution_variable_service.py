@@ -400,11 +400,48 @@ class SolutionVariableService(ServiceProtocol):
         return ZonesInfo(response.zones_info, response.domains_info)
 
 
+class IncompleteSolutionVariableDataError(RuntimeError):
+    """Raised when streamed SVAR data ends before all elements are received.
+
+    The server declares how many elements it will send (``field_size``), and the
+    client reconstructs the array from the streamed chunks. If the stream ends
+    before ``field_size`` elements arrive, the response is incomplete.
+
+    This typically indicates the server truncated the stream because the
+    requested per-zone data exceeded gRPC/protobuf message-size limits, for
+    example when pulling a large field such as ``SV_CENTROID`` on a very large
+    zone. Request smaller zones individually (see
+    :meth:`~ansys.fluent.core.fields.solution_variables.solution_variables.SolutionVariableData.get_data_per_zone`)
+    to work around it.
+    """
+
+    def __init__(self, received: int, expected: int):
+        """Initialize IncompleteSolutionVariableDataError."""
+        self.received = received
+        self.expected = expected
+        super().__init__(
+            f"Solution variable data stream ended prematurely: received "
+            f"{received} of {expected} expected elements. The server likely "
+            f"truncated the response because the requested data exceeded "
+            f"gRPC/protobuf message-size limits. Try requesting smaller zones "
+            f"individually."
+        )
+
+
 def extract_svars(solution_variables_data):
-    """Extract SVAR data via a server call (v1 proto payload shape)."""
+    """Extract SVAR data via a server call (v1 proto payload shape).
+
+    Raises
+    ------
+    IncompleteSolutionVariableDataError
+        If the streamed data for a zone ends before all declared elements are
+        received.
+    """
 
     def _extract_svar(field_datatype, field_size, solution_variables_data):
         field_arr = np.empty(field_size, dtype=field_datatype)
+        if field_size == 0:
+            return field_arr
         field_datatype_item_size = np.dtype(field_datatype).itemsize
         index = 0
         for solution_variable_data in solution_variables_data:
@@ -434,6 +471,7 @@ def extract_svars(solution_variables_data):
                 index += count
                 if index == field_size:
                     return field_arr
+        raise IncompleteSolutionVariableDataError(index, field_size)
 
     zones_svar_data = {}
     for array in solution_variables_data:
