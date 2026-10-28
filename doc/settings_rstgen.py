@@ -28,6 +28,7 @@ from pathlib import Path
 from deprecated_apis import PYFLUENT_DEPRECATED_DATA
 
 from ansys.fluent.core import config
+from ansys.fluent.core.solver.flobject import ListObject
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
@@ -102,6 +103,43 @@ def _populate_parents_list(cls):
         _populate_parents_list(getattr(cls, "child_object_type"))
 
 
+def _member_access_label(container_cls):
+    """Return the friendly access form for one member of a collection.
+
+    For a named-object container this is ``<container>['<name>']`` and for a
+    list-object container ``<container>[<index>]``. This is shown to users
+    instead of the internal, possibly ``_n``-suffixed ``*_child`` class name.
+    """
+    name = container_cls._python_name
+    if issubclass(container_cls, ListObject):
+        return f"{name}[<index>]"
+    return f"{name}['<name>']"
+
+
+def _member_breadcrumb_segment(container_cls):
+    """Return the breadcrumb segment for a member hop below its container."""
+    return "[<index>]" if issubclass(container_cls, ListObject) else "['<name>']"
+
+
+def _write_breadcrumb(r, breadcrumb):
+    """Write a navigation breadcrumb from the settings root to the current page.
+
+    Each ancestor is rendered as a cross-reference using its friendly
+    ``_python_name`` (never the internal, possibly ``_n``-suffixed class name);
+    the current page is rendered as inline literal text.
+    """
+    if len(breadcrumb) < 2:
+        return
+    parts = []
+    last_index = len(breadcrumb) - 1
+    for index, (display, target) in enumerate(breadcrumb):
+        if index == last_index:
+            parts.append(f"``{display}``")
+        else:
+            parts.append(f":ref:`{display} <{target}>`")
+    r.write("**Navigation:** " + " > ".join(parts) + "\n\n")
+
+
 def _write_common(initial_param, r, cls, attr):
     # TODO Add clarifying comments here
     data_dict = {initial_param: "Summary"}
@@ -112,16 +150,31 @@ def _write_common(initial_param, r, cls, attr):
     _generate_table_for_rst(r, data_dict)
 
 
-def _write_rst_header(r, cls, cls_name, cls_orig_name, version, current_path):
+def _write_rst_header(
+    r,
+    cls,
+    cls_name,
+    cls_orig_name,
+    version,
+    current_path,
+    breadcrumb=None,
+    display_title=None,
+):
     istr1 = _get_indent_str(1)
+    # ``display_title`` lets named/list members present their access form
+    # (for example ``boundary_conditions['<name>']``) instead of the internal
+    # ``*_child`` class name.
+    title = display_title or cls_orig_name
     r.write(":orphan:\n\n")
     # ``root`` used to create a hyperlink for settings API
     if cls_orig_name == "root":
         r.write(f".. _ref_{cls_name}:\n\n")
     else:
         r.write(f".. _{cls_name}:\n\n")
-    r.write(f"{cls_orig_name}\n")
-    r.write(f'{"="*(len(cls_orig_name))}\n\n')
+    r.write(f"{title}\n")
+    r.write(f'{"="*(len(title))}\n\n')
+    if breadcrumb:
+        _write_breadcrumb(r, breadcrumb)
     deprecated = getattr(cls, "_deprecated_version", None)
     if deprecated:
         try:
@@ -156,9 +209,13 @@ def _write_rst_body(r, cls, cls_name):
         _write_common("Argument", r, cls, "argument_names")
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
-        ref_string = f":ref:`{child_cls.__name__} <{child_cls.__name__}>`"
+        access_label = _member_access_label(cls)
         r.write(".. rubric:: Named object type\n\n")
-        r.write(f"{ref_string}\n\n\n")
+        if issubclass(cls, ListObject):
+            r.write("Access a member of this collection by index:\n\n")
+        else:
+            r.write("Access a member of this collection by name:\n\n")
+        r.write(f":ref:`{access_label} <{child_cls.__name__}>`\n\n\n")
     if parents_dict.get(cls_name):
         r.write(".. rubric:: Included in:\n\n")
         data_dict = {"Parent": "Summary"}
@@ -166,35 +223,67 @@ def _write_rst_body(r, cls, cls_name):
             parent_ref = parent.__name__
             if parent_ref == "root":
                 parent_ref = "ref_root"
-            ref_string = f":ref:`{parent.__name__} <{parent_ref}>`"
+            # Display the friendly ``_python_name`` (never the internal,
+            # possibly ``_n``-suffixed class name); keep the class name as the
+            # link target so the cross-reference still resolves.
+            ref_string = f":ref:`{parent._python_name} <{parent_ref}>`"
             data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
         _generate_table_for_rst(r, data_dict)
 
 
-def _recurse_rst_children(rst_dir, cls, version, current_path):
+def _recurse_rst_children(rst_dir, cls, version, current_path, breadcrumb):
     for attr in _CHILD_LIST_ATTRS:
         if hasattr(cls, attr):
             for child in getattr(cls, attr):
+                child_cls = cls._child_classes[child]
+                child_target = (
+                    "ref_root" if child_cls.__name__ == "root" else child_cls.__name__
+                )
+                child_breadcrumb = breadcrumb + [(child_cls._python_name, child_target)]
                 _populate_rst_from_settings(
-                    rst_dir, cls._child_classes[child], version, current_path
+                    rst_dir, child_cls, version, current_path, child_breadcrumb
                 )
     if hasattr(cls, "child_object_type"):
+        child_cls = getattr(cls, "child_object_type")
+        member_breadcrumb = breadcrumb + [
+            (_member_breadcrumb_segment(cls), child_cls.__name__)
+        ]
         _populate_rst_from_settings(
-            rst_dir, getattr(cls, "child_object_type"), version, current_path
+            rst_dir,
+            child_cls,
+            version,
+            current_path,
+            member_breadcrumb,
+            display_title=_member_access_label(cls),
         )
 
 
-def _populate_rst_from_settings(rst_dir, cls, version, path=""):
+def _populate_rst_from_settings(
+    rst_dir, cls, version, path="", breadcrumb=None, display_title=None
+):
     current_path = f"{path}.{cls._python_name}" if path else cls._python_name
     cls_name = cls.__name__
     cls_orig_name = cls._python_name
+    if breadcrumb is None:
+        # Root page: the breadcrumb starts at the settings root itself.
+        root_target = "ref_root" if cls_orig_name == "root" else cls_name
+        breadcrumb = [(cls_orig_name, root_target)]
     rstpath = os.path.normpath(os.path.join(rst_dir, cls_name + ".rst"))
     with open(rstpath, "w") as r:
-        _write_rst_header(r, cls, cls_name, cls_orig_name, version, current_path)
+        _write_rst_header(
+            r,
+            cls,
+            cls_name,
+            cls_orig_name,
+            version,
+            current_path,
+            breadcrumb,
+            display_title,
+        )
         _write_rst_body(r, cls, cls_name)
     if rstpath not in rst_list:
         rst_list.append(rstpath)
-        _recurse_rst_children(rst_dir, cls, version, current_path)
+        _recurse_rst_children(rst_dir, cls, version, current_path, breadcrumb)
 
 
 def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
