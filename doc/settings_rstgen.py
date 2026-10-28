@@ -199,16 +199,24 @@ def _write_rst_header(
         release_version = str(pyfluent_fluent_version)
         r.write(f".. deprecated:: {release_version}\n\n")
         deprecated_class_version.update({current_path: (cls_name, release_version)})
-    r.write(
-        f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
-    )
-    # ``:show-inheritance:`` on collection containers renders a noisy
-    # ``Bases: NamedObject[<member>], ...`` line exposing internal generic
-    # subscripts; suppress it there while keeping useful base-type info
-    # (for example scalar parameter types) on every other page.
-    if not hasattr(cls, "child_object_type"):
-        r.write(f"{istr1}:show-inheritance:\n")
-    r.write("\n")
+    if cls_name in instance_class_names:
+        # Named/list object member pages: autodoc would expose the internal
+        # ``*_child`` class name here, so render a clean ``class <name>_item``
+        # header instead. ``:no-index:`` avoids duplicate-object warnings since
+        # different collections can share the same ``_item`` name.
+        r.write(f".. py:class:: {_instance_name(cls)}\n")
+        r.write(f"{istr1}:no-index:\n\n")
+    else:
+        r.write(
+            f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
+        )
+        # ``:show-inheritance:`` on collection containers renders a noisy
+        # ``Bases: NamedObject[<member>], ...`` line exposing internal generic
+        # subscripts; suppress it there while keeping useful base-type info
+        # (for example scalar parameter types) on every other page.
+        if not hasattr(cls, "child_object_type"):
+            r.write(f"{istr1}:show-inheritance:\n")
+        r.write("\n")
 
 
 def _write_rst_body(r, cls, cls_name):
