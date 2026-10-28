@@ -42,7 +42,9 @@ from ansys.fluent.core.fields.field_data._field_data_interfaces import (
     FieldUnavailableError,
     _AllowedSurfaceIDs,
     _Fields,
+    _ScalarFields,
     _SurfaceIds,
+    _VectorFields,
 )
 from ansys.fluent.core.fields.field_data.live_field_data import (
     CellElementType,
@@ -535,6 +537,42 @@ def test_fields_is_active_accepts_variable_descriptor() -> None:
     assert fields.is_active("temperature")
     assert fields.is_active(VariableCatalog.TEMPERATURE)
     assert not fields.is_active(VariableCatalog.VELOCITY)
+
+
+def test_scalar_fields_is_active_rejects_vector_descriptor() -> None:
+    scalar_fields = _ScalarFields(lambda: ["velocity-magnitude"], field_info=None)
+
+    assert scalar_fields.is_active("velocity-magnitude")
+    assert scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+    with pytest.raises(TypeError):
+        scalar_fields.is_active(VariableCatalog.VELOCITY)
+
+
+def test_vector_fields_is_active_rejects_scalar_descriptor() -> None:
+    vector_fields = _VectorFields(lambda: ["velocity"])
+
+    assert vector_fields.is_active("velocity")
+    assert vector_fields.is_active(VariableCatalog.VELOCITY)
+    with pytest.raises(TypeError):
+        vector_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+
+
+def test_pathlines_request_additional_field_name_accepts_scalar_descriptor() -> None:
+    request = PathlinesFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY_X,
+        additional_field_name=VariableCatalog.PRESSURE,
+        surfaces=["inlet"],
+    )
+    assert request.additional_field_name == VariableCatalog.PRESSURE
+
+
+def test_pathlines_request_additional_field_name_rejects_vector_descriptor() -> None:
+    with pytest.raises(TypeError):
+        PathlinesFieldDataRequest(
+            field_name=VariableCatalog.VELOCITY_X,
+            additional_field_name=VariableCatalog.VELOCITY,
+            surfaces=["inlet"],
+        )
 
 
 def test_fields_allowed_variables_filters_unmapped_names() -> None:

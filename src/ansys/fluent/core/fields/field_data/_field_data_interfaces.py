@@ -227,6 +227,13 @@ class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
 
+    def _validate_descriptor(self, field_name: VariableDescriptor) -> None:
+        """Validate the descriptor type.
+
+        The base implementation accepts any ``VariableDescriptor``. Subclasses
+        override this to restrict to a specific tensor type.
+        """
+
     def is_active(self, field_name: VariableDescriptor | str) -> bool:
         """Check whether a field is active in the given context.
 
@@ -234,10 +241,20 @@ class _Fields:
         ----------
         field_name : VariableDescriptor | str
             Field name to check. Can be a VariableDescriptor or a string.
+
+        Raises
+        ------
+        TypeError
+            If ``field_name`` is a ``VariableDescriptor`` of a tensor type that
+            does not match this field collection (for example, a scalar
+            descriptor passed to ``vector_fields``).
         """
         from ansys.fluent.core._variable_strategies import (
             FluentFieldDataNamingStrategy as naming_strategy,
         )
+
+        if not isinstance(field_name, str):
+            self._validate_descriptor(field_name)
 
         _naming_strategy_instance = naming_strategy()
         _to_field_name_str = _naming_strategy_instance.to_string
@@ -287,15 +304,22 @@ class _ScalarFields(_Fields):
         super().__init__(available_field_names)
         self._field_info = field_info
 
+    def _validate_descriptor(self, field_name: ScalarVariableDescriptor) -> None:
+        _validate_scalar_variable_descriptor(field_name)
+
     def range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
+        self,
+        field: str | ScalarVariableDescriptor,
+        node_value: bool = False,
+        surface_ids: list[int] | None = None,
     ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
-        field: str
-            Field name
+        field: str | ScalarVariableDescriptor
+            Field name as a string or a scalar ``VariableDescriptor``
+            (for example, ``VariableCatalog.TEMPERATURE``).
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
@@ -310,6 +334,9 @@ class _ScalarFields(_Fields):
 class _VectorFields(_Fields):
     def __init__(self, available_field_names):
         super().__init__(available_field_names)
+
+    def _validate_descriptor(self, field_name: VectorVariableDescriptor) -> None:
+        _validate_vector_variable_descriptor(field_name)
 
 
 class _AllowedNames:

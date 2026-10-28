@@ -145,6 +145,10 @@ class PathlinesFieldDataRequest(BaseDataRequest):
     def _validate_inputs(self) -> None:
         if not isinstance(self.field_name, (str)):
             _validate_scalar_variable_descriptor(self.field_name)
+        if self.additional_field_name and not isinstance(
+            self.additional_field_name, (str)
+        ):
+            _validate_scalar_variable_descriptor(self.additional_field_name)
 
 
 _set_dataclass_field_docs(

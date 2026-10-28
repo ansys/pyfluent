@@ -84,8 +84,6 @@ jobs:
   code-style:
     name: Code style
     runs-on: ubuntu-latest
-    env:
-      FLUENT_IMAGE_TAG: v26.1.latest
 
     steps:
       - name: "Run PyAnsys code style checks"
@@ -424,7 +422,7 @@ jobs:
           path: src/ansys/fluent/core/generated
           # Combined cache key for all versions:
           # API-Code-<Cache version>-<PyFluent version>-<First Fluent release version>-<Last Fluent release version>-<Fluent dev version>-<Hash of codegen files>
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-v25.2.3-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.5-v26.1.latest-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Pull 24.2 Fluent docker image
@@ -543,7 +541,7 @@ jobs:
 
   test:
     name: Unit Testing
-    if: ${{ always() }}
+    if: ${{ !cancelled() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     needs: build
     runs-on: [public-ubuntu-latest-16-cores]
     strategy:
@@ -633,7 +631,7 @@ jobs:
 
   test-pyconsole:
     name: Test PyConsole
-    if: ${{ always() }}
+    if: ${{ !cancelled() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     needs: build
     runs-on: [public-ubuntu-latest-16-cores]
     timeout-minutes: 30
@@ -805,7 +803,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test]
+    needs: [test, test-import]
     runs-on: ubuntu-latest
     permissions:
       id-token: write # required for trusted publishing
@@ -823,12 +821,18 @@ jobs:
           name: PyFluent-packages
           path: PyFluent-packages
 
+      - name: "Download the wheelhouse artifacts from test-import step"
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: "*-wheelhouse-*"
+          path: wheelhouse
+
       - name: Display package file list
         run: ls -R
 
       - name: Upload to Private PyPi
         run: |
-          pip install 'twine>=7.0.0' 'packaging>=26.1'
+          pip install 'twine==7.0.0' 'packaging==26.3'
           python -m twine upload ./**/*.whl
           python -m twine upload ./**/*.tar.gz
         env:
