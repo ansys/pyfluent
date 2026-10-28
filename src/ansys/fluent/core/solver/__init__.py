@@ -21,19 +21,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""High-level access to the solver.
+"""Direct access to key solver settings.
 
-- Access to the solver is via session objects. See
-  :ref:`session <ref_ansys_fluent_core_solver_session>`.
-- A session object consists of individual attributes, each providing access to a
-  specific service or aspect of solver functionality.
-- A key session attribute is the solver settings object, which is the root of
-  the whole solver settings hierarchy: an API that allows configuration and
-  execution of the solver. See :ref:`settings root <ref_root>`.
+The solver is configured through a large hierarchy of settings objects. This
+package provides the most commonly used of those settings as classes you can
+create directly, without navigating the hierarchy to find them. For example,
+`Viscous()` gives you the viscous model settings, and
+`VelocityInlet("hot-inlet")` gives you the settings for a velocity inlet
+boundary condition named "hot-inlet".
 
-This package exposes high-level solver classes, which provide access to parts of
-the settings tree without the caller needing to specify the API path. They are
-listed below.
+Use :func:`using` to say which solver session these objects belong to:
+
+.. code-block:: python
+
+>>> from ansys.fluent.core.solver import Viscous, using
+
+>>> with using(solver):
+>>>     viscous = Viscous()
+>>>     viscous.model = viscous.model.K_EPSILON
+
+Without :func:`using`, the object is created for the session passed explicitly
+as its settings_source argument.
+
+Related topics:
+
+- Solver sessions are created and managed through session objects. See
+  :ref:session <ref_ansys_fluent_core_solver_session>.
+
+- Every session exposes the full settings hierarchy through its settings
+  object, the root of the API for configuring and running the solver. See
+  :ref:settings root <ref_root>.
+
+The classes available for direct access are listed below.
 """
 
 from importlib import import_module
