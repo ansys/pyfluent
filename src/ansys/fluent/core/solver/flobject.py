@@ -316,6 +316,10 @@ StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 def check_type(val: Any, tp: Any) -> bool:
     """Check type of object."""
+    from typing import Any as TypingAny
+
+    if tp is TypingAny:
+        return True
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
     if isinstance(tp, str):
@@ -3104,6 +3108,11 @@ def get_root(
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
+            import ansys.fluent.core as pyfluent
+
+            version_dir = pyfluent.codegen.get_codegen_version_dir(
+                version, config.codegen_outdir
+            )
             settings = _load_module(
                 f"settings_{version}",
                 version_dir / "solver" / "settings.py",
