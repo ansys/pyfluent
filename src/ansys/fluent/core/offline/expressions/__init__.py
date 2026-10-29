@@ -30,7 +30,8 @@ Typical use::
     )
 
     solver.setup.named_expressions["dp"] = {}
-    # The settings layer accepts the expression object directly -- no str():
+    # The settings layer accepts the expression object directly, so no manual
+    # ``str(dp)`` conversion is required (plain strings still work too):
     solver.setup.named_expressions["dp"].definition = dp
 """
 
