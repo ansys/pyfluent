@@ -396,7 +396,9 @@ def extract_svars(solution_variables_data):
     ------
     IncompleteSolutionVariableDataError
         If the streamed data for a zone ends before all declared elements are
-        received.
+        received. This typically means a single zone's data exceeds the
+        ~2 GiB gRPC/protobuf message-size limit; see the exception's
+        documentation for ways to work around it.
     """
 
     def _extract_svar(
@@ -434,7 +436,9 @@ def extract_svars(solution_variables_data):
                 index += count
                 if index == field_size:
                     return field_arr
-        raise IncompleteSolutionVariableDataError(index, field_size)
+        raise IncompleteSolutionVariableDataError(
+            index, field_size, field_datatype_item_size
+        )
 
     zones_svar_data = dict[Any, npt.NDArray[Any] | None]()
     for array in solution_variables_data:

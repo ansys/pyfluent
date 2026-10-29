@@ -400,31 +400,78 @@ class SolutionVariableService(ServiceProtocol):
         return ZonesInfo(response.zones_info, response.domains_info)
 
 
+def _format_bytes(num_bytes: int) -> str:
+    """Return a human-readable binary size string for a byte count."""
+    size = float(num_bytes)
+    for unit in ("B", "KiB", "MiB", "GiB", "TiB"):
+        if size < 1024.0 or unit == "TiB":
+            return f"{int(size)} B" if unit == "B" else f"{size:.2f} {unit}"
+        size /= 1024.0
+
+
 class IncompleteSolutionVariableDataError(RuntimeError):
-    """Raised when streamed SVAR data ends before all elements are received.
+    """Raised when streamed solution variable data ends before all elements arrive.
 
-    The server declares how many elements it will send (``field_size``), and the
-    client reconstructs the array from the streamed chunks. If the stream ends
-    before ``field_size`` elements arrive, the response is incomplete.
+    The server first declares how many elements it will send for a zone
+    (``field_size``), and the client reconstructs the array from the streamed
+    chunks. If the stream ends before ``field_size`` elements have been
+    received, the data for that zone is incomplete and this error is raised.
 
-    This typically indicates the server truncated the stream because the
-    requested per-zone data exceeded gRPC/protobuf message-size limits, for
-    example when pulling a large field such as ``SV_CENTROID`` on a very large
-    zone. Request smaller zones individually (see
-    :meth:`~ansys.fluent.core.fields.solution_variables.solution_variables.SolutionVariableData.get_data_per_zone`)
-    to work around it.
+    The usual cause is that a *single* zone's data is too large to be streamed
+    in one response: a single gRPC/protobuf message cannot exceed ~2 GiB, so the
+    server stops sending once that ceiling is reached. This is common for large
+    multi-component fields -- for example ``SV_CENTROID`` (3 components) on a
+    cell zone with hundreds of millions of cells.
+
+    Note that the client ``chunk_size`` setting does not help here: it only
+    controls how a response is sliced into messages, not the total amount of
+    data requested for a zone.
+
+    To work around it:
+
+    * If several zones were requested in one call, request each zone separately
+      so no single response is oversized.
+    * If a single zone is itself too large, reduce the amount of data (for
+      example request a scalar field rather than a multi-component one), split
+      the zone into smaller cell zones, or read the values from the case/data
+      file offline instead of over gRPC.
+
+    Attributes
+    ----------
+    received : int
+        Number of elements actually received before the stream ended.
+    expected : int
+        Number of elements the server declared it would send for the zone.
+    item_size : int | None
+        Size in bytes of a single element, when known. Used to report the
+        approximate payload size in the error message.
     """
 
-    def __init__(self, received: int, expected: int):
+    def __init__(self, received: int, expected: int, item_size: int | None = None):
         """Initialize IncompleteSolutionVariableDataError."""
         self.received = received
         self.expected = expected
+        self.item_size = item_size
+
+        if item_size:
+            size_note = (
+                f" (~{_format_bytes(expected * item_size)} requested; a single "
+                f"gRPC/protobuf message cannot exceed ~2 GiB)"
+            )
+        else:
+            size_note = " (a single gRPC/protobuf message cannot exceed ~2 GiB)"
+
         super().__init__(
             f"Solution variable data stream ended prematurely: received "
-            f"{received} of {expected} expected elements. The server likely "
-            f"truncated the response because the requested data exceeded "
-            f"gRPC/protobuf message-size limits. Try requesting smaller zones "
-            f"individually."
+            f"{received:,} of {expected:,} expected elements{size_note}. "
+            f"This usually means a single zone's data is too large for the "
+            f"server to stream in one response. Note that changing the client "
+            f"chunk size does not help, because it does not reduce the per-zone "
+            f"total. To work around it: if you requested several zones in one "
+            f"call, request each zone separately; if a single zone is too large "
+            f"(common for multi-component fields such as 'SV_CENTROID' on very "
+            f"large cell zones), request a smaller field, or split the zone into "
+            f"smaller cell zones."
         )
 
 
@@ -435,7 +482,9 @@ def extract_svars(solution_variables_data):
     ------
     IncompleteSolutionVariableDataError
         If the streamed data for a zone ends before all declared elements are
-        received.
+        received. This typically means a single zone's data exceeds the
+        ~2 GiB gRPC/protobuf message-size limit; see the exception's
+        documentation for ways to work around it.
     """
 
     def _extract_svar(field_datatype, field_size, solution_variables_data):
@@ -471,7 +520,9 @@ def extract_svars(solution_variables_data):
                 index += count
                 if index == field_size:
                     return field_arr
-        raise IncompleteSolutionVariableDataError(index, field_size)
+        raise IncompleteSolutionVariableDataError(
+            index, field_size, field_datatype_item_size
+        )
 
     zones_svar_data = {}
     for array in solution_variables_data:
