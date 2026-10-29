@@ -41,10 +41,6 @@ logger = logging.getLogger("pyfluent.settings_api")
 parents_dict = {}
 rst_list = []
 deprecated_class_version = {}
-# Class names (``__name__``) of named/list object member types. Used to decide
-# which pages render a clean ``py:class`` header (the member's ``_python_name``)
-# instead of autodoc, whose class name carries a disambiguating ``_n`` suffix.
-instance_class_names = set()
 
 
 def _get_indent_str(indent):
@@ -96,7 +92,6 @@ def _populate_parents_list(cls):
 
     if hasattr(cls, "child_object_type"):
         member = getattr(cls, "child_object_type")
-        instance_class_names.add(member.__name__)
         _register_parent(member.__name__, cls)
 
     # Phase 2: recurse into each immediate child.
@@ -107,25 +102,6 @@ def _populate_parents_list(cls):
 
     if hasattr(cls, "child_object_type"):
         _populate_parents_list(getattr(cls, "child_object_type"))
-
-
-def _write_breadcrumb(r, breadcrumb):
-    """Write a navigation breadcrumb from the settings root to the current page.
-
-    Each ancestor is rendered as a cross-reference using its friendly
-    ``_python_name`` (never the internal, possibly ``_n``-suffixed class name);
-    the current page is rendered as inline literal text.
-    """
-    if len(breadcrumb) < 2:
-        return
-    parts = []
-    last_index = len(breadcrumb) - 1
-    for index, (display, target) in enumerate(breadcrumb):
-        if index == last_index:
-            parts.append(f"``{display}``")
-        else:
-            parts.append(f":ref:`{display} <{target}>`")
-    r.write("**Navigation:** " + " > ".join(parts) + "\n\n")
 
 
 def _write_common(initial_param, r, cls, attr):
@@ -145,7 +121,6 @@ def _write_rst_header(
     cls_orig_name,
     version,
     current_path,
-    breadcrumb=None,
     display_title=None,
 ):
     istr1 = _get_indent_str(1)
@@ -161,8 +136,6 @@ def _write_rst_header(
         r.write(f".. _{cls_name}:\n\n")
     r.write(f"{title}\n")
     r.write(f'{"="*(len(title))}\n\n')
-    if breadcrumb:
-        _write_breadcrumb(r, breadcrumb)
     deprecated = getattr(cls, "_deprecated_version", None)
     if deprecated:
         try:
@@ -176,25 +149,16 @@ def _write_rst_header(
         release_version = str(pyfluent_fluent_version)
         r.write(f".. deprecated:: {release_version}\n\n")
         deprecated_class_version.update({current_path: (cls_name, release_version)})
-    if cls_name in instance_class_names:
-        # Named/list object member pages: autodoc would expose the internal
-        # class name, which carries a disambiguating ``_n`` suffix (for example
-        # ``velocity_inlet_1_item``), so render a clean ``class <name>_item``
-        # header instead. ``:no-index:`` avoids duplicate-object warnings since
-        # different collections can share the same ``_item`` name.
-        r.write(f".. py:class:: {cls._python_name}\n")
-        r.write(f"{istr1}:no-index:\n\n")
-    else:
-        r.write(
-            f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
-        )
-        # ``:show-inheritance:`` on collection containers renders a noisy
-        # ``Bases: NamedObject[<member>], ...`` line exposing internal generic
-        # subscripts; suppress it there while keeping useful base-type info
-        # (for example scalar parameter types) on every other page.
-        if not hasattr(cls, "child_object_type"):
-            r.write(f"{istr1}:show-inheritance:\n")
-        r.write("\n")
+    r.write(
+        f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
+    )
+    # ``:show-inheritance:`` on collection containers renders a noisy
+    # ``Bases: NamedObject[<member>], ...`` line exposing internal generic
+    # subscripts; suppress it there while keeping useful base-type info
+    # (for example scalar parameter types) on every other page.
+    if not hasattr(cls, "child_object_type"):
+        r.write(f"{istr1}:show-inheritance:\n")
+    r.write("\n")
 
 
 def _write_rst_body(r, cls, cls_name):
@@ -239,42 +203,28 @@ def _write_rst_body(r, cls, cls_name):
         _generate_table_for_rst(r, data_dict)
 
 
-def _recurse_rst_children(rst_dir, cls, version, current_path, breadcrumb):
+def _recurse_rst_children(rst_dir, cls, version, current_path):
     for attr in _CHILD_LIST_ATTRS:
         if hasattr(cls, attr):
             for child in getattr(cls, attr):
                 child_cls = cls._child_classes[child]
-                child_target = (
-                    "ref_root" if child_cls.__name__ == "root" else child_cls.__name__
-                )
-                child_breadcrumb = breadcrumb + [(child_cls._python_name, child_target)]
-                _populate_rst_from_settings(
-                    rst_dir, child_cls, version, current_path, child_breadcrumb
-                )
+                _populate_rst_from_settings(rst_dir, child_cls, version, current_path)
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
         instance_label = child_cls._python_name
-        member_breadcrumb = breadcrumb + [(instance_label, child_cls.__name__)]
         _populate_rst_from_settings(
             rst_dir,
             child_cls,
             version,
             current_path,
-            member_breadcrumb,
             display_title=instance_label,
         )
 
 
-def _populate_rst_from_settings(
-    rst_dir, cls, version, path="", breadcrumb=None, display_title=None
-):
+def _populate_rst_from_settings(rst_dir, cls, version, path="", display_title=None):
     current_path = f"{path}.{cls._python_name}" if path else cls._python_name
     cls_name = cls.__name__
     cls_orig_name = cls._python_name
-    if breadcrumb is None:
-        # Root page: the breadcrumb starts at the settings root itself.
-        root_target = "ref_root" if cls_orig_name == "root" else cls_name
-        breadcrumb = [(cls_orig_name, root_target)]
     rstpath = os.path.normpath(os.path.join(rst_dir, cls_name + ".rst"))
     with open(rstpath, "w") as r:
         _write_rst_header(
@@ -284,13 +234,12 @@ def _populate_rst_from_settings(
             cls_orig_name,
             version,
             current_path,
-            breadcrumb,
             display_title,
         )
         _write_rst_body(r, cls, cls_name)
     if rstpath not in rst_list:
         rst_list.append(rstpath)
-        _recurse_rst_children(rst_dir, cls, version, current_path, breadcrumb)
+        _recurse_rst_children(rst_dir, cls, version, current_path)
 
 
 def _write_deprecated_rst_table(rst_dir, deprecated_class_version):

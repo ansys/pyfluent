@@ -309,10 +309,30 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
         Whether the menu is of datamodel.
     """
     if is_datamodel:
-        title = menu_path if menu["name"].__name__ == "Root" else menu["name"].__name__
+        if menu["name"].__name__ == "Root":
+            title = menu_path
+        else:
+            # Named-object member classes are named ``_<container>``; show the
+            # friendly name (without the leading underscore) in the heading.
+            name = menu["name"].__name__
+            title = name[1:] if name.startswith("_") else name
     else:
         title = "tui" if menu["name"].__name__ == "main_menu" else menu["name"].__name__
     return title
+
+
+def _get_named_object_member(menu: dict):
+    """Return the named-object member class of a container menu, if any.
+
+    A datamodel named-object container (``PyNamedObjectContainer`` subclass)
+    exposes its member type as a nested ``_<container>`` class.
+    """
+    from ansys.fluent.core.services.object_model import PyNamedObjectContainer
+
+    container = menu["name"]
+    if isinstance(container, type) and issubclass(container, PyNamedObjectContainer):
+        return getattr(container, f"_{container.__name__}", None)
+    return None
 
 
 def _write_doc(menu: type, mode: str, is_datamodel: bool):
@@ -348,11 +368,37 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         f.write("   :autosummary:\n")
         f.write("   :autosummary-members:\n\n")
 
+        # Surface the named-object member type (mirrors the settings docs), but
+        # only when it has its own generated page (i.e. it has sub-members).
+        named_object_member = _get_named_object_member(menu) if is_datamodel else None
+        if (
+            named_object_member is not None
+            and named_object_member in menu["with_members"]
+        ):
+            member_label = named_object_member.__name__.lstrip("_")
+            _, member_path = _get_menu_name_path(named_object_member, True)
+            member_ref = (
+                f"ref_{mode}_datamodel_{member_path.rstrip('/').replace('/', '_')}"
+            )
+            f.write(".. rubric:: Named object type\n\n")
+            f.write("Access a member of this collection by name:\n\n")
+            f.write(
+                f":ref:`{member_label} <{member_ref}>` "
+                f"(for example, ``{menu['name'].__name__}['<name>']``)\n\n\n"
+            )
+        else:
+            named_object_member = None
+
         if menu["with_members"]:
             f.write(".. toctree::\n")
             f.write("   :hidden:\n\n")
+            named_member_name = (
+                named_object_member.__name__
+                if named_object_member is not None
+                else None
+            )
             for member in _get_sorted_members(menu["with_members"]):
-                if member.startswith("_"):
+                if member.startswith("_") and member != named_member_name:
                     continue
                 f.write(f"   {member}/{member}_contents\n")
 
