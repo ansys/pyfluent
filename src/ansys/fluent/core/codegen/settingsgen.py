@@ -329,7 +329,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     # in a string buffer which is written after writing the child class definitions.
     s = StringIO()
     s_stub = StringIO()
-    child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
+    child_object_name = f"{cls_name}_item" if data["child_object_type"] else None
     bases = ", ".join(_construct_bases(data["bases"], child_object_name))
     bases_stub = ", ".join(_construct_bases_stub(data["bases"], child_object_name))
     _write_class_header(s, s_stub, cls_name, bases, bases_stub, data)
@@ -341,7 +341,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         child_object_type = data["child_object_type"]
         s.write(f"    child_object_type = {child_object_name}\n")
         classes_to_write[child_object_name] = (
-            f"{python_name}_child",
+            f"{python_name}_item",
             child_object_type,
             _gethash(child_object_type),
             True,

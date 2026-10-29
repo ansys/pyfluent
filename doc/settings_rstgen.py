@@ -41,8 +41,9 @@ logger = logging.getLogger("pyfluent.settings_api")
 parents_dict = {}
 rst_list = []
 deprecated_class_version = {}
-# Class names (``__name__``) of named/list object member types, used to present
-# an instance with an ``_item`` suffix instead of the internal ``_child`` name.
+# Class names (``__name__``) of named/list object member types. Used to decide
+# which pages render a clean ``py:class`` header (the member's ``_python_name``)
+# instead of autodoc, whose class name carries a disambiguating ``_n`` suffix.
 instance_class_names = set()
 
 
@@ -108,30 +109,6 @@ def _populate_parents_list(cls):
         _populate_parents_list(getattr(cls, "child_object_type"))
 
 
-def _instance_name(member_cls):
-    """Return the friendly instance name shown for a collection member.
-
-    Members are presented with an ``_item`` suffix (for example
-    ``velocity_inlet_item``) instead of the internal ``_child`` suffix.
-    """
-    name = member_cls._python_name
-    if name.endswith("_child"):
-        name = name[: -len("_child")] + "_item"
-    return name
-
-
-def _display_name(cls):
-    """Return the user-facing name for a class.
-
-    Named/list object members are shown with the ``_item`` convention; every
-    other class uses its friendly ``_python_name`` (never the internal,
-    possibly ``_n``-suffixed class name).
-    """
-    if cls.__name__ in instance_class_names:
-        return _instance_name(cls)
-    return cls._python_name
-
-
 def _write_breadcrumb(r, breadcrumb):
     """Write a navigation breadcrumb from the settings root to the current page.
 
@@ -172,9 +149,9 @@ def _write_rst_header(
     display_title=None,
 ):
     istr1 = _get_indent_str(1)
-    # ``display_title`` lets named/list members present their access form
-    # (for example ``boundary_conditions['<name>']``) instead of the internal
-    # ``*_child`` class name.
+    # ``display_title`` lets named/list members present their clean instance
+    # name (for example ``velocity_inlet_item``) instead of the internal class
+    # name, which carries a disambiguating ``_n`` suffix.
     title = display_title or cls_orig_name
     r.write(":orphan:\n\n")
     # ``root`` used to create a hyperlink for settings API
@@ -201,10 +178,11 @@ def _write_rst_header(
         deprecated_class_version.update({current_path: (cls_name, release_version)})
     if cls_name in instance_class_names:
         # Named/list object member pages: autodoc would expose the internal
-        # ``*_child`` class name here, so render a clean ``class <name>_item``
+        # class name, which carries a disambiguating ``_n`` suffix (for example
+        # ``velocity_inlet_1_item``), so render a clean ``class <name>_item``
         # header instead. ``:no-index:`` avoids duplicate-object warnings since
         # different collections can share the same ``_item`` name.
-        r.write(f".. py:class:: {_instance_name(cls)}\n")
+        r.write(f".. py:class:: {cls._python_name}\n")
         r.write(f"{istr1}:no-index:\n\n")
     else:
         r.write(
@@ -234,7 +212,7 @@ def _write_rst_body(r, cls, cls_name):
         _write_common("Argument", r, cls, "argument_names")
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
-        instance_label = _instance_name(child_cls)
+        instance_label = child_cls._python_name
         r.write(".. rubric:: Named object type\n\n")
         if issubclass(cls, ListObject):
             access_example = f"{cls._python_name}[<index>]"
@@ -253,10 +231,10 @@ def _write_rst_body(r, cls, cls_name):
             parent_ref = parent.__name__
             if parent_ref == "root":
                 parent_ref = "ref_root"
-            # Display the friendly name (``_item`` for members, otherwise the
-            # ``_python_name``); keep the class name as the link target so the
-            # cross-reference still resolves.
-            ref_string = f":ref:`{_display_name(parent)} <{parent_ref}>`"
+            # Display the friendly ``_python_name`` (never the internal,
+            # possibly ``_n``-suffixed class name); keep the class name as the
+            # link target so the cross-reference still resolves.
+            ref_string = f":ref:`{parent._python_name} <{parent_ref}>`"
             data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
         _generate_table_for_rst(r, data_dict)
 
@@ -275,7 +253,7 @@ def _recurse_rst_children(rst_dir, cls, version, current_path, breadcrumb):
                 )
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
-        instance_label = _instance_name(child_cls)
+        instance_label = child_cls._python_name
         member_breadcrumb = breadcrumb + [(instance_label, child_cls.__name__)]
         _populate_rst_from_settings(
             rst_dir,
