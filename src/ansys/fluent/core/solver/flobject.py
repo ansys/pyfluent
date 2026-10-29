@@ -116,61 +116,157 @@ _static_class_attributes = [
 
 
 # --------------------------------------------------------------------------- #
-# Expression-object support                                                   #
+# Settings-expression protocol                                                #
 # --------------------------------------------------------------------------- #
 #
-# Settings leaves whose python-name path (stripped of NamedObject indices)
-# ends with one of these tuples will accept "expression objects" -- any
-# Python value implementing ``__fluent_expr__() -> str`` -- and convert them
-# to their Fluent-side string form before storing.
+# Any Python value can behave as an "expression object" at a settings leaf by
+# implementing the small, domain-neutral protocol below.  The settings layer
+# deliberately knows *nothing* about Fluent expressions (or any other concrete
+# expression implementation): it only talks to these dunder methods.
 #
-# Today the only entry targets ``setup.named_expressions[<name>].definition``,
-# but keeping this as a module-level constant lets future consumers plug in
-# additional paths (or migrate to a fully attribute-driven mechanism) without
-# touching :class:`Textual`.
-EXPRESSION_DEFINITION_PATHS: list[tuple[str, ...]] = [
-    ("setup", "named_expressions", "definition"),
-]
+#   __settings_str__(self) -> str
+#       REQUIRED.  Render the object to the string the settings leaf stores.
+#       Validation (see below) always runs *before* this is called.
+#
+#   __settings_kind__(self) -> str | None
+#       OPTIONAL.  Describe the *shape* of the produced value using one of the
+#       neutral tags in :data:`_EXPRESSION_KINDS` ("scalar", "vector",
+#       "boolean", "quantity", "location_list").  Return ``None`` when the kind
+#       is unknown, in which case the structural check is skipped.
+#
+#   __settings_dimensions__(self) -> dict[str, float] | None
+#       OPTIONAL.  Describe the physical dimensions of the produced value as a
+#       mapping of base-dimension name (e.g. ``"MASS"``) to exponent.  Return
+#       ``None`` when unknown, in which case the dimensional check is skipped.
+#
+# This keeps the generic settings layer decoupled from the Fluent expression
+# builder: the builder's AST nodes simply implement these methods.
+_EXPRESSION_KINDS = ("scalar", "vector", "boolean", "quantity", "location_list")
 
 
-def _python_name_chain(obj) -> list[str]:
-    """Return the python-name chain from root to ``obj``, excluding indices.
+def _is_settings_expression(state) -> bool:
+    """Return ``True`` when ``state`` implements the settings-expression protocol.
 
-    NamedObject index segments (``"[foo]"``) are dropped so the chain
-    represents structural position only.
+    Duck-typed on :func:`__settings_str__` -- a cheap ``getattr`` that
+    short-circuits for the overwhelmingly common case of plain values.
     """
-    names: list[str] = []
-    node = obj
-    while node is not None:
-        name = getattr(node, "python_name", None)
-        if name and not name.startswith("["):
-            names.append(name)
-        node = getattr(node, "_parent", None)
-    names.reverse()
-    return names
+    return callable(getattr(state, "__settings_str__", None))
 
 
-def _matches_expression_definition_path(obj) -> bool:
-    """Return True if ``obj`` sits at one of :data:`EXPRESSION_DEFINITION_PATHS`."""
-    chain = _python_name_chain(obj)
-    for suffix in EXPRESSION_DEFINITION_PATHS:
-        if len(suffix) <= len(chain) and tuple(chain[-len(suffix) :]) == suffix:
-            return True
-    return False
+def _normalize_dimensions(dimensions) -> dict[str, float]:
+    """Normalize a dimensions mapping to ``{name: exponent}``.
 
-
-def _try_render_expression(state):
-    """If ``state`` looks like an expression object, return its rendered string.
-
-    Duck-typed on ``__fluent_expr__``.  Returns ``None`` when ``state`` is not
-    an expression object, so callers can fall through to their existing logic.
+    Accepts either an ``ansys.units`` ``Dimensions`` object (whose keys are
+    ``BaseDimensions`` enum members) or a plain ``{name: exponent}`` dict, so
+    the settings layer can compare values coming from different sources.  Zero
+    exponents are dropped.
     """
-    render = getattr(state, "__fluent_expr__", None)
-    if callable(render):
-        rendered = render()
-        if isinstance(rendered, str):
-            return rendered
-    return None
+    normalized: dict[str, float] = {}
+    for key, exponent in dict(dimensions).items():
+        if not exponent:
+            continue
+        # ``BaseDimensions`` enum members expose ``.name``; plain string keys
+        # are used as-is.
+        name = getattr(key, "name", key)
+        normalized[str(name)] = float(exponent)
+    return normalized
+
+
+def _leaf_dimensions(leaf) -> dict[str, float] | None:
+    """Best-effort physical dimensions implied by a leaf's units, or ``None``.
+
+    Only numerical leaves (those exposing a ``units()`` method, e.g.
+    :class:`RealNumerical`) carry unit information.  Any failure to resolve the
+    units into dimensions is treated as "unknown" (returns ``None``) so the
+    dimensional check never blocks a legitimate assignment.
+    """
+    units = getattr(leaf, "units", None)
+    if not callable(units):
+        return None
+    try:
+        unit_str = units()
+        if not unit_str:
+            return None
+        return _normalize_dimensions(ansys.units.Quantity(1, unit_str).dimensions)
+    except Exception:
+        return None
+
+
+def _validate_expression_quantity(leaf, state) -> None:
+    """Validate an expression object against ``leaf`` *before* it is rendered.
+
+    Performs two independent, best-effort "quantity-type" checks so that an
+    obviously incompatible expression is rejected in the client settings layer
+    rather than producing a string that Fluent would later reject:
+
+    1. **Structural kind** -- compares the expression's ``__settings_kind__``
+       against the kinds the leaf accepts (``leaf._expression_kinds``).  This
+       catches, for example, a vector or boolean expression assigned to a
+       scalar real leaf.  Skipped when either side does not declare its kind.
+    2. **Physical dimension** -- compares the expression's
+       ``__settings_dimensions__`` against the dimensions implied by the leaf's
+       units.  Only a *confident* mismatch (both sides known and different)
+       raises; unknown dimensions are tolerated so that composite expressions
+       (whose dimensions cannot be inferred) are never blocked.
+
+    Raises
+    ------
+    TypeError
+        If the expression's kind or dimensions are incompatible with ``leaf``.
+    """
+    leaf_label = getattr(leaf, "python_path", None) or leaf
+
+    # 1. Structural kind check.
+    accepted_kinds = getattr(leaf, "_expression_kinds", None)
+    kind_getter = getattr(state, "__settings_kind__", None)
+    kind = kind_getter() if callable(kind_getter) else None
+    if accepted_kinds is not None and kind is not None and kind not in accepted_kinds:
+        raise TypeError(
+            f"Expression of kind '{kind}' is not valid for '{leaf_label}', "
+            f"which accepts {', '.join(accepted_kinds)} expressions."
+        )
+
+    # 2. Physical dimension check (best-effort, only on confident mismatch).
+    dims_getter = getattr(state, "__settings_dimensions__", None)
+    raw_expr_dims = dims_getter() if callable(dims_getter) else None
+    if raw_expr_dims is None:
+        return
+    expr_dims = _normalize_dimensions(raw_expr_dims)
+    leaf_dims = _leaf_dimensions(leaf)
+    if not expr_dims or leaf_dims is None:
+        # Unknown on at least one side -- do not block.
+        return
+    if expr_dims != leaf_dims:
+        raise TypeError(
+            f"Expression with dimensions {expr_dims} is not compatible with "
+            f"'{leaf_label}', which expects dimensions {leaf_dims}."
+        )
+
+
+def _render_settings_expression(leaf, state) -> str | None:
+    """Validate and render ``state`` when it is a settings-expression object.
+
+    Returns the rendered string, or ``None`` when ``state`` is not an
+    expression object (so callers fall through to their normal handling).  The
+    quantity-type validation always runs *before* the string is produced,
+    satisfying the "check the quantity type prior to ``str`` conversion"
+    contract.
+
+    Raises
+    ------
+    TypeError
+        If validation fails, or if the object does not render to a string.
+    """
+    if not _is_settings_expression(state):
+        return None
+    _validate_expression_quantity(leaf, state)
+    rendered = state.__settings_str__()
+    if not isinstance(rendered, str):
+        raise TypeError(
+            f"Expression object {state!r} did not render to a string "
+            f"(got {type(rendered).__name__})."
+        )
+    return rendered
 
 
 class InactiveObjectError(RuntimeError):
@@ -841,6 +937,11 @@ class RealNumerical(Numerical):
         Get the units string.
     """
 
+    # Real-valued leaves accept expression strings (see ``RealType``); a scalar
+    # real therefore accepts scalar / value-with-units expression objects.
+    # Containers (e.g. :class:`RealList`) widen this -- see their override.
+    _expression_kinds: tuple[str, ...] = ("scalar", "quantity")
+
     def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
@@ -866,7 +967,11 @@ class RealNumerical(Numerical):
         ----------
         state
             The type of state can be float, str (representing either
-            an expression or a value with units), or an ansys.units.Quantity.
+            an expression or a value with units), an ansys.units.Quantity,
+            or any object implementing the settings-expression protocol
+            (``__settings_str__``) -- for example an ``Expr`` produced by the
+            expression builder. Expression objects are validated against this
+            leaf's kind and units before being rendered to a string.
         kwargs : StateType
             Keyword arguments.
 
@@ -876,7 +981,19 @@ class RealNumerical(Numerical):
             If the quantity object cannot be handled for the given path. This can
             happen if the quantity attribute specifies an unsupported quantity, or if
             the units specified for the quantity are not supported.
+        TypeError
+            If an expression object's kind or dimensions are incompatible with
+            this leaf.
         """
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is validated (kind + dimensions) and
+        # rendered to its string form *before* any quantity handling below.
+        # Real-valued leaves accept expression strings, so this is where an
+        # ``Expr`` becomes a valid assignment for them.
+        rendered = _render_settings_expression(self, state)
+        if rendered is not None:
+            return self.base_set_state(state=rendered, **kwargs)
+
         try:
 
             def get_units():
@@ -909,36 +1026,39 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
+    # String leaves broadly accept Fluent expression strings (named-expression
+    # definitions, boundary-condition profiles, and so on). A definition may be
+    # scalar, vector, boolean, or a value-with-units, so all of those kinds are
+    # accepted; a bare location list is not a valid string value.
+    _expression_kinds: tuple[str, ...] = ("scalar", "vector", "boolean", "quantity")
+
     def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
         ----------
         state
-            Either str, VariableDescriptor, or -- at whitelisted paths
-            (see :data:`EXPRESSION_DEFINITION_PATHS`) -- any object
-            implementing ``__fluent_expr__() -> str`` (e.g. an
-            :class:`~ansys.fluent.core.offline.expressions.Expr` produced by the
-            expression builder).
+            Either ``str``, ``VariableDescriptor``, or any object implementing
+            the settings-expression protocol (``__settings_str__``) -- for
+            example an ``Expr`` produced by the expression builder. Expression
+            objects are validated against this leaf's accepted kinds before
+            being rendered to their string form and stored.
         kwargs : StateType
             Keyword arguments.
 
         Raises
         ------
         TypeError
-            If state is not a string.
+            If state is not a string, or if an expression object's kind is
+            incompatible with this leaf.
         """
-        # Expression-object support: convert an Expr-like input to its
-        # Fluent-side string form when this leaf is a recognised
-        # expression-definition slot.  Duck-type check first: it's a cheap
-        # getattr that short-circuits the parent-walk in the path match for
-        # the ~all case where ``state`` is a plain value.
-        if hasattr(state, "__fluent_expr__") and _matches_expression_definition_path(
-            self
-        ):
-            rendered = _try_render_expression(state)
-            if rendered is not None:
-                return self.base_set_state(state=rendered, **kwargs)
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is validated and rendered to its string
+        # form before the plain-string handling below. ``VariableDescriptor``
+        # does not implement the protocol, so it falls through unchanged.
+        rendered = _render_settings_expression(self, state)
+        if rendered is not None:
+            return self.base_set_state(state=rendered, **kwargs)
 
         allowed_types = (str, VariableDescriptor)
 
@@ -1257,6 +1377,11 @@ class RealList(SettingsBase[RealListType], RealNumerical):
 
     base_set_state: Callable[..., None] = SettingsBase[RealListType].set_state
     set_state: Callable[..., None] = RealNumerical.set_state
+
+    # A real-list leaf holds a container of reals, so (in addition to the scalar
+    # / value-with-units kinds inherited from :class:`RealNumerical`) it also
+    # accepts vector-valued expressions.
+    _expression_kinds: tuple[str, ...] = ("scalar", "vector", "quantity")
 
     _state_type = RealListType
 
