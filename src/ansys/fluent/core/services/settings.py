@@ -65,7 +65,6 @@ _indent: int = 0
 
 def _trace(fn):
     @wraps(fn)
-    # No named parameters here: a leading ``self`` hides the wrapped hints from beartype.
     def _fn(*args, **kwds):
         global _indent
         if trace:
