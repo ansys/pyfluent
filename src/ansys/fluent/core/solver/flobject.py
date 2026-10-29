@@ -3106,7 +3106,7 @@ def get_root(
         try:
             settings = _load_module(
                 f"settings_{version}",
-                config.codegen_outdir / "solver" / f"settings_{version}.py",
+                version_dir / "solver" / "settings.py",
             )
             root_cls = settings.root
         except FileNotFoundError:
