@@ -25,9 +25,11 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core.solver.flobject import StateType
 
 
+@no_runtime_type_check
 class AbstractSettings(ABC):
     """Abstract base class for accessing and modifying Fluent settings."""
 
