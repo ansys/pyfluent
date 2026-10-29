@@ -70,15 +70,14 @@ Simulation of Steady Vortex in a Stirred Tank
 # These classes allow straightforward access to various settings without the need to
 # navigate through the settings hierarchy.
 
-# sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
-# sphinx_gallery_thumbnail_path = '_static/steady_vortex/steady_vortex_setup.png'
-
 #######################################################################################
 # Dependencies
 # -------------------------------------------------------------------------------------
 # ansys-fluent-core
 # imageio
 
+# sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
+# sphinx_gallery_thumbnail_path = '_static/steady_vortex/steady_vortex_setup.png'
 import os
 
 import imageio.v2 as imageio

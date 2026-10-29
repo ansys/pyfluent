@@ -128,7 +128,7 @@ class PathlinesFieldDataRequest(BaseDataRequest):
     """Container storing parameters for path-lines field data request."""
 
     field_name: str | "ScalarVariableDescriptor"
-    additional_field_name: str = ""
+    additional_field_name: str | "ScalarVariableDescriptor" = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
     steps: int | None = 500
@@ -145,6 +145,10 @@ class PathlinesFieldDataRequest(BaseDataRequest):
     def _validate_inputs(self) -> None:
         if not isinstance(self.field_name, (str)):
             _validate_scalar_variable_descriptor(self.field_name)
+        if self.additional_field_name and not isinstance(
+            self.additional_field_name, (str)
+        ):
+            _validate_scalar_variable_descriptor(self.additional_field_name)
 
 
 _set_dataclass_field_docs(

@@ -1189,6 +1189,9 @@ def test_slurm_launcher_start_timeout_respects_explicit_value():
 def test_launch_fluent_does_not_force_config_timeout_for_slurm(monkeypatch):
     # Slurm default should be -1 (no timeout) even when parent resolves unset
     # start_timeout to config.launch_fluent_timeout (issue #4628).
+    # CONTAINER mode takes priority over scheduler_options in launch mode resolution,
+    # so launch_fluent_container must be forced off (CI sets PYFLUENT_LAUNCH_CONTAINER=1).
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     captured_launcher = {}
 
     def mock_call(self):
@@ -1275,6 +1278,9 @@ def test_launcher_timeout_defaults_via_launch_fluent(monkeypatch):
     """Verify launch_fluent passes None to launchers, allowing each to set its own default."""
     from ansys.fluent.core.execution.launcher.slurm_launcher import SlurmLauncher
 
+    # CONTAINER mode takes priority over scheduler_options in launch mode resolution,
+    # so launch_fluent_container must be forced off (CI sets PYFLUENT_LAUNCH_CONTAINER=1).
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     captured_launcher = {}
 
     # Mock SlurmLauncher.__call__ to capture the launcher instance without executing

@@ -25,11 +25,18 @@ To assign the expression to a named expression in a live Fluent solver:
   >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
   >>> solver_session.settings.file.read_case(file_name=case_path)
 
+  >>> # Initialize the solution before creating and evaluating expressions
+  >>> solver_session.solution.initialization.hybrid_initialize()
+
+  >>> # Create the expression builder
   >>> builder = ExpressionBuilder(session=solver_session)
   >>> expr = builder.reductions.area_ave(
   ...     expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
   ... )
 
-  >>> named = solver_session.setup.named_expressions.create()
+  >>> # Assign to a named expression and evaluate
+  >>> # The expression is converted to string format: "AreaAve(AbsolutePressure,['inlet1'])"
+  >>> named = solver_session.settings.setup.named_expressions.create()
   >>> named.definition = expr
+  >>> # Call get_value() to evaluate the expression against the flow field using Fluent's solver
   >>> value = named.get_value()
