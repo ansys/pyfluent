@@ -1247,6 +1247,43 @@ class SettingsBase(Base, Generic[StateT]):
         Set the state of the object.
     """
 
+    def __init_subclass__(cls, **kwargs):
+        """Enforce correct wiring of the settings-expression protocol.
+
+        A leaf opts into the protocol by declaring ``_expression_kinds``.  Because
+        ``SettingsBase`` precedes the behaviour mixins (:class:`Textual`,
+        :class:`RealNumerical`) in every leaf's MRO, a bare ``set_state`` resolves
+        to :meth:`SettingsBase.set_state`, which stores the value directly and
+        *bypasses* expression rendering/validation -- silently serializing an
+        expression object with ``str()``.  Such a leaf must therefore route
+        ``set_state`` through an expression-aware setter and expose the core
+        setter as ``base_set_state``.
+
+        This hook turns that easy-to-forget wiring from a silent runtime bug into
+        a loud, immediate failure at class-definition (import) time.
+        """
+        super().__init_subclass__(**kwargs)
+        if getattr(cls, "_expression_kinds", None) is None:
+            return
+        if cls.set_state is SettingsBase.set_state:
+            raise TypeError(
+                f"{cls.__name__} declares '_expression_kinds' (opting into the "
+                f"settings-expression protocol) but its 'set_state' resolves to "
+                f"'SettingsBase.set_state', which bypasses expression handling. "
+                f"Wire an expression-aware setter in the class body, e.g.\n"
+                f"    base_set_state = SettingsBase[...].set_state\n"
+                f"    set_state = RealNumerical.set_state  # or Textual.set_state "
+                f"/ _textual_list_set_state"
+            )
+        if getattr(cls, "base_set_state", None) is not SettingsBase.set_state:
+            raise TypeError(
+                f"{cls.__name__} routes 'set_state' through an expression-aware "
+                f"setter but does not expose the core setter as "
+                f"'base_set_state = SettingsBase[...].set_state'. The "
+                f"expression-aware setter delegates to 'base_set_state', so it "
+                f"must point at 'SettingsBase.set_state'."
+            )
+
     @classmethod
     def to_scheme_keys(cls, value: StateT, root_cls: type, path: list[str]) -> StateT:
         """Convert value to have keys with scheme names.

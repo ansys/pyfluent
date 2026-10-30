@@ -24,13 +24,19 @@ from ansys.fluent.core.offline.expressions._ast import Quantity
 from ansys.fluent.core.solver.flobject import (
     Filename,
     FilenameList,
+    Numerical,
+    Real,
+    RealList,
     RealNumerical,
+    SettingsBase,
+    String,
     StringList,
     Textual,
     _is_settings_expression,
     _normalize_dimensions,
     _render_settings_expression,
     _render_settings_expression_list,
+    _textual_list_set_state,
 )
 from ansys.units import VariableCatalog as V
 
@@ -478,3 +484,76 @@ def test_parsed_expression_kind_vs_target_parameter_kind(
         with pytest.raises(TypeError, match=f"kind '{expr_kind}'"):
             target.set_state_via(expr)
         assert target.captured is None
+
+
+# --------------------------------------------------------------------------- #
+# SettingsBase enforces correct expression-protocol wiring at import time      #
+# --------------------------------------------------------------------------- #
+#
+# Leaves declare ``SettingsBase`` before the behaviour mixin, so a bare
+# ``set_state`` resolves to ``SettingsBase.set_state`` and silently bypasses the
+# expression protocol. ``SettingsBase.__init_subclass__`` turns that easy-to-
+# forget wiring mistake into a loud failure at class-definition time.
+
+
+def test_guard_rejects_leaf_that_forgets_to_wire_set_state():
+    # Declares _expression_kinds (opts in) but never wires an expression-aware
+    # set_state -> set_state resolves to SettingsBase.set_state.
+    with pytest.raises(TypeError, match="bypasses expression handling"):
+
+        class _ForgotToWire(SettingsBase[str], Textual):
+            _expression_kinds = ("scalar",)
+
+
+def test_guard_rejects_leaf_that_forgets_base_set_state():
+    # Routes set_state through an expression-aware setter but forgets to expose
+    # the core setter as base_set_state (which that setter delegates to).
+    with pytest.raises(TypeError, match="base_set_state"):
+
+        class _HalfWired(SettingsBase[str], Textual):
+            _expression_kinds = ("scalar",)
+            set_state = Textual.set_state
+
+
+def test_guard_accepts_correctly_wired_leaf():
+    # A leaf that wires both set_state and base_set_state passes the guard.
+    class _CorrectlyWired(SettingsBase[str], Textual):
+        _expression_kinds = ("scalar",)
+        base_set_state = SettingsBase[str].set_state
+        set_state = Textual.set_state
+
+    assert _CorrectlyWired.set_state is Textual.set_state
+    assert _CorrectlyWired.base_set_state is SettingsBase.set_state
+
+
+def test_guard_accepts_textual_list_setter():
+    # The list helper used by StringList / FilenameList is a valid wiring too.
+    class _CorrectlyWiredList(SettingsBase[list], Textual):
+        _expression_kinds = ("scalar", "vector")
+        base_set_state = SettingsBase[list].set_state
+        set_state = _textual_list_set_state
+
+    assert _CorrectlyWiredList.set_state is _textual_list_set_state
+    assert _CorrectlyWiredList.base_set_state is SettingsBase.set_state
+
+
+def test_guard_ignores_leaf_without_expression_kinds():
+    # A leaf that does not opt into the protocol (no _expression_kinds anywhere
+    # in its MRO) is unaffected, even though its set_state resolves to
+    # SettingsBase.set_state.
+    class _PlainLeaf(SettingsBase[int], Numerical):
+        pass
+
+    assert getattr(_PlainLeaf, "_expression_kinds", None) is None
+    assert _PlainLeaf.set_state is SettingsBase.set_state  # no error raised
+
+
+@pytest.mark.parametrize(
+    "leaf_cls", [Real, RealList, String, StringList, Filename, FilenameList]
+)
+def test_shipped_expression_leaves_are_correctly_wired(leaf_cls):
+    # Regression guard: every shipped leaf that opts into the protocol must not
+    # resolve set_state back to the bypassing SettingsBase.set_state.
+    assert leaf_cls._expression_kinds is not None
+    assert leaf_cls.set_state is not SettingsBase.set_state
+    assert leaf_cls.base_set_state is SettingsBase.set_state
