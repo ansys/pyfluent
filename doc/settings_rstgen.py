@@ -28,6 +28,7 @@ from pathlib import Path
 from deprecated_apis import PYFLUENT_DEPRECATED_DATA
 
 from ansys.fluent.core import config
+from ansys.fluent.core.solver.flobject import ListObject
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
@@ -90,7 +91,8 @@ def _populate_parents_list(cls):
                 _register_parent(cls._child_classes[child].__name__, cls)
 
     if hasattr(cls, "child_object_type"):
-        _register_parent(getattr(cls, "child_object_type").__name__, cls)
+        member = getattr(cls, "child_object_type")
+        _register_parent(member.__name__, cls)
 
     # Phase 2: recurse into each immediate child.
     for attr in _CHILD_LIST_ATTRS:
@@ -112,16 +114,28 @@ def _write_common(initial_param, r, cls, attr):
     _generate_table_for_rst(r, data_dict)
 
 
-def _write_rst_header(r, cls, cls_name, cls_orig_name, version, current_path):
+def _write_rst_header(
+    r,
+    cls,
+    cls_name,
+    cls_orig_name,
+    version,
+    current_path,
+    display_title=None,
+):
     istr1 = _get_indent_str(1)
+    # ``display_title`` lets named/list members present their clean instance
+    # name (for example ``velocity_inlet_item``) instead of the internal class
+    # name, which carries a disambiguating ``_n`` suffix.
+    title = display_title or cls_orig_name
     r.write(":orphan:\n\n")
     # ``root`` used to create a hyperlink for settings API
     if cls_orig_name == "root":
         r.write(f".. _ref_{cls_name}:\n\n")
     else:
         r.write(f".. _{cls_name}:\n\n")
-    r.write(f"{cls_orig_name}\n")
-    r.write(f'{"="*(len(cls_orig_name))}\n\n')
+    r.write(f"{title}\n")
+    r.write(f'{"="*(len(title))}\n\n')
     deprecated = getattr(cls, "_deprecated_version", None)
     if deprecated:
         try:
@@ -138,7 +152,13 @@ def _write_rst_header(r, cls, cls_name, cls_orig_name, version, current_path):
     r.write(
         f".. autoclass:: ansys.fluent.core.generated.v{version}.solver.settings.{cls_name}\n"
     )
-    r.write(f"{istr1}:show-inheritance:\n\n")
+    # ``:show-inheritance:`` on collection containers renders a noisy
+    # ``Bases: NamedObject[<member>], ...`` line exposing internal generic
+    # subscripts; suppress it there while keeping useful base-type info
+    # (for example scalar parameter types) on every other page.
+    if not hasattr(cls, "child_object_type"):
+        r.write(f"{istr1}:show-inheritance:\n")
+    r.write("\n")
 
 
 def _write_rst_body(r, cls, cls_name):
@@ -156,9 +176,18 @@ def _write_rst_body(r, cls, cls_name):
         _write_common("Argument", r, cls, "argument_names")
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
-        ref_string = f":ref:`{child_cls.__name__} <{child_cls.__name__}>`"
+        instance_label = child_cls._python_name
         r.write(".. rubric:: Named object type\n\n")
-        r.write(f"{ref_string}\n\n\n")
+        if issubclass(cls, ListObject):
+            access_example = f"{cls._python_name}[<index>]"
+            r.write("Access a member of this collection by index:\n\n")
+        else:
+            access_example = f"{cls._python_name}['<name>']"
+            r.write("Access a member of this collection by name:\n\n")
+        r.write(
+            f":ref:`{instance_label} <{child_cls.__name__}>` "
+            f"(for example, ``{access_example}``)\n\n\n"
+        )
     if parents_dict.get(cls_name):
         r.write(".. rubric:: Included in:\n\n")
         data_dict = {"Parent": "Summary"}
@@ -166,7 +195,10 @@ def _write_rst_body(r, cls, cls_name):
             parent_ref = parent.__name__
             if parent_ref == "root":
                 parent_ref = "ref_root"
-            ref_string = f":ref:`{parent.__name__} <{parent_ref}>`"
+            # Display the friendly ``_python_name`` (never the internal,
+            # possibly ``_n``-suffixed class name); keep the class name as the
+            # link target so the cross-reference still resolves.
+            ref_string = f":ref:`{parent._python_name} <{parent_ref}>`"
             data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
         _generate_table_for_rst(r, data_dict)
 
@@ -175,22 +207,35 @@ def _recurse_rst_children(rst_dir, cls, version, current_path):
     for attr in _CHILD_LIST_ATTRS:
         if hasattr(cls, attr):
             for child in getattr(cls, attr):
-                _populate_rst_from_settings(
-                    rst_dir, cls._child_classes[child], version, current_path
-                )
+                child_cls = cls._child_classes[child]
+                _populate_rst_from_settings(rst_dir, child_cls, version, current_path)
     if hasattr(cls, "child_object_type"):
+        child_cls = getattr(cls, "child_object_type")
+        instance_label = child_cls._python_name
         _populate_rst_from_settings(
-            rst_dir, getattr(cls, "child_object_type"), version, current_path
+            rst_dir,
+            child_cls,
+            version,
+            current_path,
+            display_title=instance_label,
         )
 
 
-def _populate_rst_from_settings(rst_dir, cls, version, path=""):
+def _populate_rst_from_settings(rst_dir, cls, version, path="", display_title=None):
     current_path = f"{path}.{cls._python_name}" if path else cls._python_name
     cls_name = cls.__name__
     cls_orig_name = cls._python_name
     rstpath = os.path.normpath(os.path.join(rst_dir, cls_name + ".rst"))
     with open(rstpath, "w") as r:
-        _write_rst_header(r, cls, cls_name, cls_orig_name, version, current_path)
+        _write_rst_header(
+            r,
+            cls,
+            cls_name,
+            cls_orig_name,
+            version,
+            current_path,
+            display_title,
+        )
         _write_rst_body(r, cls, cls_name)
     if rstpath not in rst_list:
         rst_list.append(rstpath)
