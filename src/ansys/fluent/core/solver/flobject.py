@@ -116,61 +116,291 @@ _static_class_attributes = [
 
 
 # --------------------------------------------------------------------------- #
-# Expression-object support                                                   #
+# Settings-expression protocol                                                #
 # --------------------------------------------------------------------------- #
 #
-# Settings leaves whose python-name path (stripped of NamedObject indices)
-# ends with one of these tuples will accept "expression objects" -- any
-# Python value implementing ``__fluent_expr__() -> str`` -- and convert them
-# to their Fluent-side string form before storing.
+# Any Python value can behave as an "expression object" at a settings leaf by
+# implementing the small, domain-neutral protocol below.  The settings layer
+# deliberately knows *nothing* about Fluent expressions (or any other concrete
+# expression implementation): it only talks to these dunder methods.
 #
-# Today the only entry targets ``setup.named_expressions[<name>].definition``,
-# but keeping this as a module-level constant lets future consumers plug in
-# additional paths (or migrate to a fully attribute-driven mechanism) without
-# touching :class:`Textual`.
-EXPRESSION_DEFINITION_PATHS: list[tuple[str, ...]] = [
-    ("setup", "named_expressions", "definition"),
-]
+#   __settings_str__(self) -> str
+#       REQUIRED.  Render the object to the string the settings leaf stores.
+#       Validation (see below) always runs *before* this is called.
+#
+#   __settings_kind__(self) -> str | None
+#       OPTIONAL.  Describe the *shape* of the produced value using one of the
+#       neutral tags in :data:`_EXPRESSION_KINDS` ("scalar", "vector",
+#       "boolean", "quantity", "location_list").  Return ``None`` when the kind
+#       is unknown, in which case the structural check is skipped.
+#
+#   __settings_dimensions__(self) -> dict[str, float] | None
+#       OPTIONAL.  Describe the physical dimensions of the produced value as a
+#       mapping of base-dimension name (e.g. ``"MASS"``) to exponent.  Return
+#       ``None`` when unknown, in which case the dimensional check is skipped.
+#
+# This keeps the generic settings layer decoupled from the Fluent expression
+# builder: the builder's AST nodes simply implement these methods.
+_EXPRESSION_KINDS = ("scalar", "vector", "boolean", "quantity", "location_list")
 
 
-def _python_name_chain(obj) -> list[str]:
-    """Return the python-name chain from root to ``obj``, excluding indices.
+def _is_settings_expression(state) -> bool:
+    """Return ``True`` when ``state`` implements the settings-expression protocol.
 
-    NamedObject index segments (``"[foo]"``) are dropped so the chain
-    represents structural position only.
+    Duck-typed on :func:`__settings_str__` -- a cheap ``getattr`` that
+    short-circuits for the overwhelmingly common case of plain values.
     """
-    names: list[str] = []
-    node = obj
-    while node is not None:
-        name = getattr(node, "python_name", None)
-        if name and not name.startswith("["):
-            names.append(name)
-        node = getattr(node, "_parent", None)
-    names.reverse()
-    return names
+    return callable(getattr(state, "__settings_str__", None))
 
 
-def _matches_expression_definition_path(obj) -> bool:
-    """Return True if ``obj`` sits at one of :data:`EXPRESSION_DEFINITION_PATHS`."""
-    chain = _python_name_chain(obj)
-    for suffix in EXPRESSION_DEFINITION_PATHS:
-        if len(suffix) <= len(chain) and tuple(chain[-len(suffix) :]) == suffix:
-            return True
-    return False
+def _normalize_dimensions(dimensions) -> dict[str, float]:
+    """Normalize a dimensions mapping to ``{name: exponent}``.
 
-
-def _try_render_expression(state):
-    """If ``state`` looks like an expression object, return its rendered string.
-
-    Duck-typed on ``__fluent_expr__``.  Returns ``None`` when ``state`` is not
-    an expression object, so callers can fall through to their existing logic.
+    Accepts either an ``ansys.units`` ``Dimensions`` object (whose keys are
+    ``BaseDimensions`` enum members) or a plain ``{name: exponent}`` dict, so
+    the settings layer can compare values coming from different sources.  Zero
+    exponents are dropped.
     """
-    render = getattr(state, "__fluent_expr__", None)
-    if callable(render):
-        rendered = render()
-        if isinstance(rendered, str):
+    normalized: dict[str, float] = {}
+    for key, exponent in dict(dimensions).items():
+        if not exponent:
+            continue
+        # ``BaseDimensions`` enum members expose ``.name``; plain string keys
+        # are used as-is.
+        name = getattr(key, "name", key)
+        normalized[str(name)] = float(exponent)
+    return normalized
+
+
+def _leaf_dimensions(leaf) -> dict[str, float] | None:
+    """Best-effort physical dimensions implied by a leaf's units, or ``None``.
+
+    Only numerical leaves (those exposing a ``units()`` method, e.g.
+    :class:`RealNumerical`) carry unit information.  Any failure to resolve the
+    units into dimensions is treated as "unknown" (returns ``None``) so the
+    dimensional check never blocks a legitimate assignment.
+
+    A ``None`` units string means the units are unknown (unresolved) and yields
+    ``None``.  An empty units string (``""``) means a *known* dimensionless
+    setting -- ``get_si_unit_for_fluent_quantity`` returns ``""`` for
+    dimensionless quantities such as turbulent intensity -- and yields an empty
+    ``{}`` mapping so that a dimensional expression (e.g. a pressure-valued one)
+    is correctly rejected rather than silently skipped.
+    """
+    units = getattr(leaf, "units", None)
+    if not callable(units):
+        return None
+    try:
+        unit_str = units()
+        if unit_str is None:
+            return None
+        return _normalize_dimensions(ansys.units.Quantity(1, unit_str).dimensions)
+    except Exception:
+        return None
+
+
+def _leaf_label(leaf) -> str:
+    """Return a human-readable label for ``leaf`` in error messages.
+
+    ``leaf`` may be a leaf *instance* (whose ``python_path`` is a string) or a
+    leaf *class* (reached via the shared ``to_scheme_keys`` conversion path,
+    where ``python_path``/``python_name`` resolve to property descriptors rather
+    than strings).  Falls back to the class name so the message stays readable.
+    """
+    for attr in ("python_path", "python_name"):
+        value = getattr(leaf, attr, None)
+        if isinstance(value, str):
+            return value
+    return getattr(leaf, "__name__", None) or str(leaf)
+
+
+# Sentinel distinguishing "leaf dimensions were not precomputed" (resolve them
+# via an RPC) from a resolved value of ``None`` (units are genuinely unknown).
+_LEAF_DIMS_UNRESOLVED = object()
+
+
+def _validate_expression_quantity(
+    leaf, state, accepted_kinds=None, leaf_dims=_LEAF_DIMS_UNRESOLVED
+) -> None:
+    """Validate an expression object against ``leaf`` *before* it is rendered.
+
+    Performs two independent, best-effort "quantity-type" checks so that an
+    obviously incompatible expression is rejected in the client settings layer
+    rather than producing a string that Fluent would later reject:
+
+    1. **Structural kind** -- compares the expression's ``__settings_kind__``
+       against the kinds the leaf accepts (``leaf._expression_kinds``, or
+       ``accepted_kinds`` when supplied -- e.g. the scalar kinds used for each
+       element of a real-list leaf).  This catches, for example, a vector or
+       boolean expression assigned to a scalar real leaf.  Skipped when either
+       side does not declare its kind.
+    2. **Physical dimension** -- compares the expression's
+       ``__settings_dimensions__`` against the dimensions implied by the leaf's
+       units.  Only a *confident* mismatch (both sides known and different)
+       raises; unknown dimensions are tolerated so that composite expressions
+       (whose dimensions cannot be inferred) are never blocked.
+
+    ``leaf_dims`` lets a caller pass the leaf's already-resolved dimensions so a
+    bulk assignment (e.g. a :class:`RealList`) resolves the leaf's units once
+    instead of once per element -- each resolution is an uncached RPC.  When
+    left unset the dimensions are resolved here on demand.
+
+    Raises
+    ------
+    TypeError
+        If the expression's kind or dimensions are incompatible with ``leaf``.
+    """
+    leaf_label = _leaf_label(leaf)
+
+    # 1. Structural kind check.
+    if accepted_kinds is None:
+        accepted_kinds = getattr(leaf, "_expression_kinds", None)
+    kind_getter = getattr(state, "__settings_kind__", None)
+    kind = kind_getter() if callable(kind_getter) else None
+    if accepted_kinds is not None and kind is not None and kind not in accepted_kinds:
+        raise TypeError(
+            f"Expression of kind '{kind}' is not valid for '{leaf_label}', "
+            f"which accepts {', '.join(accepted_kinds)} expressions."
+        )
+
+    # 2. Physical dimension check (best-effort, only on confident mismatch).
+    dims_getter = getattr(state, "__settings_dimensions__", None)
+    raw_expr_dims = dims_getter() if callable(dims_getter) else None
+    if raw_expr_dims is None:
+        return
+    expr_dims = _normalize_dimensions(raw_expr_dims)
+    if leaf_dims is _LEAF_DIMS_UNRESOLVED:
+        leaf_dims = _leaf_dimensions(leaf)
+    if leaf_dims is None:
+        # Leaf units are unknown (unresolved) -- do not block.  An empty
+        # ``expr_dims`` ({}) is a *known* dimensionless expression (the protocol
+        # uses ``None`` for unknown, handled above), so it is still compared
+        # against the leaf below rather than skipped here.
+        return
+    if expr_dims != leaf_dims:
+        raise TypeError(
+            f"Expression with dimensions {expr_dims} is not compatible with "
+            f"'{leaf_label}', which expects dimensions {leaf_dims}."
+        )
+
+
+def _render_settings_expression(
+    leaf, state, accepted_kinds=None, leaf_dims=_LEAF_DIMS_UNRESOLVED
+) -> str | None:
+    """Validate and render ``state`` when it is a settings-expression object.
+
+    Returns the rendered string, or ``None`` when ``state`` is not an
+    expression object (so callers fall through to their normal handling).  The
+    quantity-type validation always runs *before* the string is produced,
+    satisfying the "check the quantity type prior to ``str`` conversion"
+    contract.  ``accepted_kinds`` overrides the leaf's declared kinds for the
+    kind check (used when validating individual elements of a list leaf).
+    ``leaf_dims`` optionally supplies the leaf's already-resolved dimensions so
+    repeated element validation does not re-resolve the leaf's units per call.
+
+    Raises
+    ------
+    TypeError
+        If validation fails, or if the object does not render to a string.
+    """
+    if not _is_settings_expression(state):
+        return None
+    _validate_expression_quantity(leaf, state, accepted_kinds, leaf_dims)
+    rendered = state.__settings_str__()
+    if not isinstance(rendered, str):
+        raise TypeError(
+            f"Expression object {state!r} did not render to a string "
+            f"(got {type(rendered).__name__})."
+        )
+    return rendered
+
+
+def _render_settings_expression_list(leaf, state, accepted_kinds) -> list | None:
+    """Render a ``list`` whose elements may be settings-expression objects.
+
+    A list leaf holds a *container* of values, so each element is an independent
+    expression rather than a single expression describing the whole assignment.
+    Every expression element is validated (against ``accepted_kinds`` -- the
+    kinds a single element may take -- and the leaf's units, when it has any) and
+    rendered to its string form, while plain values are left untouched,
+    preserving the list structure.  ``accepted_kinds`` differs by leaf: a
+    real-list element is scalar, whereas a string/filename-list element may be
+    any expression-string kind.
+
+    The leaf's dimensions are resolved *once* for the whole assignment and
+    reused for every element: each resolution is an uncached ``units()`` RPC, so
+    resolving per element would add one network round trip per element.
+
+    Returns the rebuilt list, or ``None`` when ``state`` is not a ``list`` or
+    carries no expression element, so callers fall through to normal handling.
+    A ``tuple`` is deliberately *not* treated as an element container because a
+    real leaf interprets a tuple as a ``(value, units)`` quantity.
+    """
+    if not isinstance(state, list):
+        return None
+    if not any(_is_settings_expression(element) for element in state):
+        return None
+    leaf_dims = _leaf_dimensions(leaf)
+    return [
+        (
+            _render_settings_expression(leaf, element, accepted_kinds, leaf_dims)
+            if _is_settings_expression(element)
+            else element
+        )
+        for element in state
+    ]
+
+
+def _textual_list_set_state(self, state=None, **kwargs) -> None:
+    """``set_state`` for ``Textual`` list leaves (``StringList``/``FilenameList``).
+
+    These leaves subclass ``SettingsBase`` *before* :class:`Textual` in the MRO,
+    so a bare ``set_state`` would resolve to ``SettingsBase.set_state`` and skip
+    the settings-expression protocol -- serializing expression objects with
+    ``str()`` instead of rendering/validating them.  Each element of the list
+    may be an independent expression (e.g. a named-expression definition), so
+    they are validated against the leaf's per-element accepted kinds and
+    rendered to their string form before delegating to the inherited setter.
+    Plain values and non-list states are passed through unchanged.
+    """
+    rendered_list = _render_settings_expression_list(
+        self, state, getattr(self, "_element_expression_kinds", None)
+    )
+    if rendered_list is not None:
+        return self.base_set_state(state=rendered_list, **kwargs)
+    return self.base_set_state(state=state, **kwargs)
+
+
+def _settings_expression_to_scheme(leaf_cls, value):
+    """Render/validate settings-expression objects in a leaf's scheme value.
+
+    This is the *shared* conversion path used by every state-setting flow --
+    direct leaf ``set_state``, :class:`Group` dict updates, and command
+    arguments -- so an expression object is rendered via ``__settings_str__``
+    (not serialized with ``str()``) and kind-checked consistently, regardless of
+    how it reaches the leaf.
+
+    Only leaves that opt into the protocol act: ``_expression_kinds`` gates
+    whole-value expressions and ``_element_expression_kinds`` gates per-element
+    expressions in a list.  Plain values (and leaves that do not opt in) are
+    returned unchanged.
+
+    ``leaf_cls`` is a leaf *class* here (``to_scheme_keys`` is a classmethod), so
+    the physical-dimension check -- which needs a live instance's units -- is
+    skipped; that check still runs on direct leaf assignment where the instance
+    is available.
+    """
+    whole_kinds = getattr(leaf_cls, "_expression_kinds", None)
+    if whole_kinds is not None:
+        rendered = _render_settings_expression(leaf_cls, value, whole_kinds)
+        if rendered is not None:
             return rendered
-    return None
+    element_kinds = getattr(leaf_cls, "_element_expression_kinds", None)
+    if element_kinds is not None:
+        rendered_list = _render_settings_expression_list(leaf_cls, value, element_kinds)
+        if rendered_list is not None:
+            return rendered_list
+    return value
 
 
 class InactiveObjectError(RuntimeError):
@@ -841,6 +1071,11 @@ class RealNumerical(Numerical):
         Get the units string.
     """
 
+    # Real-valued leaves accept expression strings (see ``RealType``); a scalar
+    # real therefore accepts scalar / value-with-units expression objects.
+    # Containers (e.g. :class:`RealList`) widen this -- see their override.
+    _expression_kinds: tuple[str, ...] = ("scalar", "quantity")
+
     def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
@@ -866,7 +1101,11 @@ class RealNumerical(Numerical):
         ----------
         state
             The type of state can be float, str (representing either
-            an expression or a value with units), or an ansys.units.Quantity.
+            an expression or a value with units), an ansys.units.Quantity,
+            or any object implementing the settings-expression protocol
+            (``__settings_str__``) -- for example an ``Expr`` produced by the
+            expression builder. Expression objects are validated against this
+            leaf's kind and units before being rendered to a string.
         kwargs : StateType
             Keyword arguments.
 
@@ -876,7 +1115,29 @@ class RealNumerical(Numerical):
             If the quantity object cannot be handled for the given path. This can
             happen if the quantity attribute specifies an unsupported quantity, or if
             the units specified for the quantity are not supported.
+        TypeError
+            If an expression object's kind or dimensions are incompatible with
+            this leaf.
         """
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is validated (kind + dimensions) and
+        # rendered to its string form *before* any quantity handling below.
+        # Real-valued leaves accept expression strings, so this is where an
+        # ``Expr`` becomes a valid assignment for them.
+        rendered = _render_settings_expression(self, state)
+        if rendered is not None:
+            return self.base_set_state(state=rendered, **kwargs)
+
+        # List leaves (e.g. ``RealList``) accept a container of reals whose
+        # elements may themselves be expression objects. Each element is an
+        # independent scalar, so validate/render them with the per-element kinds
+        # and this leaf's units while preserving the list structure.
+        element_kinds = getattr(self, "_element_expression_kinds", None)
+        if element_kinds is not None:
+            rendered_list = _render_settings_expression_list(self, state, element_kinds)
+            if rendered_list is not None:
+                return self.base_set_state(state=rendered_list, **kwargs)
+
         try:
 
             def get_units():
@@ -909,36 +1170,39 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
+    # String leaves broadly accept Fluent expression strings (named-expression
+    # definitions, boundary-condition profiles, and so on). A definition may be
+    # scalar, vector, boolean, or a value-with-units, so all of those kinds are
+    # accepted; a bare location list is not a valid string value.
+    _expression_kinds: tuple[str, ...] = ("scalar", "vector", "boolean", "quantity")
+
     def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
         ----------
         state
-            Either str, VariableDescriptor, or -- at whitelisted paths
-            (see :data:`EXPRESSION_DEFINITION_PATHS`) -- any object
-            implementing ``__fluent_expr__() -> str`` (e.g. an
-            :class:`~ansys.fluent.core.offline.expressions.Expr` produced by the
-            expression builder).
+            Either ``str``, ``VariableDescriptor``, or any object implementing
+            the settings-expression protocol (``__settings_str__``) -- for
+            example an ``Expr`` produced by the expression builder. Expression
+            objects are validated against this leaf's accepted kinds before
+            being rendered to their string form and stored.
         kwargs : StateType
             Keyword arguments.
 
         Raises
         ------
         TypeError
-            If state is not a string.
+            If state is not a string, or if an expression object's kind is
+            incompatible with this leaf.
         """
-        # Expression-object support: convert an Expr-like input to its
-        # Fluent-side string form when this leaf is a recognised
-        # expression-definition slot.  Duck-type check first: it's a cheap
-        # getattr that short-circuits the parent-walk in the path match for
-        # the ~all case where ``state`` is a plain value.
-        if hasattr(state, "__fluent_expr__") and _matches_expression_definition_path(
-            self
-        ):
-            rendered = _try_render_expression(state)
-            if rendered is not None:
-                return self.base_set_state(state=rendered, **kwargs)
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is validated and rendered to its string
+        # form before the plain-string handling below. ``VariableDescriptor``
+        # does not implement the protocol, so it falls through unchanged.
+        rendered = _render_settings_expression(self, state)
+        if rendered is not None:
+            return self.base_set_state(state=rendered, **kwargs)
 
         allowed_types = (str, VariableDescriptor)
 
@@ -1052,14 +1316,54 @@ class SettingsBase(Base, Generic[StateT]):
         Set the state of the object.
     """
 
+    def __init_subclass__(cls, **kwargs):
+        """Enforce correct wiring of the settings-expression protocol.
+
+        A leaf opts into the protocol by declaring ``_expression_kinds``.  Because
+        ``SettingsBase`` precedes the behaviour mixins (:class:`Textual`,
+        :class:`RealNumerical`) in every leaf's MRO, a bare ``set_state`` resolves
+        to :meth:`SettingsBase.set_state`, which stores the value directly and
+        *bypasses* expression rendering/validation -- silently serializing an
+        expression object with ``str()``.  Such a leaf must therefore route
+        ``set_state`` through an expression-aware setter and expose the core
+        setter as ``base_set_state``.
+
+        This hook turns that easy-to-forget wiring from a silent runtime bug into
+        a loud, immediate failure at class-definition (import) time.
+        """
+        super().__init_subclass__(**kwargs)
+        if getattr(cls, "_expression_kinds", None) is None:
+            return
+        if cls.set_state is SettingsBase.set_state:
+            raise TypeError(
+                f"{cls.__name__} declares '_expression_kinds' (opting into the "
+                f"settings-expression protocol) but its 'set_state' resolves to "
+                f"'SettingsBase.set_state', which bypasses expression handling. "
+                f"Wire an expression-aware setter in the class body, e.g.\n"
+                f"    base_set_state = SettingsBase[...].set_state\n"
+                f"    set_state = RealNumerical.set_state  # or Textual.set_state "
+                f"/ _textual_list_set_state"
+            )
+        if getattr(cls, "base_set_state", None) is not SettingsBase.set_state:
+            raise TypeError(
+                f"{cls.__name__} routes 'set_state' through an expression-aware "
+                f"setter but does not expose the core setter as "
+                f"'base_set_state = SettingsBase[...].set_state'. The "
+                f"expression-aware setter delegates to 'base_set_state', so it "
+                f"must point at 'SettingsBase.set_state'."
+            )
+
     @classmethod
     def to_scheme_keys(cls, value: StateT, root_cls: type, path: list[str]) -> StateT:
         """Convert value to have keys with scheme names.
 
         This is overridden in the ``Group``, ``NamedObject``, and
-        ``ListObject`` classes.
+        ``ListObject`` classes.  For a leaf, this is the shared conversion path
+        reached by direct assignment, :class:`Group` dict updates, and command
+        arguments alike, so settings-expression objects are rendered/validated
+        here consistently rather than being serialized with ``str()``.
         """
-        return value
+        return _settings_expression_to_scheme(cls, value)
 
     @classmethod
     def to_python_keys(cls, value: StateT) -> StateT:
@@ -1193,6 +1497,39 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
+    # ``SettingsBase`` precedes ``Textual`` in the MRO, so a bare ``set_state``
+    # would resolve to ``SettingsBase.set_state`` and skip the
+    # settings-expression protocol conversion. Keep delegating to that inherited
+    # setter, but render/validate an expression object first.
+    base_set_state: Callable[..., None] = SettingsBase[str].set_state
+
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
+        """Set the state of the object.
+
+        Parameters
+        ----------
+        state
+            Either ``str`` or any object implementing the settings-expression
+            protocol (``__settings_str__``) -- for example an ``Expr`` produced
+            by the expression builder. Expression objects are validated against
+            this leaf's accepted kinds before being rendered to their string
+            form and stored.
+        kwargs : StateType
+            Keyword arguments.
+
+        Raises
+        ------
+        TypeError
+            If an expression object's kind is incompatible with this leaf.
+        """
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is validated and rendered to its string
+        # form before the inherited setter runs.
+        rendered = _render_settings_expression(self, state)
+        if rendered is not None:
+            return self.base_set_state(state=rendered, **kwargs)
+        return self.base_set_state(state=state, **kwargs)
+
     def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
@@ -1202,6 +1539,15 @@ class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
+
+    # ``SettingsBase`` precedes ``Textual`` in the MRO, so route expression
+    # elements through the protocol before delegating to the inherited setter.
+    base_set_state: Callable[..., None] = SettingsBase[StringListType].set_state
+    set_state: Callable[..., None] = _textual_list_set_state
+
+    # Each element is an independent expression-string, accepting the same kinds
+    # as a scalar :class:`Textual` leaf.
+    _element_expression_kinds: tuple[str, ...] = Textual._expression_kinds
 
     def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
@@ -1258,6 +1604,14 @@ class RealList(SettingsBase[RealListType], RealNumerical):
     base_set_state: Callable[..., None] = SettingsBase[RealListType].set_state
     set_state: Callable[..., None] = RealNumerical.set_state
 
+    # A real-list leaf holds a container of reals, so (in addition to the scalar
+    # / value-with-units kinds inherited from :class:`RealNumerical`) it also
+    # accepts vector-valued expressions.
+    _expression_kinds: tuple[str, ...] = ("scalar", "vector", "quantity")
+
+    # Each element of the container is an independent scalar real.
+    _element_expression_kinds: tuple[str, ...] = ("scalar", "quantity")
+
     _state_type = RealListType
 
 
@@ -1281,6 +1635,15 @@ class StringList(SettingsBase[StringListType], Textual):
     """A ``StringList`` object representing a string list setting."""
 
     _state_type = StringListType
+
+    # ``SettingsBase`` precedes ``Textual`` in the MRO, so route expression
+    # elements through the protocol before delegating to the inherited setter.
+    base_set_state: Callable[..., None] = SettingsBase[StringListType].set_state
+    set_state: Callable[..., None] = _textual_list_set_state
+
+    # Each element is an independent expression-string, accepting the same kinds
+    # as a scalar :class:`Textual` leaf.
+    _element_expression_kinds: tuple[str, ...] = Textual._expression_kinds
 
 
 class BooleanList(SettingsBase[BoolListType], Property):
@@ -2236,6 +2599,15 @@ class BaseCommand(Action):
     def execute_command(self, *args: StateType, **kwds: StateType) -> StateType:
         """Execute command."""
         kwds = _get_new_keywords(self, *args, **kwds)
+        # Normalize any settings-expression arguments to their rendered string
+        # form *before* the file hooks run. ``before_execute`` / ``after_execute``
+        # (and ``expand_api_file_argument``) operate on plain strings, so a
+        # protocol object -- e.g. an expression passed as a Filename argument to
+        # ``read_case_data`` -- would otherwise raise ``AttributeError`` there.
+        # Storing the rendered value back into ``kwds`` reuses it for the scheme
+        # conversion and for ``after_execute`` as well.
+        for arg in list(kwds):
+            kwds[arg] = _settings_expression_to_scheme(getattr(self, arg), kwds[arg])
         scmKwds = {}
         for arg, value in kwds.items():
             argument = getattr(self, arg)
