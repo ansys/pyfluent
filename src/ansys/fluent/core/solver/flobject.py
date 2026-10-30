@@ -2599,6 +2599,15 @@ class BaseCommand(Action):
     def execute_command(self, *args: StateType, **kwds: StateType) -> StateType:
         """Execute command."""
         kwds = _get_new_keywords(self, *args, **kwds)
+        # Normalize any settings-expression arguments to their rendered string
+        # form *before* the file hooks run. ``before_execute`` / ``after_execute``
+        # (and ``expand_api_file_argument``) operate on plain strings, so a
+        # protocol object -- e.g. an expression passed as a Filename argument to
+        # ``read_case_data`` -- would otherwise raise ``AttributeError`` there.
+        # Storing the rendered value back into ``kwds`` reuses it for the scheme
+        # conversion and for ``after_execute`` as well.
+        for arg in list(kwds):
+            kwds[arg] = _settings_expression_to_scheme(getattr(self, arg), kwds[arg])
         scmKwds = {}
         for arg, value in kwds.items():
             argument = getattr(self, arg)

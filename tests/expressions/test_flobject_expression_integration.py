@@ -672,6 +672,48 @@ def test_command_argument_rejects_incompatible_kind(builder):
         arg_cls.to_scheme_keys(vector, arg_cls, [])
 
 
+def test_read_case_data_filename_argument_renders_protocol_object(pressure_expr):
+    # End-to-end command path: a Filename argument reaches ``before_execute``
+    # (and ``expand_api_file_argument``) *before* ``to_scheme_keys``. A protocol
+    # object must be normalized to its rendered string first, otherwise
+    # ``value.replace(".cas", ".dat")`` raises ``AttributeError`` for
+    # ``read_case_data``. The rendered value must also flow to ``after_execute``.
+    from ansys.fluent.core.solver import flobject
+
+    captured = {}
+
+    class _CmdProxy:
+        def get_static_info(self):
+            return {
+                "type": "group",
+                "commands": {
+                    "read-case-data": {
+                        "type": "command",
+                        "arguments": {
+                            "file-name": {"type": "file", "file_purpose": "input"},
+                        },
+                    },
+                },
+            }
+
+        def is_interactive_mode(self):
+            return False
+
+        def has_wildcard(self, name):
+            return False
+
+        def execute_cmd(self, parent_path, command, **kwds):
+            captured["command"] = command
+            captured["kwds"] = kwds
+            return None
+
+    root = flobject.get_root(_CmdProxy(), version="252")
+    # Before the fix this raised AttributeError inside expand_api_file_argument.
+    root.read_case_data.execute_command(file_name=pressure_expr)
+    assert captured["command"] == "read-case-data"
+    assert captured["kwds"] == {"file-name": "AreaAve(AbsolutePressure,['inlet1'])"}
+
+
 def test_shared_path_passes_plain_values_through():
     # Non-expression values and non-opt-in leaves are untouched.
     assert _settings_expression_to_scheme(String, "plain string") == "plain string"
