@@ -23,7 +23,9 @@ from ansys.fluent.core.offline.expressions import ExpressionBuilder
 from ansys.fluent.core.offline.expressions._ast import Quantity
 from ansys.fluent.core.solver.flobject import (
     Filename,
+    FilenameList,
     RealNumerical,
+    StringList,
     Textual,
     _is_settings_expression,
     _normalize_dimensions,
@@ -214,6 +216,59 @@ def test_filename_leaf_rejects_location_list_expression(builder, monkeypatch):
     location_list = builder.locations(["inlet1", "inlet2"])
     with pytest.raises(TypeError, match="kind 'location_list'"):
         leaf.set_state(location_list)
+    assert captured == {}  # never rendered / stored
+
+
+# --------------------------------------------------------------------------- #
+# Textual list leaves render each expression element via the protocol          #
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.parametrize("list_cls", [StringList, FilenameList])
+def test_textual_list_renders_expression_elements(list_cls, pressure_expr, monkeypatch):
+    # ``StringList`` / ``FilenameList`` resolve ``set_state`` via ``SettingsBase``
+    # in the MRO, so (like ``Filename``) they must route each expression element
+    # through the protocol instead of serializing it with ``str()``.
+    captured = {}
+    monkeypatch.setattr(
+        list_cls,
+        "base_set_state",
+        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
+    )
+    leaf = list_cls(name="x")
+    leaf.set_state(["a.txt", pressure_expr, "b.txt"])
+    assert captured["state"] == [
+        "a.txt",
+        "AreaAve(AbsolutePressure,['inlet1'])",
+        "b.txt",
+    ]
+
+
+@pytest.mark.parametrize("list_cls", [StringList, FilenameList])
+def test_textual_list_still_accepts_plain_list(list_cls, monkeypatch):
+    captured = {}
+    monkeypatch.setattr(
+        list_cls,
+        "base_set_state",
+        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
+    )
+    leaf = list_cls(name="x")
+    leaf.set_state(["a.txt", "b.txt"])
+    assert captured["state"] == ["a.txt", "b.txt"]
+
+
+@pytest.mark.parametrize("list_cls", [StringList, FilenameList])
+def test_textual_list_rejects_location_list_element(list_cls, builder, monkeypatch):
+    captured = {}
+    monkeypatch.setattr(
+        list_cls,
+        "base_set_state",
+        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
+    )
+    leaf = list_cls(name="x")
+    location_list = builder.locations(["inlet1", "inlet2"])
+    with pytest.raises(TypeError, match="kind 'location_list'"):
+        leaf.set_state([location_list])
     assert captured == {}  # never rendered / stored
 
 
