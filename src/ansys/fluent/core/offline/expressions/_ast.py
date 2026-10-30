@@ -22,7 +22,10 @@ from enum import Enum
 from typing import Sequence
 
 from ansys.fluent.core._variable_strategies import FluentExprNamingStrategy
-from ansys.units.variable_descriptor import VariableDescriptor
+from ansys.units.variable_descriptor import (
+    VariableDescriptor,
+    VectorVariableDescriptor,
+)
 
 from .errors import ExpressionBuildError
 
@@ -249,19 +252,42 @@ class Variable(ScalarExpr):
     def __fluent_expr__(self) -> str:
         return self._fluent_name  # type: ignore[attr-defined]
 
+    def __settings_kind__(self) -> str | None:
+        """Report the structural kind, distinguishing vector descriptors.
+
+        :class:`Variable` inherits ``kind = Kind.SCALAR`` from
+        :class:`ScalarExpr` so the builder treats every catalog entry as a
+        scalar operand. Vector catalog entries (e.g. ``V.VELOCITY``) are backed
+        by a :class:`VectorVariableDescriptor`, so override the neutral
+        settings-layer tag to ``"vector"`` for them; this lets the settings
+        layer reject vector-to-scalar assignments without altering the
+        builder's ``kind`` behavior.
+        """
+        if isinstance(self.descriptor, VectorVariableDescriptor):
+            return Kind.VECTOR.value
+        return super().__settings_kind__()
+
     def __settings_dimensions__(self) -> dict[str, float] | None:
         """Expose the descriptor's physical dimensions, when available.
 
-        ``VariableDescriptor.dimension`` already maps base-dimension names to
-        exponents (e.g. ``{"MASS": 1.0, "LENGTH": -1.0, "TIME": -2.0}`` for a
-        pressure). Returns ``None`` when the descriptor carries no usable
-        dimension so the settings layer skips the dimensional check.
+        ``VariableDescriptor.dimension`` maps :class:`~ansys.units.BaseDimensions`
+        enum members to exponents (e.g. ``{BaseDimensions.MASS: 1.0,
+        BaseDimensions.LENGTH: -1.0, BaseDimensions.TIME: -2.0}`` for a
+        pressure). Keys are normalized to their ``.name`` (``"MASS"``,
+        ``"LENGTH"``, ``"TIME"``) so they match ``Quantity.__settings_dimensions__``
+        and the settings layer's own normalization. Returns ``None`` when the
+        descriptor carries no usable dimension so the settings layer skips the
+        dimensional check.
         """
         try:
             dimension = getattr(self.descriptor, "dimension", None)
             if not dimension:
                 return None
-            return {str(k): float(v) for k, v in dict(dimension).items() if v}
+            return {
+                getattr(k, "name", str(k)): float(v)
+                for k, v in dict(dimension).items()
+                if v
+            }
         except Exception:
             return None
 

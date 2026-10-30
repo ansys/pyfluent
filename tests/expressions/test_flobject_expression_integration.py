@@ -22,11 +22,13 @@ import pytest
 from ansys.fluent.core.offline.expressions import ExpressionBuilder
 from ansys.fluent.core.offline.expressions._ast import Quantity
 from ansys.fluent.core.solver.flobject import (
+    Filename,
     RealNumerical,
     Textual,
     _is_settings_expression,
     _normalize_dimensions,
     _render_settings_expression,
+    _render_settings_expression_list,
 )
 from ansys.units import VariableCatalog as V
 
@@ -82,6 +84,18 @@ class _FakeRealLeaf:
     def set_state_via(self, state):
         """Route through the real ``RealNumerical.set_state`` for this fake leaf."""
         return RealNumerical.set_state(self, state)
+
+
+class _FakeRealListLeaf(_FakeRealLeaf):
+    """Minimal stand-in for a ``RealList`` leaf (a container of reals).
+
+    Mirrors :class:`RealList`, which widens the accepted kinds to also allow a
+    single vector-valued expression for the whole-list assignment while sharing
+    :meth:`RealNumerical.set_state`.
+    """
+
+    _expression_kinds = ("scalar", "vector", "quantity")
+    python_path = "setup.boundary_conditions['inlet'].flow_direction"
 
 
 @pytest.fixture
@@ -158,6 +172,52 @@ def test_textual_leaf_rejects_location_list_expression(builder):
 
 
 # --------------------------------------------------------------------------- #
+# Filename leaves route through the protocol before their inherited setter     #
+# --------------------------------------------------------------------------- #
+
+
+def test_filename_leaf_renders_expression_object(pressure_expr, monkeypatch):
+    # ``Filename`` resolves ``set_state`` via ``SettingsBase`` in the MRO, so it
+    # must explicitly route protocol objects through the expression helper
+    # instead of serializing them with ``str()``.
+    captured = {}
+    monkeypatch.setattr(
+        Filename,
+        "base_set_state",
+        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
+    )
+    leaf = Filename(name="x")
+    leaf.set_state(pressure_expr)
+    assert captured["state"] == "AreaAve(AbsolutePressure,['inlet1'])"
+
+
+def test_filename_leaf_still_accepts_plain_string(monkeypatch):
+    captured = {}
+    monkeypatch.setattr(
+        Filename,
+        "base_set_state",
+        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
+    )
+    leaf = Filename(name="x")
+    leaf.set_state("input.cas.h5")
+    assert captured["state"] == "input.cas.h5"
+
+
+def test_filename_leaf_rejects_location_list_expression(builder, monkeypatch):
+    captured = {}
+    monkeypatch.setattr(
+        Filename,
+        "base_set_state",
+        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
+    )
+    leaf = Filename(name="x")
+    location_list = builder.locations(["inlet1", "inlet2"])
+    with pytest.raises(TypeError, match="kind 'location_list'"):
+        leaf.set_state(location_list)
+    assert captured == {}  # never rendered / stored
+
+
+# --------------------------------------------------------------------------- #
 # Real leaves accept expression objects (the new capability)                  #
 # --------------------------------------------------------------------------- #
 
@@ -216,6 +276,66 @@ def test_unknown_dimension_expression_is_not_blocked(pressure_expr):
     leaf = _FakeRealLeaf(units="m s^-1")
     RealNumerical.set_state(leaf, pressure_expr)
     assert leaf.captured == "AreaAve(AbsolutePressure,['inlet1'])"
+
+
+# --------------------------------------------------------------------------- #
+# List leaves render / validate each expression element                       #
+# --------------------------------------------------------------------------- #
+
+
+def test_real_list_renders_expression_elements(pressure_expr):
+    # Each element of the list is rendered through the protocol; plain values
+    # are left untouched and the list structure is preserved.
+    leaf = _FakeRealListLeaf(units="Pa")
+    RealNumerical.set_state(leaf, [1.0, pressure_expr, 3.0])
+    assert leaf.captured == [1.0, "AreaAve(AbsolutePressure,['inlet1'])", 3.0]
+
+
+def test_real_list_renders_settings_str_only_element():
+    # An object implementing only ``__settings_str__`` is rendered via the
+    # protocol rather than serialized with ``str()``.
+    class _StrOnly:
+        def __settings_str__(self):
+            return "my_named_expression"
+
+    leaf = _FakeRealListLeaf(units="Pa")
+    RealNumerical.set_state(leaf, [_StrOnly()])
+    assert leaf.captured == ["my_named_expression"]
+
+
+def test_real_list_rejects_vector_element(builder):
+    # Each element is validated with scalar kinds, so a vector element is
+    # rejected even though the list leaf itself accepts a whole-list vector.
+    leaf = _FakeRealListLeaf(units="m s^-1")
+    vector = builder.vector.make_vec(
+        x=builder.literal(1.0), y=builder.literal(2.0), z=builder.literal(3.0)
+    )
+    with pytest.raises(TypeError, match="kind 'vector'"):
+        RealNumerical.set_state(leaf, [vector])
+    assert leaf.captured is None
+
+
+def test_real_list_rejects_dimension_mismatch_element():
+    # A velocity-dimensioned element assigned to a pressure (Pa) list leaf is
+    # rejected before any element is rendered.
+    leaf = _FakeRealListLeaf(units="Pa")
+    with pytest.raises(TypeError, match="not compatible"):
+        RealNumerical.set_state(leaf, [Quantity(5.0, "m s^-1")])
+    assert leaf.captured is None
+
+
+def test_real_list_still_accepts_plain_list():
+    leaf = _FakeRealListLeaf(units="Pa")
+    RealNumerical.set_state(leaf, [1.0, 2.0, 3.0])
+    assert leaf.captured == [1.0, 2.0, 3.0]
+
+
+def test_render_list_helper_returns_none_without_expression_elements():
+    leaf = _FakeRealListLeaf(units="Pa")
+    # No expression element -> fall through to normal handling.
+    assert _render_settings_expression_list(leaf, [1.0, 2.0], ("scalar",)) is None
+    # A tuple is a (value, units) quantity, not an element container.
+    assert _render_settings_expression_list(leaf, (1.0, "Pa"), ("scalar",)) is None
 
 
 # --------------------------------------------------------------------------- #
