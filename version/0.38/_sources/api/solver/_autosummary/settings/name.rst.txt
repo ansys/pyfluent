@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =====================================================
+
+Parent                                                                 Summary
+
+======================   =====================================================
+:ref:`create <create>`       Create a new instance of the current object type.
+
+======================   =====================================================
+

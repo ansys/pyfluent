@@ -1,0 +1,23 @@
+:orphan:
+
+.. _geom_bgthread:
+
+geom_bgthread
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.geom_bgthread
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==========================================================
+
+Parent                                                                              Summary
+
+==============================   ==========================================================
+:ref:`geometry_7 <geometry_7>`       Allows to change geometry model variables or settings.
+
+:ref:`geometry_8 <geometry_8>`                      Geometry settings for periodic threads.
+
+==============================   ==========================================================
+

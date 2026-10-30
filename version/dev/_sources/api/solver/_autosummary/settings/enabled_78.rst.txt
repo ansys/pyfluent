@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_78:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.enabled_78
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =======================
+
+Parent                                   Summary
+
+======================   =======================
+:ref:`plot_6 <plot_6>`   Enable the plot option.
+
+======================   =======================
+

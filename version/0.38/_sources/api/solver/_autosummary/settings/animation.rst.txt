@@ -1,0 +1,32 @@
+:orphan:
+
+.. _animation:
+
+animation
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.animation
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   =====================================================
+
+Argument                                                                 Summary
+
+========================   =====================================================
+:ref:`animate <animate>`       Animation object name(s) for transient animation.
+
+========================   =====================================================
+
+.. rubric:: Included in:
+
+============================================================   ======================================================
+
+Parent                                                                                                        Summary
+
+============================================================   ======================================================
+:ref:`transient_post_processing <transient_post_processing>`       Commands associated with transient postprocessing.
+
+============================================================   ======================================================
+

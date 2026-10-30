@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_wrap_main__wrap_mainArguments:
+
+_wrap_mainArguments
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.wrap_main._wrap_mainArguments
+   :members: _wrap_regions_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

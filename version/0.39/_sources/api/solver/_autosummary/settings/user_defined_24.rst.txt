@@ -1,0 +1,21 @@
+:orphan:
+
+.. _user_defined_24:
+
+user_defined
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.user_defined_24
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================
+
+Parent                                      Summary
+
+================================   ================
+:ref:`isat_weight <isat_weight>`       ISAT weight.
+
+================================   ================
+

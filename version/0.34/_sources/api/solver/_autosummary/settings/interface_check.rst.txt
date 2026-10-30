@@ -1,0 +1,32 @@
+:orphan:
+
+.. _interface_check:
+
+interface_check
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.interface_check
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ========================================
+
+Argument                                                              Summary
+
+==================================   ========================================
+:ref:`object_name <object_name_1>`       Turbo interface for interface check.
+
+==================================   ========================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`turbo_create <turbo_create>`       Create turbo interfaces.
+
+==================================   ============================
+

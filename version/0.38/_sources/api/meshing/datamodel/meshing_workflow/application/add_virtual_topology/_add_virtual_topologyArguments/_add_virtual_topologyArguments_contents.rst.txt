@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_virtual_topology__add_virtual_topologyArguments:
+
+_add_virtual_topologyArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.add_virtual_topology._add_virtual_topologyArguments
+   :members: _add_child, _control_name, _face_label_list, _face_zone_list, _new_faces, _selection_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

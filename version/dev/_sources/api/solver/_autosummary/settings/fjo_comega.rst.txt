@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fjo_comega:
+
+fjo_comega
+==========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.fjo_comega
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`oxidation_models <oxidation_models>`   Soot oxidation model selection.
+
+==========================================   ===============================
+

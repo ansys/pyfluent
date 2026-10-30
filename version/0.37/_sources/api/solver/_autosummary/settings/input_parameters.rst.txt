@@ -1,0 +1,46 @@
+:orphan:
+
+.. _input_parameters:
+
+input_parameters
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.input_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ===============================================================
+
+Attribute                                                                                                            Summary
+
+==========================================================   ===============================================================
+:ref:`water_density <water_density>`                                          Liquid density in water chemistry calculation.
+
+:ref:`temperature <temperature>`                                                 Temperature in water chemistry calculation.
+
+:ref:`total_gas_pressure <total_gas_pressure>`                            Total gas pressure in water chemistry calculation.
+
+:ref:`partial_gas_pressure_co2 <partial_gas_pressure_co2>`       Partial gas-pressure of co2 in water chemistry calculation.
+
+:ref:`partial_gas_pressure_h2s <partial_gas_pressure_h2s>`        Partial gas pressureof h2s in water chemistry calculation.
+
+:ref:`fixed_ph <fixed_ph>`                                                      Fix pH value in water chemistry calculation.
+
+:ref:`ph_value <ph_value>`                                                          PH value in water chemistry calculation.
+
+:ref:`phase_id <phase_id>`                                                                      Phase of corrosion reaction.
+
+==========================================================   ===============================================================
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`water_corrosion_pre <water_corrosion_pre>`       Water corrosion preprocessing tool.
+
+================================================   =======================================
+

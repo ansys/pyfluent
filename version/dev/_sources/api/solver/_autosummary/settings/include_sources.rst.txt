@@ -1,0 +1,21 @@
+:orphan:
+
+.. _include_sources:
+
+include_sources
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.include_sources
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`flux_1_child <flux_1_child>`   'child_object_type' of flux.
+
+==================================   ============================
+

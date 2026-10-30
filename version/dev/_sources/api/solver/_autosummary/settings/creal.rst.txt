@@ -1,0 +1,21 @@
+:orphan:
+
+.. _creal:
+
+creal
+=====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.creal
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =====================================
+
+Parent                                                                           Summary
+
+================================================   =====================================
+:ref:`auxiliary_constants <auxiliary_constants>`   Auxiliary GEKO model constants group.
+
+================================================   =====================================
+

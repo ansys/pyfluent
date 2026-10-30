@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_generate_simulation_report:
+
+auto_generate_simulation_report
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.auto_generate_simulation_report
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`job_settings <job_settings>`       Remote Job Settings.
+
+==================================   ========================
+

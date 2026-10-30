@@ -1,0 +1,23 @@
+:orphan:
+
+.. _onzone:
+
+onzone
+======
+
+.. deprecated:: Ansys 2025R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.onzone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`pathline_child <pathline_child>`       'child_object_type' of pathline.
+
+======================================   ====================================
+

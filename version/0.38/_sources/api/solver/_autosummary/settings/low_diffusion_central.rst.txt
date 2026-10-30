@@ -1,0 +1,34 @@
+:orphan:
+
+.. _low_diffusion_central:
+
+low_diffusion_central
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.low_diffusion_central
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ==========================================================
+
+Attribute                                                                                                 Summary
+
+====================================================   ==========================================================
+:ref:`diffusion_coefficient <diffusion_coefficient>`       The diffusion coefficient in the LDC advection scheme.
+
+:ref:`shield_bl_distance <shield_bl_distance>`                The shield bl distance in the LDC advection scheme.
+
+====================================================   ==========================================================
+
+.. rubric:: Included in:
+
+============================================================================   ============================================
+
+Parent                                                                                                              Summary
+
+============================================================================   ============================================
+:ref:`spatial_discretization_parameters <spatial_discretization_parameters>`       Spatial discretization parameters group.
+
+============================================================================   ============================================
+

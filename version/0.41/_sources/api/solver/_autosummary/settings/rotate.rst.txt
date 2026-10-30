@@ -1,0 +1,36 @@
+:orphan:
+
+.. _rotate:
+
+rotate
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.rotate
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ==============================================================================
+
+Argument                                                                                                          Summary
+
+========================================   ==============================================================================
+:ref:`angle <angle_2>`                         Specifies the angle (in degrees) to rotate the mesh around a defined axis.
+
+:ref:`origin <origin_6>`                                Sets the origin point about which the mesh rotation is performed.
+
+:ref:`axis_components <axis_components>`         Defines the direction of the rotation axis using its x, y, z components.
+
+========================================   ==============================================================================
+
+.. rubric:: Included in:
+
+==================   ==========================================================================================================
+
+Parent                                                                                                                  Summary
+
+==================   ==========================================================================================================
+:ref:`mesh <mesh>`       Provides access to mesh operations such as generation, transformation, repair, import/export and more.
+
+==================   ==========================================================================================================
+

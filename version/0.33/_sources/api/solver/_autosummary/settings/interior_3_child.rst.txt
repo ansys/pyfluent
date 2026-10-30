@@ -1,0 +1,49 @@
+:orphan:
+
+.. _interior_3_child:
+
+interior_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.interior_3_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================
+
+Attribute                                                                         Summary
+
+============================   ==========================================================
+:ref:`name <name_4>`                                                  Name of the object.
+
+:ref:`phase <phase_34>`                                                    'phase' child.
+
+:ref:`interior <interior_1>`       Allows to change interior model variables or settings.
+
+============================   ==========================================================
+
+.. rubric:: Methods
+
+======================================   ========================================================================================================================
+
+Method                                                                                                                                                    Summary
+
+======================================   ========================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone's surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                          Create surface for selected zone.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ===========================================
+
+Parent                                                               Summary
+
+==============================   ===========================================
+:ref:`interior_3 <interior_3>`       Settings for boundary-condition object.
+
+==============================   ===========================================
+

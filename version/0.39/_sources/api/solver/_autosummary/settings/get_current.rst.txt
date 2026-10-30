@@ -1,0 +1,21 @@
+:orphan:
+
+.. _get_current:
+
+get_current
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.get_current
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==========================
+
+Parent                                                            Summary
+
+============================================   ==========================
+:ref:`compute_resources <compute_resources>`       Compute Resource List.
+
+============================================   ==========================
+

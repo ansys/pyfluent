@@ -1,0 +1,34 @@
+:orphan:
+
+.. _custom_1:
+
+custom
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.custom_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+====================================   =================================================================================================
+
+Method                                                                                                                           Summary
+
+====================================   =================================================================================================
+:ref:`uniform <uniform_1>`                 Pick the first and last timestep and specify an increment to select the timesteps in-between.
+
+:ref:`timestep_list <timestep_list>`                                Select individual timesteps to be used for transient postprocessing.
+
+====================================   =================================================================================================
+
+.. rubric:: Included in:
+
+============================================   ==================================================================================
+
+Parent                                                                                                                    Summary
+
+============================================   ==================================================================================
+:ref:`timestep_selector <timestep_selector>`       Options and settings related to selecting timesteps for the transient dataset.
+
+============================================   ==================================================================================
+

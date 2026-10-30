@@ -1,0 +1,70 @@
+:orphan:
+
+.. _graphics:
+
+graphics
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.graphics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ==================================================================================
+
+Attribute                                                                                                                   Summary
+
+==============================================   ==================================================================================
+:ref:`mesh <mesh_2>`                                                                                                  'mesh' child.
+
+:ref:`contour <contour>`                                                                                           'contour' child.
+
+:ref:`vector <vector_1>`                                                                                            'vector' child.
+
+:ref:`pathline <pathline>`                                                                                        'pathline' child.
+
+:ref:`particle_track <particle_track>`                                                                      'particle_track' child.
+
+:ref:`lic <lic>`                                                                                                       'lic' child.
+
+:ref:`olic <olic>`                                                                                                    'olic' child.
+
+:ref:`volumes <volumes_4>`                                                                                         'volumes' child.
+
+:ref:`contours <contours>`                                                                                        'contours' child.
+
+:ref:`particle_tracks <particle_tracks>`                                                                   'particle_tracks' child.
+
+:ref:`colors <colors>`                                                                                              'colors' child.
+
+:ref:`lighting <lighting>`                                                                                        'lighting' child.
+
+:ref:`picture <picture>`                                                                  The hardcopy/save-picture options object.
+
+:ref:`views <views>`                                                                                                 'views' child.
+
+:ref:`windows <windows>`                                                                                           'windows' child.
+
+:ref:`raytracing_options <raytracing_options>`                                                          'raytracing_options' child.
+
+:ref:`pulse <pulse>`                                                                    Save pathline/particle tracks pulse object.
+
+:ref:`periodic_instances <periodic_instances>`       Periodic instance objects are used to specify periodic repetition of surfaces.
+
+:ref:`display <display_10>`                                                                                        'display' child.
+
+:ref:`material <material_7>`                                                              Add, Edit, Remove materials in case file.
+
+==============================================   ==================================================================================
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`results <results>`       'results' child.
+
+========================   ====================
+

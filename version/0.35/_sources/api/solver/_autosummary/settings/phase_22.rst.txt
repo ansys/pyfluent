@@ -1,0 +1,49 @@
+:orphan:
+
+.. _phase_22:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_22
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`phase_22_child <phase_22_child>`
+
+
+.. rubric:: Included in:
+
+==============================================================   ==============================================
+
+Parent                                                                                                  Summary
+
+==============================================================   ==============================================
+:ref:`settings_20 <settings_20>`                                             Domain name to define settings on.
+
+:ref:`rans_les_interface_1_child <rans_les_interface_1_child>`       'child_object_type' of rans_les_interface.
+
+==============================================================   ==============================================
+

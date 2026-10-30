@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_3:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.value_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ===================================
+
+Parent                                         Summary
+
+================   ===================================
+:ref:`cnw <cnw>`       The GEKO model coefficient CNW.
+
+================   ===================================
+

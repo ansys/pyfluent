@@ -1,0 +1,14 @@
+.. _ref_solver_tui_results_report_discrete_phase_sampling_and_erosion:
+
+sampling_and_erosion
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.results.report.discrete_phase.sampling_and_erosion
+   :members: compute_erosion_accretion_rates, compute_samples, erosion_accretion_rate_accumulation_enabled, number_of_passes_done, output_udf, reset_erosion_accretion_rates, sort_sample_files, start_file_write, stop_file_write
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

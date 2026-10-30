@@ -1,0 +1,21 @@
+:orphan:
+
+.. _specific_heat:
+
+specific_heat
+=============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.specific_heat
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================================
+
+Parent                                                    Summary
+
+==========================   ====================================
+:ref:`method_3 <method_3>`   The auxiliary fluid property method.
+
+==========================   ====================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _spray_half_angle:
+
+spray_half_angle
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.spray_half_angle
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_19:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enable_19
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================
+
+Parent                                                                               Summary
+
+====================================================   =====================================
+:ref:`divergence_prevention <divergence_prevention>`       The divergence prevention object.
+
+====================================================   =====================================
+

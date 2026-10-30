@@ -1,0 +1,42 @@
+:orphan:
+
+.. _zone_assignment:
+
+zone_assignment
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.zone_assignment
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   =============================
+
+Attribute                                                                                  Summary
+
+==================================================================   =============================
+:ref:`positive_electrode_zone <positive_electrode_zone>`                 Positive electrode zones.
+
+:ref:`positive_electrode_locations <positive_electrode_locations>`              The physics names.
+
+:ref:`electrolyte_zone <electrolyte_zone>`                                      Electrolyte zones.
+
+:ref:`electrolyte_locations <electrolyte_locations>`                            The physics names.
+
+:ref:`negative_electrode_zone <negative_electrode_zone>`                 Negative electrode zones.
+
+:ref:`negative_electrode_locations <negative_electrode_locations>`              The physics names.
+
+==================================================================   =============================
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`lithium_battery <lithium_battery>`       Up li-ion battery model.
+
+========================================   ============================
+

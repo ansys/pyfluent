@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mesh_manipulation_option:
+
+mesh_manipulation_option
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mesh_manipulation_option
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================================================
+
+Parent                                                                                         Summary
+
+====================================   ===============================================================
+:ref:`make_periodic <make_periodic>`   Attempt to establish conformal periodic face zone connectivity.
+
+====================================   ===============================================================
+

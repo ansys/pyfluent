@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_PartReplacementSettings__PartReplacementSettingsCommandArguments:
+
+_PartReplacementSettingsCommandArguments
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.PartReplacementSettings._PartReplacementSettingsCommandArguments
+   :members: _AdvancedOptions, _CreationMethod, _GraphicalSelection, _ManagementMethod, _MptMethodType, _NewObjectSelectionList, _OldObjectSelectionList, _PartReplacementName, _ScalingFactor, _ShowCoordinates, _X, _Y, _Z
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

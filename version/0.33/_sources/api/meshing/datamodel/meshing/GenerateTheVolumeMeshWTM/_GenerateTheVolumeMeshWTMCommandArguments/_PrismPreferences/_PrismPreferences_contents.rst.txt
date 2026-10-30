@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateTheVolumeMeshWTM__GenerateTheVolumeMeshWTMCommandArguments__PrismPreferences:
+
+_PrismPreferences
+=================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.GenerateTheVolumeMeshWTM._GenerateTheVolumeMeshWTMCommandArguments._PrismPreferences
+   :members: _IgnoreInflation, _MergeBoundaryLayers, _NormalSmoothRelaxationFactor, _PrismAdjacentAngle, _PrismGapFactor, _PrismKeepFirstLayer, _PrismMaxAspectRatio, _PrismMinAspectRatio, _PrismStairStepOptions, _ShowPrismPreferences, _StairStepIcemQualityLimit, _StairstepExposedQuads
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

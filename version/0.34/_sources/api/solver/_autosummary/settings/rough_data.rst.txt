@@ -1,0 +1,23 @@
+:orphan:
+
+.. _rough_data:
+
+rough_data
+==========
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.rough_data
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`turbulence_6 <turbulence_6>`       Allows to change turbulence model variables or settings.
+
+==================================   ============================================================
+

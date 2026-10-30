@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coarsen:
+
+coarsen
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.coarsen
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`operations <operations>`       The anisotropic adaption operations object.
+
+==============================   ===============================================
+

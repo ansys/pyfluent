@@ -1,0 +1,14 @@
+.. _ref_solver_tui_surface_settings_previous_defaults:
+
+previous_defaults
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.surface.settings.previous_defaults
+   :members: pre_26_point_1_algorithm
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

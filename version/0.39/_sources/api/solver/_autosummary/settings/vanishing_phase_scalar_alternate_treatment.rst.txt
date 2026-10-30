@@ -1,0 +1,21 @@
+:orphan:
+
+.. _vanishing_phase_scalar_alternate_treatment:
+
+vanishing_phase_scalar_alternate_treatment
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.vanishing_phase_scalar_alternate_treatment
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ======================================
+
+Parent                                                          Summary
+
+==============================   ======================================
+:ref:`species_13 <species_13>`       Multiphase species options object.
+
+==============================   ======================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _right_1:
+
+right
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.right_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ============================================================================
+
+Parent                                                                                      Summary
+
+====================   ============================================================================
+:ref:`orbit <orbit>`       Settings for adjusting the camera position without modifying the target.
+
+====================   ============================================================================
+

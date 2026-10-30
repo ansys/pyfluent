@@ -1,0 +1,21 @@
+:orphan:
+
+.. _maximum_length_scale_ratio:
+
+maximum_length_scale_ratio
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.maximum_length_scale_ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================================================
+
+Parent                                                                              Summary
+
+========================   ================================================================
+:ref:`overset <overset>`       Define adaption settings suitable for an overset simulation.
+
+========================   ================================================================
+

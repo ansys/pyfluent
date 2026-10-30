@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_5:
+
+use
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.use_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =========================================
+
+Parent                                                                     Summary
+
+======================================   =========================================
+:ref:`dynamic_mesh_1 <dynamic_mesh_1>`       Use load balancing for dynamic mesh?.
+
+======================================   =========================================
+

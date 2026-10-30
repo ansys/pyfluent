@@ -1,0 +1,38 @@
+:orphan:
+
+.. _options_8:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.options_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==============================
+
+Attribute                                                             Summary
+
+============================================   ==============================
+:ref:`in_cylinder <in_cylinder>`                         'in_cylinder' child.
+
+:ref:`six_dof <six_dof>`                                     'six_dof' child.
+
+:ref:`implicit_update <implicit_update>`             'implicit_update' child.
+
+:ref:`contact_detection <contact_detection>`       'contact_detection' child.
+
+============================================   ==============================
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`dynamic_mesh <dynamic_mesh>`       'dynamic_mesh' child.
+
+==================================   =========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_7:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.name_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`geometry_4_child <geometry_4_child>`       'child_object_type' of geometry.
+
+==========================================   ====================================
+

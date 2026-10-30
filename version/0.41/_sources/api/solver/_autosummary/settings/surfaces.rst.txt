@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surfaces:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ============================================================
+
+Parent                                                                                                    Summary
+
+==================================================   ============================================================
+:ref:`ensight_gold_surface <ensight_gold_surface>`       Write EnSight Gold geometry, velocity, and scalar files.
+
+==================================================   ============================================================
+

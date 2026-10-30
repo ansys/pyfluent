@@ -1,0 +1,21 @@
+:orphan:
+
+.. _strong:
+
+strong
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.strong
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==================================
+
+Parent                                                                        Summary
+
+================================================   ==================================
+:ref:`equilibrium_results <equilibrium_results>`       Water equilibrium calculation.
+
+================================================   ==================================
+

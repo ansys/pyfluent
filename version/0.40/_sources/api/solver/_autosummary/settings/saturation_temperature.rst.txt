@@ -1,0 +1,21 @@
+:orphan:
+
+.. _saturation_temperature:
+
+saturation_temperature
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.saturation_temperature
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

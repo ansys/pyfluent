@@ -1,0 +1,21 @@
+:orphan:
+
+.. _deactivated_zones_action:
+
+deactivated_zones_action
+========================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.deactivated_zones_action
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===============================================================
+
+Parent                                                                                         Summary
+
+====================================   ===============================================================
+:ref:`make_periodic <make_periodic>`   Attempt to establish conformal periodic face zone connectivity.
+
+====================================   ===============================================================
+

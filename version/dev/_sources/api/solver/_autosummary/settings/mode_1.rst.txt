@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mode_1:
+
+mode
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.mode_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`degradation <degradation>`   Degradation model settings.
+
+================================   ===========================
+

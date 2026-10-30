@@ -1,0 +1,21 @@
+:orphan:
+
+.. _specified_shear:
+
+specified_shear
+===============
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.specified_shear
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`momentum <momentum>`   Allows to change momentum model variables or settings.
+
+==========================   ======================================================
+

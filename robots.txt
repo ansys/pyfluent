@@ -1,0 +1,11 @@
+# managed-by: ansys/actions/_doc-gen-robots
+# Manual edits are overwritten on the next documentation deploy.
+# Intentionally broad deny + specific allow (RFC 9309 longest match):
+# only /version/stable/ remains crawlable under /version/.
+
+User-agent: *
+Disallow: /version/
+Allow: /version/stable/
+Disallow: /pull/
+
+Sitemap: https://fluent.docs.pyansys.com/sitemap.xml

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_draw_thin_volume_regions__draw_thin_volume_regionsArguments:
+
+_draw_thin_volume_regionsArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.graphics.draw_thin_volume_regions._draw_thin_volume_regionsArguments
+   :members: _task_instance_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

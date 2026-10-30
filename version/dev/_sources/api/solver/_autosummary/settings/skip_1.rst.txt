@@ -1,0 +1,21 @@
+:orphan:
+
+.. _skip_1:
+
+skip
+====
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.skip_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =========================
+
+Parent                                             Summary
+
+==============================   =========================
+:ref:`options_18 <options_18>`   Options for Vector Style.
+
+==============================   =========================
+

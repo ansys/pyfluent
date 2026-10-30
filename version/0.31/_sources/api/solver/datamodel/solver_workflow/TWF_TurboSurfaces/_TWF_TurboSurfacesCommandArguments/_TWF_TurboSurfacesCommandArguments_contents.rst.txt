@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_TurboSurfaces__TWF_TurboSurfacesCommandArguments:
+
+_TWF_TurboSurfacesCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.solver_workflow.Root.TWF_TurboSurfaces._TWF_TurboSurfacesCommandArguments
+   :members: _IsoSurfaceNumList, _NewIsoSurfaceNameList, _NewIsoSurfaceValueList, _NumIsoSurfaces, _OldIsoSurfaceNameList, _OldIsoSurfaceValueList, _SurfacesList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

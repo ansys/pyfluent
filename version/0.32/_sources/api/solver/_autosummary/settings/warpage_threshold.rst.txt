@@ -1,0 +1,21 @@
+:orphan:
+
+.. _warpage_threshold:
+
+warpage_threshold
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.warpage_threshold
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`poor_mesh_removal <poor_mesh_removal>`       The poor mesh removal object.
+
+============================================   =================================
+

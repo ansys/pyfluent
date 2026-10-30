@@ -1,0 +1,82 @@
+:orphan:
+
+.. _slip_velocity_child:
+
+slip_velocity_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.slip_velocity_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   =================================
+
+Attribute                                                                              Summary
+
+==========================================================   =================================
+:ref:`ppt_methods <ppt_methods>`                                                      Methods.
+
+:ref:`ppt_constant <ppt_constant>`                                                   Constant.
+
+:ref:`ppt_udf <ppt_udf>`                                                             Prop udf.
+
+:ref:`ppt_polynomial <ppt_polynomial>`                                        Polynomial f(T).
+
+:ref:`ppt_piecewise_polynomial <ppt_piecewise_polynomial>`       Piecewise-polynomial sf f(T).
+
+:ref:`ppt_piecewise_linear <ppt_piecewise_linear>`                   Piecewise-linear sf f(T).
+
+:ref:`ppt_rgp <ppt_rgp>`                                                  Surface tension RGP.
+
+:ref:`antal_coeff_1 <antal_coeff_1>`                                                Antal cw1.
+
+:ref:`antal_coeff_1_const <antal_coeff_1_const>`                                 Cw1 constant.
+
+:ref:`antal_coeff_2 <antal_coeff_2>`                                                Antal cw2.
+
+:ref:`antal_coeff_2_const <antal_coeff_2_const>`                                 Cw2 constant.
+
+:ref:`antal_coeff_2_udf <antal_coeff_2_udf>`                                          Cw2 udf.
+
+:ref:`tomiyama_coeff_1 <tomiyama_coeff_1>`                                   Tomiyama hyd dia.
+
+:ref:`tomiyama_coeff_1_const <tomiyama_coeff_1_const>`              Tomiyama hyd dia constant.
+
+:ref:`frank_coeff_1 <frank_coeff_1>`                                                Frank cwc.
+
+:ref:`frank_coeff_1_const <frank_coeff_1_const>`                                 Cwc constant.
+
+:ref:`frank_coeff_1_udf <frank_coeff_1_udf>`                                          Cwc udf.
+
+:ref:`frank_coeff_2 <frank_coeff_2>`                                                Frank cwc.
+
+:ref:`frank_coeff_2_const <frank_coeff_2_const>`                                 Cwc constant.
+
+:ref:`frank_coeff_2_udf <frank_coeff_2_udf>`                                          Cwc udf.
+
+:ref:`frank_coeff_3 <frank_coeff_3>`                                                  Frank m.
+
+:ref:`frank_coeff_3_const <frank_coeff_3_const>`                                 Cwc constant.
+
+:ref:`frank_coeff_3_udf <frank_coeff_3_udf>`                                          Cwc udf.
+
+:ref:`td_coeff <td_coeff>`                                                       Td diffusion.
+
+:ref:`td_coeff_const <td_coeff_const>`                                       Tdcoeff constant.
+
+:ref:`td_coeff_udf <td_coeff_udf>`                                                Tdcoeff udf.
+
+==========================================================   =================================
+
+.. rubric:: Included in:
+
+====================================   =======================
+
+Parent                                                 Summary
+
+====================================   =======================
+:ref:`slip_velocity <slip_velocity>`       My surf tens coeff.
+
+====================================   =======================
+

@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_CreatePorousRegions__CreatePorousRegionsCommandArguments:
+
+_CreatePorousRegionsCommandArguments
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.CreatePorousRegions._CreatePorousRegionsCommandArguments
+   :members: _BufferSizeRatio, _CellSizeP1P2, _CellSizeP1P3, _CellSizeP1P4, _FileName, _InputMethod, _Location, _P1, _P2, _P3, _P4, _PorousRegionName, _WrapperSize
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _NonRectangularParameters/_NonRectangularParameters_contents

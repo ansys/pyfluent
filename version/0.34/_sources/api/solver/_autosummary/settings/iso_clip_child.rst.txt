@@ -1,0 +1,51 @@
+:orphan:
+
+.. _iso_clip_child:
+
+iso_clip_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.iso_clip_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ====================================================================================================
+
+Attribute                                                                                                                           Summary
+
+====================================   ====================================================================================================
+:ref:`name <name_4>`                                                                                                    Name of the object.
+
+:ref:`field <field_2>`                                                                                                  The field variable.
+
+:ref:`surfaces <surfaces_10>`                                                      The surface(s) that will be used to define the iso-clip.
+
+:ref:`from_location <from_location>`                                                                                  Help  utl locations .
+
+:ref:`range <range_4>`                     Indicates the minimum and maximum value of the selected field variable in the selected surfaces.
+
+====================================   ====================================================================================================
+
+.. rubric:: Methods
+
+==========================   ======================
+
+Method                                      Summary
+
+==========================   ======================
+:ref:`display <display_8>`       Display a surface.
+
+==========================   ======================
+
+.. rubric:: Included in:
+
+==========================   ==========================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                          Summary
+
+==========================   ==========================================================================================================================================================================================================
+:ref:`iso_clip <iso_clip>`       Provides access to creating new and editing existing clip surfaces. The clipped surface consists of those points on the selected surface where the scalar field values are within the specified range.
+
+==========================   ==========================================================================================================================================================================================================
+

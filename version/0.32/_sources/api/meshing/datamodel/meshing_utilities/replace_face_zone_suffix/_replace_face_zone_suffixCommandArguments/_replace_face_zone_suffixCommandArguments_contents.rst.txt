@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_replace_face_zone_suffix__replace_face_zone_suffixCommandArguments:
+
+_replace_face_zone_suffixCommandArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.replace_face_zone_suffix._replace_face_zone_suffixCommandArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _merge, _replace_with, _separator
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

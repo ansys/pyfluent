@@ -1,0 +1,34 @@
+:orphan:
+
+.. _pv_coupling_controls:
+
+pv_coupling_controls
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.pv_coupling_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ==============================================================================================
+
+Attribute                                                                                                                                     Summary
+
+====================================================   ==============================================================================================
+:ref:`pv_coupling_controls <pv_coupling_controls_1>`       Enable/disable pressure-velocity coupling method change for solver stability and accuracy.
+
+:ref:`pv_coupling_method <pv_coupling_method>`                            Pressure-velocity coupling method change for solver stability and accuracy.
+
+====================================================   ==============================================================================================
+
+.. rubric:: Included in:
+
+============================   =============================
+
+Parent                                               Summary
+
+============================   =============================
+:ref:`methods_3 <methods_3>`       Flexible numerics object.
+
+============================   =============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _freestream_velocity:
+
+freestream_velocity
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.freestream_velocity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`convection <convection>`       Entering object.
+
+==============================   ====================
+

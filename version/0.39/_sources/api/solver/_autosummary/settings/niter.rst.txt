@@ -1,0 +1,21 @@
+:orphan:
+
+.. _niter:
+
+niter
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.niter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================================
+
+Parent                                                                                  Summary
+
+================================================   ============================================
+:ref:`periodic_conditions <periodic_conditions>`       The periodic boundary conditions object.
+
+================================================   ============================================
+

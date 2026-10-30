@@ -1,0 +1,46 @@
+:orphan:
+
+.. _p_v_coupling:
+
+p_v_coupling
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.p_v_coupling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   =====================================================
+
+Attribute                                                                                                            Summary
+
+====================================================================   =====================================================
+:ref:`flow_scheme <flow_scheme>`                                                                        'flow_scheme' child.
+
+:ref:`skewness_correction_itr_count <skewness_correction_itr_count>`                     Iterations for skewness correction.
+
+:ref:`neighbor_correction_itr_count <neighbor_correction_itr_count>`                     Iterations for neighbor correction.
+
+:ref:`skewness_neighbor_coupling <skewness_neighbor_coupling>`                                  Skewness-Neighbor Coupling?.
+
+:ref:`coupled_form <coupled_form>`                                                                     'coupled_form' child.
+
+:ref:`solve_n_phase <solve_n_phase>`                                       Enable/disable N-Phase volume fraction equations.
+
+:ref:`flux_type <flux_type>`                                                                                  The flux type.
+
+:ref:`flux_auto_select <flux_auto_select>`                                                       Enable/disable auto select.
+
+====================================================================   =====================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

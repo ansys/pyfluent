@@ -1,0 +1,21 @@
+:orphan:
+
+.. _direction_3_child:
+
+direction_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.direction_3_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`direction_3 <direction_3>`       Wall translation components.
+
+================================   ================================
+

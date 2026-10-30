@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_57:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_57
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`remeshing <remeshing>`       'remeshing' child.
+
+============================   ======================
+

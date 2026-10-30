@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cgns_mesh_type:
+
+cgns_mesh_type
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cgns_mesh_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===============================
+
+Parent                                               Summary
+
+==========================   ===============================
+:ref:`settings <settings>`       The export settings object.
+
+==========================   ===============================
+

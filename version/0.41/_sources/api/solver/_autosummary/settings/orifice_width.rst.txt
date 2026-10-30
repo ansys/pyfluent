@@ -1,0 +1,21 @@
+:orphan:
+
+.. _orifice_width:
+
+orifice_width
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.orifice_width
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

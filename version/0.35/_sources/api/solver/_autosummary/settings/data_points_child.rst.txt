@@ -1,0 +1,34 @@
+:orphan:
+
+.. _data_points_child:
+
+data_points_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.data_points_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===============
+
+Attribute                        Summary
+
+======================   ===============
+:ref:`item <item>`           Data point.
+
+:ref:`value <value_1>`       Data value.
+
+======================   ===============
+
+.. rubric:: Included in:
+
+================================   ====================================================
+
+Parent                                                                          Summary
+
+================================   ====================================================
+:ref:`data_points <data_points>`       Ranges and values for piecewise-linear property.
+
+================================   ====================================================
+

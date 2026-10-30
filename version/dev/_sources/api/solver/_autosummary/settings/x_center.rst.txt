@@ -1,0 +1,21 @@
+:orphan:
+
+.. _x_center:
+
+x_center
+========
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.x_center
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =======================================
+
+Parent                                                       Summary
+
+==========================   =======================================
+:ref:`atomizer <atomizer>`   Lagrangian atomizer injection settings.
+
+==========================   =======================================
+

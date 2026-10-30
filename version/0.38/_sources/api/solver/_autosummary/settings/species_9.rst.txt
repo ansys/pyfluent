@@ -1,0 +1,27 @@
+:orphan:
+
+.. _species_9:
+
+species
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.species_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ============================================
+
+Parent                                                                                            Summary
+
+==========================================================   ============================================
+:ref:`mass_flow_outlet_child <mass_flow_outlet_child>`           'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_12_child <phase_12_child>`                                      'child_object_type' of phase.
+
+:ref:`mass_flow_outlet_1_child <mass_flow_outlet_1_child>`       'child_object_type' of mass_flow_outlet.
+
+:ref:`phase_36_child <phase_36_child>`                                      'child_object_type' of phase.
+
+==========================================================   ============================================
+

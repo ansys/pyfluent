@@ -1,0 +1,21 @@
+:orphan:
+
+.. _renaming_choice:
+
+renaming_choice
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.renaming_choice
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===============================================================================================
+
+Parent                                                                                                                 Summary
+
+============================   ===============================================================================================
+:ref:`adjacency <adjacency>`       Rename options to be performed on selected cell zone(s) and corresponding adjacent face(s).
+
+============================   ===============================================================================================
+

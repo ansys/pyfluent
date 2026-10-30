@@ -1,0 +1,21 @@
+:orphan:
+
+.. _type_23:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.type_23
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============
+
+Parent                                Summary
+
+============================   ==============
+:ref:`licensing <licensing>`       Licensing.
+
+============================   ==============
+

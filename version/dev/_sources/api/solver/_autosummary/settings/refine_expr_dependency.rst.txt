@@ -1,0 +1,21 @@
+:orphan:
+
+.. _refine_expr_dependency:
+
+refine_expr_dependency
+======================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.refine_expr_dependency
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===================
+
+Parent                                       Summary
+
+==============================   ===================
+:ref:`expression <expression>`   'expression' child.
+
+==============================   ===================
+

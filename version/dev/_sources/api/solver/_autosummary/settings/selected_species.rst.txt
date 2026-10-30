@@ -1,0 +1,21 @@
+:orphan:
+
+.. _selected_species:
+
+selected_species
+================
+
+.. autoclass:: ansys.fluent.core.generated.v271.solver.settings.selected_species
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =======================================================================
+
+Parent                                                                                                         Summary
+
+============================================   =======================================================================
+:ref:`species_selection <species_selection>`   Manage species selection for boundary conditions during initialization.
+
+============================================   =======================================================================
+

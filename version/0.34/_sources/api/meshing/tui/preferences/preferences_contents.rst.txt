@@ -1,0 +1,31 @@
+.. _ref_meshing_tui_preferences:
+
+preferences
+===========
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_252.main_menu.preferences
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   ansys_cloud_burst/ansys_cloud_burst_contents
+   appearance/appearance_contents
+   general/general_contents
+   gpuapp/gpuapp_contents
+   graphics/graphics_contents
+   mat_pro_app/mat_pro_app_contents
+   meshing_workflow/meshing_workflow_contents
+   navigation/navigation_contents
+   parametric_study/parametric_study_contents
+   prj_app/prj_app_contents
+   python_console/python_console_contents
+   simulation/simulation_contents
+   turbo_setup/turbo_setup_contents
+   turbo_workflow/turbo_workflow_contents

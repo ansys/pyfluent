@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_25:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enable_25
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ===================================================================
+
+Parent                                                                                                                     Summary
+
+============================================================   ===================================================================
+:ref:`auto_dt_advanced_controls <auto_dt_advanced_controls>`       Automatic time-stepping controls for better solution stability.
+
+============================================================   ===================================================================
+
