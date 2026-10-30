@@ -24,6 +24,7 @@ from ansys.fluent.core.offline.expressions._ast import Quantity
 from ansys.fluent.core.solver.flobject import (
     Filename,
     FilenameList,
+    Group,
     Numerical,
     Real,
     RealList,
@@ -36,6 +37,7 @@ from ansys.fluent.core.solver.flobject import (
     _normalize_dimensions,
     _render_settings_expression,
     _render_settings_expression_list,
+    _settings_expression_to_scheme,
     _textual_list_set_state,
 )
 from ansys.units import VariableCatalog as V
@@ -81,8 +83,12 @@ class _FakeRealLeaf:
     def __init__(self, units="Pa"):
         self._units = units
         self.captured = None
+        self.units_calls = 0
 
     def units(self):
+        # Count lookups: on a real leaf this is an uncached RPC, so a bulk
+        # assignment must resolve it once, not once per element.
+        self.units_calls += 1
         return self._units
 
     def base_set_state(self, state=None, **kwargs):
@@ -103,6 +109,7 @@ class _FakeRealListLeaf(_FakeRealLeaf):
     """
 
     _expression_kinds = ("scalar", "vector", "quantity")
+    _element_expression_kinds = ("scalar", "quantity")
     python_path = "setup.boundary_conditions['inlet'].flow_direction"
 
 
@@ -399,6 +406,26 @@ def test_render_list_helper_returns_none_without_expression_elements():
     assert _render_settings_expression_list(leaf, (1.0, "Pa"), ("scalar",)) is None
 
 
+def test_real_list_resolves_leaf_units_once_per_assignment():
+    # Each units() lookup is an uncached RPC on a real leaf. A list of
+    # known-dimension expressions must resolve the leaf's units ONCE for the
+    # whole assignment, not once per element.
+    leaf = _FakeRealListLeaf(units="Pa")
+    elements = [Quantity(float(i), "Pa") for i in range(5)]
+    RealNumerical.set_state(leaf, elements)
+    assert leaf.captured == [f"{float(i)} [Pa]" for i in range(5)]
+    assert leaf.units_calls == 1
+
+
+def test_real_list_mismatch_still_resolves_units_once():
+    # A confident dimension mismatch is still raised, and only one units()
+    # lookup is performed for the assignment.
+    leaf = _FakeRealListLeaf(units="Pa")
+    with pytest.raises(TypeError, match="not compatible"):
+        RealNumerical.set_state(leaf, [Quantity(1.0, "Pa"), Quantity(2.0, "m s^-1")])
+    assert leaf.units_calls == 1
+
+
 # --------------------------------------------------------------------------- #
 # _render_settings_expression contract                                        #
 # --------------------------------------------------------------------------- #
@@ -557,3 +584,103 @@ def test_shipped_expression_leaves_are_correctly_wired(leaf_cls):
     assert leaf_cls._expression_kinds is not None
     assert leaf_cls.set_state is not SettingsBase.set_state
     assert leaf_cls.base_set_state is SettingsBase.set_state
+
+
+# --------------------------------------------------------------------------- #
+# Group dict updates and command arguments use the shared conversion path      #
+# --------------------------------------------------------------------------- #
+#
+# Group dict updates (``named.set_state({'definition': obj})``) and command
+# arguments both convert their values through ``to_scheme_keys`` -- NOT through
+# the per-leaf ``set_state`` -- so the rendering/validation must live in that
+# shared conversion path. ``SettingsBase.set_state`` forwards the result of
+# ``to_scheme_keys`` straight to the backend, so asserting on ``to_scheme_keys``
+# faithfully covers both flows.
+
+
+def _group_with_child(child_cls, fluent_name="definition", python_name="definition"):
+    """Build a minimal ``Group`` subclass exposing one leaf child."""
+
+    child = type(f"_Child_{fluent_name}", (child_cls,), {"fluent_name": fluent_name})
+    grp = type(
+        "_Grp",
+        (Group,),
+        {
+            "child_names": [python_name],
+            "_child_classes": {python_name: child},
+            "_child_aliases": {},
+        },
+    )
+    return grp
+
+
+def test_group_dict_update_renders_expression_value(pressure_expr):
+    # A builder expression nested in a group dict is rendered to its string.
+    grp = _group_with_child(String)
+    out = grp.to_scheme_keys({"definition": pressure_expr}, grp, [])
+    assert out == {"definition": "AreaAve(AbsolutePressure,['inlet1'])"}
+
+
+def test_group_dict_update_renders_settings_str_only_value():
+    # An object implementing only ``__settings_str__`` is rendered via the
+    # protocol, not serialized with ``str()``.
+    class _StrOnly:
+        def __settings_str__(self):
+            return "my_named_expression"
+
+        def __repr__(self):
+            return "<not the settings string>"
+
+    grp = _group_with_child(String)
+    out = grp.to_scheme_keys({"definition": _StrOnly()}, grp, [])
+    assert out == {"definition": "my_named_expression"}
+
+
+def test_group_dict_update_rejects_incompatible_kind(builder):
+    # A String 'definition' child does not accept a location-list expression --
+    # the kind check runs in the shared path too.
+    grp = _group_with_child(String)
+    location_list = builder.locations(["inlet1", "inlet2"])
+    with pytest.raises(TypeError, match="kind 'location_list'"):
+        grp.to_scheme_keys({"definition": location_list}, grp, [])
+
+
+def test_group_dict_update_renders_real_list_elements(pressure_expr):
+    # Nested real-list elements are rendered element-wise via the shared path.
+    grp = _group_with_child(RealList, fluent_name="values", python_name="values")
+    out = grp.to_scheme_keys({"values": [1.0, pressure_expr, 3.0]}, grp, [])
+    assert out == {"values": [1.0, "AreaAve(AbsolutePressure,['inlet1'])", 3.0]}
+
+
+def test_command_argument_renders_expression_value(pressure_expr):
+    # Command arguments convert via ``<argument>.to_scheme_keys(...)`` -- the
+    # same shared path -- so an expression argument is rendered, not str()'d.
+    arg_cls = type("_ExprArg", (String,), {"fluent_name": "expression"})
+    assert (
+        arg_cls.to_scheme_keys(pressure_expr, arg_cls, [])
+        == "AreaAve(AbsolutePressure,['inlet1'])"
+    )
+
+
+def test_command_argument_rejects_incompatible_kind(builder):
+    # A Real-valued command argument rejects a vector expression before sending.
+    arg_cls = type("_RealArg", (Real,), {"fluent_name": "value"})
+    vector = builder.vector.make_vec(
+        x=builder.literal(1.0), y=builder.literal(2.0), z=builder.literal(3.0)
+    )
+    with pytest.raises(TypeError, match="kind 'vector'"):
+        arg_cls.to_scheme_keys(vector, arg_cls, [])
+
+
+def test_shared_path_passes_plain_values_through():
+    # Non-expression values and non-opt-in leaves are untouched.
+    assert _settings_expression_to_scheme(String, "plain string") == "plain string"
+    assert _settings_expression_to_scheme(RealList, [1.0, 2.0]) == [1.0, 2.0]
+
+    class _ExprOnly:
+        def __settings_str__(self):
+            return "x"
+
+    # A leaf that does not opt into the protocol leaves the object untouched.
+    obj = _ExprOnly()
+    assert _settings_expression_to_scheme(Numerical, obj) is obj

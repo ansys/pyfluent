@@ -199,7 +199,29 @@ def _leaf_dimensions(leaf) -> dict[str, float] | None:
         return None
 
 
-def _validate_expression_quantity(leaf, state, accepted_kinds=None) -> None:
+def _leaf_label(leaf) -> str:
+    """Return a human-readable label for ``leaf`` in error messages.
+
+    ``leaf`` may be a leaf *instance* (whose ``python_path`` is a string) or a
+    leaf *class* (reached via the shared ``to_scheme_keys`` conversion path,
+    where ``python_path``/``python_name`` resolve to property descriptors rather
+    than strings).  Falls back to the class name so the message stays readable.
+    """
+    for attr in ("python_path", "python_name"):
+        value = getattr(leaf, attr, None)
+        if isinstance(value, str):
+            return value
+    return getattr(leaf, "__name__", None) or str(leaf)
+
+
+# Sentinel distinguishing "leaf dimensions were not precomputed" (resolve them
+# via an RPC) from a resolved value of ``None`` (units are genuinely unknown).
+_LEAF_DIMS_UNRESOLVED = object()
+
+
+def _validate_expression_quantity(
+    leaf, state, accepted_kinds=None, leaf_dims=_LEAF_DIMS_UNRESOLVED
+) -> None:
     """Validate an expression object against ``leaf`` *before* it is rendered.
 
     Performs two independent, best-effort "quantity-type" checks so that an
@@ -218,12 +240,17 @@ def _validate_expression_quantity(leaf, state, accepted_kinds=None) -> None:
        raises; unknown dimensions are tolerated so that composite expressions
        (whose dimensions cannot be inferred) are never blocked.
 
+    ``leaf_dims`` lets a caller pass the leaf's already-resolved dimensions so a
+    bulk assignment (e.g. a :class:`RealList`) resolves the leaf's units once
+    instead of once per element -- each resolution is an uncached RPC.  When
+    left unset the dimensions are resolved here on demand.
+
     Raises
     ------
     TypeError
         If the expression's kind or dimensions are incompatible with ``leaf``.
     """
-    leaf_label = getattr(leaf, "python_path", None) or leaf
+    leaf_label = _leaf_label(leaf)
 
     # 1. Structural kind check.
     if accepted_kinds is None:
@@ -242,7 +269,8 @@ def _validate_expression_quantity(leaf, state, accepted_kinds=None) -> None:
     if raw_expr_dims is None:
         return
     expr_dims = _normalize_dimensions(raw_expr_dims)
-    leaf_dims = _leaf_dimensions(leaf)
+    if leaf_dims is _LEAF_DIMS_UNRESOLVED:
+        leaf_dims = _leaf_dimensions(leaf)
     if leaf_dims is None:
         # Leaf units are unknown (unresolved) -- do not block.  An empty
         # ``expr_dims`` ({}) is a *known* dimensionless expression (the protocol
@@ -256,7 +284,9 @@ def _validate_expression_quantity(leaf, state, accepted_kinds=None) -> None:
         )
 
 
-def _render_settings_expression(leaf, state, accepted_kinds=None) -> str | None:
+def _render_settings_expression(
+    leaf, state, accepted_kinds=None, leaf_dims=_LEAF_DIMS_UNRESOLVED
+) -> str | None:
     """Validate and render ``state`` when it is a settings-expression object.
 
     Returns the rendered string, or ``None`` when ``state`` is not an
@@ -265,6 +295,8 @@ def _render_settings_expression(leaf, state, accepted_kinds=None) -> str | None:
     satisfying the "check the quantity type prior to ``str`` conversion"
     contract.  ``accepted_kinds`` overrides the leaf's declared kinds for the
     kind check (used when validating individual elements of a list leaf).
+    ``leaf_dims`` optionally supplies the leaf's already-resolved dimensions so
+    repeated element validation does not re-resolve the leaf's units per call.
 
     Raises
     ------
@@ -273,7 +305,7 @@ def _render_settings_expression(leaf, state, accepted_kinds=None) -> str | None:
     """
     if not _is_settings_expression(state):
         return None
-    _validate_expression_quantity(leaf, state, accepted_kinds)
+    _validate_expression_quantity(leaf, state, accepted_kinds, leaf_dims)
     rendered = state.__settings_str__()
     if not isinstance(rendered, str):
         raise TypeError(
@@ -295,6 +327,10 @@ def _render_settings_expression_list(leaf, state, accepted_kinds) -> list | None
     real-list element is scalar, whereas a string/filename-list element may be
     any expression-string kind.
 
+    The leaf's dimensions are resolved *once* for the whole assignment and
+    reused for every element: each resolution is an uncached ``units()`` RPC, so
+    resolving per element would add one network round trip per element.
+
     Returns the rebuilt list, or ``None`` when ``state`` is not a ``list`` or
     carries no expression element, so callers fall through to normal handling.
     A ``tuple`` is deliberately *not* treated as an element container because a
@@ -304,9 +340,10 @@ def _render_settings_expression_list(leaf, state, accepted_kinds) -> list | None
         return None
     if not any(_is_settings_expression(element) for element in state):
         return None
+    leaf_dims = _leaf_dimensions(leaf)
     return [
         (
-            _render_settings_expression(leaf, element, accepted_kinds)
+            _render_settings_expression(leaf, element, accepted_kinds, leaf_dims)
             if _is_settings_expression(element)
             else element
         )
@@ -322,16 +359,48 @@ def _textual_list_set_state(self, state=None, **kwargs) -> None:
     the settings-expression protocol -- serializing expression objects with
     ``str()`` instead of rendering/validating them.  Each element of the list
     may be an independent expression (e.g. a named-expression definition), so
-    they are validated against the leaf's accepted kinds and rendered to their
-    string form before delegating to the inherited setter.  Plain values and
-    non-list states are passed through unchanged.
+    they are validated against the leaf's per-element accepted kinds and
+    rendered to their string form before delegating to the inherited setter.
+    Plain values and non-list states are passed through unchanged.
     """
     rendered_list = _render_settings_expression_list(
-        self, state, getattr(self, "_expression_kinds", None)
+        self, state, getattr(self, "_element_expression_kinds", None)
     )
     if rendered_list is not None:
         return self.base_set_state(state=rendered_list, **kwargs)
     return self.base_set_state(state=state, **kwargs)
+
+
+def _settings_expression_to_scheme(leaf_cls, value):
+    """Render/validate settings-expression objects in a leaf's scheme value.
+
+    This is the *shared* conversion path used by every state-setting flow --
+    direct leaf ``set_state``, :class:`Group` dict updates, and command
+    arguments -- so an expression object is rendered via ``__settings_str__``
+    (not serialized with ``str()``) and kind-checked consistently, regardless of
+    how it reaches the leaf.
+
+    Only leaves that opt into the protocol act: ``_expression_kinds`` gates
+    whole-value expressions and ``_element_expression_kinds`` gates per-element
+    expressions in a list.  Plain values (and leaves that do not opt in) are
+    returned unchanged.
+
+    ``leaf_cls`` is a leaf *class* here (``to_scheme_keys`` is a classmethod), so
+    the physical-dimension check -- which needs a live instance's units -- is
+    skipped; that check still runs on direct leaf assignment where the instance
+    is available.
+    """
+    whole_kinds = getattr(leaf_cls, "_expression_kinds", None)
+    if whole_kinds is not None:
+        rendered = _render_settings_expression(leaf_cls, value, whole_kinds)
+        if rendered is not None:
+            return rendered
+    element_kinds = getattr(leaf_cls, "_element_expression_kinds", None)
+    if element_kinds is not None:
+        rendered_list = _render_settings_expression_list(leaf_cls, value, element_kinds)
+        if rendered_list is not None:
+            return rendered_list
+    return value
 
 
 class InactiveObjectError(RuntimeError):
@@ -1061,13 +1130,13 @@ class RealNumerical(Numerical):
 
         # List leaves (e.g. ``RealList``) accept a container of reals whose
         # elements may themselves be expression objects. Each element is an
-        # independent scalar, so validate/render them with the scalar kinds and
-        # this leaf's units while preserving the list structure.
-        rendered_list = _render_settings_expression_list(
-            self, state, RealNumerical._expression_kinds
-        )
-        if rendered_list is not None:
-            return self.base_set_state(state=rendered_list, **kwargs)
+        # independent scalar, so validate/render them with the per-element kinds
+        # and this leaf's units while preserving the list structure.
+        element_kinds = getattr(self, "_element_expression_kinds", None)
+        if element_kinds is not None:
+            rendered_list = _render_settings_expression_list(self, state, element_kinds)
+            if rendered_list is not None:
+                return self.base_set_state(state=rendered_list, **kwargs)
 
         try:
 
@@ -1289,9 +1358,12 @@ class SettingsBase(Base, Generic[StateT]):
         """Convert value to have keys with scheme names.
 
         This is overridden in the ``Group``, ``NamedObject``, and
-        ``ListObject`` classes.
+        ``ListObject`` classes.  For a leaf, this is the shared conversion path
+        reached by direct assignment, :class:`Group` dict updates, and command
+        arguments alike, so settings-expression objects are rendered/validated
+        here consistently rather than being serialized with ``str()``.
         """
-        return value
+        return _settings_expression_to_scheme(cls, value)
 
     @classmethod
     def to_python_keys(cls, value: StateT) -> StateT:
@@ -1473,6 +1545,10 @@ class FilenameList(SettingsBase[StringListType], Textual):
     base_set_state: Callable[..., None] = SettingsBase[StringListType].set_state
     set_state: Callable[..., None] = _textual_list_set_state
 
+    # Each element is an independent expression-string, accepting the same kinds
+    # as a scalar :class:`Textual` leaf.
+    _element_expression_kinds: tuple[str, ...] = Textual._expression_kinds
+
     def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
@@ -1533,6 +1609,9 @@ class RealList(SettingsBase[RealListType], RealNumerical):
     # accepts vector-valued expressions.
     _expression_kinds: tuple[str, ...] = ("scalar", "vector", "quantity")
 
+    # Each element of the container is an independent scalar real.
+    _element_expression_kinds: tuple[str, ...] = ("scalar", "quantity")
+
     _state_type = RealListType
 
 
@@ -1561,6 +1640,10 @@ class StringList(SettingsBase[StringListType], Textual):
     # elements through the protocol before delegating to the inherited setter.
     base_set_state: Callable[..., None] = SettingsBase[StringListType].set_state
     set_state: Callable[..., None] = _textual_list_set_state
+
+    # Each element is an independent expression-string, accepting the same kinds
+    # as a scalar :class:`Textual` leaf.
+    _element_expression_kinds: tuple[str, ...] = Textual._expression_kinds
 
 
 class BooleanList(SettingsBase[BoolListType], Property):
