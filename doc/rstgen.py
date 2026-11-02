@@ -381,10 +381,10 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
                 f"ref_{mode}_datamodel_{member_path.rstrip('/').replace('/', '_')}"
             )
             f.write(".. rubric:: Named object type\n\n")
-            f.write("Access a member of this collection by name:\n\n")
+            f.write(f":ref:`{member_label} <{member_ref}>`\n\n")
             f.write(
-                f":ref:`{member_label} <{member_ref}>` "
-                f"(for example, ``{menu['name'].__name__}['<name>']``)\n\n\n"
+                f"Access each ``{member_label}`` by name using "
+                f"``{menu['name'].__name__}['<name>']``.\n\n\n"
             )
         else:
             named_object_member = None

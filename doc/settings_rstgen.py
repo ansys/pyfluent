@@ -128,7 +128,9 @@ def _write_rst_header(
     # name (for example ``velocity_inlet_item``) instead of the internal class
     # name, which carries a disambiguating ``_n`` suffix.
     title = display_title or cls_orig_name
-    r.write(":orphan:\n\n")
+    r.write(":orphan:\n")
+    # Hide the right-hand "On this page" secondary sidebar on settings pages.
+    r.write(":html_theme.sidebar_secondary.remove:\n\n")
     # ``root`` used to create a hyperlink for settings API
     if cls_orig_name == "root":
         r.write(f".. _ref_{cls_name}:\n\n")
@@ -178,16 +180,19 @@ def _write_rst_body(r, cls, cls_name):
         child_cls = getattr(cls, "child_object_type")
         instance_label = child_cls._python_name
         r.write(".. rubric:: Named object type\n\n")
+        r.write(f":ref:`{instance_label} <{child_cls.__name__}>`\n\n")
         if issubclass(cls, ListObject):
             access_example = f"{cls._python_name}[<index>]"
-            r.write("Access a member of this collection by index:\n\n")
+            r.write(
+                f"Access each ``{instance_label}`` by index using "
+                f"``{access_example}``.\n\n\n"
+            )
         else:
             access_example = f"{cls._python_name}['<name>']"
-            r.write("Access a member of this collection by name:\n\n")
-        r.write(
-            f":ref:`{instance_label} <{child_cls.__name__}>` "
-            f"(for example, ``{access_example}``)\n\n\n"
-        )
+            r.write(
+                f"Access each ``{instance_label}`` by name using "
+                f"``{access_example}``.\n\n\n"
+            )
     if parents_dict.get(cls_name):
         r.write(".. rubric:: Included in:\n\n")
         data_dict = {"Parent": "Summary"}
