@@ -683,19 +683,6 @@ def test_read_case_data_filename_argument_renders_protocol_object(pressure_expr)
     captured = {}
 
     class _CmdProxy:
-        def get_static_info(self):
-            return {
-                "type": "group",
-                "commands": {
-                    "read-case-data": {
-                        "type": "command",
-                        "arguments": {
-                            "file-name": {"type": "file", "file_purpose": "input"},
-                        },
-                    },
-                },
-            }
-
         def is_interactive_mode(self):
             return False
 
@@ -707,7 +694,24 @@ def test_read_case_data_filename_argument_renders_protocol_object(pressure_expr)
             captured["kwds"] = kwds
             return None
 
-    root = flobject.get_root(_CmdProxy(), version="252")
+    static_info = {
+        "type": "group",
+        "commands": {
+            "read-case-data": {
+                "type": "command",
+                "arguments": {
+                    "file-name": {"type": "file", "file_purpose": "input"},
+                },
+            },
+        },
+    }
+    # Build directly from static info via get_cls so the command tree is used
+    # regardless of the ``use_runtime_python_classes`` config (``get_root``
+    # would otherwise load the real prebuilt settings tree, which has no
+    # ``read_case_data`` at the root).
+    root_cls, _ = flobject.get_cls("", static_info, version="252")
+    root = root_cls()
+    root.set_flproxy(_CmdProxy())
     # Before the fix this raised AttributeError inside expand_api_file_argument.
     root.read_case_data.execute_command(file_name=pressure_expr)
     assert captured["command"] == "read-case-data"
