@@ -27,9 +27,16 @@ from functools import partial
 import logging
 import os
 from pathlib import Path, PurePosixPath
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.utils.execution import asynchronous
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
+    from ansys.fluent.core.solver.session.solver import Solver
 
 network_logger = logging.getLogger("pyfluent.networking")
 
@@ -69,36 +76,37 @@ def _read_case_into_each(solvers, file_type, file_name, full_file_name_container
 
 
 def transfer_case(  # noqa: C901
-    source_instance,
-    solvers,
-    file_type: str,
-    file_name_stem: str,
-    num_files_to_try: int,
-    clean_up_temp_file: bool,
-    overwrite_previous: bool,
+    source_instance: "BaseMeshing | Solver",
+    solvers: "Iterable[Solver]",
+    file_type: str = "case",
+    file_name_stem: str | None = None,
+    num_files_to_try: int = 1,
+    clean_up_temp_file: bool = True,
+    overwrite_previous: bool = True,
     workdir: str | None = None,
     container_workdir: str | None = None,
-):
-    """Transfer case between instances.
+) -> None:
+    """Transfer a case or mesh from a source session (meshing or solver)
+    to one or more destination solver sessions.
 
     Parameters
     ----------
-    source_instance : object
-        Fluent instance (tested for meshing instance)
-    solvers : iterable
-        Sequence of solver instances
-    file_type : str
-        "case" or "mesh"
-    file_name_stem : str
-        Optional file name stem
-    num_files_to_try : int
-        Optional number of files to try to write,
-        each with a different generated name.
-        Defaults to 1
-    clean_up_temp_file: bool
-        Whether to remove the file at the end
-    overwrite_previous: bool
-        Whether to overwrite the file if it already exists
+    source_instance : BaseMeshing | Solver
+        Meshing or solver session instance to transfer the case or mesh from.
+    solvers : Iterable[Solver]
+        Sequence of solver instances to transfer the case or mesh to.
+    file_type : str, optional
+        ``"case"`` or ``"mesh"``. Defaults to ``"case"``.
+    file_name_stem : str, optional
+        File name stem. If not specified (``None``), a default stem
+        (``"temp_case_file"``) is used.
+    num_files_to_try : int, optional
+        Number of files to try to write, each with a different generated name.
+        Defaults to ``1``.
+    clean_up_temp_file : bool, optional
+        Whether to remove the file at the end. Defaults to ``True``.
+    overwrite_previous : bool, optional
+        Whether to overwrite the file if it already exists. Defaults to ``True``.
     workdir : str, optional
         Working directory that is accessible by the Fluent client as well as PyFluent.
     container_workdir : str, optional
