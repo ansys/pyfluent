@@ -36,7 +36,6 @@ from pathlib import Path
 import platform
 import socket
 import subprocess
-import threading
 from typing import Callable, TypeVar
 import warnings
 import weakref
@@ -48,6 +47,7 @@ from ansys.fluent.core.connectivity.file_transfer_service import (
     ContainerFileTransferStrategy,
     FileTransferStrategy,
 )
+from ansys.fluent.core.connectivity.grpc_transport import GrpcTransport
 from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
 from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
@@ -59,8 +59,15 @@ from ansys.fluent.core.execution.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.module_config import config
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
-from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
+from ansys.fluent.core.utils.networking import is_localhost
 from ansys.platform.instancemanagement import Instance
+
+# ``MonitorThread`` is re-exported here for backward compatibility.
+from ansys.solver.core.connection import (  # noqa: F401
+    Connection,
+    ErrorState,
+    MonitorThread,
+)
 from ansys.tools.common.cyberchannel import create_channel
 
 logger = logging.getLogger("pyfluent.general")
@@ -109,31 +116,6 @@ def _get_max_c_int_limit() -> int:
     return 2 ** (sizeof(c_int) * 8 - 1) - 1
 
 
-class MonitorThread(threading.Thread):
-    """A class used for monitoring a Fluent session.
-
-    Daemon thread which will ensure cleanup of session objects, shutdown of
-    non-daemon threads etc.
-
-    Attributes
-    ----------
-    cbs : List[Callable]
-        Cleanup/shutdown functions
-    """
-
-    def __init__(self):
-        """Initialize MonitorThread."""
-        super().__init__(daemon=True)
-        self.cbs: list[Callable] = []
-
-    def run(self) -> None:
-        """Run monitor thread."""
-        main_thread = threading.main_thread()
-        main_thread.join()
-        for cb in self.cbs:
-            cb()
-
-
 ContainerT = TypeVar("ContainerT")
 
 
@@ -169,58 +151,6 @@ def get_container(container_id_or_name: str) -> bool | ContainerT | None:
         logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
-
-
-class ErrorState:
-    """Object to indicate the error state of the connected Fluent client.
-
-    Examples
-    --------
-    >>> import ansys.fluent.core as pyfluent
-    >>> session = pyfluent.launch_fluent()
-    >>> session._fluent_connection._error_state.set("test", "test details")
-    >>> session._fluent_connection._error_state.name
-    'test'
-    >>> session._fluent_connection._error_state.details
-    'test details'
-    >>> session._fluent_connection._error_state.clear()
-    >>> session._fluent_connection._error_state.name
-    ''
-    """
-
-    @property
-    def name(self):
-        """Get name."""
-        return self._name
-
-    @property
-    def details(self):
-        """Get details."""
-        return self._details
-
-    def __init__(self, name: str = "", details: str | None = ""):
-        """Initializes the error state object.
-
-        Parameters
-        ----------
-            name : str
-                The name of the error state, by default an empty string, indicating no errors.
-            details : str
-                Additional details of the error, by default an empty string.
-        """
-        self._name = name
-        self._details = details
-
-    def set(self, name: str, details: str):
-        """Method to set the error state name and details to new values."""
-        self._name = name
-        self._details = details
-
-    def clear(self):
-        """Method to clear the current error state, emptying the error name and details
-        properties."""
-        self._name = ""
-        self._details = ""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -443,7 +373,7 @@ def _pid_exists(pid):
 S = TypeVar("S", bound=ServiceProtocol)
 
 
-class FluentConnection:
+class FluentConnection(Connection):
     """Encapsulates a Fluent connection.
 
     Methods
@@ -454,7 +384,6 @@ class FluentConnection:
 
     _on_exit_cbs: list[Callable] = []
     _id_iter = itertools.count()
-    _monitor_thread: MonitorThread | None = None
 
     def __init__(
         self,
@@ -531,49 +460,32 @@ class FluentConnection:
             If port is not provided.
         """
         self._compose_config = compose_config if compose_config else ComposeConfig()
-        self._error_state = ErrorState()
         self._data_valid = False
-        self._channel_str = None
         self._slurm_job_id = None
-        self.finalizer_cbs = []
-        self._uds_fullpath = None
-        if channel is not None:
-            self._channel = channel
-        else:
-            if address is not None:
-                self._channel_str = address
-                self._uds_fullpath = get_uds_path(address)
-                if self._uds_fullpath is None:
-                    ip, port = address.rsplit(":", 1)
-                    port = int(port)
-            else:
-                ip, port = _get_ip_and_port(ip, port)
-                self._channel_str = f"{ip}:{port}"
-            self._channel = _get_channel(
-                ip=ip,
-                port=port,
-                uds_fullpath=self._uds_fullpath,
-                allow_remote_host=allow_remote_host,
-                certificates_folder=certificates_folder,
-                insecure_mode=insecure_mode,
-                inside_container=inside_container,
-            )
-        self._metadata: list[tuple[str, str]] = (
-            [("password", password)] if password else []
+        super().__init__()
+
+        self._transport = GrpcTransport(
+            ip=ip,
+            port=port,
+            address=address,
+            channel=channel,
+            password=password,
+            allow_remote_host=allow_remote_host,
+            certificates_folder=certificates_folder,
+            insecure_mode=insecure_mode,
+            inside_container=inside_container,
         )
-
-        from ansys.fluent.core._grpc_services import create_grpc_service_factory
-        from ansys.fluent.core.services import create_service_factory
-
-        self._service_factory = create_service_factory(
-            service_factory=create_grpc_service_factory(
-                channel=self._channel,
-                metadata=self._metadata,
-                error_state=self._error_state,
-            ),
-        )
-
-        self._health_check = self._service_factory.health_check
+        # References delegated to the transport, kept on the connection for
+        # existing callers; these reach-ins are removed in task 2.5.
+        self._error_state = self._transport._error_state
+        self._channel = self._transport._channel
+        self._channel_str = self._transport._channel_str
+        self._uds_fullpath = self._transport._uds_fullpath
+        self._metadata = self._transport._metadata
+        self._service_factory = self._transport._service_factory
+        self._health_check = self._transport._health_check
+        ip = self._transport.ip
+        port = self._transport.port
 
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
@@ -592,10 +504,6 @@ class FluentConnection:
         self._slurm_job_id = slurm_job_id
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
-
-        if not FluentConnection._monitor_thread:
-            FluentConnection._monitor_thread = MonitorThread()
-            FluentConnection._monitor_thread.start()
 
         self.scheme_eval = self._service_factory.scheme_interpreter
         self.application_runtime = self._service_factory.application_runtime
@@ -640,17 +548,6 @@ class FluentConnection:
 
         self._file_transfer_service = file_transfer_service
 
-        self._exit_event = threading.Event()
-
-        # session.exit() is handled in the daemon thread (MonitorThread) which ensures
-        # shutdown of non-daemon threads. A daemon thread is terminated abruptly
-        # during interpreter exit, after all non-daemon threads are exited.
-        # self._waiting_thread is a long-running thread which is exited
-        # at the end of session.exit() to ensure everything within session.exit()
-        # gets executed during exit.
-        self._waiting_thread = threading.Thread(target=self._exit_event.wait)
-        self._waiting_thread.start()
-
         self._finalizer = weakref.finalize(
             self,
             FluentConnection._exit,
@@ -662,7 +559,7 @@ class FluentConnection:
             self._file_transfer_service,
             self._exit_event,
         )
-        FluentConnection._monitor_thread.cbs.append(self._finalizer)
+        self._ensure_monitor_thread().cbs.append(self._finalizer)
 
     @property
     @deprecated(version="0.32", reason="No longer required at this level.")
@@ -769,13 +666,6 @@ class FluentConnection:
                     "Container not found, cancelling cleanup script execution."
                 )
 
-    def register_finalizer_cb(self, cb, at_start=False):
-        """Register a callback to run with the finalizer."""
-        if at_start:
-            self.finalizer_cbs.insert(0, cb)
-        else:
-            self.finalizer_cbs.append(cb)
-
     def create_grpc_service(self, service: type[S], *args) -> S:
         """Create a gRPC service.
 
@@ -791,7 +681,7 @@ class FluentConnection:
         Any
             service object
         """
-        return service(self._channel, self._metadata, *args)
+        return self._transport.create_grpc_service(service, *args)
 
     def wait_process_finished(self, wait: float | int | bool = 100):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
