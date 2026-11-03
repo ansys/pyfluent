@@ -21,16 +21,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Solver settings and context-management APIs for PyFluent.
+"""Direct access to key solver settings.
 
-This package exposes generated solver settings objects and the :func:`using`
-context manager. Solver session classes are defined in modules under
-:mod:`ansys.fluent.core.solver.session`: ``Solver`` directly inherits from
-:class:`~ansys.fluent.core.execution.session.session.BaseSession`, and the
-``SolverAero``, ``SolverIcing``, ``SolverLite``, and ``PrePost`` variants
-inherit from ``Solver``. The session classes are re-exported through
-:mod:`ansys.fluent.core.execution.session` and the top-level
-``ansys.fluent.core`` API.
+The solver is configured through a large hierarchy of settings objects. This
+package provides the most commonly used of those settings as classes you can
+create directly, without navigating the hierarchy to find them. For example,
+``Viscous()`` gives you the viscous model settings, and
+``VelocityInlet("hot-inlet")`` gives you the settings for a velocity inlet
+boundary condition named "hot-inlet".
+
+Use :func:`using` to say which solver session these objects belong to:
+
+.. code-block:: python
+
+   >>> from ansys.fluent.core.solver import Viscous, using
+
+   >>> with using(solver):
+   >>>     viscous = Viscous()
+   >>>     viscous.model = viscous.model.K_EPSILON
+
+Without :func:`using`, the object is created for the session passed explicitly
+as its ``settings_source`` argument.
+
+Related topics:
+
+- Solver sessions are created and managed through session objects. See
+  :ref:`session <ref_ansys_fluent_core_solver_session>`.
+
+- Every session exposes the full settings hierarchy through its settings
+  object, the root of the API for configuring and running the solver. See
+  :ref:`settings root <ref_root>`.
+
+The classes available for direct access are listed below.
 """
 
 from importlib import import_module
