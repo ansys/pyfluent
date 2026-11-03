@@ -396,8 +396,8 @@ def extract_svars(solution_variables_data):
     ------
     IncompleteSolutionVariableDataError
         If the streamed data for a zone ends before all declared elements are
-        received. This typically means a single zone's data exceeds the
-        ~2 GiB gRPC/protobuf message-size limit; see the exception's
+        received. This typically means a single zone's data is too large for
+        the server to stream in one response; see the exception's
         documentation for ways to work around it.
     """
 
