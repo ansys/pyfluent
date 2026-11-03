@@ -417,11 +417,11 @@ class IncompleteSolutionVariableDataError(RuntimeError):
     chunks. If the stream ends before ``field_size`` elements have been
     received, the data for that zone is incomplete and this error is raised.
 
-    The usual cause is that a *single* zone's data is too large to be streamed
-    in one response: a single gRPC/protobuf message cannot exceed ~2 GiB, so the
-    server stops sending once that ceiling is reached. This is common for large
-    multi-component fields -- for example ``SV_CENTROID`` (3 components) on a
-    cell zone with hundreds of millions of cells.
+    The usual cause is that a *single* zone's data is too large for the server
+    to stream in one response, so the server stops sending before all elements
+    are delivered. This is common for large multi-component fields -- for
+    example ``SV_CENTROID`` (3 components) on a cell zone with hundreds of
+    millions of cells.
 
     Note that the client ``chunk_size`` setting does not help here: it only
     controls how a response is sliced into messages, not the total amount of
@@ -454,12 +454,9 @@ class IncompleteSolutionVariableDataError(RuntimeError):
         self.item_size = item_size
 
         if item_size:
-            size_note = (
-                f" (~{_format_bytes(expected * item_size)} requested; a single "
-                f"gRPC/protobuf message cannot exceed ~2 GiB)"
-            )
+            size_note = f" (~{_format_bytes(expected * item_size)} requested)"
         else:
-            size_note = " (a single gRPC/protobuf message cannot exceed ~2 GiB)"
+            size_note = ""
 
         super().__init__(
             f"Solution variable data stream ended prematurely: received "
@@ -482,8 +479,8 @@ def extract_svars(solution_variables_data):
     ------
     IncompleteSolutionVariableDataError
         If the streamed data for a zone ends before all declared elements are
-        received. This typically means a single zone's data exceeds the
-        ~2 GiB gRPC/protobuf message-size limit; see the exception's
+        received. This typically means a single zone's data is too large for
+        the server to stream in one response; see the exception's
         documentation for ways to work around it.
     """
 
