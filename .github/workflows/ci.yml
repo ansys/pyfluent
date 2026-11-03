@@ -137,6 +137,46 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  # Componentization architecture rules (EPIC #4618). Report-only during Phase 0:
+  # the step is non-blocking so current violations are visible without failing
+  # the build. Becomes blocking in the hardening phase.
+  import-linter:
+    name: "Import contracts (report-only)"
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Download generated API files
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: generated-api-files
+          path: src/ansys/fluent/core/generated
+
+      - name: Install package and import-linter
+        shell: bash
+        run: |
+          python -m pip install -U pip
+          pip install . import-linter
+
+      - name: Make the platform namespace importable
+        shell: bash
+        run: |
+          ANSYS_DIR=$(python -c "import os, ansys.fluent.core as m; print(os.path.dirname(os.path.dirname(os.path.dirname(m.__file__))))")
+          cp -r src/ansys/solver "$ANSYS_DIR"/
+
+      - name: Run import-linter (report-only)
+        continue-on-error: true
+        run: lint-imports --verbose
+
   test-import:
     name: Build and Smoke tests
     needs: [build]
