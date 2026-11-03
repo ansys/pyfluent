@@ -57,7 +57,7 @@ from functools import wraps
 from typing import Any
 
 from ansys.fluent.core.services.abstract_settings import AbstractSettings
-from ansys.fluent.core.solver.flobject import StateType
+from ansys.solver.core.state_types import StateType
 
 trace: bool = False
 _indent: int = 0
