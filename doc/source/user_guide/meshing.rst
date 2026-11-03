@@ -1,12 +1,21 @@
+.. _ref_meshing_guide:
 .. _ref_new_meshing_workflows_guide:
 
 Meshing workflows
 =================
 
-This guide describes the PyFluent-native meshing workflow interface for creating,
-organizing, and running Fluent meshing workflows directly from Python. It covers
-workflow creation, task management, and the built-in watertight, fault-tolerant,
-and two-dimensional meshing workflows available in PyFluent.
+This guide walks you through generating a volume mesh from CAD geometry
+using PyFluent's guided meshing workflows, directly from Python. You'll learn how to
+create and organize workflows, manage tasks, and use the built-in watertight,
+fault-tolerant, and two-dimensional workflows to go from geometry to a ready-to-solve
+mesh.
+
+.. note::
+
+   PyFluent offers two interfaces for meshing workflows: the PyFluent-native
+   interface and the Fluent-native interface, which mirrors Fluent's journaling
+   syntax. This guide focuses on the PyFluent-native interface, which is the
+   recommended choice.
 
 Overview
 --------
@@ -15,16 +24,21 @@ PyFluent provides pre-built workflows (Watertight Geometry, Fault-tolerant, and 
 as well as the ability to create custom workflows. You can insert and duplicate tasks, save your workflow to file,
 and load previously saved workflows for reuse.
 
+Built-in meshing workflows
+--------------------------
+PyFluent ships with three ready-to-use workflows that cover the most common
+meshing scenarios. Pick the one that matches your geometry and follow its steps.
+
 .. _ref_watertight_meshing_workflow_example:
 
 Watertight geometry workflow
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Use the **Watertight Geometry** workflow for watertight CAD geometries that
 require little cleanup. This is useful for clean geometries prepared in CAD tools
 such as Ansys SpaceClaim.
 
 Import geometry
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -42,7 +56,7 @@ Import geometry
     import_geometry()
 
 Add local sizing
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -51,7 +65,7 @@ Add local sizing
     add_local_sizing()
 
 Generate surface mesh
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -60,7 +74,7 @@ Generate surface mesh
     create_surface_mesh()
 
 Describe geometry
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -71,7 +85,7 @@ Describe geometry
     describe_geometry()
 
 Update boundaries
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -84,14 +98,14 @@ Update boundaries
     update_boundaries()
 
 Update regions
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 .. code:: python
 
     watertight.update_regions()
 
 Add boundary layers
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -101,7 +115,7 @@ Add boundary layers
     watertight.add_boundary_layers_child_1()
 
 Generate volume mesh
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -111,7 +125,7 @@ Generate volume mesh
     create_volume_mesh()
 
 Switch to solution mode
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -120,13 +134,13 @@ Switch to solution mode
 .. _ref_fault_tolerant_meshing_workflow_example:
 
 Fault-tolerant workflow
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 Use the **Fault-tolerant** workflow for complex CAD geometries that need
 cleanup or modification, such as addressing overlaps, intersections, holes, and duplicates.
 The following example shows how to use the fault-tolerant workflow.
 
 Import CAD and part management
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -162,7 +176,7 @@ Import CAD and part management
     fault_tolerant.import_cad_and_part_management()
 
 Describe geometry and flow
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -177,7 +191,7 @@ Describe geometry and flow
     describe_geometry()
 
 Enclose fluid regions (capping)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -210,7 +224,7 @@ Enclose fluid regions (capping)
     fault_tolerant.capping_child_4()
 
 Extract edge features
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -222,7 +236,7 @@ Extract edge features
     fault_tolerant.extract_edge_features_child_1()
 
 Identify regions
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -249,7 +263,7 @@ Identify regions
     fault_tolerant.identify_regions_child_2()
 
 Define leakage threshold
-~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -263,7 +277,7 @@ Define leakage threshold
     fault_tolerant.define_leakage_threshold_child_1()
 
 Update regions settings
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -301,7 +315,7 @@ Update regions settings
     update_region()
 
 Choose mesh control options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -325,21 +339,21 @@ Choose mesh control options
     fault_tolerant.choose_mesh_control_options()
 
 Generate surface mesh
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
     fault_tolerant.generate_surface_mesh()
 
 Update boundaries
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
     fault_tolerant.update_boundaries()
 
 Add boundary layers
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -349,7 +363,7 @@ Add boundary layers
     fault_tolerant.add_boundary_layers_child_1()
 
 Generate volume mesh
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -368,7 +382,7 @@ Generate volume mesh
     create_volume_mesh()
 
 Switch to solution mode
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -377,11 +391,11 @@ Switch to solution mode
 .. _ref_two_dimensional_meshing_workflow_example:
 
 Two-dimensional workflow
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 Use the **two-dimensional** workflow to perform common meshing operations on two-dimensional geometries.
 
 Import geometry
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -401,7 +415,7 @@ Import geometry
     load_cad()
 
 Set regions and boundaries
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -410,7 +424,7 @@ Set regions and boundaries
     update_boundaries()
 
 Define global sizing
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -422,7 +436,7 @@ Define global sizing
     global_sizing()
 
 Adding BOI
-~~~~~~~~~~
+^^^^^^^^^^
 
 .. code:: python
 
@@ -437,7 +451,7 @@ Adding BOI
     add_local_sizing.add_child_and_update(defer_update=False)
 
 Set edge sizing
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -451,7 +465,7 @@ Set edge sizing
     add_local_sizing.add_child_and_update(defer_update=False)
 
 Set curvature sizing
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -468,7 +482,7 @@ Set curvature sizing
     add_local_sizing.add_child_and_update(defer_update=False)
 
 Add boundary layer
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -480,7 +494,7 @@ Add boundary layer
     add_boundary_layers.add_child_and_update(defer_update=False)
 
 Generate surface mesh
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -510,18 +524,23 @@ Generate surface mesh
     generate_surface_mesh()
 
 Switch to solution mode
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Switching to solver is not allowed in 2D Meshing mode.
+
+Workflow operations
+-------------------
+Beyond the built-in workflows, these operations let you build, persist, and
+reshape workflows and their tasks to fit your own process.
 
 .. _ref_create_meshing_workflow_example:
 
 Creating a new workflow
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows you how to use ``CreateMeshingWorkflow`` to build a custom workflow.
 
 Create workflow
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -535,7 +554,7 @@ Create workflow
     custom_workflow = CreateMeshingWorkflow(session=meshing_session)
 
 Insert first task
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -545,13 +564,13 @@ Insert first task
     custom_workflow.import_geometry()
 
 Saving a workflow
------------------
+~~~~~~~~~~~~~~~~~
 
 The following example shows you how to use ``save_workflow()`` to persist the
 current workflow definition to a ``.wft`` file for later reuse.
 
 Save workflow
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -562,11 +581,11 @@ Save workflow
 .. _ref_load_meshing_workflow_example:
 
 Loading a saved workflow
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows you how to use ``LoadMeshingWorkflow`` to load a previously saved workflow.
 
 Load workflow
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -583,7 +602,7 @@ Load workflow
 
 
 Insert new task
----------------
+~~~~~~~~~~~~~~~
 You can insert tasks into a workflow using the workflow object.
 
 .. code:: python
@@ -598,7 +617,7 @@ You can insert tasks into a workflow using the workflow object.
     watertight.import_geometry.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
 
 Duplicate tasks
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 When you insert the same task multiple times, duplicates are accessible by attribute names with numeric suffixes.
 
@@ -646,7 +665,7 @@ When you insert the same task multiple times, duplicates are accessible by attri
 
 
 Current workflow
-----------------
+~~~~~~~~~~~~~~~~
 You can use the ``current_workflow`` to access the active workflow.
 
 .. code:: python
@@ -658,7 +677,7 @@ You can use the ``current_workflow`` to access the active workflow.
 
 
 Mark as updated
----------------
+~~~~~~~~~~~~~~~
 Use the ``mark_as_updated()`` to explicitly mark a task as updated.
 
 .. code:: python
@@ -667,7 +686,7 @@ Use the ``mark_as_updated()`` to explicitly mark a task as updated.
 
 
 Renaming tasks in workflow
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can rename a task to any display name, including names that are not valid Python identifiers.
 The task remains accessible by its original name or by the new display name as a string key.
 
@@ -683,7 +702,7 @@ The task remains accessible by its original name or by the new display name as a
 
 
 Deleting tasks from workflow
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can delete tasks individually or in groups. To delete multiple tasks at once,
 pass task objects to the ``list_of_tasks`` argument of ``delete_tasks()``:
 
@@ -710,8 +729,8 @@ Duplicate tasks can also be deleted via indexing:
        del watertight.create_regions
 
 
-Workflow navigation enhancements
---------------------------------
+Navigating the workflow
+~~~~~~~~~~~~~~~~~~~~~~~
 
 You can traverse tasks within a workflow using navigation methods such as
 ``first_child()``, ``last_child()``, ``next()``, ``previous()``, ``parent()``,
