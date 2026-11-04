@@ -158,9 +158,9 @@ class SafeApplier:
     def _handle_set_failure(
         self, path: str, value, old_value, err: Exception
     ) -> StepOutcome:
-        cls = self.classifier.classify(err, self.session)
-        if cls.severity.value == "benign":
-            return StepOutcome(path=path, ok=True, result="interrupted")
+        # A set is not interruptible, so the clean-stop sentinel is surfaced as a
+        # real error here (consistent handling; never swallowed).
+        cls = self.classifier.classify(err, self.session, interruptible=False)
         if cls.catastrophic:
             raise err
         if cls.recoverable:
@@ -197,7 +197,13 @@ class SafeApplier:
         try:
             result = method(**kwargs) if kwargs else method()
         except Exception as err:  # noqa: BLE001
-            cls = self.classifier.classify(err, self.session)
+            from ansys.fluent.core.resilient.controller import (
+                _is_interruptible_command,
+            )
+
+            cls = self.classifier.classify(
+                err, self.session, interruptible=_is_interruptible_command(path)
+            )
             if cls.severity.value == "benign":
                 return StepOutcome(path=path, ok=True, result="interrupted")
             if cls.catastrophic:

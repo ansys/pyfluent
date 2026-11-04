@@ -33,10 +33,19 @@ pytestmark = pytest.mark.resilient
 
 
 def test_benign_interrupt_sentinel():
-    cls = ErrorClassifier().classify(RuntimeError("()"))
+    # The clean-stop sentinel is benign ONLY for an interruptible (solve) command.
+    cls = ErrorClassifier().classify(RuntimeError("()"), interruptible=True)
     assert cls.category is ErrorCategory.BENIGN_INTERRUPT
     assert cls.severity is Severity.BENIGN
     assert not cls.recoverable and not cls.catastrophic
+
+
+def test_sentinel_not_benign_outside_interruptible_command():
+    # Consistency: the same "()" text on a non-interruptible operation (e.g. a
+    # value set) must NOT be swallowed -- it is surfaced as a real (hard) error.
+    cls = ErrorClassifier().classify(RuntimeError("()"), interruptible=False)
+    assert cls.category is not ErrorCategory.BENIGN_INTERRUPT
+    assert cls.severity is not Severity.BENIGN
 
 
 def test_fatal_state_is_catastrophic():
@@ -110,10 +119,11 @@ def test_unknown_is_hard():
 
 
 def test_benign_checked_before_fatal():
-    # Even on a fatal session, a clean-interrupt sentinel is benign.
+    # For an interruptible command, a clean-interrupt sentinel is benign even on
+    # a fatal session (a clean stop is not the fatal condition).
     session = FakeSession()
     session.go_fatal()
-    cls = ErrorClassifier().classify(RuntimeError("()"), session)
+    cls = ErrorClassifier().classify(RuntimeError("()"), session, interruptible=True)
     assert cls.category is ErrorCategory.BENIGN_INTERRUPT
 
 

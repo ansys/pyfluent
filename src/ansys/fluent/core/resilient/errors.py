@@ -111,17 +111,30 @@ class ErrorClassifier:
         """Authoritative check: is the Fluent server in a fatal state?"""
         return _compat.is_fatal(session)
 
-    def classify(self, err: Exception, session=None) -> Classification:
+    def classify(self, err: Exception, session=None, *, interruptible=False):
         """Classify ``err`` into a :class:`Classification`.
 
         ``session`` is optional; when given it is consulted for the authoritative
         fatal-state check (a fatal event poisons the whole session, so any error
         observed afterwards is really catastrophic).
+
+        ``interruptible`` mirrors core PyFluent: the clean-stop sentinel
+        ``RuntimeError("()")`` is only treated as a *benign* interrupt for an
+        interruptible (solve) command -- exactly where core itself suppresses it.
+        Anywhere else (e.g. a value ``set``) the same text is NOT swallowed; it is
+        surfaced as a genuine error so behaviour is consistent, never
+        inconsistently swallowed.
         """
         text = str(err)
 
-        # 1. Clean solver stop / interrupt -- not an error.
-        if isinstance(err, RuntimeError) and text.strip() == _INTERRUPT_SENTINEL:
+        # 1. Clean solver stop / interrupt -- benign ONLY for interruptible
+        #    (solve) commands, matching core's suppression. Elsewhere it is a real
+        #    error and must be surfaced, not swallowed.
+        if (
+            interruptible
+            and isinstance(err, RuntimeError)
+            and text.strip() == _INTERRUPT_SENTINEL
+        ):
             return self._make(
                 ErrorCategory.BENIGN_INTERRUPT,
                 "Solver was cleanly interrupted / stopped.",
