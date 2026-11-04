@@ -129,10 +129,11 @@ _static_class_attributes = [
 #       Validation (see below) always runs *before* this is called.
 #
 #   __settings_kind__(self) -> str | None
-#       OPTIONAL.  Describe the *shape* of the produced value using one of the
-#       neutral tags in :data:`_EXPRESSION_KINDS` ("scalar", "vector",
-#       "boolean", "quantity", "location_list").  Return ``None`` when the kind
-#       is unknown, in which case the structural check is skipped.
+#       OPTIONAL.  Describe the *shape* of the produced value as an opaque
+#       string tag.  The settings layer does not define this vocabulary; it only
+#       checks the tag for membership in the leaf's own set of accepted kinds
+#       (``_expression_kinds``), which uses the same vocabulary.  Return ``None``
+#       when the kind is unknown, in which case the structural check is skipped.
 #
 #   __settings_dimensions__(self) -> dict[str, float] | None
 #       OPTIONAL.  Describe the physical dimensions of the produced value as a
@@ -141,7 +142,6 @@ _static_class_attributes = [
 #
 # This keeps the generic settings layer decoupled from the Fluent expression
 # builder: the builder's AST nodes simply implement these methods.
-_EXPRESSION_KINDS = ("scalar", "vector", "boolean", "quantity", "location_list")
 
 
 def _is_settings_expression(state) -> bool:
@@ -230,9 +230,9 @@ def _validate_expression_quantity(
 
     1. **Structural kind** -- compares the expression's ``__settings_kind__``
        against the kinds the leaf accepts (``leaf._expression_kinds``, or
-       ``accepted_kinds`` when supplied -- e.g. the scalar kinds used for each
-       element of a real-list leaf).  This catches, for example, a vector or
-       boolean expression assigned to a scalar real leaf.  Skipped when either
+       ``accepted_kinds`` when supplied -- e.g. the kinds used for each
+       element of a list leaf).  This catches an expression whose structural
+       shape is not among those the leaf permits.  Skipped when either
        side does not declare its kind.
     2. **Physical dimension** -- compares the expression's
        ``__settings_dimensions__`` against the dimensions implied by the leaf's
