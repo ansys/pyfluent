@@ -8,13 +8,12 @@ accepts "expression objects" through a domain-neutral protocol
 (``__settings_str__`` / ``__settings_kind__`` / ``__settings_dimensions__``)
 rather than any Fluent-specific hook or hard-coded path. Specifically:
 
-* A :class:`Textual` leaf (``String`` / ``Filename``) accepts an expression
-  object *anywhere* and stores its rendered string.
 * A :class:`RealNumerical` leaf (``Real`` / ``RealList``) accepts an expression
-  object wherever expression strings are permitted.
+  object wherever expression strings are permitted; other leaf kinds (e.g.
+  :class:`Textual`) do not.
 * Quantity-type validation (structural kind and physical dimension) runs
   *before* the expression is rendered to a string.
-* Plain strings and ``VariableDescriptor`` values keep working as before.
+* Plain values keep working as before.
 """
 
 import pytest
@@ -22,52 +21,23 @@ import pytest
 from ansys.fluent.core.offline.expressions import ExpressionBuilder
 from ansys.fluent.core.offline.expressions._ast import Quantity
 from ansys.fluent.core.solver.flobject import (
-    Filename,
-    FilenameList,
     Group,
     Numerical,
     Real,
     RealList,
     RealNumerical,
     SettingsBase,
-    String,
-    StringList,
-    Textual,
     _is_settings_expression,
     _normalize_dimensions,
     _render_settings_expression,
     _render_settings_expression_list,
     _settings_expression_to_scheme,
-    _textual_list_set_state,
 )
 from ansys.units import VariableCatalog as V
 
 # --------------------------------------------------------------------------- #
 # Test doubles                                                                #
 # --------------------------------------------------------------------------- #
-
-
-class _FakeTextualLeaf:
-    """Minimal stand-in for a ``String``/``Filename`` settings leaf.
-
-    Captures whatever ``base_set_state`` receives so tests can assert on the
-    value the settings layer would have stored.
-    """
-
-    _has_migration_adapter = False
-    _expression_kinds = Textual._expression_kinds
-    python_path = "setup.named_expressions['x'].definition"
-
-    def __init__(self):
-        self.captured = None
-
-    def base_set_state(self, state=None, **kwargs):
-        self.captured = state
-        return state
-
-    def set_state_via(self, state):
-        """Route through the real ``Textual.set_state`` for this fake leaf."""
-        return Textual.set_state(self, state)
 
 
 class _FakeRealLeaf:
@@ -151,138 +121,6 @@ def test_normalize_dimensions_accepts_name_and_enum_keys():
     assert from_quantity == from_names
     # Zero exponents are dropped.
     assert _normalize_dimensions({"MASS": 0.0, "LENGTH": 1.0}) == {"LENGTH": 1.0}
-
-
-# --------------------------------------------------------------------------- #
-# Textual leaves accept expression objects anywhere                           #
-# --------------------------------------------------------------------------- #
-
-
-def test_textual_leaf_accepts_expression_object(pressure_expr):
-    leaf = _FakeTextualLeaf()
-    Textual.set_state(leaf, pressure_expr)
-    assert leaf.captured == "AreaAve(AbsolutePressure,['inlet1'])"
-
-
-def test_textual_leaf_still_accepts_string():
-    leaf = _FakeTextualLeaf()
-    Textual.set_state(leaf, "AreaAve(AbsolutePressure, ['inlet1'])")
-    assert leaf.captured == "AreaAve(AbsolutePressure, ['inlet1'])"
-
-
-def test_textual_leaf_still_accepts_variable_descriptor():
-    leaf = _FakeTextualLeaf()
-    # A VariableDescriptor does not implement the expression protocol, so it is
-    # handled by Textual's own field-name strategy: only that a string was
-    # captured matters here, not its exact spelling.
-    Textual.set_state(leaf, V.ABSOLUTE_PRESSURE)
-    assert isinstance(leaf.captured, str) and leaf.captured
-
-
-def test_textual_leaf_rejects_location_list_expression(builder):
-    leaf = _FakeTextualLeaf()
-    location_list = builder.locations(["inlet1", "inlet2"])
-    with pytest.raises(TypeError, match="kind 'location_list'"):
-        Textual.set_state(leaf, location_list)
-
-
-# --------------------------------------------------------------------------- #
-# Filename leaves route through the protocol before their inherited setter     #
-# --------------------------------------------------------------------------- #
-
-
-def test_filename_leaf_renders_expression_object(pressure_expr, monkeypatch):
-    # ``Filename`` resolves ``set_state`` via ``SettingsBase`` in the MRO, so it
-    # must explicitly route protocol objects through the expression helper
-    # instead of serializing them with ``str()``.
-    captured = {}
-    monkeypatch.setattr(
-        Filename,
-        "base_set_state",
-        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
-    )
-    leaf = Filename(name="x")
-    leaf.set_state(pressure_expr)
-    assert captured["state"] == "AreaAve(AbsolutePressure,['inlet1'])"
-
-
-def test_filename_leaf_still_accepts_plain_string(monkeypatch):
-    captured = {}
-    monkeypatch.setattr(
-        Filename,
-        "base_set_state",
-        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
-    )
-    leaf = Filename(name="x")
-    leaf.set_state("input.cas.h5")
-    assert captured["state"] == "input.cas.h5"
-
-
-def test_filename_leaf_rejects_location_list_expression(builder, monkeypatch):
-    captured = {}
-    monkeypatch.setattr(
-        Filename,
-        "base_set_state",
-        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
-    )
-    leaf = Filename(name="x")
-    location_list = builder.locations(["inlet1", "inlet2"])
-    with pytest.raises(TypeError, match="kind 'location_list'"):
-        leaf.set_state(location_list)
-    assert captured == {}  # never rendered / stored
-
-
-# --------------------------------------------------------------------------- #
-# Textual list leaves render each expression element via the protocol          #
-# --------------------------------------------------------------------------- #
-
-
-@pytest.mark.parametrize("list_cls", [StringList, FilenameList])
-def test_textual_list_renders_expression_elements(list_cls, pressure_expr, monkeypatch):
-    # ``StringList`` / ``FilenameList`` resolve ``set_state`` via ``SettingsBase``
-    # in the MRO, so (like ``Filename``) they must route each expression element
-    # through the protocol instead of serializing it with ``str()``.
-    captured = {}
-    monkeypatch.setattr(
-        list_cls,
-        "base_set_state",
-        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
-    )
-    leaf = list_cls(name="x")
-    leaf.set_state(["a.txt", pressure_expr, "b.txt"])
-    assert captured["state"] == [
-        "a.txt",
-        "AreaAve(AbsolutePressure,['inlet1'])",
-        "b.txt",
-    ]
-
-
-@pytest.mark.parametrize("list_cls", [StringList, FilenameList])
-def test_textual_list_still_accepts_plain_list(list_cls, monkeypatch):
-    captured = {}
-    monkeypatch.setattr(
-        list_cls,
-        "base_set_state",
-        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
-    )
-    leaf = list_cls(name="x")
-    leaf.set_state(["a.txt", "b.txt"])
-    assert captured["state"] == ["a.txt", "b.txt"]
-
-
-@pytest.mark.parametrize("list_cls", [StringList, FilenameList])
-def test_textual_list_rejects_location_list_element(list_cls, builder, monkeypatch):
-    captured = {}
-    monkeypatch.setattr(
-        list_cls,
-        "base_set_state",
-        lambda self, state=None, **kwargs: captured.__setitem__("state", state),
-    )
-    leaf = list_cls(name="x")
-    location_list = builder.locations(["inlet1", "inlet2"])
-    with pytest.raises(TypeError, match="kind 'location_list'"):
-        leaf.set_state([location_list])
-    assert captured == {}  # never rendered / stored
 
 
 # --------------------------------------------------------------------------- #
@@ -473,23 +311,20 @@ def test_parsed_expression_reports_its_quantity_type(
 
 
 @pytest.mark.parametrize(
-    ("expression_string", "target_leaf_factory", "compatible"),
+    ("expression_string", "compatible"),
     [
         # A scalar expression is compatible with a scalar Real parameter.
-        ("AreaAve(AbsolutePressure, ['inlet1'])", _FakeRealLeaf, True),
+        ("AreaAve(AbsolutePressure, ['inlet1'])", True),
         # A value-with-units is also accepted by a Real parameter.
-        ("101325 [Pa]", _FakeRealLeaf, True),
+        ("101325 [Pa]", True),
         # A vector expression is NOT compatible with a scalar Real parameter.
-        ("MakeVec(1, 2, 3)", _FakeRealLeaf, False),
+        ("MakeVec(1, 2, 3)", False),
         # A boolean expression is NOT compatible with a scalar Real parameter.
-        ("AbsolutePressure > 0", _FakeRealLeaf, False),
-        # A vector expression IS compatible with a (string) definition
-        # parameter, which accepts scalar/vector/boolean/quantity.
-        ("MakeVec(1, 2, 3)", _FakeTextualLeaf, True),
+        ("AbsolutePressure > 0", False),
     ],
 )
 def test_parsed_expression_kind_vs_target_parameter_kind(
-    builder, expression_string, target_leaf_factory, compatible
+    builder, expression_string, compatible
 ):
     # Build the expression object from its string form.
     expr = builder.parse(expression_string)
@@ -497,7 +332,7 @@ def test_parsed_expression_kind_vs_target_parameter_kind(
 
     # The "quantity type of the target parameter" is the set of kinds it
     # accepts, exposed via ``_expression_kinds``.
-    target = target_leaf_factory()
+    target = _FakeRealLeaf()
     accepted_kinds = target._expression_kinds
 
     # Direct comparison of the two quantity types.
@@ -528,7 +363,7 @@ def test_guard_rejects_leaf_that_forgets_to_wire_set_state():
     # set_state -> set_state resolves to SettingsBase.set_state.
     with pytest.raises(TypeError, match="bypasses expression handling"):
 
-        class _ForgotToWire(SettingsBase[str], Textual):
+        class _ForgotToWire(SettingsBase[float], Numerical):
             _expression_kinds = ("scalar",)
 
 
@@ -537,31 +372,20 @@ def test_guard_rejects_leaf_that_forgets_base_set_state():
     # the core setter as base_set_state (which that setter delegates to).
     with pytest.raises(TypeError, match="base_set_state"):
 
-        class _HalfWired(SettingsBase[str], Textual):
+        class _HalfWired(SettingsBase[float], Numerical):
             _expression_kinds = ("scalar",)
-            set_state = Textual.set_state
+            set_state = RealNumerical.set_state
 
 
 def test_guard_accepts_correctly_wired_leaf():
     # A leaf that wires both set_state and base_set_state passes the guard.
-    class _CorrectlyWired(SettingsBase[str], Textual):
+    class _CorrectlyWired(SettingsBase[float], Numerical):
         _expression_kinds = ("scalar",)
-        base_set_state = SettingsBase[str].set_state
-        set_state = Textual.set_state
+        base_set_state = SettingsBase[float].set_state
+        set_state = RealNumerical.set_state
 
-    assert _CorrectlyWired.set_state is Textual.set_state
+    assert _CorrectlyWired.set_state is RealNumerical.set_state
     assert _CorrectlyWired.base_set_state is SettingsBase.set_state
-
-
-def test_guard_accepts_textual_list_setter():
-    # The list helper used by StringList / FilenameList is a valid wiring too.
-    class _CorrectlyWiredList(SettingsBase[list], Textual):
-        _expression_kinds = ("scalar", "vector")
-        base_set_state = SettingsBase[list].set_state
-        set_state = _textual_list_set_state
-
-    assert _CorrectlyWiredList.set_state is _textual_list_set_state
-    assert _CorrectlyWiredList.base_set_state is SettingsBase.set_state
 
 
 def test_guard_ignores_leaf_without_expression_kinds():
@@ -575,9 +399,7 @@ def test_guard_ignores_leaf_without_expression_kinds():
     assert _PlainLeaf.set_state is SettingsBase.set_state  # no error raised
 
 
-@pytest.mark.parametrize(
-    "leaf_cls", [Real, RealList, String, StringList, Filename, FilenameList]
-)
+@pytest.mark.parametrize("leaf_cls", [Real, RealList])
 def test_shipped_expression_leaves_are_correctly_wired(leaf_cls):
     # Regression guard: every shipped leaf that opts into the protocol must not
     # resolve set_state back to the bypassing SettingsBase.set_state.
@@ -590,15 +412,15 @@ def test_shipped_expression_leaves_are_correctly_wired(leaf_cls):
 # Group dict updates and command arguments use the shared conversion path      #
 # --------------------------------------------------------------------------- #
 #
-# Group dict updates (``named.set_state({'definition': obj})``) and command
-# arguments both convert their values through ``to_scheme_keys`` -- NOT through
-# the per-leaf ``set_state`` -- so the rendering/validation must live in that
+# Group dict updates (``bc.set_state({'value': obj})``) and command arguments
+# both convert their values through ``to_scheme_keys`` -- NOT through the
+# per-leaf ``set_state`` -- so the rendering/validation must live in that
 # shared conversion path. ``SettingsBase.set_state`` forwards the result of
 # ``to_scheme_keys`` straight to the backend, so asserting on ``to_scheme_keys``
 # faithfully covers both flows.
 
 
-def _group_with_child(child_cls, fluent_name="definition", python_name="definition"):
+def _group_with_child(child_cls, fluent_name="value", python_name="value"):
     """Build a minimal ``Group`` subclass exposing one leaf child."""
 
     child = type(f"_Child_{fluent_name}", (child_cls,), {"fluent_name": fluent_name})
@@ -616,9 +438,9 @@ def _group_with_child(child_cls, fluent_name="definition", python_name="definiti
 
 def test_group_dict_update_renders_expression_value(pressure_expr):
     # A builder expression nested in a group dict is rendered to its string.
-    grp = _group_with_child(String)
-    out = grp.to_scheme_keys({"definition": pressure_expr}, grp, [])
-    assert out == {"definition": "AreaAve(AbsolutePressure,['inlet1'])"}
+    grp = _group_with_child(Real)
+    out = grp.to_scheme_keys({"value": pressure_expr}, grp, [])
+    assert out == {"value": "AreaAve(AbsolutePressure,['inlet1'])"}
 
 
 def test_group_dict_update_renders_settings_str_only_value():
@@ -631,18 +453,20 @@ def test_group_dict_update_renders_settings_str_only_value():
         def __repr__(self):
             return "<not the settings string>"
 
-    grp = _group_with_child(String)
-    out = grp.to_scheme_keys({"definition": _StrOnly()}, grp, [])
-    assert out == {"definition": "my_named_expression"}
+    grp = _group_with_child(Real)
+    out = grp.to_scheme_keys({"value": _StrOnly()}, grp, [])
+    assert out == {"value": "my_named_expression"}
 
 
 def test_group_dict_update_rejects_incompatible_kind(builder):
-    # A String 'definition' child does not accept a location-list expression --
-    # the kind check runs in the shared path too.
-    grp = _group_with_child(String)
-    location_list = builder.locations(["inlet1", "inlet2"])
-    with pytest.raises(TypeError, match="kind 'location_list'"):
-        grp.to_scheme_keys({"definition": location_list}, grp, [])
+    # A Real 'value' child does not accept a vector expression -- the kind check
+    # runs in the shared path too.
+    grp = _group_with_child(Real)
+    vector = builder.vector.make_vec(
+        x=builder.literal(1.0), y=builder.literal(2.0), z=builder.literal(3.0)
+    )
+    with pytest.raises(TypeError, match="kind 'vector'"):
+        grp.to_scheme_keys({"value": vector}, grp, [])
 
 
 def test_group_dict_update_renders_real_list_elements(pressure_expr):
@@ -655,7 +479,7 @@ def test_group_dict_update_renders_real_list_elements(pressure_expr):
 def test_command_argument_renders_expression_value(pressure_expr):
     # Command arguments convert via ``<argument>.to_scheme_keys(...)`` -- the
     # same shared path -- so an expression argument is rendered, not str()'d.
-    arg_cls = type("_ExprArg", (String,), {"fluent_name": "expression"})
+    arg_cls = type("_ExprArg", (Real,), {"fluent_name": "value"})
     assert (
         arg_cls.to_scheme_keys(pressure_expr, arg_cls, [])
         == "AreaAve(AbsolutePressure,['inlet1'])"
@@ -672,55 +496,9 @@ def test_command_argument_rejects_incompatible_kind(builder):
         arg_cls.to_scheme_keys(vector, arg_cls, [])
 
 
-def test_read_case_data_filename_argument_renders_protocol_object(pressure_expr):
-    # End-to-end command path: a Filename argument reaches ``before_execute``
-    # (and ``expand_api_file_argument``) *before* ``to_scheme_keys``. A protocol
-    # object must be normalized to its rendered string first, otherwise
-    # ``value.replace(".cas", ".dat")`` raises ``AttributeError`` for
-    # ``read_case_data``. The rendered value must also flow to ``after_execute``.
-    from ansys.fluent.core.solver import flobject
-
-    captured = {}
-
-    class _CmdProxy:
-        def is_interactive_mode(self):
-            return False
-
-        def has_wildcard(self, name):
-            return False
-
-        def execute_cmd(self, parent_path, command, **kwds):
-            captured["command"] = command
-            captured["kwds"] = kwds
-            return None
-
-    static_info = {
-        "type": "group",
-        "commands": {
-            "read-case-data": {
-                "type": "command",
-                "arguments": {
-                    "file-name": {"type": "file", "file_purpose": "input"},
-                },
-            },
-        },
-    }
-    # Build directly from static info via get_cls so the command tree is used
-    # regardless of the ``use_runtime_python_classes`` config (``get_root``
-    # would otherwise load the real prebuilt settings tree, which has no
-    # ``read_case_data`` at the root).
-    root_cls, _ = flobject.get_cls("", static_info, version="252")
-    root = root_cls()
-    root.set_flproxy(_CmdProxy())
-    # Before the fix this raised AttributeError inside expand_api_file_argument.
-    root.read_case_data.execute_command(file_name=pressure_expr)
-    assert captured["command"] == "read-case-data"
-    assert captured["kwds"] == {"file-name": "AreaAve(AbsolutePressure,['inlet1'])"}
-
-
 def test_shared_path_passes_plain_values_through():
     # Non-expression values and non-opt-in leaves are untouched.
-    assert _settings_expression_to_scheme(String, "plain string") == "plain string"
+    assert _settings_expression_to_scheme(Real, 3.14) == 3.14
     assert _settings_expression_to_scheme(RealList, [1.0, 2.0]) == [1.0, 2.0]
 
     class _ExprOnly:

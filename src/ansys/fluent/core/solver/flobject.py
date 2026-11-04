@@ -323,9 +323,8 @@ def _render_settings_expression_list(leaf, state, accepted_kinds) -> list | None
     Every expression element is validated (against ``accepted_kinds`` -- the
     kinds a single element may take -- and the leaf's units, when it has any) and
     rendered to its string form, while plain values are left untouched,
-    preserving the list structure.  ``accepted_kinds`` differs by leaf: a
-    real-list element is scalar, whereas a string/filename-list element may be
-    any expression-string kind.
+    preserving the list structure.  Each element of a real-list leaf
+    (:class:`RealList`) is an independent scalar real.
 
     The leaf's dimensions are resolved *once* for the whole assignment and
     reused for every element: each resolution is an uncached ``units()`` RPC, so
@@ -349,26 +348,6 @@ def _render_settings_expression_list(leaf, state, accepted_kinds) -> list | None
         )
         for element in state
     ]
-
-
-def _textual_list_set_state(self, state=None, **kwargs) -> None:
-    """``set_state`` for ``Textual`` list leaves (``StringList``/``FilenameList``).
-
-    These leaves subclass ``SettingsBase`` *before* :class:`Textual` in the MRO,
-    so a bare ``set_state`` would resolve to ``SettingsBase.set_state`` and skip
-    the settings-expression protocol -- serializing expression objects with
-    ``str()`` instead of rendering/validating them.  Each element of the list
-    may be an independent expression (e.g. a named-expression definition), so
-    they are validated against the leaf's per-element accepted kinds and
-    rendered to their string form before delegating to the inherited setter.
-    Plain values and non-list states are passed through unchanged.
-    """
-    rendered_list = _render_settings_expression_list(
-        self, state, getattr(self, "_element_expression_kinds", None)
-    )
-    if rendered_list is not None:
-        return self.base_set_state(state=rendered_list, **kwargs)
-    return self.base_set_state(state=state, **kwargs)
 
 
 def _settings_expression_to_scheme(leaf_cls, value):
@@ -1170,40 +1149,21 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    # String leaves broadly accept Fluent expression strings (named-expression
-    # definitions, boundary-condition profiles, and so on). A definition may be
-    # scalar, vector, boolean, or a value-with-units, so all of those kinds are
-    # accepted; a bare location list is not a valid string value.
-    _expression_kinds: tuple[str, ...] = ("scalar", "vector", "boolean", "quantity")
-
     def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
         ----------
         state
-            Either ``str``, ``VariableDescriptor``, or any object implementing
-            the settings-expression protocol (``__settings_str__``) -- for
-            example an ``Expr`` produced by the expression builder. Expression
-            objects are validated against this leaf's accepted kinds before
-            being rendered to their string form and stored.
+            Either ``str`` or ``VariableDescriptor``.
         kwargs : StateType
             Keyword arguments.
 
         Raises
         ------
         TypeError
-            If state is not a string, or if an expression object's kind is
-            incompatible with this leaf.
+            If state is not a string.
         """
-        # Expression-object support: an object implementing the
-        # settings-expression protocol is validated and rendered to its string
-        # form before the plain-string handling below. ``VariableDescriptor``
-        # does not implement the protocol, so it falls through unchanged.
-        rendered = _render_settings_expression(self, state)
-        if rendered is not None:
-            return self.base_set_state(state=rendered, **kwargs)
-
         allowed_types = (str, VariableDescriptor)
 
         if not isinstance(state, allowed_types):
@@ -1320,8 +1280,8 @@ class SettingsBase(Base, Generic[StateT]):
         """Enforce correct wiring of the settings-expression protocol.
 
         A leaf opts into the protocol by declaring ``_expression_kinds``.  Because
-        ``SettingsBase`` precedes the behaviour mixins (:class:`Textual`,
-        :class:`RealNumerical`) in every leaf's MRO, a bare ``set_state`` resolves
+        ``SettingsBase`` precedes the behaviour mixin (:class:`RealNumerical`) in
+        every leaf's MRO, a bare ``set_state`` resolves
         to :meth:`SettingsBase.set_state`, which stores the value directly and
         *bypasses* expression rendering/validation -- silently serializing an
         expression object with ``str()``.  Such a leaf must therefore route
@@ -1341,8 +1301,7 @@ class SettingsBase(Base, Generic[StateT]):
                 f"'SettingsBase.set_state', which bypasses expression handling. "
                 f"Wire an expression-aware setter in the class body, e.g.\n"
                 f"    base_set_state = SettingsBase[...].set_state\n"
-                f"    set_state = RealNumerical.set_state  # or Textual.set_state "
-                f"/ _textual_list_set_state"
+                f"    set_state = RealNumerical.set_state"
             )
         if getattr(cls, "base_set_state", None) is not SettingsBase.set_state:
             raise TypeError(
@@ -1497,39 +1456,6 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
-    # ``SettingsBase`` precedes ``Textual`` in the MRO, so a bare ``set_state``
-    # would resolve to ``SettingsBase.set_state`` and skip the
-    # settings-expression protocol conversion. Keep delegating to that inherited
-    # setter, but render/validate an expression object first.
-    base_set_state: Callable[..., None] = SettingsBase[str].set_state
-
-    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
-        """Set the state of the object.
-
-        Parameters
-        ----------
-        state
-            Either ``str`` or any object implementing the settings-expression
-            protocol (``__settings_str__``) -- for example an ``Expr`` produced
-            by the expression builder. Expression objects are validated against
-            this leaf's accepted kinds before being rendered to their string
-            form and stored.
-        kwargs : StateType
-            Keyword arguments.
-
-        Raises
-        ------
-        TypeError
-            If an expression object's kind is incompatible with this leaf.
-        """
-        # Expression-object support: an object implementing the
-        # settings-expression protocol is validated and rendered to its string
-        # form before the inherited setter runs.
-        rendered = _render_settings_expression(self, state)
-        if rendered is not None:
-            return self.base_set_state(state=rendered, **kwargs)
-        return self.base_set_state(state=state, **kwargs)
-
     def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
@@ -1539,15 +1465,6 @@ class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
-
-    # ``SettingsBase`` precedes ``Textual`` in the MRO, so route expression
-    # elements through the protocol before delegating to the inherited setter.
-    base_set_state: Callable[..., None] = SettingsBase[StringListType].set_state
-    set_state: Callable[..., None] = _textual_list_set_state
-
-    # Each element is an independent expression-string, accepting the same kinds
-    # as a scalar :class:`Textual` leaf.
-    _element_expression_kinds: tuple[str, ...] = Textual._expression_kinds
 
     def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
@@ -1635,15 +1552,6 @@ class StringList(SettingsBase[StringListType], Textual):
     """A ``StringList`` object representing a string list setting."""
 
     _state_type = StringListType
-
-    # ``SettingsBase`` precedes ``Textual`` in the MRO, so route expression
-    # elements through the protocol before delegating to the inherited setter.
-    base_set_state: Callable[..., None] = SettingsBase[StringListType].set_state
-    set_state: Callable[..., None] = _textual_list_set_state
-
-    # Each element is an independent expression-string, accepting the same kinds
-    # as a scalar :class:`Textual` leaf.
-    _element_expression_kinds: tuple[str, ...] = Textual._expression_kinds
 
 
 class BooleanList(SettingsBase[BoolListType], Property):
