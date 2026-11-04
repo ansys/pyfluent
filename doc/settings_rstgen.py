@@ -191,12 +191,10 @@ def _write_rst_body(r, cls, cls_name):
         else:
             access_example = f"{cls._python_name}['<name>']"
             r.write(
-                f"This named-object container is modelled on a ``dict``, with "
-                f"the object names as keys and the {instance_ref} objects "
-                f"as values. Access each ``{instance_label}`` by name, for "
-                f"example using ``{access_example}``, as well as through "
-                f"``get()``, ``keys()`` and ``values()``. Note that it is not a "
-                f"full ``dict`` implementation.\n\n\n"
+                f"``{cls._python_name}`` is organised like a dictionary. You "
+                f"can access each {instance_ref} by name using "
+                f"``{access_example}``, or use methods such as ``get()``, "
+                f"``keys()`` and ``values()``.\n\n\n"
             )
     if parents_dict.get(cls_name):
         r.write(".. rubric:: Included in:\n\n")

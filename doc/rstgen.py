@@ -384,12 +384,10 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             f.write(f":ref:`{member_label} <{member_ref}>`\n\n")
             member_ref_role = f":ref:`{member_label} <{member_ref}>`"
             f.write(
-                f"This named-object container is modelled on a ``dict``, with "
-                f"the object names as keys and the {member_ref_role} objects "
-                f"as values. Access each ``{member_label}`` by name, for "
-                f"example using ``{menu['name'].__name__}['<name>']``, as well "
-                f"as through ``get()``, ``keys()`` and ``values()``. Note that "
-                f"it is not a full ``dict`` implementation.\n\n\n"
+                f"``{menu['name'].__name__}`` is organised like a dictionary. "
+                f"You can access each {member_ref_role} by name using "
+                f"``{menu['name'].__name__}['<name>']``, or use methods such "
+                f"as ``get()``, ``keys()`` and ``values()``.\n\n\n"
             )
         else:
             named_object_member = None
