@@ -54,22 +54,22 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 #
 # The example demonstrates the following:
 #
-# *Overview & Problem description
-# *Launching Fluent in solver mode.
-# *Downloading a mesh files from the examples repository.
-# *Initial setup
-# *Mesh configuration
-# *Model selection & Material definition
-# *Defining cell zone conditions & boundary conditions
-# *Turbomachinery configuration
-# *Solver settings
-# *Report definitions
-# *Initialization
-# *Running the simulation
-# *Post-processing the results
-# *Visualizing the results
-# *Saving the case file
-# *Closing the solver
+# * Overview & Problem description
+# * Launching Fluent in solver mode.
+# * Downloading a mesh files from the examples repository.
+# * Initial setup
+# * Mesh configuration
+# * Model selection & Material definition
+# * Defining cell zone conditions & boundary conditions
+# * Turbomachinery configuration
+# * Solver settings
+# * Report definitions
+# * Initialization
+# * Running the simulation
+# * Post-processing the results
+# * Visualizing the results
+# * Saving the case file
+# * Closing the solver
 
 # .. note::
 # This example has been verified and validated using Ansys Fluent 2025 R2.

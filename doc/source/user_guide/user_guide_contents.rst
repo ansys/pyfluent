@@ -11,7 +11,7 @@ User guide
    config_variables
    session/session_contents
    solver_settings/solver_settings_contents
-   meshing/meshing_contents
+   meshing
    fields/fields_contents
    events
    monitors
@@ -74,7 +74,7 @@ Leverage intuitive, :ref:`guided workflows <ref_meshing_guide>` to create high-q
 
 Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
+Utilize :ref:`settings objects <ref_root>` to configure and control your simulation. Get familiar
 with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction
@@ -92,7 +92,7 @@ Offline features
 
 :ref:`Get rapid access to Fluent case and solution data through offline tools<ref_offline_guide>`.
 PyFluent offers Python classes that represent case, data, and project files, enabling you to work with
-Fluent data efficiently offline. The :obj:`~ansys.fluent.core.session.file.FileSession` class mimics the functionality of live 
+Fluent data efficiently offline. The :obj:`~ansys.fluent.core.execution.session.file.FileSession` class mimics the functionality of live
 :ref:`live session objects <ref_session_guide>`, allowing you to access field data and other relevant information without a live Fluent session.
 
 .. vale Google.Spacing = YES

@@ -158,7 +158,7 @@ class RestSettings(BaseSettings):
         For ``recursive=False``, delegates to the raw service unchanged (zero
         behavior change for the common case). For ``recursive=True``, uses
         ``_reshape_recursive_attrs`` to normalize the server's response into
-        the gRPC-compatible shape: ``{"attrs": {...}, "group_children":
+        the gRPC-compatible shape: ``{"attrs": {...}, "children":
         {name: {...}}}`` for both real settings groups (whose children the
         server nests under ``"children"``) and command-argument descendants
         (whose children the server never nests, requiring client-side

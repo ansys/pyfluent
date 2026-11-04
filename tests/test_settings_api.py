@@ -29,9 +29,11 @@ import pytest
 from pytest import WarningsRecorder
 
 from ansys.fluent.core import config
+from ansys.fluent.core.diagnostics.exceptions import (
+    DeprecatedSettingWarning,
+    PyFluentUserWarning,
+)
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.exceptions import DeprecatedSettingWarning, PyFluentUserWarning
-from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
@@ -42,6 +44,7 @@ from ansys.fluent.core.solver.flobject import (
     _OutputFile,
     to_python_name,
 )
+from ansys.fluent.core.solver.session.solver import Solver
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -386,9 +389,13 @@ def test_deprecated_settings_with_settings_api_aliases(
 ):
     solver = mixing_elbow_case_data_session_grpc_rest
     solver.settings.results.surfaces.iso_clip["clip-1"] = {}
+    if solver.get_fluent_version() < FluentVersion.v271:
+        max_val = 0
+    else:
+        max_val = 1
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
-        "maximum": 0,
+        "maximum": max_val,
     }
     solver.settings.results.surfaces.iso_clip["clip-1"] = {
         "min": -0.0001,
@@ -931,4 +938,4 @@ def test_action_behavior(mixing_elbow_case_session):
     result = solver.settings.solution.run_calculation.iterate.get_attrs(
         ["active?"], recursive=True
     )
-    assert "iter-count" in result["group_children"]
+    assert "iter-count" in result["children"]

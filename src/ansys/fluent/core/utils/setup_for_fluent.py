@@ -23,8 +23,8 @@
 
 """Provides a module to get global PyConsole objects."""
 
-from ansys.fluent.core.launcher.launcher import launch_fluent
-from ansys.fluent.core.session.solver import Solver
+from ansys.fluent.core.execution.launcher.launcher import launch_fluent
+from ansys.fluent.core.solver.session.solver import Solver
 
 __all__ = ("setup_for_fluent",)
 

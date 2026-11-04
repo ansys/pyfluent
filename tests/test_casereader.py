@@ -29,15 +29,15 @@ import defusedxml.ElementTree as ET
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.file_reader import lispy
-from ansys.fluent.core.file_reader.case_file import (
+from ansys.fluent.core.offline import _lispy
+from ansys.fluent.core.offline._pre_processor import remove_unsupported_xml_chars
+from ansys.fluent.core.offline.case_file import (
     CaseFile,
     InputParameter,
     InputParameterOld,
     MeshType,
     _get_processed_string,
 )
-from ansys.fluent.core.file_reader.pre_processor import remove_unsupported_xml_chars
 
 
 def call_casereader(
@@ -307,11 +307,11 @@ def test_case_reader_input_parameter():
 
 
 def test_lispy_for_multiline_string():
-    assert lispy.parse('(define x "abc\ndef")') == ["define", "x", '"abc\ndef"']
+    assert _lispy.parse('(define x "abc\ndef")') == ["define", "x", '"abc\ndef"']
 
 
 def test_lispy_for_quotes():
-    assert lispy.parse(
+    assert _lispy.parse(
         '(define x "\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")")'
     ) == [
         "define",

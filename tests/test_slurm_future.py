@@ -26,7 +26,10 @@ from concurrent.futures import Future
 import pytest
 
 from ansys.fluent.core import config
-from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, _SlurmWrapper
+from ansys.fluent.core.execution.launcher.slurm_launcher import (
+    SlurmFuture,
+    _SlurmWrapper,
+)
 
 
 class SlurmEnvironment:

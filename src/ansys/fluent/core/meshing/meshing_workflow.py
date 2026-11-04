@@ -28,17 +28,40 @@ from __future__ import annotations
 
 from enum import Enum
 import os
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.execution.session import Meshing, PureMeshing
+from ansys.fluent.core.execution.session._shared import _make_datamodel_module
 from ansys.fluent.core.services.object_model import PyMenu
-from ansys.fluent.core.session import Meshing, PureMeshing
-from ansys.fluent.core.session._shared import _make_datamodel_module
 from ansys.fluent.core.workflow import Workflow
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.generated.v271.meshing.meshing_workflow_tasks import (
+        FaultTolerantMeshingTasks,
+        TopologyBasedMeshingTasks,
+        TwoDMeshingTasks,
+        WatertightGeometryTasks,
+    )
+
+    _WatertightBase = WatertightGeometryTasks
+    _FaultTolerantBase = FaultTolerantMeshingTasks
+    _TwoDBase = TwoDMeshingTasks
+    _TopologyBasedBase = TopologyBasedMeshingTasks
+else:
+    _WatertightBase = object
+    _FaultTolerantBase = object
+    _TwoDBase = object
+    _TopologyBasedBase = object
 
 
 class MeshingWorkflow(Workflow):
     """Provides meshing specialization of the workflow wrapper that extends the core
-    functionality in an object-oriented manner."""
+    functionality in an object-oriented manner.
+
+    See the :ref:`workflow API <ref_ansys_fluent_core_workflow>` for details of the
+    underlying workflow object.
+    """
 
     def __init__(
         self,
@@ -50,7 +73,7 @@ class MeshingWorkflow(Workflow):
 
         Parameters
         ----------
-        session : PureMeshing | Meshing
+        session : :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` | :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
             The meshing session.
         workflow_type: str
             Workflow type to initialize it.
@@ -69,7 +92,7 @@ class MeshingWorkflow(Workflow):
         self._initialized = True
 
 
-class WatertightMeshingWorkflow(MeshingWorkflow):
+class WatertightMeshingWorkflow(MeshingWorkflow, _WatertightBase):
     """Provides watertight meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -81,7 +104,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        session : PureMeshing | Meshing
+        session : :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` | :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
             The meshing session.
         initialize: bool
             Flag to initialize the workflow, defaults to True.
@@ -95,7 +118,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         )
 
 
-class FaultTolerantMeshingWorkflow(MeshingWorkflow):
+class FaultTolerantMeshingWorkflow(MeshingWorkflow, _FaultTolerantBase):
     """Provides fault-tolerant meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -107,7 +130,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        session : PureMeshing | Meshing
+        session : :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` | :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
             The meshing session.
         initialize: bool
             Flag to initialize the workflow, defaults to True.
@@ -129,7 +152,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Returns
         -------
-        PyMenu | None
+        :class:`~ansys.fluent.core.services.object_model.PyMenu` | None
             Part-management.
         """
         return self._parent_workflow.parts
@@ -140,7 +163,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Returns
         -------
-        PyMenu | None
+        :class:`~ansys.fluent.core.services.object_model.PyMenu` | None
             File management object in the part management object.
         """
         return self._parent_workflow.parts_files
@@ -151,7 +174,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Returns
         -------
-        PyMenu | None
+        :class:`~ansys.fluent.core.services.object_model.PyMenu` | None
             Part-management.
         """
         # TODO: Remove this after migrating to the new workflow
@@ -163,14 +186,14 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Returns
         -------
-        PyMenu | None
+        :class:`~ansys.fluent.core.services.object_model.PyMenu` | None
             File management object in the part management object.
         """
         # TODO: Remove this after migrating to the new workflow
         return self._pm_file_management
 
 
-class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
+class TwoDimensionalMeshingWorkflow(MeshingWorkflow, _TwoDBase):
     """Provides 2D meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -182,7 +205,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        session : PureMeshing | Meshing
+        session : :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` | :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
             Meshing session object.
         initialize: bool
             Flag to initialize the workflow, defaults to True.
@@ -196,7 +219,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         )
 
 
-class TopologyBasedMeshingWorkflow(MeshingWorkflow):
+class TopologyBasedMeshingWorkflow(MeshingWorkflow, _TopologyBasedBase):
     """Provides topology-based meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -208,7 +231,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
 
         Parameters
         ----------
-        session : PureMeshing | Meshing
+        session : :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` | :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
             Meshing session object.
         initialize: bool
             Flag to initialize the workflow, defaults to True.
@@ -244,7 +267,7 @@ class LoadedWorkflow(Workflow):
 
         Parameters
         ----------
-        session : PureMeshing | Meshing
+        session : :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` | :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
             Meshing session object.
         file_path: os.PathLike[str | bytes] | str | bytes
             Path to the saved workflow file.
@@ -276,7 +299,7 @@ class CreatedWorkflow(Workflow):
 
         Parameters
         ----------
-        session : PureMeshing | Meshing
+        session : :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` | :class:`~ansys.fluent.core.meshing.session.meshing.Meshing`
             Meshing session object.
         initialize: bool
             Flag to initialize the workflow, defaults to True.
@@ -301,13 +324,13 @@ def _get_current_workflow(current_workflow, name: str):
 def get_current_workflow(
     workflow_root, current_workflow, workflow_factories, load_workflow_handle
 ) -> Workflow:
-    """Get the currently active workflow in new mode.
+    """Get the currently active workflow in the PyFluent-native interface.
 
     Parameters
     ----------
-    workflow_root : PyMenu
+    workflow_root : :class:`~ansys.fluent.core.services.object_model.PyMenu`
         Root workflow datamodel object.
-    current_workflow : Workflow or None
+    current_workflow : :class:`~ansys.fluent.core.workflow.Workflow` or None
         Currently cached workflow instance.
     workflow_factories : dict
         Mapping of workflow type names to factory functions.
@@ -316,7 +339,7 @@ def get_current_workflow(
 
     Returns
     -------
-    Workflow
+    :class:`~ansys.fluent.core.workflow.Workflow`
         The currently active workflow instance.
 
     Raises

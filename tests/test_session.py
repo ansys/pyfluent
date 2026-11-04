@@ -44,26 +44,33 @@ from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.api.fluent.v1 import health_pb2 as health_pb2_v1
 from ansys.api.fluent.v1 import health_pb2_grpc as health_pb2_grpc_v1
 from ansys.api.fluent.v1 import scheme_interpreter_pb2, scheme_interpreter_pb2_grpc
+from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer as SchemePointerV1
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import examples, session
+from ansys.fluent.core import examples
 from ansys.fluent.core._grpc_services import _server_supports_v1
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
-from ansys.fluent.core.exceptions import (
+from ansys.fluent.core.connectivity.file_transfer_service import (
+    ContainerFileTransferStrategy,
+)
+from ansys.fluent.core.connectivity.fluent_connection import (
+    FluentConnection,
+    PortNotProvided,
+)
+from ansys.fluent.core.diagnostics.exceptions import (
     BetaFeaturesNotEnabled,
     PyFluentDeprecationWarning,
 )
-from ansys.fluent.core.file_transfer_service import ContainerFileTransferStrategy
-from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
-from ansys.fluent.core.launcher.error_handler import LaunchFluentError
+from ansys.fluent.core.execution import session
+from ansys.fluent.core.execution.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.execution.launcher.error_handler import LaunchFluentError
+from ansys.fluent.core.execution.session.session import BaseSession
+from ansys.fluent.core.meshing.session.base_meshing import BaseMeshing
 from ansys.fluent.core.services.streaming_services.events_streaming import (
     IterationEndedEventInfo,
     SolverEvent,
 )
-from ansys.fluent.core.session.base_meshing import BaseMeshing
-from ansys.fluent.core.session.session import BaseSession
-from ansys.fluent.core.session.solver import Solver
 from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
+from ansys.fluent.core.solver.session.solver import Solver
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
@@ -150,7 +157,7 @@ class MockSchemeEvalServicerV1(scheme_interpreter_pb2_grpc.SchemeInterpreterServ
         password = metadata.get("password", None)
         if password != "12345":
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
-        return scheme_interpreter_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
+        return scheme_interpreter_pb2.SchemeEvalResponse(output=SchemePointerV1(b=True))
 
 
 class MockHealthServicerV1(health_pb2_grpc_v1.HealthServicer):

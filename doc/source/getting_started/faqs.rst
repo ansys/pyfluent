@@ -19,7 +19,7 @@ How do you learn how to use PyFluent?
   <https://visualization.fluent.docs.pyansys.com/>`_ guide.
 - Record a journal of your actions in Fluent and review the corresponding Python
   script. For comprehensive guidance on journaling, see
-  :ref:`ref_journal`.
+  :ref:`ref_journal_guide`.
 - Write scripts, using:
 
   - Autocompletion features in your Python environment or IDE to show available options

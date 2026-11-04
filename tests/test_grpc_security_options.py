@@ -27,8 +27,8 @@ import random
 import grpc
 import pytest
 
-from ansys.fluent.core.exceptions import InsecureGrpcWarning
-from ansys.fluent.core.launcher.error_warning_messages import (
+from ansys.fluent.core.diagnostics.exceptions import InsecureGrpcWarning
+from ansys.fluent.core.execution.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
@@ -38,7 +38,10 @@ from ansys.fluent.core.launcher.error_warning_messages import (
     CONNECTING_TO_LOCALHOST_INSECURE_MODE,
     INSECURE_MODE_WARNING,
 )
-from ansys.fluent.core.launcher.launcher import connect_to_fluent, launch_fluent
+from ansys.fluent.core.execution.launcher.launcher import (
+    connect_to_fluent,
+    launch_fluent,
+)
 from ansys.fluent.core.utils.networking import is_localhost
 
 

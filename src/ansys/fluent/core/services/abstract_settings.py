@@ -25,17 +25,19 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+from ansys.fluent.core.solver.flobject import StateType
+
 
 class AbstractSettings(ABC):
     """Abstract base class for accessing and modifying Fluent settings."""
 
     @abstractmethod
-    def set_var(self, path: str, value: Any) -> None:
+    def set_var(self, path: str, value: StateType) -> None:
         """Set the value for the given path."""
         pass
 
     @abstractmethod
-    def get_var(self, path: str) -> Any:
+    def get_var(self, path: str) -> StateType:
         """Get the value for the given path."""
         pass
 
@@ -81,17 +83,19 @@ class AbstractSettings(ABC):
         pass
 
     @abstractmethod
-    def execute_cmd(self, path: str, command: str, **kwds) -> Any:
+    def execute_cmd(self, path: str, command: str, **kwds) -> StateType:
         """Execute a given command with the provided keyword arguments."""
         pass
 
     @abstractmethod
-    def execute_query(self, path: str, query: str, **kwds) -> Any:
+    def execute_query(self, path: str, query: str, **kwds) -> StateType:
         """Execute a given query with the provided keyword arguments."""
         pass
 
     @abstractmethod
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+    def get_attrs(
+        self, path: str, attrs: list[str], recursive: bool = False
+    ) -> dict[str, StateType]:
         """Return values of given attributes."""
         pass
 

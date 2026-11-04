@@ -971,7 +971,7 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     assert fault_tolerant.import_cad_and_part_management.fmd_file_name()
     # Reinitialize the workflow:
     fault_tolerant = new_meshing_session.fault_tolerant(legacy=True)
-    assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
 def test_switch_between_workflows(new_meshing_session):

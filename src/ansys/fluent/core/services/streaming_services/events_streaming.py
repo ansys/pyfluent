@@ -30,7 +30,10 @@ import logging
 from typing import Generic, TypeVar
 import warnings
 
-from ansys.fluent.core.exceptions import InvalidArgument, PyFluentDeprecationWarning
+from ansys.fluent.core.diagnostics.exceptions import (
+    InvalidArgument,
+    PyFluentDeprecationWarning,
+)
 from ansys.fluent.core.services.streaming_services._events_info_store import (
     AboutToInitializeSolutionEventInfo,
     AboutToLoadCaseEventInfo,
