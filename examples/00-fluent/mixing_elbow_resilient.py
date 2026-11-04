@@ -33,15 +33,17 @@ makes the ordinary ``solver.settings...`` writes and commands **resilient**:
 * **auto-recovery** -- a recoverable Fluent error (for example an out-of-range
   value) is classified, repaired against the live bounds / allowed values, and
   retried automatically, with no special API;
-* **two-tier checkpoints with undo** -- the session gains ``checkpoint`` /
-  ``undo`` / ``redo``, and irreversible commands (``iterate``, ``read_case``, ...)
-  are auto-checkpointed so they can be rolled back;
+* **automatic checkpointing + rollback** -- irreversible commands (``iterate``,
+  ``read_case``, ...) are automatically checkpointed before they run, and if such
+  a command fails with a non-catastrophic error the session is automatically
+  rolled back to that checkpoint -- no manual ``undo`` needed;
 * **failover** -- if you launch with ``pool_size > 1`` (via ``resilient_config``),
   a fatal solver error fails over to a warm standby and replays the last
   checkpoint instead of cold-restarting.
 
 Note that below the code reads just like normal PyFluent: there is no new
-per-call API to learn. Resilience happens transparently inside the settings tree.
+per-call API to learn, and no explicit checkpoint / undo calls. Resilience
+happens transparently inside the settings tree.
 """
 
 ###############################################################################
@@ -111,27 +113,16 @@ hot_inlet.thermal.temperature.value = 313.15
 solver.settings.solution.initialization.hybrid_initialize()
 
 ###############################################################################
-# Take an explicit checkpoint before solving
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ``checkpoint`` / ``undo`` / ``redo`` are available on the session because it was
-# launched in resilient mode. This checkpoint is also the state replayed onto a
-# warm standby if the solver hits a fatal error during iteration.
-
-solver.checkpoint("pre-iterate")
-
-###############################################################################
 # Solve
 # ~~~~~
-# ``iterate`` is irreversible; resilient mode auto-checkpoints before it as well.
+# ``iterate`` is irreversible, so resilient mode automatically checkpoints the
+# case + data just before it runs. Nothing extra to call: if the solve fails with
+# a non-catastrophic error, resilient mode automatically rolls back to that
+# checkpoint; if it hits a fatal error (and a warm pool is configured), it fails
+# over to a standby and replays the checkpoint. Either way you write ordinary
+# PyFluent code.
 
 solver.settings.solution.run_calculation.iterate(iter_count=100)
-
-###############################################################################
-# Roll back to the pre-iterate checkpoint
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ``undo`` reloads the case + data captured by the ``pre-iterate`` checkpoint.
-
-solver.undo()
 
 ###############################################################################
 # Exit
