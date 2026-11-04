@@ -54,6 +54,7 @@ from ansys.fluent.core.resilient.attach import (
     enable_resilient_mode,
     is_resilient,
     last_outcome,
+    on_journal_event,
 )
 from ansys.fluent.core.resilient.checkpoint import (
     CheckpointManager,
@@ -73,6 +74,7 @@ from ansys.fluent.core.resilient.filecheck import (
     FileCheckpointStore,
 )
 from ansys.fluent.core.resilient.health import SessionHealthMonitor
+from ansys.fluent.core.resilient.journal import CommandOp, Journal, SetOp
 from ansys.fluent.core.resilient.pool import PoolConfig, WarmSessionPool
 from ansys.fluent.core.resilient.resolver import RecoverableErrorResolver
 from ansys.fluent.core.resilient.solver import ResilientConfig, ResilientSolver
@@ -91,7 +93,11 @@ __all__ = [
     "enable_resilient_mode",
     "is_resilient",
     "last_outcome",
+    "on_journal_event",
     "ResilientController",
+    "Journal",
+    "SetOp",
+    "CommandOp",
     # explicit facade (advanced)
     "ResilientSolver",
     "ResilientConfig",

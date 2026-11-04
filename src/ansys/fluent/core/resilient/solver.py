@@ -71,6 +71,12 @@ class ResilientConfig:
     file_checkpoint: FileCheckpointConfig | None = None
     max_resolver_attempts: int = 3
     auto_file_checkpoint_before_irreversible: bool = True
+    #: When an irreversible command (e.g. ``iterate`` / ``calculate``) fails with a
+    #: non-catastrophic error, automatically restore the checkpoint taken just
+    #: before it, leaving the session at the last-good state -- no manual
+    #: ``undo`` / ``rewind_to`` needed. Set False to keep the session as-is and
+    #: raise instead (so you can inspect or retry manually).
+    auto_rollback_on_failed_command: bool = True
 
 
 class ResilientSolver:

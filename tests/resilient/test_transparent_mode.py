@@ -166,6 +166,51 @@ class _Iterate:
         return {"iterated": iter_count}
 
 
+class _FailingIterate:
+    """A command that raises a non-catastrophic solver error."""
+
+    def __call__(self, **kwargs):
+        raise RuntimeError("floating point exception")
+
+
+def test_irreversible_command_auto_rolls_back_on_failure(tmp_path):
+    session = _elbow_session()
+    session.settings.solution = FakeGroup(
+        run_calculation=FakeGroup(iterate=_FailingIterate())
+    )
+    enable_resilient_mode(session, _config(tmp_path))
+    file_group = session.settings.file
+    # The failing irreversible command should auto-checkpoint, fail, and then
+    # auto-restore the checkpoint -- with no manual undo / rewind.
+    session._settings_service.execute_cmd(
+        "solution.run_calculation", "iterate", iter_count=10
+    )
+    # A checkpoint was written before the command...
+    assert any(c[0] == "write_case_data" for c in file_group.calls)
+    # ...and it was read back automatically after the failure (the rollback).
+    assert any(c[0] == "read_case_data" for c in file_group.calls)
+    out = last_outcome(session)
+    assert out is not None and out.ok is False
+    assert out.result == "auto-rolled-back"
+
+
+def test_auto_rollback_can_be_disabled(tmp_path):
+    from ansys.fluent.core.resilient.exceptions import UnrecoverableStepError
+
+    session = _elbow_session()
+    session.settings.solution = FakeGroup(
+        run_calculation=FakeGroup(iterate=_FailingIterate())
+    )
+    config = _config(tmp_path)
+    config.auto_rollback_on_failed_command = False
+    enable_resilient_mode(session, config)
+    # With auto-rollback off, the failure propagates for manual handling.
+    with pytest.raises(UnrecoverableStepError):
+        session._settings_service.execute_cmd(
+            "solution.run_calculation", "iterate", iter_count=10
+        )
+
+
 def test_scheme_path_resolution():
     # Fluent's service layer uses scheme paths (slashes, hyphens). The resolver
     # must map them to the live tree using each object's fluent_name metadata.

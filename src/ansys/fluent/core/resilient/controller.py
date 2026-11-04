@@ -40,6 +40,7 @@ from ansys.fluent.core.resilient import _compat
 from ansys.fluent.core.resilient.checkpoint import CheckpointManager
 from ansys.fluent.core.resilient.errors import ErrorClassifier
 from ansys.fluent.core.resilient.exceptions import UnrecoverableStepError
+from ansys.fluent.core.resilient.journal import CommandOp, Journal, SetOp
 from ansys.fluent.core.resilient.resolver import RecoverableErrorResolver
 from ansys.fluent.core.resilient.types import CheckpointKind, StepOutcome, UndoEntry
 
@@ -54,6 +55,19 @@ def _brief(value) -> object:
     return repr(value)
 
 
+#: Solve-type commands that may legitimately raise Fluent's clean-stop sentinel
+#: (``RuntimeError("()")``) when interrupted. Only for these is that sentinel
+#: treated as a benign interrupt -- matching core PyFluent, so the benign category
+#: is applied consistently and never swallows the sentinel elsewhere.
+_INTERRUPTIBLE_COMMANDS = frozenset({"iterate", "calculate", "dual_time_iterate"})
+
+
+def _is_interruptible_command(full_path: str) -> bool:
+    """Whether a command path is an interruptible (solve) command."""
+    leaf = full_path.strip().rstrip(")").split("(")[0].split(".")[-1]
+    return leaf in _INTERRUPTIBLE_COMMANDS
+
+
 class ResilientController:
     """Owns resilient state and the apply envelope for one session."""
 
@@ -61,6 +75,7 @@ class ResilientController:
         self.session = session
         self.config = config
         self.auto_file_checkpoint = config.auto_file_checkpoint_before_irreversible
+        self.auto_rollback = getattr(config, "auto_rollback_on_failed_command", True)
         self._pool = pool
         self._classifier = ErrorClassifier()
         self._resolver = RecoverableErrorResolver(
@@ -69,6 +84,27 @@ class ResilientController:
         self._checkpoints = CheckpointManager(
             session, file_config=config.file_checkpoint
         )
+        #: Operation journal: the replayable timeline of successful set / command
+        #: operations, using get_state values as undo points.
+        self._journal = Journal(restore=self._restore_value)
+        #: The checkpoint taken immediately before the current irreversible
+        #: command, used for automatic rollback if that command fails.
+        self._pending_rollback_entry = None
+
+    def _restore_value(self, path: str, value) -> None:
+        """Write ``value`` back to the live tree at ``path`` (journal undo/redo)."""
+        try:
+            service = self._settings_service()
+            if service is not None:
+                service.set_var(path, value)
+        except Exception:  # noqa: BLE001  # nosec B110
+            # Best-effort: an undo/redo restore must never raise.
+            pass
+
+    def _settings_service(self):
+        """The live (inner) settings service, or None."""
+        wrapped = getattr(self.session, "_settings_service", None)
+        return getattr(wrapped, "inner", wrapped)
 
     # -- accessors --------------------------------------------------------
 
@@ -76,6 +112,15 @@ class ResilientController:
     def checkpoints(self) -> CheckpointManager:
         """The checkpoint manager (undo / redo stacks)."""
         return self._checkpoints
+
+    @property
+    def journal(self) -> Journal:
+        """The operation journal (replayable timeline with undo / redo)."""
+        return self._journal
+
+    def on_journal_event(self, listener) -> None:
+        """Register a ``(event_name, op)`` journal listener (record / undo / redo)."""
+        self._journal.on_event(listener)
 
     @property
     def pool(self):
@@ -100,26 +145,53 @@ class ResilientController:
             )
 
     def _set_once(self, service, path: str, value) -> StepOutcome:
+        # Read the current value first: this is the undo point (last-good state).
+        old_value = self._read_value(service, path)
         try:
             service.set_var(path, value)
         except Exception as err:  # noqa: BLE001
-            return self._handle_set_failure(service, path, value, err)
-        return StepOutcome(path=path, ok=True, new_value=_brief(value))
+            return self._handle_set_failure(service, path, value, old_value, err)
+        # Success: record the operation on the journal (silent timeline entry).
+        self._journal.record(SetOp(path=path, old_value=old_value, new_value=value))
+        return StepOutcome(
+            path=path, ok=True, old_value=_brief(old_value), new_value=_brief(value)
+        )
 
-    def _handle_set_failure(self, service, path, value, err) -> StepOutcome:
-        cls = self._classifier.classify(err, self.session)
-        if cls.severity.value == "benign":
-            return StepOutcome(path=path, ok=True, result="interrupted")
+    def _read_value(self, service, path: str):
+        """Read the current value at ``path`` (the undo point), tolerating failure."""
+        try:
+            return service.get_var(path)
+        except Exception:  # noqa: BLE001
+            return None
+
+    def _handle_set_failure(self, service, path, value, old_value, err) -> StepOutcome:
+        # A value set is NOT interruptible, so the clean-stop sentinel is never
+        # treated as benign here -- it is surfaced as a genuine error (consistent
+        # handling; nothing swallowed).
+        cls = self._classifier.classify(err, self.session, interruptible=False)
         if cls.catastrophic:
             raise err
+        # UNDO: the set was rejected; restore the last-good value we read so the
+        # session is explicitly back at the previous successful state.
+        self._emit_undo(path, old_value)
         if cls.recoverable:
-            return self._resolve_and_retry(service, path, value, cls)
+            return self._resolve_and_retry(service, path, value, old_value, cls)
         raise UnrecoverableStepError(
             f"Could not apply {path!r}: {cls.message}"
         ) from err
 
-    def _resolve_and_retry(self, service, path, value, cls) -> StepOutcome:
-        """Fix-and-retry against the service, bounded by max attempts."""
+    def _emit_undo(self, path: str, old_value) -> None:
+        """Restore the pre-step value and notify journal listeners of an undo."""
+        try:
+            self._restore_value(path, old_value)
+        finally:
+            # A failed step is recorded + immediately undone so listeners (logs)
+            # see the undo of exactly this step, keeping the journal consistent.
+            undo_op = SetOp(path=path, old_value=old_value, new_value=old_value)
+            self._journal._notify("undo", undo_op)
+
+    def _resolve_and_retry(self, service, path, value, old_value, cls) -> StepOutcome:
+        """Fix-and-retry (REDO) against the service, bounded by max attempts."""
         current_value = value
         current_cls = cls
         fixes: list[str] = []
@@ -149,9 +221,19 @@ class ResilientController:
                 current_cls = retry_cls
                 last_error = str(retry_err)
                 continue
+            # REDO succeeded with the repaired value: record it and notify.
+            op = SetOp(
+                path=path,
+                old_value=old_value,
+                new_value=current_value,
+                fixes=list(fixes),
+            )
+            self._journal.record(op)
+            self._journal._notify("redo", op)
             return StepOutcome(
                 path=path,
                 ok=True,
+                old_value=_brief(old_value),
                 new_value=_brief(current_value),
                 attempts=attempt + 1,
                 fixes_applied=fixes,
@@ -164,24 +246,67 @@ class ResilientController:
     # -- intercepted commands --------------------------------------------
 
     def apply_command(self, service, path: str, command: str, kwds: dict):
-        """Execute a command with benign-stop handling and failover."""
+        """Execute a command with benign-stop handling, failover and auto-rollback.
+
+        Raises
+        ------
+        Exception
+            Re-raises a catastrophic error (handled by failover) or, when
+            auto-rollback is disabled or no pre-command checkpoint exists, the
+            original non-catastrophic command failure.
+        """
+        full = f"{path}.{command}" if path else command
         try:
-            return self._command_once(service, path, command, kwds)
+            try:
+                return self._command_once(service, path, command, kwds)
+            except Exception as err:  # noqa: BLE001
+                return self._maybe_failover(
+                    err,
+                    lambda svc: self._command_once(svc, path, command, kwds),
+                    full,
+                )
         except Exception as err:  # noqa: BLE001
-            full = f"{path}.{command}" if path else command
-            outcome = self._maybe_failover(
-                err,
-                lambda svc: self._command_once(svc, path, command, kwds),
-                full,
-            )
-            return outcome
+            # Reached only for non-catastrophic, non-recovered failures (failover
+            # re-raises catastrophic errors above). If the command was irreversible
+            # and we checkpointed just before it, automatically roll back to that
+            # last-good state so the user does not have to.
+            cls = self._classifier.classify(err, self.session)
+            if (
+                self.auto_rollback
+                and not cls.catastrophic
+                and self._pending_rollback_entry is not None
+            ):
+                entry = self._pending_rollback_entry
+                self._pending_rollback_entry = None
+                try:
+                    self._checkpoints.replay(entry)
+                except Exception:  # noqa: BLE001
+                    raise err from None
+                return (
+                    StepOutcome(
+                        path=full,
+                        ok=False,
+                        result="auto-rolled-back",
+                        error=str(err),
+                    ),
+                    None,
+                )
+            raise
+        finally:
+            # A successful command consumes its pending rollback point.
+            self._pending_rollback_entry = None
 
     def _command_once(self, service, path: str, command: str, kwds: dict):
         full = f"{path}.{command}" if path else command
         try:
             result = service.execute_cmd(path, command, **kwds)
         except Exception as err:  # noqa: BLE001
-            cls = self._classifier.classify(err, self.session)
+            # Only solve-type commands may legitimately raise the clean-stop
+            # sentinel; treat the benign interrupt as such exactly there (mirrors
+            # core PyFluent), and as a real error everywhere else.
+            cls = self._classifier.classify(
+                err, self.session, interruptible=_is_interruptible_command(full)
+            )
             if cls.severity.value == "benign":
                 return StepOutcome(path=full, ok=True, result="interrupted"), None
             if cls.catastrophic:
@@ -189,7 +314,26 @@ class ResilientController:
             raise UnrecoverableStepError(
                 f"Command {full!r} failed: {cls.message}"
             ) from err
+        self._record_command(full, command, kwds)
         return StepOutcome(path=full, ok=True, result=_brief(result)), result
+
+    def _record_command(self, full: str, command: str, kwds: dict) -> None:
+        """Record a successful command on the journal."""
+        from ansys.fluent.core.resilient.checkpoint import is_irreversible
+
+        irreversible = is_irreversible(full)
+        self._journal.record(
+            CommandOp(
+                path=full,
+                args=dict(kwds),
+                irreversible=irreversible,
+                checkpoint_name=(
+                    getattr(self._pending_rollback_entry, "name", None)
+                    if irreversible
+                    else None
+                ),
+            )
+        )
 
     # -- failover ---------------------------------------------------------
 
@@ -214,9 +358,14 @@ class ResilientController:
     # -- checkpoint surface (delegated to by the session methods) --------
 
     def auto_checkpoint(self, label: str) -> None:
-        """Best-effort file checkpoint before an irreversible command."""
+        """Best-effort file checkpoint before an irreversible command.
+
+        Remembers the created entry so the command can be rolled back to it
+        automatically if it fails (see :meth:`apply_command`).
+        """
+        self._pending_rollback_entry = None
         try:
-            self._checkpoints.checkpoint_file(
+            self._pending_rollback_entry = self._checkpoints.checkpoint_file(
                 f"auto:{label}", reason="pre-irreversible"
             )
         except Exception:  # noqa: BLE001  # nosec B110

@@ -136,3 +136,14 @@ def last_outcome(session):
     """The :class:`StepOutcome` of the most recent intercepted write, if any."""
     service = getattr(session, "_settings_service", None)
     return getattr(service, "last_outcome", None)
+
+
+def on_journal_event(session, listener) -> None:
+    """Register a journal ``(event_name, op)`` listener on a resilient session.
+
+    ``event_name`` is one of ``"record"`` / ``"undo"`` / ``"redo"``. Use this to
+    surface the automatic undo/redo recovery cycle (e.g. in a demo's logs).
+    """
+    controller = getattr(session, "_resilient", None)
+    if controller is not None:
+        controller.on_journal_event(listener)
