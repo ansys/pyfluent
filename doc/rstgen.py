@@ -382,9 +382,14 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             )
             f.write(".. rubric:: Named object type\n\n")
             f.write(f":ref:`{member_label} <{member_ref}>`\n\n")
+            member_ref_role = f":ref:`{member_label} <{member_ref}>`"
             f.write(
-                f"Access each ``{member_label}`` by name using "
-                f"``{menu['name'].__name__}['<name>']``.\n\n\n"
+                f"This named-object container is modelled on a ``dict``, with "
+                f"the object names as keys and the {member_ref_role} objects "
+                f"as values. Access each ``{member_label}`` by name, for "
+                f"example using ``{menu['name'].__name__}['<name>']``, as well "
+                f"as through ``get()``, ``keys()`` and ``values()``. Note that "
+                f"it is not a full ``dict`` implementation.\n\n\n"
             )
         else:
             named_object_member = None

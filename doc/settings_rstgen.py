@@ -181,17 +181,22 @@ def _write_rst_body(r, cls, cls_name):
         instance_label = child_cls._python_name
         r.write(".. rubric:: Named object type\n\n")
         r.write(f":ref:`{instance_label} <{child_cls.__name__}>`\n\n")
+        instance_ref = f":ref:`{instance_label} <{child_cls.__name__}>`"
         if issubclass(cls, ListObject):
             access_example = f"{cls._python_name}[<index>]"
             r.write(
-                f"Access each ``{instance_label}`` by index using "
+                f"Access each {instance_ref} by index using "
                 f"``{access_example}``.\n\n\n"
             )
         else:
             access_example = f"{cls._python_name}['<name>']"
             r.write(
-                f"Access each ``{instance_label}`` by name using "
-                f"``{access_example}``.\n\n\n"
+                f"This named-object container is modelled on a ``dict``, with "
+                f"the object names as keys and the {instance_ref} objects "
+                f"as values. Access each ``{instance_label}`` by name, for "
+                f"example using ``{access_example}``, as well as through "
+                f"``get()``, ``keys()`` and ``values()``. Note that it is not a "
+                f"full ``dict`` implementation.\n\n\n"
             )
     if parents_dict.get(cls_name):
         r.write(".. rubric:: Included in:\n\n")
