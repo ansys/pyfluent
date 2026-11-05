@@ -7,7 +7,7 @@ build-backend = "flit_core.buildapi"
 name = "ansys-fluent-core"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.12,<3.15"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
@@ -47,7 +47,7 @@ ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 search = ["nltk>=3.10.3"]
 tests = [
-    "pytest==9.1.1",
+    "pytest==9.2.0",
     "pytest-cov==7.1.0",
     "pytest-mock==3.17.0",
     "pytest-xdist==3.8.0",
