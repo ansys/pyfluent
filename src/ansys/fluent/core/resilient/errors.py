@@ -98,17 +98,24 @@ _SEVERITY_BY_CATEGORY = {
 class ErrorClassifier:
     """Map a caught exception (and optional session) to a classification."""
 
-    def __init__(self):
-        (
-            self._inactive_err,
-            self._read_only_err,
-            self._disallowed_err,
-            self._invalid_arg_err,
-        ) = _import_core_errors()
+    def __init__(self, adapter=None):
+        if adapter is not None:
+            classes = adapter.error_classes()
+            self._inactive_err = classes.inactive
+            self._read_only_err = classes.read_only
+            self._disallowed_err = classes.disallowed
+            self._invalid_arg_err = classes.invalid_arg
+        else:
+            (
+                self._inactive_err,
+                self._read_only_err,
+                self._disallowed_err,
+                self._invalid_arg_err,
+            ) = _import_core_errors()
 
     @staticmethod
     def is_fatal(session) -> bool:
-        """Authoritative check: is the Fluent server in a fatal state?"""
+        """Authoritative check: is the server in a fatal state?"""
         return _compat.is_fatal(session)
 
     def classify(self, err: Exception, session=None, *, interruptible=False):
@@ -185,6 +192,8 @@ class ErrorClassifier:
             or "above maximum" in lowered
             or "minimum" in lowered
             or "maximum" in lowered
+            or "invalid parameter value" in lowered  # CFX phrasing
+            or "out of bounds" in lowered
         ):
             return ErrorCategory.OUT_OF_RANGE
         if (

@@ -59,7 +59,7 @@ class PoolConfig:
 
 
 def _launch_session(launch_kwargs: dict):
-    """Launch a fresh Fluent session via the public entry point."""
+    """Launch a fresh Fluent session via the public entry point (default)."""
     import ansys.fluent.core as pyfluent
 
     return pyfluent.launch_fluent(**launch_kwargs)
@@ -76,6 +76,13 @@ class WarmSessionPool:
         launcher=None,
     ):
         self.config = config or PoolConfig()
+        if launcher is None and seed_session is not None:
+            # Launch standbys via the seed session's product adapter, so the pool
+            # works for any product (Fluent, CFX, ...).
+            from ansys.fluent.core.resilient.adapter import adapter_for
+
+            adapter = adapter_for(seed_session)
+            launcher = lambda kw: adapter.launch(**kw)  # noqa: E731
         self._launcher = launcher or _launch_session
         self._lock = threading.RLock()
         self._sessions: list = []

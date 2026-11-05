@@ -77,12 +77,15 @@ class ResilientController:
         self.auto_file_checkpoint = config.auto_file_checkpoint_before_irreversible
         self.auto_rollback = getattr(config, "auto_rollback_on_failed_command", True)
         self._pool = pool
-        self._classifier = ErrorClassifier()
+        from ansys.fluent.core.resilient.adapter import adapter_for
+
+        self._adapter = adapter_for(session)
+        self._classifier = ErrorClassifier(adapter=self._adapter)
         self._resolver = RecoverableErrorResolver(
             session, max_attempts=config.max_resolver_attempts
         )
         self._checkpoints = CheckpointManager(
-            session, file_config=config.file_checkpoint
+            session, file_config=config.file_checkpoint, adapter=self._adapter
         )
         #: Operation journal: the replayable timeline of successful set / command
         #: operations, using get_state values as undo points.
@@ -171,6 +174,12 @@ class ResilientController:
         cls = self._classifier.classify(err, self.session, interruptible=False)
         if cls.catastrophic:
             raise err
+        # If the text heuristics could not classify this, fall back to LIVE
+        # introspection of the target: a numeric value outside [min, max] or a
+        # string outside allowed_values is recoverable regardless of how the
+        # product phrased the error. This keeps clamp/snap working across products.
+        if not cls.recoverable:
+            cls = self._reclassify_by_introspection(path, value, cls)
         # UNDO: the set was rejected; restore the last-good value we read so the
         # session is explicitly back at the previous successful state.
         self._emit_undo(path, old_value)
@@ -179,6 +188,80 @@ class ResilientController:
         raise UnrecoverableStepError(
             f"Could not apply {path!r}: {cls.message}"
         ) from err
+
+    def _reclassify_by_introspection(self, path, value, cls):
+        """Upgrade an unclassified failure to recoverable using live introspection.
+
+        Product error wording varies, so when the text heuristics give up, inspect
+        the live target:
+
+        * an **inactive** target (``is_active()`` is ``False``) becomes
+          ``INACTIVE_TARGET`` (activate the governing model);
+        * a numeric value outside ``[min, max]`` becomes ``OUT_OF_RANGE`` (clamp);
+        * a value outside ``allowed_values`` becomes ``WRONG_VALUE`` (snap).
+
+        Returns the (possibly upgraded) classification.
+        """
+        from ansys.fluent.core.resilient.types import (
+            Classification,
+            ErrorCategory,
+            Severity,
+        )
+
+        inactive_cls = Classification(
+            category=ErrorCategory.INACTIVE_TARGET,
+            severity=Severity.RECOVERABLE,
+            message=cls.message,
+        )
+
+        try:
+            obj = _compat.resolve_any(self.session, path)
+        except Exception as resolve_err:  # noqa: BLE001
+            # Resolving an inactive leaf (or walking past an inactive sibling)
+            # can itself raise the product's InactiveObjectError. That is a
+            # positive signal: the target is inactive, so activate its governing
+            # model. CFX rejects the original set with a generic "not allowed"
+            # message (no typed error), so this is the reclassification hook.
+            inactive_type = self._adapter.error_classes().inactive
+            if inactive_type is not None and isinstance(resolve_err, inactive_type):
+                return inactive_cls
+            return cls
+        if obj is None:
+            return cls
+
+        def _call(attr):
+            fn = getattr(obj, attr, None)
+            if not callable(fn):
+                return None
+            try:
+                return fn()
+            except Exception:  # noqa: BLE001
+                return None
+
+        # Inactive target -> activate the governing model. CFX rejects a set to an
+        # inactive leaf with a generic "not allowed" message (no typed
+        # InactiveObjectError), so detect it by live introspection too.
+        if _call("is_active") is False:
+            return inactive_cls
+        # Numeric out-of-range -> clamp.
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            low, high = _call("min"), _call("max")
+            if (low is not None and value < low) or (high is not None and value > high):
+                return Classification(
+                    category=ErrorCategory.OUT_OF_RANGE,
+                    severity=Severity.RECOVERABLE,
+                    message=cls.message,
+                )
+        # Disallowed string value -> snap.
+        if isinstance(value, str):
+            allowed = _call("allowed_values")
+            if allowed and value not in allowed:
+                return Classification(
+                    category=ErrorCategory.WRONG_VALUE,
+                    severity=Severity.RECOVERABLE,
+                    message=cls.message,
+                )
+        return cls
 
     def _emit_undo(self, path: str, old_value) -> None:
         """Restore the pre-step value and notify journal listeners of an undo."""
@@ -321,7 +404,7 @@ class ResilientController:
         """Record a successful command on the journal."""
         from ansys.fluent.core.resilient.checkpoint import is_irreversible
 
-        irreversible = is_irreversible(full)
+        irreversible = is_irreversible(full, self.session)
         self._journal.record(
             CommandOp(
                 path=full,

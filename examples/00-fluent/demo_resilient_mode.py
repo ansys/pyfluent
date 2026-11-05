@@ -74,6 +74,9 @@ Usage
     python demo_resilient_mode.py --demo 1
     python demo_resilient_mode.py --demo 2
 
+    # add the crash + failover chapter (launches a warm standby session):
+    python demo_resilient_mode.py --failover
+
 Options can be combined. The script never aborts on a demonstrated error -- that
 is the whole point -- and always exits each Fluent session cleanly.
 """
@@ -641,6 +644,88 @@ def run_demo_2(auto: bool) -> None:
     demo2_divergence(auto)
 
 
+def run_failover_chapter(auto: bool) -> None:
+    """DEMO 3 (opt-in): the active session crashes; a warm standby takes over.
+
+    With a warm pool (``pool_size=2``) resilient mode keeps a standby Fluent
+    session ready. We checkpoint the case + data, force the active session into a
+    fatal state, and the standby is promoted and replays the last checkpoint -- so
+    a catastrophic crash costs nothing. This is the same capability the CFX demo
+    shows, driven by the SAME engine (only the adapter differs).
+    """
+    from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
+
+    demo_title(
+        3,
+        "Crash + failover (3D)",
+        "A warm standby replays the last checkpoint after a fatal crash",
+    )
+    chapter(1, "Warm pool: pool_size=2 (1 active + 1 standby)")
+    say("Resilient mode can keep warm standby sessions. On a FATAL crash it")
+    say("promotes a healthy standby and replays the last checkpoint onto it. A")
+    say("fatal session's RPCs are refused, so recovery relies only on the")
+    say("checkpoint -- never on reading the dead session.")
+    pause(auto)
+
+    # Launch the active session with resilient mode + a warm pool. The standby is
+    # launched eagerly by the pool using the same launch arguments.
+    launch_kwargs = {"mode": "solver", "ui_mode": "gui"}
+    config = ResilientConfig(pool=PoolConfig(size=2, launch_kwargs=launch_kwargs))
+    active = pyfluent.launch_fluent(
+        resilient_mode=True, resilient_config=config, **launch_kwargs
+    )
+    pool = None
+    try:
+        controller = active._resilient
+        pool = controller.pool
+        say(f"pool size: {pool.size}  (1 active + {pool.size - 1} warm standby)")
+        attach_journal_logging(active)
+
+        mesh = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", save_path=os.getcwd()
+        )
+        active.settings.file.read_mesh(file_name=mesh)
+        active.settings.solution.initialization.hybrid_initialize()
+
+        chapter(2, "Checkpoint, then crash")
+        say("Take an explicit checkpoint (a real case + data write), then force")
+        say("the active session into a fatal state to simulate a crash.")
+        entry = active.checkpoint("pre-crash")
+        event(
+            "checkpoint (real case + data)",
+            "a reloadable Fluent case + data was written for failover replay "
+            f"({os.path.basename(str(entry.case_data_path or ''))}).",
+        )
+        pause(auto)
+
+        # Force a fatal error state on the active session (authoritative signal).
+        active._fluent_connection._error_state.set("fatal", "simulated crash")
+        event(
+            "crash detected (fatal)",
+            "the active Fluent session is in a fatal state; its RPCs are refused.",
+        )
+        say("forcing failover to the warm standby...")
+
+        chapter(3, "Failover + checkpoint replay")
+        new_active = pool.failover(controller.checkpoints)
+        event(
+            "failover + checkpoint replay",
+            "the warm standby was promoted and reloaded the checkpointed case + "
+            "data; the crash cost no progress.",
+        )
+        say(
+            "recovered on the standby -- mesh is loaded: "
+            f"{bool(new_active.settings.setup.models.energy.enabled() is not None)}."
+        )
+        pause(auto)
+    finally:
+        say("Exiting the failover-demo sessions.")
+        if pool is not None:
+            pool.shutdown()
+        else:
+            active.exit()
+
+
 def main(argv=None) -> int:
     """Run the guided demo(s); each demo uses its own Fluent session."""
     parser = argparse.ArgumentParser(description="PyFluent resilient-mode demo.")
@@ -656,6 +741,12 @@ def main(argv=None) -> int:
         help="Which example to run: 1 (mixing elbow), 2 (solidification), "
         "or all (default).",
     )
+    parser.add_argument(
+        "--failover",
+        action="store_true",
+        help="Also run the crash + failover chapter (launches a warm standby "
+        "session, so it needs a second Fluent license + extra RAM/cores).",
+    )
     args = parser.parse_args(argv)
 
     intro(args.auto)
@@ -663,6 +754,8 @@ def main(argv=None) -> int:
         run_demo_1(args.auto)
     if args.demo in ("2", "all"):
         run_demo_2(args.auto)
+    if args.failover:
+        run_failover_chapter(args.auto)
     recap()
     return 0
 

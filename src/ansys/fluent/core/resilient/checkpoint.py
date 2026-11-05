@@ -45,8 +45,9 @@ from ansys.fluent.core.resilient.filecheck import (
 )
 from ansys.fluent.core.resilient.types import CheckpointKind, UndoEntry
 
-#: Leaf command names that are irreversible via ``set_state`` and therefore
-#: warrant a file checkpoint before they run.
+#: Default (Fluent) leaf command names that are irreversible via ``set_state``
+#: and therefore warrant a file checkpoint before they run. Products override via
+#: the adapter's ``irreversible_leaves``.
 IRREVERSIBLE_LEAVES = frozenset(
     {
         "iterate",
@@ -60,8 +61,18 @@ IRREVERSIBLE_LEAVES = frozenset(
 )
 
 
-def is_irreversible(path: str) -> bool:
-    """Whether a command path refers to an irreversible operation."""
+def is_irreversible(path: str, session=None) -> bool:
+    """Whether a command path refers to an irreversible operation.
+
+    When a ``session`` is given, the product adapter's ``irreversible_leaves`` is
+    used; otherwise the Fluent default set applies.
+    """
+    if session is not None:
+        from ansys.fluent.core.resilient.adapter import adapter_for
+
+        adapter = adapter_for(session)
+        if adapter.irreversible_leaves:
+            return adapter.is_irreversible(path)
     leaf = path.strip().rstrip(")").split("(")[0].split(".")[-1]
     return leaf in IRREVERSIBLE_LEAVES
 
@@ -75,12 +86,33 @@ class CheckpointManager:
         *,
         file_config: FileCheckpointConfig | None = None,
         max_depth: int = 50,
+        adapter=None,
     ):
         self.session = session
         self.max_depth = max_depth
+        if adapter is None:
+            from ansys.fluent.core.resilient.adapter import adapter_for
+
+            adapter = adapter_for(session)
+        self._adapter = adapter
         self._file_store = FileCheckpointStore(file_config)
         self._undo: list[UndoEntry] = []
         self._redo: list[UndoEntry] = []
+
+    def _file_write(self, name: str) -> UndoEntry:
+        """Write a file-tier checkpoint via the adapter (or the default store)."""
+        writer = getattr(self._adapter, "write_file_checkpoint", None)
+        if callable(writer):
+            return writer(self.session, name, self._file_store)
+        return self._file_store.write(self.session, name)
+
+    def _file_restore(self, entry: UndoEntry) -> None:
+        """Restore a file-tier checkpoint via the adapter (or the default store)."""
+        restorer = getattr(self._adapter, "restore_file_checkpoint", None)
+        if callable(restorer):
+            restorer(self.session, entry, self._file_store)
+        else:
+            self._file_store.restore(self.session, entry)
 
     def rebind(self, session) -> None:
         """Point the manager at a new session (after a failover)."""
@@ -100,7 +132,7 @@ class CheckpointManager:
         self, name: str, reason: str | None = None, *, clear_redo: bool = True
     ) -> UndoEntry:
         """Push a file checkpoint (case/data) onto the undo stack."""
-        entry = self._file_store.write(self.session, name)
+        entry = self._file_write(name)
         entry.reason = reason
         self._push_undo(entry, clear_redo=clear_redo)
         return entry
@@ -177,13 +209,13 @@ class CheckpointManager:
     def _capture_current(self, like: UndoEntry, name: str) -> UndoEntry:
         if like.kind is CheckpointKind.SETTINGS:
             return snapshot.capture_settings(self.session, like.paths or None, name)
-        return self._file_store.write(self.session, name)
+        return self._file_write(name)
 
     def _apply(self, entry: UndoEntry) -> None:
         if entry.kind is CheckpointKind.SETTINGS:
             snapshot.restore_settings(self.session, entry)
         else:
-            self._file_store.restore(self.session, entry)
+            self._file_restore(entry)
 
     def replay(self, entry: UndoEntry) -> None:
         """Apply a checkpoint onto the current session (used by failover)."""

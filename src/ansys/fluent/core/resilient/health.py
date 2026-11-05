@@ -94,9 +94,15 @@ class SessionHealthMonitor:
         self._unsubscribe()
 
     def _subscribe(self) -> None:
+        from ansys.fluent.core.resilient.adapter import adapter_for
+
         events = getattr(self.session, "events", None)
         register = getattr(events, "register_callback", None)
-        fatal_event = _solver_fatal_event()
+        # Prefer the adapter's fatal event; fall back to the Fluent default.
+        adapter = adapter_for(self.session)
+        fatal_event = adapter.fatal_event()
+        if fatal_event is None:
+            fatal_event = _solver_fatal_event()
         if not callable(register) or fatal_event is None:
             return
         try:

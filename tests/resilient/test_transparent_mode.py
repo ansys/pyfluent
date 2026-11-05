@@ -109,6 +109,26 @@ def test_out_of_range_auto_recovered_transparently(tmp_path):
     assert session.settings.setup.turbulence.intensity.get_state() == 1.0
 
 
+def test_unrecognized_error_reclassified_by_live_bounds(tmp_path):
+    # When the error text is not recognised but the live object is numeric and
+    # out of [min, max], introspection upgrades it to recoverable and clamps.
+    # (This is what makes clamp/snap work across products with different error
+    # wording, e.g. CFX's "Invalid parameter value".)
+    def reject_opaque(value):
+        if isinstance(value, (int, float)) and value > 1.0:
+            raise RuntimeError("some product-specific opaque rejection")
+
+    leaf = FakeLeaf(0.05, minimum=0.0, maximum=1.0, set_raises=reject_opaque)
+    session = FakeSession(
+        settings=FakeSettings(file_group=FakeFileGroup(), setup=FakeGroup(x=leaf))
+    )
+    enable_resilient_mode(session, _config(tmp_path))
+    session._settings_service.set_var("setup.x", 5.0)
+    out = last_outcome(session)
+    assert out.ok and "clamp" in out.fixes_applied
+    assert session.settings.setup.x.get_state() == 1.0
+
+
 def test_irreversible_command_auto_checkpoints(tmp_path):
     session = _elbow_session()
     # Give the session an iterate command under solution.run_calculation.

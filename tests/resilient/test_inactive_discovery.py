@@ -133,3 +133,98 @@ def test_end_to_end_auto_activation_via_applier():
     assert "activate_model" in out.fixes_applied
     assert energy.get_state() is True
     assert temperature.get_state() == 300.0
+
+
+class EnumModelFlag(FakeLeaf):
+    """A non-boolean model option that activates dependents for a specific value.
+
+    Models CFX-style activation, where a model is turned on by setting an enum
+    option (e.g. ``heat_transfer_model.option = "Total Energy"``) rather than a
+    boolean flag.
+    """
+
+    def __init__(self, dependents, activating_value, initial="Thermal Energy"):
+        super().__init__(value=initial)
+        self._dependents = dependents
+        self._activating_value = activating_value
+
+    def set_state(self, value):
+        super().set_state(value)
+        active = value == self._activating_value
+        for dep in self._dependents:
+            dep._active = active
+
+
+def _enum_activated_session():
+    """A session whose inactive target is activated by an enum option value."""
+    work_term = FakeLeaf(False, active=False)
+
+    def reject_if_inactive(value):
+        if not work_term._active:
+            raise RuntimeError("The object is not active")
+
+    work_term._set_raises = reject_if_inactive
+
+    option = EnumModelFlag(dependents=[work_term], activating_value="Total Energy")
+    settings = FakeSettings(
+        setup=FakeGroup(
+            fluid_models=FakeGroup(
+                heat_transfer_model=FakeGroup(
+                    option=option,
+                    include_viscous_work_term=work_term,
+                ),
+            ),
+        )
+    )
+    session = FakeSession(settings=settings)
+    return session, option, work_term
+
+
+class _EnumActivationAdapter:
+    """A minimal adapter exposing a ``(path, value)`` governing-model flag."""
+
+    def governing_model_flags(self):
+        return (("setup.fluid_models.heat_transfer_model.option", "Total Energy"),)
+
+
+def test_activation_via_path_value_pair(monkeypatch):
+    # A non-boolean (enum) governing flag activates the target: the resolver sets
+    # the given value, verifies activation, and keeps it. This is the CFX pattern.
+    session, option, work_term = _enum_activated_session()
+    resolver = RecoverableErrorResolver(session)
+    # Make the resolver use the enum (path, value) candidate flag.
+    monkeypatch.setattr(
+        resolver,
+        "_candidate_model_flags",
+        _EnumActivationAdapter().governing_model_flags,
+    )
+    path = "setup.fluid_models.heat_transfer_model.include_viscous_work_term"
+    fix = resolver.propose(path, True, _inactive_cls())
+    assert fix is not None
+    assert fix.kind == "activate_model"
+    # The (path, value) pair was applied -- not a bare boolean True.
+    assert (
+        "setup.fluid_models.heat_transfer_model.option",
+        "Total Energy",
+    ) in fix.pre_mutations
+    assert option.get_state() == "Total Energy"
+    assert work_term.is_active() is True
+
+
+def test_path_value_pair_reverted_when_not_the_activator(monkeypatch):
+    # If applying the (path, value) pair does not activate the target, it must be
+    # reverted to its prior value and no fix proposed.
+    session, option, work_term = _enum_activated_session()
+    # Break the dependency so no option value activates the target.
+    option._dependents = []
+    resolver = RecoverableErrorResolver(session)
+    monkeypatch.setattr(
+        resolver,
+        "_candidate_model_flags",
+        _EnumActivationAdapter().governing_model_flags,
+    )
+    path = "setup.fluid_models.heat_transfer_model.include_viscous_work_term"
+    fix = resolver.propose(path, True, _inactive_cls())
+    assert fix is None
+    # Reverted to the original enum value.
+    assert option.get_state() == "Thermal Energy"

@@ -49,6 +49,12 @@ Example
 ...     rsolver.command("solution.run_calculation.iterate", iter_count=100)
 """
 
+from ansys.fluent.core.resilient.adapter import (
+    DEFAULT_ADAPTER,
+    ErrorClasses,
+    ResilientAdapter,
+    adapter_for,
+)
 from ansys.fluent.core.resilient.apply import SafeApplier
 from ansys.fluent.core.resilient.attach import (
     enable_resilient_mode,
@@ -73,6 +79,7 @@ from ansys.fluent.core.resilient.filecheck import (
     FileCheckpointConfig,
     FileCheckpointStore,
 )
+from ansys.fluent.core.resilient.fluent_adapter import FluentAdapter
 from ansys.fluent.core.resilient.health import SessionHealthMonitor
 from ansys.fluent.core.resilient.journal import CommandOp, Journal, SetOp
 from ansys.fluent.core.resilient.pool import PoolConfig, WarmSessionPool
@@ -98,6 +105,12 @@ __all__ = [
     "Journal",
     "SetOp",
     "CommandOp",
+    # the reusable-framework seam (product adapters)
+    "ResilientAdapter",
+    "ErrorClasses",
+    "FluentAdapter",
+    "DEFAULT_ADAPTER",
+    "adapter_for",
     # explicit facade (advanced)
     "ResilientSolver",
     "ResilientConfig",

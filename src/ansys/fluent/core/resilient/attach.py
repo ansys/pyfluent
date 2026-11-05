@@ -48,18 +48,25 @@ from ansys.fluent.core.resilient.pool import PoolConfig, WarmSessionPool
 from ansys.fluent.core.resilient.types import CheckpointKind
 
 
-def enable_resilient_mode(session, config=None, *, pool_size: int | None = None):
+def enable_resilient_mode(
+    session, config=None, *, pool_size: int | None = None, adapter=None
+):
     """Enable transparent resilient mode on a live solver session.
 
     Parameters
     ----------
     session :
-        A live :class:`Solver` session.
+        A live solver session.
     config : ResilientConfig, optional
         Full configuration. When omitted a default is created.
     pool_size : int, optional
         Convenience override for the warm-pool size. ``1`` (default) wraps the
         single session with no failover; ``> 1`` launches warm standbys.
+    adapter : ResilientAdapter, optional
+        The product adapter (Fluent, CFX, ...). When omitted, the Fluent adapter
+        is used. The adapter is the single seam that makes the engine reusable
+        across products; it is attached to the session so a process can drive
+        multiple products concurrently.
 
     Returns
     -------
@@ -74,28 +81,41 @@ def enable_resilient_mode(session, config=None, *, pool_size: int | None = None)
     if pool_size is not None:
         config.pool.size = pool_size
 
+    # Resolve and attach the product adapter BEFORE anything else reads it.
+    if adapter is None:
+        from ansys.fluent.core.resilient.fluent_adapter import FluentAdapter
+
+        adapter = FluentAdapter()
+    session._resilient_adapter = adapter
+
     pool = None
     if config.pool.size and config.pool.size > 1:
         pool = WarmSessionPool(config.pool, seed_session=session)
         session = pool.active
+        session._resilient_adapter = adapter
 
     controller = ResilientController(session, config, pool=pool)
 
     # Wrap the live settings service and force the settings tree to rebind to it.
-    inner_service = session._settings_service
+    inner_service = adapter.settings_service(session)
     wrapped = ResilientSettingsService(inner_service, controller)
-    session._settings_service = wrapped
+    adapter.set_settings_service(session, wrapped)
     # Drop any cached settings root so it is rebuilt against the wrapped service.
-    if getattr(session, "_settings", None) is not None:
-        session._settings = None
+    adapter.invalidate_settings_cache(session)
 
     _attach_session_api(session, controller)
     session._resilient = controller
-    # Enable transparent recovery of inactive-target attribute access. This is a
-    # ref-counted, guarded patch: a no-op for non-resilient sessions.
+    # Enable product-specific recovery of inactive-target attribute access (e.g.
+    # the Fluent Group.__getattribute__ guard). A no-op when the product does not
+    # raise such errors during navigation.
     from ansys.fluent.core.resilient import patch as _patch
 
-    _patch.register_session()
+    unregister = adapter.install_inactive_patch(
+        _patch.register_session, _patch.unregister_session, _patch._controller_for
+    )
+    if unregister is None:
+        # Default behaviour (Fluent): use the built-in patch registration.
+        _patch.register_session()
     return session
 
 

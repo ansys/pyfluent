@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import re
 
+from ansys.fluent.core.resilient.adapter import adapter_for
 from ansys.fluent.core.resilient.exceptions import PathResolutionError
 
 #: Matches a path segment with an optional ``["key"]`` / ``['key']`` / ``[index]``
@@ -47,17 +48,17 @@ _SEGMENT_RE = re.compile(
     re.VERBOSE,
 )
 
-#: Prefixes a user may prepend to a path; stripped before walking the tree.
-_PATH_PREFIXES = ("solver.settings.", "settings.", "solver.")
+#: Fallback path prefixes (used when no session/adapter is available, e.g. when
+#: parsing a bare path in isolation). Per-product prefixes come from the adapter.
+_DEFAULT_PATH_PREFIXES = ("solver.settings.", "settings.", "solver.")
 
 
 def settings_root(session):
-    """Return ``session.settings`` if present, else the object itself.
+    """Return the settings root for a session (delegates to the adapter).
 
     A bare settings tree (used in tests) is returned unchanged.
     """
-    settings = getattr(session, "settings", None)
-    return settings if settings is not None else session
+    return adapter_for(session).settings_root(session)
 
 
 def _strip_quotes(key: str) -> str:
@@ -67,11 +68,20 @@ def _strip_quotes(key: str) -> str:
     return key
 
 
-def parse_segments(path: str) -> list[tuple[str, str | None]]:
+def _prefixes_for(session) -> tuple[str, ...]:
+    if session is None:
+        return _DEFAULT_PATH_PREFIXES
+    # Combine the adapter's prefixes with the defaults so a user path written
+    # with any recognised prefix still resolves.
+    return tuple(adapter_for(session).path_prefixes) + _DEFAULT_PATH_PREFIXES
+
+
+def parse_segments(path: str, session=None) -> list[tuple[str, str | None]]:
     """Parse a dotted path into ``(name, key)`` segments.
 
     ``key`` is ``None`` for a plain attribute, the string key for a named
-    object, or the raw index string for a list object.
+    object, or the raw index string for a list object. ``session`` (optional)
+    selects the product's recognised path prefixes via its adapter.
 
     Raises
     ------
@@ -79,7 +89,7 @@ def parse_segments(path: str) -> list[tuple[str, str | None]]:
         If any path segment is malformed.
     """
     cleaned = path.strip().lstrip(".")
-    for prefix in _PATH_PREFIXES:
+    for prefix in _prefixes_for(session):
         if cleaned.startswith(prefix):
             cleaned = cleaned[len(prefix) :]
             break
@@ -108,7 +118,7 @@ def resolve(session, path: str):
     """
     obj = settings_root(session)
     walked: list[str] = []
-    for name, key in parse_segments(path):
+    for name, key in parse_segments(path, session):
         walked.append(name if key is None else f"{name}[{key!r}]")
         try:
             obj = getattr(obj, name)
@@ -132,41 +142,66 @@ def resolve(session, path: str):
     return obj
 
 
+def _scheme_name(child):
+    """Return a child's scheme (server-side) name across products.
+
+    Fluent exposes it as ``fluent_name``, CFX as ``cfx_name``; ``obj_name`` is a
+    product-neutral fallback both provide.
+    """
+    for attr in ("fluent_name", "cfx_name", "obj_name"):
+        val = getattr(child, attr, None)
+        if val:
+            return val
+    return None
+
+
 def _child_by_fluent_name(obj, segment: str):
-    """Find a child of ``obj`` whose Fluent (scheme) name matches ``segment``.
+    """Find a child of ``obj`` whose scheme name matches ``segment``.
 
-    The settings service uses scheme paths (slash-separated, hyphenated, e.g.
-    ``boundary-conditions``) while the live tree is navigated by Python names
-    (dotted, underscored, e.g. ``boundary_conditions``). This maps one scheme
-    segment to the right child, trying, in order:
+    The settings service uses scheme paths (e.g. Fluent
+    ``boundary-conditions`` / CFX ``FLOW``) while the live tree is navigated by
+    Python names. This maps one scheme segment to the right child, trying, in
+    order:
 
-    * a child whose ``fluent_name`` equals the segment,
-    * the pythonized segment (hyphens -> underscores) as an attribute,
+    * a child whose scheme name (fluent_name / cfx_name / obj_name) equals it,
+    * the pythonized segment (hyphens/spaces -> underscores, lower-cased),
     * the segment as a named-object / list key.
 
     Returns the resolved child, or raises ``PathResolutionError``.
     """
-    # 1. Match a child by its Fluent name via the class metadata, if available.
+    # 1. Match a child by its scheme name via the class metadata, if available.
     child_names = getattr(obj, "child_names", None) or []
     for py_name in child_names:
         try:
             child = getattr(obj, py_name)
+            if _scheme_name(child) == segment:
+                return child
         except Exception:  # noqa: BLE001  # nosec B112
+            # An inactive child can raise InactiveObjectError on attribute access
+            # or on scheme-name introspection; skip it -- it is not our segment.
             continue
-        if getattr(child, "fluent_name", None) == segment:
-            return child
     # Command names, too (for execute_cmd parents).
     command_names = getattr(obj, "command_names", None) or []
     for py_name in command_names:
-        child = getattr(obj, py_name, None)
-        if child is not None and getattr(child, "fluent_name", None) == segment:
+        try:
+            child = getattr(obj, py_name, None)
+            if child is not None and _scheme_name(child) == segment:
+                return child
+        except Exception:  # noqa: BLE001  # nosec B112
+            continue
+    # 2. Pythonized attribute name (hyphens/spaces -> underscores, lower-cased).
+    for guess in (
+        segment.replace("-", "_"),
+        segment.replace("-", "_").replace(" ", "_").lower(),
+    ):
+        try:
+            child = getattr(obj, guess, None)
+        except Exception:  # noqa: BLE001  # nosec B112
+            # Attribute access on an inactive child may raise; treat as a miss.
+            continue
+        if child is not None:
             return child
-    # 2. Pythonized attribute name (hyphen -> underscore).
-    py_guess = segment.replace("-", "_")
-    child = getattr(obj, py_guess, None)
-    if child is not None:
-        return child
-    # 3. Named-object / list key.
+    # 3. Named-object / list key (CFX keys like 'Flow Analysis 1' resolve here).
     try:
         return obj[segment]
     except Exception:  # noqa: BLE001  # nosec B110
@@ -225,7 +260,7 @@ def resolve_parent(session, path: str):
     PathResolutionError
         If the path is empty or ends in an indexed segment.
     """
-    segments = parse_segments(path)
+    segments = parse_segments(path, session)
     if not segments:
         raise PathResolutionError(f"Empty path: {path!r}.")
     leaf_name, leaf_key = segments[-1]
@@ -241,46 +276,20 @@ def resolve_parent(session, path: str):
 
 
 def error_state(session):
-    """Return the session's ``ErrorState`` object, or ``None`` if unavailable.
-
-    Reaches ``session._fluent_connection._error_state``. Guarded so that mock
-    sessions and transports without the gRPC error-state stream return ``None``.
-    """
-    connection = getattr(session, "_fluent_connection", None)
-    if connection is None:
-        return None
-    return getattr(connection, "_error_state", None)
+    """Return the session's ``ErrorState`` object, or ``None`` (via the adapter)."""
+    return adapter_for(session).error_state(session)
 
 
 def is_fatal(session) -> bool:
-    """Whether the Fluent server is in a fatal error state.
-
-    Authoritative post-hoc check: the ``FATAL_ERROR`` event sets the shared
-    ``ErrorState`` to ``"fatal"`` and every subsequent RPC is then refused.
-    """
-    state = error_state(session)
-    return bool(state is not None and getattr(state, "name", "") == "fatal")
+    """Whether the server is in a fatal error state (via the adapter)."""
+    return adapter_for(session).is_fatal(session)
 
 
 def fatal_details(session) -> str | None:
-    """Return the fatal-error details string, if any."""
-    state = error_state(session)
-    if state is None:
-        return None
-    return getattr(state, "details", None) or None
+    """Return the fatal-error details string, if any (via the adapter)."""
+    return adapter_for(session).fatal_details(session)
 
 
 def is_server_healthy(session) -> bool:
-    """Best-effort health probe that never raises.
-
-    Uses ``BaseSession._is_server_healthy()`` / ``is_active()`` when present and
-    falls back to ``True`` for objects (e.g. mock trees) that expose neither.
-    """
-    for attr in ("_is_server_healthy", "is_active"):
-        probe = getattr(session, attr, None)
-        if callable(probe):
-            try:
-                return bool(probe())
-            except Exception:  # noqa: BLE001
-                return False
-    return True
+    """Best-effort health probe that never raises (via the adapter)."""
+    return adapter_for(session).is_server_healthy(session)

@@ -81,7 +81,9 @@ class ResilientSettingsService:
     def execute_cmd(self, path: str, command: str, **kwds):
         """Execute a command, auto-checkpointing irreversible ones first."""
         full = f"{path}.{command}" if path else command
-        if self._controller.auto_file_checkpoint and is_irreversible(full):
+        if self._controller.auto_file_checkpoint and is_irreversible(
+            full, self._controller.session
+        ):
             self._controller.auto_checkpoint(full)
         outcome, result = self._controller.apply_command(
             self._inner, path, command, kwds
