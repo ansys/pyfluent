@@ -28,6 +28,7 @@ This module centralizes reusable typing constructs
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 import os
 from typing import TYPE_CHECKING, Literal, TypeAlias, TypedDict
 
@@ -44,8 +45,15 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-PathType: TypeAlias = "os.PathLike[str] | str"
+PathType: TypeAlias = os.PathLike[str] | str
 """Type alias for file system paths."""
+
+type ValueT = (None | bool | int | float | str | Sequence[ValueT] | dict[str, ValueT])
+"""Recursive type alias for values in Fluent state/command hierarchies.
+
+Supports None, booleans, numbers, strings, and nested lists/dicts of the same.
+Both static type checkers and beartype runtime checking see this same definition.
+"""
 
 
 class LauncherArgsBase(TypedDict, total=False):

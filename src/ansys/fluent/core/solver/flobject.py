@@ -72,6 +72,7 @@ from typing import (
     NewType,
     NoReturn,
     TextIO,
+    TypeAliasType,
     TypeVar,
     Union,
     _eval_type,
@@ -309,13 +310,26 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = dict[str, "StateType"]
-ListStateType = list["StateType"]
-StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
+type DictStateType = dict[str, StateType]
+type ListStateType = list[StateType]
+type StateType = PrimitiveStateType | ListStateType | DictStateType
+"""Recursive type alias for state values in Fluent object hierarchies.
+
+Includes primitives (bool, int, float, str), lists of primitives,
+and recursive dicts/lists for nested state structures. Both static
+type checkers and beartype see this same recursive definition.
+"""
 
 
 def check_type(val: Any, tp: Any) -> bool:
-    """Check type of object."""
+    """Check type of object.
+
+    Handles PEP 695 TypeAliasType and validates values against recursive type definitions.
+    """
+    # Handle TypeAliasType (PEP 695 `type` statements)
+    if isinstance(tp, TypeAliasType):
+        return check_type(val, tp.__value__)
+
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
     if isinstance(tp, str):
@@ -1533,7 +1547,9 @@ class WildcardPath(Group):
         except KeyError as ex:
             raise AttributeError(
                 allowed_name_error_message(
-                    context=self._state_cls._python_name,
+                    # class attr, so fall back like the python_name property does
+                    context=getattr(self._state_cls, "_python_name", None)
+                    or self._state_cls.__name__,
                     trial_name=name,
                     allowed_values=self.get_active_child_names(),
                 )
@@ -3054,6 +3070,7 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
+@no_runtime_type_check
 def get_root(
     flproxy: Any,
     version: str = "",

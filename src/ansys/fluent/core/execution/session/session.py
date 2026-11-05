@@ -45,6 +45,7 @@ import weakref
 from deprecated.sphinx import deprecated
 from typing_extensions import Unpack
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.execution.launcher.launch_options import FluentMode
 from ansys.fluent.core.fields.field_data.abstract_field_data import (
@@ -130,6 +131,7 @@ def _parse_server_info_file(file_name: str):
         return ip, port, password
 
 
+@no_runtime_type_check
 class BaseSession:
     """Encapsulates a Fluent session.
 
@@ -611,6 +613,7 @@ class BaseSession:
     ) -> tuple[str, str]: ...
 
     @classmethod
+    @no_runtime_type_check
     def from_install(  # pylint: disable=missing-param-doc
         cls,
         *,
@@ -726,6 +729,7 @@ class BaseSession:
     ) -> dict[str, Any]: ...
 
     @classmethod
+    @no_runtime_type_check
     def from_container(  # pylint: disable=missing-param-doc
         cls,
         *,
@@ -823,6 +827,7 @@ class BaseSession:
         return launcher()
 
     @classmethod
+    @no_runtime_type_check
     def from_pim(  # pylint: disable=missing-param-doc
         cls,
         **kwargs: Unpack["PIMArgsWithoutMode"],

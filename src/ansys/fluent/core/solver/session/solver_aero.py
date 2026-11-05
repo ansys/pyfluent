@@ -34,6 +34,7 @@ Inheritance
 
 from typing import Any
 
+from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.services.object_model import PySimpleMenuGeneric
@@ -41,6 +42,7 @@ from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.solver.session.solver import Solver
 
 
+@no_runtime_type_check
 class SolverAero(Solver):
     """Fluent solver session with the Aero add-on loaded.
 

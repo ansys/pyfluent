@@ -24,10 +24,9 @@
 """Abstract object model wrapper."""
 
 from abc import ABC, abstractmethod
-from collections.abc import Sequence
 from typing import Any
 
-ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
+from ansys.fluent.core._types import ValueT
 
 
 class AbstractObjectModel(ABC):
