@@ -382,6 +382,48 @@ def _settings_expression_to_scheme(leaf_cls, value):
     return value
 
 
+# Textual leaves (plain strings) do *not* broadly opt into the
+# settings-expression protocol: a string setting is not generally an
+# expression slot.  Instead, expression objects are accepted at a small,
+# explicit whitelist of textual paths whose Fluent-side value is an expression
+# string -- any object implementing the protocol (``__settings_str__``) is
+# rendered to that string form before being stored.
+#
+# Today the only entry targets ``setup.named_expressions[<name>].definition``,
+# but keeping this as a module-level constant lets future consumers plug in
+# additional paths (or migrate to a fully attribute-driven mechanism) without
+# touching :class:`Textual`.
+EXPRESSION_DEFINITION_PATHS: list[tuple[str, ...]] = [
+    ("setup", "named_expressions", "definition"),
+]
+
+
+def _python_name_chain(obj) -> list[str]:
+    """Return the python-name chain from root to ``obj``, excluding indices.
+
+    NamedObject index segments (``"[foo]"``) are dropped so the chain
+    represents structural position only.
+    """
+    names: list[str] = []
+    node = obj
+    while node is not None:
+        name = getattr(node, "python_name", None)
+        if name and not name.startswith("["):
+            names.append(name)
+        node = getattr(node, "_parent", None)
+    names.reverse()
+    return names
+
+
+def _matches_expression_definition_path(obj) -> bool:
+    """Return True if ``obj`` sits at one of :data:`EXPRESSION_DEFINITION_PATHS`."""
+    chain = _python_name_chain(obj)
+    for suffix in EXPRESSION_DEFINITION_PATHS:
+        if len(suffix) <= len(chain) and tuple(chain[-len(suffix) :]) == suffix:
+            return True
+    return False
+
+
 class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
@@ -1155,7 +1197,12 @@ class Textual(Property):
         Parameters
         ----------
         state
-            Either ``str`` or ``VariableDescriptor``.
+            Either ``str``, ``VariableDescriptor``, or -- at whitelisted paths
+            (see :data:`EXPRESSION_DEFINITION_PATHS`) -- any object implementing
+            the settings-expression protocol (``__settings_str__``) -- for
+            example an ``Expr`` produced by the expression builder. Such an
+            expression object is rendered to its string form before being
+            stored.
         kwargs : StateType
             Keyword arguments.
 
@@ -1164,6 +1211,17 @@ class Textual(Property):
         TypeError
             If state is not a string.
         """
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is rendered to its string form when this
+        # leaf is a recognised expression-definition slot.  The cheap duck-type
+        # check short-circuits the parent-walk in the path match for the ~all
+        # case where ``state`` is a plain value.  ``VariableDescriptor`` does not
+        # implement the protocol, so it falls through unchanged.
+        if _is_settings_expression(state) and _matches_expression_definition_path(self):
+            rendered = _render_settings_expression(self, state)
+            if rendered is not None:
+                return self.base_set_state(state=rendered, **kwargs)
+
         allowed_types = (str, VariableDescriptor)
 
         if not isinstance(state, allowed_types):

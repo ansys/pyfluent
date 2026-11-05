@@ -35,11 +35,12 @@ def test_expression_builder_area_ave_on_static_mixer(
     # Round-trip through the parser.
     assert str(parse(rendered)) == rendered
 
-    # Assign the rendered string as a named-expression definition and evaluate
-    # it on the live session. A named-expression definition is a textual leaf,
-    # so the builder object is rendered with ``str(...)`` before assignment.
+    # Assign the builder object directly as a named-expression definition and
+    # evaluate it on the live session. A named-expression definition is a
+    # whitelisted textual path, so the expression object is accepted directly
+    # (rendered to its string form by the flobject settings integration).
     named = solver.setup.named_expressions.create()
-    named.definition = str(expr)
+    named.definition = expr
     value = named.get_value()
 
     assert isinstance(value, float) and value != 0.0

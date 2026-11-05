@@ -9,8 +9,10 @@ accepts "expression objects" through a domain-neutral protocol
 rather than any Fluent-specific hook or hard-coded path. Specifically:
 
 * A :class:`RealNumerical` leaf (``Real`` / ``RealList``) accepts an expression
-  object wherever expression strings are permitted; other leaf kinds (e.g.
-  :class:`Textual`) do not.
+  object wherever expression strings are permitted.
+* A :class:`Textual` leaf accepts an expression object only at a whitelisted
+  path (:data:`EXPRESSION_DEFINITION_PATHS`, e.g.
+  ``setup.named_expressions[<name>].definition``) and rejects it elsewhere.
 * Quantity-type validation (structural kind and physical dimension) runs
   *before* the expression is rendered to a string.
 * Plain values keep working as before.
@@ -21,14 +23,18 @@ import pytest
 from ansys.fluent.core.offline.expressions import ExpressionBuilder
 from ansys.fluent.core.offline.expressions._ast import Quantity
 from ansys.fluent.core.solver.flobject import (
+    EXPRESSION_DEFINITION_PATHS,
     Group,
     Numerical,
     Real,
     RealList,
     RealNumerical,
     SettingsBase,
+    Textual,
     _is_settings_expression,
+    _matches_expression_definition_path,
     _normalize_dimensions,
+    _python_name_chain,
     _render_settings_expression,
     _render_settings_expression_list,
     _settings_expression_to_scheme,
@@ -508,3 +514,102 @@ def test_shared_path_passes_plain_values_through():
     # A leaf that does not opt into the protocol leaves the object untouched.
     obj = _ExprOnly()
     assert _settings_expression_to_scheme(Numerical, obj) is obj
+
+
+# --------------------------------------------------------------------------- #
+# Textual leaves accept expression objects only at whitelisted paths           #
+# --------------------------------------------------------------------------- #
+#
+# A plain string setting is not generally an expression slot, so :class:`Textual`
+# does *not* broadly opt into the protocol.  Instead, expression objects are
+# accepted only at the small, explicit whitelist of paths whose Fluent-side
+# value is an expression string (``EXPRESSION_DEFINITION_PATHS``) -- today just
+# ``setup.named_expressions[<name>].definition``.
+
+
+class _FakeTextualNode:
+    """Minimal stand-in for a ``Textual`` settings-tree node.
+
+    Provides just enough shape (``python_name`` + ``_parent``) for
+    :func:`_python_name_chain` / :func:`_matches_expression_definition_path`,
+    plus a ``base_set_state`` capture used by :meth:`Textual.set_state`.
+    """
+
+    _has_migration_adapter = False
+
+    def __init__(self, python_name: str, parent=None):
+        self.python_name = python_name
+        self._parent = parent
+        self.captured = None
+
+    def base_set_state(self, state=None, **kwargs):
+        self.captured = state
+        return state
+
+
+def _make_textual_leaf(chain: list[str]) -> _FakeTextualNode:
+    """Build a chain root->leaf and return the leaf."""
+    node = None
+    for name in chain:
+        node = _FakeTextualNode(name, parent=node)
+    return node
+
+
+def _textual_set_state(node, state):
+    """Invoke ``Textual.set_state`` as an unbound method on a fake node."""
+    return Textual.set_state(node, state)
+
+
+@pytest.fixture
+def definition_leaf():
+    return _make_textual_leaf(
+        ["setup", "named_expressions", "[test_expr_1]", "definition"]
+    )
+
+
+def test_default_expression_definition_paths():
+    assert ("setup", "named_expressions", "definition") in EXPRESSION_DEFINITION_PATHS
+
+
+def test_python_name_chain_strips_indices():
+    leaf = _make_textual_leaf(
+        ["setup", "named_expressions", "[test_expr]", "definition"]
+    )
+    assert _python_name_chain(leaf) == ["setup", "named_expressions", "definition"]
+
+
+def test_matches_expression_definition_path_positive():
+    leaf = _make_textual_leaf(["setup", "named_expressions", "[dp]", "definition"])
+    assert _matches_expression_definition_path(leaf) is True
+
+
+def test_matches_expression_definition_path_negative():
+    leaf = _make_textual_leaf(["setup", "boundary_conditions", "[inlet1]", "name"])
+    assert _matches_expression_definition_path(leaf) is False
+
+
+def test_expression_object_rendered_at_whitelisted_path(definition_leaf, pressure_expr):
+    # An expression object is rendered to its string via the protocol.
+    _textual_set_state(definition_leaf, pressure_expr)
+    assert definition_leaf.captured == "AreaAve(AbsolutePressure,['inlet1'])"
+
+
+def test_string_still_accepted_at_whitelisted_path(definition_leaf):
+    _textual_set_state(definition_leaf, "AreaAve(AbsolutePressure, ['inlet1'])")
+    assert definition_leaf.captured == "AreaAve(AbsolutePressure, ['inlet1'])"
+
+
+def test_variable_descriptor_still_accepted_at_whitelisted_path(definition_leaf):
+    # ``VariableDescriptor`` does not implement the protocol, so it is handled
+    # by Textual's own field-name naming strategy rather than intercepted.
+    _textual_set_state(definition_leaf, V.ABSOLUTE_PRESSURE)
+    assert isinstance(definition_leaf.captured, str)
+    assert definition_leaf.captured  # non-empty
+
+
+def test_expression_object_rejected_at_other_path(pressure_expr):
+    # The same expression object is not a valid plain-string value elsewhere.
+    leaf = _make_textual_leaf(["setup", "some_group", "[x]", "some_string_field"])
+    with pytest.raises(TypeError):
+        _textual_set_state(leaf, pressure_expr)
+    assert leaf.captured is None

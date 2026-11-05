@@ -37,6 +37,6 @@ To assign the expression to a named expression in a live Fluent solver:
   >>> # Assign to a named expression and evaluate
   >>> # The expression is converted to string format: "AreaAve(AbsolutePressure,['inlet1'])"
   >>> named = solver_session.settings.setup.named_expressions.create()
-  >>> named.definition = str(expr)
+  >>> named.definition = expr
   >>> # Call get_value() to evaluate the expression against the flow field using Fluent's solver
   >>> value = named.get_value()
