@@ -25,7 +25,7 @@ jobs:
       pull-requests: write # Required to create pull requests, add comments, and manage reactions
     steps:
       - name: "Migrate fork PR"
-        uses: ansys/actions/hk-migrate-fork-pr@main
+        uses: ansys/actions/hk-migrate-fork-pr@f5e1481b9c128197a30d1dc1dfc52b8cd6865555 # v11.1.5
         with:
           pr-number: ${{ github.event.issue.number }}
           comment-id: ${{ github.event.comment.id }}
