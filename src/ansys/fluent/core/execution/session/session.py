@@ -566,6 +566,24 @@ class BaseSession:
     def _is_beta_enabled(self):
         return self.application_runtime.is_beta_enabled()
 
+    @staticmethod
+    def _maybe_enable_resilient_mode(session, resilient_mode, resilient_config):
+        """Enable resilient mode on a newly created session, if requested.
+
+        Resilient mode wraps the settings tree, so it only applies to a live
+        session that exposes ``_settings_service`` (a solver session). A dry-run
+        result (a ``tuple`` / ``dict`` of launch configuration) or a meshing
+        session is returned unchanged. Shared by every ``from_*`` entry point so
+        ``resilient_mode=True`` behaves identically across all of them.
+        """
+        if not resilient_mode:
+            return session
+        if not hasattr(session, "_settings_service"):
+            return session
+        from ansys.fluent.core.resilient.attach import enable_resilient_mode
+
+        return enable_resilient_mode(session, resilient_config)
+
     @overload
     @classmethod
     def from_install(
@@ -682,11 +700,11 @@ class BaseSession:
             **kwargs, dry_run=dry_run, mode=FluentMode.from_session_class(cls)
         )
         session = launcher()
-        if resilient_mode and not dry_run and hasattr(session, "_settings_service"):
-            from ansys.fluent.core.resilient.attach import enable_resilient_mode
-
-            session = enable_resilient_mode(session, resilient_config)
-        return session
+        if dry_run:
+            return session
+        return cls._maybe_enable_resilient_mode(
+            session, resilient_mode, resilient_config
+        )
 
     @overload
     @classmethod
@@ -775,6 +793,17 @@ class BaseSession:
             This mode is not recommended. For more details on the implications
             and usage of insecure mode, refer to the Fluent documentation.
 
+        resilient_mode : bool, optional
+            If True (and not a dry run), the launched solver session is wrapped in
+            resilient mode so ordinary PyFluent code transparently gains automatic
+            error recovery, an undo/redo journal, two-tier checkpointing, and
+            (opt-in) warm-standby failover. Equivalent to calling
+            ``enable_resilient_mode(session)`` on the returned session. Defaults to False.
+        resilient_config : ResilientConfig, optional
+            Full resilient-mode configuration (pool size, checkpoint settings,
+            resolver attempts, ...). Only used when ``resilient_mode`` is True.
+            Defaults to None, in which case a default configuration is used.
+
         Returns
         -------
         Meshing | PureMeshing | Solver | SolverIcing | dict
@@ -798,10 +827,17 @@ class BaseSession:
             DockerLauncher,
         )
 
+        resilient_mode = kwargs.pop("resilient_mode", False)
+        resilient_config = kwargs.pop("resilient_config", None)
         launcher = DockerLauncher(
             **kwargs, dry_run=dry_run, mode=FluentMode.from_session_class(cls)
         )
-        return launcher()
+        session = launcher()
+        if dry_run:
+            return session
+        return cls._maybe_enable_resilient_mode(
+            session, resilient_mode, resilient_config
+        )
 
     @classmethod
     def from_pim(  # pylint: disable=missing-param-doc
@@ -855,6 +891,17 @@ class BaseSession:
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
 
+        resilient_mode : bool, optional
+            If True (and not a dry run), the launched solver session is wrapped in
+            resilient mode so ordinary PyFluent code transparently gains automatic
+            error recovery, an undo/redo journal, two-tier checkpointing, and
+            (opt-in) warm-standby failover. Equivalent to calling
+            ``enable_resilient_mode(session)`` on the returned session. Defaults to False.
+        resilient_config : ResilientConfig, optional
+            Full resilient-mode configuration (pool size, checkpoint settings,
+            resolver attempts, ...). Only used when ``resilient_mode`` is True.
+            Defaults to None, in which case a default configuration is used.
+
         Returns
         -------
         Union[Meshing, PureMeshing, Solver, SolverIcing, dict]
@@ -872,8 +919,16 @@ class BaseSession:
         """
         from ansys.fluent.core.execution.launcher.pim_launcher import PIMLauncher
 
+        resilient_mode = kwargs.pop("resilient_mode", False)
+        resilient_config = kwargs.pop("resilient_config", None)
+        dry_run = kwargs.get("dry_run", False)
         launcher = PIMLauncher(**kwargs, mode=FluentMode.from_session_class(cls))
-        return launcher()
+        session = launcher()
+        if dry_run:
+            return session
+        return cls._maybe_enable_resilient_mode(
+            session, resilient_mode, resilient_config
+        )
 
     @classmethod
     def from_connection(
@@ -885,6 +940,8 @@ class BaseSession:
         allow_remote_host: bool = False,
         certificates_folder: str | None = None,
         insecure_mode: bool = False,
+        resilient_mode: bool = False,
+        resilient_config: Any | None = None,
     ):
         """Connect to an existing Fluent server instance.
 
@@ -914,6 +971,15 @@ class BaseSession:
             If True, Fluent's gRPC server will be connected in insecure mode without TLS.
             This mode is not recommended. For more details on the implications
             and usage of insecure mode, refer to the Fluent documentation.
+        resilient_mode : bool, optional
+            If True, the connected solver session is wrapped in resilient mode so
+            ordinary PyFluent code transparently gains automatic error recovery, an
+            undo/redo journal, two-tier checkpointing, and (opt-in) warm-standby
+            failover. Equivalent to calling ``enable_resilient_mode(session)`` on the
+            returned session. Defaults to False.
+        resilient_config : ResilientConfig, optional
+            Full resilient-mode configuration. Only used when ``resilient_mode`` is
+            True. Defaults to None, in which case a default configuration is used.
 
         Raises
         ------
@@ -940,7 +1006,9 @@ class BaseSession:
                 f"Session type mismatch: expected {expected}, got {actual}."
             )
 
-        return session
+        return cls._maybe_enable_resilient_mode(
+            session, resilient_mode, resilient_config
+        )
 
 
 class Fields:

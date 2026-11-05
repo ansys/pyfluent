@@ -117,3 +117,14 @@ class LauncherArgsBase(TypedDict, total=False):
     """
     file_transfer_service: Any | None
     """File transfer service. Uploads/downloads files to/from the server."""
+    resilient_mode: bool
+    """Whether to enable resilient mode on the launched solver session. When True
+    (and not a dry run), the session is transparently wrapped so ordinary PyFluent
+    code gains automatic error recovery, an undo/redo journal, two-tier
+    checkpointing, and (opt-in) warm-standby failover. The default is ``False``.
+    """
+    resilient_config: Any | None
+    """Full resilient-mode configuration (pool size, checkpoint settings, resolver
+    attempts, ...). Only used when ``resilient_mode`` is True. The default is
+    ``None``, in which case a default configuration is used.
+    """

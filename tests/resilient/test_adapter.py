@@ -109,3 +109,50 @@ def test_custom_adapter_prefixes_and_irreversible():
     a = _OtherAdapter()
     assert a.is_irreversible("root.solution.run")
     assert not a.is_irreversible("root.setup.x")
+
+
+def test_all_from_methods_expose_resilient_params():
+    # Every session-creating from_* entry point on the Solver session must
+    # advertise resilient_mode / resilient_config, so resilient mode can be
+    # requested at construction time regardless of how the session is created.
+    import inspect
+
+    from ansys.fluent.core.solver import Solver
+
+    for name in ("from_install", "from_container", "from_pim", "from_connection"):
+        params = inspect.signature(getattr(Solver, name)).parameters
+        has_kwargs = any(
+            p.kind is inspect.Parameter.VAR_KEYWORD for p in params.values()
+        )
+        if name == "from_connection":
+            # Explicit parameters (no **kwargs): they must be named.
+            assert "resilient_mode" in params, name
+            assert "resilient_config" in params, name
+            assert params["resilient_mode"].default is False, name
+            assert params["resilient_config"].default is None, name
+        else:
+            # kwargs-based entry points accept them via the typed **kwargs.
+            assert has_kwargs, name
+
+
+def test_shared_resilient_helper_is_a_no_op_when_not_requested():
+    from ansys.fluent.core.solver import Solver
+
+    session = _session_with_clamp()
+    # resilient_mode=False -> returned unchanged, no adapter attached.
+    assert Solver._maybe_enable_resilient_mode(session, False, None) is session
+    # A session without _settings_service (e.g. a dry-run / meshing result) is
+    # also returned unchanged even when resilient_mode=True.
+    assert Solver._maybe_enable_resilient_mode(object(), True, None) is not None
+
+
+def test_shared_resilient_helper_enables_when_requested():
+    from ansys.fluent.core.solver import Solver
+
+    session = _session_with_clamp()
+    result = Solver._maybe_enable_resilient_mode(session, True, None)
+    assert result is session
+    assert adapter_for(session).product_name == "fluent"
+    # Auto-recovery now works on the session with no extra calls.
+    session._settings_service.set_var("setup.ti", 5.0)
+    assert session.settings.setup.ti.get_state() == 1.0
