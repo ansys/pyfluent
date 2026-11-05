@@ -48,11 +48,12 @@ if TYPE_CHECKING:
 PathType: TypeAlias = os.PathLike[str] | str
 """Type alias for file system paths."""
 
-if TYPE_CHECKING:
-    ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
-else:
-    # Runtime checkers cannot resolve recursive aliases, so use the shallow form.
-    ValueT = None | bool | int | float | str | Sequence | dict
+type ValueT = (None | bool | int | float | str | Sequence[ValueT] | dict[str, ValueT])
+"""Recursive type alias for values in Fluent state/command hierarchies.
+
+Supports None, booleans, numbers, strings, and nested lists/dicts of the same.
+Both static type checkers and beartype runtime checking see this same definition.
+"""
 
 
 class LauncherArgsBase(TypedDict, total=False):
