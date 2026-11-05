@@ -47,7 +47,7 @@ ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 search = ["nltk>=3.10.3"]
 # gRPC transport. Componentization (#4618) is making gRPC optional so that the
-# generic ``ansys.solver.core`` platform layer imports without it. These
+# generic ``ansys.framework`` platform layer imports without it. These
 # packages are still part of the core requirements for backward compatibility;
 # the ``grpc`` extra pins the target install form (``ansys-fluent-core[grpc]``)
 # ahead of their removal from the core dependencies in a later phase.
@@ -276,13 +276,13 @@ baselineFile = ".ci/basedpyright.json"
 # report-only mode in CI during Phase 0 and become blocking in the hardening
 # phase. See doc/source/contributing/componentization.rst.
 [tool.importlinter]
-root_packages = ["ansys.fluent.core", "ansys.solver.core"]
+root_packages = ["ansys.fluent.core", "ansys.framework"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
-name = "Platform layer is backend-agnostic (ansys.solver.core must not import grpc / ansys.api / ansys.fluent)"
+name = "Platform layer is backend-agnostic (ansys.framework must not import grpc / ansys.api / ansys.fluent)"
 type = "forbidden"
-source_modules = ["ansys.solver.core"]
+source_modules = ["ansys.framework"]
 forbidden_modules = ["grpc", "ansys.api", "ansys.fluent"]
 
 [[tool.importlinter.contracts]]

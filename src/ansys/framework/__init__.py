@@ -23,7 +23,7 @@
 
 """Generic, solver-agnostic platform layer shared across Ansys solvers.
 
-``ansys.solver.core`` is the public *platform* layer introduced by the
+``ansys.framework`` is the public *platform* layer introduced by the
 componentization effort (EPIC: https://github.com/ansys/pyfluent/issues/4618).
 It is a sibling namespace to ``ansys.fluent.core`` that holds the parts of the
 architecture that are not specific to Fluent: the process-controller, the
@@ -33,7 +33,7 @@ session.
 Dependency rule (enforced by import-linter; see the architecture page in the
 docs):
 
-    ``ansys.solver.core`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
+    ``ansys.framework`` MUST NOT import ``ansys.fluent.*``, ``grpc`` or
     ``ansys.api.*``.
 
 Solver-specific layers (such as ``ansys.fluent.core``) may depend on this
