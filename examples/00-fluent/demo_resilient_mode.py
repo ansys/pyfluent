@@ -308,6 +308,29 @@ def attach_journal_logging(solver) -> None:
 # --------------------------------------------------------------------------- #
 
 
+def _resolve_mesh(file_name: str, repo_dir: str) -> str:
+    """Return a path to ``file_name``, preferring a local copy over downloading.
+
+    The example-data download can fail transiently (network hiccup or a moved
+    URL). To keep the demo robust, reuse a copy already present in the current
+    working directory if there is one, and only fall back to downloading
+    otherwise. The downloaded file is cached in the cwd, so subsequent runs use
+    the local copy.
+    """
+    local = os.path.join(os.getcwd(), file_name)
+    if os.path.isfile(local):
+        say(f"using local mesh: {file_name}")
+        return local
+    try:
+        return examples.download_file(file_name, repo_dir, save_path=os.getcwd())
+    except Exception as err:  # noqa: BLE001
+        raise FileNotFoundError(
+            f"Could not obtain {file_name!r}: no local copy in {os.getcwd()!r} and "
+            f"the download failed ({err}). Place the file next to the demo or "
+            f"restore network access, then re-run."
+        ) from err
+
+
 def intro(auto: bool) -> None:
     """Shared intro: motivate resilient mode by naming what it protects against."""
     print("\n" + _rule("="))
@@ -340,9 +363,7 @@ def demo1_launch(auto: bool):
     )
     say(f"resilient mode enabled: {is_resilient(solver)}")
     attach_journal_logging(solver)
-    mesh = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", save_path=os.getcwd()
-    )
+    mesh = _resolve_mesh("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read_mesh(file_name=mesh)
     say("Mesh loaded; the live Fluent session is on the right.")
     pause(auto)
@@ -474,9 +495,7 @@ def demo2_divergence(auto: bool) -> None:
     )
     try:
         attach_journal_logging(solver)
-        mesh = examples.download_file(
-            "solid.msh", "pyfluent/solidification", save_path=os.getcwd()
-        )
+        mesh = _resolve_mesh("solid.msh", "pyfluent/solidification")
         solver.settings.file.read_mesh(file_name=mesh)
         gen = solver.settings.setup.general
         gen.solver.two_dim_space = "swirl"
@@ -681,9 +700,7 @@ def run_failover_chapter(auto: bool) -> None:
         say(f"pool size: {pool.size}  (1 active + {pool.size - 1} warm standby)")
         attach_journal_logging(active)
 
-        mesh = examples.download_file(
-            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", save_path=os.getcwd()
-        )
+        mesh = _resolve_mesh("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
         active.settings.file.read_mesh(file_name=mesh)
         active.settings.solution.initialization.hybrid_initialize()
 
