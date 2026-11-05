@@ -11,7 +11,7 @@ User guide
    config_variables
    session/session_contents
    solver_settings/solver_settings_contents
-   meshing/meshing_contents
+   meshing
    fields/fields_contents
    events
    monitors

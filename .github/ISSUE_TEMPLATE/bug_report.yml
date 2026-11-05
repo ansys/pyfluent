@@ -92,8 +92,6 @@ body:
         - "3.14"
         - "3.13"
         - "3.12"
-        - "3.11"
-        - "3.10"
         - "Other / not listed"
     validations:
       required: true
