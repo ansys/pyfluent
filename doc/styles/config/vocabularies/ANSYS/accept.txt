@@ -2,7 +2,9 @@
 (?i)gRPC
 (?i)PyAnsys
 [Bb]oolean
+[Ff]ailover
 [Ff]luent
+[Jj]ournaled
 [Jj]ournaling
 [Mm]atplotlib
 [Pp]athlines

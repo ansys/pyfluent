@@ -308,6 +308,8 @@ _EXPECTED_LAUNCH_FLUENT_PARAMS = [
     "use_podman_compose",
     "certificates_folder",
     "insecure_mode",
+    "resilient_mode",
+    "resilient_config",
 ]
 
 
