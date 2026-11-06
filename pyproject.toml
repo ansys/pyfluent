@@ -290,14 +290,18 @@ baselineFile = ".ci/basedpyright.json"
 # report-only mode in CI during Phase 0 and become blocking in the hardening
 # phase. See doc/source/contributing/componentization.rst.
 [tool.importlinter]
-root_packages = ["ansys.fluent.core", "ansys.framework"]
+# ``ansys.api.fluent`` is an external, namespaced (``ansys.*``) package. It is
+# listed as a root package so the forbidden contract below can name it directly;
+# import-linter does not allow referencing subpackages of squashed external
+# packages (the shared ``ansys`` namespace).
+root_packages = ["ansys.fluent.core", "ansys.framework", "ansys.api.fluent"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
 name = "Platform layer is backend-agnostic (ansys.framework must not import grpc / ansys.api / ansys.fluent)"
 type = "forbidden"
 source_modules = ["ansys.framework"]
-forbidden_modules = ["grpc", "ansys.api", "ansys.fluent"]
+forbidden_modules = ["grpc", "ansys.api.fluent", "ansys.fluent.core"]
 
 [[tool.importlinter.contracts]]
 name = "Service contracts must not depend on the object framework (flobject)"
