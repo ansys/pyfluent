@@ -72,6 +72,7 @@ from typing import (
     NewType,
     NoReturn,
     TextIO,
+    TypeAliasType,
     TypeVar,
     Union,
     _eval_type,
@@ -309,17 +310,26 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = dict[str, Any]  # avoid forward-ref; runtime uses Any
-ListStateType = list[Any]  # avoid forward-ref; runtime uses Any
-StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
+type DictStateType = dict[str, StateType]
+type ListStateType = list[StateType]
+type StateType = PrimitiveStateType | ListStateType | DictStateType
+"""Recursive type alias for state values in Fluent object hierarchies.
+
+Includes primitives (bool, int, float, str), lists of primitives,
+and recursive dicts/lists for nested state structures. Both static
+type checkers and beartype see this same recursive definition.
+"""
 
 
 def check_type(val: Any, tp: Any) -> bool:
-    """Check type of object."""
-    from typing import Any as TypingAny
+    """Check type of object.
 
-    if tp is TypingAny:
-        return True
+    Handles PEP 695 TypeAliasType and validates values against recursive type definitions.
+    """
+    # Handle TypeAliasType (PEP 695 `type` statements)
+    if isinstance(tp, TypeAliasType):
+        return check_type(val, tp.__value__)
+
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
     if isinstance(tp, str):
