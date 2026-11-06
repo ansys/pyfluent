@@ -86,7 +86,7 @@ class AbstractObjectModel(ABC):
         rules: str,
         path: str,
         dict_state: dict[str, ValueT],
-        recursive=False,
+        recursive: bool = False,
     ) -> None:
         """Update the dict."""
         pass
