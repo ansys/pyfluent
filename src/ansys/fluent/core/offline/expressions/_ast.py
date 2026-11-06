@@ -22,7 +22,10 @@ from enum import Enum
 from typing import Sequence
 
 from ansys.fluent.core._variable_strategies import FluentExprNamingStrategy
-from ansys.units.variable_descriptor import VariableDescriptor
+from ansys.units.variable_descriptor import (
+    VariableDescriptor,
+    VectorVariableDescriptor,
+)
 
 from .errors import ExpressionBuildError
 
@@ -62,6 +65,36 @@ class Expr:
 
     def __repr__(self) -> str:
         return f"<{type(self).__name__} {self.__fluent_expr__()!r}>"
+
+    # -- settings-layer protocol ------------------------------------------- #
+    #   The generic PyFluent settings layer (``flobject``) consumes expression
+    #   objects through these domain-neutral dunder methods and never
+    #   references anything Fluent-specific.  ``__fluent_expr__`` remains the
+    #   package-internal renderer; ``__settings_str__`` simply forwards to it.
+    def __settings_str__(self) -> str:
+        """Render this node to the string a settings leaf stores."""
+        return self.__fluent_expr__()
+
+    def __settings_kind__(self) -> str | None:
+        """Return the neutral structural-kind tag (e.g. ``"scalar"``).
+
+        The value mirrors :class:`Kind` (``scalar``, ``vector``, ``boolean``,
+        ``quantity``, ``location_list``) so the settings layer can reject
+        structurally incompatible assignments without importing this package.
+        Returns ``None`` when the kind is unknown.
+        """
+        kind = getattr(self, "kind", None)
+        return kind.value if isinstance(kind, Kind) else None
+
+    def __settings_dimensions__(self) -> dict[str, float] | None:
+        """Return physical dimensions as ``{base_dimension_name: exponent}``.
+
+        Dimensions are only known for leaf nodes that carry units or a
+        :class:`~ansys.units.VariableDescriptor` (see :class:`Quantity` and
+        :class:`Variable`).  Composite nodes return ``None`` so the settings
+        layer skips the dimensional check for them.
+        """
+        return None
 
     # -- operator overloading (scalar arithmetic) -------------------------- #
     #   These live on the base so that any subclass whose kind is compatible
@@ -169,6 +202,23 @@ class Quantity(Expr):
     def __fluent_expr__(self) -> str:
         return f"{self.value} [{self.units}]"
 
+    def __settings_dimensions__(self) -> dict[str, float] | None:
+        """Derive physical dimensions from the literal units string.
+
+        Uses ``ansys.units`` to turn the units into base-dimension exponents.
+        Any failure (e.g. an unconfigured unit) yields ``None`` so the settings
+        layer simply skips the dimensional check rather than blocking the user.
+        """
+        try:
+            import ansys.units
+
+            dims = ansys.units.Quantity(self.value, self.units).dimensions
+            return {
+                getattr(k, "name", str(k)): float(v) for k, v in dict(dims).items() if v
+            }
+        except Exception:
+            return None
+
 
 @dataclass(frozen=True, eq=False)
 class Variable(ScalarExpr):
@@ -201,6 +251,45 @@ class Variable(ScalarExpr):
 
     def __fluent_expr__(self) -> str:
         return self._fluent_name  # type: ignore[attr-defined]
+
+    def __settings_kind__(self) -> str | None:
+        """Report the structural kind, distinguishing vector descriptors.
+
+        :class:`Variable` inherits ``kind = Kind.SCALAR`` from
+        :class:`ScalarExpr` so the builder treats every catalog entry as a
+        scalar operand. Vector catalog entries (e.g. ``V.VELOCITY``) are backed
+        by a :class:`VectorVariableDescriptor`, so override the neutral
+        settings-layer tag to ``"vector"`` for them; this lets the settings
+        layer reject vector-to-scalar assignments without altering the
+        builder's ``kind`` behavior.
+        """
+        if isinstance(self.descriptor, VectorVariableDescriptor):
+            return Kind.VECTOR.value
+        return super().__settings_kind__()
+
+    def __settings_dimensions__(self) -> dict[str, float] | None:
+        """Expose the descriptor's physical dimensions, when available.
+
+        ``VariableDescriptor.dimension`` maps :class:`~ansys.units.BaseDimensions`
+        enum members to exponents (e.g. ``{BaseDimensions.MASS: 1.0,
+        BaseDimensions.LENGTH: -1.0, BaseDimensions.TIME: -2.0}`` for a
+        pressure). Keys are normalized to their ``.name`` (``"MASS"``,
+        ``"LENGTH"``, ``"TIME"``) so they match ``Quantity.__settings_dimensions__``
+        and the settings layer's own normalization. Returns ``None`` when the
+        descriptor carries no usable dimension so the settings layer skips the
+        dimensional check.
+        """
+        try:
+            dimension = getattr(self.descriptor, "dimension", None)
+            if not dimension:
+                return None
+            return {
+                getattr(k, "name", str(k)): float(v)
+                for k, v in dict(dimension).items()
+                if v
+            }
+        except Exception:
+            return None
 
 
 @dataclass(frozen=True, eq=False)

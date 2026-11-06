@@ -418,24 +418,24 @@ def evaluate_expression(x, env=global_env):
         elif not isa(x, list):  # constant literal
             return x
         elif x[0] is _quote:  # (quote exp)
-            (_, exp) = x
+            _, exp = x
             return exp
         elif x[0] is _if:  # (if test conseq alt)
-            (_, test, conseq, alt) = x
+            _, test, conseq, alt = x
             x = conseq if evaluate_expression(test, env) else alt
         elif x[0] is _set:  # (set! var exp)
-            (_, var, exp) = x
+            _, var, exp = x
             env.find(var)[var] = evaluate_expression(exp, env)
             return None
         elif x[0] is _define:  # (define var exp)
             if len(x) == 3:
-                (_, var, exp) = x
+                _, var, exp = x
                 env[var] = evaluate_expression(exp, env)
             else:
                 env[x[1]] = None
             return None
         elif x[0] is _lambda:  # (lambda (var*) exp)
-            (_, vars, exp) = x
+            _, vars, exp = x
             return Procedure(vars, exp, env)
         elif x[0] is _begin:  # (begin exp+)
             for exp in x[1:-1]:
@@ -568,9 +568,7 @@ def let(*args):
 
 macro_table = {_let: let}  ## More macros can go here
 
-evaluate_expression(
-    parse(
-        """(begin
+evaluate_expression(parse("""(begin
 
 (define-macro and (lambda args
    (if (null? args) #t
@@ -579,9 +577,7 @@ evaluate_expression(
 
 ;; More macros can also go here
 
-)"""
-    )
-)
+)"""))
 
 if __name__ == "__main__":
     repl()

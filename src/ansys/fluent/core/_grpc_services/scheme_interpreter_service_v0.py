@@ -23,7 +23,6 @@
 
 """Wrapper over the scheme interpreter gRPC service of Fluent (v0 proto API)."""
 
-
 from typing import Any, Sequence
 
 from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc

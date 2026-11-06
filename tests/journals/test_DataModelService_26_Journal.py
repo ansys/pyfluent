@@ -23,7 +23,6 @@
 
 "Test DataModelService_26 through journal."
 
-
 import PyStateEngine as se
 
 
