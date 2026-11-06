@@ -29,6 +29,7 @@ interfaces: solver settings objects.
 
 This is a legacy Fluent API and its use is not recommended.
 """
+
 from enum import Enum
 from typing import Any
 
