@@ -28,7 +28,6 @@ This module centralizes reusable typing constructs
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 import os
 from typing import TYPE_CHECKING, Literal, TypeAlias, TypedDict
 
@@ -47,12 +46,6 @@ if TYPE_CHECKING:
 
 PathType: TypeAlias = os.PathLike[str] | str
 """Type alias for file system paths."""
-
-if TYPE_CHECKING:
-    ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
-else:
-    # Runtime checkers cannot resolve recursive aliases, so use the shallow form.
-    ValueT = None | bool | int | float | str | Sequence | dict
 
 
 class LauncherArgsBase(TypedDict, total=False):

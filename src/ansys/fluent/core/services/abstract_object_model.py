@@ -26,19 +26,17 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from ansys.fluent.core._types import ValueT
-
 
 class AbstractObjectModel(ABC):
     """Abstract base class for the object model."""
 
     @abstractmethod
-    def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
+    def get_attribute_value(self, rules: str, path: str, attribute: str) -> Any:
         """Get attribute value."""
         pass
 
     @abstractmethod
-    def get_state(self, rules: str, path: str) -> ValueT:
+    def get_state(self, rules: str, path: str) -> Any:
         """Get state."""
         pass
 
@@ -70,7 +68,7 @@ class AbstractObjectModel(ABC):
         pass
 
     @abstractmethod
-    def set_state(self, rules: str, path: str, state: ValueT) -> None:
+    def set_state(self, rules: str, path: str, state: Any) -> None:
         """Set state."""
         pass
 
@@ -84,7 +82,7 @@ class AbstractObjectModel(ABC):
         self,
         rules: str,
         path: str,
-        dict_state: dict[str, ValueT],
+        dict_state: dict[str, Any],
         recursive=False,
     ) -> None:
         """Update the dict."""
@@ -97,15 +95,15 @@ class AbstractObjectModel(ABC):
 
     @abstractmethod
     def execute_command(
-        self, rules: str, path: str, command: str, args: dict[str, ValueT]
-    ) -> ValueT:
+        self, rules: str, path: str, command: str, args: dict[str, Any]
+    ) -> Any:
         """Execute the command."""
         pass
 
     @abstractmethod
     def execute_query(
-        self, rules: str, path: str, query: str, args: dict[str, ValueT]
-    ) -> ValueT:
+        self, rules: str, path: str, query: str, args: dict[str, Any]
+    ) -> Any:
         """Execute the query."""
         pass
 

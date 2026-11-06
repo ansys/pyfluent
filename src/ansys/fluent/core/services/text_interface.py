@@ -39,7 +39,6 @@ from typing import Any
 
 from ansys.fluent.core.services.abstract_text_interface import AbstractTextInterface
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
-from ansys.fluent.core.services.object_model import ValueT
 
 Path = list[str]
 
@@ -62,7 +61,7 @@ class TextInterface(AbstractTextInterface):
 
     def get_attribute_value(
         self, path: str, attribute: str, include_unavailable: bool
-    ) -> ValueT:
+    ) -> Any:
         """Get attribute value at a path.
 
         Parameters
@@ -76,12 +75,12 @@ class TextInterface(AbstractTextInterface):
 
         Returns
         -------
-        ValueT
+        Any
             Attribute value (any Python datatype)
         """
         return self.service.get_attribute_value(path, attribute, include_unavailable)
 
-    def execute_command(self, path: str, *args, **kwargs) -> ValueT:
+    def execute_command(self, path: str, *args, **kwargs) -> Any:
         """Execute a command at a path with positional or keyword arguments.
 
         Parameters
@@ -95,12 +94,12 @@ class TextInterface(AbstractTextInterface):
 
         Returns
         -------
-        ValueT
+        Any
             Command result (any Python datatype)
         """
         return self.service.execute_command(path, *args, **kwargs)
 
-    def execute_query(self, path: str, *args, **kwargs) -> ValueT:
+    def execute_query(self, path: str, *args, **kwargs) -> Any:
         """Execute a query at a path with positional or keyword arguments.
 
         Parameters
@@ -114,7 +113,7 @@ class TextInterface(AbstractTextInterface):
 
         Returns
         -------
-        ValueT
+        Any
             Query result (any Python datatype)
         """
         return self.service.execute_query(path, *args, **kwargs)
@@ -209,7 +208,7 @@ class PyMenu:
         """
         return self._service.get_child_names(self._path, include_unavailable)
 
-    def execute(self, *args, **kwargs) -> ValueT:
+    def execute(self, *args, **kwargs) -> Any:
         """Execute a command or query at a path with positional or keyword arguments.
 
         Parameters
@@ -221,7 +220,7 @@ class PyMenu:
 
         Returns
         -------
-        ValueT
+        Any
             Query result (any Python datatype)
         """
         with ApiUpgradeAdvisor(
@@ -358,7 +357,7 @@ class TUIMenu:
 class TUICommand(TUIMenu):
     """Generic command class for when the explicit menu classes aren't available."""
 
-    def __call__(self, *args, **kwargs) -> ValueT:
+    def __call__(self, *args, **kwargs) -> Any:
         return PyMenu(self._service, self._version, self._mode, self._path).execute(
             *args, **kwargs
         )
