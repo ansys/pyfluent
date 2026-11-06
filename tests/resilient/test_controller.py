@@ -29,6 +29,7 @@ from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession, service_of
 import pytest
 
 from ansys.fluent.core.resilient.engine import (
+    ActivationCandidate,
     CheckpointConfig,
     CheckpointError,
     EventKind,
@@ -40,6 +41,7 @@ from ansys.fluent.core.resilient.engine import (
     ResilientFailoverWarning,
     ResilientRecoveryWarning,
     ResilientSession,
+    ResilientWarning,
     disable_resilient_mode,
     enable_resilient_mode,
     is_resilient,
@@ -187,6 +189,38 @@ def test_inactive_target_is_activated_when_allowed():
     assert [e.kind for e in events] == [EventKind.ACTIVATED]
 
 
+def test_configured_activation_candidates_extend_the_built_in_ones():
+    # The adapter knows no governing model; the user's candidate is tried.
+    session, events = _enable(
+        adapter=FakeAdapter(),
+        allow_model_activation=True,
+        recovery="silent",
+        activation_candidates=(ActivationCandidate("setup.energy", True),),
+    )
+    _set(session, "setup.temperature", 350.0)
+    assert session.settings.setup.energy.value is True
+    assert session.resilient.last_outcome.activated == ["setup.energy"]
+    assert [e.kind for e in events] == [EventKind.ACTIVATED]
+
+
+def test_activation_candidate_that_does_not_activate_is_reverted():
+    session, _ = _enable(
+        adapter=FakeAdapter(),
+        allow_model_activation=True,
+        recovery="silent",
+        activation_candidates=(ActivationCandidate("setup.radiation", True),),
+    )
+    with pytest.raises(RuntimeError, match="not allowed"):
+        _set(session, "setup.temperature", 350.0)
+    assert session.settings.setup.radiation.value is False
+    assert session.settings.setup.energy.value is False
+
+
+def test_activation_candidates_must_be_typed():
+    with pytest.raises(TypeError, match="ActivationCandidate"):
+        ResilientConfig(activation_candidates=[("setup.energy", True)])
+
+
 def test_failed_repair_raises_the_original_error():
     session, _ = _enable(allow_model_activation=True, recovery="silent")
 
@@ -254,6 +288,18 @@ def test_no_automatic_checkpoint_without_a_case(tmp_path):
     assert session.resilient.checkpoints == []
     with pytest.raises(CheckpointError, match="nothing to checkpoint"):
         session.resilient.checkpoint("manual")
+
+
+def test_failed_automatic_checkpoint_is_reported_and_the_command_runs(tmp_path):
+    class _FullDisk(FakeAdapter):
+        def write_checkpoint(self, session, file_path, *, include_data):
+            raise OSError("No space left on device")
+
+    session, _ = _enable(tmp_path=tmp_path, adapter=_FullDisk(), recovery="silent")
+    _with_iterate(session)
+    with pytest.warns(ResilientWarning, match="cannot be rolled back"):
+        assert session._settings_service.execute_cmd("", "iterate", iter_count=2) == 2
+    assert session.resilient.checkpoints == []
 
 
 def test_clean_stop_of_a_solve_command_is_not_an_error(tmp_path):

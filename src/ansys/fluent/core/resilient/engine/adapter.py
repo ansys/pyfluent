@@ -78,7 +78,7 @@ class ResilientAdapter(abc.ABC):
     #: Dotted prefixes a user may prepend to a settings path.
     path_prefixes: tuple[str, ...] = ("settings.",)
     #: Attribute holding the server-side name of a settings object.
-    scheme_name_attr: str = "obj_name"
+    server_name_attr: str = "obj_name"
     #: Command names that cannot be undone by setting values (a checkpoint is
     #: written before them when ``auto_checkpoint`` is enabled).
     irreversible_commands: frozenset[str] = frozenset()
@@ -129,6 +129,14 @@ class ResilientAdapter(abc.ABC):
     def error_classes(self) -> ErrorClasses:
         """Return the exception classes the product raises for settings errors."""
         return ErrorClasses()
+
+    def is_interrupt(self, err: BaseException) -> bool:
+        """Return whether ``err`` is the product's clean stop of a command.
+
+        Only consulted for :attr:`interruptible_commands`. The default is
+        ``False``.
+        """
+        return False
 
     # -- session lifecycle ---------------------------------------------------
 

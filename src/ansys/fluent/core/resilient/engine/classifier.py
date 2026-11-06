@@ -24,8 +24,8 @@
 
 The order of checks is:
 
-1. the clean-stop sentinel ``RuntimeError("()")`` of an interruptible command is
-   benign;
+1. the product's clean stop of an interruptible command
+   (:meth:`~.adapter.ResilientAdapter.is_interrupt`) is benign;
 2. a fatal error reported by the product is catastrophic;
 3. typed product exceptions (inactive, read-only, disallowed value);
 4. message heuristics for errors the server reports as plain text;
@@ -42,9 +42,6 @@ from typing import Any
 
 from .adapter import ResilientAdapter
 from .types import Classification, ErrorCategory, Severity
-
-#: Clean-stop sentinel raised by an interrupted solve command.
-_INTERRUPT_SENTINEL = "()"
 
 _SEVERITY = {
     ErrorCategory.INACTIVE_TARGET: Severity.RECOVERABLE,
@@ -121,11 +118,7 @@ class ErrorClassifier:
             The classification of ``err``.
         """
         text = str(err)
-        if (
-            interruptible
-            and isinstance(err, RuntimeError)
-            and text.strip() == _INTERRUPT_SENTINEL
-        ):
+        if interruptible and self._adapter.is_interrupt(err):
             return make_classification(
                 ErrorCategory.BENIGN_INTERRUPT, "The command was interrupted."
             )

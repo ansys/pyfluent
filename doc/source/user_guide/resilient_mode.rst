@@ -100,6 +100,24 @@ model:
     inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     inlet.thermal.temperature.value = 293.15  # enables the energy model, then writes
 
+Activation tries governing-model settings in turn and keeps one only if it makes
+the written setting active; otherwise the change is reverted and the original
+error is raised. The built-in rule enables the energy model
+(``setup.models.energy.enabled``). Add rules for your own cases with
+``ResilientConfig.activation_candidates``; they are tried before the built-in
+rule:
+
+.. code-block:: python
+
+    from ansys.fluent.core.resilient import ActivationCandidate, ResilientConfig
+
+    config = ResilientConfig(
+        allow_model_activation=True,
+        activation_candidates=(
+            ActivationCandidate("setup.models.viscous.model", "k-omega"),
+        ),
+    )
+
 
 Checkpoints and rollback
 ------------------------
@@ -151,7 +169,10 @@ Every settings write is journaled together with the previous value:
     solver.resilient.redo()  # applies "laminar" again
 
 Undo applies to settings writes only. Commands such as ``iterate`` are reverted
-by rolling back to a checkpoint.
+by rolling back to a checkpoint. To capture the previous value, resilient mode
+reads each setting before writing it, which costs one extra server round trip
+per write. Writes to the whole settings tree are not read back and cannot be
+undone.
 
 
 Failover
@@ -188,6 +209,8 @@ Keep these limits in mind:
   reach the session that is currently serving.
 * Replay starts from the newest checkpoint. Without a checkpoint, the standby
   starts from launch state, so take a checkpoint once the case is loaded.
+* The failed call is retried once, on the standby. If the call itself crashed
+  the server, the retry fails too and its error is raised.
 * Standbys are launched automatically only for local standalone sessions. For
   container, PIM or remote sessions, pass ``PoolConfig.launch_kwargs`` or
   ``PoolConfig.launcher``.
@@ -212,6 +235,11 @@ Events are of the kinds listed in
 information is logged on the ``ansys.resilient`` logger, and
 ``solver.resilient.journal.to_script()`` returns the journal as plain data.
 
+If resilient mode cannot do something it normally does, for example when an
+automatic checkpoint fails or a failed repair cannot be fully reverted, it emits a
+:class:`~ansys.fluent.core.resilient.ResilientWarning` whatever the recovery
+policy.
+
 
 Configuration reference
 -----------------------
@@ -228,6 +256,9 @@ Configuration reference
    * - ``allow_model_activation``
      - ``False``
      - Enable a governing model when an inactive setting is written.
+   * - ``activation_candidates``
+     - ``()``
+     - Additional governing-model settings to try before the built-in ones.
    * - ``max_resolver_attempts``
      - ``3``
      - Maximum repair attempts for a single write.

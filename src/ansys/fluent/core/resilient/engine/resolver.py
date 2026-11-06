@@ -26,7 +26,9 @@
 * not an allowed value -> snap to the closest live ``allowed_values`` entry;
 * wrong type -> convert a numeric string to a number;
 * inactive target -> enable the governing model that activates it (only when
-  model activation is allowed).
+  model activation is allowed). The candidates are the ones configured in
+  ``ResilientConfig.activation_candidates``, then the product's built-in ones.
+  A candidate is kept only if it activates the target.
 
 The resolver never guesses: if live introspection does not yield a safe repair,
 it proposes nothing and the caller re-raises the original error.
@@ -69,10 +71,12 @@ class RecoverableErrorResolver:
         session: Any,
         *,
         allow_model_activation: bool = False,
+        extra_candidates: tuple[ActivationCandidate, ...] = (),
     ):
         self._adapter = adapter
         self.session = session
         self.allow_model_activation = allow_model_activation
+        self.extra_candidates = tuple(extra_candidates)
 
     # -- helpers -------------------------------------------------------------
 
@@ -88,7 +92,7 @@ class RecoverableErrorResolver:
             self._adapter.settings_root(self.session),
             path,
             prefixes=self._adapter.path_prefixes,
-            name_attr=self._adapter.scheme_name_attr,
+            name_attr=self._adapter.server_name_attr,
         )
 
     def _try_resolve(self, path: str) -> Any:
@@ -199,8 +203,8 @@ class RecoverableErrorResolver:
     def activate(self, target: Any) -> list[ActivationCandidate]:
         """Activate an inactive settings object by enabling its governing model.
 
-        Each activation candidate of the adapter that is not already in its
-        activating state is applied in turn. A candidate is kept only if the
+        Each configured candidate, then each built-in candidate of the adapter,
+        that is not already in its activating state is applied in turn. A candidate is kept only if the
         target becomes active; otherwise it is reverted. Returns the candidates
         that were kept (empty if model activation is not allowed or nothing
         activated the target).
@@ -214,7 +218,11 @@ class RecoverableErrorResolver:
     ) -> list[ActivationCandidate]:
         if initially_resolvable and is_active(probe()) is True:
             return []
-        for candidate in self._adapter.activation_candidates(self.session):
+        candidates = (
+            *self.extra_candidates,
+            *self._adapter.activation_candidates(self.session),
+        )
+        for candidate in candidates:
             setting = self._try_resolve(candidate.path)
             if setting is None:
                 continue

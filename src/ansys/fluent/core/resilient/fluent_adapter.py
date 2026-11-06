@@ -23,9 +23,10 @@
 """Resilient-mode adapter for Fluent solver sessions.
 
 This module holds every Fluent-specific detail used by resilient mode: the
-session's error state and health check, Fluent's settings exceptions, case and
-data files as checkpoints, ``launch_fluent`` for standby sessions, and the
-energy model as the governing model of inactive thermal settings.
+session's error state and health check, Fluent's settings exceptions, the clean
+stop of an interrupted solve, case and data files as checkpoints,
+``launch_fluent`` for standby sessions, and the energy model as the built-in
+governing model of inactive thermal settings.
 """
 
 from __future__ import annotations
@@ -38,6 +39,7 @@ from ansys.fluent.core.diagnostics.exceptions import (
     DisallowedValuesError,
     InvalidArgument,
 )
+from ansys.fluent.core.execution.launcher.launch_options import UIMode
 from ansys.fluent.core.resilient.engine import (
     ActivationCandidate,
     ErrorClasses,
@@ -67,7 +69,7 @@ class FluentAdapter(ResilientAdapter):
 
     product_name = "Fluent"
     path_prefixes = ("solver.settings.", "settings.")
-    scheme_name_attr = "fluent_name"
+    server_name_attr = "fluent_name"
     irreversible_commands = frozenset(
         {
             "iterate",
@@ -127,6 +129,14 @@ class FluentAdapter(ResilientAdapter):
             invalid_arg=InvalidArgument,
         )
 
+    def is_interrupt(self, err: BaseException) -> bool:
+        """Return whether ``err`` is the clean stop of an interrupted solve.
+
+        Fluent ends an interrupted ``iterate`` or ``calculate`` with
+        ``RuntimeError("()")``.
+        """
+        return isinstance(err, RuntimeError) and str(err).strip() == "()"
+
     # -- session lifecycle -----------------------------------------------------------
 
     def launch(self, **kwargs: Any) -> Any:
@@ -154,6 +164,10 @@ class FluentAdapter(ResilientAdapter):
             for key, value in args.items()
             if key in accepted and key not in _NOT_FORWARDED
         }
+        # The recorded arguments include the graphics driver the launcher resolved,
+        # which only applies to graphical modes; the launcher warns otherwise.
+        if UIMode(args.get("ui_mode")) not in (UIMode.GUI, UIMode.HIDDEN_GUI):
+            kwargs.pop("graphics_driver", None)
         return functools.partial(launch_fluent, **kwargs)
 
     def register_exit_callback(
@@ -237,5 +251,9 @@ class FluentAdapter(ResilientAdapter):
     # -- recovery knowledge ------------------------------------------------------------
 
     def activation_candidates(self, session: Any) -> tuple[ActivationCandidate, ...]:
-        """Return the energy model, which activates thermal settings."""
+        """Return the built-in governing models: the energy model.
+
+        Enabling the energy model activates thermal settings. Users add their own
+        candidates with ``ResilientConfig.activation_candidates``.
+        """
         return (ActivationCandidate("setup.models.energy.enabled", True),)

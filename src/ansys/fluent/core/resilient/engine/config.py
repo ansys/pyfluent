@@ -29,6 +29,8 @@ import enum
 import os
 from typing import Any, Callable
 
+from .types import ActivationCandidate
+
 
 class RecoveryPolicy(str, enum.Enum):
     """What resilient mode may do when the server rejects a value."""
@@ -111,6 +113,11 @@ class ResilientConfig:
         Whether resilient mode may enable a governing model (for example the
         energy model) so that a write to an inactive setting succeeds. This changes
         the physics of the case, so it is disabled by default.
+    activation_candidates : sequence of ActivationCandidate, optional
+        Governing-model settings to try, before the product's built-in ones, when
+        an inactive setting is written and ``allow_model_activation`` is
+        ``True``. A candidate is kept only if it activates the setting; otherwise
+        it is reverted. The default is no additional candidates.
     max_resolver_attempts : int, optional
         Maximum number of repair attempts for one write. The default is ``3``.
     auto_checkpoint : bool, optional
@@ -131,6 +138,7 @@ class ResilientConfig:
 
     recovery: RecoveryPolicy | str = RecoveryPolicy.WARN
     allow_model_activation: bool = False
+    activation_candidates: tuple[ActivationCandidate, ...] = ()
     max_resolver_attempts: int = 3
     auto_checkpoint: bool = True
     auto_rollback: bool = True
@@ -146,6 +154,14 @@ class ResilientConfig:
             raise ValueError(
                 f"Invalid recovery policy {self.recovery!r}; use one of {allowed}."
             ) from err
+        self.activation_candidates = tuple(self.activation_candidates)
+        for candidate in self.activation_candidates:
+            if not isinstance(candidate, ActivationCandidate):
+                raise TypeError(
+                    "activation_candidates must contain ActivationCandidate "
+                    f"objects, for example ActivationCandidate(path, value); got "
+                    f"{candidate!r}."
+                )
         if self.max_resolver_attempts < 0:
             raise ValueError("max_resolver_attempts must not be negative.")
         if self.journal_max_ops < 1:

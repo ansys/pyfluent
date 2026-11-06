@@ -306,6 +306,9 @@ class FakeAdapter(ResilientAdapter):
     def is_server_healthy(self, session):
         return session.serving
 
+    def is_interrupt(self, err):
+        return isinstance(err, RuntimeError) and str(err).strip() == "()"
+
     def launch(self, **kwargs):
         session = self.factory(**kwargs)
         self.launched.append(session)

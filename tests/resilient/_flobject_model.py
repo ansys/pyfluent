@@ -346,7 +346,7 @@ class ModelAdapter(ResilientAdapter):
     """Adapter for :class:`ModelSession`."""
 
     product_name = "Model"
-    scheme_name_attr = "fluent_name"
+    server_name_attr = "fluent_name"
     irreversible_commands = frozenset({"iterate", "read_case"})
     interruptible_commands = frozenset({"iterate"})
     non_replayable_prefixes = ("write",)

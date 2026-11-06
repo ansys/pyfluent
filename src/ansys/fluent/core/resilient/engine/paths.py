@@ -126,14 +126,14 @@ def resolve(root: Any, path: str, prefixes: tuple[str, ...] = ()) -> Any:
     return obj
 
 
-def _scheme_name(obj: Any, name_attr: str) -> Any:
+def _server_name(obj: Any, name_attr: str) -> Any:
     try:
         return getattr(obj, name_attr, None)
     except Exception:  # noqa: BLE001
         return None
 
 
-def _child_by_scheme_name(obj: Any, segment: str, name_attr: str) -> Any:
+def _child_by_server_name(obj: Any, segment: str, name_attr: str) -> Any:
     """Find the child of ``obj`` whose server-side name is ``segment``."""
     for py_name in list(getattr(obj, "child_names", None) or []) + list(
         getattr(obj, "command_names", None) or []
@@ -143,7 +143,7 @@ def _child_by_scheme_name(obj: Any, segment: str, name_attr: str) -> Any:
         except Exception:  # noqa: BLE001  # nosec B112
             # An inactive sibling can raise on access; it is not this segment.
             continue
-        if _scheme_name(child, name_attr) == segment:
+        if _server_name(child, name_attr) == segment:
             return child
     for guess in (segment.replace("-", "_"), segment.replace("-", "_").lower()):
         try:
@@ -158,7 +158,7 @@ def _child_by_scheme_name(obj: Any, segment: str, name_attr: str) -> Any:
         raise PathResolutionError(f"Cannot map segment {segment!r}.") from err
 
 
-def resolve_scheme_path(root: Any, path: str, name_attr: str) -> Any:
+def resolve_server_path(root: Any, path: str, name_attr: str) -> Any:
     """Resolve a slash-separated server path against a settings root.
 
     Raises
@@ -171,7 +171,7 @@ def resolve_scheme_path(root: Any, path: str, name_attr: str) -> Any:
     for segment in (s for s in path.replace("\\", "/").split("/") if s):
         walked.append(segment)
         try:
-            obj = _child_by_scheme_name(obj, segment, name_attr)
+            obj = _child_by_server_name(obj, segment, name_attr)
         except PathResolutionError as err:
             raise PathResolutionError(
                 f"Cannot resolve {'/'.join(walked)!r}: {err}"
@@ -190,10 +190,10 @@ def resolve_any(
         If the path cannot be resolved in either form.
     """
     if "/" in path or ("." not in path and "-" in path):
-        return resolve_scheme_path(root, path, name_attr)
+        return resolve_server_path(root, path, name_attr)
     try:
         return resolve(root, path, prefixes)
     except PathResolutionError:
         if "." not in path:
-            return resolve_scheme_path(root, path, name_attr)
+            return resolve_server_path(root, path, name_attr)
         raise

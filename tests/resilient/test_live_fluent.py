@@ -22,7 +22,9 @@
 
 """Resilient mode against a live Fluent solver (standalone only)."""
 
+import contextlib
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -30,7 +32,9 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.resilient import (
     CheckpointConfig,
     EventKind,
+    PoolConfig,
     ResilientConfig,
+    ResilientFailoverWarning,
     ResilientRecoveryWarning,
     enable_resilient_mode,
 )
@@ -107,3 +111,33 @@ def test_checkpoint_rollback_and_automatic_checkpoint(resilient_elbow):
     assert solver.resilient.checkpoints[-1].name == "auto-iterate"
     solver.resilient.rollback("initialized")
     assert [c.name for c in solver.resilient.checkpoints] == ["initialized"]
+
+
+def test_failover_after_the_fluent_process_is_killed(new_solver_session, tmp_path):
+    solver = new_solver_session
+    case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read_case(file_name=case)
+    # The standby is launched with the same arguments as the active session.
+    enable_resilient_mode(
+        solver,
+        ResilientConfig(
+            checkpoint=CheckpointConfig(directory=tmp_path),
+            pool=PoolConfig(size=2),
+        ),
+    )
+    events = []
+    solver.resilient.on_event(events.append)
+    solver.resilient.checkpoint("before-crash")
+    velocity = _cold_inlet(solver).momentum.velocity_magnitude
+    velocity.value = 0.5
+    # On Windows, Fluent's cleanup script can report a failure even though it
+    # killed Fluent.
+    with contextlib.suppress(subprocess.CalledProcessError):
+        solver.force_exit()
+    with pytest.warns(ResilientFailoverWarning):
+        _cold_inlet(solver).turbulence.turbulent_intensity = 0.1
+    assert solver.resilient.active_session is not solver
+    assert EventKind.FAILOVER in [e.kind for e in events]
+    # The write made after the checkpoint was replayed onto the standby.
+    assert velocity.value() == pytest.approx(0.5)
+    assert _cold_inlet(solver).turbulence.turbulent_intensity() == pytest.approx(0.1)

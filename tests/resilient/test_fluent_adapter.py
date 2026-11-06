@@ -136,6 +136,19 @@ def test_standby_launcher_repeats_a_local_launch():
 
 
 @pytest.mark.parametrize(
+    "ui_mode, forwarded",
+    [("no_gui", False), ("no_gui_or_graphics", False), ("gui", True)],
+)
+def test_graphics_driver_is_forwarded_only_for_graphical_modes(ui_mode, forwarded):
+    # The launcher records the driver it resolved and warns if it is passed back
+    # for a mode without graphics.
+    args = {"mode": "solver", "ui_mode": ui_mode, "graphics_driver": "null"}
+    launcher = FluentAdapter().standby_launcher(_session(_launcher_args=args))
+    assert ("graphics_driver" in launcher.keywords) is forwarded
+    assert launcher.keywords["ui_mode"] == ui_mode
+
+
+@pytest.mark.parametrize(
     "attributes",
     [
         {"_launcher_args": None},
@@ -196,6 +209,13 @@ def test_enable_resilient_mode_rejects_non_solver_sessions():
     with pytest.raises(ResilientError, match="solver sessions only"):
         enable_resilient_mode(meshing)
     assert not hasattr(meshing, "resilient")
+
+
+def test_only_fluent_clean_stop_is_an_interrupt():
+    adapter = FluentAdapter()
+    assert adapter.is_interrupt(RuntimeError("()"))
+    assert not adapter.is_interrupt(RuntimeError("Divergence detected"))
+    assert not adapter.is_interrupt(ValueError("()"))
 
 
 @pytest.mark.parametrize("function", [launch_fluent, connect_to_fluent])

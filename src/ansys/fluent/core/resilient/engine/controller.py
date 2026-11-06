@@ -43,6 +43,7 @@ from .exceptions import (
     FailoverError,
     ResilientFailoverWarning,
     ResilientRecoveryWarning,
+    ResilientWarning,
 )
 from .interceptor import InactiveTargetProxy, ResilientSettingsService
 from .journal import CommandOp, Journal, ObjectOp, SetOp
@@ -76,6 +77,15 @@ def _summary(text: str, limit: int = 120) -> str:
     lines = str(text).strip().splitlines()
     line = lines[0] if lines else ""
     return line if len(line) <= limit else line[: limit - 3].rstrip() + "..."
+
+
+def _warn_degraded(message: str) -> None:
+    """Report that resilient mode could not do what it normally does.
+
+    Emitted whatever the recovery policy, because the user may rely on it.
+    """
+    logger.warning(message)
+    warnings.warn(message, ResilientWarning, stacklevel=4)
 
 
 def _navigate(obj: Any, chain: tuple[tuple[str, Any], ...]) -> Any:
@@ -131,12 +141,15 @@ class ResilientController:
                 config.allow_model_activation
                 and config.recovery is not RecoveryPolicy.STRICT
             ),
+            extra_candidates=config.activation_candidates,
         )
         self._journal_complete = journal_complete
         self._listeners: list[Callable[[ResilientEvent], None]] = []
         self._thread_state = threading.local()
         self._bound_sessions: list[Any] = []
         self._retiring: set[int] = set()
+        #: Retired sessions, kept alive so that their ids cannot be reused.
+        self._retired: list[Any] = []
         self._failover_lock = threading.RLock()
         #: The session object the user enabled resilient mode on.
         self._origin = session
@@ -189,6 +202,7 @@ class ResilientController:
 
     def _retire(self, session: Any) -> None:
         self._retiring.add(id(session))
+        self._retired.append(session)
 
     # -- events ------------------------------------------------------------------
 
@@ -362,7 +376,10 @@ class ResilientController:
                     try:
                         self._inner.set_var(op.path, op.old_value)
                     except Exception as err:  # noqa: BLE001
-                        logger.warning("Could not revert %s: %s", op.describe(), err)
+                        _warn_degraded(
+                            f"Resilient mode could not revert {op.describe()} after "
+                            f"a failed repair: {_summary(err)}"
+                        )
         self.journal.truncate(mark)
 
     def _announce_recovery(
@@ -715,7 +732,10 @@ class ResilientController:
             with self._in_mode(_UNTRACKED):
                 possible = self.adapter.can_checkpoint(self.session)
         except Exception as err:  # noqa: BLE001
-            logger.warning("No automatic checkpoint before %s: %s", full, err)
+            _warn_degraded(
+                f"No automatic checkpoint before {full}; it cannot be rolled back if "
+                f"it fails: {_summary(err)}"
+            )
             return None
         if not possible:
             logger.debug(
@@ -726,10 +746,9 @@ class ResilientController:
         try:
             checkpoint = self._write_checkpoint(name, reason=f"before {full}")
         except Exception as err:  # noqa: BLE001
-            logger.warning(
-                "The automatic checkpoint before %s failed; continuing without it: %s",
-                full,
-                err,
+            _warn_degraded(
+                f"The automatic checkpoint before {full} failed; it cannot be rolled "
+                f"back if it fails: {_summary(err)}"
             )
             return None
         return checkpoint

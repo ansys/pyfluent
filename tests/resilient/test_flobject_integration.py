@@ -36,6 +36,7 @@ from ansys.fluent.core.resilient.engine import (
     ResilientConfig,
     ResilientFailoverWarning,
     ResilientRecoveryWarning,
+    ResilientWarning,
     enable_resilient_mode,
 )
 from ansys.fluent.core.resilient.engine.interceptor import InactiveTargetProxy
@@ -127,6 +128,21 @@ def test_failed_deferred_write_reverts_the_activation(tmp_path):
     assert session.settings.setup.models.energy.enabled() is False
     assert len(session.resilient.journal) == 0
     assert events == []
+
+
+def test_revert_that_fails_is_reported_whatever_the_policy(tmp_path):
+    session, _ = _resilient(tmp_path, allow_model_activation=True, recovery="silent")
+    write = session.service.set_var
+
+    def set_var(path, value):
+        if path == "setup/models/energy/enabled" and value is False:
+            raise RuntimeError("locked")
+        write(path, value)
+
+    session.service.set_var = set_var
+    with pytest.warns(ResilientWarning, match="could not revert"):
+        with pytest.raises(RuntimeError, match="unphysical"):
+            session.settings.bc.inlet.thermal.temperature = 1e6
 
 
 def test_out_of_range_value_is_clamped_through_the_settings_tree(tmp_path):
