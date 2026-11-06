@@ -510,6 +510,14 @@ def launch_fluent(
         If True, Fluent's gRPC server will be started in insecure mode without TLS.
         This mode is not recommended. For more details on the implications
         and usage of insecure mode, refer to the Fluent documentation.
+    resilient_mode : bool, optional
+        Whether to enable resilient mode on the launched solver session. The
+        default is ``False``. Ignored when ``dry_run`` is ``True``. See
+        :ref:`ref_resilient_guide`.
+    resilient_config : ResilientConfig, optional
+        Resilient-mode configuration. Only used when ``resilient_mode`` is
+        ``True``. The default is ``None``, in which case the default configuration
+        is used.
 
     Returns
     -------

@@ -1,5 +1,7 @@
 .. _ref_resilient_guide:
 
+.. vale Google.Spacing = NO
+
 Resilient mode
 ==============
 
@@ -219,8 +221,8 @@ Keep these limits in mind:
 * Exiting ``solver`` exits all the sessions of the pool.
 
 
-Events and logging
-------------------
+Event listeners and logging
+---------------------------
 
 Register a listener to react to what resilient mode does:
 
@@ -231,7 +233,7 @@ Register a listener to react to what resilient mode does:
 
     solver.resilient.on_event(show)
 
-Events are of the kinds listed in
+Each event has one of the kinds listed in
 :class:`~ansys.fluent.core.resilient.EventKind`: ``RECOVERED``, ``ACTIVATED``,
 ``CHECKPOINT``, ``ROLLBACK``, ``UNDO``, ``REDO`` and ``FAILOVER``. The same
 information is logged on the ``ansys.resilient`` logger, and

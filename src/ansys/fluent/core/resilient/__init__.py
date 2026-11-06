@@ -88,9 +88,7 @@ from ansys.fluent.core.resilient.engine import (
 from ansys.fluent.core.resilient.engine import (
     enable_resilient_mode as _enable_resilient_mode,
 )
-from ansys.fluent.core.resilient.engine import (
-    is_resilient,
-)
+from ansys.fluent.core.resilient.engine import is_resilient
 from ansys.fluent.core.resilient.fluent_adapter import FluentAdapter
 
 
