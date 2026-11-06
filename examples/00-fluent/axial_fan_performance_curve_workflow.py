@@ -399,9 +399,10 @@ solver.settings.file.parametric_project.save()
 # ^^^^^^^^^^^^^^^^^^^^^^^
 # Export the design point table to a CSV file.
 
-solver.settings.parametric_studies.export_design_table(
-    filepath="../../../design_point_table_study.csv"
-)
+# Use an absolute path so the file location does not depend on Fluent's
+# transient working directory during the parametric update.
+csv_file_path = os.path.join(os.getcwd(), "design_point_table_study.csv")
+solver.settings.parametric_studies.export_design_table(filepath=csv_file_path)
 
 # %%
 # Plotting fan performance curve
@@ -409,8 +410,7 @@ solver.settings.parametric_studies.export_design_table(
 # Plot the computed total-to-static pressure rise versus the inlet volume flow rate.
 
 # Load the design point study results data from the CSV file
-file = "design_point_table_study.csv"
-data = np.loadtxt(file, delimiter=",", skiprows=2, usecols=range(1, 6))
+data = np.loadtxt(csv_file_path, delimiter=",", skiprows=2, usecols=range(1, 6))
 
 # Plot the results data
 plt.plot(data[:, 2], data[:, 4], "-o")

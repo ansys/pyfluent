@@ -228,11 +228,10 @@ class StandaloneLauncher:
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = kwargs.get("file_transfer_service")
+        self.argvals = self._update_default_argvals(self.argvals)
         if pyfluent.config.show_fluent_gui:
             kwargs["ui_mode"] = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
-        if self.argvals.get("lightweight_mode") is None:
-            self.argvals["lightweight_mode"] = False
 
         # case_data_file_name is not supported in meshing mode.
         if FluentMode.is_meshing(self.argvals.get("mode")) and self.argvals.get(
@@ -278,8 +277,6 @@ class StandaloneLauncher:
             self.argvals,
             server_info_file_name_for_server,
         )
-        if self.argvals.get("start_timeout") is None:
-            self.argvals["start_timeout"] = 100
         # Negative start_timeout values are treated as "no timeout".
         start_timeout = self.argvals.get("start_timeout")
         if start_timeout >= 0:
@@ -314,6 +311,18 @@ class StandaloneLauncher:
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
+
+    @staticmethod
+    def _update_default_argvals(argvals: dict) -> dict:
+        if argvals.get("cleanup_on_exit") is None:
+            argvals["cleanup_on_exit"] = True
+        if argvals.get("start_transcript") is None:
+            argvals["start_transcript"] = True
+        if argvals.get("lightweight_mode") is None:
+            argvals["lightweight_mode"] = False
+        if argvals.get("start_timeout") is None:
+            argvals["start_timeout"] = 100
+        return argvals
 
     @staticmethod
     def _construct_timeout_arg(idle_timeout_seconds: int) -> str:
@@ -411,5 +420,5 @@ class StandaloneLauncher:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(self._launch_cmd) from ex
         finally:
-            if self.argvals.get("cleanup_on_exit", True):
+            if self.argvals.get("cleanup_on_exit"):
                 Path(self._server_info_file_name).unlink(missing_ok=True)

@@ -43,6 +43,7 @@ Usage::
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 # REST API is only available from Fluent 27.1 onward.
 _DEFAULT_VERSION = "271"
@@ -87,6 +88,10 @@ class HttpSolver:
     def is_active(self) -> bool:
         """Whether the REST connection is still usable."""
         return self._rest_client is not None
+
+    def get_fluent_version(self) -> FluentVersion:
+        """Gets and returns the Fluent version of the connected REST server."""
+        return FluentVersion(self._version)
 
     def exit(self) -> None:
         """Release the REST connection.

@@ -32,17 +32,6 @@ SKIP_FILES = {
     "workflow_old",
     "workflow",
 }
-ADDITIONAL_DOCUMENTATION = {
-    "ansys.fluent.core.meshing": (
-        "Meshing workflows use the underlying meshing workflow object. See the "
-        ":ref:`meshing workflow API <ref_meshing_datamodel_meshing_workflow>` "
-        "for details.\n"
-    ),
-    "ansys.fluent.core.solver": (
-        "Solver expose an underlying hierarchical settings object. See "
-        "the :ref:`settings API <ref_root>` for details.\n"
-    ),
-}
 
 # Modules documented on standalone pages that are reachable through
 # cross-references from docstrings but kept out of the API reference toctree.
@@ -74,12 +63,6 @@ def _write_api_page(rst_file, title, directive, module_name):
     rst_file.write(f"{'=' * len(title)}\n\n")
     rst_file.write(f".. {directive}:: {module_name}\n")
     _write_common_options(rst_file)
-
-
-def _write_additional_documentation(rst_file, module_name):
-    additional_documentation = ADDITIONAL_DOCUMENTATION.get(module_name)
-    if additional_documentation:
-        rst_file.write(f"\n{additional_documentation}\n")
 
 
 def _module_name(source_path):
@@ -147,7 +130,6 @@ def _write_package_index(source_path):
 
     with output_path.open("w", encoding="utf8") as rst_file:
         _write_api_page(rst_file, title, "automodule", package_name)
-        _write_additional_documentation(rst_file, package_name)
         rst_file.write("\n.. toctree::\n")
         rst_file.write("    :maxdepth: 2\n")
         rst_file.write("    :hidden:\n\n")
@@ -184,7 +166,18 @@ def _write_api_index():
             "versions are expected to work without modification.\n\n"
             "This is PyFluent's class and function reference. Please refer to the "
             ":ref:`ref_user_guide` for full guidelines on their use.\n\n"
-            "All public APIs for PyFluent are listed below.\n\n"
+            "All the public APIs for PyFluent are listed in the left hand margin. "
+            "Some key APIs are mentioned below:\n\n"
+            "Meshing mode\n"
+            "------------\n\n"
+            "The :ref:`meshing workflow <ref_ansys_fluent_core_meshing_meshing_workflow>` and "
+            ":ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` "
+            "provide the primary interface for creating, editing, managing, and "
+            "querying mesh data.\n\n"
+            "Solution mode\n"
+            "-------------\n\n"
+            "The solver :ref:`settings API <ref_root>` is the main interface for "
+            "controlling and running the solver.\n\n"
             ".. toctree::\n"
             "    :maxdepth: 2\n"
             "    :hidden:\n\n"
