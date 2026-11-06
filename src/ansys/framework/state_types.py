@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 #
 #
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -20,18 +21,33 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import ansys.fluent.core as pyfluent
+"""Solver-agnostic value types for the settings/object state tree.
 
-solver = pyfluent.Solver.from_install()
+These aliases describe the values that flow in and out of a settings backend
+(scalars, lists, vectors, and nested group/list states). They live in the
+platform layer so the transport and service contracts can reference them
+without depending on Fluent's object framework (``flobject``). ``flobject``
+re-exports these names for backward compatibility.
+"""
 
-from ansys.fluent.core.offline.expressions import ExpressionBuilder
-from ansys.units import VariableCatalog as V
+from typing import NewType, Union
 
-builder = ExpressionBuilder(settings=solver.settings)
-
-dp = builder.reductions.area_ave(
-    expression=V.ABSOLUTE_PRESSURE, locations=["inlet1"]
-) - builder.reductions.area_ave(expression=V.ABSOLUTE_PRESSURE, locations=["outlet"])
-
-solver.settings.setup.named_expressions["dp"] = {}
-solver.settings.setup.named_expressions["dp"].definition = str(dp)
+RealType = NewType("real", float | str)  # constant or expression
+RealListType = list[RealType]
+RealVectorType = tuple[RealType, RealType, RealType]
+IntListType = list[int]
+StringListType = list[str]
+BoolListType = list[bool]
+PrimitiveStateType = Union[
+    str,
+    RealType,
+    int,
+    bool,
+    RealListType,
+    IntListType,
+    StringListType,
+    BoolListType,
+]
+DictStateType = dict[str, "StateType"]
+ListStateType = list["StateType"]
+StateType = Union[PrimitiveStateType, DictStateType, ListStateType]

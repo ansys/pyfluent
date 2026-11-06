@@ -42,3 +42,15 @@ package, never the reverse.
 This package is currently a stub. Modules are moved here incrementally, each
 behind a backward-compatible shim at the original ``ansys.fluent.core`` path.
 """
+
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _distribution_version
+
+# Read the version from the distribution metadata rather than importing
+# ``ansys.fluent.core`` (forbidden by the dependency rule above). This keeps a
+# single source of truth and lets packaging smoke tests resolve ``__version__``
+# from this top-level package, which is the shallowest in the distribution.
+try:
+    __version__ = _distribution_version("ansys-fluent-core")
+except PackageNotFoundError:  # pragma: no cover - source tree without metadata
+    __version__ = "0.0.0.dev0"
