@@ -35,6 +35,7 @@ Inheritance
 import importlib
 from typing import Any
 
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.services.scheme_interpreter import SchemeInterpreter
 from ansys.fluent.core.solver.session.solver import Solver
@@ -59,7 +60,7 @@ class SolverIcing(Solver):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
     ):
@@ -67,10 +68,10 @@ class SolverIcing(Solver):
 
         Parameters
         ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
-            Encapsulates a Fluent connection.
+        fluent_connection : FluentConnection
+            Encapsulates a :class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`.
         scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+            Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional

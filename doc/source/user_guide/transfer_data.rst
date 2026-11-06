@@ -3,15 +3,11 @@
 Transferring session data
 =========================
 
-You use the :func:`transfer_case() <ansys.fluent.core.connectivity.data_transfer.transfer_case>` function to transfer a case or mesh file between
-PyFluent sessions. You must specify a source session and one or more
-destination solver sessions.
+Use :func:`transfer_case() <ansys.fluent.core.connectivity.data_transfer.transfer_case>` to transfer a case or mesh
+from a source session (meshing or solver) to one or more destination solver sessions.
 
-Sample usage
-------------
-
-This example shows how you use the :func:`transfer_case() <ansys.fluent.core.connectivity.data_transfer.transfer_case>` function to read a mesh file in a
-meshing session and transfer it to a solver session.
+Meshing to solver
+-----------------
 
 .. code:: python
 
@@ -19,27 +15,29 @@ meshing session and transfer it to a solver session.
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.connectivity.data_transfer import transfer_case
 
-  >>> mesh_file_name = download_file(
-  >>>     "mixing_elbow.msh.h5",
-  >>>     "pyfluent/mixing_elbow"
-  >>> )
-  >>> pure_meshing_session = pyfluent.PureMeshing.from_install()
-  >>> pure_meshing_session.tui.file.read_mesh(
-  >>>     mesh_file_name
-  >>> )
+  >>> mesh_file_name = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
-  >>> solver_session = pyfluent.Solver.from_install()
+  >>> source = pyfluent.PureMeshing.from_install()
+  >>> source.meshing_workflow.application.file.read_mesh(file_name=mesh_file_name)
 
-  >>> transfer_case(
-  >>>     source_instance=pure_meshing_session,
-  >>>     solvers=[solver_session],
-  >>>     file_type="mesh",
-  >>>     file_name_stem='',
-  >>>     num_files_to_try=1,
-  >>>     clean_up_temp_file=True,
-  >>>     overwrite_previous=True
-  >>> )
+  >>> solver = pyfluent.Solver.from_install()
+  >>> transfer_case(source_instance=source, solvers=[solver], file_type="mesh")
 
+Solver to solver
+----------------
 
-Similarly, you can use the :func:`transfer_case() <ansys.fluent.core.connectivity.data_transfer.transfer_case>` function to transfer a case file between PyFluent
-sessions.
+``file_type`` defaults to ``"case"``, so you can omit it here.
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core.examples import download_file
+  >>> from ansys.fluent.core.connectivity.data_transfer import transfer_case
+
+  >>> case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+
+  >>> source = pyfluent.Solver.from_install()
+  >>> source.settings.file.read_case(file_name=case_file_name)
+
+  >>> target = pyfluent.Solver.from_install()
+  >>> transfer_case(source_instance=source, solvers=[target])

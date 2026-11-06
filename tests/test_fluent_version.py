@@ -61,15 +61,15 @@ def test_version_not_found():
         FluentVersion(22)
 
 
-@pytest.mark.parametrize("version", ["27.2.0", 27.2, 272])
+@pytest.mark.parametrize("version", ["28.2.0", 28.2, 282])
 def test_newer_version_uses_latest(version):
     with pytest.warns(PyFluentUserWarning, match="newer than"):
-        assert FluentVersion(version) == FluentVersion.v271
+        assert FluentVersion(version) == FluentVersion.v272
 
 
 def test_unrecognized_version_uses_latest():
     with pytest.warns(PyFluentUserWarning, match="'invalid' is unrecognized"):
-        assert FluentVersion("invalid") == FluentVersion.v271
+        assert FluentVersion("invalid") == FluentVersion.v272
 
 
 def test_get_latest_installed(helpers, fs):

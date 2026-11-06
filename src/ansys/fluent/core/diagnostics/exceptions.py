@@ -22,6 +22,7 @@
 # SOFTWARE.
 
 """Custom common higher level exceptions."""
+
 from collections.abc import Iterable
 from typing import Any
 import warnings
@@ -49,14 +50,19 @@ class DisallowedValuesError(ValueError):
         """Initialize DisallowedValuesError."""
         from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
-        super().__init__(
-            allowed_name_error_message(
-                context=context,
-                trial_name=name,
-                allowed_values=allowed_values,
-                message=f"{name} is not an allowed {context}",
-            )
+        self._message = allowed_name_error_message(
+            context=context,
+            trial_name=name,
+            allowed_values=allowed_values,
+            message=f"{name} is not an allowed {context}",
         )
+        # Forward the original arguments so pickle and copy.copy can
+        # reconstruct the exception via ``cls(*exc.args)``.
+        super().__init__(context, name, allowed_values)
+
+    def __str__(self) -> str:
+        """Return the formatted error message."""
+        return self._message
 
 
 class InvalidArgument(ValueError):
@@ -115,19 +121,6 @@ class DeprecatedSettingWarning(PyFluentDeprecationWarning):
 
 
 warnings.filterwarnings("always", category=InsecureGrpcWarning)
-
-
-def warning_for_fluent_dev_version(version):
-    """Provides warning if Fluent develop branch is used."""
-    from ansys.fluent.core import FluentVersion, config
-
-    if FluentVersion(version) > FluentVersion(config.fluent_release_version):
-        warnings.warn(
-            "⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.\n"
-            "Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released "
-            "version of Fluent that is officially supported by this version of PyFluent.",
-            FluentDevVersionWarning,
-        )
 
 
 class WarningControl:

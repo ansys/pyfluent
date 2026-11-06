@@ -404,9 +404,11 @@ class DataModelGenerator:
                         f, parameter_info | {"name": name}, f"{indent}    "
                     )
 
-    def _write_class_header(self, f: FileIO, name: str, indent: str, info: Any):
+    def _write_class_header(
+        self, f: FileIO, name: str, indent: str, info: Any, base_class: str = "PyMenu"
+    ):
         singleton_doc = _get_api_help_text(info, _build_singleton_docstring(name))
-        f.write(f"{indent}class {name}(PyMenu):\n")
+        f.write(f"{indent}class {name}({base_class}):\n")
         f.write(f'{indent}    """\n')
         for line in singleton_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
@@ -467,7 +469,7 @@ class DataModelGenerator:
             f.write(f"{indent}        .\n")
             f.write(f'{indent}        """\n')
             api_tree[f"{k}:<name>"] = self._write_static_info(
-                f"_{k}", info["namedobjects"][k], f, level + 2
+                f"_{k}", info["namedobjects"][k], f, level + 2, is_named_object=True
             )
             # Specify the concrete named object type for __getitem__
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
@@ -603,7 +605,14 @@ class DataModelGenerator:
             queries, "PyQuery", ("queries", "queryinfo", "Query"), False
         )
 
-    def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
+    def _write_static_info(
+        self,
+        name: str,
+        info: Any,
+        f: FileIO,
+        level: int = 0,
+        is_named_object: bool = False,
+    ):
         api_tree = {}
         # preferences contains a deprecated object Meshing Workflow (with a space)
         # which migrates to MeshingWorkflow automatically. Simplest thing to do is
@@ -616,7 +625,8 @@ class DataModelGenerator:
         parameters = sorted(info.get("parameters", []))
         commands = sorted(info.get("commands", []))
         queries = sorted(info.get("queries", []))
-        self._write_class_header(f, name, indent, info)
+        base_class = "PyNamedObject" if is_named_object else "PyMenu"
+        self._write_class_header(f, name, indent, info, base_class)
         self._write_init_body(
             f, indent, named_objects, singletons, parameters, commands, queries
         )
@@ -644,6 +654,7 @@ class DataModelGenerator:
                 f.write("# pylint: disable=line-too-long\n\n")
                 f.write("from ansys.fluent.core.services.object_model import (\n")
                 f.write("    PyMenu,\n")
+                f.write("    PyNamedObject,\n")
                 f.write("    PyParameter,\n")
                 f.write("    PyTextual,\n")
                 f.write("    PyNumerical,\n")

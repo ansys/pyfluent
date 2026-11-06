@@ -42,8 +42,6 @@ Conjugate Heat Transfer
 # * Use a convective thermal boundary condition to represent heat transfer.
 # * Examine and understand the relationship between flow and temperature.
 
-# sphinx_gallery_thumbnail_path = '_static/cht_xy_pressure.png'
-
 #######################################################################################
 # Dependencies
 # =====================================================================================
@@ -56,6 +54,7 @@ Conjugate Heat Transfer
 # Import required libraries/modules
 # =================================
 
+# sphinx_gallery_thumbnail_path = '_static/cht_xy_pressure.png'
 import csv
 import os
 from pathlib import Path

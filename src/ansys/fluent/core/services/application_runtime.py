@@ -600,8 +600,7 @@ class ApplicationRuntimeOld:
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
-        unique_id: int = self.scheme.eval(
-            f"""
+        unique_id: int = self.scheme.eval(f"""
             (let
                 ((ids
                     (let loop ((i 1))
@@ -627,8 +626,7 @@ class ApplicationRuntimeOld:
                     )
                 (car ids)
                 )
-        """
-        )
+        """)
         return unique_id
 
     def resume_on_solution_event(self, registration_id: int) -> None:

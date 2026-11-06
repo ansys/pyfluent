@@ -27,7 +27,9 @@ from pathlib import Path
 
 import grpc
 
-from ansys.fluent.core._grpc_service import ObjectModelService as DatamodelService
+from ansys.fluent.core._grpc_services.object_model_service import (
+    ObjectModelService as DatamodelService,
+)
 from ansys.fluent.core.services.object_model import (
     PySimpleMenuGeneric,
 )

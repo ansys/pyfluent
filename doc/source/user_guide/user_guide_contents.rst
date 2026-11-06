@@ -11,7 +11,7 @@ User guide
    config_variables
    session/session_contents
    solver_settings/solver_settings_contents
-   meshing/meshing_contents
+   meshing
    fields/fields_contents
    events
    monitors
@@ -75,7 +75,7 @@ Leverage intuitive, :ref:`guided workflows <ref_meshing_guide>` to create high-q
 
 Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
+Utilize :ref:`settings objects <ref_root>` to configure and control your simulation. Get familiar
 with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction

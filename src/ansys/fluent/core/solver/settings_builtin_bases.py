@@ -23,7 +23,7 @@
 
 """Base classes for builtin setting classes."""
 
-from typing import Protocol, runtime_checkable
+from typing import Any, ClassVar, Protocol, TypeGuard, runtime_checkable
 
 from ansys.fluent.core.execution.session.session import _get_active_session
 from ansys.fluent.core.solver.flobject import (
@@ -39,11 +39,19 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 class Solver(Protocol):
     """Solver session class for type hinting."""
 
-    settings: SettingsBase
+    settings: SettingsBase[Any]
 
 
-def _get_settings_root(settings_source: SettingsBase | Solver):
-    def is_root_obj(obj):
+class _BuiltinSettingsObj(Protocol):
+    """Structural type for generated builtin-setting instances."""
+
+    _db_name: ClassVar[str]
+
+
+def _get_settings_root(
+    settings_source: SettingsBase[Any] | Solver,
+) -> SettingsBase[Any]:
+    def is_root_obj(obj: SettingsBase[Any] | Solver) -> TypeGuard[SettingsBase[Any]]:
         return isinstance(obj, SettingsBase) and obj.parent is None
 
     if is_root_obj(settings_source):
@@ -56,9 +64,12 @@ def _get_settings_root(settings_source: SettingsBase | Solver):
         )
 
 
-def _get_settings_obj(settings_root, builtin_settings_obj):
+def _get_settings_obj(
+    settings_root: SettingsBase[Any], builtin_settings_obj: _BuiltinSettingsObj
+) -> Any:
     builtin_cls_db_name = builtin_settings_obj.__class__._db_name
-    obj = settings_root
+    # Traverses from a typed root into dynamically-generated child objects.
+    obj: Any = settings_root
     path = DATA[builtin_cls_db_name][1]
     found_path = None
     if isinstance(path, dict):
@@ -83,7 +94,12 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
     return obj
 
 
-def _initialize_settings(instance, defaults: dict, settings_source=None, **kwargs):
+def _initialize_settings(
+    instance: Any,
+    defaults: dict[str, Any],
+    settings_source: SettingsBase[Any] | Solver | None = None,
+    **kwargs: Any,
+) -> None:
     active_session = _get_active_session()
     instance.__dict__.update(defaults | kwargs)
     if settings_source is not None:
@@ -94,10 +110,14 @@ def _initialize_settings(instance, defaults: dict, settings_source=None, **kwarg
 
 class _SingletonSetting:
     # Covers groups, named-object containers and commands.
-    def __init__(self, settings_source: SettingsBase | Solver | None = None, **kwargs):
+    _db_name: ClassVar[str]
+
+    def __init__(
+        self, settings_source: SettingsBase[Any] | Solver | None = None, **kwargs: Any
+    ) -> None:
         _initialize_settings(self, {"settings_source": None}, settings_source, **kwargs)
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any) -> None:
         if name == "settings_source":
             settings_root = _get_settings_root(value)
             obj = _get_settings_obj(settings_root, self)
@@ -109,14 +129,20 @@ class _SingletonSetting:
 
 
 class _NonCreatableNamedObjectSetting:
+    _db_name: ClassVar[str]
+
     def __init__(
-        self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
-    ):
+        self,
+        name: str,
+        settings_source: SettingsBase[Any] | Solver | None = None,
+        **kwargs: Any,
+    ) -> None:
+        self.name: str = name
         _initialize_settings(
             self, {"settings_source": None, "name": name}, settings_source, **kwargs
         )
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any) -> None:
         if name == "settings_source":
             settings_root = _get_settings_root(value)
             obj = _get_settings_obj(settings_root, self)
@@ -129,15 +155,19 @@ class _NonCreatableNamedObjectSetting:
 
 
 class _CreatableNamedObjectSetting:
+    _db_name: ClassVar[str]
+
     def __init__(
         self,
-        settings_source: SettingsBase | Solver | None = None,
+        settings_source: SettingsBase[Any] | Solver | None = None,
         name: str | None = None,
         new_instance_name: str | None = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> None:
         if name and new_instance_name:
             raise ValueError("Cannot specify both name and new_instance_name.")
+        self.name: str | None = name
+        self.new_instance_name: str | None = new_instance_name
         _initialize_settings(
             self,
             {
@@ -149,7 +179,7 @@ class _CreatableNamedObjectSetting:
             **kwargs,
         )
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any) -> None:
         if name == "settings_source":
             settings_root = _get_settings_root(value)
             obj = _get_settings_obj(settings_root, self)

@@ -42,7 +42,14 @@ Example
 from __future__ import annotations
 
 import collections
-from collections.abc import Callable
+import collections.abc  # needed so `collections.abc.X` resolves for the type checker
+from collections.abc import (
+    Callable,
+    ItemsView,
+    Iterator,
+    KeysView,
+    ValuesView,
+)
 from contextlib import contextmanager, nullcontext, suppress
 from enum import Enum
 import fnmatch
@@ -57,11 +64,14 @@ import string
 import sys
 import types
 from typing import (
+    TYPE_CHECKING,
     Any,
     ForwardRef,
     Generic,
     Iterable,
     NewType,
+    NoReturn,
+    TextIO,
     TypeVar,
     Union,
     _eval_type,
@@ -70,6 +80,11 @@ from typing import (
 )
 import warnings
 import weakref
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.connectivity.file_transfer_service import (
+        FileTransferStrategy,
+    )
 
 from ansys.fluent.core._type_checking import no_runtime_type_check
 from ansys.fluent.core._variable_strategies import (
@@ -87,7 +102,7 @@ from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
 
-settings_logger = logging.getLogger("pyfluent.settings_api")
+settings_logger: logging.Logger = logging.getLogger("pyfluent.settings_api")
 
 
 _static_class_attributes = [
@@ -101,13 +116,278 @@ _static_class_attributes = [
 
 
 # --------------------------------------------------------------------------- #
-# Expression-object support                                                   #
+# Settings-expression protocol                                                #
 # --------------------------------------------------------------------------- #
 #
-# Settings leaves whose python-name path (stripped of NamedObject indices)
-# ends with one of these tuples will accept "expression objects" -- any
-# Python value implementing ``__fluent_expr__() -> str`` -- and convert them
-# to their Fluent-side string form before storing.
+# Any Python value can behave as an "expression object" at a settings leaf by
+# implementing the small, domain-neutral protocol below.  The settings layer
+# deliberately knows *nothing* about Fluent expressions (or any other concrete
+# expression implementation): it only talks to these dunder methods.
+#
+#   __settings_str__(self) -> str
+#       REQUIRED.  Render the object to the string the settings leaf stores.
+#       Validation (see below) always runs *before* this is called.
+#
+#   __settings_kind__(self) -> str | None
+#       OPTIONAL.  Describe the *shape* of the produced value as an opaque
+#       string tag.  The settings layer does not define this vocabulary; it only
+#       checks the tag for membership in the leaf's own set of accepted kinds
+#       (``_expression_kinds``), which uses the same vocabulary.  Return ``None``
+#       when the kind is unknown, in which case the structural check is skipped.
+#
+#   __settings_dimensions__(self) -> dict[str, float] | None
+#       OPTIONAL.  Describe the physical dimensions of the produced value as a
+#       mapping of base-dimension name (e.g. ``"MASS"``) to exponent.  Return
+#       ``None`` when unknown, in which case the dimensional check is skipped.
+#
+# This keeps the generic settings layer decoupled from the Fluent expression
+# builder: the builder's AST nodes simply implement these methods.
+
+
+def _is_settings_expression(state) -> bool:
+    """Return ``True`` when ``state`` implements the settings-expression protocol.
+
+    Duck-typed on :func:`__settings_str__` -- a cheap ``getattr`` that
+    short-circuits for the overwhelmingly common case of plain values.
+    """
+    return callable(getattr(state, "__settings_str__", None))
+
+
+def _normalize_dimensions(dimensions) -> dict[str, float]:
+    """Normalize a dimensions mapping to ``{name: exponent}``.
+
+    Accepts either an ``ansys.units`` ``Dimensions`` object (whose keys are
+    ``BaseDimensions`` enum members) or a plain ``{name: exponent}`` dict, so
+    the settings layer can compare values coming from different sources.  Zero
+    exponents are dropped.
+    """
+    normalized: dict[str, float] = {}
+    for key, exponent in dict(dimensions).items():
+        if not exponent:
+            continue
+        # ``BaseDimensions`` enum members expose ``.name``; plain string keys
+        # are used as-is.
+        name = getattr(key, "name", key)
+        normalized[str(name)] = float(exponent)
+    return normalized
+
+
+def _leaf_dimensions(leaf) -> dict[str, float] | None:
+    """Best-effort physical dimensions implied by a leaf's units, or ``None``.
+
+    Only numerical leaves (those exposing a ``units()`` method, e.g.
+    :class:`RealNumerical`) carry unit information.  Any failure to resolve the
+    units into dimensions is treated as "unknown" (returns ``None``) so the
+    dimensional check never blocks a legitimate assignment.
+
+    A ``None`` units string means the units are unknown (unresolved) and yields
+    ``None``.  An empty units string (``""``) means a *known* dimensionless
+    setting -- ``get_si_unit_for_fluent_quantity`` returns ``""`` for
+    dimensionless quantities such as turbulent intensity -- and yields an empty
+    ``{}`` mapping so that a dimensional expression (e.g. a pressure-valued one)
+    is correctly rejected rather than silently skipped.
+    """
+    units = getattr(leaf, "units", None)
+    if not callable(units):
+        return None
+    try:
+        unit_str = units()
+        if unit_str is None:
+            return None
+        return _normalize_dimensions(ansys.units.Quantity(1, unit_str).dimensions)
+    except Exception:
+        return None
+
+
+def _leaf_label(leaf) -> str:
+    """Return a human-readable label for ``leaf`` in error messages.
+
+    ``leaf`` may be a leaf *instance* (whose ``python_path`` is a string) or a
+    leaf *class* (reached via the shared ``to_scheme_keys`` conversion path,
+    where ``python_path``/``python_name`` resolve to property descriptors rather
+    than strings).  Falls back to the class name so the message stays readable.
+    """
+    for attr in ("python_path", "python_name"):
+        value = getattr(leaf, attr, None)
+        if isinstance(value, str):
+            return value
+    return getattr(leaf, "__name__", None) or str(leaf)
+
+
+# Sentinel distinguishing "leaf dimensions were not precomputed" (resolve them
+# via an RPC) from a resolved value of ``None`` (units are genuinely unknown).
+_LEAF_DIMS_UNRESOLVED = object()
+
+
+def _validate_expression_quantity(
+    leaf, state, accepted_kinds=None, leaf_dims=_LEAF_DIMS_UNRESOLVED
+) -> None:
+    """Validate an expression object against ``leaf`` *before* it is rendered.
+
+    Performs two independent, best-effort "quantity-type" checks so that an
+    obviously incompatible expression is rejected in the client settings layer
+    rather than producing a string that Fluent would later reject:
+
+    1. **Structural kind** -- compares the expression's ``__settings_kind__``
+       against the kinds the leaf accepts (``leaf._expression_kinds``, or
+       ``accepted_kinds`` when supplied -- e.g. the kinds used for each
+       element of a list leaf).  This catches an expression whose structural
+       shape is not among those the leaf permits.  Skipped when either
+       side does not declare its kind.
+    2. **Physical dimension** -- compares the expression's
+       ``__settings_dimensions__`` against the dimensions implied by the leaf's
+       units.  Only a *confident* mismatch (both sides known and different)
+       raises; unknown dimensions are tolerated so that composite expressions
+       (whose dimensions cannot be inferred) are never blocked.
+
+    ``leaf_dims`` lets a caller pass the leaf's already-resolved dimensions so a
+    bulk assignment (e.g. a :class:`RealList`) resolves the leaf's units once
+    instead of once per element -- each resolution is an uncached RPC.  When
+    left unset the dimensions are resolved here on demand.
+
+    Raises
+    ------
+    TypeError
+        If the expression's kind or dimensions are incompatible with ``leaf``.
+    """
+    leaf_label = _leaf_label(leaf)
+
+    # 1. Structural kind check.
+    if accepted_kinds is None:
+        accepted_kinds = getattr(leaf, "_expression_kinds", None)
+    kind_getter = getattr(state, "__settings_kind__", None)
+    kind = kind_getter() if callable(kind_getter) else None
+    if accepted_kinds is not None and kind is not None and kind not in accepted_kinds:
+        raise TypeError(
+            f"Expression of kind '{kind}' is not valid for '{leaf_label}', "
+            f"which accepts {', '.join(accepted_kinds)} expressions."
+        )
+
+    # 2. Physical dimension check (best-effort, only on confident mismatch).
+    dims_getter = getattr(state, "__settings_dimensions__", None)
+    raw_expr_dims = dims_getter() if callable(dims_getter) else None
+    if raw_expr_dims is None:
+        return
+    expr_dims = _normalize_dimensions(raw_expr_dims)
+    if leaf_dims is _LEAF_DIMS_UNRESOLVED:
+        leaf_dims = _leaf_dimensions(leaf)
+    if leaf_dims is None:
+        # Leaf units are unknown (unresolved) -- do not block.  An empty
+        # ``expr_dims`` ({}) is a *known* dimensionless expression (the protocol
+        # uses ``None`` for unknown, handled above), so it is still compared
+        # against the leaf below rather than skipped here.
+        return
+    if expr_dims != leaf_dims:
+        raise TypeError(
+            f"Expression with dimensions {expr_dims} is not compatible with "
+            f"'{leaf_label}', which expects dimensions {leaf_dims}."
+        )
+
+
+def _render_settings_expression(
+    leaf, state, accepted_kinds=None, leaf_dims=_LEAF_DIMS_UNRESOLVED
+) -> str | None:
+    """Validate and render ``state`` when it is a settings-expression object.
+
+    Returns the rendered string, or ``None`` when ``state`` is not an
+    expression object (so callers fall through to their normal handling).  The
+    quantity-type validation always runs *before* the string is produced,
+    satisfying the "check the quantity type prior to ``str`` conversion"
+    contract.  ``accepted_kinds`` overrides the leaf's declared kinds for the
+    kind check (used when validating individual elements of a list leaf).
+    ``leaf_dims`` optionally supplies the leaf's already-resolved dimensions so
+    repeated element validation does not re-resolve the leaf's units per call.
+
+    Raises
+    ------
+    TypeError
+        If validation fails, or if the object does not render to a string.
+    """
+    if not _is_settings_expression(state):
+        return None
+    _validate_expression_quantity(leaf, state, accepted_kinds, leaf_dims)
+    rendered = state.__settings_str__()
+    if not isinstance(rendered, str):
+        raise TypeError(
+            f"Expression object {state!r} did not render to a string "
+            f"(got {type(rendered).__name__})."
+        )
+    return rendered
+
+
+def _render_settings_expression_list(leaf, state, accepted_kinds) -> list | None:
+    """Render a ``list`` whose elements may be settings-expression objects.
+
+    A list leaf holds a *container* of values, so each element is an independent
+    expression rather than a single expression describing the whole assignment.
+    Every expression element is validated (against ``accepted_kinds`` -- the
+    kinds a single element may take -- and the leaf's units, when it has any) and
+    rendered to its string form, while plain values are left untouched,
+    preserving the list structure.  Each element of a real-list leaf
+    (:class:`RealList`) is an independent scalar real.
+
+    The leaf's dimensions are resolved *once* for the whole assignment and
+    reused for every element: each resolution is an uncached ``units()`` RPC, so
+    resolving per element would add one network round trip per element.
+
+    Returns the rebuilt list, or ``None`` when ``state`` is not a ``list`` or
+    carries no expression element, so callers fall through to normal handling.
+    A ``tuple`` is deliberately *not* treated as an element container because a
+    real leaf interprets a tuple as a ``(value, units)`` quantity.
+    """
+    if not isinstance(state, list):
+        return None
+    if not any(_is_settings_expression(element) for element in state):
+        return None
+    leaf_dims = _leaf_dimensions(leaf)
+    return [
+        (
+            _render_settings_expression(leaf, element, accepted_kinds, leaf_dims)
+            if _is_settings_expression(element)
+            else element
+        )
+        for element in state
+    ]
+
+
+def _settings_expression_to_scheme(leaf_cls, value):
+    """Render/validate settings-expression objects in a leaf's scheme value.
+
+    This is the *shared* conversion path used by every state-setting flow --
+    direct leaf ``set_state``, :class:`Group` dict updates, and command
+    arguments -- so an expression object is rendered via ``__settings_str__``
+    (not serialized with ``str()``) and kind-checked consistently, regardless of
+    how it reaches the leaf.
+
+    Only leaves that opt into the protocol act: ``_expression_kinds`` gates
+    whole-value expressions and ``_element_expression_kinds`` gates per-element
+    expressions in a list.  Plain values (and leaves that do not opt in) are
+    returned unchanged.
+
+    ``leaf_cls`` is a leaf *class* here (``to_scheme_keys`` is a classmethod), so
+    the physical-dimension check -- which needs a live instance's units -- is
+    skipped; that check still runs on direct leaf assignment where the instance
+    is available.
+    """
+    whole_kinds = getattr(leaf_cls, "_expression_kinds", None)
+    if whole_kinds is not None:
+        rendered = _render_settings_expression(leaf_cls, value, whole_kinds)
+        if rendered is not None:
+            return rendered
+    element_kinds = getattr(leaf_cls, "_element_expression_kinds", None)
+    if element_kinds is not None:
+        rendered_list = _render_settings_expression_list(leaf_cls, value, element_kinds)
+        if rendered_list is not None:
+            return rendered_list
+    return value
+
+
+# Textual leaves (plain strings) do *not* broadly opt into the
+# settings-expression protocol: a string setting is not generally an
+# expression slot.  Instead, expression objects are accepted at a small,
+# explicit whitelist of textual paths whose Fluent-side value is an expression
+# string -- any object implementing the protocol (``__settings_str__``) is
+# rendered to that string form before being stored.
 #
 # Today the only entry targets ``setup.named_expressions[<name>].definition``,
 # but keeping this as a module-level constant lets future consumers plug in
@@ -144,24 +424,10 @@ def _matches_expression_definition_path(obj) -> bool:
     return False
 
 
-def _try_render_expression(state):
-    """If ``state`` looks like an expression object, return its rendered string.
-
-    Duck-typed on ``__fluent_expr__``.  Returns ``None`` when ``state`` is not
-    an expression object, so callers can fall through to their existing logic.
-    """
-    render = getattr(state, "__fluent_expr__", None)
-    if callable(render):
-        rendered = render()
-        if isinstance(rendered, str):
-            return rendered
-    return None
-
-
 class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
-    def __init__(self, python_path):
+    def __init__(self, python_path: str):
         """Initialize InactiveObjectError."""
         super().__init__(f"'{python_path}' is currently inactive.")
 
@@ -181,7 +447,7 @@ def _handle_inactive_access(obj, name):
 class ReadOnlyActionError(RuntimeError):
     """Read-only action execution."""
 
-    def __init__(self, python_path):
+    def __init__(self, python_path: str):
         """Initialize ReadOnlyActionError."""
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
@@ -194,7 +460,7 @@ class ExposureLevel(Enum):
     BETA = "beta"
     STABLE = "stable"
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
         """Compare exposure levels by their order: ALPHA < BETA < STABLE."""
         if isinstance(other, ExposureLevel):
             order = {
@@ -311,7 +577,7 @@ ListStateType = list["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
-def check_type(val, tp):
+def check_type(val: Any, tp: Any) -> bool:
     """Check type of object."""
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
@@ -347,7 +613,7 @@ def check_type(val, tp):
         return False
 
 
-def assert_type(val, tp):
+def assert_type(val: Any, tp: Any) -> None:
     """Assert type.
 
     Raises
@@ -510,7 +776,7 @@ class Base:
     fluent_name
     """
 
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
@@ -526,7 +792,7 @@ class Base:
         else:
             return self._parent._root
 
-    def set_flproxy(self, flproxy):
+    def set_flproxy(self, flproxy: Any) -> None:
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
@@ -543,7 +809,7 @@ class Base:
         self._setattr("_file_transfer_service", file_transfer_service)
 
     @property
-    def flproxy(self):
+    def flproxy(self) -> Any:
         """Proxy object.
 
         The proxy object is set at the root level and accessed via the parent for the
@@ -569,7 +835,7 @@ class Base:
     _python_name = None
 
     @property
-    def parent(self):
+    def parent(self) -> "Base | None":
         """Parent (container) object."""
         return self._parent
 
@@ -625,7 +891,7 @@ class Base:
             return ppath + self.python_name
         return ppath + "." + self.python_name
 
-    def get_attrs(self, attrs, recursive=False) -> Any:
+    def get_attrs(self, attrs: list[str], recursive: bool = False) -> StateType:
         """Get the requested attributes for the object.
 
         Parameters
@@ -637,7 +903,7 @@ class Base:
 
         Returns
         -------
-        Any
+        StateType
             Requested attributes.
         """
         return self.flproxy.get_attrs(self.path, attrs, recursive)
@@ -646,7 +912,7 @@ class Base:
         self,
         attr: str,
         attr_type_or_types: type | tuple[type] | None = None,
-    ) -> Any:
+    ) -> StateType:
         """Get the requested attribute for the object.
 
         Parameters
@@ -658,7 +924,7 @@ class Base:
 
         Returns
         -------
-        Any
+        StateType
             attribute value
 
         Raises
@@ -697,7 +963,7 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any) -> NoReturn:
         raise AttributeError(name)
 
     # __setattr__ is overridden to prevent creation of new attributes or
@@ -705,7 +971,7 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def find_object(self, relative_path):
+    def find_object(self, relative_path: str) -> "Base":
         """Find object."""
         obj = self
         for comp in relative_path.split("/"):
@@ -715,7 +981,9 @@ class Base:
                 obj = getattr(obj, comp)
         return obj
 
-    def before_execute(self, command_name, value, kwargs):
+    def before_execute(
+        self, command_name: str, value: StateType, kwargs: dict[str, StateType]
+    ) -> StateType:
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
             base_file_name = self._do_before_execute(
@@ -725,7 +993,9 @@ class Base:
         else:
             return value
 
-    def after_execute(self, command_name, value, kwargs):
+    def after_execute(
+        self, command_name: str, value: StateType, kwargs: dict[str, StateType]
+    ) -> StateType:
         """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
             base_file_name = self._do_after_execute(
@@ -759,13 +1029,13 @@ class Base:
         """Avoid additional processing while executing a command."""
         return nullcontext()
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
     def get_completer_info(
-        self, prefix: str = "", excluded: Iterable = None
+        self, prefix: str = "", excluded: Iterable[str] | None = None
     ) -> list[list[str]]:
         """Get completer information of all children.
 
@@ -796,7 +1066,7 @@ StateT = TypeVar("StateT")
 class Property(Base):
     """Exposes attribute accessor on settings object."""
 
-    def default_value(self):
+    def default_value(self) -> StateType:
         """Gets the default value of the object."""
         return self.get_attr(_InlineConstants.default_value)
 
@@ -804,12 +1074,12 @@ class Property(Base):
 class Numerical(Property):
     """Exposes attribute accessor on settings object - specific to numerical objects."""
 
-    def min(self):
+    def min(self) -> float | int | None:
         """Get the minimum value of the object."""
         val = self.get_attr(_InlineConstants.min, (float, int))
         return None if isinstance(val, bool) else val
 
-    def max(self):
+    def max(self) -> float | int | None:
         """Get the maximum value of the object."""
         val = self.get_attr(_InlineConstants.max, (float, int))
         return None if isinstance(val, bool) else val
@@ -834,6 +1104,11 @@ class RealNumerical(Numerical):
         Get the units string.
     """
 
+    # Real-valued leaves accept expression strings (see ``RealType``); a scalar
+    # real therefore accepts scalar / value-with-units expression objects.
+    # Containers (e.g. :class:`RealList`) widen this -- see their override.
+    _expression_kinds: tuple[str, ...] = ("scalar", "quantity")
+
     def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
@@ -852,15 +1127,19 @@ class RealNumerical(Numerical):
                 error = "Could not determine units."
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
         ----------
         state
             The type of state can be float, str (representing either
-            an expression or a value with units), or an ansys.units.Quantity.
-        kwargs : Any
+            an expression or a value with units), an ansys.units.Quantity,
+            or any object implementing the settings-expression protocol
+            (``__settings_str__``) -- for example an ``Expr`` produced by the
+            expression builder. Expression objects are validated against this
+            leaf's kind and units before being rendered to a string.
+        kwargs : StateType
             Keyword arguments.
 
         Raises
@@ -869,7 +1148,29 @@ class RealNumerical(Numerical):
             If the quantity object cannot be handled for the given path. This can
             happen if the quantity attribute specifies an unsupported quantity, or if
             the units specified for the quantity are not supported.
+        TypeError
+            If an expression object's kind or dimensions are incompatible with
+            this leaf.
         """
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is validated (kind + dimensions) and
+        # rendered to its string form *before* any quantity handling below.
+        # Real-valued leaves accept expression strings, so this is where an
+        # ``Expr`` becomes a valid assignment for them.
+        rendered = _render_settings_expression(self, state)
+        if rendered is not None:
+            return self.base_set_state(state=rendered, **kwargs)
+
+        # List leaves (e.g. ``RealList``) accept a container of reals whose
+        # elements may themselves be expression objects. Each element is an
+        # independent scalar, so validate/render them with the per-element kinds
+        # and this leaf's units while preserving the list structure.
+        element_kinds = getattr(self, "_element_expression_kinds", None)
+        if element_kinds is not None:
+            rendered_list = _render_settings_expression_list(self, state, element_kinds)
+            if rendered_list is not None:
+                return self.base_set_state(state=rendered_list, **kwargs)
+
         try:
 
             def get_units():
@@ -902,18 +1203,19 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object.
 
         Parameters
         ----------
         state
-            Either str, VariableDescriptor, or -- at whitelisted paths
-            (see :data:`EXPRESSION_DEFINITION_PATHS`) -- any object
-            implementing ``__fluent_expr__() -> str`` (e.g. an
-            :class:`~ansys.fluent.core.expressions.Expr` produced by the
-            expression builder).
-        kwargs : Any
+            Either ``str``, ``VariableDescriptor``, or -- at whitelisted paths
+            (see :data:`EXPRESSION_DEFINITION_PATHS`) -- any object implementing
+            the settings-expression protocol (``__settings_str__``) -- for
+            example an ``Expr`` produced by the expression builder. Such an
+            expression object is rendered to its string form before being
+            stored.
+        kwargs : StateType
             Keyword arguments.
 
         Raises
@@ -921,15 +1223,14 @@ class Textual(Property):
         TypeError
             If state is not a string.
         """
-        # Expression-object support: convert an Expr-like input to its
-        # Fluent-side string form when this leaf is a recognised
-        # expression-definition slot.  Duck-type check first: it's a cheap
-        # getattr that short-circuits the parent-walk in the path match for
-        # the ~all case where ``state`` is a plain value.
-        if hasattr(state, "__fluent_expr__") and _matches_expression_definition_path(
-            self
-        ):
-            rendered = _try_render_expression(state)
+        # Expression-object support: an object implementing the
+        # settings-expression protocol is rendered to its string form when this
+        # leaf is a recognised expression-definition slot.  The cheap duck-type
+        # check short-circuits the parent-walk in the path match for the ~all
+        # case where ``state`` is a plain value.  ``VariableDescriptor`` does not
+        # implement the protocol, so it falls through unchanged.
+        if _is_settings_expression(state) and _matches_expression_definition_path(self):
+            rendered = _render_settings_expression(self, state)
             if rendered is not None:
                 return self.base_set_state(state=rendered, **kwargs)
 
@@ -1045,14 +1346,53 @@ class SettingsBase(Base, Generic[StateT]):
         Set the state of the object.
     """
 
+    def __init_subclass__(cls, **kwargs):
+        """Enforce correct wiring of the settings-expression protocol.
+
+        A leaf opts into the protocol by declaring ``_expression_kinds``.  Because
+        ``SettingsBase`` precedes the behaviour mixin (:class:`RealNumerical`) in
+        every leaf's MRO, a bare ``set_state`` resolves
+        to :meth:`SettingsBase.set_state`, which stores the value directly and
+        *bypasses* expression rendering/validation -- silently serializing an
+        expression object with ``str()``.  Such a leaf must therefore route
+        ``set_state`` through an expression-aware setter and expose the core
+        setter as ``base_set_state``.
+
+        This hook turns that easy-to-forget wiring from a silent runtime bug into
+        a loud, immediate failure at class-definition (import) time.
+        """
+        super().__init_subclass__(**kwargs)
+        if getattr(cls, "_expression_kinds", None) is None:
+            return
+        if cls.set_state is SettingsBase.set_state:
+            raise TypeError(
+                f"{cls.__name__} declares '_expression_kinds' (opting into the "
+                f"settings-expression protocol) but its 'set_state' resolves to "
+                f"'SettingsBase.set_state', which bypasses expression handling. "
+                f"Wire an expression-aware setter in the class body, e.g.\n"
+                f"    base_set_state = SettingsBase[...].set_state\n"
+                f"    set_state = RealNumerical.set_state"
+            )
+        if getattr(cls, "base_set_state", None) is not SettingsBase.set_state:
+            raise TypeError(
+                f"{cls.__name__} routes 'set_state' through an expression-aware "
+                f"setter but does not expose the core setter as "
+                f"'base_set_state = SettingsBase[...].set_state'. The "
+                f"expression-aware setter delegates to 'base_set_state', so it "
+                f"must point at 'SettingsBase.set_state'."
+            )
+
     @classmethod
-    def to_scheme_keys(cls, value: StateT, root_cls, path: list[str]) -> StateT:
+    def to_scheme_keys(cls, value: StateT, root_cls: type, path: list[str]) -> StateT:
         """Convert value to have keys with scheme names.
 
         This is overridden in the ``Group``, ``NamedObject``, and
-        ``ListObject`` classes.
+        ``ListObject`` classes.  For a leaf, this is the shared conversion path
+        reached by direct assignment, :class:`Group` dict updates, and command
+        arguments alike, so settings-expression objects are rendered/validated
+        here consistently rather than being serialized with ``str()``.
         """
-        return value
+        return _settings_expression_to_scheme(cls, value)
 
     @classmethod
     def to_python_keys(cls, value: StateT) -> StateT:
@@ -1063,7 +1403,7 @@ class SettingsBase(Base, Generic[StateT]):
         """
         return value
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: StateType, **kwargs: StateType) -> StateT | None:
         """Get or set the state of the object."""
         if kwargs:
             # Send value of the first key only
@@ -1084,7 +1424,7 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the object."""
         with self._while_setting_state():
             if isinstance(state, (tuple, ansys.units.Quantity)) and hasattr(
@@ -1119,7 +1459,7 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             out.write(f"{state}\n")
 
-    def print_state(self, out=None, indent_factor=2):
+    def print_state(self, out: TextIO | None = None, indent_factor: int = 2) -> None:
         """Print the state of the object."""
         out = sys.stdout if out is None else out
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
@@ -1166,8 +1506,8 @@ class Real(SettingsBase[RealType], RealNumerical):
     expression values.
     """
 
-    base_set_state = SettingsBase[RealType].set_state
-    set_state = RealNumerical.set_state
+    base_set_state: Callable[..., None] = SettingsBase[RealType].set_state
+    set_state: Callable[..., None] = RealNumerical.set_state
 
     _state_type = RealType
 
@@ -1177,8 +1517,8 @@ class String(SettingsBase[str], Textual):
 
     _state_type = str
 
-    base_set_state = SettingsBase[str].set_state
-    set_state = Textual.set_state
+    base_set_state: Callable[..., None] = SettingsBase[str].set_state
+    set_state: Callable[..., None] = Textual.set_state
 
 
 class Filename(SettingsBase[str], Textual):
@@ -1186,7 +1526,7 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
-    def file_purpose(self):
+    def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
@@ -1196,7 +1536,7 @@ class FilenameList(SettingsBase[StringListType], Textual):
 
     _state_type = StringListType
 
-    def file_purpose(self):
+    def file_purpose(self) -> StateType:
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
@@ -1208,6 +1548,8 @@ class FileName(Base):
 
 
 class _InputFile(FileName):
+    """Mixin providing upload behavior for settings backed by an input file."""
+
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
@@ -1219,6 +1561,8 @@ class _InputFile(FileName):
 
 
 class _OutputFile(FileName):
+    """Mixin providing download behavior for settings backed by an output file."""
+
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
@@ -1230,6 +1574,8 @@ class _OutputFile(FileName):
 
 
 class _InOutFile(_InputFile, _OutputFile):
+    """Mixin providing both upload and download behavior for in/out file settings."""
+
     pass
 
 
@@ -1242,8 +1588,16 @@ class Boolean(SettingsBase[bool], Property):
 class RealList(SettingsBase[RealListType], RealNumerical):
     """A ``RealList`` object representing a real list setting."""
 
-    base_set_state = SettingsBase[RealListType].set_state
-    set_state = RealNumerical.set_state
+    base_set_state: Callable[..., None] = SettingsBase[RealListType].set_state
+    set_state: Callable[..., None] = RealNumerical.set_state
+
+    # A real-list leaf holds a container of reals, so (in addition to the scalar
+    # / value-with-units kinds inherited from :class:`RealNumerical`) it also
+    # accepts vector-valued expressions.
+    _expression_kinds: tuple[str, ...] = ("scalar", "vector", "quantity")
+
+    # Each element of the container is an independent scalar real.
+    _element_expression_kinds: tuple[str, ...] = ("scalar", "quantity")
 
     _state_type = RealListType
 
@@ -1303,7 +1657,7 @@ class Group(SettingsBase[DictStateType]):
 
     _state_type = DictStateType
 
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
@@ -1316,7 +1670,7 @@ class Group(SettingsBase[DictStateType]):
             cls = self.__class__._child_classes[query]
             self._setattr(query, _create_child(cls, None, self))
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: StateType, **kwargs: StateType) -> DictStateType | None:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -1325,7 +1679,9 @@ class Group(SettingsBase[DictStateType]):
             return self.get_state()
 
     @classmethod
-    def to_scheme_keys(cls, value, root_cls, path: list[str]):
+    def to_scheme_keys(
+        cls, value: DictStateType, root_cls: type, path: list[str]
+    ) -> DictStateType:
         """Convert value to have keys with scheme names.
 
         Raises
@@ -1354,7 +1710,7 @@ class Group(SettingsBase[DictStateType]):
             return value
 
     @classmethod
-    def to_python_keys(cls, value):
+    def to_python_keys(cls, value: DictStateType) -> DictStateType:
         """Convert value to have keys with Python names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
@@ -1369,12 +1725,12 @@ class Group(SettingsBase[DictStateType]):
             return {}
 
     _child_classes = {}
-    child_names = []
-    command_names = []
-    query_names = []
+    child_names: list[str] = []
+    command_names: list[str] = []
+    query_names: list[str] = []
     _child_aliases = {}
 
-    def get_active_child_names(self):
+    def get_active_child_names(self) -> list[str]:
         """Names of children that are currently active."""
         ret = []
         child_classes = type(self)._child_classes
@@ -1387,15 +1743,15 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(child_name)
         return ret
 
-    def get_active_command_names(self):
+    def get_active_command_names(self) -> list[str]:
         """Names of commands that are currently active."""
         return _get_active_names(self, self.command_names)
 
-    def get_active_query_names(self):
+    def get_active_query_names(self) -> list[str]:
         """Names of queries that are currently active."""
         return _get_active_names(self, self.query_names)
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(
             self.child_names + self.command_names + self.query_names,
@@ -1404,7 +1760,7 @@ class Group(SettingsBase[DictStateType]):
         )
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         # Avoiding server queries for static attributes
         if name in _static_class_attributes:
             return super().__getattribute__(name)
@@ -1440,7 +1796,7 @@ class Group(SettingsBase[DictStateType]):
             ex.args = (error_msg,)
             raise
 
-    def __setattr__(self, name: str, value):
+    def __setattr__(self, name: str, value: StateType) -> None:
         # 'settings_source' will be set to settings object when they are created from builtin settings classes.
         # We don't allow overwriting it.
         if name == "settings_source":
@@ -1471,7 +1827,14 @@ class Group(SettingsBase[DictStateType]):
 class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on flproxy."""
 
-    def __init__(self, flproxy, path: str, state_cls, settings_cls, parent):
+    def __init__(
+        self,
+        flproxy: Any,
+        path: str,
+        state_cls: type,
+        settings_cls: type,
+        parent: "Base",
+    ):
         """__init__ of WildcardPath class."""
         self._setattr("_flproxy", flproxy)
         self._setattr("_path", path)
@@ -1486,16 +1849,16 @@ class WildcardPath(Group):
         self._setattr("_parent", parent)
 
     @property
-    def flproxy(self):
+    def flproxy(self) -> Any:
         """Proxy object."""
         return self._flproxy
 
     @property
-    def path(self):
+    def path(self) -> str:
         """Path with wildcards."""
         return self._path
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> "WildcardPath":
         try:
             child_settings_cls = self._settings_cls._child_classes[name]
             scheme_name = child_settings_cls.fluent_name
@@ -1520,13 +1883,13 @@ class WildcardPath(Group):
                 )
             ) from ex
 
-    def items(self):
+    def items(self) -> Iterator[tuple[str, StateType]]:
         """Items."""
         for key, value in self._parent.items():
             if fnmatch.fnmatch(key, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield key, value
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         for item in self._parent:
             if fnmatch.fnmatch(item, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield item
@@ -1536,11 +1899,13 @@ class WildcardPath(Group):
     # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
     # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
 
-    def to_scheme_keys(self, value, root_cls, path):
+    def to_scheme_keys(
+        self, value: StateType, root_cls: type, path: list[str]
+    ) -> StateType:
         """Convert value to have keys with scheme names."""
         return self._settings_cls.to_scheme_keys(value, root_cls, path)
 
-    def to_python_keys(self, value):
+    def to_python_keys(self, value: StateType) -> StateType:
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
 
@@ -1548,7 +1913,7 @@ class WildcardPath(Group):
 class NamedObjectWildcardPath(WildcardPath):
     """WildcardPath at a NamedObject path, so it can be looked up by wildcard again."""
 
-    def __getitem__(self, name: str):
+    def __getitem__(self, name: str) -> WildcardPath:
         return WildcardPath(
             self.flproxy,
             self.path + "/" + name,
@@ -1557,7 +1922,7 @@ class NamedObjectWildcardPath(WildcardPath):
             self,
         )
 
-    def __setitem__(self, name, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         self[name].set_state(value)
 
 
@@ -1577,7 +1942,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", {})
@@ -1596,7 +1961,9 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
 
     @classmethod
-    def to_scheme_keys(cls, value, root_cls, path: list[str]):
+    def to_scheme_keys(
+        cls, value: DictStateType, root_cls: type, path: list[str]
+    ) -> DictStateType:
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
@@ -1607,7 +1974,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return value
 
     @classmethod
-    def to_python_keys(cls, value):
+    def to_python_keys(cls, value: DictStateType) -> DictStateType:
         """Convert value to have keys with Python names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
@@ -1618,18 +1985,18 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return {}
 
     _child_classes = {}
-    command_names = []
-    query_names = []
+    command_names: list[str] = []
+    query_names: list[str] = []
     _child_aliases = {}
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(
             self.command_names + self.query_names, type(self)._child_classes, self
         )
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         if name in _static_class_attributes:
             return super().__getattribute__(name)
         _raise_if_exposure_hidden(
@@ -1658,33 +2025,33 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             if name not in self._objects:
                 self._create_child_object(name)
 
-    def __delitem__(self, name: str):
+    def __delitem__(self, name: str) -> None:
         with self._while_deleting():
             self.flproxy.delete(self.path, name)
         if name in self._objects:
             del self._objects[name]
 
-    def __contains__(self, name: str):
+    def __contains__(self, name: str) -> bool:
         return name in self.get_object_names()
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.keys())
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         self._update_objects()
         return iter(self._objects)
 
-    def keys(self):
+    def keys(self) -> KeysView[str]:
         """Object names."""
         self._update_objects()
         return self._objects.keys()
 
-    def values(self):
+    def values(self) -> ValuesView[ChildTypeT]:
         """Object values."""
         self._update_objects()
         return self._objects.values()
 
-    def items(self):
+    def items(self) -> ItemsView[str, ChildTypeT]:
         """Items."""
         self._update_objects()
         return self._objects.items()
@@ -1693,17 +2060,17 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         """Whether the object is user-creatable."""
         return self.get_attr(_InlineConstants.user_creatable, bool)
 
-    def get_object_names(self):
+    def get_object_names(self) -> list[str]:
         """Object names."""
         obj_names = self.flproxy.get_object_names(self.path)
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
-    def get_active_command_names(self):
+    def get_active_command_names(self) -> list[str]:
         """Names of commands that are currently active."""
         return _get_active_names(self, self.command_names)
 
-    def get_active_query_names(self):
+    def get_active_query_names(self) -> list[str]:
         """Names of queries that are currently active."""
         return _get_active_names(self, self.query_names)
 
@@ -1750,7 +2117,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         except Exception:
             return
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         alias = self._child_aliases.get(name)
         if alias:
             alias = alias[0]
@@ -1769,21 +2136,21 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                     f"'{self.__class__.__name__}' has no attribute '{name}'"
                 ) from ex
 
-    def __add__(self, other):
+    def __add__(self, other: "NamedObject[Any]") -> "CombinedNamedObject":
         if not isinstance(other, NamedObject):
             raise TypeError(
                 f"Can only add NamedObject to NamedObject, not {type(other).__name__}"
             )
         return CombinedNamedObject([self, other])
 
-    def list(self):
+    def list(self) -> Any:
         """Print the object names."""
         if FluentVersion(self._version) >= FluentVersion.v261:
             return self._root.list(object_path=self.path)
         else:
             return self.list_1()
 
-    def list_properties(self, object_name):
+    def list_properties(self, object_name: str) -> Any:
         """Print the properties of the given object name.
 
         Parameters
@@ -1800,10 +2167,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 class CombinedNamedObject:
     """A ``CombinedNamedObject`` contains the concatenated named-objects."""
 
-    def __init__(self, objects: list[NamedObject]):
+    def __init__(self, objects: list[NamedObject[Any]]):
         """__init__ of CombinedNamedObject."""
-        self.objects = []
-        self._items = []
+        self.objects: list[NamedObject[Any]] = []
+        self._items: list[tuple[str, Any]] = []
         for obj in objects:
             if isinstance(obj, CombinedNamedObject):
                 self.objects.extend(obj.objects)
@@ -1812,20 +2179,20 @@ class CombinedNamedObject:
         for obj in self.objects:
             self._items.extend(obj.items())
 
-    def items(self):
+    def items(self) -> list[tuple[str, Any]]:
         """Return items like a dictionary."""
         return self._items
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
         for obj in self.objects:
             yield from obj
 
-    def __add__(self, other):
+    def __add__(self, other: NamedObject[Any]) -> "CombinedNamedObject":
         if not isinstance(other, NamedObject):
             raise TypeError(f"Cannot add {type(self)} to NamedObject")
         return CombinedNamedObject(self.objects + [other])
 
-    def __call__(self):
+    def __call__(self) -> dict[str, Any]:
         temp_dict = {}
         for obj in self.objects:
             temp_dict.update(obj())
@@ -1909,7 +2276,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name=None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of ListObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", [])
@@ -1921,7 +2288,9 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             self._setattr(query, _create_child(cls, None, self))
 
     @classmethod
-    def to_scheme_keys(cls, value, root_cls, path: list[str]):
+    def to_scheme_keys(
+        cls, value: ListStateType, root_cls: type, path: list[str]
+    ) -> ListStateType:
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Sequence):
             return [
@@ -1931,7 +2300,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return value
 
     @classmethod
-    def to_python_keys(cls, value):
+    def to_python_keys(cls, value: ListStateType) -> ListStateType:
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Sequence):
             return [cls.child_object_type.to_python_keys(v) for v in value]
@@ -1939,18 +2308,18 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return []
 
     _child_classes = {}
-    command_names = []
-    query_names = []
+    command_names: list[str] = []
+    query_names: list[str] = []
     _child_aliases = {}
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(
             self.command_names + self.query_names, type(self)._child_classes, self
         )
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         if name in _static_class_attributes:
             return super().__getattribute__(name)
         _raise_if_exposure_hidden(
@@ -1965,18 +2334,18 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             [_create_child(cls, str(x), self) for x in range(self.get_size())],
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.get_size()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[ChildTypeT]:
         self._update_objects()
         return iter(self._objects)
 
-    def get_active_command_names(self):
+    def get_active_command_names(self) -> list[str]:
         """Names of commands that are currently active."""
         return _get_active_names(self, self.command_names)
 
-    def get_active_query_names(self):
+    def get_active_query_names(self) -> list[str]:
         """Names of queries that are currently active."""
         return _get_active_names(self, self.query_names)
 
@@ -1997,11 +2366,11 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             self._update_objects()
         return self._objects[index]
 
-    def __setitem__(self, index: int, value):
+    def __setitem__(self, index: int, value: StateType) -> None:
         child = self[index]
         child.set_state(value)
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         alias = self._child_aliases.get(name)
         if alias:
             alias = alias[0]
@@ -2037,7 +2406,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return child_value.units()
         return None
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs: StateType) -> None:
         """Set the state of the list object.
 
         For Quantity-like inputs containing sequence values, convert once to the
@@ -2117,9 +2486,9 @@ class Action(Base):
 
     _child_classes = {}
     _child_aliases = {}
-    argument_names = []
+    argument_names: list[str] = []
 
-    def __init__(self, name: str | None = None, parent=None):
+    def __init__(self, name: str | None = None, parent: "Base | None" = None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
@@ -2127,12 +2496,12 @@ class Action(Base):
                 cls = self.__class__._child_classes[argument]
                 self._setattr(argument, _create_child(cls, None, self))
 
-    def __dir__(self):
+    def __dir__(self) -> set[str]:
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         hidden = _get_hidden_names(self.argument_names, type(self)._child_classes, self)
         return dir_list - hidden
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str) -> Any:
         if name in _static_class_attributes:
             return super().__getattribute__(name)
         _raise_if_exposure_hidden(
@@ -2140,7 +2509,7 @@ class Action(Base):
         )
         return super().__getattribute__(name)
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         alias = self._child_aliases.get(name)
         if alias:
             alias = alias[0]
@@ -2159,7 +2528,7 @@ class Action(Base):
                     f"'{self.python_path}' is a command/query object and has no attribute '{name}'"
                 ) from None
 
-    def __setattr__(self, name: str, value):
+    def __setattr__(self, name: str, value: StateType) -> None:
         attr = getattr(self, name)
         try:
             return attr.set_state(value)
@@ -2208,9 +2577,18 @@ class BaseCommand(Action):
                 ret = _fix_parameter_list_return(ret)
             return ret
 
-    def execute_command(self, *args, **kwds):
+    def execute_command(self, *args: StateType, **kwds: StateType) -> StateType:
         """Execute command."""
         kwds = _get_new_keywords(self, *args, **kwds)
+        # Normalize any settings-expression arguments to their rendered string
+        # form *before* the file hooks run. ``before_execute`` / ``after_execute``
+        # (and ``expand_api_file_argument``) operate on plain strings, so a
+        # protocol object -- e.g. an expression passed as a Filename argument to
+        # ``read_case_data`` -- would otherwise raise ``AttributeError`` there.
+        # Storing the rendered value back into ``kwds`` reuses it for the scheme
+        # conversion and for ``after_execute`` as well.
+        for arg in list(kwds):
+            kwds[arg] = _settings_expression_to_scheme(getattr(self, arg), kwds[arg])
         scmKwds = {}
         for arg, value in kwds.items():
             argument = getattr(self, arg)
@@ -2277,7 +2655,7 @@ _fix_parameter_list_return.scheme_eval = None
 class Command(BaseCommand):
     """Command object."""
 
-    def __call__(self, **kwds):
+    def __call__(self, **kwds: Any) -> StateType | None:
         """Call a command with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2308,7 +2686,7 @@ class Command(BaseCommand):
 class CommandWithPositionalArgs(BaseCommand):
     """Command Object supporting positional arguments."""
 
-    def __call__(self, *args, **kwds):
+    def __call__(self, *args: Any, **kwds: Any) -> StateType | None:
         """Call a command with the specified positional and keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2339,7 +2717,7 @@ class CommandWithPositionalArgs(BaseCommand):
 class Query(Action):
     """Query object."""
 
-    def __call__(self, **kwds):
+    def __call__(self, **kwds: Any) -> StateType | None:
         """Call a query with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
@@ -2399,7 +2777,7 @@ def _fix_help_info(obj_type, helpinfo):
     return fix or helpinfo
 
 
-class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
+class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping[str, "Base"]):
     """A mixin class to provide a dictionary interface at a Group class level if the
     Group has multiple named objects of a similar type. For example, boundary conditions
     are grouped by type but quite often we want to access them without the type context.
@@ -2412,7 +2790,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     boundary_conditions.
     """
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str) -> "Base":
         """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
@@ -2422,11 +2800,11 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 return cobj[name]
         raise KeyError(name)
 
-    def __setitem__(self, name, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         """Set the state of a child object."""
         self[name].set_state(value)
 
-    def __delitem__(self, name):
+    def __delitem__(self, name: str) -> None:
         """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
@@ -2437,7 +2815,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 return
         raise KeyError(name)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         """Iterator for child named objects."""
         for cname in self.child_names:
             # Use suppress to ignore exceptions during child object iteration without triggering B110
@@ -2446,7 +2824,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 for item in getattr(self, cname):
                     yield item
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Number of child named objects."""
         count = 0
         for cname in self.child_names:
@@ -2456,10 +2834,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         return count
 
 
-class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+class CreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
     """Provides creatable named objects for Fluent 2025 R1 and later."""
 
-    def __setitem__(self, name: str, value):
+    def __setitem__(self, name: str, value: StateType) -> None:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child = WildcardPath(
@@ -2480,7 +2858,7 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTyp
         child.set_state(value)
 
 
-class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
+class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin[ChildTypeT]):
     """Provides creatable named objects for Fluent 2024 R2 and earlier."""
 
     # In Fluent 2025 R1, the ``create()`` method is available as commands in the ``NamedObject`` class.
@@ -2502,10 +2880,8 @@ class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
         return self._create_child_object(name)
 
 
-class _NonCreatableNamedObjectMixin(
-    collections.abc.MutableMapping, Generic[ChildTypeT]
-):
-    def __setitem__(self, name: str, value):
+class _NonCreatableNamedObjectMixin(collections.abc.MutableMapping[str, ChildTypeT]):
+    def __setitem__(self, name: str, value: StateType) -> None:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child = WildcardPath(
@@ -2533,7 +2909,7 @@ class _NonCreatableNamedObjectMixin(
 class AllowedValuesMixin:
     """Provides allowed values."""
 
-    def allowed_values(self):
+    def allowed_values(self) -> list[StateType] | str:
         """Get the allowed values of the object."""
         try:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
@@ -2988,7 +3364,13 @@ def _create_generated_class(
 
 
 # pylint: disable=missing-raises-doc
-def get_cls(name, info, parent=None, version=None, parent_taboo=None):
+def get_cls(
+    name: str,
+    info: dict[str, Any],
+    parent: type | None = None,
+    version: str | None = None,
+    parent_taboo: set[str] | None = None,
+) -> tuple[type, str]:
     """Create a class for the object identified by "path"."""
     try:
         cls, parent_attr_name, taboo, user_creatable = _create_generated_class(
@@ -3026,12 +3408,12 @@ def _gethash(obj_info):
 
 
 def get_root(
-    flproxy,
+    flproxy: Any,
     version: str = "",
     interrupt: Any | None = None,
-    is_interruptible_command: Any | None = None,
-    file_transfer_service: Any | None = None,
-    scheme_eval=None,
+    is_interruptible_command: Callable[[str], bool] | None = None,
+    file_transfer_service: "FileTransferStrategy | None" = None,
+    scheme_eval: Callable[[str], StateType] | None = None,
 ) -> Group:
     """Get the root settings object.
 
@@ -3048,7 +3430,7 @@ def get_root(
         gRPC when the solver is stopped cleanly by ``interrupt()``.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
-    scheme_eval : Any
+    scheme_eval : Callable[[str], StateType], optional
         A gRPC service to execute Scheme code.
     version : str
         Fluent version.
@@ -3082,9 +3464,6 @@ def get_root(
                 version_dir / "solver" / "settings.py",
             )
             root_cls = settings.root
-            from ..diagnostics.exceptions import warning_for_fluent_dev_version
-
-            warning_for_fluent_dev_version(version)
         except FileNotFoundError:
             obj_info = flproxy.get_static_info()
             root_cls, _ = get_cls("", obj_info, version=version)
@@ -3104,7 +3483,7 @@ def get_root(
     return root
 
 
-def find_children(obj, identifier="*"):
+def find_children(obj: Any, identifier: str = "*") -> list[str]:
     """Returns path of all the child objects matching an identifier.
 
     Parameters

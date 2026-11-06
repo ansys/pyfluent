@@ -23,6 +23,8 @@
 
 """Test suite to verify the public API of ansys.fluent.core remains stable."""
 
+import inspect
+
 import pytest
 
 
@@ -92,12 +94,11 @@ def test_ansys_fluent_core_public_api():
         "config",
         "connect_to_fluent",
         "examples",
-        "file_reader",
         "connectivity",
         "diagnostics",
         "execution",
         "generated",
-        "local_parametric_study",
+        "offline",
         "launch_fluent",
         "module_config",
         "rpvars",
@@ -269,4 +270,190 @@ def test_star_import_exports_all_public_symbols():
         f"\nCritical symbols missing from star import!\n"
         f"Missing: {sorted(missing_critical)}\n"
         f"These must be added to __all__ in ansys/fluent/core/__init__.py"
+    )
+
+
+# Ordered, keyword-only parameters of ``launch_fluent``. Baseline captured
+# 2026-11-03. Reordering, renaming, or removing a parameter, or making an
+# optional parameter required, is a public API change and must be intentional.
+_EXPECTED_LAUNCH_FLUENT_PARAMS = [
+    "product_version",
+    "dimension",
+    "precision",
+    "processor_count",
+    "journal_file_names",
+    "start_timeout",
+    "additional_arguments",
+    "env",
+    "start_container",
+    "container_dict",
+    "dry_run",
+    "cleanup_on_exit",
+    "start_transcript",
+    "ui_mode",
+    "graphics_driver",
+    "case_file_name",
+    "case_data_file_name",
+    "lightweight_mode",
+    "mode",
+    "py",
+    "gpu",
+    "cwd",
+    "fluent_path",
+    "topy",
+    "start_watchdog",
+    "scheduler_options",
+    "file_transfer_service",
+    "use_docker_compose",
+    "use_podman_compose",
+    "certificates_folder",
+    "insecure_mode",
+]
+
+
+def test_launch_fluent_signature_is_stable():
+    """Snapshot the ``launch_fluent`` public signature.
+
+    Guards against accidental renaming, reordering or removal of parameters,
+    and against an optional parameter silently becoming required.
+    """
+    from ansys.fluent.core import launch_fluent
+
+    params = inspect.signature(launch_fluent).parameters
+    actual_names = list(params)
+
+    assert actual_names == _EXPECTED_LAUNCH_FLUENT_PARAMS, (
+        "\nlaunch_fluent signature changed!\n"
+        f"Expected order: {_EXPECTED_LAUNCH_FLUENT_PARAMS}\n"
+        f"Actual order:   {actual_names}\n"
+        "If this change is intentional, update "
+        "_EXPECTED_LAUNCH_FLUENT_PARAMS in this test."
+    )
+
+    for name, param in params.items():
+        assert (
+            param.kind is inspect.Parameter.KEYWORD_ONLY
+        ), f"launch_fluent parameter '{name}' must remain keyword-only."
+        assert param.default is not inspect.Parameter.empty, (
+            f"launch_fluent parameter '{name}' lost its default value; "
+            "making it required is a breaking API change."
+        )
+
+
+# Backward-compatibility module aliases registered in sys.modules by
+# ansys.fluent.core.__init__. Each legacy import path must resolve to the exact
+# same object the package assigns to it. Baseline captured 2026-11-03.
+def test_backward_compatibility_sys_modules_aliases():
+    """Ensure legacy module import paths still resolve to the right objects.
+
+    These aliases let old ``import ansys.fluent.core.<legacy>`` paths keep
+    working after modules were relocated. Removing or repointing one breaks
+    backward compatibility. Identity is checked (not ``__name__``) because some
+    aliases point to a re-exported callable rather than a module.
+    """
+    import importlib
+    import sys
+
+    import ansys.fluent.core  # noqa: F401  (registers the aliases)
+    from ansys.fluent.core import offline
+    from ansys.fluent.core.connectivity import fluent_connection
+    from ansys.fluent.core.diagnostics import exceptions, journaling, logger
+    from ansys.fluent.core.diagnostics.search import search
+    from ansys.fluent.core.execution.session import file as session_file
+    from ansys.fluent.core.offline import parametric_study
+
+    expected_aliases = {
+        "ansys.fluent.core.file_session": session_file,
+        "ansys.fluent.core.fluent_connection": fluent_connection,
+        "ansys.fluent.core.parametric": parametric_study,
+        "ansys.fluent.core.pyfluent_warnings": exceptions,
+        "ansys.fluent.core.filereader": offline,
+        "ansys.fluent.core.logger": logger,
+        "ansys.fluent.core.journaling": journaling,
+        "ansys.fluent.core.exceptions": exceptions,
+        "ansys.fluent.core.search": search,
+    }
+
+    for alias, target in expected_aliases.items():
+        assert (
+            alias in sys.modules
+        ), f"Backward-compatibility alias '{alias}' is missing from sys.modules."
+        assert sys.modules[alias] is target, (
+            f"Alias '{alias}' no longer resolves to its canonical object. "
+            "Update the baseline in this test if the move is intentional."
+        )
+        # The alias must also resolve through the normal import machinery.
+        assert importlib.import_module(alias) is target
+
+
+# Fully-qualified "module:qualname" of the public session classes. Baseline
+# captured 2026-11-03. Relocating a session class without preserving its public
+# import path is a backward-compatibility break.
+_EXPECTED_SESSION_CLASS_PATHS = {
+    "Fluent": "ansys.fluent.core:Fluent",
+    "Solver": "ansys.fluent.core.solver.session.solver:Solver",
+    "SolverAero": "ansys.fluent.core.solver.session.solver_aero:SolverAero",
+    "SolverIcing": "ansys.fluent.core.solver.session.solver_icing:SolverIcing",
+    "PrePost": "ansys.fluent.core.solver.session.solver_pre_post:PrePost",
+    "Meshing": "ansys.fluent.core.meshing.session.meshing:Meshing",
+    "PureMeshing": "ansys.fluent.core.meshing.session.pure_meshing:PureMeshing",
+}
+
+
+def test_session_class_paths_are_stable():
+    """Snapshot the defining module and qualified name of the session classes.
+
+    Guards the backward-compatible import paths of the session classes exposed
+    at the top level of ``ansys.fluent.core``.
+    """
+    import ansys.fluent.core as pyfluent
+
+    for name, expected_path in _EXPECTED_SESSION_CLASS_PATHS.items():
+        cls = getattr(pyfluent, name)
+        actual_path = f"{cls.__module__}:{cls.__qualname__}"
+        assert actual_path == expected_path, (
+            f"Session class '{name}' moved from '{expected_path}' to "
+            f"'{actual_path}'. Keep a backward-compatible alias or update the "
+            "baseline in this test if the move is intentional."
+        )
+
+    from ansys.fluent.core.execution.session.session import BaseSession
+
+    assert (
+        f"{BaseSession.__module__}:{BaseSession.__qualname__}"
+        == "ansys.fluent.core.execution.session.session:BaseSession"
+    )
+
+
+# Builtin solver settings classes that must remain importable from
+# ``ansys.fluent.core.solver``. This is a stable subset, not the full list, so
+# the test does not churn as new settings classes are added.
+_EXPECTED_BUILTIN_SETTINGS = [
+    "Setup",
+    "General",
+    "Models",
+    "Energy",
+    "Viscous",
+    "Materials",
+    "BoundaryConditions",
+    "Solution",
+    "Results",
+]
+
+
+def test_builtin_settings_classes_available():
+    """Ensure key builtin solver settings classes stay publicly importable.
+
+    Skipped when generated settings are not present (for example a lightweight
+    checkout without codegen), since the builtin classes are generated.
+    """
+    from ansys.fluent.core import solver
+
+    if not getattr(solver, "_settings_all", []):
+        pytest.skip("Generated settings_builtin not available in this environment.")
+
+    missing = [name for name in _EXPECTED_BUILTIN_SETTINGS if not hasattr(solver, name)]
+    assert not missing, (
+        f"Builtin solver settings classes no longer available: {missing}. "
+        "These are part of the public API exported by ansys.fluent.core.solver."
     )

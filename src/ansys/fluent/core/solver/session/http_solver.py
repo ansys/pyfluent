@@ -25,8 +25,8 @@
 
 This module provides :class:`HttpSolver`, a lightweight solver session that
 communicates with Fluent exclusively over the REST (HTTP) transport.  It is
-completely independent of the gRPC infrastructure (``BaseSession``,
-``FluentConnection``, ``ServiceFactory``, etc.).
+completely independent of the gRPC infrastructure (:class:`~ansys.fluent.core.execution.session.session.BaseSession`,
+:class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`, :class:`~ansys.fluent.core.services.ServiceFactory`, etc.).
 
 Usage::
 
@@ -43,6 +43,7 @@ Usage::
 from ansys.fluent.core.rest.client import FluentRestClient
 from ansys.fluent.core.services.rest_settings import RestSettings
 from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 # REST API is only available from Fluent 27.1 onward.
 _DEFAULT_VERSION = "271"
@@ -52,7 +53,7 @@ class HttpSolver:
     """Standalone solver session backed by the Fluent REST API.
 
     Unlike the gRPC-based :class:`~ansys.fluent.core.solver.session.solver.Solver`,
-    this class has **no** dependency on ``BaseSession``, ``FluentConnection``,
+    this class has **no** dependency on :class:`~ansys.fluent.core.execution.session.session.BaseSession`, :class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`,
     or any gRPC service.  Settings classes are built at runtime from
     ``get_static_info()`` — no generated settings module is required.
 
@@ -88,13 +89,17 @@ class HttpSolver:
         """Whether the REST connection is still usable."""
         return self._rest_client is not None
 
+    def get_fluent_version(self) -> FluentVersion:
+        """Gets and returns the Fluent version of the connected REST server."""
+        return FluentVersion(self._version)
+
     def exit(self) -> None:
         """Release the REST connection.
 
         Only client-side state is dropped; the Fluent server itself keeps
         running. This mirrors :meth:`BaseSession.exit` closely enough for
         fixture/context-manager teardown; moving it into a finalizer (as
-        ``BaseSession`` does) is left for the inheritance refactor.
+        :class:`~ansys.fluent.core.execution.session.session.BaseSession` does) is left for the inheritance refactor.
         """
         self._rest_client = None
         self._settings = None

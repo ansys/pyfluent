@@ -28,7 +28,7 @@ This module is private.  Do not import from it directly; use
 :class:`~ansys.fluent.core.meshing.session.meshing.Meshing` instead.
 
 Both leaf classes are lightweight and add no further public API beyond what
-is defined here.  ``PureMeshing`` targets deployments where meshing and
+is defined here.  :class:`~ansys.fluent.core.meshing.session.pure_meshing.PureMeshing` targets deployments where meshing and
 solving run as separate processes; ``Meshing`` additionally exposes
 :meth:`~ansys.fluent.core.meshing.session.meshing.Meshing.switch_to_solver`.
 """
@@ -41,6 +41,7 @@ from typing import TYPE_CHECKING, Any, cast
 from ansys.fluent.core._data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.connectivity.data_transfer import transfer_case
+from ansys.fluent.core.connectivity.file_transfer_service import FileTransferStrategy
 from ansys.fluent.core.connectivity.fluent_connection import FluentConnection
 from ansys.fluent.core.diagnostics.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.execution.session._shared import (
@@ -56,6 +57,8 @@ from ansys.fluent.core.utils.fluent_version import (
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from ansys.fluent.core import meshing as _meshing_workflow_type
     from ansys.fluent.core.generated.v261.meshing.meshing import Root as meshing_root
     from ansys.fluent.core.generated.v261.meshing.meshing_utilities import (
@@ -77,6 +80,7 @@ if TYPE_CHECKING:
     from ansys.fluent.core.generated.v261.object_model.workflow import (
         Root as workflow_root,
     )
+    from ansys.fluent.core.solver.session.solver import Solver
 
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
@@ -112,7 +116,7 @@ class BaseMeshing(BaseSession):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeInterpreter,
-        file_transfer_service: Any | None = None,
+        file_transfer_service: FileTransferStrategy | None = None,
         start_transcript: bool = True,
         launcher_args: dict[str, Any] | None = None,
     ):
@@ -120,10 +124,10 @@ class BaseMeshing(BaseSession):
 
         Parameters
         ----------
-        fluent_connection (:ref:`ref_fluent_connection`):
-            Encapsulates a Fluent connection.
+        fluent_connection : FluentConnection
+            Encapsulates a :class:`~ansys.fluent.core.connectivity.fluent_connection.FluentConnection`.
         scheme_eval: SchemeInterpreter
-            Instance of ``SchemeInterpreter`` to execute Fluent's scheme code on.
+            Instance of :class:`~ansys.fluent.core.services.scheme_interpreter.SchemeInterpreter` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Service for uploading and downloading files.
         start_transcript : bool, optional
@@ -647,7 +651,7 @@ class BaseMeshing(BaseSession):
 
     def transfer_mesh_to_solvers(
         self,
-        solvers,
+        solvers: "Iterable[Solver]",
         file_type: str = "case",
         file_name_stem: str | None = None,
         num_files_to_try: int = 1,
@@ -658,18 +662,19 @@ class BaseMeshing(BaseSession):
 
         Parameters
         ----------
-        solvers : iterable
-            Sequence of solver instances.
+        solvers : Iterable[Solver]
+            Sequence of solver instances to transfer the case or mesh to.
         file_type : str, optional
             ``"case"`` or ``"mesh"``.  Default is ``"case"``.
         file_name_stem : str, optional
-            Stem for the generated file name.
+            Stem for the generated file name. If not specified (``None``),
+            a default stem (``"temp_case_file"``) is used.
         num_files_to_try : int, optional
-            Number of candidate file names to try.  Default is ``1``.
+            Number of files to try to write, each with a different generated name. Default is ``1``.
         clean_up_mesh_file : bool, optional
-            Remove the mesh file after transfer.  Default is ``True``.
+            Whether to remove the file at the end. Defaults to ``True``.
         overwrite_previous : bool, optional
-            Overwrite an existing file with the same name.  Default is ``True``.
+            Whether to overwrite the file if it already exists. Defaults to ``True``.
         """
         transfer_case(
             self,

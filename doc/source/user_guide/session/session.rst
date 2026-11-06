@@ -1,6 +1,6 @@
-.. _ref_session_guide:
-
 .. vale Google.Spacing = NO
+
+.. _ref_session_guide:
 
 Using PyFluent sessions
 =======================

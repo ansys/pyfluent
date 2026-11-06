@@ -26,6 +26,7 @@
 import json
 import os
 from pathlib import Path
+import re
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.execution.launcher import launcher_utils
@@ -40,6 +41,35 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
+
+# Matches Fluent's parallel flags '-t<n>' (process count) and '-cnf=' (machine list)
+# only when they appear as a whole token (at the start of the string or after
+# whitespace). This avoids false positives from substrings such as the '-t' in
+# "-scheduler_opt='--time=...'".
+#
+# Limitations:
+# - Only the '-t<n>' form (digit immediately after '-t', e.g. '-t4') is detected.
+#   A space-separated form such as '-t 4' is not recognized.
+# - Detection is purely textual; it does not account for shell quoting. A parallel
+#   flag embedded inside a quoted value (e.g. "-opt='-t4'") would be matched even
+#   though it is not a standalone Fluent argument. Such usage is not expected.
+_PARALLEL_FLAGS_PATTERN = re.compile(r"(?:^|\s)(?:-t\d|-cnf=)")
+
+
+def _has_parallel_flags(additional_arguments: str) -> bool:
+    """Return whether ``additional_arguments`` already sets Fluent parallel flags.
+
+    Parameters
+    ----------
+    additional_arguments : str
+        Extra command line arguments passed to Fluent.
+
+    Returns
+    -------
+    bool
+        ``True`` if the '-t<n>' or '-cnf=' parallel flag is present as a token.
+    """
+    return bool(_PARALLEL_FLAGS_PATTERN.search(additional_arguments))
 
 
 def _build_fluent_launch_args_string(**kwargs) -> str:
@@ -89,7 +119,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     additional_arguments = kwargs.get("additional_arguments", "")
     if additional_arguments:
         launch_args_string += " " + additional_arguments
-    if "-t" not in additional_arguments and "-cnf=" not in additional_arguments:
+    if not _has_parallel_flags(additional_arguments):
         parallel_options = build_parallel_options(
             load_machines(ncores=kwargs.get("processor_count"))
         )

@@ -80,7 +80,7 @@ def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_se
 
     def cb(path: str):
         nonlocal called
-        nonlocal created
+        nonlocal created  # noqa: F824
         called += 1
         created.append(path)
 
