@@ -545,7 +545,7 @@ class _InlineConstants:
 # Type hints. These solver-agnostic value types live in the platform layer;
 # they are re-exported here so ``flobject.StateType`` (and the related names)
 # keep working for existing callers and ``from flobject import *``.
-from ansys.solver.core.state_types import (  # noqa: E402, F401
+from ansys.framework.state_types import (  # noqa: E402, F401
     BoolListType,
     DictStateType,
     IntListType,

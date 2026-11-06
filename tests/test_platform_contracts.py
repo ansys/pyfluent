@@ -25,8 +25,8 @@
 
 import pytest
 
-from ansys.solver.core.services import NotSupported, ServiceRegistry
-from ansys.solver.core.transport import ErrorState, Transport
+from ansys.framework.services import NotSupported, ServiceRegistry
+from ansys.framework.transport import ErrorState, Transport
 
 
 def test_service_registry_lazy_resolution_and_caching():
