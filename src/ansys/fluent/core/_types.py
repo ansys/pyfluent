@@ -29,7 +29,7 @@ This module centralizes reusable typing constructs
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Literal, Sequence, TypeAlias, TypedDict
+from typing import TYPE_CHECKING, Literal, TypeAlias, TypedDict
 
 if TYPE_CHECKING:
     from ansys.fluent.core.connectivity.file_transfer_service import (
