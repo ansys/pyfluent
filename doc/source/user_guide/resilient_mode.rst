@@ -1,463 +1,267 @@
 .. _ref_resilient_guide:
 
-==============
 Resilient mode
 ==============
 
-Resilient mode makes a solver workflow *survivable*. Enable it with a single
-launch flag (``resilient_mode=True``) and keep writing ordinary PyFluent code --
-the settings tree is transparently wrapped so a long, automated setup-and-solve
-run can recover from mistakes and from solver failures without you restarting from
-scratch:
-
-* **auto-recovery** from non-catastrophic Fluent errors,
-* **two-tier checkpoints** with a unified **undo / redo** stack,
-* an opt-in **warm session pool** with health monitoring, and
-* automatic **failover and state replay** when the active session dies.
-
-It lives in :mod:`ansys.fluent.core.resilient` and depends on neither
-``fastmcp`` nor the AI layer -- the same behavior benefits a human or an
-autonomous agent. Everything is driven through the typed settings tree, so it
-behaves identically over gRPC and REST.
+Resilient mode makes an automated setup-and-solve script survive the errors
+that would normally stop it. You keep writing ordinary PyFluent code. Resilient
+mode works inside the settings API:
 
-.. note::
+* **Recovery**: a rejected value (out of range, a near-miss of an allowed
+  string, or the wrong type) is repaired and applied. You get a warning.
+* **Model activation** (opt-in): writing a setting that is inactive because its
+  governing model is off (for example a thermal boundary condition while the
+  energy model is disabled) enables that model first.
+* **Checkpoints and rollback**: irreversible commands such as ``iterate``,
+  ``calculate`` and ``read_case`` are preceded by an automatic case and data
+  checkpoint. If such a command fails, the session is restored to that
+  checkpoint and the original error is raised.
+* **Undo and redo** of settings writes from a journal.
+* **Failover**: with a warm pool of standby sessions, a solver that dies is
+  replaced by a standby. The standby is brought to the same state from the
+  newest checkpoint and the journal, and the failed call is retried.
 
-   Resilient mode never changes *what* Fluent does. It wraps your settings and
-   command calls with classification, checkpointing, and recovery. If a value is
-   accepted by Fluent, it is applied unchanged.
-
+Resilient mode only works with solver sessions. It does not apply to meshing
+sessions or to REST (``HttpSolver``) sessions.
 
-Getting started
----------------
-
-Resilient mode is **transparent**: you write ordinary PyFluent code and turn it on
-with a single launch flag. Pass ``resilient_mode=True`` and keep using the session
-exactly as you normally would -- the settings tree is wrapped so every write and
-command gains resilience automatically.
 
-.. code:: python
+Enable resilient mode
+---------------------
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent(mode="solver", resilient_mode=True)
-  >>>
-  >>> # ...ordinary PyFluent code from here on...
-  >>> solver.settings.file.read_case(file_name="mixing_elbow.cas.h5")
-  >>> solver.settings.setup.models.energy.enabled = True
-  >>> inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
-  >>> inlet.momentum.velocity_magnitude.value = 0.4
-  >>> inlet.turbulence.turbulent_intensity = 0.05   # auto-recovered if out of range
-  >>>
-  >>> solver.settings.solution.initialization.hybrid_initialize()
-  >>> solver.checkpoint("pre-iterate")               # explicit checkpoint
-  >>> solver.settings.solution.run_calculation.iterate(iter_count=100)
-  >>> solver.undo()                                  # roll back to pre-iterate
-
-``Solver.from_install`` accepts the same flag:
-
-.. code:: python
-
-  >>> from ansys.fluent.core import Solver
-  >>> solver = Solver.from_install(resilient_mode=True)
-
-There is **no new per-call API to learn.** The only addition is a handful of
-convenience methods attached to the session for checkpoint / undo / redo:
-
-================================  ==========================================================
-Session member                    Purpose
-================================  ==========================================================
-``solver.checkpoint(name, ...)``  Take an explicit checkpoint (file by default).
-``solver.undo()`` / ``redo()``    Walk the unified undo / redo stack.
-``solver.rewind_to(name)``        Undo repeatedly back to a named checkpoint.
-``solver.resilient_checkpoints``  The :class:`CheckpointManager` (undo / redo stacks).
-================================  ==========================================================
-
-Enabling a warm pool (for failover) is done through ``resilient_config``:
-
-.. code:: python
-
-  >>> from ansys.fluent.core.resilient import ResilientConfig, PoolConfig
-  >>> solver = pyfluent.launch_fluent(
-  ...     mode="solver",
-  ...     resilient_mode=True,
-  ...     resilient_config=ResilientConfig(pool=PoolConfig(size=3)),
-  ... )
-
-.. note::
-
-   Resilient mode never changes *what* Fluent does. It wraps your settings and
-   command calls with classification, checkpointing, and recovery. If a value is
-   accepted by Fluent, it is applied unchanged.
-
-Enabling on an existing session
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you already have a session (for example from ``connect_to_fluent``), enable
-resilient mode in place:
-
-.. code:: python
-
-  >>> from ansys.fluent.core.resilient import enable_resilient_mode
-  >>> enable_resilient_mode(solver)   # same session, now resilient
-
-Advanced: the explicit facade
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For programmatic control (e.g. inspecting the :class:`StepOutcome` of each write,
-or driving the runtime without a live tree in tests), an explicit
-:class:`~ansys.fluent.core.resilient.ResilientSolver` facade is also available. It
-exposes ``set(path, value)`` / ``command(path, **args)`` that take string paths
-and return outcomes. Most users should prefer transparent ``resilient_mode=True``.
-
-.. code:: python
-
-  >>> from ansys.fluent.core.resilient import ResilientSolver
-  >>> with ResilientSolver(session, pool_size=1) as rsolver:
-  ...     out = rsolver.set("setup.models.energy.enabled", True)
-  ...     print(out.ok, out.fixes_applied)
-
-
-Feature 1 -- automatic recovery from non-catastrophic errors
-------------------------------------------------------------
-
-When a settings write fails, the runtime classifies the error and, if it is
-*recoverable*, repairs and retries it automatically using **live** object
-introspection (``is_active`` / ``is_read_only`` / ``allowed_values`` / ``min`` /
-``max``). The repair happens inside the normal ``obj.x = v`` call -- you do not
-catch anything. (The explicit facade additionally returns a :class:`StepOutcome`
-recording what happened.)
-
-**How errors are classified.** Fluent flattens most errors to
-``RuntimeError(<text>)``, so the classifier combines typed exceptions, the shared
-fatal-error state, and text heuristics:
-
-.. important::
-
-   A classification of **fatal** (and therefore a failover) comes *only* from the
-   authoritative session ``ErrorState`` (set by the ``FATAL_ERROR`` event). Error
-   *text* is never used to escalate to fatal, so a recoverable or benign message
-   that merely mentions the word "fatal" cannot trigger a session failover.
-
-====================  ===========  ==================================================
-Category              Severity     Automatic action
-====================  ===========  ==================================================
-``inactive_target``   recoverable  Discover the governing model by live introspection, enable it, then retry.
-``out_of_range``      recoverable  Clamp to the live ``[min, max]`` and retry.
-``wrong_value``       recoverable  Snap to the nearest live ``allowed_values`` entry.
-``wrong_type``        recoverable  Coerce a numeric string to ``int`` / ``float``.
-``read_only``         hard         Not fixable; raises ``UnrecoverableStepError``.
-``benign_interrupt``  benign       A clean solver stop (``RuntimeError("()")``) -- treated as success.
-``fatal``             catastrophic Triggers **failover** (see Feature 4).
-``unknown``           hard         Raises ``UnrecoverableStepError``.
-====================  ===========  ==================================================
-
-**Where each error is detected (and how it is caught).** The three value errors
-you might expect -- out of range, not an allowed value, wrong type -- are not all
-raised in the same place, and resilient mode hooks every layer so recovery is
-transparent regardless:
-
-=========================  ================================================  ================================================
-Error                      Where it is raised                                How resilient mode catches it
-=========================  ================================================  ================================================
-Out of range               Fluent server (``RuntimeError`` via ``set_var``)  At the settings-service layer (``set_var``).
-Not an allowed value       Fluent server (``set_var``), or client-side       At the settings-service layer; client-side
-                           ``DisallowedValuesError``                         ``DisallowedValuesError`` is caught by the
-                                                                             guarded ``__setattr__`` wrapper.
-Wrong data type            Client-side ``TypeError`` in ``Textual.set_state``  By the guarded ``__setattr__`` wrapper, before
-                           / type checks (``flobject.py``) -- *before* any     the value reaches the server.
-                           value reaches the server
-Inactive target            Client-side ``InactiveObjectError`` in            By the guarded ``__getattribute__`` wrapper,
-                           ``Group.__getattribute__`` while *navigating*      which runs model-activation discovery.
-                           into an inactive branch
-=========================  ================================================  ================================================
-
-This is why resilient mode wraps **three** points, not one: the settings-service
-layer (``set_var`` / ``execute_cmd``) for server-reported errors, and -- for the
-errors Fluent raises *client-side before the value is ever sent* -- a guarded,
-reference-counted pair of wrappers around the settings tree's ``__getattribute__``
-and ``__setattr__``. All of these wrappers are a complete no-op for non-resilient
-sessions.
-
-.. note::
-
-   Fluent is permissive about some "type" cases: a numeric string on a real-valued
-   field is accepted natively (treated as a value or expression), so no coercion is
-   needed. The ``wrong_type`` repair only applies when Fluent actually raises a
-   ``TypeError``, and only performs a *safe* coercion (numeric string to a number).
-   A genuinely unconvertible assignment (for example an integer given to a
-   string-valued enumeration) has no safe fix, so the original ``TypeError`` is
-   re-raised unchanged -- resilient mode never masks a real mistake.
-
-**Example (verified on Fluent 27.1.0).** Turbulent intensity must be a fraction
-in ``[0, 1]``. Setting ``5.0`` makes Fluent raise ``Value is not in range``. The
-runtime reads the live bounds (``min=0``, ``max=1``), clamps to ``1``, and
-retries:
-
-.. code:: python
-
-  >>> out = rsolver.set(
-  ...     'setup.boundary_conditions.velocity_inlet["cold-inlet"].turbulence'
-  ...     '.turbulent_intensity',
-  ...     5.0,
-  ... )
-  >>> out.ok
-  True
-  >>> out.fixes_applied
-  ['clamp']
-  >>> out.attempts
-  2
-  >>> out.old_value, out.new_value
-  (0.05, 1)
-
-In transparent mode the same thing happens through ordinary PyFluent code --
-``cold_inlet.turbulence.turbulent_intensity = 5.0`` simply succeeds with the value
-clamped to ``1``.
-
-**Example -- disallowed value snapped (verified on Fluent 27.1.0).** A near-miss of
-an allowed enumeration value is snapped to the nearest valid entry:
-
-.. code:: python
-
-  >>> # 'Intensity and Hydraulic Diamete' (typo) -> nearest allowed value
-  >>> cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diamete"
-  >>> cold_inlet.turbulence.turbulence_specification()
-  'Intensity and Hydraulic Diameter'
-
-**Inactive targets: automatic model activation (live discovery).** Many settings
-are *inactive* until a governing model is enabled -- for example a thermal boundary
-condition is inactive while the energy model is off, and Fluent raises
-``InactiveObjectError`` the moment you navigate into it
-(``cold_inlet.thermal.temperature.value = 293.15``). Resilient mode handles this
-transparently by **live introspection rather than guesswork**: it tentatively
-enables each candidate governing model that is currently off, re-checks whether
-the target has become active, and keeps only the model that actually activates it
-(reverting the rest). So in resilient mode the write above simply succeeds -- the
-energy model is discovered and enabled automatically, then the value is applied.
-
-.. code:: python
-
-  >>> # energy model is off; resilient mode enables it automatically
-  >>> cold_inlet.thermal.temperature.value = 293.15
-  >>> solver.settings.setup.models.energy.enabled()
-  True
-
-This discovery happens both when navigating into an inactive branch (a guarded
-wrapper around the settings tree's attribute access, active only for resilient
-sessions) and when a write reaches the service layer. If **no** model activates
-the target (for example it requires a zone-type assignment instead), the original
-``InactiveObjectError`` is re-raised unchanged -- the runtime never enables models
-blindly.
-
-**Bounded retries.** Recovery is capped (``max_resolver_attempts``, default
-``3``). If no safe fix can be derived, the runtime raises
-``UnrecoverableStepError`` with the original Fluent error chained as the cause --
-it never silently swallows a failure.
-
-
-Feature 2 -- two-tier checkpoints and undo / redo
--------------------------------------------------
-
-Reversible settings changes and irreversible commands require different
-checkpoint strategies, so the runtime keeps **two tiers** under a single
-undo / redo stack:
-
-* **Settings tier** -- an in-memory snapshot of one or more settings subtrees via
-  ``get_state`` (cheap, no disk). Restored with ``set_state``. Use this for
-  reversible parameter changes.
-* **File tier** -- a case/data file written with
-  ``settings.file.write_case_data`` and reloaded with ``read_case_data``. This is
-  the only way to undo *irreversible* operations such as ``iterate`` or
-  ``read_case``, which cannot be reversed by ``set_state``.
-
-Take a checkpoint explicitly:
-
-.. code:: python
-
-  >>> rsolver.checkpoint("before-bcs", kind=CheckpointKind.SETTINGS,
-  ...                    paths=["setup.boundary_conditions"])   # lightweight
-  >>> rsolver.checkpoint("pre-iterate", kind=CheckpointKind.FILE)  # case + data
-
-If you omit ``kind``, a **file** checkpoint is taken (the safest, broadest
-option).
-
-**Automatic checkpoints before irreversible commands.** ``command`` recognizes
-irreversible leaves (``iterate``, ``calculate``, ``dual_time_iterate``,
-``read_case``, ``read_case_data``, ``read_data``, ``read``) and takes a file
-checkpoint *before* running them, so they remain undoable even if you did not ask
-for a checkpoint.
-
-**Undo / redo semantics.** ``undo`` pops the newest checkpoint and restores it.
-To keep every undo redoable, the runtime first captures the *current* state (same
-tier) onto the redo stack, then restores the popped entry:
-
-* a **settings** undo snapshots the present with ``get_state`` and writes back the
-  past with ``set_state``;
-* a **file** undo writes the present with ``write_case_data`` and then reloads the
-  past with ``read_case_data``.
-
-.. code:: python
-
-  >>> rsolver.set("setup.models.energy.enabled", True)
-  >>> rsolver.undo()   # settings restore -> energy back to its previous value
-  >>> rsolver.redo()   # re-applies the change
-
-Taking any *new* checkpoint clears the redo stack (a new branch of history).
-``rewind_to("name")`` undoes repeatedly until the named checkpoint has been
-restored.
-
-.. note::
-
-   Undo is a **state + data** rollback, not a wall-clock rewind. Reloading a case
-   restores the mesh, settings, and solution data, but transient artifacts such
-   as residual history or monitor plots are not reconstructed.
-
-**Disk usage.** File checkpoints are written to the directory configured by
-:class:`FileCheckpointConfig` (default ``resilient_checkpoints/``) and pruned with
-a ring buffer (``keep_last``, default ``5``). Set ``data=False`` to checkpoint the
-case only (smaller, faster) when solution data does not need to be preserved.
-Checkpoint labels that contain path-like characters (dots, colons) are sanitized
-before they become file names, so they are safe on Windows.
-
-**Fail-fast pre-flight checks.** A case/data write or read is a *synchronous*
-Fluent command: if the server-side file operation fails in a way that never
-returns a response (an illegal file name, a missing or unwritable directory, an
-over-long path, or -- on restore -- a missing / empty / unreadable artifact), the
-client can block indefinitely. To avoid that, the file-checkpoint tier validates
-the target **locally, before** issuing the command, and raises an immediate,
-actionable ``CheckpointError`` instead. This turns a latent stall into a clear
-error you can act on.
-
-.. note::
-
-   The pre-flight checks guard the file-checkpoint operations the runtime issues
-   itself. They do not impose any client-side timeout on Fluent commands in
-   general. A broader "a command was accepted but never returned" detector would
-   build on the Fluent **transcript stream** (observing that an in-flight command
-   has produced no new transcript output), which is a possible future addition --
-   the runtime deliberately does not time out Fluent operations on your behalf
-   today.
-
-
-Feature 3 -- the warm session pool
-----------------------------------
-
-A single catastrophic solver error normally forces you to cold-launch a fresh
-Fluent session and replay your whole setup. The warm pool avoids that by keeping
-additional sessions ready.
-
-* ``pool_size=1`` (the **default**) keeps a single session and consumes no extra
-  licenses or resources. Failover is disabled -- there is nothing to fail over to.
-* ``pool_size=N`` (``N > 1``) launches ``N - 1`` **warm standby** sessions
-  eagerly, so a failover is near-instant. Each standby consumes a license and
-  host resources (RAM and cores), so choose ``N`` deliberately.
-
-.. code:: python
-
-  >>> rsolver = ResilientSolver(session, pool_size=3)  # 1 active + 2 standbys
-
-**Health monitoring.** Every session is watched by a
-:class:`SessionHealthMonitor` that combines two signals:
-
-* a push-based subscription to the ``FATAL_ERROR`` solver event (the exact event
-  that flips Fluent's shared error state) -- near-instant, zero steady-state cost;
-* a slow poll backstop (default every ``2`` seconds) that also catches a hard
-  crash whose event never arrived.
-
-Fatal state is *sticky* and the detector is thread-safe. The event callback only
-flips a flag -- it performs no RPCs.
-
-Standby launch keyword arguments are taken from the pool configuration. When you
-use :meth:`ResilientSolver.launch`, the arguments you pass are reused for the
-standbys:
-
-.. code:: python
-
-  >>> rsolver = ResilientSolver.launch(pool_size=3, mode="solver",
-  ...                                  precision="double", processor_count=2)
-
-
-Feature 4 -- failover and checkpoint replay
--------------------------------------------
-
-When the active session enters a fatal state, a ``set`` or ``command`` on it
-raises a *catastrophic* error. The runtime then:
-
-#. promotes the healthiest **warm standby** to active;
-#. **replays the last good checkpoint** onto it; and
-#. retries the failed operation once on the new active session.
-
-The returned :class:`StepOutcome` has ``failed_over=True`` so you can tell a
-failover happened.
-
-**Why replay from a checkpoint, not from the dead session?** Once Fluent is
-fatal, every RPC to it is refused -- you cannot read its state. Recovery therefore
-relies solely on the last checkpoint:
-
-* with ``replay_from="auto"`` (default), the newest **file** checkpoint is
-  reloaded as the base (mesh + settings + data) and the newest **settings**
-  snapshot is layered on top for any changes made after that file was written;
-* ``replay_from="file"`` reloads only the newest file checkpoint;
-* ``replay_from="settings"`` restores only the newest settings snapshot.
-
-This is why the runtime auto-checkpoints before irreversible commands and why you
-should take a checkpoint before risky steps -- anything changed after the last
-checkpoint cannot be recovered on the standby.
-
-.. code:: python
-
-  >>> with ResilientSolver(session, pool_size=3) as rsolver:
-  ...     rsolver.command("file.read_case", file_name="elbow.cas.h5")
-  ...     rsolver.checkpoint("configured")          # replay base
-  ...     out = rsolver.set("setup.models.energy.enabled", True)
-  ...     out.failed_over   # True if the active died and a standby took over
-
-If the pool has no healthy standby (for example ``pool_size=1``), or if replaying
-the checkpoint onto the standby fails, the runtime raises ``FailoverError`` rather
-than silently continuing on a broken session. The dead session is retired off the
-critical path, and the pool refills a replacement standby in the background.
-
-
-Configuration
+Every entry point that creates a solver session accepts ``resilient_mode`` and
+``resilient_config``:
+
+.. code-block:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core.resilient import ResilientConfig
+
+    solver = pyfluent.launch_fluent(mode="solver", resilient_mode=True)
+
+    # The same options apply to connect_to_fluent and to Solver.from_install,
+    # Solver.from_container, Solver.from_pim and Solver.from_connection.
+    solver = pyfluent.Solver.from_install(
+        resilient_mode=True,
+        resilient_config=ResilientConfig(allow_model_activation=True),
+    )
+
+You can also enable it on a session you already have:
+
+.. code-block:: python
+
+    from ansys.fluent.core.resilient import enable_resilient_mode
+
+    enable_resilient_mode(solver)
+
+Once enabled, ``solver.resilient`` gives access to every resilient-mode
+feature. :func:`~ansys.fluent.core.resilient.is_resilient` tells whether a session
+is resilient, and ``solver.resilient.disable()`` turns resilient mode off.
+
+
+Recovery
+--------
+
+When Fluent rejects a write, resilient mode classifies the error and, if it can
+be repaired, applies a fix and retries:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Rejected write
+     - Fix
+   * - Value outside the allowed range
+     - Clamp to the nearest bound.
+   * - String that is not an allowed value
+     - Snap to the closest allowed value (close matches only).
+   * - Value of the wrong type, such as ``"0.5"`` for a real
+     - Convert to the expected type.
+   * - Setting that is inactive
+     - Enable the governing model (only when ``allow_model_activation=True``).
+
+``ResilientConfig.recovery`` selects how a repair is reported:
+
+* ``RecoveryPolicy.WARN`` (default): apply the fix and emit a
+  :class:`~ansys.fluent.core.resilient.ResilientRecoveryWarning`.
+* ``RecoveryPolicy.SILENT``: apply the fix and log it on the
+  ``ansys.resilient`` logger.
+* ``RecoveryPolicy.STRICT``: do not repair; raise the original error.
+
+When a value cannot be repaired, the original Fluent error is raised unchanged,
+so existing ``except`` clauses keep working.
+
+Model activation is off by default because enabling a model changes the
+physics. With ``allow_model_activation=True``, only writes trigger activation.
+Reading an inactive setting raises the usual error and never changes the
+model:
+
+.. code-block:: python
+
+    solver.settings.setup.models.energy.enabled = False
+    inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    inlet.thermal.temperature.value = 293.15  # enables the energy model, then writes
+
+
+Checkpoints and rollback
+------------------------
+
+With ``auto_checkpoint=True`` (default), resilient mode writes a checkpoint
+before each irreversible command once the session has a valid case. If the
+command fails and ``auto_rollback=True`` (default), the session is restored to
+that checkpoint and the original exception is raised with a note that says
+so. ``solver.resilient.last_outcome.rolled_back`` is then ``True``. If the
+checkpoint cannot be restored, the note says that instead and ``rolled_back``
+is ``False``.
+
+.. code-block:: python
+
+    try:
+        solver.settings.solution.run_calculation.calculate()
+    except RuntimeError:
+        # The session is back at the state before calculate().
+        solver.settings.solution.run_calculation.transient_controls.time_step_size = 1e-3
+        solver.settings.solution.run_calculation.calculate()
+
+Named checkpoints can also be written and restored explicitly:
+
+.. code-block:: python
+
+    solver.resilient.checkpoint("initialized")
+    solver.settings.solution.run_calculation.iterate(iter_count=100)
+    solver.resilient.rollback("initialized")  # or rollback() for the newest one
+
+Rolling back discards newer checkpoints. Checkpoints are written to a
+``<run-id>`` folder in ``CheckpointConfig.directory``, or in
+``resilient_checkpoints`` under the current working directory by default. Only
+the newest ``CheckpointConfig.keep_last`` checkpoints are kept. Set
+``include_data=False`` to write case files only.
+
+When Fluent runs on a host or container that does not share the client's file
+system, checkpoints are written to the Fluent working directory instead.
+
+
+Undo and redo
 -------------
 
-:class:`ResilientConfig` groups every option:
+Every settings write is journaled together with the previous value:
 
-.. code:: python
+.. code-block:: python
 
-  >>> from ansys.fluent.core.resilient import (
-  ...     ResilientConfig, PoolConfig, FileCheckpointConfig,
-  ... )
-  >>> config = ResilientConfig(
-  ...     pool=PoolConfig(size=3, health_interval=2.0, replay_from="auto"),
-  ...     file_checkpoint=FileCheckpointConfig(
-  ...         directory="my_checkpoints", keep_last=10, data=True,
-  ...     ),
-  ...     max_resolver_attempts=3,
-  ...     auto_file_checkpoint_before_irreversible=True,
-  ... )
-  >>> rsolver = ResilientSolver(session, config=config)
+    solver.settings.setup.models.viscous.model = "laminar"
+    solver.resilient.undo()  # restores the previous viscous model
+    solver.resilient.redo()  # applies "laminar" again
+
+Undo applies to settings writes only. Commands such as ``iterate`` are reverted
+by rolling back to a checkpoint.
 
 
-Error handling
---------------
+Failover
+--------
 
-Resilient-runtime errors all derive from
-:class:`~ansys.fluent.core.resilient.ResilientError` and always chain the
-underlying Fluent error as the cause (``raise ... from err``):
+Failover needs at least one warm standby session:
 
-================================  ==================================================
-Exception                         Raised when
-================================  ==================================================
-``UnrecoverableStepError``        A step failed and no safe automatic fix applied (session still usable).
-``FailoverError``                 No healthy standby, or replay onto the standby failed.
-``CheckpointError``               A checkpoint could not be captured, restored, or found.
-``PathResolutionError``           A settings path could not be resolved on the live tree.
-================================  ==================================================
+.. code-block:: python
+
+    from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
+
+    solver = pyfluent.launch_fluent(
+        mode="solver",
+        resilient_mode=True,
+        resilient_config=ResilientConfig(pool=PoolConfig(size=2)),
+    )
+
+``PoolConfig.size`` counts the active session, so ``size=2`` launches one
+standby with the same launch arguments as the active session. If the active
+session dies during a settings write or command, resilient mode:
+
+#. promotes a healthy standby,
+#. restores the newest checkpoint on it and replays the journaled operations
+   recorded since then,
+#. retries the failed call, and
+#. emits a :class:`~ansys.fluent.core.resilient.ResilientFailoverWarning`.
+
+A replacement standby is launched in the background.
+
+Keep these limits in mind:
+
+* Failover reroutes ``solver.settings``. Other services of the dead session, such
+  as field data, are not rerouted. Use ``solver.resilient.active_session`` to
+  reach the session that is currently serving.
+* Replay starts from the newest checkpoint. Without a checkpoint, the standby
+  starts from launch state, so take a checkpoint once the case is loaded.
+* Standbys are launched automatically only for local standalone sessions. For
+  container, PIM or remote sessions, pass ``PoolConfig.launch_kwargs`` or
+  ``PoolConfig.launcher``.
+* Exiting ``solver`` exits all the sessions of the pool.
 
 
-End-to-end example
+Events and logging
 ------------------
 
-A complete, runnable mixing-elbow example -- read the case, configure boundary
-conditions (with a deliberately out-of-range value that is auto-recovered),
-checkpoint, iterate, and undo -- is available at
-:ref:`ref_mixing_elbow_resilient`.
+Register a listener to react to what resilient mode does:
+
+.. code-block:: python
+
+    def show(event):
+        print(f"[{event.kind.value}] {event.message}")
+
+    solver.resilient.on_event(show)
+
+Events are of the kinds listed in
+:class:`~ansys.fluent.core.resilient.EventKind`: ``RECOVERED``, ``ACTIVATED``,
+``CHECKPOINT``, ``ROLLBACK``, ``UNDO``, ``REDO`` and ``FAILOVER``. The same
+information is logged on the ``ansys.resilient`` logger, and
+``solver.resilient.journal.to_script()`` returns the journal as plain data.
+
+
+Configuration reference
+-----------------------
+
+.. list-table::
+   :header-rows: 1
+
+   * - Option
+     - Default
+     - Description
+   * - ``recovery``
+     - ``RecoveryPolicy.WARN``
+     - How repairs are reported, or ``STRICT`` to disable them.
+   * - ``allow_model_activation``
+     - ``False``
+     - Enable a governing model when an inactive setting is written.
+   * - ``max_resolver_attempts``
+     - ``3``
+     - Maximum repair attempts for a single write.
+   * - ``auto_checkpoint``
+     - ``True``
+     - Checkpoint before irreversible commands.
+   * - ``auto_rollback``
+     - ``True``
+     - Restore that checkpoint when the command fails.
+   * - ``journal_max_ops``
+     - ``10000``
+     - Maximum number of journaled operations kept in memory.
+   * - ``checkpoint``
+     - ``CheckpointConfig()``
+     - ``directory``, ``keep_last`` (``5``) and ``include_data`` (``True``).
+   * - ``pool``
+     - ``PoolConfig()``
+     - ``size`` (``1``, no standby), ``launch_kwargs`` and ``launcher``.
+
+
+Design
+------
+
+Resilient mode is split into a product-neutral engine and a small product
+adapter:
+
+* ``ansys.fluent.core.resilient.engine`` holds the classifier, resolver,
+  journal, checkpoint store, warm pool and controller. It depends only on the
+  Python standard library, so other Ansys clients can reuse it. PyCFX uses it
+  through ``ansys-cfx-core[resilient]``.
+* :class:`~ansys.fluent.core.resilient.FluentAdapter` implements the Fluent
+  details: error types, health checks, checkpoint I/O, launching standbys and
+  the list of irreversible commands.
+
+The controller wraps the session's settings service. Every write, command and
+named-object change made through ``solver.settings`` therefore goes through
+resilient mode without any change to the settings classes.

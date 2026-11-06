@@ -102,9 +102,8 @@ Resilient mode
 ~~~~~~~~~~~~~~
 
 Make an automated setup-and-solve run survivable with
-:ref:`resilient mode <ref_resilient_guide>`. Recover automatically from
-non-catastrophic Fluent errors, checkpoint and undo / redo across an in-memory
-settings tier and a case/data file tier, and optionally run a warm pool of
-sessions that fails over and replays the last checkpoint when the active solver
-dies.
+:ref:`resilient mode <ref_resilient_guide>`. Repair rejected setting values,
+checkpoint automatically before irreversible commands and roll back when they
+fail, undo and redo settings changes, and fail over to a warm standby session
+when the active solver dies.
 

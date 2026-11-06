@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 #
 #
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -21,761 +20,316 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Guided demo of PyFluent resilient mode (for screen recording).
+""".. _ref_resilient_mode_demo:
 
-This script walks through resilient mode using **two separate, clearly-framed
-examples**, each in its own Fluent session, so a viewer never mistakes one
-example recovering repeatedly for the whole story. It prints plain-ASCII banners
-that make the otherwise-silent recovery visible on camera. Run it with Fluent's
-GUI visible so a viewer sees the live session (graphics + console) react
-alongside this output.
+Resilient mode walkthrough
+--------------------------
+This script shows each resilient-mode capability on live Fluent sessions, one
+chapter at a time:
 
-Recommended recording layout (e.g. in OBS):
+1. Repair of rejected values and activation of the energy model.
+2. Undo and redo of settings changes.
+3. Checkpoints before solves, and rollback.
+4. Failover to a warm standby after the Fluent process is killed.
+5. Automatic rollback of a diverging transient solve.
 
-    +-----------------------------+--------------------------+
-    |  this script's output       |   live Fluent GUI        |
-    |  (demo/chapter + EVENT      |   (graphics + console)   |
-    |   banners)                  |                          |
-    +-----------------------------+--------------------------+
+Run it from a terminal::
 
-Structure
----------
-DEMO 1 -- Mixing elbow (3D): transparent auto-recovery and auto-checkpointing.
-    1. One flag        -- enabling resilient mode (``resilient_mode=True``).
-    2. Auto-recovery   -- out-of-range clamp, disallowed-value snap, and
-                          inactive-target model activation, all through ordinary
-                          PyFluent code.
-    3. Auto-checkpoint -- irreversible commands are checkpointed automatically
-                          (no checkpoint / undo calls in your code).
+    python demo_resilient_mode.py [--auto] [--failover] [--no-gui]
 
-DEMO 2 -- Solidification (2D): recovering a failed / diverging solve automatically.
-    1. A failed solve  -- run a stable baseline solve; push the solver too hard so
-                          Fluent raises a FLOATING POINT EXCEPTION (non-catastrophic
-                          -- the session stays alive); resilient mode AUTOMATICALLY
-                          rolls back to the state it checkpointed before the failed
-                          command; then RESUME solving so the iterations visibly
-                          continue from the restored state (nothing was lost).
+``--auto`` runs without pausing between chapters. ``--failover`` adds chapter 4,
+which launches a second Fluent session as a warm standby. ``--no-gui`` runs Fluent
+without its GUI.
 
-Everything is automatic: the demo never calls checkpoint, undo, or rewind. Each
-demo launches and exits its own Fluent session, and a Recap closes the run.
-
-For the best-looking recording, install ``rich`` (``pip install rich``) so the
-EVENT banners are colour-coded; without it the script falls back to plain ASCII.
-
-Usage
------
-    # interactive, both demos (pauses between steps for narration):
-    python demo_resilient_mode.py
-
-    # unattended / CI-smoke (no Enter prompts):
-    python demo_resilient_mode.py --auto
-
-    # record a single example at a time:
-    python demo_resilient_mode.py --demo 1
-    python demo_resilient_mode.py --demo 2
-
-    # add the crash + failover chapter (launches a warm standby session):
-    python demo_resilient_mode.py --failover
-
-Options can be combined. The script never aborts on a demonstrated error -- that
-is the whole point -- and always exits each Fluent session cleanly.
+See :ref:`ref_resilient_guide` for details.
 """
 
-from __future__ import annotations
+# %%
+# Helpers
+# ~~~~~~~
 
 import argparse
-import os
-import sys
-import time
+import contextlib
+import subprocess
+import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.resilient import (
-    is_resilient,
-    last_outcome,
-    on_journal_event,
-)
+from ansys.fluent.core.resilient import PoolConfig, ResilientConfig, ResilientWarning
 
-# --------------------------------------------------------------------------- #
-# Banner / narration helpers                                                  #
-#                                                                             #
-# Colourful output via ``rich`` when it is installed; otherwise a clean       #
-# plain-ASCII fallback so the demo never hard-fails on a bare environment.    #
-# For the best recording, ``pip install rich`` first.                         #
-# --------------------------------------------------------------------------- #
-
-try:
-    from rich.console import Console
-    from rich.panel import Panel
-    from rich.text import Text
-
-    # Reconfigure stdout to UTF-8 where possible so rich's box-drawing characters
-    # survive being redirected to a file on Windows (cp1252 would otherwise raise
-    # UnicodeEncodeError). Harmless if stdout does not support reconfigure().
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-    except Exception:  # noqa: BLE001
-        pass
-    # Force colour output. Many IDE / embedded consoles are not detected as a TTY
-    # by rich, which then silently drops all colour; forcing a colour system keeps
-    # the EVENT banners colourful there too. Respect NO_COLOR to opt out.
-    _force = None if os.environ.get("NO_COLOR") else "truecolor"
-    _CONSOLE = Console(
-        highlight=False,
-        legacy_windows=False,
-        force_terminal=None if os.environ.get("NO_COLOR") else True,
-        color_system=_force,
-    )
-    _HAVE_RICH = True
-except Exception:  # noqa: BLE001  # pragma: no cover - cosmetic fallback only
-    _CONSOLE = None
-    _HAVE_RICH = False
-
-_WIDTH = 72
+# Every repair is also reported as an event, which this demo prints.
+warnings.simplefilter("ignore", ResilientWarning)
 
 
-def _rule(ch: str = "=") -> str:
-    return ch * _WIDTH
+def chapter(number: int, title: str, auto: bool) -> None:
+    """Print a chapter title, after waiting for Enter unless ``auto`` is set."""
+    if not auto:
+        input("\nPress Enter to continue...")
+    print(f"\n{'=' * 72}\n  {number}. {title}\n{'=' * 72}")
 
 
-def chapter(number: int, title: str) -> None:
-    """Print a chapter header."""
-    if _HAVE_RICH:
-        _CONSOLE.print()
-        _CONSOLE.rule(
-            f"[bold cyan]CHAPTER {number}:  {title}[/bold cyan]",
-            style="cyan",
-        )
-        _CONSOLE.print()
-    else:
-        print("\n" + _rule("="))
-        print(f"  CHAPTER {number}:  {title}".upper())
-        print(_rule("=") + "\n")
+def show_event(event) -> None:
+    """Print a resilient-mode event."""
+    print(f"  >> resilient mode [{event.kind.value}]: {event.message}")
 
 
-def demo_title(number: int, name: str, subtitle: str) -> None:
-    """Print a prominent DEMO title card marking a distinct, separate example."""
-    if _HAVE_RICH:
-        _CONSOLE.print()
-        _CONSOLE.print()
-        body = Text.assemble(
-            (f"DEMO {number}:  {name}\n", "bold white"),
-            (subtitle, "white"),
-        )
-        _CONSOLE.print(
-            Panel(body, border_style="bold magenta", padding=(1, 4), expand=True)
-        )
-        _CONSOLE.print()
-    else:
-        bar = "#" * _WIDTH
-        print("\n\n" + bar)
-        print(bar)
-        print(f"##  DEMO {number}:  {name}".ljust(_WIDTH - 2) + "##")
-        print(f"##  {subtitle}".ljust(_WIDTH - 2) + "##")
-        print(bar)
-        print(bar + "\n")
+# %%
+# Mixing elbow: recovery, undo and redo, checkpoints and failover
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-def say(text: str) -> None:
-    """Print a narration line (what the viewer should notice)."""
-    if _HAVE_RICH:
-        _CONSOLE.print(f"  [dim]>>[/dim] {text}")
-    else:
-        print(f"  >> {text}")
-
-
-#: Per-capability colour/emphasis styling (rich only). Keys are matched by
-#: case-insensitive substring so variants like "auto-recovery (clamp)" map to the
-#: recovery style.
-_EVENT_STYLES = {
-    "error": "bold white on red",
-    "rollback": "bold black on yellow",
-    "undo": "bold black on yellow",
-    "redo": "bold black on yellow",
-    "recovery": "bold black on green",
-    "activate": "bold black on green",
-    "checkpoint": "bold black on cyan",
-    "failover": "bold white on blue",
-    "resume": "bold black on green",
-}
-
-
-def _event_style(capability: str) -> str:
-    lowered = capability.lower()
-    for needle, style in _EVENT_STYLES.items():
-        if needle in lowered:
-            return style
-    return "bold black on white"
-
-
-def event(capability: str, fluent_action: str) -> None:
-    """Print one compact resilient-mode event as ``capability`` + ``action``.
-
-    Each event is a scannable two-line card:
-
-        CAPABILITY      : <what resilient mode did>
-        ACTION IN FLUENT: <what you see happen in the live session>
-
-    so a viewer can follow the whole story from these lines and the Fluent window
-    alone.
-    """
-    style = _event_style(capability)
-    if _HAVE_RICH:
-        body = Text.assemble(
-            ("CAPABILITY       : ", "bold"),
-            (f"{capability}\n", "bold white"),
-            ("ACTION IN FLUENT : ", "bold"),
-            (fluent_action, "white"),
-        )
-        _CONSOLE.print(Panel(body, border_style=style, padding=(0, 2)))
-    else:
-        print("\n  +" + "-" * (_WIDTH - 4) + "+")
-        print(f"  | CAPABILITY       : {capability}")
-        print(f"  | ACTION IN FLUENT : {fluent_action}")
-        print("  +" + "-" * (_WIDTH - 4) + "+")
-
-
-def report_outcome(session, label: str, rejected=None) -> None:
-    """Translate the last resilient outcome into a capability/action event."""
-    out = last_outcome(session)
-    if out is None:
-        return
-    if out.fixes_applied:
-        fixes = ", ".join(out.fixes_applied)
-        rejected_txt = f"{rejected!r} rejected -> " if rejected is not None else ""
-        event(
-            f"auto-recovery ({fixes})",
-            f"{label}: {rejected_txt}applied {out.new_value!r}, accepted.",
-        )
-    elif out.failed_over:
-        event(
-            "failover",
-            f"{label}: promoted a warm standby session and replayed the state.",
-        )
-
-
-def pause(auto: bool, prompt: str = "Press Enter to continue...") -> None:
-    """Pause for narration unless running unattended."""
-    if auto:
-        time.sleep(1.0)
-        return
-    try:
-        input(f"\n  ({prompt})")
-    except EOFError:
-        pass
-
-
-def attach_journal_logging(solver) -> None:
-    """Log the automatic undo / redo recovery cycle as capability events.
-
-    Resilient mode records every successful operation on a journal; when a step
-    errors it is undone (the pre-step value, read via get_state, is restored) and
-    -- if recoverable -- redone with the repaired value. Here we surface just those
-    undo / redo events so a viewer sees the cycle; successful steps are recorded
-    silently.
-    """
-
-    def _leaf(path):
-        # Short, readable name from a scheme or dotted path for the banners.
-        token = str(path or "setting").replace("\\", "/")
-        token = token.rsplit("/", 1)[-1].rsplit(".", 1)[-1]
-        return token or "setting"
-
-    def _fmt(value):
-        return "the previous value" if value in (None, "") else repr(value)
-
-    def _listener(event_name, op):
-        if event_name == "undo":
-            event(
-                "undo",
-                f"{_leaf(op.path)}: restored the previously recorded value "
-                f"({_fmt(op.old_value)}).",
-            )
-        elif event_name == "redo":
-            fixes = ", ".join(getattr(op, "fixes", []) or [])
-            event(
-                "redo",
-                f"{_leaf(op.path)}: re-applied the recorded value"
-                + (f" ({fixes})" if fixes else "")
-                + f" -> {_fmt(op.new_value)}.",
-            )
-
-    on_journal_event(solver, _listener)
-
-
-# --------------------------------------------------------------------------- #
-# Chapters                                                                     #
-# --------------------------------------------------------------------------- #
-
-
-def _resolve_mesh(file_name: str, repo_dir: str) -> str:
-    """Return a path to ``file_name``, preferring a local copy over downloading.
-
-    The example-data download can fail transiently (network hiccup or a moved
-    URL). To keep the demo robust, reuse a copy already present in the current
-    working directory if there is one, and only fall back to downloading
-    otherwise. The downloaded file is cached in the cwd, so subsequent runs use
-    the local copy.
-    """
-    local = os.path.join(os.getcwd(), file_name)
-    if os.path.isfile(local):
-        say(f"using local mesh: {file_name}")
-        return local
-    try:
-        return examples.download_file(file_name, repo_dir, save_path=os.getcwd())
-    except Exception as err:  # noqa: BLE001
-        raise FileNotFoundError(
-            f"Could not obtain {file_name!r}: no local copy in {os.getcwd()!r} and "
-            f"the download failed ({err}). Place the file next to the demo or "
-            f"restore network access, then re-run."
-        ) from err
-
-
-def intro(auto: bool) -> None:
-    """Shared intro: motivate resilient mode by naming what it protects against."""
-    print("\n" + _rule("="))
-    print("  PYFLUENT RESILIENT MODE -- GUIDED DEMO")
-    print(_rule("="))
-    say("A long, scripted Fluent run is fragile. In ordinary PyFluent:")
-    say("  - a single out-of-range value raises and aborts the script;")
-    say("  - a setting that needs an inactive model raises on access;")
-    say("  - a diverging solve throws a floating point exception and you")
-    say("    lose the converged state you already paid for.")
-    say("Resilient mode turns each of these into a handled, recoverable event.")
-    say("We show it on TWO separate examples, run in their own Fluent sessions:")
-    say("  DEMO 1 (mixing elbow, 3D) -- transparent auto-recovery + auto-checkpoint;")
-    say("  DEMO 2 (solidification, 2D) -- automatic recovery of a failed solve.")
-    pause(auto)
-
-
-def demo1_launch(auto: bool):
-    """DEMO 1, chapter 1: launch a 3D resilient session and load the mesh."""
-    chapter(1, "One flag: resilient_mode=True")
-    say("The ONLY change to your code is one launch argument. Everything after")
-    say("this is ordinary PyFluent -- no new per-call API to learn.")
-    print("\n      solver = pyfluent.launch_fluent(")
-    print('          mode="solver", ui_mode="gui", resilient_mode=True,')
-    print("      )\n")
+def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
+    """Run chapters 1 to 4 on the mixing elbow."""
     solver = pyfluent.launch_fluent(
-        mode="solver",
-        ui_mode="gui",
-        resilient_mode=True,
-    )
-    say(f"resilient mode enabled: {is_resilient(solver)}")
-    attach_journal_logging(solver)
-    mesh = _resolve_mesh("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read_mesh(file_name=mesh)
-    say("Mesh loaded; the live Fluent session is on the right.")
-    pause(auto)
-    return solver
-
-
-def demo1_auto_recovery(solver, auto: bool) -> None:
-    """DEMO 1, chapter 2: clamp, nearest-allowed snap, inactive-target activation."""
-    chapter(2, "Transparent auto-recovery")
-
-    # 2a. Inactive-target activation: energy is off; a thermal BC needs it.
-    say("Energy model is OFF. We set a thermal boundary condition anyway --")
-    say("ordinary code. Watch resilient mode discover + enable the model.")
-    solver.settings.setup.models.energy.enabled = False
-    cold = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
-    print("\n      cold_inlet.thermal.temperature.value = 293.15\n")
-    cold.thermal.temperature.value = 293.15
-    event(
-        "activate inactive target",
-        "energy model auto-enabled, then the thermal temperature is set "
-        f"(energy.enabled = {solver.settings.setup.models.energy.enabled()}).",
-    )
-    pause(auto)
-
-    # 2b. Out-of-range clamp.
-    say("Turbulent intensity must be in [0, 1]. We deliberately set 5.0.")
-    print("\n      cold_inlet.turbulence.turbulent_intensity = 5.0\n")
-    cold.turbulence.turbulent_intensity = 5.0
-    report_outcome(solver, "turbulent_intensity", rejected=5.0)
-    say(f"live value is now {cold.turbulence.turbulent_intensity()} (clamped).")
-    pause(auto)
-
-    # 2c. Disallowed-value snap.
-    spec = cold.turbulence.turbulence_specification
-    allowed = spec.allowed_values()
-    target = allowed[-1]
-    typo = target[:-1]
-    say("We set a near-miss of an allowed enumeration value (a typo).")
-    print(f"\n      cold_inlet.turbulence.turbulence_specification = {typo!r}\n")
-    cold.turbulence.turbulence_specification = typo
-    report_outcome(solver, "turbulence_specification", rejected=typo)
-    say(f"snapped to the nearest allowed value: {spec()!r}.")
-    pause(auto)
-
-
-def demo1_auto_checkpoint(solver, auto: bool) -> None:
-    """DEMO 1, chapter 3: show automatic checkpointing before irreversible ops."""
-    chapter(3, "Automatic checkpointing (no manual calls)")
-    say("Resilient mode automatically checkpoints the case + data before every")
-    say("irreversible command (iterate, read_case, ...). You do not call")
-    say("checkpoint, undo, or rewind -- it just happens, so a failed command can")
-    say("be rolled back for you. Here, simply initializing + iterating triggers")
-    say("the automatic checkpoint; watch the Fluent console write the case.")
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver.settings.solution.run_calculation.iterate(iter_count=5)
-    event(
-        "checkpoint (automatic)",
-        "case + data written automatically before the iterate command "
-        "(no checkpoint() call in your code).",
-    )
-    pause(auto)
-
-
-def demo1_undo_redo(solver, auto: bool) -> None:
-    """DEMO 1, chapter 4: undo/redo order is correct (reviewer Point 1).
-
-    Sets the same setting twice, then undoes step-by-step to show each undo
-    restores the value captured live BEFORE that step -- never a stale default,
-    so an earlier undo never overrides a later change.
-    """
-    chapter(4, "Undo / redo \u2014 correct order, no stale override")
-    vis = solver.settings.setup.models.viscous
-    say("We change the SAME setting twice, then undo one step at a time.")
-    say("Each undo must restore the value captured live before that step.")
-    start = vis.model()
-    say(f"viscous model starts at: {start!r}")
-
-    vis.model = "k-epsilon"  # Op1  (old captured live = start)
-    say(f"Op1 -> {vis.model()!r}")
-    vis.model = "laminar"  # Op2  (old captured live = 'k-epsilon')
-    say(f"Op2 -> {vis.model()!r}")
-
-    journal = solver._resilient.journal
-    say("Now undo one step at a time (watch the undo / redo banners):")
-    journal.undo()  # undo Op2 -> 'k-epsilon'
-    say(
-        f"   after undo Op2 -> viscous model = {vis.model()!r}  "
-        "(value BEFORE Op2, not a default)"
-    )
-    journal.undo()  # undo Op1 -> original
-    say(
-        f"   after undo Op1 -> viscous model = {vis.model()!r}  "
-        "(the original value; LIFO order is exact)"
-    )
-    journal.redo()  # redo Op1
-    say(
-        f"   after redo Op1 -> viscous model = {vis.model()!r}  "
-        "(re-applies the recorded new value)"
-    )
-    say(
-        "Each undo restored the value captured live before that step -- an "
-        "earlier undo never overrides a later change."
-    )
-    pause(auto)
-
-
-def demo2_divergence(auto: bool) -> None:
-    """DEMO 2: a 2D solidification solve that hits a floating point exception and
-    is AUTOMATICALLY rolled back to the last-good state, then resumed."""
-    chapter(1, "A failed solve, recovered automatically")
-    say("A real solver failure, handled with ZERO manual recovery calls. The")
-    say("solidification case is 2D, so this is a completely separate Fluent")
-    say("session from Demo 1. The plan:")
-    say("  1. run a stable baseline solve (watch the residuals in Fluent),")
-    say("  2. push too hard -> Fluent raises a FLOATING POINT EXCEPTION,")
-    say("  3. resilient mode AUTOMATICALLY rolls back to the state it")
-    say("     checkpointed just before the failed command,")
-    say("  4. resume solving -- iterations continue from the restored state.")
-    say("In plain PyFluent, step 2 would abort the whole script. Here we never")
-    say("call checkpoint, undo, or rewind -- it is all automatic.")
-    pause(auto)
-
-    solver = pyfluent.launch_fluent(
-        mode="solver",
-        ui_mode="gui",
-        dimension=pyfluent.Dimension.TWO,
+        mode=pyfluent.FluentMode.SOLVER,
         precision=pyfluent.Precision.DOUBLE,
+        processor_count=2,
+        ui_mode=ui_mode,
+        start_transcript=False,
         resilient_mode=True,
+        resilient_config=ResilientConfig(
+            allow_model_activation=True,
+            pool=PoolConfig(size=2 if failover else 1),
+        ),
     )
+    solver.resilient.on_event(show_event)
     try:
-        attach_journal_logging(solver)
-        mesh = _resolve_mesh("solid.msh", "pyfluent/solidification")
+        mesh = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
         solver.settings.file.read_mesh(file_name=mesh)
-        gen = solver.settings.setup.general
-        gen.solver.two_dim_space = "swirl"
-        gen.operating_conditions.gravity = {"enable": True, "components": [-9.81]}
-        solver.settings.setup.models.viscous.model = "laminar"
-        solver.tui.define.models.solidification_melting(
-            "yes", "constant", "100000", "yes", "no"
+        setup = solver.settings.setup
+        cold_inlet = setup.boundary_conditions.velocity_inlet["cold-inlet"]
+        hot_inlet = setup.boundary_conditions.velocity_inlet["hot-inlet"]
+
+        chapter(1, "Repair of rejected values", auto)
+        setup.models.energy.enabled = False
+        print("Energy model enabled:", setup.models.energy.enabled())
+        print("Setting the cold inlet temperature while the energy model is off.")
+        cold_inlet.thermal.temperature.value = 293.15
+        print("Energy model enabled:", setup.models.energy.enabled())
+        print("Setting a turbulent intensity of 5 (the allowed range is 0 to 1).")
+        cold_inlet.turbulence.turbulence_specification = (
+            "Intensity and Hydraulic Diameter"
         )
-        inlet = solver.settings.setup.boundary_conditions.velocity_inlet["inlet"]
-        inlet.momentum.velocity_magnitude.value = 0.00101
-        inlet.thermal.temperature.value = 1300
+        cold_inlet.turbulence.turbulent_intensity = 5
+        print("Turbulent intensity:", cold_inlet.turbulence.turbulent_intensity())
+        print("Setting the hot inlet specification with '&' instead of 'and'.")
+        hot_inlet.turbulence.turbulence_specification = "Intensity & Hydraulic Diameter"
+        print("Specification:", hot_inlet.turbulence.turbulence_specification())
+
+        cold_inlet.momentum.velocity_magnitude.value = 0.4
+        cold_inlet.turbulence.turbulent_intensity = 0.05
+        cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+        hot_inlet.momentum.velocity_magnitude.value = 1.2
+        hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+        hot_inlet.thermal.temperature.value = 313.15
+
+        chapter(2, "Undo and redo", auto)
+        viscous = setup.models.viscous
+        print("Viscous model:", viscous.model())
+        viscous.model = "laminar"
+        print("Viscous model:", viscous.model())
+        solver.resilient.undo()
+        print("After undo:", viscous.model())
+        solver.resilient.redo()
+        print("After redo:", viscous.model())
+        solver.resilient.undo()
+        print("After a second undo:", viscous.model())
+
+        chapter(3, "Checkpoints and rollback", auto)
+        run_calculation = solver.settings.solution.run_calculation
         solver.settings.solution.initialization.hybrid_initialize()
+        solver.resilient.checkpoint("initialized")
+        cold_inlet.momentum.velocity_magnitude.value = 0.6
+        print("Iterating; a checkpoint is written first.")
+        run_calculation.iterate(iter_count=20)
+        print("Checkpoints:", [c.name for c in solver.resilient.checkpoints])
+        print("Rolling back to 'initialized'.")
+        solver.resilient.rollback("initialized")
+        print("Checkpoints:", [c.name for c in solver.resilient.checkpoints])
+        print("Cold inlet velocity:", cold_inlet.momentum.velocity_magnitude.value())
 
-        run_calc = solver.settings.solution.run_calculation
-
-        # 1. Stable baseline. ``iterate`` is irreversible, so resilient mode
-        #    automatically checkpoints the case + data before it -- this is the
-        #    state it will roll back to if a later solve fails. No manual call.
-        say("Step 1: running a stable baseline solve (watch the residuals). Note")
-        say("that resilient mode auto-checkpoints before this iterate command.")
-        run_calc.iterate(iter_count=20)
-        say("Baseline converged and was auto-checkpointed. Nothing to call.")
-        pause(auto)
-
-        # 2. Push too hard -> floating point exception. ``calculate`` is also
-        #    irreversible, so it is auto-checkpointed too; if it fails
-        #    non-catastrophically, resilient mode auto-rolls-back to that point.
-        say("Step 2: enabling destabilizing physics (Marangoni free surface +")
-        say("coupled flow + swirl) and forcing a huge transient step -- watch the")
-        say("Fluent console blow up. We just call calculate() as usual.")
-        walls = solver.settings.setup.boundary_conditions.wall
-        try:
-            walls["free-surface"] = {
-                "momentum": {
-                    "shear_condition": "Marangoni Stress",
-                    "surface_tension_gradient": -0.00036,
-                },
-                "thermal": {
-                    "thermal_condition": "Convection",
-                    "free_stream_temp": 1500,
-                    "heat_transfer_coeff": 100,
-                },
-            }
-        except Exception:  # noqa: BLE001
-            pass
-        gen.solver.time = "unsteady-1st-order"
-        solver.settings.solution.methods.p_v_coupling.flow_scheme = "Coupled"
-        solver.settings.solution.controls.equations = {
-            "flow": True,
-            "w-swirl": True,
-        }
-        tc = run_calc.transient_controls
-        tc.time_step_size = 1000.0  # deliberately far too large -> divergence
-        tc.time_step_count = 20
-
-        # Ordinary call -- no try/except, no manual rollback. Resilient mode
-        # catches the floating point exception, classifies it non-catastrophic,
-        # and automatically restores the pre-command checkpoint.
-        run_calc.calculate()
-        out = last_outcome(solver)
-        if out is not None and out.result == "auto-rolled-back":
-            event(
-                "detect non-catastrophic error",
-                "solve DIVERGED -> floating point exception; session kept ALIVE "
-                "(no new Fluent session).",
+        if failover:
+            chapter(4, "Failover to a warm standby", auto)
+            solver.resilient.checkpoint("before-crash")
+            cold_inlet.momentum.velocity_magnitude.value = 0.5
+            print("Killing the Fluent process of the active session.")
+            # On Windows, Fluent's cleanup script can report a failure even though
+            # it killed Fluent.
+            with contextlib.suppress(subprocess.CalledProcessError):
+                solver.force_exit()
+            print("Setting the hot inlet velocity on the dead session.")
+            hot_inlet.momentum.velocity_magnitude.value = 1.0
+            standby = solver.resilient.active_session
+            print("A different Fluent session took over:", standby is not solver)
+            print(
+                "Cold inlet velocity, replayed on the standby:",
+                cold_inlet.momentum.velocity_magnitude.value(),
             )
-            event(
-                "auto-rollback",
-                "automatically reloaded the case + data checkpointed before the "
-                "failed command (no undo / rewind call).",
-            )
-        else:
-            say("(This mesh stayed stable under these settings. The divergence is")
-            say(" mesh/BC-sensitive; for a run that reliably raises the floating")
-            say(" point exception see modeling_solidification_workflow_resilient.py.")
-            say(" The automatic rollback + resume is identical when it does fail.)")
-        pause(auto)
-
-        # 3/4. Resume solving from the (restored) state with safe settings. The
-        #      viewer sees iterations CONTINUE from the baseline, not restart.
-        say("Step 4: resuming the solve with safe, conservative settings -- notice")
-        say("the iterations continue from the restored state, they do NOT start")
-        say("over from zero. Nothing was lost across the failure.")
-        solver.settings.solution.controls.equations = {
-            "flow": False,
-            "w-swirl": False,
-        }
-        gen.solver.time = "steady"
-        run_calc.iterate(iter_count=15)
-        event(
-            "resume from restored state",
-            "iterations CONTINUE from the restored solution (residuals do not "
-            "restart from zero) -- nothing was lost.",
-        )
-        pause(auto)
+            print("Iterating on the standby.")
+            run_calculation.iterate(iter_count=10)
+        print(solver.resilient)
     finally:
-        say("Exiting the Demo 2 session.")
         solver.exit()
 
 
-def recap() -> None:
-    """Final recap: print the summary card of every capability shown."""
-    lines = (
-        "auto-recovery of out-of-range values (clamp to live min/max)",
-        "auto-recovery of disallowed values (snap to nearest allowed)",
-        "inactive-target activation (discover + enable the governing model)",
-        "automatic undo (restore last-good value) + redo (re-apply the fix) per step",
-        "automatic checkpointing before irreversible commands",
-        "automatic rollback of a failed / diverging solve to the last-good state",
-        "(opt-in) warm-pool failover with checkpoint replay",
-    )
-    footer = (
-        "Catastrophic (fatal) errors fail over to a warm standby; everything "
-        "else is recovered in place. Your code never changes."
-    )
-    if _HAVE_RICH:
-        _CONSOLE.print()
-        _CONSOLE.rule("[bold green]RECAP[/bold green]", style="green")
-        _CONSOLE.print(
-            "\n  Everything in this demo used [bold]ordinary PyFluent code[/bold]. "
-            "Resilient mode added, with a single launch flag:\n"
-        )
-        for line in lines:
-            _CONSOLE.print(f"    [green]-[/green] {line}")
-        _CONSOLE.print(f"\n  [dim]{footer}[/dim]")
-        _CONSOLE.rule(style="green")
-    else:
-        print("\n" + _rule("="))
-        print("  RECAP")
-        print(_rule("=") + "\n")
-        print("  Everything in this demo used ORDINARY PyFluent code. Resilient")
-        print("  mode added, with a single launch flag:\n")
-        for line in lines:
-            print(f"    - {line}")
-        print(f"\n  {footer}")
-        print("\n" + _rule("="))
+# %%
+# Solidification: automatic rollback of a diverging solve
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-def run_demo_1(auto: bool) -> None:
-    """DEMO 1 (mixing elbow, 3D): transparent auto-recovery and auto-checkpoint."""
-    demo_title(
-        1,
-        "Mixing elbow (3D)",
-        "Transparent auto-recovery and automatic checkpointing",
+def setup_solidification(solver) -> None:
+    """Set up the solidification case and solve the steady conduction problem."""
+    mesh = examples.download_file("solid.msh", "pyfluent/solidification")
+    settings = solver.settings
+    settings.file.read_mesh(file_name=mesh)
+    general = settings.setup.general
+    general.solver.two_dim_space = "swirl"
+    general.operating_conditions.gravity = {"enable": True, "components": [-9.81]}
+    settings.setup.models.viscous.model = "laminar"
+    solver.tui.define.models.solidification_melting(
+        "yes", "constant", "100000", "yes", "no"
     )
-    solver = None
+    materials = settings.setup.materials
+    materials.database.copy_by_name(type="fluid", name="air", new_name="liquid-metal")
+    materials.fluid["liquid-metal"] = {
+        "density": {
+            "polynomial": {"coefficients": [8000, -0.1], "function_of": "temperature"},
+            "option": "polynomial",
+        },
+        "viscosity": {"value": 0.00553},
+        "specific_heat": {"value": 680.0},
+        "thermal_conductivity": {"value": 30.0},
+        "melting_heat": {"value": 100000.0},
+        "tsolidus": {"value": 1150.0},
+        "tliqidus": {"value": 1150.0},
+    }
+    settings.setup.cell_zone_conditions.fluid["fluid"] = {
+        "general": {"material": "liquid-metal"}
+    }
+    conditions = settings.setup.boundary_conditions
+    inlet = conditions.velocity_inlet["inlet"]
+    inlet.momentum.velocity_magnitude.value = 0.00101
+    inlet.thermal.temperature.value = 1300
+    outlet = conditions.velocity_inlet["outlet"]
+    outlet.momentum.velocity_specification_method = "Components"
+    outlet.momentum.swirl_angular_velocity = 1
+    outlet.momentum.velocity_components = [0.001, 0, 0]
+    outlet.thermal.temperature.value = 500
+    conditions.wall["bottom-wall"] = {
+        "thermal": {"thermal_condition": "Temperature", "temperature": 1300}
+    }
+    conditions.wall["free-surface"] = {
+        "momentum": {
+            "shear_condition": "Marangoni Stress",
+            "surface_tension_gradient": -0.00036,
+        },
+        "thermal": {
+            "thermal_condition": "Convection",
+            "free_stream_temp": 1500,
+            "heat_transfer_coeff": 100,
+        },
+    }
+    conditions.wall["side-wall"] = {
+        "thermal": {"thermal_condition": "Temperature", "temperature": 1400}
+    }
+    conditions.wall["solid-wall"] = {
+        "momentum": {
+            "wall_motion": "Moving Wall",
+            "velocity_spec": "Rotational",
+            "rotation_speed": 1,
+        },
+        "thermal": {"thermal_condition": "Temperature", "temperature": 500},
+    }
+    methods = settings.solution.methods
+    methods.p_v_coupling.flow_scheme = "Coupled"
+    methods.spatial_discretization.discretization_scheme = {"pressure": "presto!"}
+    methods.pseudo_time_method.formulation = {"coupled_solver": "global-time-step"}
+    controls = settings.solution.controls
+    controls.equations = {"flow": False, "w-swirl": False}
+    initialization = settings.solution.initialization
+    initialization.hybrid_initialize()
+    settings.results.custom_field_functions.create(
+        name="omegar", custom_field_function="1 * radial_coordinate"
+    )
+    for variable, value in (("x-pull-velocity", 0.001), ("z-pull-velocity", None)):
+        patch = {
+            "cell_zones": ["fluid"],
+            "variable": variable,
+            "reference_frame": "Relative to Cell Zone",
+            "use_custom_field_function": True,
+            "custom_field_function_name": "omegar",
+        }
+        if value is not None:
+            patch["value"] = value
+        initialization.patch.calculate_patch(**patch)
+    run_calculation = settings.solution.run_calculation
+    run_calculation.pseudo_time_settings.time_step_method = {
+        "time_step_method": "user-specified",
+        "auto_time_size_calc_solid_zone": False,
+    }
+    run_calculation.iterate(iter_count=20)
+
+
+def solidification(ui_mode: str, auto: bool) -> None:
+    """Run chapter 5 on the solidification case."""
+    chapter(5, "Automatic rollback of a diverging solve", auto)
+    solver = pyfluent.launch_fluent(
+        mode=pyfluent.FluentMode.SOLVER,
+        precision=pyfluent.Precision.DOUBLE,
+        dimension=pyfluent.Dimension.TWO,
+        ui_mode=ui_mode,
+        start_transcript=False,
+        resilient_mode=True,
+    )
+    solver.resilient.on_event(show_event)
     try:
-        solver = demo1_launch(auto)
-        demo1_auto_recovery(solver, auto)
-        demo1_auto_checkpoint(solver, auto)
-        demo1_undo_redo(solver, auto)
-    finally:
-        if solver is not None:
-            say("Exiting the Demo 1 session.")
-            solver.exit()
+        print("Setting up the solidification case and solving the steady state.")
+        setup_solidification(solver)
+        settings = solver.settings
+        settings.setup.general.solver.time = "unsteady-1st-order"
+        controls = settings.solution.controls
+        controls.equations = {"flow": True, "w-swirl": True}
+        controls.under_relaxation = {"delh": 0.1}
+        transient_controls = settings.solution.run_calculation.transient_controls
+        transient_controls.time_step_size = 0.1
+        transient_controls.time_step_count = 50
 
-
-def run_demo_2(auto: bool) -> None:
-    """DEMO 2 (solidification, 2D): recovering a failed / diverging solve."""
-    demo_title(
-        2,
-        "Solidification (2D)",
-        "Recovering a failed solve by rolling back to a checkpoint",
-    )
-    demo2_divergence(auto)
-
-
-def run_failover_chapter(auto: bool) -> None:
-    """DEMO 3 (opt-in): the active session crashes; a warm standby takes over.
-
-    With a warm pool (``pool_size=2``) resilient mode keeps a standby Fluent
-    session ready. We checkpoint the case + data, force the active session into a
-    fatal state, and the standby is promoted and replays the last checkpoint -- so
-    a catastrophic crash costs nothing. This is the same capability the CFX demo
-    shows, driven by the SAME engine (only the adapter differs).
-    """
-    from ansys.fluent.core.resilient import PoolConfig, ResilientConfig
-
-    demo_title(
-        3,
-        "Crash + failover (3D)",
-        "A warm standby replays the last checkpoint after a fatal crash",
-    )
-    chapter(1, "Warm pool: pool_size=2 (1 active + 1 standby)")
-    say("Resilient mode can keep warm standby sessions. On a FATAL crash it")
-    say("promotes a healthy standby and replays the last checkpoint onto it. A")
-    say("fatal session's RPCs are refused, so recovery relies only on the")
-    say("checkpoint -- never on reading the dead session.")
-    pause(auto)
-
-    # Launch the active session with resilient mode + a warm pool. The standby is
-    # launched eagerly by the pool using the same launch arguments.
-    launch_kwargs = {"mode": "solver", "ui_mode": "gui"}
-    config = ResilientConfig(pool=PoolConfig(size=2, launch_kwargs=launch_kwargs))
-    active = pyfluent.launch_fluent(
-        resilient_mode=True, resilient_config=config, **launch_kwargs
-    )
-    pool = None
-    try:
-        controller = active._resilient
-        pool = controller.pool
-        say(f"pool size: {pool.size}  (1 active + {pool.size - 1} warm standby)")
-        attach_journal_logging(active)
-
-        mesh = _resolve_mesh("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-        active.settings.file.read_mesh(file_name=mesh)
-        active.settings.solution.initialization.hybrid_initialize()
-
-        chapter(2, "Checkpoint, then crash")
-        say("Take an explicit checkpoint (a real case + data write), then force")
-        say("the active session into a fatal state to simulate a crash.")
-        entry = active.checkpoint("pre-crash")
-        event(
-            "checkpoint (real case + data)",
-            "a reloadable Fluent case + data was written for failover replay "
-            f"({os.path.basename(str(entry.case_data_path or ''))}).",
-        )
-        pause(auto)
-
-        # Force a fatal error state on the active session (authoritative signal).
-        active._fluent_connection._error_state.set("fatal", "simulated crash")
-        event(
-            "crash detected (fatal)",
-            "the active Fluent session is in a fatal state; its RPCs are refused.",
-        )
-        say("forcing failover to the warm standby...")
-
-        chapter(3, "Failover + checkpoint replay")
-        new_active = pool.failover(controller.checkpoints)
-        event(
-            "failover + checkpoint replay",
-            "the warm standby was promoted and reloaded the checkpointed case + "
-            "data; the crash cost no progress.",
-        )
-        say(
-            "recovered on the standby -- mesh is loaded: "
-            f"{bool(new_active.settings.setup.models.energy.enabled() is not None)}."
-        )
-        pause(auto)
-    finally:
-        say("Exiting the failover-demo sessions.")
-        if pool is not None:
-            pool.shutdown()
+        print("Solving to 5 seconds with a time step of 0.1 s; the solve diverges.")
+        try:
+            settings.solution.run_calculation.calculate()
+        except RuntimeError as error:
+            print(f"The solve failed: {error}")
+            print("Rolled back:", solver.resilient.last_outcome.rolled_back)
+            print("Retrying from the restored steady state with a time step of 1 ms.")
+            controls.under_relaxation = {"delh": 0.02}
+            transient_controls.time_step_size = 0.001
+            transient_controls.time_step_count = 5
+            settings.solution.run_calculation.calculate()
+            print("The retry completed.")
         else:
-            active.exit()
+            print("The solve did not diverge this time.")
+    finally:
+        solver.exit()
 
 
-def main(argv=None) -> int:
-    """Run the guided demo(s); each demo uses its own Fluent session."""
-    parser = argparse.ArgumentParser(description="PyFluent resilient-mode demo.")
-    parser.add_argument(
-        "--auto",
-        action="store_true",
-        help="Run unattended with short timed pauses (no Enter prompts).",
-    )
-    parser.add_argument(
-        "--demo",
-        choices=("1", "2", "all"),
-        default="all",
-        help="Which example to run: 1 (mixing elbow), 2 (solidification), "
-        "or all (default).",
-    )
-    parser.add_argument(
-        "--failover",
-        action="store_true",
-        help="Also run the crash + failover chapter (launches a warm standby "
-        "session, so it needs a second Fluent license + extra RAM/cores).",
-    )
-    args = parser.parse_args(argv)
+# %%
+# Run the demo
+# ~~~~~~~~~~~~
 
-    intro(args.auto)
-    if args.demo in ("1", "all"):
-        run_demo_1(args.auto)
-    if args.demo in ("2", "all"):
-        run_demo_2(args.auto)
-    if args.failover:
-        run_failover_chapter(args.auto)
-    recap()
-    return 0
+
+def main() -> None:
+    """Parse the command line and run the chapters."""
+    parser = argparse.ArgumentParser(description="PyFluent resilient mode demo.")
+    parser.add_argument("--auto", action="store_true", help="do not pause")
+    parser.add_argument(
+        "--failover", action="store_true", help="also demonstrate failover"
+    )
+    parser.add_argument("--no-gui", action="store_true", help="hide the Fluent GUI")
+    args = parser.parse_args()
+    ui_mode = "no_gui" if args.no_gui else "gui"
+    mixing_elbow(ui_mode, args.auto, args.failover)
+    solidification(ui_mode, args.auto)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

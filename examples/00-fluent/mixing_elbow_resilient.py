@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 #
 #
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -23,83 +22,67 @@
 
 """.. _ref_mixing_elbow_resilient:
 
-Resilient solver setup and solution
------------------------------------
-This example solves the mixing-elbow case exactly like the standard
-:ref:`settings-API example <ref_mixing_elbow_settings_api_beta>` -- the PyFluent
-code is identical -- but launches with ``resilient_mode=True``. That single flag
-makes the ordinary ``solver.settings...`` writes and commands **resilient**:
+Mixing elbow in resilient mode
+------------------------------
+This example sets up and solves the mixing elbow with ordinary settings API
+code, launched with ``resilient_mode=True``. It shows how resilient mode:
 
-* **auto-recovery** -- a recoverable Fluent error (for example an out-of-range
-  value) is classified, repaired against the live bounds / allowed values, and
-  retried automatically, with no special API;
-* **automatic checkpointing + rollback** -- irreversible commands (``iterate``,
-  ``read_case``, ...) are automatically checkpointed before they run, and if such
-  a command fails with a non-catastrophic error the session is automatically
-  rolled back to that checkpoint -- no manual ``undo`` needed;
-* **failover** -- if you launch with ``pool_size > 1`` (via ``resilient_config``),
-  a fatal solver error fails over to a warm standby and replays the last
-  checkpoint instead of cold-restarting.
+* repairs rejected values and enables a governing model when needed,
+* undoes and redoes settings writes,
+* checkpoints before ``iterate`` and rolls back on request.
 
-Note that below the code reads just like normal PyFluent: there is no new
-per-call API to learn, and no explicit checkpoint / undo calls. Resilience
-happens transparently inside the settings tree.
+See :ref:`ref_resilient_guide` for details.
 """
 
-###############################################################################
+# %%
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-import os
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.resilient import ResilientConfig
 
 import_file_name = examples.download_file(
-    "mixing_elbow.msh.h5",
-    "pyfluent/mixing_elbow",
-    save_path=os.getcwd(),
+    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
 )
 
-###############################################################################
+# %%
 # Launch Fluent in resilient mode
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# The only difference from a normal launch is ``resilient_mode=True``. Everything
-# after this point is ordinary PyFluent code.
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ``allow_model_activation=True`` lets resilient mode enable a governing model,
+# such as energy, when you write a setting that depends on it.
 
 solver = pyfluent.launch_fluent(
-    precision="double",
+    precision=pyfluent.Precision.DOUBLE,
     processor_count=2,
-    mode="solver",
+    mode=pyfluent.FluentMode.SOLVER,
     resilient_mode=True,
+    resilient_config=ResilientConfig(allow_model_activation=True),
 )
+solver.resilient.on_event(lambda event: print(f"[{event.kind.value}] {event.message}"))
 
-###############################################################################
-# Read the mesh and check it
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ``read_mesh`` is irreversible, so resilient mode takes an automatic file
-# checkpoint before it runs.
+# %%
+# Read the mesh
+# ~~~~~~~~~~~~~
 
 solver.settings.file.read_mesh(file_name=import_file_name)
-solver.settings.mesh.check()
 
-###############################################################################
-# Enable heat transfer
-# ~~~~~~~~~~~~~~~~~~~~
-solver.settings.setup.models.energy.enabled = True
-
-###############################################################################
+# %%
 # Set up boundary conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Exactly as in the standard example. If any value is rejected by Fluent as
-# recoverable (for example out of range), resilient mode repairs and retries it
-# automatically -- you would otherwise have had to catch the error yourself.
+# The energy model is off, so the inlet temperature is inactive. Writing it
+# enables the energy model first. The turbulent intensity of 5 is outside the
+# allowed range and is clamped to the upper bound with a warning.
 
 cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 cold_inlet.momentum.velocity_magnitude.value = 0.4
 cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-cold_inlet.turbulence.turbulent_intensity = 0.05
+cold_inlet.turbulence.turbulent_intensity = 5
 cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
 cold_inlet.thermal.temperature.value = 293.15
+
+print("energy enabled:", solver.settings.setup.models.energy.enabled())
+print("turbulent intensity:", cold_inlet.turbulence.turbulent_intensity())
 
 hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 hot_inlet.momentum.velocity_magnitude.value = 1.2
@@ -107,24 +90,41 @@ hot_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diamete
 hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
 hot_inlet.thermal.temperature.value = 313.15
 
-###############################################################################
-# Initialize the flow field
-# ~~~~~~~~~~~~~~~~~~~~~~~~~
-solver.settings.solution.initialization.hybrid_initialize()
+# %%
+# Undo and redo a settings change
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-###############################################################################
+cold_inlet.turbulence.turbulent_intensity = 0.05
+solver.resilient.undo()
+print("after undo:", cold_inlet.turbulence.turbulent_intensity())
+solver.resilient.redo()
+print("after redo:", cold_inlet.turbulence.turbulent_intensity())
+
+# %%
+# Initialize and checkpoint
+# ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+solver.settings.solution.initialization.hybrid_initialize()
+solver.resilient.checkpoint("initialized")
+
+# %%
 # Solve
 # ~~~~~
-# ``iterate`` is irreversible, so resilient mode automatically checkpoints the
-# case + data just before it runs. Nothing extra to call: if the solve fails with
-# a non-catastrophic error, resilient mode automatically rolls back to that
-# checkpoint; if it hits a fatal error (and a warm pool is configured), it fails
-# over to a standby and replays the checkpoint. Either way you write ordinary
-# PyFluent code.
+# ``iterate`` is irreversible, so resilient mode writes an automatic checkpoint
+# before it runs. If the solve failed, the session would be restored to that
+# checkpoint and the error raised.
 
 solver.settings.solution.run_calculation.iterate(iter_count=100)
+print("checkpoints:", [checkpoint.name for checkpoint in solver.resilient.checkpoints])
 
-###############################################################################
+# %%
+# Roll back to the initialized state
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+solver.resilient.rollback("initialized")
+
+# %%
 # Exit
 # ~~~~
+
 solver.exit()

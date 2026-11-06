@@ -78,6 +78,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 if TYPE_CHECKING:
     from ansys.fluent.core.meshing.session.meshing import Meshing
     from ansys.fluent.core.meshing.session.pure_meshing import PureMeshing
+    from ansys.fluent.core.resilient import ResilientConfig
     from ansys.fluent.core.solver.session.solver import Solver
     from ansys.fluent.core.solver.session.solver_aero import SolverAero
     from ansys.fluent.core.solver.session.solver_icing import SolverIcing
@@ -369,7 +370,7 @@ def launch_fluent(
     certificates_folder: str | None = None,
     insecure_mode: bool = False,
     resilient_mode: bool = False,
-    resilient_config: Any | None = None,
+    resilient_config: ResilientConfig | None = None,
 ) -> (
     Meshing
     | PureMeshing
@@ -554,22 +555,10 @@ def launch_fluent(
 
     session = launcher()
     if resilient_mode and not dry_run:
-        session = _maybe_enable_resilient_mode(session, resilient_config)
+        from ansys.fluent.core.resilient import _enable_on_new_session
+
+        session = _enable_on_new_session(session, resilient_config, launched=True)
     return session
-
-
-def _maybe_enable_resilient_mode(session, resilient_config):
-    """Enable resilient mode on a solver session, if applicable.
-
-    Resilient mode wraps the settings tree, so it only applies to a live solver
-    session (one exposing ``_settings_service``). Meshing sessions and dry-run
-    results are returned unchanged.
-    """
-    if not hasattr(session, "_settings_service"):
-        return session
-    from ansys.fluent.core.resilient.attach import enable_resilient_mode
-
-    return enable_resilient_mode(session, resilient_config)
 
 
 def connect_to_fluent(
@@ -586,6 +575,8 @@ def connect_to_fluent(
     insecure_mode: bool = False,
     start_watchdog: bool | None = None,
     file_transfer_service: Any | None = None,
+    resilient_mode: bool = False,
+    resilient_config: ResilientConfig | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SolverAero:
     """Connect to an existing Fluent server instance.
 
@@ -635,17 +626,14 @@ def connect_to_fluent(
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     resilient_mode : bool, optional
-        If True (and launching a solver), enable *resilient mode* on the returned
-        session. The settings tree is transparently wrapped so that ordinary
-        PyFluent code (``solver.settings...`` writes and commands) gains automatic
-        recovery from recoverable Fluent errors, two-tier checkpoint/undo/redo
-        (via ``session.checkpoint`` / ``undo`` / ``redo``), and -- with a warm pool
-        -- failover with checkpoint replay. Defaults to False. See
-        :mod:`ansys.fluent.core.resilient`.
+        Whether to enable resilient mode on the connected solver session. The
+        default is ``False``. See :ref:`ref_resilient_guide`. Because the state of
+        the session before connecting is unknown, write a checkpoint with
+        ``session.resilient.checkpoint()`` before relying on failover.
     resilient_config : ResilientConfig, optional
-        Configuration for resilient mode (pool size, checkpoint directory, resolver
-        attempts, ...). Only used when ``resilient_mode`` is True. Defaults to None,
-        which uses the resilient-mode defaults (single session, no failover).
+        Resilient-mode configuration. Only used when ``resilient_mode`` is
+        ``True``. The default is ``None``, in which case the default configuration
+        is used.
 
     Returns
     -------
@@ -714,9 +702,14 @@ def connect_to_fluent(
                 inside_container=fluent_connection.connection_properties.inside_container,
             )
 
-    return new_session(
+    session = new_session(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection.scheme_eval,
         start_transcript=start_transcript,
         file_transfer_service=file_transfer_service,
     )
+    if resilient_mode:
+        from ansys.fluent.core.resilient import _enable_on_new_session
+
+        session = _enable_on_new_session(session, resilient_config, launched=False)
+    return session
