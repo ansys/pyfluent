@@ -122,7 +122,7 @@ def test_accepted_write_is_journaled_with_its_previous_value():
 def test_rejected_value_is_clamped_with_a_warning_and_an_event():
     session, events = _enable()
     with pytest.warns(ResilientRecoveryWarning, match="setup.intensity"):
-        _set(session, "setup.intensity", 5.0)
+        _set(session, "setup.intensity", 1.05)
     assert session.settings.setup.intensity.value == 1.0
     outcome = session.resilient.last_outcome
     assert outcome.fixes_applied == ["clamp"] and outcome.new_value == 1.0
@@ -138,8 +138,22 @@ def test_unrecognized_message_is_reclassified_by_live_introspection():
             raise RuntimeError("Error: invalid input")
 
     session.settings.setup.intensity.reject = reject
-    _set(session, "setup.intensity", 3.0)
+    _set(session, "setup.intensity", 1.05)
     assert session.settings.setup.intensity.value == 1.0
+
+
+def test_value_far_outside_the_range_raises_the_original_error():
+    # 5 for a 0..1 fraction more likely means 5 %: it is not clamped to 1.
+    session, events = _enable()
+    with pytest.raises(RuntimeError, match="not in range"):
+        _set(session, "setup.intensity", 5.0)
+    assert session.settings.setup.intensity.value == 0.05
+    assert events == []
+
+
+def test_clamp_tolerance_must_not_be_negative():
+    with pytest.raises(ValueError, match="clamp_tolerance"):
+        ResilientConfig(clamp_tolerance=-0.1)
 
 
 def test_disallowed_value_is_snapped_to_the_closest_allowed_value():
@@ -516,7 +530,7 @@ def test_listener_errors_do_not_break_the_session():
         raise ValueError("listener bug")
 
     session.resilient.on_event(broken)
-    _set(session, "setup.intensity", 5.0)
+    _set(session, "setup.intensity", 1.05)
     assert session.settings.setup.intensity.value == 1.0
 
 

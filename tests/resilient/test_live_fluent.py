@@ -68,10 +68,21 @@ def test_out_of_range_value_is_clamped(resilient_elbow):
     solver, events = resilient_elbow
     turbulence = _cold_inlet(solver).turbulence
     with pytest.warns(ResilientRecoveryWarning):
-        turbulence.turbulent_intensity = 5.0
+        turbulence.turbulent_intensity = 1.05
     assert turbulence.turbulent_intensity() == pytest.approx(1.0)
     assert solver.resilient.last_outcome.fixes_applied == ["clamp"]
     assert events[-1].kind is EventKind.RECOVERED
+
+
+def test_value_far_outside_the_range_raises_the_original_error(resilient_elbow):
+    # 5 for a 0..1 fraction more likely means 5 %: it is not clamped to 1.
+    solver, events = resilient_elbow
+    turbulence = _cold_inlet(solver).turbulence
+    before = turbulence.turbulent_intensity()
+    with pytest.raises(RuntimeError):
+        turbulence.turbulent_intensity = 5.0
+    assert turbulence.turbulent_intensity() == pytest.approx(before)
+    assert events == []
 
 
 def test_close_typo_is_snapped_to_an_allowed_value(resilient_elbow):

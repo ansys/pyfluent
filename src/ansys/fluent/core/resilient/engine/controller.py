@@ -142,6 +142,7 @@ class ResilientController:
                 and config.recovery is not RecoveryPolicy.STRICT
             ),
             extra_candidates=config.activation_candidates,
+            clamp_tolerance=config.clamp_tolerance,
         )
         self._journal_complete = journal_complete
         self._listeners: list[Callable[[ResilientEvent], None]] = []
@@ -391,14 +392,14 @@ class ResilientController:
             else None
         )
         if outcome.activated:
-            enabled = [
+            enabled = "; ".join(
                 d
                 for d, k in zip(descriptions, outcome.fixes_applied)
                 if k == "activate_model"
-            ]
+            )
             self._emit(
                 EventKind.ACTIVATED,
-                f"Resilient mode {'; '.join(enabled)} to activate {path}.",
+                f"Enabled {enabled} so that {self._describe_path(path)} can be set.",
                 path=path,
                 warning=warning,
                 outcome=outcome.to_dict(),
@@ -411,14 +412,34 @@ class ResilientController:
         if value_fixes:
             self._emit(
                 EventKind.RECOVERED,
-                f"Resilient mode set {path} = {outcome.new_value!r} instead of the "
-                f"rejected value {brief(value)!r} ({'; '.join(value_fixes)}).",
+                f"{self._describe_path(path)}: {brief(value)!r} was rejected; set "
+                f"{outcome.new_value!r} instead ({'; '.join(value_fixes)}).",
                 path=path,
                 warning=warning,
                 outcome=outcome.to_dict(),
             )
 
     # -- inactive objects ------------------------------------------------------------
+
+    def _display_path(self, path: str) -> str:
+        """Return ``path`` without the session and settings-root prefixes."""
+        text = path.removeprefix("<session>.")
+        for prefix in self.adapter.path_prefixes:
+            if text.startswith(prefix):
+                return text[len(prefix) :]
+        return text
+
+    def _describe_path(self, path: str) -> str:
+        """Return the Python path of the settings object at ``path``, for messages.
+
+        Falls back to ``path`` when the object or its Python path is unknown.
+        """
+        try:
+            with self._in_mode(_UNTRACKED):
+                python_path = self._resolver.resolve(path).python_path
+        except Exception:  # noqa: BLE001
+            return path
+        return self._display_path(python_path) if isinstance(python_path, str) else path
 
     def on_inactive_access(self, obj: Any, name: str) -> Any:
         """Return a write-deferring proxy for child ``name`` of inactive ``obj``."""
@@ -470,10 +491,12 @@ class ResilientController:
             raise
         if activated:
             names = ", ".join(f"{c.path} = {c.value!r}" for c in activated)
-            location = getattr(inactive, "python_path", None) or repr(inactive)
+            location = self._display_path(
+                getattr(inactive, "python_path", None) or repr(inactive)
+            )
             self._emit(
                 EventKind.ACTIVATED,
-                f"Resilient mode enabled {names} to activate {location}.",
+                f"Enabled {names} so that {location} can be set.",
                 path=location,
                 warning=(
                     ResilientRecoveryWarning
@@ -568,10 +591,10 @@ class ResilientController:
             else:
                 outcome.rolled_back = True
                 message = (
-                    f"{full} failed; resilient mode restored checkpoint "
-                    f"{checkpoint.name!r} (the state before the command)."
+                    f"{self.adapter.command_name(full)} failed; restored checkpoint "
+                    f"{checkpoint.name!r}, the state before the command."
                 )
-                _add_note(err, message)
+                _add_note(err, f"Resilient mode: {message}")
                 self._emit(
                     EventKind.ROLLBACK,
                     message,
@@ -669,7 +692,7 @@ class ResilientController:
 
     def _replace_active_session(self, cls: Classification) -> Any:
         product = self.adapter.product_name
-        reason = _summary(cls.details or cls.message)
+        reason = _summary(cls.details or cls.message, limit=80)
         logger.error("The active %s session failed: %s", product, reason)
         standby = self.pool.take_standby()
         try:
@@ -694,10 +717,9 @@ class ResilientController:
         self.bind(standby)
         self._emit(
             EventKind.FAILOVER,
-            f"The {product} session failed ({reason}); a standby session took over "
-            "and was brought to the same state. Settings calls on your session "
-            "object now go to the standby; use session.resilient.active_session for "
-            "other services.",
+            f"The {product} session failed and a standby took over with the same "
+            "state; settings calls now go to it (use session.resilient."
+            f"active_session for other services). Cause: {reason}",
             warning=ResilientFailoverWarning,
         )
         return self._inner
@@ -744,7 +766,9 @@ class ResilientController:
             return None
         name = f"auto-{self.adapter.command_name(full)}"
         try:
-            checkpoint = self._write_checkpoint(name, reason=f"before {full}")
+            checkpoint = self._write_checkpoint(
+                name, before=self.adapter.command_name(full)
+            )
         except Exception as err:  # noqa: BLE001
             _warn_degraded(
                 f"The automatic checkpoint before {full} failed; it cannot be rolled "
@@ -753,14 +777,16 @@ class ResilientController:
             return None
         return checkpoint
 
-    def _write_checkpoint(self, name: str, *, reason: str) -> Checkpoint:
+    def _write_checkpoint(self, name: str, *, before: str | None = None) -> Checkpoint:
+        reason = f"before {before}" if before else "requested"
         with self._in_mode(_UNTRACKED):
             checkpoint = self.store.write(
                 self.session, name, reason=reason, journal_seq=self.journal.next_seq
             )
+        when = f" before {before}" if before else ""
         self._emit(
             EventKind.CHECKPOINT,
-            f"Checkpoint {name!r} written ({reason}): {checkpoint.path}",
+            f"Checkpoint {name!r} written{when}: {checkpoint.path}",
             checkpoint=checkpoint.to_dict(),
         )
         return checkpoint
@@ -778,7 +804,7 @@ class ResilientController:
                 f"The {self.adapter.product_name} session has nothing to checkpoint "
                 "yet (for example, no case is loaded)."
             )
-        return self._write_checkpoint(name, reason="requested")
+        return self._write_checkpoint(name)
 
     def _restore(self, checkpoint: Checkpoint) -> None:
         with self._in_mode(_UNTRACKED):
@@ -818,7 +844,8 @@ class ResilientController:
             op = self.journal.undo(self._inner.set_var)
         self._emit(
             EventKind.UNDO,
-            f"Undid {op.describe()}; restored {op.old_value!r}.",
+            f"Undid {self._describe_path(op.path)} = {op.new_value!r}; restored "
+            f"{op.old_value!r}.",
             path=op.path,
         )
         return op
@@ -833,7 +860,11 @@ class ResilientController:
         """
         with self._in_mode(_UNTRACKED):
             op = self.journal.redo(self._inner.set_var)
-        self._emit(EventKind.REDO, f"Redid {op.describe()}.", path=op.path)
+        self._emit(
+            EventKind.REDO,
+            f"Redid {self._describe_path(op.path)} = {op.new_value!r}.",
+            path=op.path,
+        )
         return op
 
     # -- disabling ------------------------------------------------------------------

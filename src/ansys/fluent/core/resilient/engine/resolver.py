@@ -22,7 +22,8 @@
 
 """Propose bounded repairs for recoverable errors by live introspection.
 
-* out of range -> clamp to the live ``[min, max]``;
+* out of range -> clamp to the live ``[min, max]``, but only when the value is
+  close to the range (see ``ResilientConfig.clamp_tolerance``);
 * not an allowed value -> snap to the closest live ``allowed_values`` entry;
 * wrong type -> convert a numeric string to a number;
 * inactive target -> enable the governing model that activates it (only when
@@ -62,6 +63,13 @@ def is_active(obj: Any) -> bool | None:
     return None if value is None else bool(value)
 
 
+def _number(value: Any) -> int | float | None:
+    """Return ``value`` if it is a real number (not a bool), else ``None``."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return value
+
+
 class RecoverableErrorResolver:
     """Propose repairs for recoverable errors on one session."""
 
@@ -72,11 +80,13 @@ class RecoverableErrorResolver:
         *,
         allow_model_activation: bool = False,
         extra_candidates: tuple[ActivationCandidate, ...] = (),
+        clamp_tolerance: float = 0.1,
     ):
         self._adapter = adapter
         self.session = session
         self.allow_model_activation = allow_model_activation
         self.extra_candidates = tuple(extra_candidates)
+        self.clamp_tolerance = clamp_tolerance
 
     # -- helpers -------------------------------------------------------------
 
@@ -120,26 +130,32 @@ class RecoverableErrorResolver:
             return self.fix_type(value)
         return None
 
-    @staticmethod
-    def fix_range(target: Any, value: Any) -> Fix | None:
-        """Clamp a numeric value to the live bounds of ``target``."""
+    def fix_range(self, target: Any, value: Any) -> Fix | None:
+        """Clamp a numeric value that is slightly outside the live bounds of ``target``.
+
+        Only an overshoot of at most ``clamp_tolerance`` times the allowed range is
+        clamped (with a single bound, times the magnitude of that bound). A value
+        further away more likely reflects a different intent, such as a
+        percentage instead of a fraction, so it is not repaired.
+        """
         if target is None or isinstance(value, bool):
             return None
         if not isinstance(value, (int, float)):
             return None
-        low, high = _call(target, "min"), _call(target, "max")
-        clamped = value
-        if isinstance(low, (int, float)) and value < low:
-            clamped = low
-        if isinstance(high, (int, float)) and value > high:
-            clamped = high
-        if clamped == value:
+        low, high = _number(_call(target, "min")), _number(_call(target, "max"))
+        if low is not None and value < low:
+            bound, overshoot, side = low, low - value, "minimum"
+        elif high is not None and value > high:
+            bound, overshoot, side = high, value - high, "maximum"
+        else:
             return None
-        return Fix(
-            kind="clamp",
-            description=f"clamped {value!r} to the allowed range -> {clamped!r}",
-            new_value=clamped,
-        )
+        if low is not None and high is not None and high > low:
+            scale = high - low
+        else:
+            scale = abs(bound)
+        if overshoot > self.clamp_tolerance * scale:
+            return None
+        return Fix(kind="clamp", description=f"the allowed {side}", new_value=bound)
 
     @staticmethod
     def fix_allowed_value(target: Any, value: Any) -> Fix | None:
@@ -157,8 +173,7 @@ class RecoverableErrorResolver:
             return None
         return Fix(
             kind="nearest_allowed",
-            description=f"replaced {value!r} with the closest allowed value "
-            f"{matches[0]!r}",
+            description="the closest allowed value",
             new_value=matches[0],
         )
 
@@ -175,7 +190,7 @@ class RecoverableErrorResolver:
                 continue
             return Fix(
                 kind="coerce_type",
-                description=f"converted {value!r} to {converted!r}",
+                description="converted to a number",
                 new_value=converted,
             )
         return None
@@ -196,7 +211,7 @@ class RecoverableErrorResolver:
         names = ", ".join(f"{c.path} = {c.value!r}" for c in activated)
         return Fix(
             kind="activate_model",
-            description=f"enabled {names}",
+            description=names,
             activations=tuple(activated),
         )
 

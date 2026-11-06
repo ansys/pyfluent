@@ -22,6 +22,8 @@
 
 """Error classification and repair proposals."""
 
+import math
+
 from _resilient_fakes import FakeAdapter, FakeLeaf, FakeSession
 import pytest
 
@@ -108,10 +110,31 @@ def _resolver(session, *, allow=False, candidates=()):
     return RecoverableErrorResolver(adapter, session, allow_model_activation=allow)
 
 
-def test_clamp_uses_live_bounds():
-    fix = RecoverableErrorResolver.fix_range(FakeLeaf(0, minimum=0, maximum=1), 5.0)
+def test_clamp_repairs_only_values_close_to_the_live_bounds():
+    resolver = _resolver(FakeSession())
+    leaf = FakeLeaf(0, minimum=0, maximum=1)
+    fix = resolver.fix_range(leaf, 1.05)
     assert fix.kind == "clamp" and fix.new_value == 1
-    assert RecoverableErrorResolver.fix_range(FakeLeaf(0, minimum=0), True) is None
+    assert fix.description == "the allowed maximum"
+    # 5 for a 0..1 fraction more likely means 5 %: it is not clamped to 1.
+    assert resolver.fix_range(leaf, 5.0) is None
+    assert resolver.fix_range(FakeLeaf(0, minimum=0), True) is None
+
+
+def test_clamp_with_a_single_bound_scales_with_that_bound():
+    resolver = _resolver(FakeSession())
+    fix = resolver.fix_range(FakeLeaf(20, minimum=10), 9.5)
+    assert fix.new_value == 10 and fix.description == "the allowed minimum"
+    assert resolver.fix_range(FakeLeaf(20, minimum=10), 5) is None
+    assert resolver.fix_range(FakeLeaf(1, minimum=0), -0.01) is None
+
+
+def test_clamp_tolerance_is_configurable():
+    session, leaf = FakeSession(), FakeLeaf(0, minimum=0, maximum=1)
+    always = RecoverableErrorResolver(FakeAdapter(), session, clamp_tolerance=math.inf)
+    never = RecoverableErrorResolver(FakeAdapter(), session, clamp_tolerance=0)
+    assert always.fix_range(leaf, 5.0).new_value == 1
+    assert never.fix_range(leaf, 1.05) is None
 
 
 def test_snap_requires_a_close_match():

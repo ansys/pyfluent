@@ -69,8 +69,10 @@ be repaired, applies a fix and retries:
 
    * - Rejected write
      - Fix
-   * - Value outside the allowed range
-     - Clamp to the nearest bound.
+   * - Value just outside the allowed range
+     - Clamp to the nearest bound. Only an overshoot of up to
+       ``clamp_tolerance`` (10 % of the range by default) is clamped; a value
+       further away, such as ``5`` for a fraction from 0 to 1, is not repaired.
    * - String that is not an allowed value
      - Snap to the closest allowed value (close matches only).
    * - Value of the wrong type, such as ``"0.5"`` for a real
@@ -262,6 +264,9 @@ Configuration reference
    * - ``max_resolver_attempts``
      - ``3``
      - Maximum repair attempts for a single write.
+   * - ``clamp_tolerance``
+     - ``0.1``
+     - Largest overshoot that is clamped, as a fraction of the allowed range.
    * - ``auto_checkpoint``
      - ``True``
      - Checkpoint before irreversible commands.

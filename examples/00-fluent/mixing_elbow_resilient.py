@@ -71,13 +71,15 @@ solver.settings.file.read_mesh(file_name=import_file_name)
 # Set up boundary conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The energy model is off, so the inlet temperature is inactive. Writing it
-# enables the energy model first. The turbulent intensity of 5 is outside the
-# allowed range and is clamped to the upper bound with a warning.
+# enables the energy model first. The turbulent intensity of 1.05 is just above
+# the allowed range of 0 to 1, so it is clamped to 1 with a warning. A value far
+# outside the range, such as 5 for 5 %, is not repaired: Fluent's error is
+# raised unchanged.
 
 cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 cold_inlet.momentum.velocity_magnitude.value = 0.4
 cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
-cold_inlet.turbulence.turbulent_intensity = 5
+cold_inlet.turbulence.turbulent_intensity = 1.05
 cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
 cold_inlet.thermal.temperature.value = 293.15
 

@@ -27,7 +27,8 @@ Resilient mode walkthrough
 This script shows each resilient-mode capability on live Fluent sessions, one
 chapter at a time:
 
-1. Repair of rejected values and activation of the energy model.
+1. Repair of near-miss values, refusal to guess for values far outside the
+   allowed range, and activation of the energy model.
 2. Undo and redo of settings changes.
 3. Checkpoints before solves, and rollback.
 4. Failover to a warm standby after the Fluent process is killed.
@@ -50,27 +51,83 @@ See :ref:`ref_resilient_guide` for details.
 
 import argparse
 import contextlib
+import os
+import re
 import subprocess
+import textwrap
 import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.diagnostics.exceptions import DeprecatedSettingWarning
 from ansys.fluent.core.resilient import PoolConfig, ResilientConfig, ResilientWarning
 
 # Every repair is also reported as an event, which this demo prints.
 warnings.simplefilter("ignore", ResilientWarning)
+# Development builds of Fluent suggest newer names for some settings. The demo
+# keeps the names of the released versions so that it runs on all of them.
+warnings.simplefilter("ignore", DeprecatedSettingWarning)
+
+WIDTH = 78
+
+INTRO = """\
+PyFluent resilient mode walkthrough
+
+The script below is ordinary PyFluent code. While you read the output:
+  > lines           what the script does next
+  indented lines    values read back from Fluent
+  [resilient: ...]  what resilient mode did, and why"""
 
 
 def chapter(number: int, title: str, auto: bool) -> None:
     """Print a chapter title, after waiting for Enter unless ``auto`` is set."""
     if not auto:
-        input("\nPress Enter to continue...")
-    print(f"\n{'=' * 72}\n  {number}. {title}\n{'=' * 72}")
+        input("\nPress Enter for the next chapter...")
+    print(f"\n{'=' * WIDTH}\n {number}. {title}\n{'=' * WIDTH}")
+
+
+def step(text: str) -> None:
+    """Print what the script does next."""
+    print(
+        "\n" + textwrap.fill(text, WIDTH, initial_indent="> ", subsequent_indent="  ")
+    )
+
+
+def show(label: str, value) -> None:
+    """Print a value read back from Fluent."""
+    print(f"    {label}: {value}")
+
+
+def first_line(error: Exception) -> str:
+    """Return the first line of an error message."""
+    lines = str(error).strip().splitlines()
+    return lines[0] if lines else type(error).__name__
+
+
+def intensity(value: float) -> str:
+    """Format a turbulent intensity, which the Fluent GUI shows in percent."""
+    return f"{value:g} ({value * 100:g} % in the Fluent GUI)"
 
 
 def show_event(event) -> None:
-    """Print a resilient-mode event."""
-    print(f"  >> resilient mode [{event.kind.value}]: {event.message}")
+    """Print a resilient-mode event, wrapped, with short checkpoint file names."""
+    message = event.message
+    checkpoint = event.data.get("checkpoint")
+    if checkpoint:
+        message = message.replace(
+            checkpoint["path"], os.path.basename(checkpoint["path"])
+        )
+    # Keep quoted names such as ["cold-inlet"] on one line.
+    message = re.sub(r'"[^"]*"', lambda m: m.group(0).replace(" ", "\xa0"), message)
+    text = textwrap.fill(
+        message,
+        WIDTH,
+        initial_indent=f"    [resilient: {event.kind.value}] ",
+        subsequent_indent=" " * 8,
+        break_long_words=False,
+        break_on_hyphens=False,
+    )
+    print(text.replace("\xa0", " "))
 
 
 # %%
@@ -101,73 +158,110 @@ def mixing_elbow(ui_mode: str, auto: bool, failover: bool) -> None:
         hot_inlet = setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
         chapter(1, "Repair of rejected values", auto)
+        step("Write the cold-inlet temperature while the energy model is off.")
         setup.models.energy.enabled = False
-        print("Energy model enabled:", setup.models.energy.enabled())
-        print("Setting the cold inlet temperature while the energy model is off.")
+        show("energy model enabled", setup.models.energy.enabled())
         cold_inlet.thermal.temperature.value = 293.15
-        print("Energy model enabled:", setup.models.energy.enabled())
-        print("Setting a turbulent intensity of 5 (the allowed range is 0 to 1).")
-        cold_inlet.turbulence.turbulence_specification = (
-            "Intensity and Hydraulic Diameter"
-        )
-        cold_inlet.turbulence.turbulent_intensity = 5
-        print("Turbulent intensity:", cold_inlet.turbulence.turbulent_intensity())
-        print("Setting the hot inlet specification with '&' instead of 'and'.")
-        hot_inlet.turbulence.turbulence_specification = "Intensity & Hydraulic Diameter"
-        print("Specification:", hot_inlet.turbulence.turbulence_specification())
+        show("energy model enabled", setup.models.energy.enabled())
+        show("cold-inlet temperature", cold_inlet.thermal.temperature.value())
 
+        turbulence = cold_inlet.turbulence
+        turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+        step(
+            "Write a turbulent intensity of 1.05, just above the allowed maximum of 1."
+        )
+        turbulence.turbulent_intensity = 1.05
+        show("turbulent intensity", intensity(turbulence.turbulent_intensity()))
+
+        step(
+            "Write a turbulent intensity of 5, which probably means 5 %. That is far "
+            "outside the range, so resilient mode does not guess: Fluent's error is "
+            "raised unchanged and the value stays as it was."
+        )
+        try:
+            turbulence.turbulent_intensity = 5
+        except RuntimeError as error:
+            show("Fluent error", first_line(error))
+        show("turbulent intensity", intensity(turbulence.turbulent_intensity()))
+
+        step("Write the hot-inlet specification with '&' instead of 'and'.")
+        hot_inlet.turbulence.turbulence_specification = "Intensity & Hydraulic Diameter"
+        show("specification", hot_inlet.turbulence.turbulence_specification())
+
+        chapter(2, "Undo and redo", auto)
+        # Newer Fluent versions name the viscous model "turbulence".
+        models = setup.models
+        viscous = (
+            models.turbulence if "turbulence" in models.child_names else models.viscous
+        )
+        step("Switch the viscous model to laminar, then undo, redo and undo again.")
+        show("viscous model", viscous.model())
+        viscous.model = "laminar"
+        show("viscous model", viscous.model())
+        solver.resilient.undo()
+        show("after undo", viscous.model())
+        solver.resilient.redo()
+        show("after redo", viscous.model())
+        solver.resilient.undo()
+        show("after a second undo", viscous.model())
+
+        chapter(3, "Checkpoints and rollback", auto)
+        step(
+            "Set the inlet conditions for the solve: 0.4 m/s and 5 % turbulent "
+            "intensity at the cold inlet, 1.2 m/s and 313.15 K at the hot inlet. "
+            "The settings API takes the intensity as a fraction, so 5 % is 0.05."
+        )
         cold_inlet.momentum.velocity_magnitude.value = 0.4
-        cold_inlet.turbulence.turbulent_intensity = 0.05
-        cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+        turbulence.turbulent_intensity = 0.05
+        turbulence.hydraulic_diameter = "4 [in]"
         hot_inlet.momentum.velocity_magnitude.value = 1.2
         hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
         hot_inlet.thermal.temperature.value = 313.15
-
-        chapter(2, "Undo and redo", auto)
-        viscous = setup.models.viscous
-        print("Viscous model:", viscous.model())
-        viscous.model = "laminar"
-        print("Viscous model:", viscous.model())
-        solver.resilient.undo()
-        print("After undo:", viscous.model())
-        solver.resilient.redo()
-        print("After redo:", viscous.model())
-        solver.resilient.undo()
-        print("After a second undo:", viscous.model())
-
-        chapter(3, "Checkpoints and rollback", auto)
+        show(
+            "cold-inlet turbulent intensity",
+            intensity(turbulence.turbulent_intensity()),
+        )
         run_calculation = solver.settings.solution.run_calculation
         solver.settings.solution.initialization.hybrid_initialize()
-        solver.resilient.checkpoint("initialized")
+        step("Write a checkpoint named 'initialized'.")
+        checkpoint = solver.resilient.checkpoint("initialized")
+        show("checkpoint folder", os.path.dirname(checkpoint.path))
+        step(
+            "Change the cold-inlet velocity to 0.6 and iterate. Iterating cannot be "
+            "undone, so resilient mode writes a checkpoint first."
+        )
         cold_inlet.momentum.velocity_magnitude.value = 0.6
-        print("Iterating; a checkpoint is written first.")
         run_calculation.iterate(iter_count=20)
-        print("Checkpoints:", [c.name for c in solver.resilient.checkpoints])
-        print("Rolling back to 'initialized'.")
+        show("checkpoints", [c.name for c in solver.resilient.checkpoints])
+        step("Roll back to 'initialized'.")
         solver.resilient.rollback("initialized")
-        print("Checkpoints:", [c.name for c in solver.resilient.checkpoints])
-        print("Cold inlet velocity:", cold_inlet.momentum.velocity_magnitude.value())
+        show("checkpoints", [c.name for c in solver.resilient.checkpoints])
+        show("cold-inlet velocity", cold_inlet.momentum.velocity_magnitude.value())
 
         if failover:
             chapter(4, "Failover to a warm standby", auto)
+            step("Write a checkpoint, then change the cold-inlet velocity to 0.5.")
             solver.resilient.checkpoint("before-crash")
             cold_inlet.momentum.velocity_magnitude.value = 0.5
-            print("Killing the Fluent process of the active session.")
+            step("Kill the Fluent process of the active session.")
             # On Windows, Fluent's cleanup script can report a failure even though
             # it killed Fluent.
             with contextlib.suppress(subprocess.CalledProcessError):
                 solver.force_exit()
-            print("Setting the hot inlet velocity on the dead session.")
+            step("Change the hot-inlet velocity on the session that was just killed.")
             hot_inlet.momentum.velocity_magnitude.value = 1.0
             standby = solver.resilient.active_session
-            print("A different Fluent session took over:", standby is not solver)
-            print(
-                "Cold inlet velocity, replayed on the standby:",
+            show("served by another Fluent session", standby is not solver)
+            show(
+                "cold-inlet velocity (replayed)",
                 cold_inlet.momentum.velocity_magnitude.value(),
             )
-            print("Iterating on the standby.")
+            show("hot-inlet velocity", hot_inlet.momentum.velocity_magnitude.value())
+            step("Iterate on the standby.")
             run_calculation.iterate(iter_count=10)
-        print(solver.resilient)
+        step("Summary of this resilient session.")
+        show("checkpoints", len(solver.resilient.checkpoints))
+        show("journaled operations", len(solver.resilient.journal))
     finally:
         solver.exit()
 
@@ -283,7 +377,7 @@ def solidification(ui_mode: str, auto: bool) -> None:
     )
     solver.resilient.on_event(show_event)
     try:
-        print("Setting up the solidification case and solving the steady state.")
+        step("Set up the solidification case and solve the steady state.")
         setup_solidification(solver)
         settings = solver.settings
         settings.setup.general.solver.time = "unsteady-1st-order"
@@ -294,20 +388,23 @@ def solidification(ui_mode: str, auto: bool) -> None:
         transient_controls.time_step_size = 0.1
         transient_controls.time_step_count = 50
 
-        print("Solving to 5 seconds with a time step of 0.1 s; the solve diverges.")
+        step(
+            "Solve to 5 s with a time step of 0.1 s. The time step is too large, so "
+            "the solve diverges; resilient mode wrote a checkpoint before it."
+        )
         try:
             settings.solution.run_calculation.calculate()
         except RuntimeError as error:
-            print(f"The solve failed: {error}")
-            print("Rolled back:", solver.resilient.last_outcome.rolled_back)
-            print("Retrying from the restored steady state with a time step of 1 ms.")
+            show("Fluent error", first_line(error))
+            show("rolled back", solver.resilient.last_outcome.rolled_back)
+            step("Retry from the restored steady state with a time step of 1 ms.")
             controls.under_relaxation = {"delh": 0.02}
             transient_controls.time_step_size = 0.001
             transient_controls.time_step_count = 5
             settings.solution.run_calculation.calculate()
-            print("The retry completed.")
+            show("retry", "completed")
         else:
-            print("The solve did not diverge this time.")
+            show("retry", "not needed; the solve did not diverge this time")
     finally:
         solver.exit()
 
@@ -327,6 +424,7 @@ def main() -> None:
     parser.add_argument("--no-gui", action="store_true", help="hide the Fluent GUI")
     args = parser.parse_args()
     ui_mode = "no_gui" if args.no_gui else "gui"
+    print(INTRO)
     mixing_elbow(ui_mode, args.auto, args.failover)
     solidification(ui_mode, args.auto)
 

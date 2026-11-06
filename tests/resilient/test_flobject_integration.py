@@ -148,8 +148,16 @@ def test_revert_that_fails_is_reported_whatever_the_policy(tmp_path):
 def test_out_of_range_value_is_clamped_through_the_settings_tree(tmp_path):
     session, _ = _resilient(tmp_path)
     with pytest.warns(ResilientRecoveryWarning):
-        session.settings.bc.inlet.intensity = 5.0
+        session.settings.bc.inlet.intensity = 1.05
     assert session.settings.bc.inlet.intensity() == 1.0
+
+
+def test_value_far_outside_the_range_keeps_the_usual_error(tmp_path):
+    session, events = _resilient(tmp_path)
+    with pytest.raises(RuntimeError, match="not in range"):
+        session.settings.bc.inlet.intensity = 5.0
+    assert session.settings.bc.inlet.intensity() == 0.05
+    assert events == []
 
 
 def test_close_typo_is_snapped_through_the_settings_tree(tmp_path):
